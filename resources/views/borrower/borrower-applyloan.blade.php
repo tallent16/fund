@@ -1,7 +1,26 @@
 @extends('layouts.applyloan-dashboard')
+@section('styles')
+	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 
+	<link rel="stylesheet" type="text/css" href="{{ url('css/bootstrap-select.min.css') }}">        
+@endsection
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	 
+	<script src="{{ url('js/bootstrap-select.min.js') }}" type="text/javascript"></script>	 
+	 
+	<script src="{{ url('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>  
+	<script src="{{ url('vendor/unisharp/laravel-ckeditor/adapters/jquery.js') }}"></script>  
+	<script>
+		$(document).ready(function(){			
+			$('#testCKE').ckeditor();  
+			$('#bid_type').selectpicker({
+				  style: 'btn-default',
+				  size: 12
+			  }); 
+			$('#payment_type').selectpicker(); 
+		});		
+	</script>
+		
 @endsection
 @section('page_heading','Apply Loan')
 @section('section')     
@@ -29,7 +48,8 @@
 											<div class="row">
 											   <div class="col-md-6">
 												    <p>Purpose of Loan</p>
-												   	<textarea id="txtEditor"></textarea> 
+												 <textarea id="testCKE"></textarea> 
+												   	
 												   
 											<form class="form-inline">	
 												
@@ -69,7 +89,7 @@
 													</div>
 																				
 													<div class="col-xs-8">													
-														<select class="form-control select-width" id="sel1">
+														<select id="bid_type">
 														<option>Please Select</option>
 														<option>Bid type</option>
 														<option>Bid type</option>
@@ -83,13 +103,15 @@
 														<label>Bid Close Date:</label>												
 													</div>
 																				
-													<div class="col-xs-8">														 
+													<div class="col-xs-8">	
+																											 
 														<div class="controls">
 															<div class="input-group">
 																<input id="date-picker-2" type="text" class="date-picker form-control" />
 																<label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
 																</label>
-															</div>
+															</div>									
+															
 														</div>																			
 													</div>
 												</div>
@@ -123,7 +145,7 @@
 													</div>
 																				
 													<div class="col-xs-8">													
-														<select class="form-control select-width" id="sel1">
+														<select id="payment_type">
 														<option>Please Select</option>
 														<option>Payment type</option>
 														<option>Payment type</option>
@@ -336,29 +358,29 @@
   												
 	</div>	<!--end panel head-->							
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
 <script>
-	$(document).ready(function(){
-		$(".nav-tabs a").click(function(){
-			$(this).tab('show');
-		});
-		$('.nav-tabs a').on('shown.bs.tab', function(event){
-			var x = $(event.target).text();         // active tab
-			var y = $(event.relatedTarget).text();  // previous tab
-			$(".act span").text(x);
-			$(".prev span").text(y);
-		});
-		
-		$(".date-picker").datepicker();
-
-$(".date-picker").on("change", function () {
-    var id = $(this).attr("id");
-    var val = $("label[for='" + id + "']").text();
-    $("#msg").text(val + " changed");
-});
-		
-		$(":file").fileloading({buttonText: "Attach File"});
+$(document).ready(function(){ 
+	// Main tabs
+	$(".nav-tabs a").click(function(){
+		$(this).tab('show');
 	});
-</script>
+	$('.nav-tabs a').on('shown.bs.tab', function(event){
+		var x = $(event.target).text();         // active tab
+		var y = $(event.relatedTarget).text();  // previous tab
+		$(".act span").text(x);
+		$(".prev span").text(y);
+	});	
+
+	// date picker
+	$('.date-picker').datetimepicker({
+	autoclose: true,
+	minView: 2,
+	format: 'dd/mm/yyyy'
+
+	}); 
+}); 
+</script>  	
     @endsection  
 @stop

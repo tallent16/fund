@@ -9103,4 +9103,7 @@ ol li{
 }
 .form-inline .row{ 
 	margin:10px 0 0 0;
+} 
+.applyloan .btn-group.bootstrap-select {
+    width: 100%;
 }
