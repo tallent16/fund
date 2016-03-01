@@ -22,12 +22,36 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="{{ url ('register') }}">Signup</a>
-                    </li>
-                    <li>
-                        <a href="{{ url ('auth/login') }}">Login</a>
-                    </li>                    
+					@if(Auth::check())
+						@if(Auth::user()->usertype	==	1)
+							@var	$userProfile	=	'borrower/profile'
+						@endif
+						@if(Auth::user()->usertype	==	2)
+							@var	$userProfile	=	'investor/profile'
+						@endif
+						@if(Auth::user()->usertype	==	3)
+							@var	$userProfile	=	'adminnn/profile'
+						@endif
+						
+						<li>
+							<a href="{{ url($userProfile)}}">
+								<i class="fa fa-user"></i>
+								{{ Lang::get('borrower-leftmenu.user_profile') }}
+							</a>
+						<li>
+							<a href="{{ url ('auth/logout') }}">
+								<i class="fa fa-sign-out"></i>
+								{{ Lang::get('borrower-leftmenu.logout') }} 
+							</a>
+						</li>
+					@else
+						<li>
+							<a href="{{ url ('register') }}">Signup</a>
+						</li>
+						<li>
+							<a href="{{ url ('auth/login') }}">Login</a>
+						</li>                    
+					@endif	
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

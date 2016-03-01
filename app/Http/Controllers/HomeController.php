@@ -1,81 +1,51 @@
 <?php namespace App\Http\Controllers;
 use Auth;
-class HomeController extends Controller {
+class HomeController extends MoneyMatchController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders your application's "dashboard" for users that
-	| are authenticated. Of course, you are free to change or remove the
-	| controller as you wish. It is just here to get your app started!
-	|
-	*/
-
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{	
+	
+	public function __construct() {	
 		//~ $this->middleware('auth');
 	}
-
-	/**
-	 * Show the application dashboard to the user.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return view('borrower.home');
-	}
-
-	public function checkUserType()
-	{
+	
+	//based on user type redirect to related dashboard
+	public function checkUserType() {
 		
 		if (Auth::check()) {
 
-			switch(Auth::user()->user_type){
+			switch(Auth::user()->usertype) {
 				case 1:
-					return redirect('admin');
-					break;
-				case 2:
 					return redirect('borrower');
 					break;
-				case 3:
+				case 2:
 					return redirect('investor');
 					break;
-						
+				case 3:
+					return redirect('admin');
+					break;
 			}	
-		
 		}
-
 	}
-	public function customRedirectPath()
-	{
+	
+	//checks the user login redirect to related dashboard else to home page
+	public function customRedirectPath() {
 		
 		if (Auth::check()) {
 
-			switch(Auth::user()->user_type){
+			switch(Auth::user()->usertype) {
 				case 1:
-					return redirect('admin');
-					break;
-				case 2:
 					return redirect('borrower');
 					break;
-				case 3:
+				case 2:
 					return redirect('investor');
 					break;
-						
+				case 3:
+					return redirect('admin');
+					break;
 			}	
-		
+			
 		}else{
 			return redirect('/');
 		}
-
 	}
 
 }

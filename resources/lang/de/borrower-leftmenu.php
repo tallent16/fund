@@ -23,5 +23,11 @@ return [
 	'banking'					=> 'Bankwesen',
 	'support'					=> 'Unterstützen',	
 	'pinnacle'					=> 'Pinnacle One',
+	'applyloans'				=> 'Übernehmen Kredite',
+	'myloans'					=> 'meine Darlehen',
+	'loanslist'					=> 'Loan Listing',
+	'transhistory'				=> 'transcation Geschichte',
+	'bankdetails'				=> 'Bankdaten',
+	'repayloans'				=> 'Darlehen zurückzuzahlen',
 	
 	];

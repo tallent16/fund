@@ -20,8 +20,7 @@
             <li><a href="/form">Forms</a></li>
             <li><a href="/navbar">Navigation Bar</a></li>
             <li><a href="/popup">Popovers and Tooltips</a></li>
-            <li><a href="/collapse">Collapse</a></li>
-            
+            <li><a href="/collapse">Collapse</a></li>            
             </ul>
         </li>
 		</ul>

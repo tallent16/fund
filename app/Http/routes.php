@@ -9,97 +9,62 @@
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the Closure to execute when that URI is requested.
 |
-*//*
-Route::get('/', function()
-{
-	return redirect('borrower');
-});*/
+*/
 
 Route::get('/', function()
 {
 	return View::make('homepage');  
 });
+
+
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
-Route::get('home', 'HomeController@checkUserType');
+
+// The routes (or pages that are applicable for all types of users
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
-	
 	Route::get('login',  'CustomAuthController@getLogin');
 	Route::post('login', 'CustomAuthController@postLogin');
 	Route::get('logout', 'CustomAuthController@getLogout');
 });
-Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function() {
-    // your routes
+
+
+// The routes (or pages that are applicable for admin users only
+Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
+    Route::get('admin',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
+    Route::get('admin/login',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
 });
 
-Route::get('borrower', 'HomeController@index');
+// The routes (or pages that are applicable for Borrower Users only
+Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], function() {
+    Route::get('borrower', 'BorrowerDashboardController@indexAction');
+	Route::match(['get', 'post'],'borrower/profile', 'BorrowerProfileController@indexAction');
+	Route::get('borrower/applyloan', 'BorrowerApplyLoanController@index');
+	Route::get('borrower/myloans', 'BorrowerMyLoansController@index');	
+	Route::get('borrower/loanslist', 'BorrowerLoanListingController@index');	
+	Route::get('borrower/myloaninfo', 'BorrowerMyLoanInfoController@index');	
+	Route::get('borrower/transhistory', 'BorrowerTransHistoryController@index'); 
+	Route::get('borrower/bankdetails', 'BorrowerBankDetailsController@index');
+	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@index');
+	Route::get('borrower/settings', 'BorrowerSettingsController@index');
+});
+
+// The routes (or pages that are applicable for investor users only
+Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], function()
+{
+    Route::get('investor',array('middleware' => 'auth', 'uses' => 'InvestorController@index'));
+   
+});
+
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');
-Route::get('borrower/profile', 'BorrowerProfileController@index');
-//Route::get('borrower/directorsinfo', 'BorrowerDirectorController@index');
-Route::get('borrower/applyloan', 'BorrowerApplyLoanController@index');
 
 Route::get('user', 'UserController@index');
 Route::get('ajax/user_master', 'UserController@view_user');
 Route::post('ajax/user_master', 'UserController@view_user');
 
-Route::get('/register', function()
-{
-	return View::make('register');
-});
+Route::post('ajax/CheckEmailavailability', 'RegistrationController@checkEmailavailability');
+Route::post('submit_registration', 'RegistrationController@submitAction');
+Route::get('register', 'RegistrationController@indexAction');
+Route::get('activation/{activation}', 'RegistrationController@activationAction'); 
 
-Route::get('/charts', function()
-{
-	return View::make('mcharts');
-});
-
-Route::get('/tables', function()
-{
-	return View::make('table');
-});
-
-Route::get('/forms', function()
-{
-	return View::make('form');
-});
-
-Route::get('/grid', function()
-{
-	return View::make('grid');
-});
-
-Route::get('/buttons', function()
-{
-	return View::make('buttons');
-});
-
-
-Route::get('/icons', function()
-{
-	return View::make('icons');
-});
-
-Route::get('/panels', function()
-{
-	return View::make('panel');
-});
-
-Route::get('/typography', function()
-{
-	return View::make('typography');
-});
-
-Route::get('/notifications', function()
-{
-	return View::make('notifications');
-});
-
-Route::get('/blank', function()
-{
-	return View::make('blank');
-});
-
-
-
-Route::get('/documentation', function()
-{
-	return View::make('documentation');
+Route::get('verification', function() {
+	echo "<h3>Registration successful, please activate email.</h3>";
 });

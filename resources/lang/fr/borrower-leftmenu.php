@@ -24,5 +24,11 @@ return [
 	'support'					=> 'Soutien',
 	'settings'					=> 'Réglages',
 	'pinnacle'					=> 'Pinnacle One',
+	'applyloans'				=> 'appliquer prêts',
+	'myloans'					=> 'Mes prêts',
+	'loanslist'					=> 'Annonce prêt',
+	'transhistory'				=> 'transcation Histoire',
+	'bankdetails'				=> 'Coordonnées bancaires',
+	'repayloans'				=> 'rembourser les prêts',
 	
 	];

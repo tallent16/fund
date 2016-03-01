@@ -1293,7 +1293,8 @@ h6,
   font-size: 12px;
 }
 p {
-  margin: 0 0 10px;
+  /*margin: 0 0 10px;*/
+  text-align:justify;
 }
 .lead {
   margin-bottom: 20px;
@@ -5463,7 +5464,7 @@ a.list-group-item-danger.active:focus {
 }
 .panel > .table-bordered,
 .panel > .table-responsive > .table-bordered {
-  border: 0;
+  /*border: 0;*/
 }
 .panel > .table-bordered > thead > tr > th:first-child,
 .panel > .table-responsive > .table-bordered > thead > tr > th:first-child,
@@ -8950,12 +8951,15 @@ canvas.round {
     }
 }
 /*# sourceMappingURL=styles.css.map */
-/*----------------------------------------Custom css----------------started------------------------------------------------- * */
-/*----------------------------------------sidebar menu------------------------------------------------------------------------*/
+/*--------------------------------------------CUSTOM CSS---------------------------------------------------------------------------**/
+/*----------------------------------------SIDEBAR NAVIGATION------------------------------------------------------------------------*/
 .active{
 	color:#F6942C;
 }
-/*-----------------------------------borrower dashboard----------------------------------------------------------------------*/
+.nav > li > a .active{
+	color:#F6942C; 
+}
+/*------------------------------------------borrower dashboard----------------------------------------------------------------------*/
 .annoucement-msg-container{
 	margin:0;
 }
@@ -8970,8 +8974,9 @@ canvas.round {
 	background-color: #2A292A;
 	border-color: #2A292A;
 	font-size: 16px;
-    padding: 18px; 
+    padding: 10px 0 10px 20px; 
     font-weight:600;
+    border-radius:0;
 }
 .panel-subhead{
 	color:#8B170A;
@@ -9001,6 +9006,7 @@ canvas.round {
 .settings-menu{ 
 	margin:10em 0 0 0;
 }
+/*--------------------------------Login Page------------------------------------------------------------------------------------------------------------------*/
 .login-logo{
 	display: inline-block;
 	margin: 25px 0 0 0;
@@ -9023,6 +9029,7 @@ canvas.round {
 	color:#EF4F1F;
 	text-decoration:none;
 }
+/*-------------------------------Register page---------------------------------------------------------------------------------------------------------------*/
 .register-button{
 	background-color:#EF4F1F;
 	color:#fff;	
@@ -9041,7 +9048,8 @@ canvas.round {
 	color:#fff;	
 	padding:5px;
 }
-td:nth-child(2n) {
+/*---------------------------Profile (company info,director info,profile info)-----------------------------------------------------------------------------------------*/
+.directorinfo td:nth-child(2n) {
     background-color: #fff;
 }
 .status-button, .status-button:hover{
@@ -9050,7 +9058,8 @@ td:nth-child(2n) {
 	border:1px solid #ccc;
 	margin: 0 0 15px 0;	
 	padding: 10px;
-	width: 100px;
+	width: auto;  /* Modified by sathya on 27.02.2016  width: 100px*/
+	
 }
 .verification-button, .verification-button:hover{
 	background-color: #F6942C;
@@ -9058,7 +9067,7 @@ td:nth-child(2n) {
 	border: none;
 	margin: 0 0 35px 0;	
 	padding: 10px;
-	width: 300px;
+	width: auto;
 }
 .user-icon{
 	color:#8B170A;
@@ -9070,11 +9079,11 @@ td:nth-child(2n) {
 	background-color: #F6942C;
 	color: #fff;
 	border: none;
-	width:100px;
+	width:auto;
 	padding:5px;
 }
-.directorinfo .select-width, .applyloan .select-width{
-	width:100%;
+.directorinfo .select-width, .applyloan .select-width, .form-inline .btn-group.bootstrap-select.select-width, .form-horizontal .btn-group.bootstrap-select.select-width{  
+	width:100%; 
 }
 .directorinfo .pagination > li > a {
 	background-color:#EBEBED;
@@ -9085,8 +9094,12 @@ td:nth-child(2n) {
 .directorinfo .panel-primary > .panel-headsection, .applyloan .panel-headsection{
 	padding:5px;
 }
+/*---------------------------Apply loan (loan info, documents submitted)-----------------------------------------------------------------------------------------*/
 .applyloan{
 	background-color:#F9F9F9;	
+}
+.applyloan .row{
+  margin:10px 0 0 0;
 }
 ol li{
 	margin:10px 0 0 0;
@@ -9098,12 +9111,239 @@ ol li{
 .tab-content .active{ 
 	color:#4B4949;
 }
-.panel-body p{
-	font-size:20px;
-}
 .form-inline .row{ 
 	margin:10px 0 0 0;
 } 
 .applyloan .btn-group.bootstrap-select {
     width: 100%;
+}
+.jfilestyle input{
+    border: none; 
+    margin: 0 0 0 20px;
+}
+.jfilestyle label {
+    background-color: #8D8D8D;
+    color: #fff;
+    padding: 2px 5px;
+    width: 120px;
+    text-align: center;
+    font-weight: bold;
+}
+.block-content p a{
+	color:#F6942C;
+	font-weight:bold;
+}
+#documents_submitted a {
+    color: #333;
+}
+/*-----------------------------------------My loans-----------------------------------------------------------------------------------------------*/
+.tab-head-red{
+	background-color:#A52D26;
+	color:#fff;	
+}
+.tab-left-head{
+	background-color:#EAEBED;	
+}
+.table-loan{
+	background-color:#F5F5F5;	
+}
+.social-share img{
+	border-radius:50px;
+	width:30px;
+	margin:0 5px 0 0;
+}
+.myloan-wrapper table tr td:first-child{
+	text-align:left;
+}
+.panel-container img{
+	margin:-1px 0 0 0;
+}
+.img-container {
+    position: relative;
+    text-align: center;
+}
+.text-bottom {
+    position: absolute;
+    font-size: 18px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color:#fff;
+}
+.img-container img { 
+    width: 100%;
+    height: auto;   
+}
+.imageoverlap{
+	position: absolute;	
+	z-index: 1;
+	width:20%;
+}
+.loan-comments{
+	font-weight:bold;
+	margin-left: 8px;
+}
+.comments-section > div:nth-child(even) {
+    background-color:#F5F5F5;
+    padding: 5px;
+}
+.bid-now-section{
+	color:#8B170A;
+	margin: 0 0 0 8px;
+}
+.space-around{
+	margin:10px 0 0 0;
+}
+.bidders-value{
+	color:#F6942C;
+}
+.myloans .panel-body{
+	overflow-y: scroll;
+    max-height: 300px;
+}
+table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
+    border: none;
+    text-align: center;
+}
+.tab-row-orange{
+	background-color:#F6942C;
+	color:#fff;	
+}
+.table-bidinfo{
+	border-collapse: separate;
+    border-spacing: 0 15px;
+}
+.tab-bid-label{
+	background-image: url('../../img/label.png');   
+    color: #fff;
+    background-repeat: no-repeat;
+}
+.img-arrow{	
+	width: 5%; 
+    top: 80px;
+	left:-4px;
+}
+.panel-white{
+	background-color:#fff;
+	padding:10px;
+	color:#222;
+}
+.panel-footer{
+	background-color:#E2E2E2;
+	padding:10px;
+	color:#222;
+}
+.loan-list-container{
+	border:6px solid #333;
+	margin-bottom: 25px;
+}
+.loan-list-image img{
+	margin: 0 0 0 -14px;
+    height: 187px;
+    width: 200px; 
+}
+.panel-white .progress, .space-around .progress{
+	height:8px;
+	margin-bottom:0;
+}
+.panel-white .table{
+	margin-bottom:0;
+}
+.panel-white .table td, .loan-info-wrapper .table td, .myloan-wrapper .table td{
+    border: none;
+}
+.title-loanlist{
+	padding:0 0 5px 10px;
+}
+.loanlist-wrapper .pagination > .active > a, .loanlist-wrapper .pagination > .active > a:hover, .loanlist-wrapper .pagination > .active > a:focus{
+	background-color: #8B170A;
+    border-color: #8B170A;
+}
+.loanlist-wrapper .pagination > li > a{
+	background-color: #383838;
+	color:#fff;
+	border-radius: 0;
+    border: none;
+}
+.loan-list-image .imageoverlap img {
+    width: 100%;
+    height: auto;
+}
+.loan-list-image .imageoverlap{
+	 width: 70%;
+}
+.loanlist-wrapper .btn-default, .loanlist-wrapper .open > .dropdown-toggle.btn-default, 
+.loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a:focus, .loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a{
+	color: #fff;
+    background-color: #000;
+    border-color: #333;
+    border-radius: 0;
+}
+.loanlist-wrapper .dropdown-menu > li > a, .loanlist-wrapper .dropdown-menu{
+	background-color: #333;
+	color:#fff;
+	border-radius: 0;
+	margin:0;
+}
+.loanlist-wrapper .dropdown-menu{
+	top:98%;
+}
+table.table.tab-label {
+    text-align: left;
+    margin: 42% 0 0 0;
+}
+.button-grey{
+	background-color: #7E7E7E;
+    color: #fff;
+    border: none;
+    padding: 3px 20px;	
+}
+.loan-detail-button{
+	background-color: #E88C2A;
+	color: #fff;
+	border: none;
+	padding: 3px 20px;
+	margin:20px;
+}
+.loan-info-wrapper{
+	background-color: #EAEBED;
+	border: 1px solid #ccc;
+}
+/*------------------------------------------------------Transcation History---------------------------------------*/
+.button-black{
+	padding:10px;
+	border:none;
+}
+#trans-history .table th{ 
+    background-color: #E2E2E2;
+}
+#transhistory-container tr:nth-child(2n) {
+    border-bottom: 1px solid #ccc;
+}
+#transhistory-container td{
+    border: none;
+}
+#transhistory-container table{
+	margin-bottom:0;
+	border: 1px solid #ccc;	
+}
+/*-----------------------------------------------------Bank Details----------------------------------------------*/
+.button-orange{
+	background-color: #F1922E;
+	color: #fff;
+    border: none;
+    padding: 3px 25px;	
+}
+/*-----------------------------------------------------Settings--------------------------------------------------*/
+.button-red{ 
+	background-color: #901E17;
+	color: #fff;
+    border: none;
+    padding: 3px 25px;
+}
+.font-bold{
+	font-weight:bold;
+}
+.borrower-settings .panel-body {
+    padding: 40px;
 }

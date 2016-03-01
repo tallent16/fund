@@ -6,10 +6,10 @@ use Session;
 use Input;
 use Redirect;
 
-class TranslationController extends Controller {
+class TranslationController extends MoneyMatchController {
 
-    public function languagetranslation($lang)
-    {
+	//changing the language and redirect to current page
+    public function languagetranslation($lang)	{
         Session::set('locale', $lang);
         \App::setLocale($lang);
         return Redirect::back();

@@ -1,13 +1,9 @@
 <?php 
-
 namespace App\Http\Controllers;  
-  
 use Auth;  
-
 use Request;
 
-
-class CustomAuthController extends Controller {
+class CustomAuthController extends MoneyMatchController {
 	/**
 	 * The Guard implementation.
 	 *
@@ -27,50 +23,44 @@ class CustomAuthController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
+	
 	public function getLogin() { 
 	
 		return view('login'); //or just use the default login page  
 	}  
   
-    public function postLogin(Request $request) {  
+    public function postLogin(Request $request)	{  
 	
 		
         $email = Request::input('email');  
         $password = Request::input('password');  
                 
-        if(!isset($email)){
+        if(!isset($email)) {
 			$email="";
 		}
-        if(!isset($password)){
+        if(!isset($password)) {
 			$password="";
 		}
               
-        if (Auth::attempt(['email' => $email, 'password' => $password]))  
-        {  
+        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => 1 ])) {  
             //echo "success";  
             return redirect()->intended($this->redirectPath());
-        }  
-        else {  
+        }else {  
 		
             return redirect($this->loginPath())
-					->withErrors([
-						'email' => $this->getFailedLoginMessage(),
-					]);
+					->withErrors(['email' => $this->getFailedLoginMessage(),]);
         }  
     }
-    
-    
+     
 	/**
 	 * Get the failed login message.
 	 *
 	 * @return string
 	 */
-	protected function getFailedLoginMessage()
-	{
+	protected function getFailedLoginMessage() {
 		return 'These credentials do not match our records.';
 	}
 
@@ -79,10 +69,9 @@ class CustomAuthController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function getLogout()
-	{
+	public function getLogout()	{
+		
 		Auth::logout();
-
 		return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
 	}
 
@@ -91,13 +80,11 @@ class CustomAuthController extends Controller {
 	 *
 	 * @return string
 	 */
-	public function redirectPath()
-	{
-		if (property_exists($this, 'redirectPath'))
-		{
+	public function redirectPath() {
+		
+		if (property_exists($this, 'redirectPath')) {
 			return $this->redirectPath;
 		}
-		
 		return property_exists($this, 'redirectTo') ? $this->redirectTo : '/customRedirectPath';
 	}
 
@@ -106,8 +93,7 @@ class CustomAuthController extends Controller {
 	 *
 	 * @return string
 	 */
-	public function loginPath()
-	{
+	public function loginPath() {
 		return property_exists($this, 'loginPath') ? $this->loginPath : '/auth/login';
 	}  
 }

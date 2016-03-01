@@ -12,11 +12,12 @@ return [
 	| you want to customize your views to better match your application.
 	|
 	*/
-
+ 
 	'status'				=> 'STATUS',
 	'profile'				=> 'Profil',
-	'company_info'			=> 'FIRMENINFO',
+	'company_info'			=> 'FIRMENINFO', 
 	'director_info'			=> 'DIRECTORS INFO',
+	'profile_info'			=> 'INFO PROFIL',
 	'business_name'			=> 'Business Name',
 	'name_business'			=> 'Leap Networks PTE LTD',
 	'bank_code'				=> 'Bankleitzahl',
@@ -42,4 +43,16 @@ return [
 	'address_mailing'		=> '1 INTERNATIONAL BUSINESS PARK , # 02-01C LA SYNERGIE , SINGAPORE 609917',
 	'submit_verification'	=> 'Senden für die Überprüfung',
 	'comments'				=> 'Kommentare / Bemerkungen: Lorem ipsum dolor sit amet, consectetur adipiscing elit , sed do TEMPOR eiusmod incididunt ut labore et dolore magna aliqua . Ut enim ad minim veniam , quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat .',
+	'select'				=> 'Wählen',
+	'select_director' 		=> 'Bitte wählen Directors',
+	'director_name'			=> 'Director \'s -Name',
+	'director_info'			=> 'Director \'s Informationen',
+	'age'					=> 'Alter',
+	'period_since'			=> 'Zeitraum , da in diesem Geschäft',
+	'overall_exp'			=> 'Insgesamt Erfahrung in Jahren',
+	'accomplish'			=> 'Leistungen / Weitere Informationen',
+	'years'					=> 'Jahre',
+	'add'					=> 'Hinzufügen',
+	'companyprofile'		=> 'Detaillierte Unternehmensprofil',
+	'success'				=> 'Profil Details wurde erfolgreich abgegeben',
 ];

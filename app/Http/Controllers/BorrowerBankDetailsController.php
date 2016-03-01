@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-class BorrowerDirectorController extends Controller {
+class BorrowerBankDetailsController extends Controller {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ class BorrowerDirectorController extends Controller {
 	 */
 	public function index()
 	{
-		return view('borrower.borrower-directorsinfo');
+		return view('borrower.borrower-bankdetails'); 
 	}
 
 }

@@ -47,7 +47,7 @@ function callDataTableFunc(){
 		table: "#user",
 		fields: [ {
 				label: "User Name:",
-				name: "user_name"
+				name: "username"
 			}, {
 				label: "Email:",
 				name: "email"
@@ -56,7 +56,7 @@ function callDataTableFunc(){
 				name: "password",
 			},{
 				label: "User Type:",
-				name: "user_type",
+				name: "usertype",
 				type: 'select',
 				"ipOpts": $userTypeOptions
 			}, {
@@ -88,7 +88,7 @@ function callDataTableFunc(){
 								var str ="";             					    
 								str=str+'<input type="checkbox"';
 								str=str+' name="user_id" class="user_id"';
-								str=str+' value="'+data.id+'" />';
+								str=str+' value="'+data.user_id+'" />';
 								return str;
         					},
         					orderable: false
@@ -101,7 +101,7 @@ function callDataTableFunc(){
 							var str ="";             					    
 							str=str+'<a href="javascript:void(0);"';
 							str=str+' class="editor_edit user_edit_master" >';
-							str=str+data.user_name+'</a>';
+							str=str+data.username+'</a>';
 							return str;
 						}
 					},
@@ -122,15 +122,18 @@ function callDataTableFunc(){
 						className: "center",
 						render: function(data, type, full, meta){
 							var $userType	=	"";
-							switch(data.user_type){
+							switch(data.usertype){
 								case "1":
-									$userType	=	"Admin";
-									break;
-								case "2":
+								case 1:
 									$userType	=	"Borrower";
 									break;
-								case "3":
+								case "2":
+								case 2:
 									$userType	=	"Investor";
+									break;
+								case "3":
+								case 3:
+									$userType	=	"Admin";
 									break;
 							}
 							var str ="";             					    
@@ -146,9 +149,11 @@ function callDataTableFunc(){
 								var $Status	=	"";
 								switch(data.status){
 								case "0":
+								case 0:
 									$Status	=	"Deactive";
 									break;
 								case "1":
+								case 1:
 									$Status	=	"Active";
 									break;
 							}
@@ -263,9 +268,9 @@ function callDeleteClickEventFunc(){
 function buildUserTypeList(){
 	
 	var opt = new Array();
-	opt.push({value : 1,label : "Admin"});
-	opt.push({value : 2,label : "Borrower"});
-	opt.push({value : 3,label : "Investor"});
+	opt.push({value : 1,label : "Borrower"});
+	opt.push({value : 2,label : "Investor"});
+	opt.push({value : 3,label : "Admin"});
 	return opt;
 	
 }

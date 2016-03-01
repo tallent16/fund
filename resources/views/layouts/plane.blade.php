@@ -20,4 +20,6 @@
 	@yield('body') 
 	@yield('bottomscripts')
 </body>
+<script src="{{ url('js/bootstrap-select.min.js') }}" type="text/javascript"></script>	
+<link rel="stylesheet" type="text/css" href="{{ url('css/bootstrap-select.min.css') }}">
 </html>

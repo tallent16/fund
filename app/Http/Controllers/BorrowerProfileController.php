@@ -1,36 +1,35 @@
-<?php namespace App\Http\Controllers;
+<?php 
+namespace App\Http\Controllers;
+use Request;
+use	\App\models\BorrowerProfileModel;
+class BorrowerProfileController extends MoneyMatchController {
 
-class BorrowerProfileController extends Controller {
-
-	/*
-	|--------------------------------------------------------------------------
-	| Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders your application's "dashboard" for users that
-	| are authenticated. Of course, you are free to change or remove the
-	| controller as you wish. It is just here to get your app started!
-	|
-	*/
-
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{	
+	public function __construct() {	
 		$this->middleware('auth');
+		$this->init();
 	}
-
-	/**
-	 * Show the application dashboard to the user.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return view('borrower.borrower-profile');
+	
+	//Additional initiate model
+	public function littleMoreInit() {
+		$this->borrowerProfileModel	=	new BorrowerProfileModel;
+	}
+	
+	//render the borrower profiile page
+	public function indexAction() {
+		
+		$submitted	=	false;
+		if (Request::isMethod('post')) {
+			$postArray	=	Request::all();
+			$result		=	$this->borrowerProfileModel->processProfile($postArray);
+			$submitted	=	true;
+		}
+		
+		$this->borrowerProfileModel->getBorrowerDetails();
+		
+		$borrList				=	array('submitted');
+		return view('borrower.borrower-profile')
+					->with(compact($borrList))
+					->with("modelBorPrf",$this->borrowerProfileModel);
 	}
 
 }

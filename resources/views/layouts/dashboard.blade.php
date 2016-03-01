@@ -23,10 +23,10 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-leftmenu.user_profile') }}</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
+                        <li><a href="#"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="{{ url ('auth/logout') }}"><i class="fa fa-sign-out fa-fw"></i>{{ Lang::get('borrower-leftmenu.logout') }} </a>
+                        <li><a href="{{ url ('auth/logout') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('borrower-leftmenu.logout') }} </a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -42,18 +42,25 @@
                             <div class="head-balance">{{ Lang::get('borrower-leftmenu.balance') }} : $100,000</div> 
                             <!-- /input-group -->
                         </li>
-                        <li {{ (Request::is('/') ? 'class="active"' : '') }}>
-                            <a href="{{ url ('') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a>
-                        </li>
                          <li>
+                            <a href="{{ url ('borrower') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
+                        </li>
+                        <li> 
 							<a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
-                        </li>                                            
-                        <li >
+                        </li>                 
+                                                                     
+                        <li>
                             <a href="#"><i class="fa fa-money fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li {{ (Request::is('*panels') ? 'class="active"' : '') }}> 
-                                    <a href="{{ url ('borrower/applyloan') }}">Apply Loans</a>
-                                </li>                               
+                                <li> 
+                                    <a href="{{ url ('borrower/applyloan') }}">{{ Lang::get('borrower-leftmenu.applyloans') }}</a>
+                                </li> 
+                                 <li> 
+                                    <a href="{{ url ('borrower/loanslist') }}">{{ Lang::get('borrower-leftmenu.loanslist') }}</a> 
+                                </li>       
+                                <li> 
+                                    <a href="{{ url ('borrower/myloans') }}">{{ Lang::get('borrower-leftmenu.myloans') }}</a> 
+                                </li>                              
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -61,22 +68,27 @@
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">sub menu</a>
+                                    <a href="{{ url ('borrower/transhistory') }}">{{ Lang::get('borrower-leftmenu.transhistory') }}</a>
+                                </li>  
+                                 <li>
+                                    <a href="{{ url ('borrower/bankdetails') }}">{{ Lang::get('borrower-leftmenu.bankdetails') }}</a>
+                                </li>  
+                                 <li>
+                                    <a href="{{ url ('borrower/repayloans') }}">{{ Lang::get('borrower-leftmenu.repayloans') }}</a>
                                 </li>                                                             
                             </ul>
                             <!-- /.nav-second-level -->
+                        </li>                      
+                        <li>
+                            <a href="{{ url ('banking') }}"><i class="fa fa-university fa-fw"></i>{{ Lang::get('borrower-leftmenu.banking') }} </a>
                         </li>
-                      
-                        <li {{ (Request::is('*documentation') ? 'class="active"' : '') }}>
-                            <a href="{{ url ('documentation') }}"><i class="fa fa-university fa-fw"></i>{{ Lang::get('borrower-leftmenu.banking') }} </a>
-                        </li>
-                         <li {{ (Request::is('*forms') ? 'class="active"' : '') }}>
-                            <a href="{{ url ('forms') }}"><i class="fa fa-edit fa-fw"></i>{{ Lang::get('borrower-leftmenu.support') }} </a>
+                         <li>
+                            <a href="{{ url ('support') }}"><i class="fa fa-edit fa-fw"></i>{{ Lang::get('borrower-leftmenu.support') }} </a>
                         </li>
                     </ul>
                      <ul class="nav settings-menu" id="side-menu">	                    
                         <li>
-							<a href="#"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
+							<a href="{{ url ('borrower/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
                         </li>  
                         <li>
 							<a href="#"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.pinnacle') }} </a>
@@ -91,18 +103,19 @@
             <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
-			 <div class="row">
-                <div class="col-lg-12"> 
-                    <h1 class="page-header">@yield('page_heading')</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-           </div>
+		<div id="page-wrapper">
+			
+			<div class="row">
+				<div class="col-lg-12"> 
+					<h1 class="page-header">@yield('page_heading')</h1>
+				</div><!-- /.col-lg-12 -->
+			</div>
+			
 			<div class="row">  
 				@yield('section')
-
-            </div>
-            <!-- /#page-wrapper -->
-        </div>
+			</div>
+		
+		</div><!-- /#page-wrapper -->
+		
     </div>
 @stop

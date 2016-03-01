@@ -14,7 +14,7 @@ return [
 	*/
 
 	'register'  		 => 'Register',
-	'back2login'  		 => 'Register',
+	'back2login'  		 => 'Login',
 	'investor'  	 	 => 'Investor',
 	'borrower'  	 	 => 'Borrower',
 	'confirmpass'  	 	 => 'Confirm Password',	

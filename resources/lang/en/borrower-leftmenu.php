@@ -24,5 +24,11 @@ return [
 	'support'					=> 'Support',
 	'settings'					=> 'Settings',
 	'pinnacle'					=> 'Pinnacle One',
+	'applyloans'				=> 'Apply Loans',
+	'myloans'					=> 'My Loans',
+	'loanslist'					=> 'Loan Listing',
+	'transhistory'				=> 'Transcation History',
+	'bankdetails'				=> 'Bank Details',
+	'repayloans'				=> 'Repay Loans',
 	
 	];
