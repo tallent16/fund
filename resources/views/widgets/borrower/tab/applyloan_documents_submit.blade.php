@@ -10,7 +10,7 @@ $(document).ready(function(){
 			<div class="col-sm-12">
 				<span class="pull-left"><h4>{{ Lang::get('borrower-applyloan.documents_submitted') }}</h4></span>								
 				</br><hr>
-			
+						<!---doc--rule--1-->
 						<div class="row">
 							<div class="col-sm-6">
 								{{ Lang::get('borrower-applyloan.short_desc_1') }}
@@ -21,7 +21,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >
 							</div>
 						</div>
-																				
+						<!---doc--rule--2-->														
 						<div class="row">
 							<div class="col-sm-6">
 								{{ Lang::get('borrower-applyloan.short_desc_2') }}
@@ -33,7 +33,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >									
 							</div>
 						</div>
-						
+						<!---doc--rule--3-->
 						<div class="row">
 							<div class="col-sm-6">
 								{{ Lang::get('borrower-applyloan.short_desc_3') }}
@@ -46,7 +46,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >										
 							</div>
 						</div>
-					
+						<!---doc--rule--4-->
 						<div class="row">
 							<div class="col-sm-6">
 							{{ Lang::get('borrower-applyloan.short_desc_4') }}
@@ -57,7 +57,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >										
 							</div>
 						</div>
-						
+						<!---doc--rule--5-->
 						<div class="row">
 							<div class="col-sm-6">
 							{{ Lang::get('borrower-applyloan.short_desc_5') }}
@@ -68,7 +68,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >									
 							</div>
 						</div>
-				
+						<!---doc--rule--6-->
 						<div class="row">
 							<div class="col-sm-6">
 								{{ Lang::get('borrower-applyloan.short_desc_6') }}
@@ -81,7 +81,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >										
 							</div>
 						</div>
-					
+						<!---doc--rule--7-->
 						<div class="row">
 							<div class="col-sm-6">
 							{{ Lang::get('borrower-applyloan.short_desc_7') }}								
@@ -92,7 +92,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >										
 							</div>
 						</div>
-					
+						<!---doc--rule--8-->
 						<div class="row">
 							<div class="col-sm-6">
 							{{ Lang::get('borrower-applyloan.short_desc_8') }}							
@@ -103,7 +103,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >									
 							</div>
 						</div>
-						
+						<!---doc--rule--9-->
 						<div class="row">
 							<div class="col-sm-6">
 							{{ Lang::get('borrower-applyloan.short_desc_9') }}		
@@ -114,7 +114,7 @@ $(document).ready(function(){
 									<input type="file" class="jfilestyle" data-buttonBefore="true" >								
 							</div>
 						</div>
-						
+						<!---doc--rule--10-->
 						<div class="row">
 							<div class="col-sm-6">
 							{{ Lang::get('borrower-applyloan.short_desc_10') }}	
@@ -127,9 +127,9 @@ $(document).ready(function(){
 						</div>					
 									 											
 				</div>
-	
+				<!---submit---button-->
 			<div class="col-sm-1 text-right">
-				<input type="submit" name="" class="add-director-button"  value="Submit">	
+				<input type="submit" name="" class="btn add-director-button"  value="Submit">	
 			</div>						
 
 		</div><!---panel body-->

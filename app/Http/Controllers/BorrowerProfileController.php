@@ -29,7 +29,8 @@ class BorrowerProfileController extends MoneyMatchController {
 		$borrList				=	array('submitted');
 		return view('borrower.borrower-profile')
 					->with(compact($borrList))
-					->with("modelBorPrf",$this->borrowerProfileModel);
+					->with("modelBorPrf",$this->borrowerProfileModel)
+					->with("classname","fa fa-user fa-fw user-icon");
 	}
 
 }

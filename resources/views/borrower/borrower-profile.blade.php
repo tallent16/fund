@@ -1,4 +1,4 @@
-@extends('layouts.profile-dashboard')	
+@extends('layouts.dashboard')	
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.settings-dashboard')
+@extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 @endsection
@@ -52,9 +52,9 @@
 											<button type="submit" class="button-orange">UPDATE</button>	
 										</div>
 										<div class="pull-right">	
-											<button type="submit" class="button-red">DELETE ACCOUNT</button>
+											<button type="submit" class="button-red">DELETE</button>
 										</div>
-									</div>																						
+									</div>									  													
 								</div>
 								
 							</form>

@@ -1,4 +1,4 @@
-@extends('layouts.applyloan-dashboard')
+@extends('layouts.dashboard')
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
 @endsection
@@ -17,12 +17,12 @@
 @endsection
 @section('page_heading',Lang::get('borrower-applyloan.apply_loan') )
 @section('section')     
-<div class="text-center">
+<div class="col-sm-12 text-center">
 	<h4>{{ Lang::get('borrower-applyloan.loan_title_info_1') }}{{ Lang::get('borrower-applyloan.loan_title_info_2') }}</h4>				
 </div>
 <div class="col-sm-12"> 			
 	<div class="row">				
-		<div class="col-lg-12 col-md-6">				
+		<div class="col-lg-12">				
 				
 			<div class="row">
 				<ul class="nav nav-tabs">
@@ -35,8 +35,8 @@
 					@include('widgets.borrower.tab.applyloan_info')
 					<!-------second tab--starts------------------------>
 					@include('widgets.borrower.tab.applyloan_documents_submit')
-				</div>
-			</div>
+				</div><!--tab content-->	
+			</div><!--row-->	
 			
 		</div><!--col-->										
 	</div>	<!--row-->							

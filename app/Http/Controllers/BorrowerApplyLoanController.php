@@ -14,7 +14,7 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 	}
 
 	public function index() {
-		return view('borrower.borrower-applyloan');
+		return view('borrower.borrower-applyloan')
+					->with("classname","fa fa fa-usd fa-fw user-icon"); 
 	}
-
 }

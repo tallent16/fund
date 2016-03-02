@@ -30,7 +30,8 @@ class BorrowerSettingsController extends Controller {
 	 */
 	public function index()
 	{
-		return view('borrower.borrower-settings'); 
+		return view('borrower.borrower-settings')
+			->with("classname","fa fa fa-cogs fa-fw user-icon"); 
 	}
 
 }

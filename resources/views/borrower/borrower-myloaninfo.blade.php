@@ -1,4 +1,4 @@
-@extends('layouts.myloaninfo-dashboard')
+@extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 @endsection

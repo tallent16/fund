@@ -1,11 +1,11 @@
-@extends('layouts.bankdetails-dashboard')
+@extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 @endsection
 @section('page_heading','Banking') 
 @section('section')    
 <div class="col-sm-12"> 			
-	<div class="panel panel-primary panel-container">	
+		<div class="panel panel-primary panel-container">	
 					
 				<div class="panel-heading panel-headsection"><!--panel head-->
 					<div class="row">
@@ -37,16 +37,17 @@
 						</tbody>
 					</table>							 
 				</div><!---table end---> 
-				</div>	
-				<div class="row"> 
-					<div class="col-sm-12">	
-						<div class="pull-right">							
-							<button type="submit" class="verification-button">EDIT ACCOUNT</button>	
-						</div>
+			</div><!-------panel------>	
+				
+			<div class="row"> 
+				<div class="col-sm-12">	
+					<div class="pull-right">							
+						<button type="submit" class="button-orange">EDIT ACCOUNT</button>	
 					</div>
-				</div>		
+				</div>
+			</div>		
 			
-	</div><!-------panel------>
+	
 </div><!-----col 12------->
 @endsection  
 @stop 

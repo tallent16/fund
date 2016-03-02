@@ -15,6 +15,7 @@ class BorrowerLoanListingController extends MoneyMatchController {
 
 	public function index() {
 		return view('borrower.borrower-loanlisting');
+					
 	}
 
 }

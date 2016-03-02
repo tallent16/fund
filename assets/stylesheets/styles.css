@@ -6400,6 +6400,11 @@ button.close {
 .visible-lg-inline-block {
   display: none !important;
 }
+@media (max-width: 360px) {
+	.nav-tabs > li{
+		float:none;
+	}
+}
 @media (max-width: 767px) {
   .visible-xs {
     display: block !important;
@@ -8476,7 +8481,7 @@ body {
 }
 
 .navbar-top-links .dropdown-user {
-    right: 0;
+  /*  right: 0;*/
     left: auto;
 }
 
@@ -8952,6 +8957,11 @@ canvas.round {
 }
 /*# sourceMappingURL=styles.css.map */
 /*--------------------------------------------CUSTOM CSS---------------------------------------------------------------------------**/
+/*--------------------------------------------dashboard---------------------*/
+.loan_title{
+	display:none;
+}
+
 /*----------------------------------------SIDEBAR NAVIGATION------------------------------------------------------------------------*/
 .active{
 	color:#F6942C;
@@ -9066,7 +9076,7 @@ canvas.round {
 	color: #fff;
 	border: none;
 	margin: 0 0 35px 0;	
-	padding: 10px;
+	/*padding: 10px;*/
 	width: auto;
 }
 .user-icon{
@@ -9075,7 +9085,7 @@ canvas.round {
 .directorinfo{
 	background-color:#EBEBED;
 }
-.add-director-button{
+.add-director-button, .add-director-button:hover{
 	background-color: #F6942C;
 	color: #fff;
 	border: none;
@@ -9310,9 +9320,9 @@ table.table.tab-label {
 	border: 1px solid #ccc;
 }
 /*------------------------------------------------------Transcation History---------------------------------------*/
-.button-black{
-	padding:10px;
+.button-black, .button-black:hover{											
 	border:none;
+	color:#fff;
 }
 #trans-history .table th{ 
     background-color: #E2E2E2;

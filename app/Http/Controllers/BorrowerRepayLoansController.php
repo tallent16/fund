@@ -30,7 +30,8 @@ class BorrowerRepayLoansController extends Controller {
 	 */
 	public function index()
 	{
-		return view('borrower.borrower-repayloans'); 
+		return view('borrower.borrower-repayloans')
+			->with("classname","fa fa-university fa-fw user-icon"); 
 	}
 
 }
