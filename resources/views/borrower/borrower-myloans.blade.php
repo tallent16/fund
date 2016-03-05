@@ -2,12 +2,13 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 @endsection
+@section('page_heading','My Loans'))
 @section('section')     
 
-<div class="col-sm-12"> 			
+<div class="col-sm-12 space-around"> 			
 	<div class="row">	
 					
-		<div class="col-sm-8">							
+		<div class="col-sm-12 col-lg-8 ">							
 			<ul class="nav nav-tabs">
 				<li class="active"><a data-toggle="tab" href="#home">LOAN DETAILS</a></li>
 				<li><a data-toggle="tab" href="#menu1">COMPANY DETAILS</a></li>
@@ -31,8 +32,8 @@
 			</div>
 		</div>
 					
-		<div class="col-sm-4"> 
-			<div class="row">
+		<div class="col-sm-12 col-lg-4"> 
+			<!--<div class="row">-->
 				
 				<div class="panel panel-default">
 					<div class="panel-body">
@@ -48,25 +49,25 @@
 					<div class="col-md-12">
 					
 						<div class="row space-around">
-							<div class="col-md-3">
+							<div class="col-md-3 col-sm-4 col-xs-4">
 								5
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-6 col-sm-4 col-xs-4">
 								$8,500.00
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3 col-sm-4 col-xs-4">
 								255
 							</div>
 						</div>
 						
 						<div class="row space-around bidders-value">
-							<div class="col-md-3">
+							<div class="col-md-3 col-sm-4 col-xs-4">
 								Bidders
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-6 col-sm-4 col-xs-4">
 								of $20,000.00 Goal
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3 col-sm-4 col-xs-4">
 								Days to go
 							</div>
 						</div>
@@ -81,44 +82,44 @@
 					
 					<div class="row  space-around">	
 						<div class="row">						
-							<div class="col-md-7"> <i class="fa fa-file-text"></i> <span class="bid-now-section"> Grade of Borrower:</span></div>
-							<div class="col-md-5">C</div>
+							<div class="col-md-7 col-xs-7"> <i class="fa fa-file-text"></i> <span class="bid-now-section"> Grade of Borrower:</span></div>
+							<div class="col-md-5 col-xs-5">C</div>
 						</div>
 						
 						<div class="row">						
-							<div class="col-md-7"> <i class="fa fa-database"></i> <span class="bid-now-section"> Type of Loan:</span></div>
-							<div class="col-md-5">Monthly repayment</div>
+							<div class="col-md-7 col-xs-7"> <i class="fa fa-database"></i> <span class="bid-now-section"> Type of Loan:</span></div>
+							<div class="col-md-5 col-xs-5">Monthly repayment</div>
 						</div>
 						
 						<div class="row">				 		
-							<div class="col-md-7"> <i class="fa fa-archive"></i> <span class="bid-now-section"> Tenure:</span></div>
-							<div class="col-md-5">12</div>
+							<div class="col-md-7 col-xs-7"> <i class="fa fa-archive"></i> <span class="bid-now-section"> Tenure:</span></div>
+							<div class="col-md-5 col-xs-5">12</div>
 						</div>
 						
 						<div class="row">							
-							<div class="col-md-7"> <i class="fa fa-inr"></i> <span class="bid-now-section"> Interest Range:</span></div>
-							<div class="col-md-5">10%</div>
+							<div class="col-md-7 col-xs-7"> <i class="fa fa-inr"></i> <span class="bid-now-section"> Interest Range:</span></div>
+							<div class="col-md-5 col-xs-5">10%</div>
 						</div>
 						
 						<div class="row">						
-							<div class="col-md-7"> <i class="fa fa-line-chart"></i> <span class="bid-now-section"> Average Interest Bidded:</span></div>
-							<div class="col-md-5">13%</div>
+							<div class="col-md-7 col-xs-7"> <i class="fa fa-line-chart"></i> <span class="bid-now-section"> Average Interest Bidded:</span></div>
+							<div class="col-md-5 col-xs-5">13%</div>
 						</div>
 						
 						<div class="row">					
-							<div class="col-md-7"> <i class="fa fa-usd"></i> <span class="bid-now-section"> Amount bidded:</span></div>
-							<div class="col-md-5">$50,000</div>
+							<div class="col-md-7 col-xs-7"> <i class="fa fa-usd"></i> <span class="bid-now-section"> Amount bidded:</span></div>
+							<div class="col-md-5 col-xs-5">$50,000</div>
 						</div>
 						
 						<div class="row">						
-							<div class="col-md-7"> <i class="fa fa-info-circle"></i> <span class="bid-now-section"> Status:</span></div>
-							<div class="col-md-5">Open for Lending</div>
+							<div class="col-md-7 col-xs-7"> <i class="fa fa-info-circle"></i> <span class="bid-now-section"> Status:</span></div>
+							<div class="col-md-5 col-xs-5">Open for Lending</div>
 						</div>
 					</div>	
 						
 						<div class="row space-around">
 							<div class="text-center">	
-									<button type="submit" class="add-director-button">BID NOW  <i class="fa fa-gavel"></i></button>
+									<button type="submit" class="btn add-director-button">BID NOW  <i class="fa fa-gavel"></i></button>
 							</div>
 						</div>
 						
@@ -127,9 +128,9 @@
 					</div>
 				</div>
 											
-			</div> 
+			<!--</div> -->
 
-			<div class="row">	
+		<!--	<div class="row">	--->
 				<div class="panel panel-primary panel-container myloans">
 					
 					<div class="panel-heading panel-headsection"><!--panel head-->
@@ -183,7 +184,7 @@
 					</div>	<!--end panel body-->					
 				</div>
 				
-			</div>
+		<!---	</div>-->
 		</div>					
 										
 	</div>								

@@ -14,7 +14,7 @@ class HomeController extends MoneyMatchController {
 
 			switch(Auth::user()->usertype) {
 				case 1:
-					return redirect('borrower');
+					return redirect('borrower/dashboard');
 					break;
 				case 2:
 					return redirect('investor');
@@ -33,7 +33,7 @@ class HomeController extends MoneyMatchController {
 
 			switch(Auth::user()->usertype) {
 				case 1:
-					return redirect('borrower');
+					return redirect('borrower/dashboard');
 					break;
 				case 2:
 					return redirect('investor');

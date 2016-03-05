@@ -16,7 +16,15 @@ Route::get('/', function()
 	return View::make('homepage');  
 });
 
-
+// global contants for all requests
+Route::group(['prefix' => ''], function() {
+    define('BORROWER_STATUS_NEW_PROFILE','1');
+    define('BORROWER_STATUS_SUBMITTED_FOR_APPROVAL','2');
+    define('BORROWER_STATUS_COMMENTS_ON_ADMIN','3');
+    define('BORROWER_STATUS_VERIFIED','4');
+    define('BORROWER_BANK_STATUS_VERIFIED','2');
+    define('BORROWER_BANK_STATUS_UNVERIFIED','1');
+});
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
 // The routes (or pages that are applicable for all types of users
@@ -35,7 +43,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 
 // The routes (or pages that are applicable for Borrower Users only
 Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], function() {
-    Route::get('borrower', 'BorrowerDashboardController@indexAction');
+    Route::get('borrower/dashboard', 'BorrowerDashboardController@indexAction');
 	Route::match(['get', 'post'],'borrower/profile', 'BorrowerProfileController@indexAction');
 	Route::get('borrower/applyloan', 'BorrowerApplyLoanController@index');
 	Route::get('borrower/myloans', 'BorrowerMyLoansController@index');	

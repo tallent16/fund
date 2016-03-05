@@ -9,7 +9,7 @@
 @section('page_heading','Transcation History')
 @section('section')    
 		
-	<div class="col-sm-12">	
+	<div class="col-sm-12 space-around">	
 		<div class="row"> 
 			<div class="col-sm-12"> 
 				<!--col-1--->	

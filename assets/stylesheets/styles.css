@@ -2261,7 +2261,7 @@ th {
 .table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 20px; 
+  /*margin-bottom: 20px; */
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -2315,7 +2315,7 @@ th {
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
 }
-.table-striped > tbody > tr:nth-of-type(odd) {
+.table-striped > tbody > tr:nth-of-type(even) {
   background-color: #f9f9f9;
 }
 .table-hover > tbody > tr:hover {
@@ -2440,6 +2440,7 @@ table th[class*="col-"] {
 .table-responsive {
   min-height: .01%;
   overflow-x: auto;
+  margin-bottom:20px;
 }
 @media screen and (max-width: 767px) {
   .table-responsive {
@@ -6400,10 +6401,18 @@ button.close {
 .visible-lg-inline-block {
   display: none !important;
 }
+@media (max-width: 320px) {
+	.loan-list-image img{
+		width: 275px;
+	}		
+}
 @media (max-width: 360px) {
 	.nav-tabs > li{
 		float:none;
 	}
+	.loan-list-image img{
+		width: auto;
+	}	
 }
 @media (max-width: 767px) {
   .visible-xs {
@@ -6434,6 +6443,11 @@ button.close {
   .visible-xs-inline-block {
     display: inline-block !important;
   }
+}
+@media (max-width: 768px){
+	.form-control{ 
+		width: auto	;
+	}
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .visible-sm {
@@ -6591,6 +6605,16 @@ button.close {
   .hidden-print {
     display: none !important;
   }
+}
+@media (max-width: 1280px) {
+	.tab-bid-label{
+		background-position: 100% 0;
+	}
+}
+@media (min-width: 1920px) {
+	.tab-bid-label{
+		background-position: 35% 0;
+	}
 }
 /*# sourceMappingURL=bootstrap.css.map */
 
@@ -8424,7 +8448,7 @@ body {
         margin: 0 0 0 250px;
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
-    }
+    }    
 }
 
 .navbar-top-links {
@@ -8481,7 +8505,7 @@ body {
 }
 
 .navbar-top-links .dropdown-user {
-  /*  right: 0;*/
+    right: 0;
     left: auto;
 }
 
@@ -8956,20 +8980,36 @@ canvas.round {
     }
 }
 /*# sourceMappingURL=styles.css.map */
-/*--------------------------------------------CUSTOM CSS---------------------------------------------------------------------------**/
-/*--------------------------------------------dashboard---------------------*/
-.loan_title{
-	display:none;
-}
-
-/*----------------------------------------SIDEBAR NAVIGATION------------------------------------------------------------------------*/
+/*--------------------------------------------CUSTOM CSS STARTS---------------------------------------------------------------------------**/
+/*--------------------------------------------SIDEBAR NAVIGATION---------------------------------------------------------------------------*/
 .active{
 	color:#F6942C;
 }
 .nav > li > a .active{
 	color:#F6942C; 
 }
-/*------------------------------------------borrower dashboard----------------------------------------------------------------------*/
+/*--------------------------------------------borrower dashboard----------------------------------------------------------------------*/
+.loan_title{
+	display:none;
+}
+.cursor-pointer{
+	cursor:pointer;
+} 
+.page-header-title{
+	float: left;
+	margin: 15px 0px 0px 30px;
+	font-size: 36px;
+	color: rgb(255, 255, 255);
+}
+.status-label-section{
+	margin: 42px -72px 0px 0px;
+	float: right;
+}
+.status-label{
+	color:#F6942C;
+	background-color:transparent;
+	border:1px solid #F6942C;	
+}
 .annoucement-msg-container{
 	margin:0;
 }
@@ -9021,12 +9061,9 @@ canvas.round {
 	display: inline-block;
 	margin: 25px 0 0 0;
 }
-.login-button{
+.login-button, .login-button:hover{
 	background-color:#F6942C;
 	border:none;
-}
-.login-button:hover{
-	background-color:#F6942C;
 }
 .register-style{
 	background-color:#fff;
@@ -9067,7 +9104,8 @@ canvas.round {
 	color:#3A8B60;
 	border:1px solid #ccc;
 	margin: 0 0 15px 0;	
-	padding: 10px;
+	font-weight: normal;
+/*	padding: 10px;*/ 
 	width: auto;  /* Modified by sathya on 27.02.2016  width: 100px*/
 	
 }
@@ -9080,7 +9118,7 @@ canvas.round {
 	width: auto;
 }
 .user-icon{
-	color:#8B170A;
+	color:#fff;
 }
 .directorinfo{
 	background-color:#EBEBED;
@@ -9246,11 +9284,12 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 .loan-list-container{
 	border:6px solid #333;
 	margin-bottom: 25px;
+	background-color: #333;
 }
 .loan-list-image img{
 	margin: 0 0 0 -14px;
-    height: 187px;
-    width: 200px; 
+    height: 190px;  
+    /*width:220px; */
 }
 .panel-white .progress, .space-around .progress{
 	height:8px;
@@ -9296,28 +9335,37 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 	margin:0;
 }
 .loanlist-wrapper .dropdown-menu{
-	top:98%;
+	top:97%;
 }
 table.table.tab-label {
     text-align: left;
     margin: 42% 0 0 0;
 }
-.button-grey{
+.button-grey, .button-grey:hover{
 	background-color: #7E7E7E;
     color: #fff;
     border: none;
-    padding: 3px 20px;	
+    padding: 3px 8px;	
 }
-.loan-detail-button{
+.loan-detail-button, .loan-detail-button:hover{
 	background-color: #E88C2A;
 	color: #fff;
 	border: none;
 	padding: 3px 20px;
-	margin:20px;
+	margin:20px 0;
 }
 .loan-info-wrapper{
 	background-color: #EAEBED;
 	border: 1px solid #ccc;
+}
+.loan-list-image .thumbnail{
+	padding:0;
+	background:none;
+	border-radius:0;
+	border:none;
+}
+.loan-details{
+	background-color:#fff;
 }
 /*------------------------------------------------------Transcation History---------------------------------------*/
 .button-black, .button-black:hover{											
@@ -9356,4 +9404,16 @@ table.table.tab-label {
 }
 .borrower-settings .panel-body {
     padding: 40px;
+}
+/*-------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------Custom Responsive css-------------------------------------------*/
+@media (max-width: 360px) {
+	.status-label-section{
+		margin: 0 8px 0 0;	 
+		float:none;
+		text-align:right;
+	}	
+	.page-header-title{
+		margin:0;
+	}
 }

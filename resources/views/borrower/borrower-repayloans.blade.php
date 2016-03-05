@@ -2,9 +2,9 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 @endsection
-@section('page_heading','Banking') 
-@section('section')    
-	<div class="col-sm-12"> 			
+@section('page_heading','Repay Loans') 
+@section('section')     
+	<div class="col-sm-12 space-around"> 			
 	
 		<div class="panel panel-primary panel-container">
 			<div class="panel-heading panel-headsection">

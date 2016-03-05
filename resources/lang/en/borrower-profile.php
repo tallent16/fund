@@ -55,4 +55,5 @@ return [
 	'add'					=> 'Add',
 	'companyprofile'		=> 'Detailed Company Profile',
 	'success'				=> 'Profile Details Submitted Successfully',
+	'save'					=> 'Profile Details Saved Successfully',
 ];

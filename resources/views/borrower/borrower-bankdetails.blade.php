@@ -3,8 +3,12 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 @endsection
 @section('page_heading','Banking') 
+@section('status_button')						
+		<!--------Status Button Section---->		
+			  <h4><span class="label label-default status-label">Status</span></h3>														
+@endsection
 @section('section')    
-<div class="col-sm-12"> 			
+<div class="col-sm-12 space-around"> 			
 		<div class="panel panel-primary panel-container">	
 					
 				<div class="panel-heading panel-headsection"><!--panel head-->
@@ -33,7 +37,15 @@
 							<tr>
 								<td class="tab-left-head">Bank Account Number</td>
 								<td>5011234567</td>
-							</tr>																
+							</tr>	
+							<tr>
+								<td class="tab-left-head">Active Status</td>
+								<td>Inactive</td>
+							</tr>
+							<tr>
+								<td class="tab-left-head">Verified Status</td>
+								<td>Verified</td>
+							</tr>															
 						</tbody>
 					</table>							 
 				</div><!---table end---> 
@@ -42,7 +54,7 @@
 			<div class="row"> 
 				<div class="col-sm-12">	
 					<div class="pull-right">							
-						<button type="submit" class="button-orange">EDIT ACCOUNT</button>	
+						<button type="submit" class="btn button-orange">ADD</button>	
 					</div>
 				</div>
 			</div>		

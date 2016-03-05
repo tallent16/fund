@@ -126,11 +126,7 @@ $(document).ready(function(){
 							</div>												
 						</div>					
 									 											
-				</div>
-				<!---submit---button-->
-			<div class="col-sm-1 text-right">
-				<input type="submit" name="" class="btn add-director-button"  value="Submit">	
-			</div>						
+				</div>								
 
 		</div><!---panel body-->
 	</div><!---panel------>

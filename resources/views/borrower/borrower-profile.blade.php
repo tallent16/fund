@@ -8,6 +8,10 @@
 	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>
 @endsection 
 @section('page_heading',Lang::get('borrower-profile.profile'))
+@section('status_button')						
+		<!--------Status Button Section---->   
+		<h4><span class="label label-default status-label">{{$modelBorPrf->statusText}}</span></h4>							
+@endsection
 @section('section')       
 		@if($modelBorPrf->borrower_id	==	"")
 			@var	$trantype	=	"add"
@@ -16,30 +20,25 @@
 		@endif
 		<!-----Body Content----->
 		<div class="col-sm-12"> 
-			 <!--------Status Button Section---->   
-			<div class="row">
-				<div class="col-sm-12"> 
-					<div class="pull-right">	
-						<button type="button" class="status-button">
-							<i class="fa pull-right"></i>{{$modelBorPrf->statusText}}
-						</button>
-					 </div>
-				</div>
-			</div>
+			
 			@if($submitted)
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="annoucement-msg-container">
 							<div class="alert alert-success">
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-								{{ Lang::get('borrower-profile.success') }}
+								@if($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+									{{ Lang::get('borrower-profile.success') }}
+								@else
+									{{ Lang::get('borrower-profile.save') }}
+								@endif
 							</div>
 						</div>
 					</div> 
 				</div> 	
 			@endif
 			<!--comments----->
-			@if(!$submitted && $modelBorPrf->status	==	3)
+			@if(!$submitted && $modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="annoucement-msg-container">
@@ -54,11 +53,12 @@
 			<form method="post" id="form-profile" name="form-profile">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="trantype" value="{{ $trantype }}">
+				<input type="hidden" id="isSaveButton" name="isSaveButton" value="">
 				<input type="hidden" name="borrower_id" value="{{ $modelBorPrf->borrower_id }}">
 				<input type="hidden" name="borrower_bankid" value="{{ $modelBorPrf->borrower_bankid }}">
 				<div class="row">	
 					
-					<div class="col-lg-12 col-md-6 col-xs-12">
+					<div class="col-lg-12 col-md-6 col-xs-12 space-around">
 						<!-----Tab Starts----->
 						<ul class="nav nav-tabs">
 							<li class="active">
@@ -78,7 +78,7 @@
 									href="#profile_info">
 									{{ Lang::get('borrower-profile.profile_info') }}
 								</a>
-							</li>	   							
+							</li>						   							
 						</ul>	
 				
 					<div class="tab-content">
@@ -93,18 +93,30 @@
 						<!-----Third Tab content starts----->
 							@include('widgets.borrower.tab.profile_info')
 						<!-----Third Tab content ends----->	
-
+						
 					</div>	<!---col ends-->	
 				
 					<div class="row"> 
 						<div class="col-sm-12"> 
-							<div class="pull-right">	
+							<div class="pull-right">
+								@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+									||	($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) )
+									<button type="submit" 
+											id="save_button"
+										class="btn verification-button" >
+										<i class="fa pull-right"></i>
+										Save
+									</button>
+								@endif
+								
+									
 								<button type="submit" 
 										class="btn verification-button {{$modelBorPrf->viewStatus}}"
 										 {{$modelBorPrf->viewStatus}}>
 									<i class="fa pull-right"></i>
 									{{ Lang::get('borrower-profile.submit_verification') }}
 								</button>
+								
 							</div>
 						</div> 
 					</div> 
@@ -117,6 +129,7 @@
 <input type="hidden" id="max_director" value= "{{ count($modelBorPrf->director_details) }}" />
 	<div  id="directorTemplate">
 		<div id="XXX" class="dir-list">
+			<div class="table-responsive">
 			<table class="table table-bordered .tab-fontsize text-left">		
 				
 				<tr>
@@ -189,7 +202,7 @@
 								></textarea>
 					</td>
 				</tr>													
-			</table>
+			</table></div>
 		</div>
 	</div>
 </div>

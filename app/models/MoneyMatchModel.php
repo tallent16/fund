@@ -73,14 +73,14 @@ class MoneyMatchModel extends Model {
 		
 		try {
 			
-			$result		= DB::select($sqlStatement);
+			$sqlStat_rs		=	 DB::select($sqlStatement);
 			
 		} catch (\Exception $e) {
 			
 			$this->dbErrorHandler($e);
 			return false;
 		}
-		return $result;
+		return $sqlStat_rs;
 	}
 	
 	public function dbFetchOne($sqlStatement) {
@@ -97,16 +97,16 @@ class MoneyMatchModel extends Model {
 		$pdoDB = DB::connection()->getPdo();
 		$query = $pdoDB->prepare($sqlStatement);
 		$query->execute();
-		$result = $query->fetch();
-		return	$result;
+		$sqlStat_rs 	= 	$query->fetch();
+		return	$sqlStat_rs;
 	}
 	
 	public function dbExecuteSql($sqlStatement) {
 		
-		$pdoDB 	= 	DB::connection()->getPdo();
-		$query 	= 	$pdoDB->prepare($sqlStatement);
-		$result	=	$query->execute();
-		return $result;		
+		$pdoDB 		= 	DB::connection()->getPdo();
+		$query 		= 	$pdoDB->prepare($sqlStatement);
+		$sqlStat_rs	=	$query->execute();
+		return $sqlStat_rs;		
 	}
 	
 	public function dbErrorHandler($e) {

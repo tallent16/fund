@@ -16,15 +16,26 @@
 	</script>		
 @endsection
 @section('page_heading',Lang::get('borrower-applyloan.apply_loan') )
+@section('status_button')						
+		<!--------Status Button Section---->   
+		
+			  <h4><span class="label label-default status-label">Status</span></h3>			
+													
+@endsection
 @section('section')     
-<div class="col-sm-12 text-center">
-	<h4>{{ Lang::get('borrower-applyloan.loan_title_info_1') }}{{ Lang::get('borrower-applyloan.loan_title_info_2') }}</h4>				
+<div class="col-sm-12 text-center space-around">
+	<div class="annoucement-msg-container">
+		<div class="alert alert-success annoucement-msg">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<h4>{{ Lang::get('borrower-applyloan.loan_title_info_1') }}{{ Lang::get('borrower-applyloan.loan_title_info_2') }}</h4>	
+		</div>
+	</div>				
 </div>
 <div class="col-sm-12"> 			
 	<div class="row">				
-		<div class="col-lg-12">				
+		<div class="col-lg-12 col-sm-12">				
 				
-			<div class="row">
+			<!--<div class="row">-->
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#loans_info">{{ Lang::get('borrower-applyloan.loan_info') }}</a></li>
 					<li><a href="#documents_submitted">{{ Lang::get('borrower-applyloan.document_submit') }}</a></li>								
@@ -36,7 +47,30 @@
 					<!-------second tab--starts------------------------>
 					@include('widgets.borrower.tab.applyloan_documents_submit')
 				</div><!--tab content-->	
-			</div><!--row-->	
+			<!--</div><!--row-->	
+			
+			<div class="row"> 
+				<div class="col-sm-12"> 
+					<div class="pull-right">	
+						
+						<button type="submit" 
+								class="btn verification-button">
+							<i class="fa pull-right"></i>
+							Save
+						</button>
+						
+						<button type="submit" 
+								class="btn verification-button">
+							<i class="fa pull-right"></i>
+							{{ Lang::get('borrower-profile.submit_verification') }}
+						</button>
+						
+					</div>
+				</div> 
+			</div> 
+			
+			
+			
 			
 		</div><!--col-->										
 	</div>	<!--row-->							

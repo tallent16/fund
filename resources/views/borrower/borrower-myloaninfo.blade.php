@@ -17,7 +17,7 @@
 					<div class="col-sm-12 loan-info-wrapper">
 						<div class="row"> 
 							
-							<div class="col-sm-2">										
+							<div class="col-sm-12 col-lg-2">										
 								<div class="table-responsive"><!---table start-->
 									<table class="table tab-label">		
 										<tbody>																								
@@ -59,10 +59,10 @@
 								</div>							
 							</div> <!----col--2--->
 							
-							<div class="col-sm-10 loan-details">
+							<div class="col-sm-12 col-lg-10 loan-details">
 							
-								<div class="col-sm-3 text-center">									
-										<button type="submit" class="loan-detail-button">LOAN DETAILS 1</button>				
+								<div class="col-sm-12 col-lg-3 text-center">									
+										<button type="submit" class="btn loan-detail-button">LOAN DETAILS 1</button>				
 																
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
@@ -87,7 +87,7 @@
 												</tr>
 												<tr>
 													<td>														
-														<button type="submit" class="button-grey">View All Bids</button>												
+														<button type="submit" class="btn button-grey">View All Bids</button>												
 													</td>												
 												</tr>
 												<tr>
@@ -98,7 +98,7 @@
 												</tr>
 												<tr>
 													<td>													
-														<button type="submit" class="button-grey">Repayment Schedule</button>												
+														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
 													</td>											
 												</tr>
 												<tr>
@@ -111,9 +111,9 @@
 								</div><!--col-3---->
 								
 										
-							<div class="col-sm-3 text-center">
+							<div class="col-sm-12 col-lg-3 text-center">
 
-										<button type="submit" class="loan-detail-button">LOAN DETAILS 1</button>							
+										<button type="submit" class="btn loan-detail-button">LOAN DETAILS 2</button>							
 												
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
@@ -139,7 +139,7 @@
 												</tr>
 												<tr>
 													<td>														
-														<button type="submit" class="button-grey">View All Bids</button>												
+														<button type="submit" class="btn button-grey">View All Bids</button>												
 													</td>												
 												</tr>
 												<tr>
@@ -150,7 +150,7 @@
 												</tr>
 												<tr>
 													<td>													
-														<button type="submit" class="button-grey">Repayment Schedule</button>												
+														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
 													</td>											
 												</tr>
 												<tr>
@@ -165,9 +165,9 @@
 								
 								
 								
-								<div class="col-sm-3 text-center">
+								<div class="col-sm-12 col-lg-3 text-center">
 									
-											<button type="submit" class="loan-detail-button">LOAN DETAILS 1</button>				
+											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 3</button>				
 												
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
@@ -192,7 +192,7 @@
 												</tr>
 												<tr>
 													<td>														
-														<button type="submit" class="button-grey">View All Bids</button>												
+														<button type="submit" class="btn button-grey">View All Bids</button>												
 													</td>												
 												</tr>
 												<tr>
@@ -203,7 +203,7 @@
 												</tr>
 												<tr>
 													<td>													
-														<button type="submit" class="button-grey">Repayment Schedule</button>												
+														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
 													</td>											
 												</tr>
 												<tr>
@@ -214,9 +214,9 @@
 									</div>									
 								</div><!---col--3-->
 								
-								<div class="col-sm-3 text-center">
+								<div class="col-sm-12 col-lg-3 text-center">
 									
-											<button type="submit" class="loan-detail-button">LOAN DETAILS 1</button>								
+											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 4</button>								
 												
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
@@ -241,7 +241,7 @@
 												</tr>
 												<tr>
 													<td>														
-														<button type="submit" class="button-grey">View All Bids</button>												
+														<button type="submit" class="btn button-grey">View All Bids</button>												
 													</td>												
 												</tr>
 												<tr>
@@ -252,7 +252,7 @@
 												</tr>
 												<tr>
 													<td>													
-														<button type="submit" class="button-grey">Repayment Schedule</button>												
+														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
 													</td>											
 												</tr>
 												<tr>

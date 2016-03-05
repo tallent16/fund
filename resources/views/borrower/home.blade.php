@@ -1,12 +1,116 @@
 @extends('layouts.dashboard')
+@section('styles')
+<style>
+	.chart-legend li span{
+		display: inline-block;
+		width: 12px;
+		height: 12px;
+		margin-right: 5px;
+	}
+</style>
+@endsection
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>
+	 var current_loansJson	=	{{$BorDashMod->current_loansJson}}		
+	 var barchartJson		=	{{$BorDashMod->barchart_detJson}}		
+		$(document).ready(function(){
+			$('.fa-caret-right').on("click", function() {
+				var curLoanLen	=	current_loansJson.length;
+				var curLoanInd	=	$("#current_loan_index").val();
+				if( curLoanLen > 0) {
+					changeCurLoanInd	=	parseInt(curLoanInd)+1;
+					if(	changeCurLoanInd >  parseInt(curLoanLen-1)) {
+						changeCurLoanInd	=	0;
+					}
+					setCurrentLoanFunc(changeCurLoanInd);
+					$("#current_loan_index").val(changeCurLoanInd);
+				}
+			});
+			repaymentBarChartFunc();
+		});
+		
+		function repaymentBarChartFunc(){
+			var datasetsArry	=	[];
+			var colors = [];
+			
+			colors.push({
+					fillColor: "rgba(151,187,205,0.5)",
+					strokeColor: "rgba(151,187,205,0.8)",
+					highlightFill: "rgba(151,187,205,0.75)",
+					highlightStroke: "rgba(151,187,205,1)",
+			});
+			colors.push({
+					fillColor : "rgba(95,137,250,0.5)",
+					strokeColor : "rgba(95,137,250,0.9)",
+					highlightFill: "rgba(95,137,250,0.75)",
+					highlightStroke: "rgba(95,137,250,1)"
+			});
+			colors.push({
+					fillColor : "rgba(245,75,75,0.5)",
+					strokeColor : "rgba(245,75,75,0.8)",
+					highlightFill : "rgba(245,75,75,0.75)",
+					highlightStroke : "rgba(245,75,75,1)"
+			});
+			colors.push({
+					fillColor : "rgba(98,223,114,0.5)",
+					strokeColor : "rgba(98,223,114,0.8)",
+					highlightFill : "rgba(98,223,114,0.75)",
+					highlightStroke : "rgba(98,223,114,1)",
+			});
+			var dataLabel		=	"";
+			 if(barchartJson.length > 0){
+				dataLabel	=	 (barchartJson[0].barChartLabel).split(',');
+				$.each( barchartJson, function( key ) {
+					colorIndex	=	key;
+					if(key > 3)
+						colorIndex	=	0;
+					var dataArry	=	[];
+					datasetsArry.push({
+						   label:barchartJson[key].loan_ref ,
+							fillColor : colors[colorIndex].fillColor,
+							strokeColor : colors[colorIndex].strokeColor,
+							highlightFill: colors[colorIndex].highlightFill,
+							highlightStroke: colors[colorIndex].highlightStroke,
+							data : (barchartJson[key].barChartValue).split(',')
+						});
+				});
+			}
+			console.log(datasetsArry);
+			var bdata = {
+			  labels : dataLabel, 			  
+			  width:10,
+				datasets : datasetsArry
+			}
+
+			var options = {
+					responsive:true
+			}
+
+			var cbar = document.getElementById("cbar").getContext("2d");
+			var barChart = new Chart(cbar).Bar(bdata, options);	
+			var legend = barChart.generateLegend();
+
+			$('#cbarlegend').append(legend);
+		}
+		function setCurrentLoanFunc(currentIndex){
+			var currentlist	=	current_loansJson[currentIndex];
+			
+			$("#cur_loan_subhead").html(currentlist.business_name+" "+currentlist.business_organisation);
+			$("#cur_loan_content").html(currentlist.purpose);
+			$("#cur_loan_rate").html(currentlist.rate+"%");
+			$("#cur_loan_duration").html(currentlist.duration);
+			$("#cur_loan_amount").html(currentlist.amount);
+		}
+	</script>
 @endsection
+@section('page_heading','Dashboard')
 @section('section')  
-           
-		<div class="col-sm-12"> 
+         @var $borrowerLoans 	= $BorDashMod->loan_details;
+         @var $borCurLoans 		= $BorDashMod->curloans;
+		<div class="col-sm-12 space-around"> 
 			<!--First row--->
-			<div class="row annoucement-msg-container">
+			<div class="row annoucement-msg-container" style="display:none">
 				<div class="alert alert-danger annoucement-msg">
 					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					{{ Lang::get('borrower-dashboard.annocement_section') }} 
@@ -22,33 +126,61 @@
 						
 						<div class="panel-heading panel-headsection"><!--panel head-->
 							<div class="row">
-								<div class="col-xs-11">
+								<div class="col-xs-10 col-lg-11">
 									<span class="pull-left">{{ Lang::get('borrower-dashboard.current_loan') }} </span> 
 								</div>
-								<div class="col-xs-1">
-									<i class="fa fa-caret-right "></i>
+								<div class="col-xs-2 col-lg-1">
+									<i class="fa fa-caret-right cursor-pointer"></i>
 								</div>								
 							</div>							
 						</div>	<!--end panel head-->
 						
 						<div class="panel-body"><!--panel body-->
-							   <div class="panel-subhead">{{ Lang::get('borrower-dashboard.companyname') }}</div>
-							   <div>{{ Lang::get('borrower-dashboard.content') }}</div>
+								<input 	type="hidden" id="current_loan_index" 
+										value="0" />
+							   <div class="panel-subhead" id="cur_loan_subhead">
+								 	@if(count($borCurLoans	) >0 )
+										{{$borCurLoans[0]->business_name." ".$borCurLoans[0]->business_organisation}}
+									@endif
+								</div>
+							   <div  id="cur_loan_content">
+								    @if(count($borCurLoans	) >0 )
+										{{$borCurLoans[0]->purpose}}
+									@endif
+								</div>
 						</div>	<!--end panel body-->
 						<div class="table-responsive"><!---table start-->
 							<table class="table table-bordered .tab-fontsizebig">
 								<thead>
 									<tr>
-										<th class="tab-head">{{ Lang::get('borrower-dashboard.rate') }}</th>
-										<th class="tab-head">{{ Lang::get('borrower-dashboard.duration') }}</th>
-										<th class="tab-head">{{ Lang::get('borrower-dashboard.amount') }}</th>
+										<th class="tab-head">
+											{{ Lang::get('borrower-dashboard.rate') }}
+										</th>
+										<th class="tab-head">
+											{{ Lang::get('borrower-dashboard.duration') }}
+										</th>
+										<th class="tab-head">
+											{{ Lang::get('borrower-dashboard.amount') }}
+										</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td>10%</td> 
-										<td>1 {{ Lang::get('borrower-dashboard.year') }}</td>
-										<td>$1,000</td>
+										<td  id="cur_loan_rate" >
+											 @if(count($borCurLoans	) >0 )
+												{{$borCurLoans[0]->rate}}%
+											@endif
+										</td> 
+										<td  id="cur_loan_duration">
+											@if(count($borCurLoans	) >0 )
+												{{$borCurLoans[0]->duration}}
+											@endif
+										</td>
+										<td  id="cur_loan_amount">
+											@if(count($borCurLoans	) >0 )
+												{{$borCurLoans[0]->amount}}
+											@endif
+										</td>
 									</tr>										
 								</tbody>
 							</table>							 
@@ -76,8 +208,14 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td class="text-center">2</td>
-										<td class="text-center">$100,000</td>										
+										<td class="text-center">{{count($borCurLoans)}}</td>
+										<td class="text-center">
+											@var $totalLoanAmount	=	0
+											@foreach($borCurLoans as $curLoan)
+												@var $totalLoanAmount = $totalLoanAmount	+	$curLoan->amount
+											@endforeach
+											{{$totalLoanAmount}}
+										</td>										
 									</tr>										
 								</tbody>
 							</table>                     
@@ -113,17 +251,19 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1018</td>
-									<td>26 {{ Lang::get('borrower-dashboard.nov') }} 2016</td>
-									<td>11 {{ Lang::get('borrower-dashboard.nov') }} 2016</td>
-									<td>$100,000</td>
-									<td>18%</td>
-									<td>11</td>
-									<td>$91.68</td>
-									<td></td>
-									<td>{{ Lang::get('borrower-dashboard.paid') }}</td>
-								</tr>										
+								@foreach($borrowerLoans as $loanRow)
+									<tr>
+										<td>{{$loanRow['loan_reference_number']}}</td>
+										<td>{{$loanRow['last_payment']}}</td>
+										<td>{{$loanRow['next_payment']}}</td>
+										<td>{{$loanRow['amount_paid']}}</td>
+										<td>{{$loanRow['inst_rate']}}%</td>
+										<td>{{$loanRow['no_of_installment']}}</td>
+										<td>{{$loanRow['total_repayments']}}</td>
+										<td>{{$loanRow['tot_prin_outstanding']}}</td>
+										<td>{{$loanRow['repayment_status']}}</td>
+									</tr>				
+								@endforeach						
 							</tbody>
 						</table>						
 					</div><!-----third row end--->	

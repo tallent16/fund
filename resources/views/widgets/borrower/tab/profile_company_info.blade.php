@@ -1,23 +1,20 @@
 @var	$opt1	=	""
 @var	$opt2	=	""
-@if( $modelBorPrf->verified_status	==	1)
+@if( $modelBorPrf->verified_status	==	BORROWER_BANK_STATUS_UNVERIFIED)
 	@var $opt1	="selected"
-@elseif( $modelBorPrf->verified_status	==	2)
+@elseif( $modelBorPrf->verified_status	==	BORROWER_BANK_STATUS_VERIFIED)
 	@var $opt2	="selected"
 @endif
 <div id="company_info" class="tab-pane fade in active">	
-	<fieldset {{ $modelBorPrf->viewStatus }}>
-		<div class="row">
-			<div class="col-xs-12">
-				
-				 <div class="table-responsive directorinfo"><!---table start-->
-					<table class="table table-bordered .tab-fontsize text-left">		
-						<tbody>
+				<div class="table-responsive directorinfo"><!---table start-->
+					<fieldset {{ $modelBorPrf->viewStatus }}>	
+					<table class="table table-bordered .tab-fontsize text-left">						
+						<tbody>							
 							<tr>
-								<td class="col-md-3">
+								<td>
 									{{ Lang::get('borrower-profile.business_name') }}
 								</td>
-								<td class="col-md-3">
+								<td>
 									<input 	type="text" 
 											id="business_name" 
 											name="business_name"
@@ -25,10 +22,10 @@
 											class="form-control"
 											/>
 								</td>		
-								<td class="col-md-3">
+								<td>
 									{{ Lang::get('borrower-profile.bank_code') }}
 								</td>
-								<td class="col-md-3">
+								<td>
 									<input 	type="text" 
 											id="bank_code" 
 											name="bank_code"
@@ -38,16 +35,28 @@
 								</td>																
 							</tr>
 							<tr>
-								<td>{{ Lang::get('borrower-profile.business_org') }}</td>
 								<td>
+									{{ Lang::get('borrower-profile.business_org') }}
+								</td>
+								<td>
+									<select class="selectpicker"
+											id="business_organisation" 
+											name="business_organisation"
+											>
+											{{ $modelBorPrf->busin_organSelectOptions }}
+									</select>
+<!--
 									<input 	type="text" 
 											id="business_organisation" 
 											name="business_organisation"
 											value="{{ $modelBorPrf->business_organisation }}"
 											class="form-control"
 											/>
+-->
 								</td>		
-								<td>{{ Lang::get('borrower-profile.bank_name') }}</td>
+								<td>
+									{{ Lang::get('borrower-profile.bank_name') }}
+								</td>
 								<td>
 									<input 	type="text" 
 											id="bank_name" 
@@ -178,10 +187,6 @@
 							<tr>
 								<td>{{ Lang::get('borrower-profile.reg_address') }}</td> 
 								<td>
-									@var	$registered_address	=	""
-									@if(isset($company_info[0]))
-										@var	$registered_address	=	$company_info[0]->registered_address	
-									@endif
 									<textarea	id="registered_address" 
 												name="registered_address"
 												class="form-control"
@@ -191,22 +196,17 @@
 							<tr>
 								<td>{{ Lang::get('borrower-profile.mailing_address') }}</td> 
 								<td>
-									@var	$mailing_address	=	""
-									@if(isset($company_info[0]))
-										@var	$mailing_address	=	$company_info[0]->mailing_address	
-									@endif
 									<textarea	id="mailing_address" 
 												name="mailing_address"
 												class="form-control"
 											>{{$modelBorPrf->mailing_address}}</textarea>
 								</td>																										
-							</tr>								
-						</tbody>								
-					</table>							
-				</div> <!---table end---> 
-											
-			</div><!---col-12---> 				
-		</div><!---row---> 
-	</fieldset>
+							</tr>	
+														
+						</tbody>									
+					</table>	
+					</fieldset>					
+				</div> <!---table end---> 				
+			
 </div><!---tab---> 
 

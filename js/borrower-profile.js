@@ -44,6 +44,10 @@ $(document).ready(function (){
        addNewDirectorRow();
     });
 	
+	$("#save_button").click(function(){
+      $("#isSaveButton").val("yes");
+    });
+	
     $(".fa-trash").click(function(){
 		if($(this).hasClass("disabled"))
 			return;

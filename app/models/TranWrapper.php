@@ -106,5 +106,26 @@ class TranWrapper extends MoneyMatchModel {
 		}
 		return $borrower_id;
 	}
-
+	
+	
+	function getBusinessOrganisationList() {
+		
+		$bus_orgArry	=	array();	
+		$busorg_sql 	= "SELECT	bo_id,
+									bo_name,
+									bo_borrowing_allowed
+							FROM	business_organisations  ";
+		
+		
+		$busorg_rs		=	$this->dbFetchAll($busorg_sql);
+		$i				=	0;	
+		foreach($busorg_rs as $busorgOpt){
+			$bus_orgArry[$i]['bo_id']					=	$busorgOpt->bo_id;
+			$bus_orgArry[$i]['bo_name']					=	$busorgOpt->bo_name;
+			$bus_orgArry[$i]['bo_borrowing_allowed']	=	$busorgOpt->bo_borrowing_allowed;
+			$i++;
+		}
+		return $bus_orgArry;
+	}
+	
 }

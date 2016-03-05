@@ -4,7 +4,7 @@
 	<div class="panel panel-default directorinfo"> 						
 		<div class="panel-body">
 	
-			<div class="col-sm-8">	
+			<div class="col-sm-12 col-lg-8">	
 				<div class="row">	
 					<div class="col-xs-12">		
 						<form class="form-inline">													 										
@@ -45,7 +45,7 @@
 														{{ Lang::get('borrower-profile.director_name') }}
 													</td>
 													<td class="col-md-3">
-														<input 	type="text" 
+														<input 	type="text"  
 																id="name_{{$i}}" 
 																name="director_row[name][]"
 																value="{{ $directorRow['name'] }}"
@@ -122,7 +122,11 @@
 									@var	$i++
 								@endforeach
 							</div>
-								<div class="pull-left">											
+								
+														
+						</div><!--table-->
+						
+						<div class="pull-left">											
 									<button type="button"
 											class="btn add-director-button  {{$modelBorPrf->viewStatus}}"
 											id="add-director">
@@ -144,9 +148,9 @@
 										</li>	
 									</ul>
 								</div>						
-							</br>
-														
-						</div><!--table-->
+							</br> 
+						
+						
 					</div><!--col-12-->
 				</div><!--row-->			
 			</div>	<!--col-8 end-->

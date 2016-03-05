@@ -40,7 +40,7 @@
 			<p>Our Commotyment to personalized service is ehat makes us stand out from other leasing companies. Our Clients include international MNCs, private individuals, multi-natinal expatriates working in Singapore to small-medium enterprises.</p>
 		</div>
 		
-		<div class="col-md-9 col-sm-offset-1 col-xs-12">
+		<div class="col-md-8  col-xs-12 col-lg-offset-2">
 			<div class="table-responsive"><!---table start-->
 				<table class="table table-loan">		
 					<tbody>
@@ -94,7 +94,7 @@
 			<div class="col-md-12">
 				<div class="col-md-6">	
 					<div class="pull-left">	
-						<button type="submit" class="verification-button">DOWNLOAD DETAILED INFORMATION</button>
+						<button type="submit" class="btn verification-button">DOWNLOAD INFORMATION</button>
 					</div>
 				</div>
 				

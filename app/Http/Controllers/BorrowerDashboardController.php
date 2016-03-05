@@ -17,9 +17,10 @@ class BorrowerDashboardController extends MoneyMatchController {
 	//render the borrower Dashboard page
 	public function indexAction() {
 		
-		//$this->borrowerDashboardModel->getBorrowerDashboardDetails();
+		$this->borrowerDashboardModel->getBorrowerDashboardDetails();
 		return view('borrower.home')
-					->with("modelBorDash",$this->borrowerDashboardModel);
+					->with("BorDashMod",$this->borrowerDashboardModel)
+					->with("classname","fa fa-gear fa-fw user-icon"); 
 	}
 
 }

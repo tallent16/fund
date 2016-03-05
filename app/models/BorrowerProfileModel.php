@@ -2,35 +2,37 @@
 
 class BorrowerProfileModel extends TranWrapper {
 	
-	public $borrower_id  =  "";
-	public $user_id  =  "";
-	public $business_name  =  "";
-	public $business_organisation  =  "";
-	public $date_of_incorporation  =  "";
-	public $business_registration_number  =  "";
-	public $contact_person  =  "";
-	public $contact_person_email  =  "";
-	public $contact_person_mobile  =  "";
-	public $paid_up_capital  =  "";
-	public $number_of_employees  =  "";
-	public $operation_since  =  "";
-	public $registered_address  =  "";
-	public $mailing_address  =  "";
-	public $company_profile  =  "";
-	public $comments  =  "";
-	public $status  =  "";
-	public $statusText  =  "";
-	public $viewStatus  =  "";
-	public $company_image  =  "";
-	public $company_video_url  =  "";
-	public $borrower_bankid  =  "";
-	public $bank_name  =  "";
-	public $branch_code  =  "";
-	public $bank_account_number  	=  "";
-	public $verified_status  		=  "";
-	public $bank_code				=  "";
-	public $director_details		= array();
-	public $directorSelectOptions	= "";
+	public $borrower_id  					=  	"";
+	public $bo_id  							=  	"";
+	public $user_id  						=  	"";
+	public $business_name  					=  	"";
+	public $business_organisation  			=  	"";
+	public $date_of_incorporation  			=  	"";
+	public $business_registration_number  	=	"";
+	public $contact_person  				=  	"";
+	public $contact_person_email  			=  	"";
+	public $contact_person_mobile  			=  	"";
+	public $paid_up_capital  				=  	"";
+	public $number_of_employees  			=  	"";
+	public $operation_since  				=  	"";
+	public $registered_address  			=  	"";
+	public $mailing_address  				=  	"";
+	public $company_profile  				=  	"";
+	public $comments  						=  	"";
+	public $status  						=  	"";
+	public $statusText  					=  	"";
+	public $viewStatus  					=  	"";
+	public $company_image  					=  	"";
+	public $company_video_url  				=  	"";
+	public $borrower_bankid  				=  	"";
+	public $bank_name  						=  	"";
+	public $branch_code  					=  	"";
+	public $bank_account_number  			=  	"";
+	public $verified_status  				=  	"";
+	public $bank_code						=  	"";
+	public $director_details				= 	array();
+	public $directorSelectOptions			= 	"";
+	public $busin_organSelectOptions		= 	"";
 	protected $table = 'borrowers';
 	
 	protected $primaryKey = 'borrower_id';
@@ -38,7 +40,7 @@ class BorrowerProfileModel extends TranWrapper {
 		
 		$this->getBorrowerCompanyInfo();
 		$this->getBorrowerDirectorInfo();
-		$this->getBorrowerDirectorDropDown();
+		$this->processDropDowns();
 	}
 		
 	public function getBorrowerCompanyInfo() {
@@ -48,6 +50,7 @@ class BorrowerProfileModel extends TranWrapper {
 		
 		$sql= "	SELECT 	borrowers.borrower_id,
 						borrowers.user_id,
+						borrowers.bo_id,
 						borrowers.business_name,
 						borrowers.business_organisation,
 						ifnull(DATE_FORMAT(borrowers.date_of_incorporation,'%d/%m/%Y'),'') date_of_incorporation,
@@ -133,7 +136,7 @@ class BorrowerProfileModel extends TranWrapper {
 		return $result;
 	}
 	
-	public function getBorrowerDirectorDropDown() {
+	public function getBorrowerDirectorList() {
 		
 		$directorList			=	array();
 		$current_borrower_id	=	 $this->getCurrentBorrowerID();
@@ -151,15 +154,14 @@ class BorrowerProfileModel extends TranWrapper {
 				WHERE	borrower_id	=	{$current_borrower_id}";
 		
 		
-		$dir		= $this->dbFetchAll($sql);
+		$dir_rs		= $this->dbFetchAll($sql);
 		$i				=	0;	
-		foreach($dir as $dirOpt){
+		foreach($dir_rs as $dirOpt){
 			$directorList[$i]['id']			=	$dirOpt->slno;
 			$directorList[$i]['name']		=	$dirOpt->name;
 			$i++;
 		}
-		$directorSelectOptions			=	 $this->constructSelectOption($directorList, 'name', 'id',"", "");
-		$this->directorSelectOptions	=	$directorSelectOptions;
+		return $directorList;
 	}
 	
 	public function processProfile($postArray) {
@@ -183,21 +185,23 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerInfo($postArray,$transType) {
 		
-		
+		if($postArray['isSaveButton']	==	"yes") {
+			$status		=	BORROWER_STATUS_NEW_PROFILE;	
+		}else{
+			$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
+		}
 		if ($transType == "edit") {
 			$borrowerId	= $postArray['borrower_id'];
-			$status		=	2;
 		} else {
 			$borrowerId = 0;
-			$status		=	1;
 		}
 		$business_name 					=	$postArray['business_name'];
 		$business_organisation			= 	$postArray['business_organisation'];
 		$date_of_incorporation			= 	$postArray['date_of_incorporation'];
 		if($date_of_incorporation	==	"") 
-			$date_of_incorporation		= 	 $this->getDbDateFormat(date("d/m/Y"));
+			$date_of_incorporation		= 	$this->getDbDateFormat(date("d/m/Y"));
 		else
-			$date_of_incorporation		= 	 $this->getDbDateFormat($date_of_incorporation);
+			$date_of_incorporation		= 	$this->getDbDateFormat($date_of_incorporation);
 		$business_reg_number 			= 	$postArray['business_registration_number'];
 		$contact_person 				= 	$postArray['contact_person'];
 		$contact_person_mobile 			= 	$postArray['contact_person_mobile'];
@@ -215,7 +219,7 @@ class BorrowerProfileModel extends TranWrapper {
 		$current_user_id				=	 $this->getCurrentuserID();
 		
 		$dataArray = array(	'business_name' 				=> ($business_name!="")?$business_name:null,
-							'business_organisation'			=> ($business_organisation!="")?$business_organisation:null,
+							'bo_id'							=> ($business_organisation!="")?$business_organisation:null,
 							'date_of_incorporation'			=> $date_of_incorporation,
 							'business_registration_number' 	=> ($business_reg_number!="")?$business_reg_number:null,
 							'contact_person' 				=> ($contact_person!="")?$contact_person:null,
@@ -248,8 +252,7 @@ class BorrowerProfileModel extends TranWrapper {
 		
 		$numRows = count($directorRows['name']);
 		$rowIndex = 0;
-		echo $numRows;
-		//~ die; 
+		
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 			
 			$borrower_id 				= $borrowerId;
@@ -305,5 +308,13 @@ class BorrowerProfileModel extends TranWrapper {
 			$this->dbUpdate('borrower_banks', $dataArray, $whereArry);
 			return $borrowerBankId;
 		}
+	}
+	
+	public function processDropDowns() {
+		
+		$this->directorSelectOptions	=	$this->constructSelectOption($this->getBorrowerDirectorList(),
+															'name', 'id',"", "");		
+		$this->busin_organSelectOptions	=	$this->constructSelectOption($this->getBusinessOrganisationList(),
+															'bo_name', 'bo_id',$this->bo_id, "");		
 	}
 }

@@ -12,10 +12,12 @@
                 </button>
                   <a class="navbar-brand" href="{{ url ('') }}">{{ Html::image('img/LOGO.jpg') }}</a>
             </div>
-            <!-- /.navbar-header -->
-
-            <ul class="nav navbar-top-links navbar-right">               
-                <!-- /.dropdown -->
+            <!-- /.navbar-header --> 
+			
+			<div class="page-header-title"><i class="{{(isset($classname)?$classname:'')}}"></i>@yield('page_heading')</div>
+			          
+            <ul class="nav navbar-top-links navbar-right">           
+                <!-- /.dropdown -->               
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -31,10 +33,11 @@
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
-                <!-- /.dropdown -->
+                <!-- /.dropdown -->               
             </ul>
             <!-- /.navbar-top-links -->
-
+		 <div class="status-label-section">@yield('status_button')</div>
+			
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
@@ -43,7 +46,7 @@
                             <!-- /input-group -->
                         </li>
                          <li>
-                            <a href="{{ url ('borrower') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
+                            <a href="{{ url ('borrower/dashboard') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
                         </li>
                         <li> 
 							<a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
@@ -86,7 +89,7 @@
                             <a href="{{ url ('support') }}"><i class="fa fa-edit fa-fw"></i>{{ Lang::get('borrower-leftmenu.support') }} </a>
                         </li>
                     </ul>
-                     <ul class="nav settings-menu" id="side-menu">	                    
+                     <ul class="nav settings-menu" id="side-menu">	                
                         <li>
 							<a href="{{ url ('borrower/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
                         </li>  
@@ -105,11 +108,12 @@
 
 		<div id="page-wrapper">
 			
-			<div class="row">
-				<div class="col-lg-12"> 
-					<h1 class="page-header"><i class="{{(isset($classname)?$classname:'')}}"></i>@yield('page_heading')</h1>
+		<!--	<div class="row">
+				<div class="col-lg-8 col-sm-8"> 				
 				</div><!-- /.col-lg-12 -->
-			</div>
+			<!--	<div class="col-lg-4 col-sm-4"> 				
+				</div>
+			</div>-->
 			
 			<div class="row">  
 				@yield('section')

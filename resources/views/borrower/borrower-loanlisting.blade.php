@@ -2,20 +2,23 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 @endsection
+@section('page_heading','Loan Listing')
 @section('section')     
-
+<div class="col-sm-12 text-center space-around">
+	<div class="annoucement-msg-container">
+		<div class="alert alert-success annoucement-msg">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<h4>We are here to help you find the best loans to find.</h4>	
+		</div>
+	</div>				
+</div>
 <div class="col-sm-12 loanlist-wrapper"> 			
 	<div class="row">	
-
-		<div class="col-sm-12 text-center">
-			<h4 class="panel-subhead">We are here to help you find the best loans to find.</h4>
-			<h4>///////////////////////////////////////<h4>
-		</div>
-
+		
 		<div class="row"> 
 			<div class="col-sm-12"> 
 				
-				<div class="col-sm-6"> 
+				<div class="col-sm-12 col-lg-6"> 
 					<div class="col-sm-6"> 														
 						<div class="form-group">								
 							<select class="selectpicker">
@@ -39,7 +42,7 @@
 					</div>
 				</div>
 				<!-------first two dropdown--ends--->
-				<div class="col-sm-6"> 
+				<div class="col-sm-12 col-lg-6"> 
 					<div class="col-sm-6"> 														
 						<div class="form-group">							
 							<select class="selectpicker">
@@ -70,22 +73,23 @@
 		<div class="row"> 
 			<div class="col-sm-12">						
 				<!----left block tables--------------->				
-				<div class="col-sm-6"> 	
+				<div class="col-sm-12 col-lg-6"> 	
 					
 					<div class="col-sm-12"> 
 						<div class="row loan-list-container">
 							
-							<div class="col-sm-4 tab-head loan-list-image"> 	
+							<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	
 									<div class="imageoverlap">
-										<img src="http://52.77.34.254/img/featured.png" class="img-responsive" alt="">
+										{{ Html::image('img/featured.png', '', array('class' => 'img-responsive')) }}
 									</div>
-								{{ Html::image('img/thumbnail.png') }}
+									
+								{{ Html::image('img/car.png', '', array('class' => 'thumbnail')) }}
 							</div>
-							 
-							<div class="col-sm-8 tab-head"> 	
+
+							<div class="col-sm-12 col-lg-8 tab-head"> 	
 								<div class="row">
-									<div class="col-sm-11 col-xs-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
-									<div class="col-sm-1"><i class="fa fa-caret-right"></i></div>
+									<div class="col-sm-10 col-xs-10 col-lg-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
+									<div class="col-sm-2 col-xs-2 col-lg-1"><i class="fa fa-caret-right"></i></div>
 								</div>		
 								<div class="row panel-white">
 									<div class="progress">
@@ -129,14 +133,14 @@
 					<div class="col-sm-12"> 
 						<div class="row loan-list-container">
 							
-							<div class="col-sm-4 tab-head loan-list-image"> 	
-								{{ Html::image('img/thumbnail.png') }}
+							<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	
+								{{ Html::image('img/thumbnail.png', '', array('class' => 'thumbnail')) }}
 							</div>
 							 
-							<div class="col-sm-8 tab-head"> 	
+							<div class="col-sm-12 col-lg-8 tab-head"> 	
 								<div class="row">
-									<div class="col-sm-11 col-xs-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
-									<div class="col-sm-1"><i class="fa fa-caret-right"></i></div>
+									<div class="col-sm-10 col-xs-10 col-lg-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
+									<div class="col-sm-2 col-xs-2 col-lg-1"><i class="fa fa-caret-right"></i></div>
 								</div>				
 								<div class="row panel-white">
 									<div class="progress">
@@ -181,15 +185,15 @@
 					   <div class="col-sm-12"> 
 						<div class="row loan-list-container">
 							
-							<div class="col-sm-4 tab-head loan-list-image"> 	
-								{{ Html::image('img/thumbnail.png') }}
+							<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	
+								{{ Html::image('img/thumbnail.png', '', array('class' => 'thumbnail')) }}
 							</div>
 							 
-							<div class="col-sm-8 tab-head"> 	
+							<div class="col-sm-12 col-lg-8 tab-head"> 	
 								<div class="row">
-									<div class="col-sm-11 col-xs-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
-									<div class="col-sm-1"><i class="fa fa-caret-right"></i></div>
-								</div>			
+									<div class="col-sm-10 col-xs-10 col-lg-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
+									<div class="col-sm-2 col-xs-2 col-lg-1"><i class="fa fa-caret-right"></i></div>
+								</div>		
 								<div class="row panel-white">
 									<div class="progress">
 										<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70"
@@ -233,20 +237,20 @@
 				</div><!---col--6-->
 				<!--------left ---table ----ends------------------------->	
 				<!--------right ---table ----starts------------------------->	
-				<div class="col-sm-6"> 	
+				<div class="col-sm-12 col-lg-6"> 	
 					
 					<div class="col-sm-12"> 
 						<div class="row loan-list-container">
 							
-							<div class="col-sm-4 tab-head loan-list-image"> 	
-								{{ Html::image('img/thumbnail.png') }}
+							<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	
+								{{ Html::image('img/thumbnail.png', '', array('class' => 'thumbnail')) }}
 							</div>
 							 
-							<div class="col-sm-8 tab-head"> 	
+							<div class="col-sm-12 col-lg-8 tab-head"> 	
 								<div class="row">
-									<div class="col-sm-11 col-xs-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
-									<div class="col-sm-1"><i class="fa fa-caret-right"></i></div>
-								</div>			
+									<div class="col-sm-10 col-xs-10 col-lg-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
+									<div class="col-sm-2 col-xs-2 col-lg-1"><i class="fa fa-caret-right"></i></div>
+								</div>		
 								<div class="row panel-white">
 									<div class="progress">
 										<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70"
@@ -290,14 +294,14 @@
 					   <div class="col-sm-12"> 
 						<div class="row loan-list-container">
 							
-							<div class="col-sm-4 tab-head loan-list-image"> 	
-								{{ Html::image('img/thumbnail.png') }}
+							<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	
+								{{ Html::image('img/thumbnail.png', '', array('class' => 'thumbnail')) }}
 							</div>
 							 
-							<div class="col-sm-8 tab-head"> 	
+							<div class="col-sm-12 col-lg-8 tab-head"> 	
 								<div class="row">
-									<div class="col-sm-11 col-xs-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
-									<div class="col-sm-1"><i class="fa fa-caret-right"></i></div>
+									<div class="col-sm-10 col-xs-10 col-lg-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
+									<div class="col-sm-2 col-xs-2 col-lg-1"><i class="fa fa-caret-right"></i></div>
 								</div>			
 								<div class="row panel-white">
 									<div class="progress">
@@ -344,15 +348,15 @@
 					   <div class="col-sm-12"> 
 						<div class="row loan-list-container">
 							
-							<div class="col-sm-4 tab-head loan-list-image"> 	
-								{{ Html::image('img/thumbnail.png') }}
+							<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	
+								{{ Html::image('img/thumbnail.png', '', array('class' => 'thumbnail')) }}
 							</div>
 							 
-							<div class="col-sm-8 tab-head"> 	
+							<div class="col-sm-12 col-lg-8 tab-head"> 	
 								<div class="row">
-									<div class="col-sm-11 col-xs-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
-									<div class="col-sm-1"><i class="fa fa-caret-right"></i></div>
-								</div>				
+									<div class="col-sm-10 col-xs-10 col-lg-11 title-loanlist"><div class="bidders-value">MKM Car Leasing pte Ltd</div><span>Transport Industry, Business Expanison</span></div>
+									<div class="col-sm-2 col-xs-2 col-lg-1"><i class="fa fa-caret-right"></i></div>
+								</div>			
 								<div class="row panel-white">
 									<div class="progress">
 										<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70"

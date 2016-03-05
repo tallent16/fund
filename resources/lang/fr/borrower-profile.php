@@ -55,4 +55,5 @@ return [
 	'add'					=> 'Ajouter',
 	'companyprofile'		=> 'Détail Profil de la société', 
 	'success'				=> 'Détails du profil soumis avec succès',
+	'save'					=> 'Profile Details enregistré avec succès',
 ];
