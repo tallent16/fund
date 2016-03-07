@@ -5,6 +5,7 @@
 @elseif( $modelBorPrf->verified_status	==	BORROWER_BANK_STATUS_VERIFIED)
 	@var $opt2	="selected"
 @endif
+
 <div id="company_info" class="tab-pane fade in active">	
 				<div class="table-responsive directorinfo"><!---table start-->
 					<fieldset {{ $modelBorPrf->viewStatus }}>	

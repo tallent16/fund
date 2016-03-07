@@ -11,7 +11,8 @@
 	<script src="{{ url('vendor/unisharp/laravel-ckeditor/adapters/jquery.js') }}"></script>  
 	<script>
 		$(document).ready(function(){			
-			$('#testCKE').ckeditor();   //text editor
+			$('#laon_purpose').ckeditor();   //text editor
+			$('[data-toggle="tooltip"]').tooltip();
 		});		
 	</script>		
 @endsection
@@ -31,14 +32,26 @@
 		</div>
 	</div>				
 </div>
-<div class="col-sm-12"> 			
+<div class="col-sm-12"> 	
+	<form class="form-inline" method="post" enctype="multipart/form-data">	
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 	<div class="row">				
 		<div class="col-lg-12 col-sm-12">				
 				
 			<!--<div class="row">-->
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#loans_info">{{ Lang::get('borrower-applyloan.loan_info') }}</a></li>
-					<li><a href="#documents_submitted">{{ Lang::get('borrower-applyloan.document_submit') }}</a></li>								
+					<li class="active">
+						<a 	data-toggle="tab"
+							href="#loans_info">
+							{{ Lang::get('borrower-applyloan.loan_info') }}
+						</a>
+					</li>
+					<li>
+						<a 	data-toggle="tab"
+							href="#documents_submitted">
+							{{ Lang::get('borrower-applyloan.document_submit') }}
+						</a>
+					</li>								
 				</ul>					
 
 				<div class="tab-content">
@@ -74,22 +87,13 @@
 			
 		</div><!--col-->										
 	</div>	<!--row-->							
+	</form>	
 </div><!--col-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
 <script>
 $(document).ready(function(){ 
 	// Main tabs
-	$(".nav-tabs a").click(function(){
-		$(this).tab('show');
-	});
-	$('.nav-tabs a').on('shown.bs.tab', function(event){
-		var x = $(event.target).text();         // active tab
-		var y = $(event.relatedTarget).text();  // previous tab
-		$(".act span").text(x);
-		$(".prev span").text(y);
-	});	
-
 	$(":file").jfilestyle({buttonText: "Attach Docs",buttonBefore: true,inputSize: '200px'});  // file upload
 
 

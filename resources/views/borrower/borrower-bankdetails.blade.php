@@ -8,7 +8,7 @@
 			  <h4><span class="label label-default status-label">Status</span></h3>														
 @endsection
 @section('section')    
-<div class="col-sm-12 space-around"> 			
+<div class="col-sm-12 space-around bank-details"> 			
 		<div class="panel panel-primary panel-container">	
 					
 				<div class="panel-heading panel-headsection"><!--panel head-->
@@ -52,10 +52,25 @@
 			</div><!-------panel------>	
 				
 			<div class="row"> 
+					<div class="text-center pull-left">
+									<ul class="pagination">
+										<li>
+											<a href="javascript:void(0)" id="prev">
+												<i class="fa fa-chevron-circle-left"></i>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0)" id="next">
+												<i class="fa fa-chevron-circle-right"></i>
+												</a>
+										</li>	
+									</ul>
+								</div>		
 				<div class="col-sm-12">	
 					<div class="pull-right">							
 						<button type="submit" class="btn button-orange">ADD</button>	
 					</div>
+					
 				</div>
 			</div>		
 			

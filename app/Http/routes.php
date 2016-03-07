@@ -45,7 +45,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], function() {
     Route::get('borrower/dashboard', 'BorrowerDashboardController@indexAction');
 	Route::match(['get', 'post'],'borrower/profile', 'BorrowerProfileController@indexAction');
-	Route::get('borrower/applyloan', 'BorrowerApplyLoanController@index');
+	Route::match(['get', 'post'],'borrower/applyloan', 'BorrowerApplyLoanController@index');
 	Route::get('borrower/myloans', 'BorrowerMyLoansController@index');	
 	Route::get('borrower/loanslist', 'BorrowerLoanListingController@index');	
 	Route::get('borrower/myloaninfo', 'BorrowerMyLoanInfoController@index');	
@@ -58,7 +58,7 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 // The routes (or pages that are applicable for investor users only
 Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], function()
 {
-    Route::get('investor',array('middleware' => 'auth', 'uses' => 'InvestorController@index'));
+    Route::get('investor/dashboard',array('middleware' => 'auth', 'uses' => 'InvestorDashboardController@indexAction'));
    
 });
 

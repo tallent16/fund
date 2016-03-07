@@ -12,7 +12,8 @@
 		<!--------Status Button Section---->   
 		<h4><span class="label label-default status-label">{{$modelBorPrf->statusText}}</span></h4>							
 @endsection
-@section('section')       
+@section('section')   
+		
 		@if($modelBorPrf->borrower_id	==	"")
 			@var	$trantype	=	"add"
 		@else
@@ -62,10 +63,10 @@
 						<!-----Tab Starts----->
 						<ul class="nav nav-tabs">
 							<li class="active">
-									<a 	data-toggle="tab" 
-										href="#company_info">
-										{{ Lang::get('borrower-profile.company_info') }}
-									</a>
+								<a 	data-toggle="tab" 
+									href="#company_info">
+									{{ Lang::get('borrower-profile.company_info') }}
+								</a>
 							</li>
 							<li>
 								<a 	data-toggle="tab"
