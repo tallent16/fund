@@ -1,7 +1,8 @@
 @extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>  
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script> 
+	<script src="{{ url('js/borrower-transhistory.js') }}" type="text/javascript"></script> 
 @endsection
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
@@ -28,8 +29,8 @@
 					<div class="col-sm-8 col-lg-9">						
 						<div class="controls">							
 							<div class="input-group">								
-								<input id="date-picker-2" type="text" class="date-picker form-control" />
-								<label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
+								<input id="fromdate" type="text" class="date-picker form-control" />
+								<label for="fromdate" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
 								</label>
 							</div>													
 						</div>		
@@ -47,8 +48,8 @@
 					<div class="col-sm-8 col-lg-9">
 						<div class="controls">
 							<div class="input-group">
-								<input id="date-picker-3" type="text" class="date-picker form-control" />
-								<label for="date-picker-3" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
+								<input id="todate" type="text" class="date-picker form-control" />
+								<label for="todate" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
 								</label>
 							</div>													
 						</div>

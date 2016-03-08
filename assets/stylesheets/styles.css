@@ -6445,9 +6445,9 @@ button.close {
   }
 }
 @media (max-width: 768px){
-	/*.form-control{ 
-		width: auto	;
-	}*/
+	.form-control{
+		width:220px;
+	}
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .visible-sm {
@@ -6610,8 +6610,8 @@ button.close {
   }
 }
 @media (min-width: 1281px) {
-	#company_info .input-group-addon, .input-group-btn{
-		width:auto; 
+	.input-group-addon, .input-group-btn{
+		width:auto;  
 	}
 }
 @media (max-width: 1280px) {
@@ -9005,12 +9005,12 @@ canvas.round {
 } 
 .page-header-title{
 	float: left;
-	margin: 15px 0px 0px 30px;
+	margin: 15px 0px 0px 24px;
 	font-size: 36px;
 	color: rgb(255, 255, 255);
 }
 .status-label-section{
-	margin: 42px -72px 0px 0px;
+	margin: 42px -66px 0px 0px;
 	float: right;
 }
 .status-label{
@@ -9157,7 +9157,7 @@ canvas.round {
 	background-color:#F9F9F9;	
 }
 .applyloan .row{
-  margin:10px 0 0 0;
+	margin:10px 0 0 0;
 }
 ol li{
 	margin:10px 0 0 0;
@@ -9382,7 +9382,7 @@ table.table.tab-label {
 	border:none;
 	color:#fff;
 }
-#trans-history .table th{ 
+#trans-history .table th{  
     background-color: #E2E2E2;
 }
 #transhistory-container tr:nth-child(2n) {
@@ -9440,7 +9440,7 @@ table.table.tab-label {
 #account-summary td {
     border: none;
 }
-table#account-summary {
+table#account-summary, .table-border-custom{
     border: 1px solid #ccc;
 }
 /*--------------------------------------------------Custom Responsive css-------------------------------------------*/
@@ -9452,5 +9452,5 @@ table#account-summary {
 	}	
 	.page-header-title{
 		margin:0;
-	}
+	}	
 }

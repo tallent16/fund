@@ -53,12 +53,14 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::get('borrower/bankdetails', 'BorrowerBankDetailsController@index');
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@index');
 	Route::get('borrower/settings', 'BorrowerSettingsController@index');
+	Route::get('borrower/makepayment', 'BorrowerMakePaymentController@index');
 });
 
 // The routes (or pages that are applicable for investor users only
 Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], function()
 {
     Route::get('investor/dashboard',array('middleware' => 'auth', 'uses' => 'InvestorDashboardController@indexAction'));
+    Route::get('investor/profile', 'InvestorProfileController@index');
    
 });
 

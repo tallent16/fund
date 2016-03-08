@@ -19,8 +19,6 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		$submitted	=	false;
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
-			echo "<pre>",print_r($postArray),"</pre>";
-			die;
 			$result		=	$this->borrowerApplyLoanModel->processLoan($postArray);
 			$submitted	=	true;
 		}

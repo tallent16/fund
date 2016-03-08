@@ -49,9 +49,9 @@
 	
 	
 			<div class="col-md-12 space-around">				
-				<div class="col-md-6">
+				<!--<div class="col-md-6">
 					<div class="table-responsive"><!---table start-->
-						<table class="table table-loan">		
+					<!--	<table class="table table-loan">		
 							<tbody>
 								<tr>
 									<th class="tab-head" colspan="2">FACT SHEET</th>																	
@@ -79,9 +79,9 @@
 							</tbody>
 						</table>	
 					</div><!---table responsive---->
-				</div><!-----col-------->
+				<!--</div><!-----col-------->
 				
-				<div class="col-md-6">			
+				<div class="col-md-6  col-xs-12 col-lg-offset-3">			
 					<div class="table-responsive"><!---table start-->
 						<table class="table table-loan">		
 							<tbody>

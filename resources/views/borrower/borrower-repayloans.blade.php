@@ -37,7 +37,9 @@
 							<td>Installment</td>
 							<td>$1,000.00</td>	
 							<td>
-								<button type="submit" class="button-orange">REPAY</button>	
+								<a href="{{ url ('borrower/makepayment') }}">
+								<button type="submit" class="button-orange">REPAY</button>
+								</a>	
 							</td>								
 						</tr>	
 						<tr>
@@ -48,7 +50,9 @@
 							<td>Installment</td>
 							<td>$1,000.00</td>	
 							<td>
+								<a href="{{ url ('borrower/makepayment') }}">
 								<button type="submit" class="button-orange">REPAY</button>	
+								</a>
 							</td>								
 						</tr>	
 						<tr>
@@ -59,7 +63,9 @@
 							<td>Installment</td>
 							<td>$1,000.00</td>	
 							<td>
+								<a href="{{ url ('borrower/makepayment') }}">
 								<button type="submit" class="button-orange">REPAY</button>	
+								</a>
 							</td>								
 						</tr>	
 						<tr>
@@ -70,7 +76,9 @@
 							<td>Installment</td>
 							<td>$1,000.00</td>	
 							<td>
+								<a href="{{ url ('borrower/makepayment') }}">
 								<button type="submit" class="button-orange">REPAY</button>	
+								</a>
 							</td>								
 						</tr>										
 					</tbody>

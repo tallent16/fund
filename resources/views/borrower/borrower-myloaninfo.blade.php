@@ -7,7 +7,7 @@
 <div class="col-sm-12"> 			
 	<div class="row">			
 			
-			<div class="col-sm-12"> 
+			<div class="col-sm-12 space-around"> 
 				<div class="panel panel-primary panel-container">
 					
 					<div class="panel-heading panel-headsection">					
@@ -62,7 +62,9 @@
 							<div class="col-sm-12 col-lg-10 loan-details">
 							
 								<div class="col-sm-12 col-lg-3 text-center">									
-										<button type="submit" class="btn loan-detail-button">LOAN DETAILS 1</button>				
+										<a href="{{ url ('borrower/myloans') }}">
+											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 1</button>
+										</a>				
 																
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
@@ -112,9 +114,9 @@
 								
 										
 							<div class="col-sm-12 col-lg-3 text-center">
-
+										<a href="{{ url ('borrower/myloans') }}">
 										<button type="submit" class="btn loan-detail-button">LOAN DETAILS 2</button>							
-												
+										</a>		
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
 											<tbody>
@@ -166,9 +168,9 @@
 								
 								
 								<div class="col-sm-12 col-lg-3 text-center">
-									
+										<a href="{{ url ('borrower/myloans') }}">
 											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 3</button>				
-												
+										</a>	
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
 											<tbody>
@@ -215,9 +217,9 @@
 								</div><!---col--3-->
 								
 								<div class="col-sm-12 col-lg-3 text-center">
-									
+										<a href="{{ url ('borrower/myloans') }}">
 											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 4</button>								
-												
+										</a>		
 									<div class="table-responsive"><!---table start-->
 										<table class="table table-loan">		
 											<tbody>

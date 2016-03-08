@@ -1,5 +1,6 @@
 <?php namespace App\models;
-
+use fileupload\FileUpload;
+use File;
 class BorrowerApplyLoanModel extends TranWrapper {
 	
 	public $loan_id		  					=  	"";
@@ -116,4 +117,138 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		}
 		return $loandocument_rs;
 	}
+	
+	public function processLoan($postArray) {
+		//~ $fileUploadObj		=	new FileUpload();
+		//~ $destinationPath 	= 	'uploads/borrower';
+		//~ foreach($postArray['documents'] as $file) {
+			//~ if(isset($file)) {
+				//~ $fileUploadObj->storeFile($destinationPath ,$file);
+			//~ }
+		//~ }
+		
+		//~ $transType = $postArray['trantype'];
+		$transType = 'add';
+		//~ if($transType	==	"edit") {
+			//~ $borrowerId  	= 	$postArray['borrower_id'];
+			//~ $whereArry		=	array("borrower_id" => $borrowerId);
+			 //~ $this->dbDelete("borrower_directors",$whereArry);
+		//~ }
+		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType);
+		$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
+	}
+	
+	public function updateBorrowerLoanInfo($postArray,$transType) {
+		
+		if($postArray['isSaveButton']	==	"yes") {
+			$status		=	BORROWER_STATUS_NEW;	
+		}else{
+			$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
+		}
+		if ($transType == "edit") {
+			$loanId	= $postArray['loan_id'];
+		} else {
+			$loanId = 0;
+		}
+		
+		$loan_reference_number 			=	"Loan-Ref";
+		$borrower_id					= 	$this->getCurrentBorrowerID();
+		$purpose						= 	$postArray['laon_purpose'];
+		$apply_date						= 	$this->getDbDateFormat(date("d/m/Y"));
+		$apply_amount		 			= 	$this->makeFloat($postArray['loan_amount']);
+		$loan_tenure	 				= 	$postArray['loan_tenure'];
+		$target_interest	 			= 	$postArray['target_interest'];
+		$bid_close_date 				= 	$postArray['bid_close_date'];
+		if($bid_close_date	==	"") 
+			$bid_close_date				= 	$this->getDbDateFormat(date("d/m/Y"));
+		else
+			$bid_close_date				= 	$this->getDbDateFormat($bid_close_date);
+		$bid_type		 				= 	$postArray['paid_up_capital'];
+		$partial_sub_allowed 			= 	$postArray['partial_sub_allowed'];
+		$min_for_partial_sub 			= 	$this->makeFloat($postArray['min_for_partial_sub']);
+	
+		$repayment_type 				= 	$postArray['payment_type'];
+		$final_interest_rate 			= 	$postArray['target_interest'];
+		$loan_sactioned_amount 			= 	$apply_amount;
+		$trans_fees						=	$apply_amount - ( ($apply_amount*4)/100 );
+		$total_disbursed				=	$apply_amount	-	$trans_fees;
+		
+		$dataArray = array(	'loan_reference_number' 		=> $loan_reference_number,
+							'borrower_id'					=> $borrower_id,
+							'purpose'						=> ($purpose!="")?$purpose:null,
+							'apply_date	' 					=> $apply_date,
+							'apply_amount' 					=> ($apply_amount!="")?$apply_amount:null,
+							'loan_tenure' 					=> ($loan_tenure!="")?$loan_tenure:null,
+							'target_interest' 				=> ($target_interest!="")?$target_interest:null,
+							'bid_close_date' 				=> ($bid_close_date!="")?$bid_close_date:null,
+							'bid_type' 						=> ($bid_type!="")?$bid_type:null,
+							'partial_sub_allowed' 			=> ($partial_sub_allowed!="")?$partial_sub_allowed:null,
+							'min_for_partial_sub' 			=> ($min_for_partial_sub!="")?$min_for_partial_sub:null,
+							'repayment_type' 				=> $repayment_type,
+							'final_interest_rate' 			=> ($final_interest_rate!="")?$final_interest_rate:null,
+							'loan_sactioned_amount' 		=> $loan_sactioned_amount,
+							'trans_fees' 					=> $trans_fees,
+							'total_disbursed' 				=> $total_disbursed);
+							
+	//~ echo "<pre>",print_r($dataArray),"</pre>";
+		//~ die;	
+		if ($transType != "edit") {
+			$loanId =  $this->dbInsert('loans', $dataArray, true);
+			if ($loanId < 0) {
+				return -1;
+			}
+			return $loanId;
+		}else{
+			$whereArry	=	array("loan_id" =>"{$loanId}");
+			$this->dbUpdate('loans', $dataArray, $whereArry);
+			return $loanId;
+		}
+	}
+	
+	public function updateBorrowerLoanDocuments($postArray,$transType,$loanId) {
+		
+		$fileUploadObj	=	new FileUpload();
+		$numRows 		= 	count($postArray['document_ids']);
+		$rowIndex		= 	0;
+		$borrower_id	= 	$this->getCurrentBorrowerID();
+		
+		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+			
+			$loan_doc_id		= 	$postArray['document_ids'][$rowIndex];
+			$loan_id			= 	$loanId;
+			$destinationPath 	= 	Config::get('moneymatch_settings.upload_bor');
+			$destinationPath 	= 	$destinationPath."/".$borrower_id."/loan".$loan_id."documents";
+			if(!File::exists($destinationPath)) {
+				File::makeDirectory($destinationPath, 0755, true);
+			}
+			
+			// Construct the data array
+			if(isset($postArray['documents'][$rowIndex])) {
+				
+				$file			=	$postArray['documents'][$rowIndex];
+				$filename 		= 	$file->getClientOriginalName();
+				$loan_doc_url	=	$destinationPath."/".$filename;
+				
+				$dataArray 	= 	array(	
+									'loan_doc_id' 				=> $loan_doc_id,
+									'loan_id'					=> $loan_id,
+									'loan_doc_url'	 			=> $loan_doc_url);		
+								
+				// Insert or Update the loan documents list
+					if($transType	==	"add") {
+						$result =  $this->dbInsert('loan_docs_submitted', $dataArray, true);
+						if ($result < 0) {
+							return -1;
+						}
+					}else{
+						$whereArry	=	array("loan_id" =>"{$loan_id}","loan_doc_id" =>"{$loan_doc_id}");
+						$this->dbUpdate('loan_docs_submitted', $dataArray, $whereArry);
+					}
+			// Insert or Update the loan documents list	
+				$fileUploadObj->storeFile($destinationPath ,$file);
+			}
+		}
+		return 1;
+	}
+	
 }

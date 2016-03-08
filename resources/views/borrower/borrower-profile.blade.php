@@ -79,6 +79,18 @@
 									href="#profile_info">
 									{{ Lang::get('borrower-profile.profile_info') }}
 								</a>
+							</li>	
+							<li>
+								<a 	data-toggle="tab"
+									href="#financial_info">
+									FINANCIAL INFO
+								</a>
+							</li>	
+							<li>
+								<a 	data-toggle="tab"
+									href="#bank_info">
+									BANK INFO
+								</a>
 							</li>						   							
 						</ul>	
 				
@@ -94,6 +106,14 @@
 						<!-----Third Tab content starts----->
 							@include('widgets.borrower.tab.profile_info')
 						<!-----Third Tab content ends----->	
+						
+						<!-----Four Tab content starts----->
+							@include('widgets.borrower.tab.profile_financial_info')
+						<!-----Four Tab content ends----->	
+						
+						<!-----Five Tab content starts----->
+							@include('widgets.borrower.tab.profile_bank_info')
+						<!-----Five Tab content ends----->	
 						
 					</div>	<!---col ends-->	
 				

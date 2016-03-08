@@ -20,7 +20,7 @@
                                     <a href="{{ url ('borrower/loanslist') }}">{{ Lang::get('borrower-leftmenu.loanslist') }}</a> 
                                 </li>       
                                 <li> 
-                                    <a href="{{ url ('borrower/myloans') }}">{{ Lang::get('borrower-leftmenu.myloans') }}</a> 
+                                    <a href="{{ url ('borrower/myloaninfo') }}">{{ Lang::get('borrower-leftmenu.myloans') }}</a> 
                                 </li>                              
                             </ul>
                             <!-- /.nav-second-level -->
@@ -39,20 +39,14 @@
                                 </li>                                                             
                             </ul>
                             <!-- /.nav-second-level -->
-                        </li>                      
-                        <li>
-                            <a href="{{ url ('banking') }}"><i class="fa fa-university fa-fw"></i>{{ Lang::get('borrower-leftmenu.banking') }} </a>
-                        </li>
-                         <li>
-                            <a href="{{ url ('support') }}"><i class="fa fa-edit fa-fw"></i>{{ Lang::get('borrower-leftmenu.support') }} </a>
-                        </li>
+                        </li>                             
                     </ul>
                      <ul class="nav settings-menu" id="side-menu">	                
                         <li>
-							<a href="{{ url ('borrower/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
+							<a href="javascript:void(0)"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
                         </li>  
                         <li>
-							<a href="#"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.pinnacle') }} </a>
+							<a href="javascript:void(0)"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.pinnacle') }} </a>
                         </li>                      
                         <li>
 							<a href="{{ url ('auth/logout') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('borrower-leftmenu.logout') }}</a>
