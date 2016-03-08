@@ -151,7 +151,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$loanId = 0;
 		}
 		
-		$loan_reference_number 			=	"Loan-Ref";
+		$loan_reference_number 			=	"Loan-Ref-";
 		$borrower_id					= 	$this->getCurrentBorrowerID();
 		$purpose						= 	$postArray['laon_purpose'];
 		$apply_date						= 	$this->getDbDateFormat(date("d/m/Y"));
@@ -197,6 +197,10 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			if ($loanId < 0) {
 				return -1;
 			}
+			// Update the loan_reference_number to the newly added row
+			$dataArray 	= 	array( 'loan_reference_number'	=> $loan_reference_number.$loanId);
+			$whereArry	=	array("loan_id" =>"{$loanId}");
+			$result = $this->dbUpdate('loans', $dataArray, $whereArry );
 			return $loanId;
 		}else{
 			$whereArry	=	array("loan_id" =>"{$loanId}");
