@@ -128,7 +128,7 @@
 						
 						<div class="pull-left">											
 									<button type="button"
-											class="btn add-director-button  {{$modelBorPrf->viewStatus}}"
+											class="btn verification-button  {{$modelBorPrf->viewStatus}}"
 											id="add-director">
 										<i class="fa pull-right"></i>
 										{{ Lang::get('borrower-profile.add') }}

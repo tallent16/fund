@@ -16,14 +16,22 @@
 		});		
 	</script>		
 @endsection
-@section('page_heading',Lang::get('borrower-applyloan.apply_loan') )
+@if($BorModLoan->loan_id	==	"")
+	@var	$trantype		=	"add"
+	@var	$page_heading	=	Lang::get('borrower-applyloan.apply_loan')
+@else
+	@var	$trantype		=	"edit"
+	@var	$page_heading	=	Lang::get('borrower-applyloan.edit_loan')
+@endif   
+@section('page_heading',$page_heading) )
 @section('status_button')						
 		<!--------Status Button Section---->   
 		
-			  <h4><span class="label label-default status-label">Status</span></h3>			
+			  <h4><span class="label label-default status-label">{{$BorModLoan->statusText}}</span></h3>			
 													
 @endsection
-@section('section')     
+@section('section')
+
 <div class="col-sm-12 text-center space-around">
 	<div class="annoucement-msg-container">
 		<div class="alert alert-success annoucement-msg">
@@ -35,6 +43,8 @@
 <div class="col-sm-12"> 	
 	<form class="form-inline" method="post" enctype="multipart/form-data">	
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">	
+		<input type="hidden" name="isSaveButton" value="">	
+		<input type="hidden" name="trantype" value="{{ $trantype }}">
 	<div class="row">				
 		<div class="col-lg-12 col-sm-12">				
 				

@@ -12,21 +12,21 @@
 		
 	<div class="col-sm-12 space-around">	
 		<div class="row"> 
-			<div class="col-sm-12"> 
-				<!--col-1--->	
-				<div class="col-sm-12 col-md-3 col-lg-4"> 
+		
+				<!--col-12--->	
+				<div class="col-sm-12"> 
 					<button type="submit" class="btn button-black tab-head">ALL</button>			
 					<button type="submit" class="btn button-black tab-head">REPAYMENTS</button>			
 					<button type="submit" class="btn button-black tab-head">FEES</button>			
 				</div>
-				<!--col--2-->	
-				<div class="col-sm-12 col-md-3 col-lg-3"> 
+				<!--col--5-->	
+				<div class="col-lg-5 space-around"> 
 					
-					<div class="col-sm-4 col-lg-3">
+					<div class="col-lg-4">
 						<label>FROM DATE</label>
 					</div>
 								
-					<div class="col-sm-8 col-lg-9">						
+					<div class="col-lg-8">						
 						<div class="controls">							
 							<div class="input-group">								
 								<input id="fromdate" type="text" class="date-picker form-control" />
@@ -37,15 +37,15 @@
 					</div>
 					
 				</div>
-				<!--col--3-->	
-				<div class="col-sm-12 col-md-3 col-lg-3">
+				<!--col--5-->	
+				<div class="col-lg-5 space-around">
 					
-					<div class="col-sm-4 col-lg-3">
+					<div class="col-lg-4">
 						
 						<label>TO DATE</label>
 					</div>
 						
-					<div class="col-sm-8 col-lg-9">
+					<div class="col-lg-8">
 						<div class="controls">
 							<div class="input-group">
 								<input id="todate" type="text" class="date-picker form-control" />
@@ -56,21 +56,12 @@
 					</div>	
 				</div>
 				<!--col--4-->		
-				<div class="col-sm-12 col-md-3 col-lg-2"> 
-					
-					<div class="col-sm-5 col-lg-1">	</div>
-					
-					<div class="col-sm-3 col-xs-6 col-lg-3">							
-						<button type="submit" class="btn verification-button">GO</button>	
-					</div>
-							
-					<div class="col-sm-4 col-lg-9">							
-						<button type="submit" class="btn verification-button">EXPORT</button>	
-					</div>
-					
+				<div class="col-lg-2 text-right space-around"> 														
+						<button type="submit" class="btn verification-button">GO</button>							
+						<button type="submit" class="btn verification-button">EXPORT</button>		
 				</div>
-				<!---all--4-cols--end--in header-->	
-			</div><!--col-12-->			
+				<!---all--cols--end--in header-->	
+			<!--</div><!--col-12-->			
 						
 		</div><!--row-->
 		<!----table----row-->		
@@ -237,8 +228,8 @@
 					</table>						
 				</div>
 				
-			</div><!---col-12-->
-		</div><!--row-->					
+				</div><!---col-12-->
+			</div><!--row-->					
 			
 	</div><!--col--12-->		
 		 

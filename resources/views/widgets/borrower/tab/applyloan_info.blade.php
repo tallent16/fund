@@ -1,4 +1,11 @@
+@var	$par_sub_allowed_yes	=	""
+@var	$par_sub_allowed_no		=	""
 
+@if($BorModLoan->partial_sub_allowed	==	1)
+	@var	$par_sub_allowed_yes		=	"checked"
+@else
+	@var	$par_sub_allowed_no			=	"checked"
+@endif  
 <div id="loans_info" class="tab-pane fade in active">
 	<div class="panel panel-default applyloan">   
 		<div class="panel-body">
@@ -6,7 +13,7 @@
 				   <div class="col-md-6">
 						<h4>{{ Lang::get('borrower-applyloan.purpose_of_loan') }}</h4>														   
 							<textarea 	id="laon_purpose"
-										name="laon_purpose"></textarea> 					
+										name="laon_purpose">{{$BorModLoan->purpose}}</textarea> 					
 					</div>
 					   
 					<div class="col-md-6">	
@@ -19,7 +26,8 @@
 									<input 	type="text" 
 											class="form-control select-width"
 											name="loan_amount"												
-											id="loan_amount" >												
+											id="loan_amount" 
+											value="{{$BorModLoan->apply_amount}}">												
 								</div>
 							</div>
 						
@@ -32,7 +40,8 @@
 									<input 	type="text" 
 											class="form-control select-width"
 											name="loan_tenure"												
-											id="loan_tenure" >												
+											id="loan_tenure"
+											value="{{$BorModLoan->loan_tenure}}" >												
 								</div>
 							</div>
 						
@@ -44,7 +53,8 @@
 								<div class="col-xs-8">													
 									<input type="text" class="form-control select-width" 
 											name="target_interest"												
-											id="target_interest" >																	
+											id="target_interest"
+											value="{{$BorModLoan->target_interest}}" >																	
 								</div>
 							</div>
 						
@@ -57,12 +67,7 @@
 									<select 	id="bid_type" 
 												name="bid_type" 
 												class="selectpicker"> 
-										<option>
-											{{ Lang::get('borrower-applyloan.please_select') }}
-										</option>
-										<option value=1>Open Bid</option>
-										<option value=2>Closed Bid</option>
-										<option value=3>Fixed Interest</option>
+										{{$BorModLoan->bidTypeSelectOptions}}
 									</select>												
 								</div>
 							</div>
@@ -78,7 +83,8 @@
 											<input 	id="date-picker-2" 
 													type="text" 
 													class="date-picker form-control" 
-													name="bid_close_date"/>
+													name="bid_close_date"
+													value="{{$BorModLoan->bid_close_date}}" />
 											<label for="date-picker-2" class="input-group-addon btn">
 												<span class="glyphicon glyphicon-calendar"></span>
 											</label>
@@ -93,8 +99,20 @@
 								</div>
 															
 								<div class="col-xs-8">														 
-									<label class="radio-inline"><input type="radio" name="optradio">{{ Lang::get('borrower-applyloan.yes') }}</label>
-									<label class="radio-inline"><input type="radio" name="optradio">{{ Lang::get('borrower-applyloan.no') }}</label>
+									<label class="radio-inline">
+										<input 	type="radio" 
+												name="partial_sub_allowed"
+												value="1"
+												{{$par_sub_allowed_yes}} >
+										{{ Lang::get('borrower-applyloan.yes') }}
+									</label>
+									<label class="radio-inline">
+										<input 	type="radio" 
+												name="partial_sub_allowed"
+												value="2"
+												{{$par_sub_allowed_no}}>
+										{{ Lang::get('borrower-applyloan.no') }}
+									</label>
 																							
 								</div>
 							</div>	
@@ -105,7 +123,10 @@
 								</div>
 															
 								<div class="col-xs-8">														 
-									<input type="text" class="form-control select-width" >	
+									<input 	type="text" 
+											class="form-control select-width"
+											 name="min_for_partial_sub"
+											 value="{{$BorModLoan->min_for_partial_sub}}">	
 																							
 								</div>
 							</div>	
@@ -116,11 +137,10 @@
 								</div>
 															
 								<div class="col-xs-8">						 							
-									<select id="payment_type" class="selectpicker">
-									<option>{{ Lang::get('borrower-applyloan.please_select') }}</option>
-									<option value=1>Bullet</option>
-									<option value=2>Monthly Interest</option>
-									<option value=3>EMI</option>
+									<select id="payment_type" 
+											name="payment_type" 
+											class="selectpicker">
+											{{$BorModLoan->paymentTypeSelectOptions}}
 									</select>												
 								</div>
 							</div>

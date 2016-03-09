@@ -6,17 +6,18 @@
 					<table class="table table-bordered .tab-fontsize text-left">						
 						<tbody>		
 							<tr>
-								<td>
+								<td class="col-sm-3">
 									{{ Lang::get('borrower-profile.bank_code') }}
 								</td>
-								<td>
+								<td class="col-sm-3">
 									<input 	type="text" 
 											id="bank_code" 
 											name="bank_code"
 											value="{{ $modelBorPrf->bank_code }}"
 											class="form-control"
 											/>
-								</td>																
+								</td>	
+								<td class="col-sm-6"></td>															
 							</tr>					
 							<tr>
 								<td>
@@ -30,6 +31,7 @@
 											class="form-control"
 											/>
 								</td>
+								<td></td>	
 							</tr>
 							<tr>
 								<td>{{ Lang::get('borrower-profile.branch_code') }}</td>
@@ -41,6 +43,7 @@
 												class="form-control"
 												/>
 									</td>
+									<td></td>	
 							</tr>
 							<tr>
 							<td>{{ Lang::get('borrower-profile.acc_num') }}</td>
@@ -52,6 +55,7 @@
 											class="form-control"
 											/>
 								</td>
+								<td></td>	
 							</tr>
 															
 						</tbody>									

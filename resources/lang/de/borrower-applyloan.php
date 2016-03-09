@@ -14,6 +14,7 @@ return [
 	*/
 	
 	'apply_loan'				=> 'Bewerben Loan',
+	'edit_loan'					=> 'Bearbeiten Loan',
 	'loan_info'					=> 'KREDITE INFO',
 	'document_submit'			=> 'Einzureichenden Unterlagen',
 	'next'						=> 'Nächster',

@@ -20,7 +20,7 @@
 			@var	$trantype	=	"edit"
 		@endif
 		<!-----Body Content----->
-		<div class="col-sm-12"> 
+		<div class="col-sm-12 space-around"> 
 			
 			@if($submitted)
 				<div class="row">
@@ -59,7 +59,7 @@
 				<input type="hidden" name="borrower_bankid" value="{{ $modelBorPrf->borrower_bankid }}">
 				<div class="row">	
 					
-					<div class="col-lg-12 col-md-6 col-xs-12 space-around">
+					<div class="col-lg-12 col-md-6 col-xs-12">
 						<!-----Tab Starts----->
 						<ul class="nav nav-tabs">
 							<li class="active">

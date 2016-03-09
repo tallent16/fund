@@ -55,7 +55,7 @@
 
 		<div id="page-wrapper">
 			
-		<!--	<div class="row">
+		<!--<div class="row">
 				<div class="col-lg-8 col-sm-8"> 				
 				</div><!-- /.col-lg-12 -->
 			<!--	<div class="col-lg-4 col-sm-4"> 				

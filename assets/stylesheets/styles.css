@@ -6409,9 +6409,6 @@ button.close {
 @media (max-width: 360px) {
 	.nav-tabs > li{
 		float:none;
-	}
-	.loan-list-image img{
-		width: auto;
 	}	
 }
 @media (max-width: 767px) {
@@ -6619,11 +6616,7 @@ button.close {
 		background-position: 100% 0; 
 	}		
 }
-@media (min-width: 1920px) {
-	.tab-bid-label{
-		background-position: 35% 0;
-	}	
-}
+
 /*# sourceMappingURL=bootstrap.css.map */
 
 /*!
@@ -8450,15 +8443,6 @@ body {
     background-color: #F0EDEF;
 }
 
-@media(min-width:768px) {
-    #page-wrapper {
-        position: inherit;
-        margin: 0 0 0 250px;
-        padding: 0 30px;
-        border-left: 1px solid #e7e7e7;
-    }    
-}
-
 .navbar-top-links {
     margin-right: 0;
 }
@@ -8520,14 +8504,6 @@ body {
 .sidebar .sidebar-nav.navbar-collapse {
     padding-right: 0;
     padding-left: 0;
-}
-
-.sidebar .sidebar-balance {
-    padding: 15px;
-    background-color:#F6942C;
-    text-align: center;
-	color: #fff;
-	font-weight: 600;
 }
 
 .sidebar ul li {
@@ -8988,26 +8964,75 @@ canvas.round {
     }
 }
 /*# sourceMappingURL=styles.css.map */
-/*--------------------------------------------CUSTOM CSS STARTS---------------------------------------------------------------------------**/
-/*--------------------------------------------SIDEBAR NAVIGATION---------------------------------------------------------------------------*/
+/*--------CUSTOM CSS STARTS HERE------**/
+/**************Login Page*************************/
+/*.loan_title{
+	display:none;
+}*/
+.login-logo{
+	display: inline-block;
+	margin: 25px 0 0 0;
+}
+.login-button, .login-button:hover{
+	background-color:#F6942C;
+	border:none;
+}
+.register-style{
+	background-color:#fff;
+	margin-top:25px;
+}
+.block-header a{
+	color:#C0BBBE;
+}
+.form-group a{
+	color:#EF4F1F;
+	text-decoration:none;
+}
+/**************Register page**********************/
+.register-button{
+	background-color:#EF4F1F;
+	color:#fff;	
+	border:none;
+}
+.register-button:hover{
+	background-color:#222;
+	color:#fff;	
+	border:none;
+}
+.block-title{
+	color:#fff;
+}
+.header-register{
+	background-color:#222;
+	color:#fff;	
+	padding:5px;
+}
+/************SIDEBAR NAVIGATION******************/
 .active{
 	color:#F6942C;
 }
 .nav > li > a .active{
 	color:#F6942C; 
 }
-/*--------------------------------------------borrower dashboard----------------------------------------------------------------------*/
-.loan_title{
-	display:none;
+.sidebar .sidebar-balance {
+    padding: 15px;
+    background-color:#F6942C;
+    text-align: center;
+	color: #fff;
+	font-weight: 600;
 }
-.cursor-pointer{
-	cursor:pointer;
-} 
+.settings-menu{ 
+	margin:10em 0 0 0;
+}
+/******************HEADER***********************/
 .page-header-title{
 	float: left;
 	margin: 15px 0px 0px 24px;
-	font-size: 36px;
+	font-size: 32px;
 	color: rgb(255, 255, 255);
+}
+.user-icon{
+	color:#fff;
 }
 .status-label-section{
 	margin: 42px -66px 0px 0px;
@@ -9017,6 +9042,10 @@ canvas.round {
 	color:#F6942C;
 	background-color:transparent;
 	border:1px solid #F6942C;	
+}
+/*****************BORROWER DASHBOARD****************/
+.cursor-pointer{
+	cursor:pointer;
 }
 .annoucement-msg-container{
 	margin:0;
@@ -9040,6 +9069,9 @@ canvas.round {
 	color:#8B170A;
 	font-weight: 600;
 }
+.panel-bodysection{
+	padding-top:0;	
+}
 .tab-head{
 	background-color: #383838;
 	color:#fff;	
@@ -9053,57 +9085,9 @@ canvas.round {
 	color:#fff;	
 }
 .tab-fontsize{
-	font-size:11px;	
+	font-size:10px;	 
 }
-.tab-fontsizebig{
-	font-size:14px;	
-}
-.panel-bodysection{
-	padding-top:0;	
-}
-.settings-menu{ 
-	margin:10em 0 0 0;
-}
-/*--------------------------------Login Page------------------------------------------------------------------------------------------------------------------*/
-.login-logo{
-	display: inline-block;
-	margin: 25px 0 0 0;
-}
-.login-button, .login-button:hover{
-	background-color:#F6942C;
-	border:none;
-}
-.register-style{
-	background-color:#fff;
-	margin-top:25px;
-}
-.block-header a{
-	color:#C0BBBE;
-}
-.form-group a{
-	color:#EF4F1F;
-	text-decoration:none;
-}
-/*-------------------------------Register page---------------------------------------------------------------------------------------------------------------*/
-.register-button{
-	background-color:#EF4F1F;
-	color:#fff;	
-	border:none;
-}
-.register-button:hover{
-	background-color:#222;
-	color:#fff;	
-	border:none;
-}
-.block-title{
-	color:#fff;
-}
-.header-register{
-	background-color:#222;
-	color:#fff;	
-	padding:5px;
-}
-/*---------------------------Profile (company info,director info,profile info)-----------------------------------------------------------------------------------------*/
+/*********************Profile (company info,director info,profile info)***************/
 .directorinfo td:nth-child(2n) {
     background-color: #fff;
 }/*
@@ -9124,20 +9108,19 @@ canvas.round {
 	/*padding: 10px;*/
 	width: auto;
 }
-.user-icon{
-	color:#fff;
-}
 .directorinfo{
 	background-color:#EBEBED;
-}
+}/*
 .add-director-button, .add-director-button:hover{
 	background-color: #F6942C;
 	color: #fff;
 	border: none;
 	width:auto;
 	padding:5px;
-}
-.directorinfo .select-width, .applyloan .select-width, .form-inline .btn-group.bootstrap-select.select-width, .form-horizontal .btn-group.bootstrap-select.select-width{  
+}*/
+.directorinfo .select-width, .applyloan .select-width, 
+.form-inline .btn-group.bootstrap-select.select-width, 
+.form-horizontal .btn-group.bootstrap-select.select-width{  
 	width:100%; 
 }
 .directorinfo .pagination > li > a, .bank-details  .pagination > li > a{
@@ -9152,7 +9135,14 @@ canvas.round {
 .directorinfo .panel-primary > .panel-headsection, .applyloan .panel-headsection{
 	padding:5px;
 }
-/*---------------------------Apply loan (loan info, documents submitted)-----------------------------------------------------------------------------------------*/
+#financial_info .tab-head{
+	background-color: #868686;
+}
+.controls .input-group{
+	width:100%;
+	display: inline-table;
+}
+/******************Apply loan (loan info, documents submitted)************/
 .applyloan{
 	background-color:#F9F9F9;	
 }
@@ -9298,9 +9288,8 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 }
 .loan-list-image img{
 	margin: 0 0 0 -14px;
-    height: 190px;  
-    /*width:220px; */
-}
+    height: 205px;  
+  }
 .panel-white .progress, .space-around .progress{
 	height:8px;
 	margin-bottom:0;
@@ -9329,7 +9318,7 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
     height: auto;
 }
 .loan-list-image .imageoverlap{
-	 width: 70%;
+	 width: 50%;
 }
 .loanlist-wrapper .btn-default, .loanlist-wrapper .open > .dropdown-toggle.btn-default, 
 .loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a:focus, .loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a{
@@ -9443,6 +9432,17 @@ table.table.tab-label {
 table#account-summary, .table-border-custom{
     border: 1px solid #ccc;
 }
+
+
+
+
+.profile-details-wrapper { display: table-row; }
+.profile-picture {
+  display: table-cell; 
+  vertical-align: top; 
+  margin-right: 10px;
+}
+.profile-details { display: table-cell; vertical-align: top; }
 /*--------------------------------------------------Custom Responsive css-------------------------------------------*/
 @media (max-width: 360px) {
 	.status-label-section{
@@ -9453,4 +9453,34 @@ table#account-summary, .table-border-custom{
 	.page-header-title{
 		margin:0;
 	}	
+	.loan-list-image img{
+		width: auto;
+		height:190px;
+	}	
+}
+@media(min-width:768px) {
+    #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 250px; 
+        padding: 0 30px;
+        border-left: 1px solid #e7e7e7;
+    }        
+}
+@media(min-width:361px) and (max-width:768px) {
+	.loan-list-image .imageoverlap img{
+		width:45%;
+    }
+}
+@media(min-width:1280px)and (max-width:1919px) {
+	/*.loan-list-image img{
+		height:247px;
+	}*/
+}
+@media (min-width: 1920px) {
+	.tab-bid-label{
+		background-position: 35% 0;
+	}	
+	.loan-list-image .imageoverlap img {
+		width: auto;
+	}
 }

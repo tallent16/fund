@@ -19,6 +19,7 @@ Route::get('/', function()
 // global contants for all requests
 Route::group(['prefix' => ''], function() {
     define('BORROWER_STATUS_NEW_PROFILE','1');
+    define('BORROWER_STATUS_NEW','1');
     define('BORROWER_STATUS_SUBMITTED_FOR_APPROVAL','2');
     define('BORROWER_STATUS_COMMENTS_ON_ADMIN','3');
     define('BORROWER_STATUS_VERIFIED','4');
@@ -45,7 +46,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], function() {
     Route::get('borrower/dashboard', 'BorrowerDashboardController@indexAction');
 	Route::match(['get', 'post'],'borrower/profile', 'BorrowerProfileController@indexAction');
-	Route::match(['get', 'post'],'borrower/applyloan', 'BorrowerApplyLoanController@index');
+	
+	Route::match(['get', 'post'],'borrower/applyloan','BorrowerApplyLoanController@indexAction');
+	Route::match(['get', 'post'],'borrower/applyloan/{loan_id}','BorrowerApplyLoanController@indexAction');
+	
 	Route::get('borrower/myloans', 'BorrowerMyLoansController@index');	
 	Route::get('borrower/loanslist', 'BorrowerLoanListingController@index');	
 	Route::get('borrower/myloaninfo', 'BorrowerMyLoanInfoController@index');	
@@ -61,7 +65,10 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 {
     Route::get('investor/dashboard',array('middleware' => 'auth', 'uses' => 'InvestorDashboardController@indexAction'));
     Route::get('investor/profile', 'InvestorProfileController@index');
-   
+    Route::get('investor/loanlisting', 'InvestorLoanListingController@index');
+    Route::get('investor/loandetails', 'InvestorLoanDetailsController@index');
+    Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@index');
+    Route::get('investor/myloans', 'InvestorMyLoansController@index');   
 });
 
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');

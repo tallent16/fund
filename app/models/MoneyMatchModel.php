@@ -52,16 +52,28 @@ class MoneyMatchModel extends Model {
 	public function dbInsert($tableName, $dataArray, $returnLastValue) {
 		
 		$result			=	"";
-		$id 			= 	DB::table($tableName)->insertGetId($dataArray);
-		if ($returnLastValue) {
-			$result = $id;
+		try {
+			$id 			= 	DB::table($tableName)->insertGetId($dataArray);
+			if ($returnLastValue) {
+				$result = $id;
+			}
+		}catch (\Exception $e) {
+			
+			$this->dbErrorHandler($e);
+			return false;
 		}
+			
 		return $result;
 	}
 	
 	public function dbUpdate($tableName, $dataArray, $where) {
-		
-		DB::table($tableName)->where($where)->update($dataArray);
+		try {
+			DB::table($tableName)->where($where)->update($dataArray);
+		}catch (\Exception $e) {
+			$this->dbErrorHandler($e);
+			return false;
+		}
+		return true;
 	}
 	
 	public function dbDelete($tableName,$where) {

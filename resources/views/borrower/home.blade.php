@@ -150,7 +150,7 @@
 								</div>
 						</div>	<!--end panel body-->
 						<div class="table-responsive"><!---table start-->
-							<table class="table table-bordered .tab-fontsizebig">
+							<table class="table table-bordered">
 								<thead>
 									<tr>
 										<th class="tab-head">
@@ -199,7 +199,7 @@
 							@include('widgets.panel', array('header'=>true, 'as'=>'cchart4'))
 						</div>
 						<div class="table-responsive">                         
-							<table class="table table-bordered .tab-fontsizebig">
+							<table class="table table-bordered">
 								<thead>
 									<tr>
 										<th class="loantaken">{{ Lang::get('borrower-dashboard.loan_taken') }}</th>

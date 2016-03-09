@@ -7,7 +7,7 @@
 					<label>Detailed Company Pofile</label>		
 					<div class="form-group">
 						<textarea 	class="form-control" 
-									rows="5" 
+									rows="10" 
 									id="company_profile" 
 									name="company_profile"
 									 {{$modelBorPrf->viewStatus}} >{{$modelBorPrf->company_profile}}</textarea>
@@ -21,7 +21,7 @@
 					<label>About us</label>
 					<div class="form-group">
 						<textarea 	class="form-control" 
-									rows="5" 
+									rows="10" 
 									id="about_us" 
 									name="about_us"
 									disabled ></textarea>

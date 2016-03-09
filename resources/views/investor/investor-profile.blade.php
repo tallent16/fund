@@ -33,7 +33,7 @@
 				</div><!-------------end of---panel heading---------------------->	
 				
 				<div class="table-responsive">				
-					<table class="table text-left">					
+					<table class="table text-left table-bordered">					
 						<tbody>
 							<tr>
 								<td class="tab-left-head">Full Name</th>

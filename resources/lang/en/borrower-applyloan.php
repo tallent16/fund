@@ -14,6 +14,7 @@ return [
 	*/
 	
 	'apply_loan'				=> 'Apply Loan',
+	'edit_loan'					=> 'Edit Loan',
 	'loan_info'					=> 'LOANS INFO',
 	'document_submit'			=> 'DOCUMENTS TO BE SUBMITTED',
 	'next'						=> 'Next',

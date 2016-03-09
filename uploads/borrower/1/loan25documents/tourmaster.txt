@@ -1,0 +1,186 @@
+<style>
+.modal-dialog  {
+	position:fixed;
+
+}
+</style>
+	
+<div class="form-horizontal">
+	<div class="ErrorContainer alert-danger" style="margin:20px;display:none">
+	</div>
+	<form method="post" id="formTourMaster" >
+		<input type="hidden" id="actionType" name="actionType" />
+		<div  class="col-md-12">
+			<!-- Tour Code -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="rntDisplayBlock">Tour Code</label>
+					<input type="text" class="col-xs-6 input" 
+								name="tour_code" id="tour_code"
+								>
+				</div>
+			</div>
+			<!-- Tour Name -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="rntDisplayBlock">Tour Name</label>
+					<input type="text" class="col-xs-12 input" 
+								name="tour_name" id="tour_name"
+								>
+				</div>
+			</div>
+		</div>
+		<div  class="col-md-12">
+			<!-- Tour Code -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="rntDisplayBlock">Tour Code</label>
+					<input type="text" class="col-xs-6 input" 
+								name="tour_code" id="tour_code"
+								>
+				</div>
+			</div>
+			<!-- Tour Name -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="rntDisplayBlock">Tour Name</label>
+					<input type="text" class="col-xs-12 input" 
+								name="tour_name" id="tour_name"
+								>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<!-- Tour Code -->
+			<div class="form-group">
+				<label class="rntDisplayBlock">Tour Code</label>
+				<input type="text" class="col-xs-6 input" 
+							name="tour_code" id="tour_code"
+							>
+			</div>
+			<!-- Start Location -->
+			<div class="form-group">
+				<label class="rntDisplayBlock">Start Location</label>
+				<select class="col-xs-6" 
+						id="start_location"
+						name="start_location">
+					<option>Opt1</option>
+					<option>Opt2</option>
+					<option>Opt3</option>
+				</select>
+			</div>
+			<!-- Bus Tour Code -->
+			<div class="form-group">
+				<label class="rntDisplayBlock">Bus Tour Code</label>
+					<select class="col-xs-6"
+							id="bus_tour_code"
+							name="bus_tour_code">
+						<option>Opt1</option>
+						<option>Opt2</option>
+						<option>Opt3</option>
+					</select>
+			</div>
+			<!-- Default Start Time -->
+			<div class="form-group">
+				<label class="rntDisplayBlock">Default Start Time</label>
+				<input type="text" class="col-xs-6 input" 
+							name="start_time" id="start_time"
+							>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="rntDisplayBlock">Tour Name</label>
+				<input type="text" class="col-xs-12 input" 
+							name="tour_name" id="tour_name"
+							>
+			</div>
+			<!-- End Location -->
+			<div class="form-group">
+				<label class="rntDisplayBlock">End Location</label>
+				<select class="col-xs-6"
+						id="end_location"
+						name="end_location">
+					<option>Opt1</option>
+					<option>Opt2</option>
+					<option>Opt3</option>
+				</select>
+			</div>
+			<!-- Guide Tour Code -->
+			<div class="form-group">
+				<label class="rntDisplayBlock">Guide Tour Code</label>
+					<select class="col-xs-6"
+							id="guide_tour_code"
+							name="guide_tour_code">
+						<option>Opt1</option>
+						<option>Opt2</option>
+						<option>Opt3</option>
+					</select>
+			</div>
+			<!-- Default End Time -->
+			<div class="form-group">
+				<label class="rntDisplayBlock">Default Duration(in Minutes)</label>
+				<input type="text" class="col-xs-6 input" 
+							name="duration" id="duration"
+							>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<table class="table table-condensed table-bordered table-striped" id="tour_product_list">
+				<thead>
+					<tr  class="rntHeadings">
+						<th>Product Name</th>
+						<th>Product Type</th>
+						<th>Price</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="no_row">
+						<td valign="top" colspan="4" align="center">
+							No Product List Available
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-xs-12">
+			<input 	type="button" 
+					id="add_new_product" 
+					class="btn btn-primary" 
+					value="Add New Product"
+					onclick="addProductRow()">
+		</div>
+	</form>		
+</div>
+<div style="display:none">
+	<input type="hidden" value="0" id="hidden_max_product" name="hidden_max_product">
+<table>
+	<tr id="newproductRow_template">
+		<td>
+			<select name="productOrderID[]" 
+					id="productOrderID_XXX" 
+					class="col-xs-8 productOrderID">
+					<option value=""></option> 
+					@foreach($product_list as $prodlist)
+						<option value="{{$prodlist->productId}}"
+								prod-type="{{$prodlist->productType}}"
+								prod-vat="{{$prodlist->productVat}}"
+								prod-rate="{{$prodlist->productRate}}">{{$prodlist->productDesc}}</option>
+					@endforeach
+					
+			</select>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+			<a 	href="javascript:void(0);" 
+				onclick="delProductRow(XXX)"
+				class="icon-minus custom-icon-style customMarginTop">
+			</a>
+		</td>
+	</tr>
+</table>
+</div>

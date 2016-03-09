@@ -1,6 +1,7 @@
 <?php namespace App\models;
 use fileupload\FileUpload;
 use File;
+use Config;
 class BorrowerApplyLoanModel extends TranWrapper {
 	
 	public $loan_id		  					=  	"";
@@ -31,12 +32,16 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $loan_video_url  				=  	"";
 
 	public $document_details				= 	array();
+	public $submitted_document_details		= 	array();
+	public $bidTypeSelectOptions			= 	"";
+	public $paymentTypeSelectOptions		= 	"";
 	
 	public function getBorrowerLoanDetails($loan_id) {
 		
 		$this->getBorrowerLoanInfo($loan_id);
 		$this->getBorrowerDocumentListInfo();
-		//~ $this->processDropDowns();
+		$this->getBorrowerSubmittedDocumentInfo($loan_id);
+		$this->processDropDowns();
 	}
 		
 	public function getBorrowerLoanInfo($loan_id) {
@@ -54,7 +59,6 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.target_interest,
 											ifnull(DATE_FORMAT(loans.bid_open_date,'%d/%m/%Y'),'') bid_open_date,
 											ifnull(DATE_FORMAT(loans.bid_close_date,'%d/%m/%Y'),'') bid_close_date,
-											ifnull(DATE_FORMAT(borrowers.operation_since,'%d/%m/%Y'),'') operation_since,
 											loans.bid_type,
 											loans.partial_sub_allowed,
 											loans.min_for_partial_sub,
@@ -118,22 +122,31 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		return $loandocument_rs;
 	}
 	
-	public function processLoan($postArray) {
-		//~ $fileUploadObj		=	new FileUpload();
-		//~ $destinationPath 	= 	'uploads/borrower';
-		//~ foreach($postArray['documents'] as $file) {
-			//~ if(isset($file)) {
-				//~ $fileUploadObj->storeFile($destinationPath ,$file);
-			//~ }
-		//~ }
+	public function getBorrowerSubmittedDocumentInfo($loan_id) {
 		
-		//~ $transType = $postArray['trantype'];
-		$transType = 'add';
-		//~ if($transType	==	"edit") {
-			//~ $borrowerId  	= 	$postArray['borrower_id'];
-			//~ $whereArry		=	array("borrower_id" => $borrowerId);
-			 //~ $this->dbDelete("borrower_directors",$whereArry);
-		//~ }
+		$loandocument_sql		= 	"	SELECT 	loan_doc_id,
+												loan_doc_submitted_id,
+												loan_doc_url,
+												status
+										FROM 	loan_docs_submitted
+										WHERE	loan_id	={$loan_id}";
+		
+		
+		$loandocument_rs		= 	$this->dbFetchAll($loandocument_sql);
+			
+		if ($loandocument_rs) {
+			foreach ($loandocument_rs as $docRow) {
+				$docRowIndex	=	$docRow->loan_doc_id;
+				$docRowValue	=	base64_encode($docRow->loan_doc_submitted_id);
+				$this->submitted_document_details[$docRowIndex] = $docRowValue;
+			}
+		}
+		return $loandocument_rs;
+	}
+	
+	public function processLoan($postArray) {
+		
+		$transType 	= 'add';
 		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType);
 		$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
 	}
@@ -163,20 +176,20 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$bid_close_date				= 	$this->getDbDateFormat(date("d/m/Y"));
 		else
 			$bid_close_date				= 	$this->getDbDateFormat($bid_close_date);
-		$bid_type		 				= 	$postArray['paid_up_capital'];
+		$bid_type		 				= 	$postArray['bid_type'];
 		$partial_sub_allowed 			= 	$postArray['partial_sub_allowed'];
 		$min_for_partial_sub 			= 	$this->makeFloat($postArray['min_for_partial_sub']);
 	
 		$repayment_type 				= 	$postArray['payment_type'];
 		$final_interest_rate 			= 	$postArray['target_interest'];
 		$loan_sactioned_amount 			= 	$apply_amount;
-		$trans_fees						=	$apply_amount - ( ($apply_amount*4)/100 );
+		$trans_fees						=	($apply_amount*4)/100 ;
 		$total_disbursed				=	$apply_amount	-	$trans_fees;
 		
 		$dataArray = array(	'loan_reference_number' 		=> $loan_reference_number,
 							'borrower_id'					=> $borrower_id,
 							'purpose'						=> ($purpose!="")?$purpose:null,
-							'apply_date	' 					=> $apply_date,
+							'apply_date' 					=> $apply_date,
 							'apply_amount' 					=> ($apply_amount!="")?$apply_amount:null,
 							'loan_tenure' 					=> ($loan_tenure!="")?$loan_tenure:null,
 							'target_interest' 				=> ($target_interest!="")?$target_interest:null,
@@ -204,7 +217,9 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			return $loanId;
 		}else{
 			$whereArry	=	array("loan_id" =>"{$loanId}");
-			$this->dbUpdate('loans', $dataArray, $whereArry);
+			if (!$this->dbUpdate('loans', $dataArray, $whereArry)) {
+				return -1;
+			}
 			return $loanId;
 		}
 	}
@@ -255,4 +270,22 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		return 1;
 	}
 	
+	public function processDropDowns() {
+		
+		$bidTypeList		=	array(
+									array("id"=>1,"name"=>"Open Bid"),
+									array("id"=>2,"name"=>"Closed Bid"),
+									array("id"=>3,"name"=>"Fixed Interest")
+								);
+		$paymentTypeList	=	array(
+								array("id"=>1,"name"=>"Bullet"),
+								array("id"=>2,"name"=>"Monthly Interest"),
+								array("id"=>3,"name"=>"EMI")
+							);
+		
+		$this->bidTypeSelectOptions	=	$this->constructSelectOption($bidTypeList,
+															'name', 'id',$this->bid_type, "--Please Select--");		
+		$this->paymentTypeSelectOptions	=	$this->constructSelectOption($paymentTypeList,
+															'name', 'id',$this->repayment_type, "--Please Select--");		
+	}
 }

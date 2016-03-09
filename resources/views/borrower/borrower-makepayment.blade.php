@@ -21,7 +21,7 @@
 			</div><!-------------end of---panel heading---------------------->	
 			
 			<div class="table-responsive">				
-				<table class="table text-left">					
+				<table class="table text-left table-loan">					
 					<tbody>
 						<tr>
 							<td class="tab-left-head col-md-3">Loan Reference Number</th>

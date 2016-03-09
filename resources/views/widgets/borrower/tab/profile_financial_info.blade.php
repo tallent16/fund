@@ -2,24 +2,19 @@
 	<div class="panel panel-default directorinfo"> 						
 		<div class="panel-body">
 			<form class="form-horizontal" role="form">	
-					<div class="col-sm-5">
+					<div class="col-sm-6">
 						<div class="table-responsive"><!---table start-->
 							<table class="table table-loan table-border-custom">		
 								<tbody>
 									<tr>
-										<th class="tab-head">FINANCIAL RATIO</th>
-										<th class="tab-head">PREVIOUS YEAR</th>	
-										<th class="tab-head">CURRENT YEAR</th>				
+										<th class="tab-head text-left">Financial Ratio</th>
+										<th class="tab-head text-left">Previous Year</th>	
+										<th class="tab-head text-left">Current Year</th>				
 									</tr>
 									<tr>
-										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="revenue_growth" 
-												name="revenue_growth"
-												value="Revenue Growth"
-												class="form-control"
-												/>											
-											</td>
+										<td class="tab-left-head text-left col-sm-4">
+												Revenue Growth										
+										</td>
 										<td><input 	type="text" 
 												id="rg_py_value" 
 												name="rg_py_value"
@@ -34,13 +29,9 @@
 												/></td>		
 									</tr>		
 									<tr>
-										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="gross_margin" 
-												name="gross_margin"
-												value="Gross Margin"
-												class="form-control"
-												/></td>
+										<td class="tab-left-head text-left col-sm-4">
+											Gross Margin
+										</td>
 										<td><input 	type="text" 
 												id="gm_py_value" 
 												name="gm_py_value"
@@ -55,13 +46,9 @@
 												/></td>		
 									</tr>
 									<tr>
-										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="net_margin" 
-												name="net_margin"
-												value="Net Margin"
-												class="form-control"
-												/></td>
+										<td class="tab-left-head text-left col-sm-4">
+											Net Margin
+										</td>
 										<td><input 	type="text" 
 												id="nm_py_value" 
 												name="nm_py_value"
@@ -77,12 +64,8 @@
 									</tr>	
 									<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="return_networth" 
-												name="return_networth"
-												value="Return On Net Worth"
-												class="form-control"
-												/></td>
+											Return On Net Worth
+										</td>
 										<td><input 	type="text" 
 												id="rnw_py_value" 
 												name="rnw_py_value"
@@ -98,12 +81,8 @@
 									</tr>
 										<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="receivables_turnover" 
-												name="receivables_turnover"
-												value="Receivables Turnover"
-												class="form-control"
-												/></td>
+											Receivables Turnover
+										</td>
 										<td><input 	type="text" 
 												id="rto_py_value" 
 												name="rto_py_value"
@@ -119,12 +98,8 @@
 									</tr>	
 										<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="inventory_turnover" 
-												name="inventory_turnover"
-												value="Inventory Turnover"
-												class="form-control"
-												/></td>
+											Inventory Turnover
+										</td>
 										<td><input 	type="text" 
 												id="ito_py_value" 
 												name="ito_py_value"
@@ -140,12 +115,8 @@
 										</tr>	
 										<tr>
 											<td class="tab-left-head text-left">
-												<input 	type="text" 
-												id="total_asset_turnover" 
-												name="total_asset_turnover"
-												value="Total asset Turnover"
-												class="form-control"
-												/></td>
+												Total asset Turnover
+											</td>
 											<td><input 	type="text" 
 													id="tat_py_value" 
 													name="tat_py_value"
@@ -164,23 +135,18 @@
 							</table>	
 						</div>
 					</div>
-					<div class="col-sm-2">
-					</div>
-					<div class="col-sm-5">			
+					
+					<div class="col-sm-6">			
 						<div class="table-responsive"><!---table start-->
-							<table class="table table-loan table-border-custom">		
+							<table class="table table-loan table-border-custom  text-left">		
 								<tbody>
 									<tr>
-										<th class="tab-head" colspan="2">FINANCIALS</th>																	
+										<th class="tab-head" colspan="2">Financials</th>																	
 									</tr>
 									<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="gross_profit" 
-												name="gross_profit"
-												value="Gross profit"
-												class="form-control"
-												/></td>
+											Gross profit
+										</td>
 										<td><input type="text" 
 													id="gp_value" 
 													name="gp_value"
@@ -190,12 +156,8 @@
 									</tr>		
 									<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="ebit" 
-												name="ebit"
-												value="EBIT"
-												class="form-control"
-												/></td>
+											EBIT
+										</td>
 										<td><input type="text" 
 													id="ebit_value" 
 													name="ebit_value"
@@ -205,12 +167,8 @@
 									</tr>
 									<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="net_profit" 
-												name="net_profit"
-												value="Net Profit(Loss)"
-												class="form-control"
-												/></td>
+											Net Profit(Loss)
+										</td>
 										<td><input type="text" 
 													id="np_value" 
 													name="np_value"
@@ -220,12 +178,8 @@
 									</tr>	
 									<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="total_asset" 
-												name="total_asset"
-												value="Total Asset"
-												class="form-control"
-												/></td>
+											Total Asset
+										</td>
 										<td><input type="text" 
 													id="ta_value" 
 													name="ta_value"
@@ -235,12 +189,8 @@
 									</tr>
 										<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="total_liabilities" 
-												name="total_liabilities"
-												value="Total Liabilities"
-												class="form-control"
-												/></td>
+											Total Liabilities
+										</td>
 										<td><input type="text" 
 													id="totalli_value" 
 													name="totalli_value"
@@ -250,12 +200,8 @@
 									</tr>	
 										<tr>
 										<td class="tab-left-head text-left">
-												<input 	type="text" 
-												id="total_liabilities_equity" 
-												name="total_liabilities_equity"
-												value="Total Liabilities and Equity"
-												class="form-control"
-												/></td>
+											Total Liabilities and Equity
+										</td>
 										<td><input type="text" 
 													id="tle_value" 
 													name="tle_value"
@@ -265,12 +211,8 @@
 									</tr>	
 										<tr>
 										<td class="tab-left-head text-left">
-											<input 	type="text" 
-												id="total_turnover" 
-												name="total_turnover"
-												value="Total asset Turnover"
-												class="form-control"
-												/></td>
+											Total asset Turnover
+										</td>
 										<td><input type="text" 
 													id="toturn_value" 
 													name="toturn_value"

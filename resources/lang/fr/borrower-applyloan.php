@@ -14,6 +14,7 @@ return [
 	*/
 	
 	'apply_loan'				=> 'appliquer prêt',
+	'edit_loan'					=> 'Modifier prêt',
 	'loan_info'					=> 'PRÊTS INFO', 
 	'document_submit'			=> 'DOCUMENTS A FOURNIR',
 	'next'						=> 'Prochain',
