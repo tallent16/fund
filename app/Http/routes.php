@@ -49,10 +49,18 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	
 	Route::match(['get', 'post'],'borrower/applyloan','BorrowerApplyLoanController@indexAction');
 	Route::match(['get', 'post'],'borrower/applyloan/{loan_id}','BorrowerApplyLoanController@indexAction');
+	Route::get('borrower/docdownload/{doc_id}','BorrowerApplyLoanController@downloadAction');
 	
-	Route::get('borrower/myloans', 'BorrowerMyLoansController@index');	
-	Route::get('borrower/loanslist', 'BorrowerLoanListingController@index');	
-	Route::get('borrower/myloaninfo', 'BorrowerMyLoanInfoController@index');	
+	Route::get('borrower/myloans/{loan_id}', 'BorrowerMyLoansController@index');	
+	
+	Route::get('borrower/loanslist', 'LoanListingController@index');	
+	Route::get('borrower/loanlist', function() {
+			return View::make('Borrower-loanlisting'); }
+			);
+	Route::get('borrower/myloaninfo', 'BorrowerMyLoanInfoController@indexAction');	
+	Route::post('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
+	Route::get('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
+	
 	Route::get('borrower/transhistory', 'BorrowerTransHistoryController@index'); 
 	Route::get('borrower/bankdetails', 'BorrowerBankDetailsController@index');
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@index');
@@ -66,9 +74,13 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/dashboard',array('middleware' => 'auth', 'uses' => 'InvestorDashboardController@indexAction'));
     Route::get('investor/profile', 'InvestorProfileController@index');
     Route::get('investor/loanlisting', 'InvestorLoanListingController@index');
+
     Route::get('investor/loandetails', 'InvestorLoanDetailsController@index');
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@index');
-    Route::get('investor/myloans', 'InvestorMyLoansController@index');   
+    Route::get('investor/myloans', 'InvestorMyLoansController@index');  
+    Route::get('investor/transhistory', 'InvestorTransHistoryController@index'); 
+    Route::get('investor/bankdetails', 'InvestorBankDetailsController@index'); 
+    Route::get('investor/withdraw', 'InvestorWithdrawController@index');  
 });
 
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');
@@ -84,4 +96,8 @@ Route::get('activation/{activation}', 'RegistrationController@activationAction')
 
 Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";
+});
+Route::get('/test_loanlisting', function()
+{
+	return View::make('test_loanlisting');
 });

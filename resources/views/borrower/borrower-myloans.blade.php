@@ -1,23 +1,28 @@
 @extends('layouts.dashboard')
 @section('bottomscripts') 
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading','My Loans'))
 @section('section')     
+@var	$pos = strpos(base64_decode($loan_id), "bids");
 
 <div class="col-sm-12 space-around"> 			
 	<div class="row">	
 					
 		<div class="col-sm-12 col-lg-8 ">							
 			<ul class="nav nav-tabs">
-				<li class="active"><a data-toggle="tab" href="#home">LOAN DETAILS</a></li>
+				<li {{ ($pos === false)?"class='active'":""}}>
+					<a data-toggle="tab" href="#home">LOAN DETAILS</a>
+				</li>
 				<li><a data-toggle="tab" href="#menu1">COMPANY DETAILS</a></li>
 				<li><a data-toggle="tab" href="#menu2">LOAN UPDATES</a></li>
-				<li><a data-toggle="tab" href="#menu3">BID INFO</a></li>
+				<li  {{ ($pos !== false)?"class='active'":""}}>
+					<a data-toggle="tab" href="#menu3">BID INFO</a>
+				</li>
 			</ul>
 
 			<div class="tab-content myloan-wrapper">
-				<div id="home" class="tab-pane fade in active">
+				<div id="home" class="tab-pane fade {{ ($pos === false)?'in active':'' }}">
 					@include('widgets.borrower.tab.myloans_loandetails')
 				</div>
 				<div id="menu1" class="tab-pane fade">
@@ -26,7 +31,7 @@
 				<div id="menu2" class="tab-pane fade">
 					@include('widgets.borrower.tab.myloans_loanupdates')
 				</div>
-				<div id="menu3" class="tab-pane fade">
+				<div id="menu3" class="tab-pane fade  {{ ($pos !== false)?'in active':'' }}">
 					@include('widgets.borrower.tab.myloans_bidinfo')
 				</div>
 			</div>
@@ -119,7 +124,7 @@
 						
 						<div class="row space-around">
 							<div class="text-center">	
-									<button type="submit" class="btn add-director-button">BID NOW  <i class="fa fa-gavel"></i></button>
+									<button type="submit" class="btn verification-button">BID NOW  <i class="fa fa-gavel"></i></button>
 							</div>
 						</div>
 						
@@ -189,6 +194,5 @@
 										
 	</div>								
 </div>
-
-    @endsection  
+	@endsection  
 @stop

@@ -13,6 +13,14 @@
 		$(document).ready(function(){			
 			$('#laon_purpose').ckeditor();   //text editor
 			$('[data-toggle="tooltip"]').tooltip();
+			$(".borrower_doc_download").on("click",function(){
+				var	loan_doc_url	=	$(this).attr("data-download-url");
+					loan_doc_url	=	loan_doc_url+"_"+ new Date().getTime();
+					window.location	=	loan_doc_url;
+			});
+			$("#save_button").on("click",function(){
+				$("#isSaveButton").val("yes");
+			});
 		});		
 	</script>		
 @endsection
@@ -32,7 +40,7 @@
 @endsection
 @section('section')
 
-<div class="col-sm-12 text-center space-around">
+<div class="col-sm-12 text-center space-around" style="display:none;">
 	<div class="annoucement-msg-container">
 		<div class="alert alert-success annoucement-msg">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -40,10 +48,22 @@
 		</div>
 	</div>				
 </div>
+@if(isset($status))
+	@var	$alertClass	=	($status	==	"success"?"":"annoucement-msg")
+	<div class="col-sm-12 space-around">
+		<div class="annoucement-msg-container">
+			<div class="alert alert-success {{$alertClass}}">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				{{$msg}}
+			</div>
+		</div>				
+	</div>
+@endif
 <div class="col-sm-12"> 	
 	<form class="form-inline" method="post" enctype="multipart/form-data">	
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">	
-		<input type="hidden" name="isSaveButton" value="">	
+		<input type="hidden" name="isSaveButton" id="isSaveButton" value="">	
+		<input type="hidden" name="loan_id" value="{{$BorModLoan->loan_id}}">	
 		<input type="hidden" name="trantype" value="{{ $trantype }}">
 	<div class="row">				
 		<div class="col-lg-12 col-sm-12">				
@@ -65,25 +85,35 @@
 				</ul>					
 
 				<div class="tab-content">
+					
 					<!-------first-tab--------------------------------->
 					@include('widgets.borrower.tab.applyloan_info')
 					<!-------second tab--starts------------------------>
 					@include('widgets.borrower.tab.applyloan_documents_submit')
+					
 				</div><!--tab content-->	
 			<!--</div><!--row-->	
 			
 			<div class="row"> 
 				<div class="col-sm-12"> 
 					<div class="pull-right">	
-						
+						@if($trantype	==	"edit")
+							<input type="button" 
+									value="Preview"
+									class="btn verification-button"
+									/>
+						@endif
 						<button type="submit" 
-								class="btn verification-button">
+								id="save_button"
+								class="btn verification-button"
+								{{$BorModLoan->viewStatus}}>
 							<i class="fa pull-right"></i>
 							Save
 						</button>
 						
 						<button type="submit" 
-								class="btn verification-button">
+								class="btn verification-button"
+								{{$BorModLoan->viewStatus}}>
 							<i class="fa pull-right"></i>
 							{{ Lang::get('borrower-profile.submit_verification') }}
 						</button>

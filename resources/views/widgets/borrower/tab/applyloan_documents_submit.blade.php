@@ -7,10 +7,12 @@
 			<div class="col-sm-12">
 				<span class="pull-left"><h4>{{ Lang::get('borrower-applyloan.documents_submitted') }}</h4></span>								
 				</br><hr>
+						<fieldset {{$BorModLoan->viewStatus}}>
 						@var	$i	=	1
 						@foreach($loanDocuments as $documentRow)
 							@var	$documentRowIndex	=	$documentRow['loan_doc_id']
 							<!---doc--rule--1-->
+							
 							<div class="row">
 								<div class="col-sm-6">
 									{{ $i.". ".$documentRow['short_name']}}
@@ -32,14 +34,19 @@
 									@if(isset($BorModLoan->submitted_document_details[$documentRowIndex]))
 										@var	$loan_url	=	$BorModLoan->submitted_document_details[$documentRowIndex]
 										@var	$loan_url	=	"borrower/docdownload/".$loan_url
-										<a href="{{url($loan_url)}}">View</a>
+										<a 	href="javascript:void(0)"
+											data-download-url="{{url($loan_url)}}"
+											class="borrower_doc_download">View
+										</a>
 									@endif
 								</div>
 							</div>
 						@var	$i++;	
-					@endforeach									
+					@endforeach		
+					</fieldset>					
 				</div>								
 
 		</div><!---panel body-->
 	</div><!---panel------>
 </div><!---2nd tab ends-->
+

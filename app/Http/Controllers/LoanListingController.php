@@ -1,7 +1,11 @@
 <?php 
 namespace App\Http\Controllers;
 
-class BorrowerLoanListingController extends MoneyMatchController {
+class LoanListingController extends MoneyMatchController {
+	/*------------------------------------------------------------
+	 *  Loan Listing is common to both Investors' and Borrowers' modules
+	 *  
+	 * */
 
 	public function __construct() {	
 		
@@ -14,6 +18,7 @@ class BorrowerLoanListingController extends MoneyMatchController {
 	}
 
 	public function index() {
+		
 		return view('borrower.borrower-loanlisting')
 			->with("classname","fa fa-list fa-fw user-icon"); 
 					

@@ -20,6 +20,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $min_for_partial_sub  			=  	"";
 	public $repayment_type  				=  	"";
 	public $status  						=  	"";
+	public $statusText  					=  	"New";
 	public $comments  						=  	"";
 	public $final_interest_rate  			=  	"";
 	public $loan_sactioned_amount  			=  	"";
@@ -66,6 +67,15 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.status,
 											loans.comments,
 											loans.final_interest_rate,
+											case loans.status 
+												   when 1 then '' 
+												   when 2 then 'disabled'
+												   when 3 then ''
+												   when 4 then 'disabled'
+												   when 5 then 'disabled'
+												   when 6 then 'disabled'
+												   when 7 then 'disabled'
+											end as viewStatus,
 											case loans.status 
 												   when 1 then 'New' 
 												   when 2 then 'Submitted for Approval'
@@ -137,7 +147,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		if ($loandocument_rs) {
 			foreach ($loandocument_rs as $docRow) {
 				$docRowIndex	=	$docRow->loan_doc_id;
-				$docRowValue	=	base64_encode($docRow->loan_doc_submitted_id);
+				$docRowValue	=	$docRow->loan_doc_submitted_id;
 				$this->submitted_document_details[$docRowIndex] = $docRowValue;
 			}
 		}
@@ -146,9 +156,10 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	
 	public function processLoan($postArray) {
 		
-		$transType 	= 'add';
+		$transType 	= $postArray['trantype'];
 		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType);
 		$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
+		return $loanId;
 	}
 	
 	public function updateBorrowerLoanInfo($postArray,$transType) {
@@ -186,8 +197,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$trans_fees						=	($apply_amount*4)/100 ;
 		$total_disbursed				=	$apply_amount	-	$trans_fees;
 		
-		$dataArray = array(	'loan_reference_number' 		=> $loan_reference_number,
-							'borrower_id'					=> $borrower_id,
+		$dataArray = array(	'borrower_id'					=> $borrower_id,
 							'purpose'						=> ($purpose!="")?$purpose:null,
 							'apply_date' 					=> $apply_date,
 							'apply_amount' 					=> ($apply_amount!="")?$apply_amount:null,
@@ -201,6 +211,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 							'final_interest_rate' 			=> ($final_interest_rate!="")?$final_interest_rate:null,
 							'loan_sactioned_amount' 		=> $loan_sactioned_amount,
 							'trans_fees' 					=> $trans_fees,
+							'status' 						=> $status,
 							'total_disbursed' 				=> $total_disbursed);
 							
 	//~ echo "<pre>",print_r($dataArray),"</pre>";
@@ -216,7 +227,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$result = $this->dbUpdate('loans', $dataArray, $whereArry );
 			return $loanId;
 		}else{
-			$whereArry	=	array("loan_id" =>"{$loanId}");
+			$whereArry								=	array("loan_id" =>"{$loanId}");
 			if (!$this->dbUpdate('loans', $dataArray, $whereArry)) {
 				return -1;
 			}
@@ -237,6 +248,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$loan_id			= 	$loanId;
 			$destinationPath 	= 	Config::get('moneymatch_settings.upload_bor');
 			$destinationPath 	= 	$destinationPath."/".$borrower_id."/loan".$loan_id."documents";
+			
 			if(!File::exists($destinationPath)) {
 				File::makeDirectory($destinationPath, 0755, true);
 			}
@@ -287,5 +299,17 @@ class BorrowerApplyLoanModel extends TranWrapper {
 															'name', 'id',$this->bid_type, "--Please Select--");		
 		$this->paymentTypeSelectOptions	=	$this->constructSelectOption($paymentTypeList,
 															'name', 'id',$this->repayment_type, "--Please Select--");		
+	}
+	
+	public function getBorrowerLoanDocUrl($doc_id) {
+		
+		$loandocumenturl_sql		= 	"	SELECT 	loan_doc_url
+											FROM 	loan_docs_submitted	
+											WHERE	loan_doc_submitted_id	={$doc_id}";
+		
+		$loandocumenturl_rs			= 	$this->dbFetchOne($loandocumenturl_sql);
+		$fileUploadObj				=	new FileUpload();
+		$loan_doc_full_path			=	$fileUploadObj->getFile($loandocumenturl_rs);
+		return $loan_doc_full_path;
 	}
 }

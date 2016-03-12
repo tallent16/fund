@@ -28,10 +28,11 @@ class BorrowerMyLoansController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($loan_id)
 	{
 		return view('borrower.borrower-myloans')
-			->with("classname","fa fa-money fa-fw user-icon"); 
+			->with("classname","fa fa-money fa-fw user-icon")
+			->with("loan_id",$loan_id); 
 	}
 
 }

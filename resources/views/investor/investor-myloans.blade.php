@@ -107,7 +107,7 @@
 						
 						<div class="row space-around">
 							<div class="text-center">	
-									<button type="submit" class="btn add-director-button">BID NOW  <i class="fa fa-gavel"></i></button>
+									<button type="submit" class="btn verification-button">BID NOW  <i class="fa fa-gavel"></i></button>
 							</div>
 						</div>
 						

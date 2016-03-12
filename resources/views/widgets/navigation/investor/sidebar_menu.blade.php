@@ -27,18 +27,20 @@
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{ url ('investor/transhistory') }}">{{ Lang::get('borrower-leftmenu.transhistory') }}</a>
-                                </li>  
-                                 <li>
-                                    <a href="{{ url ('investor/bankdetails') }}">{{ Lang::get('borrower-leftmenu.bankdetails') }}</a>
-                                </li>  
-                                 <li>
-                                    <a href="{{ url ('investor/repayloans') }}">{{ Lang::get('borrower-leftmenu.repayloans') }}</a>
-                                </li>                                                             
+                                </li>                                                                                            
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>                      
                         <li>
-                            <a href="{{ url ('banking') }}"><i class="fa fa-university fa-fw"></i>{{ Lang::get('borrower-leftmenu.banking') }} </a>
+                            <a href="{{ url ('banking') }}"><i class="fa fa-university fa-fw"></i>{{ Lang::get('borrower-leftmenu.banking') }}<span class="fa arrow"></span> </a>
+                              <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{ url ('investor/bankdetails') }}">Bank Details</a>
+                                </li> 
+                                 <li>
+                                    <a href="{{ url ('investor/withdraw') }}">Withdraw</a>
+                                </li>                                                                                            
+                            </ul>
                         </li>
                          <li>
                             <a href="{{ url ('support') }}"><i class="fa fa-edit fa-fw"></i>{{ Lang::get('borrower-leftmenu.support') }} </a>

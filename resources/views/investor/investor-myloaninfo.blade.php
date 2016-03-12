@@ -25,35 +25,29 @@
 												<td>Loan Reference</td>														
 											</tr>
 											<tr>
-												<td>Date Applied</td>												
+												<td>Borrower's Name</td>												
 											</tr>
 											<tr>
-												<td>Status</td>												
+												<td>Grade</td>												
 											</tr>
 											<tr>
-												<td>Loan Type</td>												
-											</tr>
-											<tr>
-												<td>Bid Type</td>												
-											</tr>
-											<tr>
-												<td>Target Interest%</td>												
-											</tr>
-											<tr>
-												<td>Effective Interest%</td>												
+												<td>Target Interest Range</td>												
 											</tr>
 											<tr>
 												<td>Amount Applied</td>												
 											</tr>
 											<tr>
-												<td>Amount Realized</td>												
+												<td>Amount Offered</td>												
 											</tr>
 											<tr>
-												<td>Repayments till date</td>												
+												<td>Amount Accepted</td>												
 											</tr>
 											<tr>
-												<td>Principal Outstanding</td>												
+												<td>Interest %bid</td>												
 											</tr>
+											<tr>
+												<td>Status</td>												
+											</tr>										
 										</tbody>
 									</table>	
 								</div>							
@@ -67,45 +61,37 @@
 										</a>				
 																
 									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
+										<table class="table table-loan loan-list-table">		
 											<tbody>												
 												<tr>
 													<td class="tab-head">LOAN 1</td>																										
 												</tr>
 												<tr>
-													<td>1 JAN 2016</td>														
+													<td>Name 1</td>														
 												</tr>
 												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
+													<td>C</td>														
 												</tr>
 												<tr>
 													<td>10%</td>												
 												</tr>
 												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
 													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
+														$1,000.00												
 													</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
+													<td>10%</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
+													<td>Under Process</td>												
+												</tr>												
 											</tbody>
 										</table>	
 									</div>
@@ -118,46 +104,37 @@
 										<button type="submit" class="btn loan-detail-button">LOAN DETAILS 2</button>							
 										</a>		
 									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
-											<tbody>
-												
+										<table class="table table-loan loan-list-table">		
+												<tbody>												
 												<tr>
-													<td class="tab-head">LOAN 1</td>																										
+													<td class="tab-head">LOAN 2</td>																										
 												</tr>
 												<tr>
-													<td>1 JAN 2016</td>														
+													<td>Name 2</td>														
 												</tr>
 												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
+													<td>C</td>														
 												</tr>
 												<tr>
 													<td>10%</td>												
 												</tr>
 												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
 													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
+														$1,000.00												
 													</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
+													<td>10%</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
+													<td>Under Process</td>												
+												</tr>												
 											</tbody>
 										</table>	
 									</div>
@@ -172,45 +149,37 @@
 											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 3</button>				
 										</a>	
 									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
-											<tbody>
+										<table class="table table-loan loan-list-table">		
+												<tbody>												
 												<tr>
-													<td class="tab-head">LOAN 1</td>																										
+													<td class="tab-head">LOAN 3</td>																										
 												</tr>
 												<tr>
-													<td>1 JAN 2016</td>														
+													<td>Name 3</td>														
 												</tr>
 												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
+													<td>C</td>														
 												</tr>
 												<tr>
 													<td>10%</td>												
 												</tr>
 												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
 													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
+														$1,000.00												
 													</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
+													<td>10%</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
+													<td>Under Process</td>												
+												</tr>												
 											</tbody>
 										</table>	
 									</div>									
@@ -221,45 +190,37 @@
 											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 4</button>								
 										</a>		
 									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
-											<tbody>
+										<table class="table table-loan loan-list-table">		
+												<tbody>												
 												<tr>
-													<td class="tab-head">LOAN 1</td>																										
+													<td class="tab-head">LOAN 4</td>																										
 												</tr>
 												<tr>
-													<td>1 JAN 2016</td>														
+													<td>Name 4</td>														
 												</tr>
 												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
+													<td>C</td>														
 												</tr>
 												<tr>
 													<td>10%</td>												
 												</tr>
 												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
+													<td>$1,000.00</td>												
+												</tr>
+												<tr>
 													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
+														$1,000.00												
 													</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
+													<td>10%</td>												
 												</tr>
 												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
+													<td>Under Process</td>												
+												</tr>												
 											</tbody>
 										</table>	
 									</div>

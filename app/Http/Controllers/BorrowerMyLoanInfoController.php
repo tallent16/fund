@@ -1,37 +1,31 @@
 <?php namespace App\Http\Controllers;
+use	\App\models\BorrowerMyLoanInfoModel;
+use Request;
+class BorrowerMyLoanInfoController extends MoneyMatchController {
 
-class BorrowerMyLoanInfoController extends Controller {
-
-	/*
-	|--------------------------------------------------------------------------
-	| Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders your application's "dashboard" for users that
-	| are authenticated. Of course, you are free to change or remove the
-	| controller as you wish. It is just here to get your app started!
-	|
-	*/
-
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{	
+	public function __construct() {	
+		
 		$this->middleware('auth');
+		$this->init();
 	}
-
-	/**
-	 * Show the application dashboard to the user.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
+	
+	public function littleMoreInit() {
+		$this->borrowerMyLoanInfoModel	=	new BorrowerMyLoanInfoModel;
+	}
+	
+	public function indexAction() {
+		$withArry	=	array(	"BorModMyLoanInfo"=>$this->borrowerMyLoanInfoModel,
+								"classname"=>"fa fa-usd fa-fw user-icon"
+							);	
+		$this->borrowerMyLoanInfoModel->getBorrowerAllLoanDetails();	
 		return view('borrower.borrower-myloaninfo')
-			->with("classname","fa fa fa-usd fa-fw user-icon"); 
+			->with($withArry);
+	}
+	
+	public function ajaxRepayScheduleAction() {
+		$loan_id 		= 	Request::get('loan_id');
+		$response_data 	= 	$this->borrowerMyLoanInfoModel->getBorrowerRepaymentSchedule($loan_id);
+		return json_encode(array("rows"=>$response_data));
 	}
 
 }

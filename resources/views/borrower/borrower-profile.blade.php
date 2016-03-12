@@ -4,8 +4,14 @@
 @endsection
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>		
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	 
 	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>
+	<script>
+	$(document).ready(function(){ 	
+		$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '200px'});  // file upload  
+	}); 
+	</script>
 @endsection 
 @section('page_heading',Lang::get('borrower-profile.profile'))
 @section('status_button')						
@@ -227,6 +233,6 @@
 		</div>
 	</div>
 </div>
-     
+
   @endsection  
 @stop

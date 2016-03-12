@@ -2315,8 +2315,8 @@ th {
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
 }
-.table-striped > tbody > tr:nth-of-type(even) {
-  background-color: #f9f9f9;
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f3f3f3;
 }
 .table-hover > tbody > tr:hover {
   background-color: #f5f5f5;
@@ -6442,9 +6442,9 @@ button.close {
   }
 }
 @media (max-width: 768px){
-	.form-control{
+	/*.form-control{
 		width:220px;
-	}
+	}*/
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .visible-sm {
@@ -8964,8 +8964,8 @@ canvas.round {
     }
 }
 /*# sourceMappingURL=styles.css.map */
-/*--------CUSTOM CSS STARTS HERE------**/
-/**************Login Page*************************/
+/*---------------------------CUSTOM CSS STARTS HERE-------------------**/
+/******************************Login Page*******************************/
 /*.loan_title{
 	display:none;
 }*/
@@ -8988,7 +8988,7 @@ canvas.round {
 	color:#EF4F1F;
 	text-decoration:none;
 }
-/**************Register page**********************/
+/******************************Register page****************************/
 .register-button{
 	background-color:#EF4F1F;
 	color:#fff;	
@@ -9007,7 +9007,7 @@ canvas.round {
 	color:#fff;	
 	padding:5px;
 }
-/************SIDEBAR NAVIGATION******************/
+/************************SIDEBAR NAVIGATION*****************************/
 .active{
 	color:#F6942C;
 }
@@ -9024,7 +9024,7 @@ canvas.round {
 .settings-menu{ 
 	margin:10em 0 0 0;
 }
-/******************HEADER***********************/
+/****************************HEADER*************************************/
 .page-header-title{
 	float: left;
 	margin: 15px 0px 0px 24px;
@@ -9043,7 +9043,7 @@ canvas.round {
 	background-color:transparent;
 	border:1px solid #F6942C;	
 }
-/*****************BORROWER DASHBOARD****************/
+/**********************BORROWER DASHBOARD*******************************/
 .cursor-pointer{
 	cursor:pointer;
 }
@@ -9087,44 +9087,25 @@ canvas.round {
 .tab-fontsize{
 	font-size:10px;	 
 }
-/*********************Profile (company info,director info,profile info)***************/
-.directorinfo td:nth-child(2n) {
+/************Profile (company info,director info,profile info)**********/
+.directorinfo td:nth-child(n+2) {
     background-color: #fff;
-}/*
-.status-button, .status-button:hover{
-	background-color:#F3F3F3;
-	color:#3A8B60;
-	border:1px solid #ccc;
-	margin: 0 0 15px 0;	
-	font-weight: normal;
-/*	padding: 10px;*/ 
-	/*width: auto;   Modified by sathya on 27.02.2016  width: 100px	*/
-/*}*/
+}
 .verification-button, .verification-button:hover{
 	background-color: #F6942C;
 	color: #fff;
 	border: none;
-	margin: 0 0 35px 0;	
-	/*padding: 10px;*/
+	/*margin: 0 0 35px 0;	
+	padding: 10px;*/
 	width: auto;
 }
-.directorinfo{
-	background-color:#EBEBED;
-}/*
-.add-director-button, .add-director-button:hover{
-	background-color: #F6942C;
-	color: #fff;
-	border: none;
-	width:auto;
-	padding:5px;
-}*/
 .directorinfo .select-width, .applyloan .select-width, 
 .form-inline .btn-group.bootstrap-select.select-width, 
 .form-horizontal .btn-group.bootstrap-select.select-width{  
 	width:100%; 
 }
 .directorinfo .pagination > li > a, .bank-details  .pagination > li > a{
-	background-color:#EBEBED;
+	background-color:#F9F9F9;
 	border:none;
 	color:#222;
 	font-size:24px;	
@@ -9135,14 +9116,14 @@ canvas.round {
 .directorinfo .panel-primary > .panel-headsection, .applyloan .panel-headsection{
 	padding:5px;
 }
-#financial_info .tab-head{
+/*#financial_info .tab-head{
 	background-color: #868686;
-}
+}*/
 .controls .input-group{
 	width:100%;
 	display: inline-table;
 }
-/******************Apply loan (loan info, documents submitted)************/
+/**************Apply loan (loan info, documents submitted)**************/
 .applyloan{
 	background-color:#F9F9F9;	
 }
@@ -9184,7 +9165,7 @@ ol li{
 #documents_submitted a {
     color: #333;
 }
-/*-----------------------------------------My loans-----------------------------------------------------------------------------------------------*/
+/***********************My loans****************************************/
 .tab-head-red{
 	background-color:#A52D26;
 	color:#fff;	
@@ -9321,7 +9302,8 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 	 width: 50%;
 }
 .loanlist-wrapper .btn-default, .loanlist-wrapper .open > .dropdown-toggle.btn-default, 
-.loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a:focus, .loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a{
+.loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a:focus,
+.loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a{
 	color: #fff;
     background-color: #000;
     border-color: #333;
@@ -9366,7 +9348,7 @@ table.table.tab-label {
 .loan-details{
 	background-color:#fff;
 }
-/*------------------------------------------------------Transcation History---------------------------------------*/
+/*********************Transcation History*******************************/
 .button-black, .button-black:hover{											
 	border:none;
 	color:#fff;
@@ -9384,14 +9366,18 @@ table.table.tab-label {
 	margin-bottom:0;
 	border: 1px solid #ccc;	
 }
-/*-----------------------------------------------------Bank Details----------------------------------------------*/
+/****************************MyloanInfo*********************************/
+.loan-list-table tr:last-child td:last-child {
+    padding: 0 0 72% 0;
+}
+/****************************Bank Details*******************************/
 .button-orange{
 	background-color: #F1922E;
 	color: #fff;
     border: none;
     padding: 3px 25px;	
 }
-/*-----------------------------------------------------Settings--------------------------------------------------*/
+/******************************Settings*********************************/
 .button-red{ 
 	background-color: #901E17;
 	color: #fff;
@@ -9404,8 +9390,8 @@ table.table.tab-label {
 .borrower-settings .panel-body {
     padding: 40px;
 }
-/*-------------------------------------------------------------------------------------------------------------------*/
-/*---------------------------------------------Investor Dashboard--------------------------------------------------*/
+/*---------------------------End of Borrower----------------------------*/
+/*********************Investor Dashboard********************************/
 #accordion .panel-body{
 	padding:0;
 }
@@ -9416,34 +9402,17 @@ table.table.tab-label {
 #accordion .panel-title > a{
 	text-decoration:none;
 }
-#accordion .panel-body{
+#accordion .panel-body, #account-summary td{
 	border:none;
 } 
 #accordion .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child, 
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child{
 	border-radius:0;
 }
-#investor-dashboard .panel-container{
+table#account-summary, .table-border-custom{
 	border: 1px solid #ccc;
 }
-#account-summary td {
-    border: none;
-}
-table#account-summary, .table-border-custom{
-    border: 1px solid #ccc;
-}
-
-
-
-
-.profile-details-wrapper { display: table-row; }
-.profile-picture {
-  display: table-cell; 
-  vertical-align: top; 
-  margin-right: 10px;
-}
-.profile-details { display: table-cell; vertical-align: top; }
-/*--------------------------------------------------Custom Responsive css-------------------------------------------*/
+/*******************************Custom Responsive css*******************/
 @media (max-width: 360px) {
 	.status-label-section{
 		margin: 0 8px 0 0;	 

@@ -66,7 +66,7 @@
 		</div><!--row-->
 		<!----table----row-->		
 		<div class="row">
-			<div class="col-sm-12"> 
+			<div class="col-sm-12 space-around"> 
 				
 				<div class="table-responsive applyloan" id="transhistory-container"> 
 					<table class="table tab-fontsize">

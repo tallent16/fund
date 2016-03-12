@@ -12,7 +12,7 @@
 										<th class="tab-head text-left">Current Year</th>				
 									</tr>
 									<tr>
-										<td class="tab-left-head text-left col-sm-4">
+										<td class="text-left col-sm-4">
 												Revenue Growth										
 										</td>
 										<td><input 	type="text" 
@@ -29,7 +29,7 @@
 												/></td>		
 									</tr>		
 									<tr>
-										<td class="tab-left-head text-left col-sm-4">
+										<td class="text-left col-sm-4">
 											Gross Margin
 										</td>
 										<td><input 	type="text" 
@@ -46,7 +46,7 @@
 												/></td>		
 									</tr>
 									<tr>
-										<td class="tab-left-head text-left col-sm-4">
+										<td class="text-left col-sm-4">
 											Net Margin
 										</td>
 										<td><input 	type="text" 
@@ -63,7 +63,7 @@
 												/></td>		
 									</tr>	
 									<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Return On Net Worth
 										</td>
 										<td><input 	type="text" 
@@ -80,7 +80,7 @@
 												/></td>		
 									</tr>
 										<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Receivables Turnover
 										</td>
 										<td><input 	type="text" 
@@ -97,7 +97,7 @@
 												/></td>		
 									</tr>	
 										<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Inventory Turnover
 										</td>
 										<td><input 	type="text" 
@@ -114,7 +114,7 @@
 												/></td>		
 										</tr>	
 										<tr>
-											<td class="tab-left-head text-left">
+											<td class="text-left">
 												Total asset Turnover
 											</td>
 											<td><input 	type="text" 
@@ -144,7 +144,7 @@
 										<th class="tab-head" colspan="2">Financials</th>																	
 									</tr>
 									<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Gross profit
 										</td>
 										<td><input type="text" 
@@ -155,7 +155,7 @@
 													/></td>										
 									</tr>		
 									<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											EBIT
 										</td>
 										<td><input type="text" 
@@ -166,7 +166,7 @@
 													/></td>									
 									</tr>
 									<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Net Profit(Loss)
 										</td>
 										<td><input type="text" 
@@ -177,7 +177,7 @@
 													/></td>									
 									</tr>	
 									<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Total Asset
 										</td>
 										<td><input type="text" 
@@ -188,7 +188,7 @@
 													/></td>								
 									</tr>
 										<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Total Liabilities
 										</td>
 										<td><input type="text" 
@@ -199,7 +199,7 @@
 													/></td>								
 									</tr>	
 										<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Total Liabilities and Equity
 										</td>
 										<td><input type="text" 
@@ -210,7 +210,7 @@
 													/></td>									
 									</tr>	
 										<tr>
-										<td class="tab-left-head text-left">
+										<td class="text-left">
 											Total asset Turnover
 										</td>
 										<td><input type="text" 

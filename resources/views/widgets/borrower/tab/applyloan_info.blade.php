@@ -9,14 +9,20 @@
 <div id="loans_info" class="tab-pane fade in active">
 	<div class="panel panel-default applyloan">   
 		<div class="panel-body">
+			<fieldset {{$BorModLoan->viewStatus}}>
 				<div class="row">
 				   <div class="col-md-6">
-						<h4>{{ Lang::get('borrower-applyloan.purpose_of_loan') }}</h4>														   
-							<textarea 	id="laon_purpose"
-										name="laon_purpose">{{$BorModLoan->purpose}}</textarea> 					
-					</div>
-					   
-					<div class="col-md-6">	
+					   	
+							<div class="row">		
+								<div class="col-xs-4">
+									<label>{{ Lang::get('borrower-applyloan.purpose_of_loan') }}</label>
+								</div>	
+								<div class="col-xs-8">															   
+									<textarea class="form-control" 
+												name="laon_purpose" rows="3">{{$BorModLoan->purpose}}</textarea> 	
+								</div>
+							</div>
+									
 							<div class="row">		
 								<div class="col-xs-4">											
 									<label>{{ Lang::get('borrower-applyloan.loan_amount') }}</label>												
@@ -29,8 +35,8 @@
 											id="loan_amount" 
 											value="{{$BorModLoan->apply_amount}}">												
 								</div>
-							</div>
-						
+							</div>	
+							
 							<div class="row">		
 								<div class="col-xs-4">											
 									<label>{{ Lang::get('borrower-applyloan.loan_tenure') }}</label>												
@@ -56,7 +62,12 @@
 											id="target_interest"
 											value="{{$BorModLoan->target_interest}}" >																	
 								</div>
-							</div>
+							</div>			
+					</div>
+					   
+					<div class="col-md-6">	
+							
+						
 						
 							<div class="row">		
 								<div class="col-xs-4">											
@@ -207,6 +218,7 @@
 						
 					</div><!--col--->									   								   
 				</div><!--row-->	
+				</fieldset>
 		</div><!--panel-body--->
 	</div><!--panel---->
 </div><!--first-tab--->

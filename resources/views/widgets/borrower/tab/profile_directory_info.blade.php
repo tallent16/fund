@@ -1,7 +1,7 @@
 @var $borrowerDirectors = $modelBorPrf->director_details;
 
 <div id="director_info" class="tab-pane fade">
-	<div class="panel panel-default directorinfo"> 						
+	<div class="panel panel-default directorinfo applyloan"> 						
 		<div class="panel-body">
 	
 			<div class="col-sm-12 col-lg-8">	

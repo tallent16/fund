@@ -32,6 +32,130 @@
 					</div>                           
 				</div><!-------------end of---panel heading---------------------->	
 				
+				<div class="col-sm-6">
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Full Name</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="full_name" 
+								value="Maxene Smith" class="form-control">
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Display Name</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="display_name" 
+								value="Maxene Smith" class="form-control">
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Email</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="email" 
+								value="maxenesmith@info.com" class="form-control">
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Mobile Number</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="mobile_Num" 
+								value="123456789" class="form-control">
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Mobile Number verified status</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="mobile_Num_Verification" 
+								value="verified" class="form-control">
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Date of Birth</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<div class="controls">
+										<div class="input-group">
+											<input 	type="text" 
+													id="dob"  
+													name="dob" 
+													value=""
+													class="date-picker-2 form-control"
+													readonly />	
+											<label class="input-group-addon btn" for="dob">
+												<span class="glyphicon glyphicon-calendar"></span>
+											</label>
+										</div>													
+									</div>
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>NRIC Number</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="nric_Num" 
+								value="123456789" class="form-control">
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Bank Name</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="bank_Name" 
+								value="OCBC Bank" class="form-control">
+						</div>
+					</div>
+					
+					<div class="row">		
+						<div class="col-xs-4">											
+							<label>Bank Name</label>												
+						</div>
+											
+						<div class="col-xs-8">													
+								<input type="text" name="bank_Name" 
+								value="OCBC Bank" class="form-control">
+						</div>
+					</div>
+					
+				</div>
+				<div class="col-sm-6">
+				</div>
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				<div class="table-responsive">				
 					<table class="table text-left table-bordered">					
 						<tbody>

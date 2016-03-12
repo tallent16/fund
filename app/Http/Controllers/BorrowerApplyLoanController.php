@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use Request;
 use	\App\models\BorrowerApplyLoanModel;
+use Response;
 class BorrowerApplyLoanController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -27,12 +28,22 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		} 
 		// Edit borrower loan passing loan id parameter
 		if (null !== $laon_id) {
-			$sourceId =	$laon_id;
+			$sourceId =	base64_decode($laon_id);
 			return $this->getBorrowerLoanDetails('edit', $sourceId);
 		} 
 	}
 	
-	protected function processLoan($postArray) {
+	public function downloadAction($doc_id=null) {
+		
+		// Edit borrower loan passing loan id parameter
+		if (null !== $doc_id) {
+			$sourceId 		=	explode("_",$doc_id);
+			$loan_doc_url	=	$this->borrowerApplyLoanModel->getBorrowerLoanDocUrl($sourceId[0]);
+			return  Response::download($loan_doc_url);
+		} 
+	}
+	
+		protected function processLoan($postArray) {
 		
 		$tranType 	= 	$postArray["trantype"];
 		$result	 	= 	$this->borrowerApplyLoanModel->processLoan($postArray);
@@ -44,14 +55,17 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 			switch ($tranType) {
 				case "add":
 					$withArry["status"]	=	"success";
-					$withArry["msg"]	=	"New Loan Created Successgfully";
+					$withArry["msg"]	=	"New Loan Created Successfully";
 					break;
 				
 				case "edit":
 					$withArry["status"]	=	"success";
-					$withArry["msg"]	=	"Loan Updated Successgfully";
+					$withArry["msg"]	=	"Loan Updated Successfully";
+					$sourceId			=	$postArray["loan_id"];
+					$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId);
 					break;
 			}
+			
 		} else {
 			$withArry["status"]	=	"failure";
 			$withArry["msg"]	=	"Failed to create new loan";
@@ -65,6 +79,7 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		switch ($trantype) {
 			
 			case "add":
+				$this->borrowerApplyLoanModel->processDropDowns();
 				$this->borrowerApplyLoanModel->getBorrowerDocumentListInfo();
 				break;
 				

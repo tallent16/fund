@@ -1,9 +1,15 @@
 @extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>
+		var baseUrl	=	"{{url('')}}"
+	</script>
+	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading','My Loans') )
 @section('section')    
+@var	$borrowerAllList	=	$BorModMyLoanInfo->allloan_details
+
 <div class="col-sm-12"> 			
 	<div class="row">			
 			
@@ -15,9 +21,11 @@
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
+						@if(count($borrowerAllList) > 0)
 						<div class="row"> 
-							
-							<div class="col-sm-12 col-lg-2">										
+							<!----col--2--->
+							<div class="col-sm-12 col-lg-2">
+																		
 								<div class="table-responsive"><!---table start-->
 									<table class="table tab-label">		
 										<tbody>																								
@@ -58,217 +66,106 @@
 									</table>	
 								</div>							
 							</div> <!----col--2--->
-							
+							<!---col--10-->
 							<div class="col-sm-12 col-lg-10 loan-details">
-							
-								<div class="col-sm-12 col-lg-3 text-center">									
-										<a href="{{ url ('borrower/myloans') }}">
-											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 1</button>
-										</a>				
-																
-									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
-											<tbody>												
-												<tr>
-													<td class="tab-head">LOAN 1</td>																										
-												</tr>
-												<tr>
-													<td>1 JAN 2016</td>														
-												</tr>
-												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
-												</tr>
-												<tr>
-													<td>10%</td>												
-												</tr>
-												<tr>
-													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
-													</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
-											</tbody>
-										</table>	
-									</div>
+									@foreach($borrowerAllList as $loanRow)
 									
-								</div><!--col-3---->
-								
+									<div class="col-sm-12 col-lg-3 text-center">		
+											@if(($loanRow->status	==	BORROWER_STATUS_NEW) || 
+															($loanRow->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN))
+												@var	$loan_url	=	'borrower/applyloan/'.base64_encode($loanRow->loan_id)
+												@var	$bid_url	=	'borrower/myloans/'
+												@var	$bid_url	=	$bid_url.base64_encode($loanRow->loan_id."_bids")
+											@else
+												@var	$loan_url	=	'borrower/myloans/'.base64_encode($loanRow->loan_id)
+												@var	$bid_url	=	'borrower/myloans/'
+												@var	$bid_url	=	$bid_url.base64_encode($loanRow->loan_id."_bids")
+											@endif
+											<a href="{{ url ($loan_url) }}"
+												class="btn btn-lg loan-detail-button">
+												{{$loanRow->viewStatus}}
+											</a>				
+																	
+										<div class="table-responsive"><!---table start-->
+											<table class="table table-loan loan-list-table">		
+												<tbody>												
+													<tr>
+														<td class="tab-head">
+															{{$loanRow->loan_reference_number}}
+														</td>																										
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->apply_date}}
+														</td>														
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->statusText}}
+														</td>															
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->repayment_type}}
+														</td>												
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->bid_type}}
+														</td>												
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->target_interest}}
+														</td>													
+													</tr>
+													<tr>
+														<td><a href="{{ url ($bid_url) }}"
+																class="btn button-grey">
+																View All Bids
+															</a>														
+														</td>												
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->amount_applied}}
+														</td>												
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->amount_realized}}
+														</td>													
+													</tr>
+													<tr>
+														<td>												
+															<button type="button" 
+																	class="btn button-grey repayment_schedule_btn"
+																	data-loan-id="{{$loanRow->loan_id}}">
+																	Repayment Schedule
+															</button>												
+														</td>											
+													</tr>
+													<tr>
+														<td>
+															{{$loanRow->outstanding}}
+														</td>												
+													</tr>
+												</tbody>
+											</table>	
+										</div>
 										
-							<div class="col-sm-12 col-lg-3 text-center">
-										<a href="{{ url ('borrower/myloans') }}">
-										<button type="submit" class="btn loan-detail-button">LOAN DETAILS 2</button>							
-										</a>		
-									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
-											<tbody>
-												
-												<tr>
-													<td class="tab-head">LOAN 1</td>																										
-												</tr>
-												<tr>
-													<td>1 JAN 2016</td>														
-												</tr>
-												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
-												</tr>
-												<tr>
-													<td>10%</td>												
-												</tr>
-												<tr>
-													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
-													</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
-											</tbody>
-										</table>	
-									</div>
+									</div><!--col-3---->
 									
-								</div><!---col--3-->
-								
-								
-								
-								
-								<div class="col-sm-12 col-lg-3 text-center">
-										<a href="{{ url ('borrower/myloans') }}">
-											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 3</button>				
-										</a>	
-									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
-											<tbody>
-												<tr>
-													<td class="tab-head">LOAN 1</td>																										
-												</tr>
-												<tr>
-													<td>1 JAN 2016</td>														
-												</tr>
-												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
-												</tr>
-												<tr>
-													<td>10%</td>												
-												</tr>
-												<tr>
-													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
-													</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
-											</tbody>
-										</table>	
-									</div>									
-								</div><!---col--3-->
-								
-								<div class="col-sm-12 col-lg-3 text-center">
-										<a href="{{ url ('borrower/myloans') }}">
-											<button type="submit" class="btn loan-detail-button">LOAN DETAILS 4</button>								
-										</a>		
-									<div class="table-responsive"><!---table start-->
-										<table class="table table-loan">		
-											<tbody>
-												<tr>
-													<td class="tab-head">LOAN 1</td>																										
-												</tr>
-												<tr>
-													<td>1 JAN 2016</td>														
-												</tr>
-												<tr>
-													<td>Approved</td>														
-												</tr>
-												<tr>
-													<td>Monthly Repayment</td>												
-												</tr>
-												<tr>
-													<td>Auction</td>												
-												</tr>
-												<tr>
-													<td>10%</td>												
-												</tr>
-												<tr>
-													<td>														
-														<button type="submit" class="btn button-grey">View All Bids</button>												
-													</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>$1,000.00</td>												
-												</tr>
-												<tr>
-													<td>													
-														<button type="submit" class="btn button-grey">Repayment Schedule</button>												
-													</td>											
-												</tr>
-												<tr>
-													<td>-</td>												
-												</tr>
-											</tbody>
-										</table>	
-									</div>
-									
-								</div><!---col--3-->							
+								@endforeach
 							
 							</div><!---col--10-->
 							
 						</div><!---row--->
+						@else
+							<p>
+								No Loan Found For this Borrower
+							</p>
+						@endif
 					</div>	<!---col 12--->
 										
 				</div><!--panel container--->			
@@ -276,7 +173,15 @@
 					
 	<div><!---row--->
 </div><!---col 12--->
-
- 
+<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
+ @section ('popup-box_panel_title','All Repayment Schedule')
+	@section ('popup-box_panel_body')
+		
+	@endsection
+	@include('widgets.modal_box.panel', array(	'id'=>'repayment_information',
+												'aria_labelledby'=>'repayment_information',
+												'as'=>'popup-box',
+												'class'=>'',
+											))
 @endsection  
 @stop

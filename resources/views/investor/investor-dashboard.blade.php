@@ -18,8 +18,8 @@
 			<!--second row--->
 			<div class="row">
 				<!-----first col----->
-				<div class="col-lg-6 col-md-6" id="investor-dashboard">
-					<div class="panel panel-primary panel-container">
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-primary panel-container table-border-custom">
 						
 						<div class="panel-heading panel-headsection"><!--panel head-->
 							<div class="row">
