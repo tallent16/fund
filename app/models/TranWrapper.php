@@ -2,7 +2,8 @@
 namespace App\models;
 use Mail;
 use Auth;
-
+use fileupload\FileUpload;
+use File;
 class TranWrapper extends MoneyMatchModel {
 
 	public function CheckUserName($userName)	{
@@ -107,8 +108,7 @@ class TranWrapper extends MoneyMatchModel {
 		return $borrower_id;
 	}
 	
-	
-	function getBusinessOrganisationList() {
+	public function getBusinessOrganisationList() {
 		
 		$bus_orgArry	=	array();	
 		$busorg_sql 	= "SELECT	bo_id,
@@ -126,6 +126,90 @@ class TranWrapper extends MoneyMatchModel {
 			$i++;
 		}
 		return $bus_orgArry;
+	}
+	
+	public function getFinacialRatioList($borrwerID) {
+		
+		$finacialRation_sql		= 	"	SELECT 	ratio_name,
+												ratio_value_current_year current_ratio,
+												ratio_value_previous_year previous_ratio
+										FROM 	borrower_financial_ratios
+										WHERE	borrower_id	=	{$this->borrower_id}";
+		
+		
+		$finacialRation_rs		= 	$this->dbFetchAll($finacialRation_sql);
+		return $finacialRation_rs;
+	}
+	
+	public function getFinacialList($borrwerID) {
+		
+		$finacial_sql	= 	"	SELECT 	indicator_name,
+										IFNULL(ROUND(indicator_value,2),'') indicator_value,
+										currency
+								FROM 	borrower_financial_info
+								WHERE	borrower_id	=	{$borrwerID}";
+		
+		
+		$finacial_rs	= 	$this->dbFetchAll($finacial_sql);
+		return $finacial_rs;
+	}
+	
+	
+	public function getCodeListFinacialRatio() {
+		
+		$finacialRation_sql		= 	"	SELECT	codelist_id,
+													codelist_code,
+													codelist_value,
+													expression
+											FROM	codelist_details
+											WHERE	codelist_id = 13";
+		
+		
+		$finacialRation_rs		= 	$this->dbFetchAll($finacialRation_sql);
+		return $finacialRation_rs;
+	}
+	
+	public function getCodeListFinacial() {
+		
+		$finacial_sql	= 	"	SELECT	codelist_id,
+													codelist_code,
+													codelist_value,
+													expression
+											FROM	codelist_details
+											WHERE	codelist_id = 14";
+		
+		
+		$finacial_rs	= 	$this->dbFetchAll($finacial_sql);
+		return $finacial_rs;
+	}
+	
+	public function getImagePath($desitinationPath) {
+		
+		$fileUploadObj	=	new FileUpload();
+		$imagePath		=	$fileUploadObj->getFile($desitinationPath);
+		if(!$this->checkRemoteFile($imagePath)) {
+			return	url()."/img/noimage.png";
+		}else{
+			return	$imagePath;
+		}
+		
+	}
+	
+	function checkRemoteFile($url)	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,$url);
+		// don't download content
+		curl_setopt($ch, CURLOPT_NOBODY, 1);
+		curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		if(curl_exec($ch)!==FALSE)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 }

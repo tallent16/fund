@@ -9,7 +9,7 @@ class InvestorMyLoanInfoController extends MoneyMatchController {
 	}
 	
 	//render the borrower Dashboard page
-	public function index() {		
+	public function indexAction() {		
 		
 		return view('investor.investor-myloaninfo')					
 					->with("classname","fa fa-gear fa-fw user-icon"); 

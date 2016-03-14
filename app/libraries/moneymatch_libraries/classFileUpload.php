@@ -22,9 +22,8 @@ class FileUpload {
 		$s3BucketEnabled	=	false;
 		if ($s3BucketEnabled) {
 			//This will be implemented later 
-			
 		} else {
-			return	base_path()."/".$destinationPath;
+			return	url()."/".$destinationPath;
 		}
 	}
 	

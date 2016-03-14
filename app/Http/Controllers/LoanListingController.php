@@ -1,5 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
+use	\App\models\LoanListingModel;
+use Response;
 
 class LoanListingController extends MoneyMatchController {
 	/*------------------------------------------------------------
@@ -7,6 +9,8 @@ class LoanListingController extends MoneyMatchController {
 	 *  
 	 * */
 
+	public $loanListing;
+	
 	public function __construct() {	
 		
 		$this->middleware('auth');
@@ -14,13 +18,35 @@ class LoanListingController extends MoneyMatchController {
 	}
 	
 	public function littleMoreInit() {
-		
+		$this->loanListing = new LoanListingModel();
 	}
 
-	public function index() {
+	public function indexAction() { 
+		$filterIntRate 	= 'all';
+		$filterLoanAmt	= 'all';
+		$filterTenure 	= 'all';
+		$filterGrade 	= 'all';
 		
-		return view('borrower.borrower-loanlisting')
-			->with("classname","fa fa-list fa-fw user-icon"); 
+		if (isset($_REQUEST["intrate_filter"])) 
+			$filterIntRate 	= $_REQUEST["intrate_filter"];
+		
+		if (isset($_REQUEST["loanamt_filter"])) 
+		$filterLoanAmt	= $_REQUEST["loanamt_filter"];
+		
+		
+		if (isset($_REQUEST["tenure_filter"])) 
+		$filterTenure 	= $_REQUEST["tenure_filter"];
+
+		if (isset($_REQUEST["grade_filter"])) 
+		$filterGrade 	= $_REQUEST["grade_filter"];			
+		
+		$this->loanListing->getLoanList($filterIntRate, $filterLoanAmt, $filterTenure, $filterGrade);
+		$this->loanListing->processDropDowns();
+
+		$withArry	=	array(	"loanListing" => $this->loanListing	, "classname"=>"fa fa-list fa-fw user-icon");
+		return view('common.loanlisting')
+			->with($withArry); 
+			
 					
 	}
 

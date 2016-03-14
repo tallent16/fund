@@ -15,6 +15,17 @@
 					   	
 							<div class="row">		
 								<div class="col-xs-4">
+									<label>{{ Lang::get('borrower-applyloan.purpose_of_loan_type') }}</label>
+								</div>	
+								<div class="col-xs-8">															   
+									{{ Form::select('purpose_singleline', 
+												$BorModLoan->purposeSingleLineInfo, 
+												$BorModLoan->purpose_singleline, 
+												["class" => "selectpicker"]) }}  	
+								</div>
+							</div>
+							<div class="row">		
+								<div class="col-xs-4">
 									<label>{{ Lang::get('borrower-applyloan.purpose_of_loan') }}</label>
 								</div>	
 								<div class="col-xs-8">															   

@@ -1,14 +1,13 @@
 	<ul class="nav" id="side-menu">
 		<li class="sidebar-balance">
-			{{ Lang::get('borrower-leftmenu.balance') }} : $100,000
-		<!-- /input-group -->
+			{{ Lang::get('borrower-leftmenu.balance') }} : $100,000 		
 		</li>
 		<li>
 			<a href="{{ url ('borrower/dashboard') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
 		</li>
 		<li> 
 			<a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
-		</li>                 
+		</li>               
 									 
 		<li>
 			<a href="#"><i class="fa fa-money fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>

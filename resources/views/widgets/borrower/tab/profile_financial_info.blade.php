@@ -1,230 +1,105 @@
+@var	$finacialRatioInfo	=	$modelBorPrf->finacialRatioInfo;
+@var	$finacialInfo		=	$modelBorPrf->finacialInfo;
 <div id="financial_info" class="tab-pane fade">  	
 	<div class="panel panel-default directorinfo"> 						
 		<div class="panel-body">
-			<form class="form-horizontal" role="form">	
-					<div class="col-sm-6">
-						<div class="table-responsive"><!---table start-->
-							<table class="table table-loan table-border-custom">		
-								<tbody>
-									<tr>
-										<th class="tab-head text-left">Financial Ratio</th>
-										<th class="tab-head text-left">Previous Year</th>	
-										<th class="tab-head text-left">Current Year</th>				
-									</tr>
-									<tr>
-										<td class="text-left col-sm-4">
-												Revenue Growth										
-										</td>
-										<td><input 	type="text" 
-												id="rg_py_value" 
-												name="rg_py_value"
-												value="NA"
-												class="form-control"
-												/>	</td>	
-										<td><input 	type="text" 
-												id="rg_cy_value" 
-												name="rg_cy_value"
-												value="-22.15%"
-												class="form-control"
-												/></td>		
-									</tr>		
-									<tr>
-										<td class="text-left col-sm-4">
-											Gross Margin
-										</td>
-										<td><input 	type="text" 
-												id="gm_py_value" 
-												name="gm_py_value"
-												value="90.98%"
-												class="form-control"
-												/></td>	
-										<td><input 	type="text" 
-												id="gm_cy_value" 
-												name="gm_cy_value"
-												value="96.74%"
-												class="form-control"
-												/></td>		
-									</tr>
-									<tr>
-										<td class="text-left col-sm-4">
-											Net Margin
-										</td>
-										<td><input 	type="text" 
-												id="nm_py_value" 
-												name="nm_py_value"
-												value="0.56%"
-												class="form-control"
-												/></td>	
-										<td><input 	type="text" 
-												id="nm_cy_value" 
-												name="nm_cy_value"
-												value="41.03%"
-												class="form-control"
-												/></td>		
-									</tr>	
-									<tr>
-										<td class="text-left">
-											Return On Net Worth
-										</td>
-										<td><input 	type="text" 
-												id="rnw_py_value" 
-												name="rnw_py_value"
-												value="0.68%"
-												class="form-control"
-												/></td>	
-										<td><input 	type="text" 
-												id="rnw_cy_value" 
-												name="rnw_cy_value"
-												value="27.84%"
-												class="form-control"
-												/></td>		
-									</tr>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="table-responsive"><!---table start-->
+						<table class="table table-loan table-border-custom text-left">		
+							<tbody>
+								<tr>
+									<th class="tab-head">Financial Ratio</th>
+									<th class="tab-head">Previous Year</th>	
+									<th class="tab-head">Current Year</th>				
+								</tr>
+								@if(count($finacialRatioInfo)>0)
+									@var	$i	=1
+									@foreach($finacialRatioInfo as $finRatioRow)
 										<tr>
-										<td class="text-left">
-											Receivables Turnover
-										</td>
-										<td><input 	type="text" 
-												id="rto_py_value" 
-												name="rto_py_value"
-												value="60.04%"
-												class="form-control"
-												/></td>	
-										<td><input 	type="text" 
-												id="rto_cy_value" 
-												name="rto_cy_value"
-												value="24.62%"
-												class="form-control"
-												/></td>		
-									</tr>	
-										<tr>
-										<td class="text-left">
-											Inventory Turnover
-										</td>
-										<td><input 	type="text" 
-												id="ito_py_value" 
-												name="ito_py_value"
-												value="0.11%"
-												class="form-control"
-												/></td>	
-										<td><input 	type="text" 
-												id="ito_cy_value" 
-												name="ito_cy_value"
-												value="0.03%"
-												class="form-control"
-												/></td>		
-										</tr>	
-										<tr>
-											<td class="text-left">
-												Total asset Turnover
+											<td class="tab-left-head">
+												{{$finRatioRow['ratio_name']}}
+												<input 	type="hidden" 
+														id="ratio_id_{{$i}}" 
+														name="finacialRatio_row[ratio_id][]"
+														value="{{$i}}"
+														class="form-control"
+														/>
+												<input 	type="hidden" 
+														id="ratio_name_{{$i}}" 
+														name="finacialRatio_row[ratio_name][]"
+														value="{{$finRatioRow['ratio_name']}}"
+														class="form-control"
+														/>
 											</td>
-											<td><input 	type="text" 
-													id="tat_py_value" 
-													name="tat_py_value"
-													value="1.21%"
-													class="form-control"
-													/></td>	
-											<td><input type="text" 
-													id="tat_cy_value" 
-													name="tat_cy_value"
-													value="0.68%"
-													class="form-control"
-													/></td>		
-									</tr>	
-												
-								</tbody>
-							</table>	
-						</div>
+											<td>
+												<input 	type="text" 
+														id="previous_ratio_{{$i}}" 
+														name="finacialRatio_row[previous_ratio][]"
+														value="{{$finRatioRow['previous_ratio']}}"
+														class="form-control"
+														{{ $modelBorPrf->viewStatus }} />
+											</td>	
+											<td>
+												<input 	type="text" 
+														id="current_ratio_{{$i}}" 
+														name="finacialRatio_row[current_ratio][]"
+														value="{{$finRatioRow['current_ratio']}}"
+														class="form-control"
+														{{ $modelBorPrf->viewStatus }} />
+											</td>	
+										</tr>
+										@var $i++			
+									@endforeach
+								@endif
+							</tbody>
+						</table>	
 					</div>
-					
-					<div class="col-sm-6">			
-						<div class="table-responsive"><!---table start-->
-							<table class="table table-loan table-border-custom  text-left">		
-								<tbody>
-									<tr>
-										<th class="tab-head" colspan="2">Financials</th>																	
-									</tr>
-									<tr>
-										<td class="text-left">
-											Gross profit
-										</td>
-										<td><input type="text" 
-													id="gp_value" 
-													name="gp_value"
-													value="$365,371"
-													class="form-control"
-													/></td>										
-									</tr>		
-									<tr>
-										<td class="text-left">
-											EBIT
-										</td>
-										<td><input type="text" 
-													id="ebit_value" 
-													name="ebit_value"
-													value="$2,252"
-													class="form-control"
-													/></td>									
-									</tr>
-									<tr>
-										<td class="text-left">
-											Net Profit(Loss)
-										</td>
-										<td><input type="text" 
-													id="np_value" 
-													name="np_value"
-													value="$2,252"
-													class="form-control"
-													/></td>									
-									</tr>	
-									<tr>
-										<td class="text-left">
-											Total Asset
-										</td>
-										<td><input type="text" 
-													id="ta_value" 
-													name="ta_value"
-													value="$2,252"
-													class="form-control"
-													/></td>								
-									</tr>
+				</div>
+				
+				<div class="col-sm-6">			
+					<div class="table-responsive"><!---table start-->
+						<table class="table table-loan table-border-custom  text-left">		
+							<tbody>
+								<tr>
+									<th class="tab-head" colspan="2">Financials</th>																	
+								</tr>
+								@if(count($finacialInfo)>0)
+									@var	$i	=1
+									@foreach($finacialInfo as $finacialRow)
 										<tr>
-										<td class="text-left">
-											Total Liabilities
-										</td>
-										<td><input type="text" 
-													id="totalli_value" 
-													name="totalli_value"
-													value="$332,524"
-													class="form-control"
-													/></td>								
-									</tr>	
-										<tr>
-										<td class="text-left">
-											Total Liabilities and Equity
-										</td>
-										<td><input type="text" 
-													id="tle_value" 
-													name="tle_value"
-													value="$0"
-													class="form-control"
-													/></td>									
-									</tr>	
-										<tr>
-										<td class="text-left">
-											Total asset Turnover
-										</td>
-										<td><input type="text" 
-													id="toturn_value" 
-													name="toturn_value"
-													value="$332,524"
-													class="form-control"
-													/></td>										
-									</tr>												
-								</tbody>
-							</table>	
-						</div><!----table responsive--->
-				</div><!---col---->				
-			</form>
+											<td class="tab-left-head">
+												{{$finacialRow['indicator_name']}}
+												<input 	type="hidden" 
+														id="indicator_id_{{$i}}" 
+														name="finacial_row[indicator_id][]"
+														value="{{$i}}"
+														class="form-control"
+														/>
+												<input 	type="hidden" 
+														id="indicator_name_{{$i}}" 
+														name="finacial_row[indicator_name][]"
+														value="{{$finacialRow['indicator_name']}}"
+														class="form-control"
+														/>
+														
+											</td>
+											<td>
+												<input 	type="text" 
+														id="indicator_value_{{$i}}" 
+														name="finacial_row[indicator_value][]"
+														value="{{$finacialRow['indicator_value']}}"
+														class="form-control"
+														{{ $modelBorPrf->viewStatus }} />
+											</td>										
+										</tr>		
+									@endforeach
+								@endif			
+							</tbody>
+						</table>	
+					</div><!----table responsive--->
+				</div><!---col---->		
+			</div><!---row---->	
 		</div><!--panel body-->													
 	</div><!--panel-->
 </div><!--profile tab-->

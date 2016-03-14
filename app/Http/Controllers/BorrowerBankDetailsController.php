@@ -28,7 +28,7 @@ class BorrowerBankDetailsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function indexAction()
 	{
 		return view('borrower.borrower-bankdetails') 
 					->with("classname","fa fa-university fa-fw user-icon"); 

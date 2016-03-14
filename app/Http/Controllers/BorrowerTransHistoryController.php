@@ -28,7 +28,7 @@ class BorrowerTransHistoryController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function indexAction()
 	{
 		return view('borrower.borrower-transcationhistory')
 				->with("classname","fa fa-credit-card fa-fw user-icon"); 

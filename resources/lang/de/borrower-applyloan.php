@@ -19,6 +19,7 @@ return [
 	'document_submit'			=> 'Einzureichenden Unterlagen',
 	'next'						=> 'Nächster',
 	'purpose_of_loan'			=> 'Zweck des Darlehens',
+	'purpose_of_loan_type'		=> 'Zweck Art',
 	'loan_amount'				=> 'Darlehensbetrag',
 	'loan_tenure'				=> 'Amtszeit des Darlehens',
 	'target_int'				=> 'Ziel Zinsen%',

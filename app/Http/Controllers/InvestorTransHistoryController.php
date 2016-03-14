@@ -9,7 +9,7 @@ class InvestorTransHistoryController extends MoneyMatchController {
 	}
 	
 	//render the Investor Transcation History
-	public function index() {		
+	public function indexAction() {		
 		
 		return view('investor.investor-transcationhistory')					
 					->with("classname","fa fa-credit-card fa-fw user-icon"); 

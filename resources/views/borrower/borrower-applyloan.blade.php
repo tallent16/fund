@@ -98,8 +98,11 @@
 				<div class="col-sm-12"> 
 					<div class="pull-right">	
 						@if($trantype	==	"edit")
+							@var	$preview	=	"borrower/myloans/".base64_encode($BorModLoan->loan_id)
 							<input type="button" 
 									value="Preview"
+									id="preview_url"
+									data-preview-url="{{url($preview)}}"
 									class="btn verification-button"
 									/>
 						@endif
@@ -144,6 +147,9 @@ $(document).ready(function(){
 	format: 'dd/mm/yyyy'
 
 	}); 
+	$("#preview_url").on('click',function (){
+		window.location	=	$(this).attr("data-preview-url");
+	});
 }); 
 </script>  	
     @endsection  

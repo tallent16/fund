@@ -61,6 +61,18 @@
 						
 						<div class="row">		
 							<div class="col-xs-4">											
+								<label>{{ Lang::get('borrower-profile.industry') }}</label>												
+							</div>
+												
+							<div class="col-xs-8">													
+								{{ Form::select('industry',$modelBorPrf->industryInfo , 
+															$modelBorPrf->industry, 
+															['class' => 'selectpicker']) }}								
+							</div>
+						</div>		
+						
+						<div class="row">		
+							<div class="col-xs-4">											
 								<label>{{ Lang::get('borrower-profile.date_incorp') }}</label>												
 							</div>
 												
@@ -127,7 +139,7 @@
 									<input 	type="file" 
 												class="jfilestyle" 
 												data-buttonBefore="true" 
-												name="documents[]">									
+												name="company_image">									
 							</div>
 						</div>
 							
@@ -139,9 +151,9 @@
 												
 							<div class="col-xs-8">									
 								<input 	type="file" 
-												class="jfilestyle" 
-												data-buttonBefore="true" 
-												name="documents[]">									
+										class="jfilestyle" 
+										data-buttonBefore="true" 
+										name="company_thumbnail">									
 							</div>
 						</div>
 							
@@ -230,7 +242,7 @@
 								<input 	type="file" 
 												class="jfilestyle" 
 												data-buttonBefore="true" 
-												name="documents[]">								
+												name="company_video">								
 							</div>
 						</div>
 							
@@ -242,4 +254,6 @@
 			</div><!---panel body---> 
 		</div><!---panel---> 
 </div><!---tab---> 
+
+
 

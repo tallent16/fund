@@ -39,11 +39,21 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		if (null !== $doc_id) {
 			$sourceId 		=	explode("_",$doc_id);
 			$loan_doc_url	=	$this->borrowerApplyLoanModel->getBorrowerLoanDocUrl($sourceId[0]);
-			return  Response::download($loan_doc_url);
-		} 
+			$imageName = $this->get_basename($loan_doc_url);
+			//~ return  Response::download($loan_doc_url);
+			header('Content-Disposition: attachment; filename=' .$this->get_basename($loan_doc_url));
+			header('Content-Type: application/force-download');
+			header('Content-Type: application/octet-stream');
+			header('Content-Type: application/download');
+			header('Content-Description: File Transfer');
+			echo file_get_contents($loan_doc_url);
+		}
 	}
 	
-		protected function processLoan($postArray) {
+	public function get_basename($filename) {
+		return preg_replace('/^.+[\\\\\\/]/', '', $filename);
+	}
+	protected function processLoan($postArray) {
 		
 		$tranType 	= 	$postArray["trantype"];
 		$result	 	= 	$this->borrowerApplyLoanModel->processLoan($postArray);

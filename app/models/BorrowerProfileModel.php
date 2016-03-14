@@ -1,50 +1,61 @@
 <?php namespace App\models;
-
+use fileupload\FileUpload;
+use File;
+use Config;
 class BorrowerProfileModel extends TranWrapper {
 	
-	public $borrower_id  					=  	"";
-	public $bo_id  							=  	"";
-	public $user_id  						=  	"";
-	public $business_name  					=  	"";
-	public $business_organisation  			=  	"";
-	public $date_of_incorporation  			=  	"";
-	public $business_registration_number  	=	"";
-	public $contact_person  				=  	"";
-	public $contact_person_email  			=  	"";
-	public $contact_person_mobile  			=  	"";
-	public $paid_up_capital  				=  	"";
-	public $number_of_employees  			=  	"";
-	public $operation_since  				=  	"";
-	public $registered_address  			=  	"";
-	public $mailing_address  				=  	"";
-	public $company_profile  				=  	"";
-	public $comments  						=  	"";
-	public $status  						=  	"";
-	public $statusText  					=  	"";
-	public $viewStatus  					=  	"";
-	public $company_image  					=  	"";
-	public $company_video_url  				=  	"";
-	public $borrower_bankid  				=  	"";
-	public $bank_name  						=  	"";
-	public $branch_code  					=  	"";
-	public $bank_account_number  			=  	"";
-	public $verified_status  				=  	"";
-	public $bank_code						=  	"";
-	public $director_details				= 	array();
-	public $directorSelectOptions			= 	"";
-	public $busin_organSelectOptions		= 	"";
-	protected $table = 'borrowers';
+	public 	$borrower_id  					=  	"";
+	public 	$bo_id  						=  	"";
+	public 	$user_id  						=  	"";
+	public 	$business_name  				=  	"";
+	public 	$business_organisation  		=  	"";
+	public 	$date_of_incorporation  		=  	"";
+	public 	$business_registration_number  	=	"";
+	public 	$contact_person  				=  	"";
+	public 	$contact_person_email  			=  	"";
+	public 	$contact_person_mobile  		=  	"";
+	public 	$paid_up_capital  				=  	"";
+	public 	$number_of_employees  			=  	"";
+	public 	$operation_since  				=  	"";
+	public 	$registered_address  			=  	"";
+	public 	$mailing_address  				=  	"";
+	public 	$company_profile  				=  	"";
+	public 	$company_aboutus  				=  	"";
+	public 	$risk_industry  				=  	"";
+	public 	$risk_strength  				=  	"";
+	public 	$risk_weakness  				=  	"";
+	public 	$comments  						=  	"";
+	public 	$status  						=  	"";
+	public 	$statusText  					=  	"";
+	public 	$viewStatus  					=  	"";
+	public 	$company_image  				=  	"";
+	public 	$company_image_thumbnail		=  	"";
+	public 	$company_video_url  			=  	"";
+	public 	$borrower_bankid  				=  	"";
+	public 	$bank_name  					=  	"";
+	public 	$branch_code  					=  	"";
+	public 	$bank_account_number  			=  	"";
+	public 	$verified_status  				=  	"";
+	public 	$bank_code						=  	"";
+	public 	$director_details				= 	array();
+	public 	$industryInfo					= 	array();
+	public 	$finacialRatioInfo 				= 	array();
+	public 	$finacialInfo 					= 	array();
+	public 	$directorSelectOptions			= 	"";
+	public 	$busin_organSelectOptions		= 	"";
+	protected $table 						= 	'borrowers';
 	
 	protected $primaryKey = 'borrower_id';
 	public function getBorrowerDetails() {
 		
 		$this->getBorrowerCompanyInfo();
 		$this->getBorrowerDirectorInfo();
+		$this->getBorrowerFinacialRatio();
+		$this->getBorrowerFinacial();
 		$this->processDropDowns();
 	}
 		
 	public function getBorrowerCompanyInfo() {
-		
 		
 		$current_user_id	=	 $this->getCurrentuserID();
 		
@@ -64,6 +75,10 @@ class BorrowerProfileModel extends TranWrapper {
 						borrowers.registered_address,
 						borrowers.mailing_address,
 						borrowers.company_profile,
+						borrowers.company_aboutus,
+						borrowers.risk_industry,
+						borrowers.risk_strength,
+						borrowers.risk_weakness,
 						borrowers.comments,
 						borrowers.status,
 						case borrowers.status 
@@ -79,6 +94,7 @@ class BorrowerProfileModel extends TranWrapper {
 							   when 4 then 'disabled'
 						end as viewStatus,
 						borrowers.company_image,
+						borrowers.company_image_thumbnail,
 						borrowers.company_video_url,
 						borrower_banks.borrower_bankid,
 						borrower_banks.bank_name,
@@ -166,11 +182,15 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function processProfile($postArray) {
 		
+		//~ echo "<pre>",print_r($postArray),"</pre>";
+		//~ die;	
 		$transType = $postArray['trantype'];
 		if($transType	==	"edit") {
 			$borrowerId  	= 	$postArray['borrower_id'];
 			$whereArry		=	array("borrower_id" => $borrowerId);
-			 $this->dbDelete("borrower_directors",$whereArry);
+			$this->dbDelete("borrower_directors",$whereArry);
+			$this->dbDelete("borrower_financial_ratios",$whereArry);
+			$this->dbDelete("borrower_financial_info",$whereArry);
 		}
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
 		
@@ -178,6 +198,16 @@ class BorrowerProfileModel extends TranWrapper {
 			$directorRows = $postArray['director_row'];
 			
 			$this->updateBorrowerDirectorInfo($directorRows,$borrowerId);
+		}
+		
+		if (isset($postArray['finacialRatio_row'])) {
+			$finacialRatioRows = $postArray['finacialRatio_row'];
+			$this->updateBorrowerFinacialRatioInfo($finacialRatioRows,$borrowerId);
+		}
+		
+		if (isset($postArray['finacial_row'])) {
+			$finacialRows = $postArray['finacial_row'];
+			$this->updateBorrowerFinacialInfo($finacialRows,$borrowerId);
 		}
 		
 		$this->updateBorrowerBankInfo($postArray,$borrowerId,$transType);
@@ -203,9 +233,10 @@ class BorrowerProfileModel extends TranWrapper {
 		else
 			$date_of_incorporation		= 	$this->getDbDateFormat($date_of_incorporation);
 		$business_reg_number 			= 	$postArray['business_registration_number'];
+		$industry			 			= 	$postArray['industry'];
 		$contact_person 				= 	$postArray['contact_person'];
 		$contact_person_mobile 			= 	$postArray['contact_person_mobile'];
-		$paid_up_capital 				= 	 $this->makeFloat($postArray['paid_up_capital']);
+		$paid_up_capital 				= 	$this->makeFloat($postArray['paid_up_capital']);
 		$number_of_employees 			= 	$postArray['number_of_employees'];
 		$operation_since 				= 	$postArray['operation_since'];
 		if($operation_since	==	"") 
@@ -215,11 +246,58 @@ class BorrowerProfileModel extends TranWrapper {
 		$registered_address 			= 	$postArray['registered_address'];
 		$mailing_address 				= 	$postArray['mailing_address'];
 		$company_profile 				= 	$postArray['company_profile'];
+		$company_aboutus 				= 	$postArray['about_us'];
+		$risk_industry 					= 	$postArray['risk_industry'];
+		$risk_strength 					= 	$postArray['risk_strength'];
+		$risk_weakness 					= 	$postArray['risk_weakness'];
 		$status 						= 	$status;
-		$current_user_id				=	 $this->getCurrentuserID();
+		$current_user_id				=	$this->getCurrentuserID();
+		$destinationPath 				= 	Config::get('moneymatch_settings.upload_bor');
+		$updateDataArry					=	array();
+		$fileUploadObj					=	new FileUpload();
+		if(isset($postArray['company_image'])){
+			$file		=	$postArray['company_image'];
+			$imagePath	=	$destinationPath."/".$borrowerId."/profile/image";
+			$fileUploadObj->createIfNotExists($imagePath);
+			//~ if(!File::exists($imagePath)) {
+				//~ File::makeDirectory($imagePath, 0755, true);
+			//~ }
+			$fileUploadObj->storeFile($imagePath ,$file);
+			$filename 		= 	$file->getClientOriginalName();
+			$company_image	=	$imagePath."/".$filename;
+			$updateDataArry		=	array(	"company_image"=>$company_image,
+											"company_image_thumbnail"=>$company_image
+											);
+		}
+		if(isset($postArray['company_thumbnail'])){
+			$file			=	$postArray['company_thumbnail'];
+			$thumbnailPath	=	$destinationPath."/".$borrowerId."/profile/thumbnail";
+			$fileUploadObj->createIfNotExists($thumbnailPath);
+			//~ if(!File::exists($thumbnailPath)) {
+				//~ File::makeDirectory($thumbnailPath, 0755, true);
+			//~ }
+			$fileUploadObj->storeFile($thumbnailPath ,$file);
+			$filename 									= 	$file->getClientOriginalName();
+			$company_thumbnail							=	$thumbnailPath."/".$filename;
+			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
+			
+		}
+		if(isset($postArray['company_video'])){
+			$file			=	$postArray['company_video'];
+			$videoPath		=	$destinationPath."/".$borrowerId."/profile/video";
+			$fileUploadObj->createIfNotExists($videoPath);
+			//~ if(!File::exists($videoPath)) {
+				//~ File::makeDirectory($videoPath, 0755, true);
+			//~ }
+			$fileUploadObj->storeFile($thumbnailPath ,$file);
+			$filename 								= 	$file->getClientOriginalName();
+			$company_video							=	$thumbnailPath."/".$filename;
+			$updateDataArry["company_video_url"]	=	$company_video;
+		}
 		
 		$dataArray = array(	'business_name' 				=> ($business_name!="")?$business_name:null,
 							'bo_id'							=> ($business_organisation!="")?$business_organisation:null,
+							'industry'						=> ($industry!="")?$industry:null,
 							'date_of_incorporation'			=> $date_of_incorporation,
 							'business_registration_number' 	=> ($business_reg_number!="")?$business_reg_number:null,
 							'contact_person' 				=> ($contact_person!="")?$contact_person:null,
@@ -227,12 +305,21 @@ class BorrowerProfileModel extends TranWrapper {
 							'paid_up_capital' 				=> ($paid_up_capital!="")?$paid_up_capital:null,
 							'number_of_employees' 			=> ($number_of_employees!="")?$number_of_employees:null,
 							'operation_since' 				=> ($operation_since!="")?$operation_since:null,
+							'risk_industry' 				=> ($risk_industry!="")?$risk_industry:null,
+							'risk_strength' 				=> ($risk_strength!="")?$risk_strength:null,
+							'risk_weakness' 				=> ($risk_weakness!="")?$risk_weakness:null,
 							'registered_address' 			=> ($registered_address!="")?$registered_address:null,
 							'mailing_address' 				=> ($mailing_address!="")?$mailing_address:null,
 							'company_profile' 				=> ($company_profile!="")?$company_profile:null,
+							'company_aboutus' 				=> ($company_aboutus!="")?$company_aboutus:null,
 							'status' 						=> ($status!="")?$status:null,
 							'user_id' 						=> $current_user_id);
-							
+		
+		if(count($updateDataArry) > 0) {
+			foreach($updateDataArry as $key=>$value) {
+				$dataArray[$key]	=	$value;
+			}	
+		}					
 	//~ echo "<pre>",print_r($dataArray),"</pre>";
 		//~ die;	
 		if ($transType != "edit") {
@@ -285,6 +372,64 @@ class BorrowerProfileModel extends TranWrapper {
 		return 1;
 	}
 	
+	public function updateBorrowerFinacialRatioInfo($RatioRows,$borrowerId) {
+		
+		//~ echo "<pre>",print_r($finacialRatioRows),"</pre>";
+		//~ die;
+		$numRows = count($RatioRows['ratio_id']);
+		$rowIndex = 0;
+		
+		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+			
+			$borrower_id 				= $borrowerId;
+			$ratio_name					= $RatioRows['ratio_name'][$rowIndex];
+			$ratio_value_current_year	= $RatioRows['current_ratio'][$rowIndex];
+			$ratio_value_previous_year	= $RatioRows['previous_ratio'][$rowIndex];
+			
+			// Construct the data array
+			$dataArray = array(	
+							'borrower_id' 				=> $borrower_id,
+							'ratio_name'				=> $ratio_name,
+							'ratio_value_current_year'	=> $ratio_value_current_year,
+							'ratio_value_previous_year'	=> $ratio_value_previous_year);		
+							
+			
+			// Insert the rows (for all types of transaction)
+			$result =  $this->dbInsert('borrower_financial_ratios', $dataArray, true);
+			if ($result < 0) {
+				return -1;
+			}
+		}
+		return 1;
+	}
+	
+	public function updateBorrowerFinacialInfo($finacialRows,$borrowerId) {
+		
+		$numRows = count($finacialRows['indicator_name']);
+		$rowIndex = 0;
+		
+		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+			
+			$borrower_id 				= 	$borrowerId;
+			$indicator_name				= 	$finacialRows['indicator_name'][$rowIndex];
+			$indicator_value			= 	$finacialRows['indicator_value'][$rowIndex];
+				
+			// Construct the data array
+			$dataArray = array(	
+							'borrower_id' 				=> $borrower_id,
+							'indicator_name'			=> $indicator_name,
+							'indicator_value'			=> $indicator_value);		
+							
+			
+			// Insert the rows (for all types of transaction)
+			$result =  $this->dbInsert('borrower_financial_info', $dataArray, true);
+			if ($result < 0) {
+				return -1;
+			}
+		}
+		return 1;
+	}
+	
 	public function updateBorrowerBankInfo($postArray,$borrowerId,$transType) {
 		
 		$dataArray = array(	'borrower_id' 			=> $borrowerId,
@@ -293,8 +438,7 @@ class BorrowerProfileModel extends TranWrapper {
 							'branch_code' 			=> $postArray['branch_code'],
 							'bank_account_number'	=> ($postArray['bank_account_number']!="")
 																				?$postArray['bank_account_number']:NULL,
-							'active_status' 		=> 1,
-							'verified_status' 		=> $postArray['verified_status']);
+							'active_status' 		=> 1);
 							
 		if ($transType != "edit") {
 			$borrowerBankId =  $this->dbInsert('borrower_banks', $dataArray, true);
@@ -312,9 +456,95 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function processDropDowns() {
 		
+		$industry_sql				=	"	SELECT	codelist_id,
+													codelist_code,
+													codelist_value,
+													expression
+											FROM	codelist_details
+											WHERE	codelist_id = 15";
+											
+		$industry_rs				= 	$this->dbFetchAll($industry_sql);
+		if ($industry_rs) {
+			foreach($industry_rs as $industryRow) {
+				$industryRowIndex	=	$industryRow->codelist_value;
+				$industryRowvalue	=	$industryRow->codelist_value;
+				$this->industryInfo[$industryRowIndex]	=	$industryRowvalue;
+			}
+		}
+		
 		$this->directorSelectOptions	=	$this->constructSelectOption($this->getBorrowerDirectorList(),
 															'name', 'id',"", "");		
 		$this->busin_organSelectOptions	=	$this->constructSelectOption($this->getBusinessOrganisationList(),
 															'bo_name', 'bo_id',$this->bo_id, "");		
+	}
+	
+	public function getBorrowerFinacialRatio() {
+		
+		$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		$finacialRation_rs		= 	 $this->getFinacialRatioList($current_borrower_id);
+			
+		if ($finacialRation_rs) {
+			foreach ($finacialRation_rs as $finRatioRow) {
+				$newrow = count($this->finacialRatioInfo);
+				$newrow ++;
+				foreach ($finRatioRow as $colname => $colvalue) {
+					$this->finacialRatioInfo[$newrow][$colname] = $colvalue;
+				}
+			}
+		}else{
+			$finacialRation_rs	=	 $this->getBorrowerCodeListFinacialRatio();	
+		}
+		return $finacialRation_rs;
+	}
+			
+	public function getBorrowerFinacial() {
+		
+		$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		$finacial_rs			= 	 $this->getFinacialList($current_borrower_id);
+			
+		if ($finacial_rs) {
+			foreach ($finacial_rs as $directorRow) {
+				$newrow = count($this->finacialInfo);
+				$newrow ++;
+				foreach ($directorRow as $colname => $colvalue) {
+					$this->finacialInfo[$newrow][$colname] = $colvalue;
+				}
+			}
+		}else{
+			$finacial_rs	=	 $this->getBorrowerCodeListFinacial();	
+		}
+		return $finacial_rs;
+	}
+	
+	public function getBorrowerCodeListFinacialRatio() {
+		
+		$finacialRation_rs		= 	 $this->getCodeListFinacialRatio();
+			
+		if ($finacialRation_rs) {
+			foreach ($finacialRation_rs as $finRatioRow) {
+				$newrow = count($this->finacialRatioInfo);
+				$newrow ++;
+				$this->finacialRatioInfo[$newrow]['ratio_name'] 	= 	$finRatioRow->codelist_value;
+				$this->finacialRatioInfo[$newrow]['current_ratio'] 	= 	"";
+				$this->finacialRatioInfo[$newrow]['previous_ratio'] = 	"";
+			}
+		}
+		return $finacialRation_rs;
+	}
+			
+	public function getBorrowerCodeListFinacial() {
+		
+		$finacial_rs			= 	 $this->getCodeListFinacial();
+			
+		if ($finacial_rs) {
+			foreach ($finacial_rs as $finacialRow) {
+				$newrow = count($this->finacialInfo);
+				$newrow ++;
+				$this->finacialInfo[$newrow]['indicator_name'] 		= 	$finacialRow->codelist_value;
+				$this->finacialInfo[$newrow]['indicator_value'] 	= 	"";
+				$this->finacialInfo[$newrow]['currency'] 			= 	"";
+			}
+		}
+		return $finacial_rs;
 	}
 }

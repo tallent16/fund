@@ -9,7 +9,7 @@ class InvestorWithdrawController extends MoneyMatchController {
 	}
 	
 	//render the investor withdraw page
-	public function index() {		
+	public function indexAction() {		
 		
 		return view('investor.investor-withdraw')					
 					->with("classname","fa fa-university fa-fw user-icon"); 

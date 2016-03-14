@@ -1,8 +1,7 @@
 <div id="bank_info" class="tab-pane fade">  	
 	<div class="panel panel-default directorinfo applyloan"> 						
 		<div class="panel-body">
-		<form class="form-horizontal" role="form">	
-			
+			<div class="row">
 				<fieldset {{ $modelBorPrf->viewStatus }}>	
 				<div class="col-sm-6">
 					
@@ -72,7 +71,7 @@
 				</div><!--col-6--->
 														
 				</fieldset>	
-			
-		</form>
-	</div></div>
+			</div>
+		</div>
+	</div>
 </div><!--profile tab-->

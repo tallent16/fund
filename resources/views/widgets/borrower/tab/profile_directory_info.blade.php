@@ -4,10 +4,10 @@
 	<div class="panel panel-default directorinfo applyloan"> 						
 		<div class="panel-body">
 	
-			<div class="col-sm-12 col-lg-8">	
-				<div class="row">	
-					<div class="col-xs-12">		
-						<form class="form-inline">													 										
+			<div class="col-sm-12 col-lg-7">	
+			
+						<form class="form-inline">	
+																			 										
 							<div class="row">	
 								<div class="col-xs-3">																				
 									<label>{{ Lang::get('borrower-profile.select') }}:</label>											
@@ -21,8 +21,10 @@
 									</select>											
 								</div>										
 							</div><!--row-->
+							
 						</form>					
 						</br>
+						<div class="row">
 						<div class="panel-primary panel-container">
 							<div class="panel-heading panel-headsection"><!--panel head-->
 								<div class="row">
@@ -125,37 +127,35 @@
 								
 														
 						</div><!--table-->
-						
-						<div class="pull-left">											
-									<button type="button"
-											class="btn verification-button  {{$modelBorPrf->viewStatus}}"
-											id="add-director">
-										<i class="fa pull-right"></i>
-										{{ Lang::get('borrower-profile.add') }}
-									</button>											
-								</div>
-								<div class="text-center pull-right">
-									<ul class="pagination">
-										<li>
-											<a href="javascript:void(0)" id="prev">
-												<i class="fa fa-chevron-circle-left"></i>
-											</a>
-										</li>
-										<li>
-											<a href="javascript:void(0)" id="next">
-												<i class="fa fa-chevron-circle-right"></i>
-												</a>
-										</li>	
-									</ul>
-								</div>						
-							</br> 
-						
-						
-					</div><!--col-12-->
-				</div><!--row-->			
-			</div>	<!--col-8 end-->
-		
-			<div class="col-sm-4"></div>		
+						</div>
+						<div class="row">	
+							<div class="pull-left">											
+								<button type="button"
+										class="btn verification-button  {{$modelBorPrf->viewStatus}}"
+										id="add-director">
+									<i class="fa pull-right"></i>
+									{{ Lang::get('borrower-profile.add') }}
+								</button>											
+							</div>
+							<div class="text-center pull-right">
+								<ul class="pagination">
+									<li>
+										<a href="javascript:void(0)" id="prev">
+											<i class="fa fa-chevron-circle-left"></i>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" id="next">
+											<i class="fa fa-chevron-circle-right"></i>
+										</a>
+									</li>	
+								</ul>
+							</div>				
+								</br> 						
+						</div><!--row-->						
+			</div>	<!--col-7 end-->
+		    
+			<div class="col-lg-5"></div>		
 	
 		</div><!--panel body-->
 	</div><!--panel------>	

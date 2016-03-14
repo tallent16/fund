@@ -9,7 +9,7 @@ class InvestorBankDetailsController extends MoneyMatchController {
 	}
 	
 	//render the investor Bank Details page
-	public function index() {		
+	public function indexAction() {		
 		
 		return view('investor.investor-bankdetails')					
 					->with("classname","fa fa-university fa-fw user-icon"); 

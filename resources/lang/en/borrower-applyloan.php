@@ -19,6 +19,7 @@ return [
 	'document_submit'			=> 'DOCUMENTS TO BE SUBMITTED',
 	'next'						=> 'Next',
 	'purpose_of_loan'			=> 'Purpose of Loan',
+	'purpose_of_loan_type'		=> 'Purpose Type',
 	'loan_amount'				=> 'Loan Amount',
 	'loan_tenure'				=> 'Tenure of Loan',
 	'target_int'				=> 'Target Interest%',

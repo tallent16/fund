@@ -3,15 +3,16 @@
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
 @endsection
 @section('bottomscripts')
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>		
-	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	 
-	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
 	<script>
 	$(document).ready(function(){ 	
 		$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '200px'});  // file upload  
 	}); 
-	</script>
+	</script>	 
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
+	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
+	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>		 	
 @endsection 
 @section('page_heading',Lang::get('borrower-profile.profile'))
 @section('status_button')						
@@ -57,7 +58,7 @@
 					</div> 
 				</div> 	
 			@endif
-			<form method="post" id="form-profile" name="form-profile">
+			<form method="post" id="form-profile" name="form-profile" enctype="multipart/form-data">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="trantype" value="{{ $trantype }}">
 				<input type="hidden" id="isSaveButton" name="isSaveButton" value="">

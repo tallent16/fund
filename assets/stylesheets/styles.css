@@ -9110,7 +9110,10 @@ canvas.round {
 	color:#222;
 	font-size:24px;	
 }
-.directorinfo .pagination, .bank-details  .pagination {
+.bank-details  .pagination > li > a{
+	background-color:#F0EDEF;
+}
+.directorinfo .pagination{
 	margin:0;
 }
 .directorinfo .panel-primary > .panel-headsection, .applyloan .panel-headsection{
@@ -9299,7 +9302,7 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
     height: auto;
 }
 .loan-list-image .imageoverlap{
-	 width: 50%;
+	 width: 60%;
 }
 .loanlist-wrapper .btn-default, .loanlist-wrapper .open > .dropdown-toggle.btn-default, 
 .loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a:focus,
@@ -9348,6 +9351,9 @@ table.table.tab-label {
 .loan-details{
 	background-color:#fff;
 }
+.no-image{
+	background-color:rgba(0, 0, 0, 0.8);
+}
 /*********************Transcation History*******************************/
 .button-black, .button-black:hover{											
 	border:none;
@@ -9371,14 +9377,14 @@ table.table.tab-label {
     padding: 0 0 72% 0;
 }
 /****************************Bank Details*******************************/
-.button-orange{
+.button-orange, .button-orange:hover{
 	background-color: #F1922E;
 	color: #fff;
     border: none;
     padding: 3px 25px;	
 }
 /******************************Settings*********************************/
-.button-red{ 
+.button-red .button-red:hover{ 
 	background-color: #901E17;
 	color: #fff;
     border: none;
@@ -9423,7 +9429,7 @@ table#account-summary, .table-border-custom{
 		margin:0;
 	}	
 	.loan-list-image img{
-		width: auto;
+		width: 315px;
 		height:190px;
 	}	
 }

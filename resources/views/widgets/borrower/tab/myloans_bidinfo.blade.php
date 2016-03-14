@@ -1,4 +1,5 @@
-
+	@var	$bidInfo		=	$LoanDetMod->bidInfo;
+	@var	$bidInfoCnt		=	count($bidInfo);
 	<div class="panel panel-primary panel-container">
 		<div class="panel-body">
 					
@@ -22,36 +23,24 @@
 										<th>INTEREST RATE</th>	
 										<th>BID AMOUNT</th>				
 									</tr>
-									<tr>
-										<td class="tab-bid-label">Bidder A</td>
-										<td class="tab-row-orange">8%</td>	
-										<td class="tab-row-orange">10000</td>		
-									</tr>		
-									<tr>
-										<td class="tab-bid-label">Bidder B</td>
-										<td class="tab-row-orange">9%</td>	
-										<td class="tab-row-orange">20000</td>		
-									</tr>
-									<tr>
-										<td class="tab-bid-label">Bidder C</td>
-										<td class="tab-row-orange">9.5%</td>	
-										<td class="tab-row-orange">30000</td>		
-									</tr>	
-									<tr>
-										<td class="tab-bid-label">Bidder D</td>
-										<td class="tab-row-orange">10%</td>	
-										<td class="tab-row-orange">20000</td>		
-									</tr>
-										<tr>
-										<td class="tab-bid-label">Bidder E</td>
-										<td class="tab-row-orange">11%</td>	
-										<td class="tab-row-orange">30000</td>		
-									</tr>	
-										<tr>
-										<td class="tab-bid-label">Bidder F</td>
-										<td class="tab-head">12%</td>	
-										<td class="tab-head">50000</td>		
-									</tr>											
+										@if($bidInfoCnt	>	0)
+											@var	$i	=	1;
+											@foreach($bidInfo as $bidRow)
+												@if($bidInfoCnt	==	$i)
+													@var	$tdRowClass	=	"tab-head"
+												@else
+													@var	$tdRowClass	=	"tab-row-orange"
+												@endif
+												<tr>
+													<td class="tab-bid-label">Bidder #{{$i}}</td>
+													<td class="{{$tdRowClass}}">{{$bidRow['bid_interest_rate']}}%</td>	
+													<td class="{{$tdRowClass}}">{{$bidRow['bid_amount']}}</td>		
+												</tr>	
+												@var	$i++;
+											@endforeach
+										@else
+												<tr><td colspan="3">No Bidder Information Found</td></tr>
+										@endif
 								</tbody>
 							</table>	
 						</div>					

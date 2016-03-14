@@ -15,7 +15,7 @@
 
 			<div class="tab-content myloan-wrapper">
 				<div id="home" class="tab-pane fade in active">
-					@include('widgets.borrower.tab.myloans_loandetails')
+					@include('widgets.common.tab.myloans_loandetails')
 				</div>				
 			</div>
 		</div>

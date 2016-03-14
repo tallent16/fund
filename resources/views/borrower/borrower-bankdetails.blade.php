@@ -57,9 +57,7 @@
 						</tbody>
 					</table>							 
 				</div><!---table end---> 
-			</div><!-------panel------>	
 				
-			<div class="row"> 
 				<div class="pull-left">
 					<ul class="pagination">
 						<li>
@@ -73,7 +71,12 @@
 								</a>
 						</li>	
 					</ul>
-				</div>		
+				</div>	
+				
+			</div><!-------panel------>	
+				
+			<div class="row"> 
+					
 				<div class="col-sm-12">	
 					<div class="pull-right">							
 						<button type="submit" class="btn button-orange">ADD</button>	

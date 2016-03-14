@@ -28,7 +28,7 @@ class BorrowerSettingsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function indexAction()
 	{
 		return view('borrower.borrower-settings')
 			->with("classname","fa fa fa-cogs fa-fw user-icon"); 

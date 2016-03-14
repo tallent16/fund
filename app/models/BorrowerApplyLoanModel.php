@@ -7,6 +7,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $loan_id		  					=  	"";
 	public $loan_reference_number  			=  	"";
 	public $borrower_id  					=  	"";
+	public $purpose_singleline		  		=  	"";
 	public $purpose		  					=  	"";
 	public $apply_date			  			=  	"";
 	public $apply_amount		  			=  	"";
@@ -34,6 +35,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 
 	public $document_details				= 	array();
 	public $submitted_document_details		= 	array();
+	public $purposeSingleLineInfo			= 	array();
 	public $bidTypeSelectOptions			= 	"";
 	public $paymentTypeSelectOptions		= 	"";
 	
@@ -53,6 +55,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.loan_reference_number,
 											loans.borrower_id,
 											loans.purpose,
+											loans.purpose_singleline,
 											ifnull(DATE_FORMAT(loans.apply_date,'%d/%m/%Y'),'') apply_date,
 											ROUND(loans.apply_amount,2) apply_amount ,
 											loans.loan_currency_code,
@@ -149,6 +152,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 				$docRowIndex	=	$docRow->loan_doc_id;
 				$docRowValue	=	$docRow->loan_doc_submitted_id;
 				$this->submitted_document_details[$docRowIndex] = $docRowValue;
+				$this->submitted_document_details['loan_doc_url'][$docRowIndex] = $docRow->loan_doc_url;
 			}
 		}
 		return $loandocument_rs;
@@ -178,6 +182,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$loan_reference_number 			=	"Loan-Ref-";
 		$borrower_id					= 	$this->getCurrentBorrowerID();
 		$purpose						= 	$postArray['laon_purpose'];
+		$purpose_singleline				= 	$postArray['purpose_singleline'];
 		$apply_date						= 	$this->getDbDateFormat(date("d/m/Y"));
 		$apply_amount		 			= 	$this->makeFloat($postArray['loan_amount']);
 		$loan_tenure	 				= 	$postArray['loan_tenure'];
@@ -199,6 +204,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		
 		$dataArray = array(	'borrower_id'					=> $borrower_id,
 							'purpose'						=> ($purpose!="")?$purpose:null,
+							'purpose_singleline'			=> ($purpose_singleline!="")?$purpose_singleline:null,
 							'apply_date' 					=> $apply_date,
 							'apply_amount' 					=> ($apply_amount!="")?$apply_amount:null,
 							'loan_tenure' 					=> ($loan_tenure!="")?$loan_tenure:null,
@@ -294,6 +300,21 @@ class BorrowerApplyLoanModel extends TranWrapper {
 								array("id"=>2,"name"=>"Monthly Interest"),
 								array("id"=>3,"name"=>"EMI")
 							);
+		$purpose_singlelineSql		=	"	SELECT	codelist_id,
+													codelist_code,
+													codelist_value,
+													expression
+											FROM	codelist_details
+											WHERE	codelist_id = 16";
+											
+		$purpose_singleline_rs		= 	$this->dbFetchAll($purpose_singlelineSql);
+		if ($purpose_singleline_rs) {
+			foreach($purpose_singleline_rs as $pur_sinlineRow) {
+				$pur_sinlineRowIndex	=	$pur_sinlineRow->codelist_value;
+				$pur_sinlineRowvalue	=	$pur_sinlineRow->codelist_value;
+				$this->purposeSingleLineInfo[$pur_sinlineRowIndex]	=	$pur_sinlineRowvalue;
+			}
+		}
 		
 		$this->bidTypeSelectOptions	=	$this->constructSelectOption($bidTypeList,
 															'name', 'id',$this->bid_type, "--Please Select--");		

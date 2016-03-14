@@ -15185,7 +15185,8 @@ var lineChartData = {
 
 }
 
-
+/*
+ * This portion is being commented out by Venkat since doesn't make any sense
     var cline = document.getElementById("cline").getContext("2d");
     new Chart(cline).Line(lineChartData, {
         responsive: true
@@ -15298,4 +15299,6 @@ new Chart(cpolar).PolarArea(podata, { responsive: true});
                 ]
                 var cdonut1 = document.getElementById("cdonut1").getContext("2d");
                 new Chart(cdonut1).Doughnut(ddata1, { responsive: true});
+*-------------- End of commenting by Venkat
+*/
 //# sourceMappingURL=frontend.js.map

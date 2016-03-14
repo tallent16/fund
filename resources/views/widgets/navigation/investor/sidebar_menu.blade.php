@@ -14,7 +14,7 @@
                             <a href="#"><i class="fa fa-money fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">                              
                                  <li> 
-                                    <a href="{{ url ('investor/loanlisting') }}">{{ Lang::get('borrower-leftmenu.loanslist') }}</a> 
+                                    <a href="{{ url ('investor/loanslist') }}">{{ Lang::get('borrower-leftmenu.loanslist') }}</a> 
                                 </li>       
                                 <li> 
                                     <a href="{{ url ('investor/myloaninfo') }}">{{ Lang::get('borrower-leftmenu.myloans') }}</a> 

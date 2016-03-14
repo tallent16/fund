@@ -19,6 +19,7 @@ return [
 	'document_submit'			=> 'DOCUMENTS A FOURNIR',
 	'next'						=> 'Prochain',
 	'purpose_of_loan'			=> 'Objet du prêt',
+	'purpose_of_loan_type'		=> 'Type d\'Objet',
 	'loan_amount'				=> 'Montant du prêt',
 	'loan_tenure'				=> 'Durée du prêt',
 	'target_int'				=> 'Intérêt cible %',
