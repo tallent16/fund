@@ -114,6 +114,9 @@ function hideShowFilter() {
 function chumma() {
 	alert("chumma");
 }
+function redirecturl(loanurl){	
+	window.location=loanurl;
+}
 	
 </script>
  @endsection

@@ -1,7 +1,7 @@
 	<ul class="nav" id="side-menu">
-		<li class="sidebar-balance">
+		<!--<li class="sidebar-balance">
 			{{ Lang::get('borrower-leftmenu.balance') }} : $100,000 		
-		</li>
+		</li>-->
 		<li>
 			<a href="{{ url ('borrower/dashboard') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
 		</li>

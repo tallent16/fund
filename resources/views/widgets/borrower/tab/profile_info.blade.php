@@ -4,7 +4,7 @@
 			<div class="col-sm-12">
 				<div class="row">
 						<div class="col-sm-6">
-							<label>Detailed Company Pofile</label>		
+							<label>Detailed Company Profile</label>		
 							<div class="form-group">
 								<textarea 	class="form-control" 
 											rows="10" 

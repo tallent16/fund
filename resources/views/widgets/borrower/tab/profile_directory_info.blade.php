@@ -76,7 +76,7 @@
 																id="age_{{$i}}" 
 																name="director_row[age][]"
 																value="{{ $directorRow['age']  }}"
-																class="form-control"
+																class="form-control text-right"
 																 {{$modelBorPrf->viewStatus}} />
 													</td>			
 												</tr>
@@ -89,7 +89,7 @@
 																id="period_in_this_business_{{$i}}" 
 																name="director_row[period_in_this_business][]"
 																value="{{ $directorRow['period_in_this_business']  }}"
-																class="form-control"
+																class="form-control text-right"
 																 {{$modelBorPrf->viewStatus}} />
 													</td>	
 												</tr>
@@ -102,7 +102,7 @@
 																id="overall_experience_{{$i}}" 
 																name="director_row[overall_experience][]"
 																value="{{ $directorRow['overall_experience']  }}"
-																class="form-control"
+																class="form-control text-right"
 																 {{$modelBorPrf->viewStatus}} />
 													</td>	
 												</tr>

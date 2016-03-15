@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 use Request;
 use	\App\models\LoanDetailsModel;
+use Auth;
 class LoanDetailsController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -17,10 +18,28 @@ class LoanDetailsController extends MoneyMatchController {
 		
 		$sourceId	=	explode("_",base64_decode($loan_id));
 		$this->loanDetailsModel->getLoanDetails($sourceId[0]);
-		return view('borrower.borrower-myloans')
+		switch(Auth::user()->usertype) {
+				case 1:
+					$viewTemplate	=	"borrower.borrower-myloans";
+					break;
+				case 2:
+					$viewTemplate	=	"investor.investor-myloans";
+					break;
+			}	
+		return view($viewTemplate)
 			->with("classname","fa fa-money fa-fw user-icon")
 			->with("loan_id",$loan_id)
 			->with("LoanDetMod",$this->loanDetailsModel);
+	}
+	
+	public function ajaxSubmitReplyAction() {
+		$postArray	=	Request::all();
+		$result		=	$this->loanDetailsModel->updateCommentReply($postArray);
+		if($result) {
+			return json_encode(array("status"=>"success"));
+		}else{
+			return json_encode(array("status"=>"failed"));
+		}
 	}
 
 }

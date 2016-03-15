@@ -23,13 +23,13 @@
 														id="ratio_id_{{$i}}" 
 														name="finacialRatio_row[ratio_id][]"
 														value="{{$i}}"
-														class="form-control"
+														class="form-control text-right"
 														/>
 												<input 	type="hidden" 
 														id="ratio_name_{{$i}}" 
 														name="finacialRatio_row[ratio_name][]"
 														value="{{$finRatioRow['ratio_name']}}"
-														class="form-control"
+														class="form-control text-right"
 														/>
 											</td>
 											<td>

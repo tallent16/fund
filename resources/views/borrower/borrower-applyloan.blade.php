@@ -39,36 +39,42 @@
 													
 @endsection
 @section('section')
-
-<div class="col-sm-12 text-center space-around" style="display:none;">
-	<div class="annoucement-msg-container">
-		<div class="alert alert-success annoucement-msg">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<h4>{{ Lang::get('borrower-applyloan.loan_title_info_1') }}{{ Lang::get('borrower-applyloan.loan_title_info_2') }}</h4>	
+<div class="col-sm-12 space-around"> 
+	
+	<div class="row">
+		<div class="col-sm-12 text-center " style="display:none;">
+			<div class="annoucement-msg-container">
+				<div class="alert alert-success annoucement-msg">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<h4>{{ Lang::get('borrower-applyloan.loan_title_info_1') }}{{ Lang::get('borrower-applyloan.loan_title_info_2') }}</h4>	
+				</div>
+			</div>				
 		</div>
-	</div>				
-</div>
-@if(isset($status))
-	@var	$alertClass	=	($status	==	"success"?"":"annoucement-msg")
-	<div class="col-sm-12 space-around">
-		<div class="annoucement-msg-container">
-			<div class="alert alert-success {{$alertClass}}">
-				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				{{$msg}}
+		@if(isset($status))
+			@var	$alertClass	=	($status	==	"success"?"":"annoucement-msg")
+			<div class="col-sm-12 space-around">
+				<div class="annoucement-msg-container">
+					<div class="alert alert-success {{$alertClass}}">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						{{$msg}}
+					</div>
+				</div>				
 			</div>
-		</div>				
-	</div>
-@endif
-<div class="col-sm-12"> 	
-	<form class="form-inline" method="post" enctype="multipart/form-data">	
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">	
-		<input type="hidden" name="isSaveButton" id="isSaveButton" value="">	
-		<input type="hidden" name="loan_id" value="{{$BorModLoan->loan_id}}">	
-		<input type="hidden" name="trantype" value="{{ $trantype }}">
-	<div class="row">				
-		<div class="col-lg-12 col-sm-12">				
+		@endif
+	</div>	
+	
+	<!--<div class="row">	
+		<div class="col-lg-12 col-sm-12">	-->
+			<form class="form-inline" method="post" enctype="multipart/form-data">	
+				<input type="hidden" name="_token" value="{{ csrf_token() }}">	
+				<input type="hidden" name="isSaveButton" id="isSaveButton" value="">	
+				<input type="hidden" name="loan_id" value="{{$BorModLoan->loan_id}}">	
+				<input type="hidden" name="trantype" value="{{ $trantype }}">
 				
-			<!--<div class="row">-->
+				
+				
+			<div class="row">
+				<div class="col-lg-12 col-md-6 col-xs-12">
 				<ul class="nav nav-tabs">
 					<li class="active">
 						<a 	data-toggle="tab"
@@ -92,45 +98,45 @@
 					@include('widgets.borrower.tab.applyloan_documents_submit')
 					
 				</div><!--tab content-->	
-			<!--</div><!--row-->	
 			
-			<div class="row"> 
-				<div class="col-sm-12"> 
-					<div class="pull-right">	
-						@if($trantype	==	"edit")
-							@var	$preview	=	"borrower/myloans/".base64_encode($BorModLoan->loan_id)
-							<input type="button" 
-									value="Preview"
-									id="preview_url"
-									data-preview-url="{{url($preview)}}"
-									class="btn verification-button"
-									/>
-						@endif
-						<button type="submit" 
-								id="save_button"
+			
+			<div class="row">	
+				<div class="col-sm-12">			
+				<div class="pull-right">	
+					@if($trantype	==	"edit")
+						@var	$preview	=	"borrower/myloans/".base64_encode($BorModLoan->loan_id)
+						<input type="button" 
+								value="Preview"
+								id="preview_url"
+								data-preview-url="{{url($preview)}}"
 								class="btn verification-button"
-								{{$BorModLoan->viewStatus}}>
-							<i class="fa pull-right"></i>
-							Save
-						</button>
-						
-						<button type="submit" 
-								class="btn verification-button"
-								{{$BorModLoan->viewStatus}}>
-							<i class="fa pull-right"></i>
-							{{ Lang::get('borrower-profile.submit_verification') }}
-						</button>
-						
-					</div>
-				</div> 
-			</div> 
+								/>
+					@endif
+					<button type="submit" 
+							id="save_button"
+							class="btn verification-button"
+							{{$BorModLoan->viewStatus}}>
+						<i class="fa pull-right"></i>
+						Save
+					</button>
+					
+					<button type="submit" 
+							class="btn verification-button"
+							{{$BorModLoan->viewStatus}}>
+						<i class="fa pull-right"></i>
+						{{ Lang::get('borrower-profile.submit_verification') }}
+					</button>
+					
+				</div>	
+				</div>			 
+			</div> 			
+			</form>	
 			
+			</div><!--row-->	
+			</div>
 			
-			
-			
-		</div><!--col-->										
-	</div>	<!--row-->							
-	</form>	
+	<!--	</div><!--col-->	
+	<!--</div>	<!--row-->	
 </div><!--col-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    

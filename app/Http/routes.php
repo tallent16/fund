@@ -55,6 +55,8 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::get('borrower/docdownload/{doc_id}','BorrowerApplyLoanController@downloadAction');
 	
 	Route::get('borrower/myloans/{loan_id}', 'LoanDetailsController@indexAction');	
+	Route::post('ajax/borrower/send_comment', 'LoanDetailsController@ajaxSubmitReplyAction');	
+	Route::get('ajax/borrower/send_comment', 'LoanDetailsController@ajaxSubmitReplyAction');	
 	
 	Route::get('borrower/loanslist', 'LoanListingController@indexAction');	 
 	/*Route::get('borrower/loanlist', function() {
@@ -81,7 +83,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 
     Route::get('investor/loandetails', 'InvestorLoanDetailsController@indexAction');
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
-    Route::get('investor/myloans', 'InvestorMyLoansController@indexAction');  
+    Route::get('investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
     Route::get('investor/bankdetails', 'InvestorBankDetailsController@indexAction'); 
     Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  

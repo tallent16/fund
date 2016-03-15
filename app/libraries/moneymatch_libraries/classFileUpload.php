@@ -40,7 +40,7 @@ class FileUpload {
 			}
 		} else {
 			// Get the bucket details and create a folder in the bucket system
-			
+			$disk = Storage::disk('s3');
 			if(!File::exists($destinationPath)) {
 				File::makeDirectory($destinationPath, 0755, true);
 			}

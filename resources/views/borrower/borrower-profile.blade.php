@@ -6,7 +6,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
 	<script>
 	$(document).ready(function(){ 	
-		$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '200px'});  // file upload  
+		$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
 	}); 
 	</script>	 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		

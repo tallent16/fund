@@ -106,17 +106,30 @@
 													</tr>
 													<tr>
 														<td>
-															{{$loanRow->repayment_type}}
+															@if($loanRow->repayment_type	!=	"")
+																{{$loanRow->repayment_type}}
+															@else
+																--
+															@endif
 														</td>												
 													</tr>
 													<tr>
 														<td>
-															{{$loanRow->bid_type}}
+															@if($loanRow->bid_type	!=	"")
+																{{$loanRow->bid_type}}
+															@else
+																--
+															@endif
+															
 														</td>												
 													</tr>
 													<tr>
 														<td>
-															{{$loanRow->target_interest}}
+															@if($loanRow->target_interest	!=	"")
+																{{$loanRow->target_interest}}
+															@else
+																--
+															@endif															
 														</td>													
 													</tr>
 													<tr>
@@ -128,12 +141,21 @@
 													</tr>
 													<tr>
 														<td>
-															{{$loanRow->amount_applied}}
+															@if($loanRow->amount_applied	!=	"")
+																{{$loanRow->amount_applied}}
+															@else
+																--
+															@endif
+															
 														</td>												
 													</tr>
 													<tr>
 														<td>
-															{{$loanRow->amount_realized}}
+															@if($loanRow->amount_realized	!=	"")
+																{{$loanRow->amount_realized}}
+															@else
+																--
+															@endif															
 														</td>													
 													</tr>
 													<tr>

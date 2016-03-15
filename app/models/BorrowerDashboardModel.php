@@ -13,6 +13,9 @@ class BorrowerDashboardModel extends TranWrapper {
 		$this->barchart_detJson		=	json_encode($this->getBorrowerBarChart());
 		$this->current_loansJson	=	json_encode($this->getBorrowerCurrentLoans());
 		$this->curloans				=	json_decode($this->current_loansJson);
+		if($this->curloans	==	""){
+			$this->curloans	=	array();
+		}
 	}
 	
 	public function getBorrowerLoanList() {

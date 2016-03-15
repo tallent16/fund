@@ -22,7 +22,7 @@ return [
 	'purpose_of_loan_type'		=> 'Purpose Type',
 	'loan_amount'				=> 'Loan Amount',
 	'loan_tenure'				=> 'Tenure of Loan',
-	'target_int'				=> 'Target Interest%',
+	'target_int'				=> 'Target Interest %',
 	'bid_type'					=> 'Bid Type',
 	'please_select'				=> 'Please Select',
 	'bid_close_date'			=> 'Bid Close Date',

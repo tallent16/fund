@@ -3,7 +3,7 @@
 		<div class="panel-body">
 			<div class="row">
 				<fieldset {{ $modelBorPrf->viewStatus }}>	
-				<div class="col-sm-6">
+				<div class="col-sm-6 input-space">
 					
 					<div class="row">		
 						<div class="col-xs-4">											
@@ -45,7 +45,7 @@
 											id="branch_code" 
 											name="branch_code"
 											value="{{ $modelBorPrf->branch_code }}"
-											class="form-control"
+											class="form-control text-right"
 											/>
 						</div>
 					</div>
@@ -60,14 +60,14 @@
 										id="bank_account_number" 
 										name="bank_account_number"
 										value="{{ $modelBorPrf->bank_account_number }}"
-										class="form-control"
+										class="form-control text-right"
 										/>
 						</div>
 					</div>						
 					
 				</div><!--col-6--->
 				
-				<div class="col-sm-6">
+				<div class="col-sm-6 input-space">
 				</div><!--col-6--->
 														
 				</fieldset>	

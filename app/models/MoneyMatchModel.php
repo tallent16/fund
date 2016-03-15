@@ -66,6 +66,7 @@ class MoneyMatchModel extends Model {
 		return $result;
 	}
 	
+	
 	public function dbUpdate($tableName, $dataArray, $where) {
 		try {
 			DB::table($tableName)->where($where)->update($dataArray);
@@ -111,6 +112,17 @@ class MoneyMatchModel extends Model {
 		$query->execute();
 		$sqlStat_rs 	= 	$query->fetch();
 		return	$sqlStat_rs;
+	}
+	
+	public function dbFetchWithParam($sqlStatment, $paramArray) {
+		
+		try {
+			$resultRs 	=	DB::select($sqlStatement, $paramArray);
+		} catch (\Exception $e) {
+			$this->dbErrorHandler($e);
+			return false;
+		}
+		return $resultRs;
 	}
 	
 	public function dbExecuteSql($sqlStatement) {

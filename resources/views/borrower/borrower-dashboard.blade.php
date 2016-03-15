@@ -28,6 +28,8 @@
 				}
 			});
 			repaymentBarChartFunc();
+			setwidth();
+			
 		});
 		
 		function repaymentBarChartFunc(){
@@ -102,6 +104,15 @@
 			$("#cur_loan_duration").html(currentlist.duration);
 			$("#cur_loan_amount").html(currentlist.amount);
 		}
+		function setwidth(){
+			Chart.types.Bar.extend({
+				name: "bar",
+				draw: function(){
+					this.options.barValueSpacing = this.chart.width / 8;
+					Chart.types.Bar.prototype.draw.apply(this, arguments);
+					}
+				});
+		}
 	</script>
 @endsection
 @section('page_heading','Dashboard')
@@ -139,12 +150,12 @@
 								<input 	type="hidden" id="current_loan_index" 
 										value="0" />
 							   <div class="panel-subhead" id="cur_loan_subhead">
-								 	@if(count($borCurLoans	) >0 )
-										{{$borCurLoans[0]->business_name." ".$borCurLoans[0]->business_organisation}}
-									@endif
+								 		@if(isset($borCurLoans[0]))
+											{{$borCurLoans[0]->business_name." ".$borCurLoans[0]->business_organisation}}
+										@endif
 								</div>
 							   <div  id="cur_loan_content">
-								    @if(count($borCurLoans	) >0 )
+								   	@if(isset($borCurLoans[0]))
 										{{$borCurLoans[0]->purpose}}
 									@endif
 								</div>
@@ -167,17 +178,17 @@
 								<tbody>
 									<tr>
 										<td  id="cur_loan_rate" >
-											 @if(count($borCurLoans	) >0 )
+											 @if(isset($borCurLoans[0]))
 												{{$borCurLoans[0]->rate}}%
 											@endif
 										</td> 
 										<td  id="cur_loan_duration">
-											@if(count($borCurLoans	) >0 )
+											@if(isset($borCurLoans[0]))
 												{{$borCurLoans[0]->duration}}
 											@endif
 										</td>
 										<td  id="cur_loan_amount">
-											@if(count($borCurLoans	) >0 )
+											@if(isset($borCurLoans[0]))
 												{{$borCurLoans[0]->amount}}
 											@endif
 										</td>

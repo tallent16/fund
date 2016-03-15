@@ -8,16 +8,16 @@
 @endif  
 <div id="loans_info" class="tab-pane fade in active">
 	<div class="panel panel-default applyloan">   
-		<div class="panel-body">
-			<fieldset {{$BorModLoan->viewStatus}}>
+		<div class="panel-body">			
 				<div class="row">
-				   <div class="col-md-6">
+					<fieldset {{$BorModLoan->viewStatus}}>
+				   <div class="col-md-6 input-space">
 					   	
 							<div class="row">		
-								<div class="col-xs-4">
+								<div class="col-xs-5">
 									<label>{{ Lang::get('borrower-applyloan.purpose_of_loan_type') }}</label>
 								</div>	
-								<div class="col-xs-8">															   
+								<div class="col-xs-7">															   
 									{{ Form::select('purpose_singleline', 
 												$BorModLoan->purposeSingleLineInfo, 
 												$BorModLoan->purpose_singleline, 
@@ -25,23 +25,23 @@
 								</div>
 							</div>
 							<div class="row">		
-								<div class="col-xs-4">
+								<div class="col-xs-5">
 									<label>{{ Lang::get('borrower-applyloan.purpose_of_loan') }}</label>
 								</div>	
-								<div class="col-xs-8">															   
+								<div class="col-xs-7">															   
 									<textarea class="form-control" 
 												name="laon_purpose" rows="3">{{$BorModLoan->purpose}}</textarea> 	
 								</div>
 							</div>
 									
 							<div class="row">		
-								<div class="col-xs-4">											
+								<div class="col-xs-5">											
 									<label>{{ Lang::get('borrower-applyloan.loan_amount') }}</label>												
 								</div>
 													
-								<div class="col-xs-8">													
+								<div class="col-xs-7">													
 									<input 	type="text" 
-											class="form-control select-width"
+											class="form-control select-width text-right"
 											name="loan_amount"												
 											id="loan_amount" 
 											value="{{$BorModLoan->apply_amount}}">												
@@ -49,43 +49,43 @@
 							</div>	
 							
 							<div class="row">		
-								<div class="col-xs-4">											
+								<div class="col-xs-5">											
 									<label>{{ Lang::get('borrower-applyloan.loan_tenure') }}</label>												
 								</div>
-															
-								<div class="col-xs-8">													
-									<input 	type="text" 
-											class="form-control select-width"
-											name="loan_tenure"												
-											id="loan_tenure"
-											value="{{$BorModLoan->loan_tenure}}" >												
+								<div class="col-xs-4">	
+									
+									{{ Form::select('loan_tenure', array("3"=>"3 Months","6"=>"6 Months","9"=>"9 Months","12"=>"12 Months"), 
+															$BorModLoan->loan_tenure, 
+															['class' => 'selectpicker text-right']) }}	
+													
+								</div>
+								<div class="col-xs-3">										
 								</div>
 							</div>
 						
 							<div class="row">		
-								<div class="col-xs-4">											
+								<div class="col-xs-5">											
 									<label>{{ Lang::get('borrower-applyloan.target_int') }}</label>												
 								</div>
-															
-								<div class="col-xs-8">													
-									<input type="text" class="form-control select-width" 
+								<div class="col-xs-4">													
+									<input type="text" class="form-control select-width text-right" 
 											name="target_interest"												
 											id="target_interest"
 											value="{{$BorModLoan->target_interest}}" >																	
 								</div>
+								<div class="col-xs-3">	
+								</div>
 							</div>			
 					</div>
 					   
-					<div class="col-md-6">	
-							
-						
+					<div class="col-md-6 input-space">
 						
 							<div class="row">		
-								<div class="col-xs-4">											
+								<div class="col-xs-5">											
 									<label>{{ Lang::get('borrower-applyloan.bid_type') }}</label>												
 								</div>
 															
-								<div class="col-xs-8">													
+								<div class="col-xs-7">													
 									<select 	id="bid_type" 
 												name="bid_type" 
 												class="selectpicker"> 
@@ -95,11 +95,11 @@
 							</div>
 						
 							<div class="row">		
-								<div class="col-xs-4">											
+								<div class="col-xs-5">											
 									<label>{{ Lang::get('borrower-applyloan.bid_close_date') }}</label>												
 								</div>
 															
-								<div class="col-xs-8">																									 
+								<div class="col-xs-7">																									 
 									<div class="controls">
 										<div class="input-group">
 											<input 	id="date-picker-2" 
@@ -116,11 +116,25 @@
 							</div>
 						
 							<div class="row">		
-								<div class="col-xs-4">											
+									<div class="col-xs-5">											
+										<label>{{ Lang::get('borrower-applyloan.payment_type') }}</label>												
+									</div>
+																
+									<div class="col-xs-7">						 							
+										<select id="payment_type" 
+												name="payment_type" 
+												class="selectpicker">
+												{{$BorModLoan->paymentTypeSelectOptions}}
+										</select>												
+									</div>
+								</div>
+						
+							<div class="row">		
+								<div class="col-xs-5">											
 									<label>{{ Lang::get('borrower-applyloan.accept_partial_sub') }}</label>												
 								</div>
 															
-								<div class="col-xs-8">														 
+								<div class="col-xs-7">														 
 									<label class="radio-inline">
 										<input 	type="radio" 
 												name="partial_sub_allowed"
@@ -140,32 +154,21 @@
 							</div>	
 							
 							<div class="row">		
-								<div class="col-xs-4">											
+								<div class="col-xs-5">											
 									<label>{{ Lang::get('borrower-applyloan.minimum_limit') }}</label>												
 								</div>
-															
-								<div class="col-xs-8">														 
+								<div class="col-xs-4">														 
 									<input 	type="text" 
-											class="form-control select-width"
+											class="form-control select-width text-right"
 											 name="min_for_partial_sub"
 											 value="{{$BorModLoan->min_for_partial_sub}}">	
 																							
 								</div>
+								<div class="col-xs-3">	
+								</div>	
 							</div>	
 						
-							<div class="row">		
-								<div class="col-xs-4">											
-									<label>{{ Lang::get('borrower-applyloan.payment_type') }}</label>												
-								</div>
-															
-								<div class="col-xs-8">						 							
-									<select id="payment_type" 
-											name="payment_type" 
-											class="selectpicker">
-											{{$BorModLoan->paymentTypeSelectOptions}}
-									</select>												
-								</div>
-							</div>
+							
 					<!--<div class="panel-primary panel-container">
 							<div class="panel-heading panel-headsection"><!--panel head-->
 							<!---<div class="row">
@@ -227,9 +230,10 @@
 							</div>
 						</div>--->
 						
-					</div><!--col--->									   								   
+					</div><!--col--->	
+					</fieldset>								   								   
 				</div><!--row-->	
-				</fieldset>
+				
 		</div><!--panel-body--->
 	</div><!--panel---->
 </div><!--first-tab--->

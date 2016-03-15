@@ -1,11 +1,16 @@
 @extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>
+		var baseUrl	=	"{{url()}}"
+	</script>
+	<script src="{{ asset("js/common.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading','My Loans'))
 @section('section')     
-@var	$pos = strpos(base64_decode($loan_id), "bids");
-
+@var	$pos 			= 	strpos(base64_decode($loan_id), "bids");
+@var	$commnetInfo	=	$LoanDetMod->commentInfo	
+<input id="hidden_token" name="_token" type="hidden" value="{{csrf_token()}}">
 <div class="col-sm-12 space-around"> 			
 	<div class="row">	
 					
@@ -38,18 +43,111 @@
 		</div>
 					
 		<div class="col-sm-12 col-lg-4"> 
+			<!-- summary panel starts here -->
 			<div class="panel panel-default">
 				<div class="panel-body">
-					
 					<div class="row">
 						<div class="col-md-12">
-							<div class="panel-subhead">
-								<h4>{{$LoanDetMod->statusText}}</h4>
+							<div class="pull-right">
+								<i class="fa fa-exclamation-circle"></i>
 							</div>
 						</div>
 					</div>
+					<div class="col-md-12">
+						<div class="row space-around">
+							<div class="col-md-3 col-sm-4 col-xs-4">
+								{{$LoanDetMod->no_of_bidders}}
+							</div>
+							<div class="col-md-6 col-sm-4 col-xs-4">
+								{{$LoanDetMod->total_bid}}
+							</div>
+							<div class="col-md-3 col-sm-4 col-xs-4">
+								{{$LoanDetMod->days_to_go}}
+							</div>
+						</div>
+						
+						<div class="row space-around bidders-value">
+							<div class="col-md-3 col-sm-4 col-xs-4">
+								Bidders
+							</div>
+							<div class="col-md-6 col-sm-4 col-xs-4">
+								of {{$LoanDetMod->apply_amount}} Goal
+							</div>
+							<div class="col-md-3 col-sm-4 col-xs-4">
+								Days to go
+							</div>
+						</div>
+						<div class="row  space-around">	
+								<div class="progress">
+									<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70"
+									aria-valuemin="0" aria-valuemax="100" style="width:70%">		
+									</div>
+								</div>
+							</div>	
+								
+						<div class="row  space-around">	
+							<div class="row">						
+								<div class="col-md-7 col-xs-7"> 
+									<i class="fa fa-file-text"></i> 
+									<span class="bid-now-section"> Grade of Borrower:</span>
+								</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->borrower_risk_grade}}</div>
+							</div>
+							
+							<div class="row">						
+								<div class="col-md-7 col-xs-7">
+									<i class="fa fa-database"></i>
+									<span class="bid-now-section"> Type of Loan:</span>
+								</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->repayment_type}}</div>
+							</div>
+							
+							<div class="row">				 		
+								<div class="col-md-7 col-xs-7">
+									<i class="fa fa-archive"></i>
+									<span class="bid-now-section"> Tenure:</span>
+								</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->loan_tenure}}</div>
+							</div>
+							
+							<div class="row">							
+								<div class="col-md-7 col-xs-7"> 
+									<i class="fa fa-inr"></i> 
+									<span class="bid-now-section"> Interest Range:</span>
+								</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->target_interest}}%</div>
+							</div>
+							
+							<div class="row">						
+								<div class="col-md-7 col-xs-7"> 
+									<i class="fa fa-line-chart"></i> 
+									<span class="bid-now-section"> Average Interest Bidded:</span>
+								</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}}%</div>
+							</div>
+							
+							<div class="row">					
+								<div class="col-md-7 col-xs-7"> 
+									<i class="fa fa-usd"></i> 
+									<span class="bid-now-section"> Amount bidded:</span>
+								</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->total_bid}}</div>
+							</div>
+							
+							<div class="row">						
+								<div class="col-md-7 col-xs-7"> 
+									<i class="fa fa-info-circle"></i> 
+									<span class="bid-now-section"> Status:</span>
+								</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->statusText}}</div>
+							</div>
+						</div>	
+					</div>
+				</div>
 			</div>
-		<!--	<div class="row">	--->
+			<!-- summary panel ends here -->
+			
+			<!-- comments panel starts here -->
 				<div class="panel panel-primary panel-container myloans">
 					
 					<div class="panel-heading panel-headsection"><!--panel head-->
@@ -64,46 +162,16 @@
 					</div>	<!--end panel head-->
 
 					<div class="panel-body"><!--panel body--> 
-						<div class="col-md-12 comments-section">		
-							<div class="row">						
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Mathew</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>
-								<div class="col-md-12">
-									<p>My prayers that yout financial goal will be met with a little extra.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>		
-															
-							</div>
-							<div class="row">								
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Amanda</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>		
-								<div class="col-md-12">
-									<p>I'm excitedly waiting for the next step.Have a great weekend!.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>
-															
-							</div>
-							<div class="row">								
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Xavier</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>		
-								<div class="col-md-12">
-									<p>Thank you all so very much for your continued support.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>													
-							</div>
-							<div class="row">							
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Anthony</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>	
-								<div class="col-md-12">
-									<p>I've been keeping a blog for a number of years. The blog posts are short and the Overall feel is of my debt consolidation.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>															
-							</div>
-						</div>
+						@if(count($commnetInfo) > 0)
+							@include('widgets.common.myloans_comments',array("commnetInfo"=>$commnetInfo)) 
+						@else
+							<p>
+								No Comments Found
+							</p>
+						@endif
 					</div>	<!--end panel body-->					
 				</div>
-				
-		<!---	</div>-->
+			<!-- comments panel ends here -->
 		</div>					
 										
 	</div>								
