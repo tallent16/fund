@@ -2,10 +2,11 @@
 	@var	$desitinationPath	=	$LoanDetMod->company_image;
 	
 	<div class="panel panel-primary panel-container">
-		
-		<div class="imageoverlap">
-			{{ Html::image('img/featured.png',"",['class' => 'img-responsive']) }}
-		</div>
+		@if ($LoanDetMod->isfeatured == 1)
+			<div class="imageoverlap">
+				{{ Html::image('img/featured.png',"",['class' => 'img-responsive']) }}
+			</div>
+		@endif
 		<div class="img-container">
 		 {{ Html::image($LoanDetMod->getImagePath($desitinationPath),"",['class' => 'img-responsive']) }}
 			<div class="text-bottom text-center no-image">	

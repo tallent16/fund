@@ -13,11 +13,13 @@ return [
 	|
 	*/
  
-	'status'				=> 'STATUS',
 	'profile'				=> 'Profil',
 	'company_info'			=> 'FIRMENINFO', 
 	'director_info'			=> 'DIRECTORS INFO',
 	'profile_info'			=> 'INFO PROFIL',
+	'financial_info'		=> 'FINANZ INFO',
+	'bank_info'				=> 'BANK INFO',
+	'industry'				=> 'Industrie',
 	'business_name'			=> 'Business Name',
 	'name_business'			=> 'Leap Networks PTE LTD',
 	'bank_code'				=> 'Bankleitzahl',
@@ -56,4 +58,15 @@ return [
 	'companyprofile'		=> 'Detaillierte Unternehmensprofil',
 	'success'				=> 'Profil Details wurde erfolgreich abgegeben',
 	'save'					=> 'Profildetails erfolgreich gespeichert',
+	'save_button'			=> 'sparen',
+	'company_image'			=> 'Firmenimage',
+	'company_thumb_image'	=> 'Firma Minibild',
+	'company_video'			=> 'Unternehmensvideo',
+	'about_us'				=> 'Über uns',
+	'risk_industry' 		=> 'Risiko Industrie',
+	'risk_strength'			=> 'Kraft Risiko',
+	'risk_weakness'			=> 'Risiko Schwäche',
+	'financial_ratio'		=> 'Finanzkennzahlen',
+	'previous_year'			=> 'Vorheriges Jahr',
+	'current_year'			=> 'Laufendes Jahr',
 ];

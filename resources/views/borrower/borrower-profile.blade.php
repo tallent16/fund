@@ -90,13 +90,13 @@
 							<li>
 								<a 	data-toggle="tab"
 									href="#financial_info">
-									FINANCIAL INFO
+									{{ Lang::get('borrower-profile.financial_info') }}
 								</a>
 							</li>	
 							<li>
 								<a 	data-toggle="tab"
 									href="#bank_info">
-									BANK INFO
+									{{ Lang::get('borrower-profile.bank_info') }}
 								</a>
 							</li>						   							
 						</ul>	
@@ -133,7 +133,7 @@
 											id="save_button"
 										class="btn verification-button" >
 										<i class="fa pull-right"></i>
-										Save
+										{{ Lang::get('borrower-profile.save_button') }}
 									</button>
 								@endif
 								

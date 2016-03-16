@@ -33,10 +33,8 @@
 @endif   
 @section('page_heading',$page_heading) )
 @section('status_button')						
-		<!--------Status Button Section---->   
-		
-			  <h4><span class="label label-default status-label">{{$BorModLoan->statusText}}</span></h3>			
-													
+<!--------Status Button Section---->   
+ <h4><span class="label label-default status-label">{{$BorModLoan->statusText}}</span></h3>														
 @endsection
 @section('section')
 <div class="col-sm-12 space-around"> 

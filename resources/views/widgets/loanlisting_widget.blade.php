@@ -29,33 +29,33 @@
 		<div class="row panel-white">
 			<div class="progress">
 				<div style="width:{{$loanRow->perc_funded}}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="42" role="progressbar" class="progress-bar progress-bar-danger">
-				<span class="sr-only">{{$loanRow->perc_funded}}% Complete</span>
+				<span class="sr-only">{{$loanRow->perc_funded}}% {{ Lang::get('borrower-loanlisting.complete') }}</span>
 				</div>
 			</div>
 
 			<div class="table-responsive"><!---table start-->
-				<table class="table">		
+				<table class="table" style="font-size:0.7em">		
 					<tbody>
 						<tr>
-							<th style="font-size:0.7em" >{{ Lang::get("Funded")}}</td>
-							<th style="font-size:0.7em" >{{ Lang::get("Loan amount")}}</td>	
-							<th style="font-size:0.7em" >{{ Lang::get("Interest")}}</td>		
-							<th style="font-size:0.7em" >{{ Lang::get("Days to go")}}</td>	
-							<th style="font-size:0.7em" >{{ Lang::get("Grade")}}</td>			
+							<th>{{ Lang::get('borrower-loanlisting.funded') }}</td>
+							<th>{{ Lang::get('borrower-loanlisting.loan_amount') }}</td>	
+							<th>{{ Lang::get('borrower-loanlisting.interest') }}</td>		
+							<th>{{ Lang::get('borrower-loanlisting.days') }}</td>	
+							<th>{{ Lang::get('borrower-loanlisting.grade') }}</td>			
 						</tr>
 						<tr>
-							<td style="font-size:0.7em" class="panel-subhead">
+							<td class="panel-subhead">
 								{{$loanRow->perc_funded}}</td>
-							<td style="font-size:0.7em" class="panel-subhead">	
+							<td class="panel-subhead">	
 								S${{$loanRow->apply_amount}}
 							</td>	
-							<td style="font-size:0.7em" class="panel-subhead">
+							<td class="panel-subhead">
 								{{$loanRow->target_interest}}%
 							</td>	
-							<td style="font-size:0.7em" class="panel-subhead">
+							<td class="panel-subhead">
 								{{$loanRow->days_to_go}}
 							</td>	
-							<td style="font-size:0.7em" class="panel-subhead">
+							<td class="panel-subhead">
 								{{$loanRow->borrower_risk_grade}}
 							</td>				
 						</tr>
@@ -63,9 +63,9 @@
 				</table>	
 			</div>											
 		</div>	<!--row- panel white-->
-		<div class="row panel-footer">
-			<div class="text-center" style="font-size:0.90em">Type of Repayment: 
-				<span class="panel-subhead" style="font-size:0.90em">Monthly Installments</span>
+		<div class="row panel-footer" style="font-size:0.90em">
+			<div class="text-center">{{ Lang::get('borrower-loanlisting.repayment_type') }}: 
+				<span class="panel-subhead">{{ Lang::get('borrower-loanlisting.monthly_install') }}</span>
 			</div>									
 		</div><!--row-->																							
 	</div><!--col-8-->

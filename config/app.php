@@ -146,6 +146,7 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 		'App\Providers\MoneyMatchServiceProvider',
+		'App\Providers\GoogleCloudStorageServiceProvider',
 		'Unisharp\Ckeditor\ServiceProvider',
 
 	],

@@ -2,12 +2,10 @@
 
 <div id="director_info" class="tab-pane fade">
 	<div class="panel panel-default directorinfo applyloan"> 						
-		<div class="panel-body">
-	
+		<div class="panel-body">	
 			<div class="col-sm-12 col-lg-7">	
 			
-						<form class="form-inline">	
-																			 										
+						<form class="form-inline">																			 										
 							<div class="row">	
 								<div class="col-xs-3">																				
 									<label>{{ Lang::get('borrower-profile.select') }}:</label>											

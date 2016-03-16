@@ -36,7 +36,7 @@
 										@var	$loan_url	=	"borrower/docdownload/".$loan_url
 										<a 	href="javascript:void(0)"
 											data-download-url="{{url($loan_url)}}"
-											class="borrower_doc_download">View
+											class="borrower_doc_download">{{ Lang::get('borrower-applyloan.view') }}
 										</a>
 									@endif
 								</div>

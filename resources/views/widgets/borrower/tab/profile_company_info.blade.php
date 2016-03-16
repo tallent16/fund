@@ -6,12 +6,11 @@
 	@var $opt2	="selected"
 @endif
 
-<div id="company_info" class="tab-pane fade in active">	
-	
+<div id="company_info" class="tab-pane fade in active">		
 	<div class="panel panel-default applyloan">   
 		<div class="panel-body">
-				<div class="row">
-					<fieldset {{ $modelBorPrf->viewStatus }}>
+			<div class="row">
+				<fieldset {{ $modelBorPrf->viewStatus }}>
 					
 					<div class="col-md-6 input-space">
 						<div class="row">		
@@ -132,28 +131,30 @@
 						
 						<div class="row">		
 							<div class="col-xs-5">											
-								<label>Company Image</label>												
+								<label>{{ Lang::get('borrower-profile.company_image') }}</label>												
 							</div>
 												
 							<div class="col-xs-7">									
 									<input 	type="file" 
 												class="jfilestyle" 
 												data-buttonBefore="true" 
-												name="company_image">									
+												name="company_image"
+												/>									
 							</div>
 						</div>
 							
 							
 						<div class="row">		
 							<div class="col-xs-5">											
-								<label>Company Thumbnail Image</label>												
+								<label>{{ Lang::get('borrower-profile.company_thumb_image') }}</label>												
 							</div>
 												
 							<div class="col-xs-7">									
 								<input 	type="file" 
 										class="jfilestyle" 
 										data-buttonBefore="true" 
-										name="company_thumbnail">									
+										name="company_thumbnail"
+										/>									
 							</div>
 						</div>
 							
@@ -235,7 +236,7 @@
 						
 					<!--<div class="row">		
 							<div class="col-xs-4">											
-								<label>Company Video</label>												
+								<label>{{ Lang::get('borrower-profile.company_video') }}</label>												
 							</div>
 												
 							<div class="col-xs-8">									
@@ -248,11 +249,11 @@
 							
 								
 					</div>
-					</fieldset>	
+				</fieldset>	
 					
-				</div><!---row---> 
-			</div><!---panel body---> 
-		</div><!---panel---> 
+			</div><!---row---> 
+		</div><!---panel body---> 
+	</div><!---panel---> 
 </div><!---tab---> 
 
 

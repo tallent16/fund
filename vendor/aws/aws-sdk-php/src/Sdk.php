@@ -23,6 +23,7 @@ namespace Aws;
  * @method \Aws\CognitoSync\CognitoSyncClient createCognitoSync(array $args = [])
  * @method \Aws\ConfigService\ConfigServiceClient createConfigService(array $args = [])
  * @method \Aws\DataPipeline\DataPipelineClient createDataPipeline(array $args = [])
+ * @method \Aws\DatabaseMigrationService\DatabaseMigrationServiceClient createDatabaseMigrationService(array $args = [])
  * @method \Aws\DeviceFarm\DeviceFarmClient createDeviceFarm(array $args = [])
  * @method \Aws\DirectConnect\DirectConnectClient createDirectConnect(array $args = [])
  * @method \Aws\DirectoryService\DirectoryServiceClient createDirectoryService(array $args = [])
@@ -69,7 +70,7 @@ namespace Aws;
  */
 class Sdk
 {
-    const VERSION = '3.15.9';
+    const VERSION = '3.16.0';
 
     /** @var array Arguments for creating clients */
     private $args;

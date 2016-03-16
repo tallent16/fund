@@ -4,7 +4,7 @@
 			<div class="col-sm-12">
 				<div class="row">
 						<div class="col-sm-6">
-							<label>Detailed Company Profile</label>		
+							<label>{{ Lang::get('borrower-profile.companyprofile') }}</label>		
 							<div class="form-group">
 								<textarea 	class="form-control" 
 											rows="10" 
@@ -17,7 +17,7 @@
 						</div><!--col-6-->	
 									
 						<div class="col-sm-6">
-							<label>About us</label>
+							<label>{{ Lang::get('borrower-profile.about_us') }}</label>
 							<div class="form-group">
 								<textarea 	class="form-control" 
 											rows="10" 
@@ -29,7 +29,7 @@
 					</div><!--row1-->
 					<div class="row">
 				<div class="col-sm-6">
-					<label>Risk Industy</label>		
+					<label>{{ Lang::get('borrower-profile.risk_industry') }}</label>		
 					<div class="form-group">
 						<textarea 	class="form-control" 
 									rows="5" 
@@ -41,7 +41,7 @@
 				</div><!--col-6-->			
 				
 				<div class="col-sm-6">
-					<label>Risk Strength</label>
+					<label>{{ Lang::get('borrower-profile.risk_strength') }}</label>
 					<div class="form-group">
 						<textarea 	class="form-control" 
 									rows="5" 
@@ -53,7 +53,7 @@
 				</div>
 				<div class="row">
 				<div class="col-sm-6">
-					<label>Risk Weakness</label>		
+					<label>{{ Lang::get('borrower-profile.risk_weakness') }}</label>		
 					<div class="form-group">
 						<textarea 	class="form-control" 
 									rows="5" 

@@ -34,10 +34,10 @@
                             <a href="{{ url ('banking') }}"><i class="fa fa-university fa-fw"></i>{{ Lang::get('borrower-leftmenu.banking') }}<span class="fa arrow"></span> </a>
                               <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{{ url ('investor/bankdetails') }}">Bank Details</a>
+                                    <a href="{{ url ('investor/bankdetails') }}">{{ Lang::get('borrower-leftmenu.bankdetails') }}</a>
                                 </li> 
                                  <li>
-                                    <a href="{{ url ('investor/withdraw') }}">Withdraw</a>
+                                    <a href="{{ url ('investor/withdraw') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
                                 </li>                                                                                            
                             </ul>
                         </li>

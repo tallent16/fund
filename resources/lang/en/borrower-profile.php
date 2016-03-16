@@ -13,11 +13,12 @@ return [
 	|
 	*/
 
-	'status'				=> 'STATUS',
 	'profile'				=> 'Profile',
 	'company_info'			=> 'COMPANY INFO',
 	'directors_info'		=> 'DIRECTORS INFO',
 	'profile_info'			=> 'PROFILE INFO',
+	'financial_info'		=> 'FINANCIAL INFO',
+	'bank_info'				=> 'BANK INFO',
 	'industry'				=> 'Industry',
 	'business_name'			=> 'Business Name',
 	'name_business'			=> 'LEAP NETWORKS PTE LTD', 
@@ -57,4 +58,16 @@ return [
 	'companyprofile'		=> 'Detailed Company Profile',
 	'success'				=> 'Profile Details Submitted Successfully',
 	'save'					=> 'Profile Details Saved Successfully',
+	'save_button'			=> 'Save',
+	'company_image'			=> 'Company Image',
+	'company_thumb_image'	=> 'Company Thumbnail Image',
+	'company_video'			=> 'Company Video',
+	'about_us'				=> 'About us',
+	'risk_industry' 		=> 'Risk Industry',
+	'risk_strength'			=> 'Risk Strength',
+	'risk_weakness'			=> 'Risk Weakness',
+	'financial_ratio'		=> 'Financial Ratio',
+	'previous_year'			=> 'Previous Year',
+	'current_year'			=> 'Current Year',
+	
 ];

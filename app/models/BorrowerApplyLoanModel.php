@@ -13,6 +13,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $apply_amount		  			=  	"";
 	public $loan_currency_code			  	=	"";
 	public $loan_tenure		  				=  	"";
+	public $loan_tenure_list	  			=  	array();
 	public $target_interest  				=  	"";
 	public $bid_open_date		  			=  	"";
 	public $bid_close_date  				=  	"";
@@ -38,6 +39,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $purposeSingleLineInfo			= 	array();
 	public $bidTypeSelectOptions			= 	"";
 	public $paymentTypeSelectOptions		= 	"";
+	
 	
 	public function getBorrowerLoanDetails($loan_id) {
 		
@@ -320,6 +322,40 @@ class BorrowerApplyLoanModel extends TranWrapper {
 															'name', 'id',$this->bid_type, "--Please Select--");		
 		$this->paymentTypeSelectOptions	=	$this->constructSelectOption($paymentTypeList,
 															'name', 'id',$this->repayment_type, "--Please Select--");		
+		$loanTenureCode =	19;
+	
+		$filterSql		=	"	SELECT	codelist_id,
+										codelist_code,
+										codelist_value,
+										expression
+								FROM	codelist_details
+								WHERE	codelist_id in ($loanTenureCode)
+								AND		expression !='all'";
+								
+		$filter_rs		= 	$this->dbFetchAll($filterSql);
+
+		if (!$filter_rs) {
+			throw exception ("Code List Master / Detail information not correct");
+			return;
+		}
+		
+		foreach($filter_rs as $filter_row) {
+
+			$codeId 	= 	$filter_row->codelist_id;
+			$codeCode 	= 	$filter_row->codelist_code;
+			$codeValue 	= 	$filter_row->codelist_value;
+			$codeExpr 	= 	$filter_row->expression;
+			
+			switch ($codeId) {
+			
+				case 19:
+					$this->loan_tenure_list[$codeExpr] 	=	$codeValue;
+					break;
+
+			}
+			
+		}
+		
 	}
 	
 	public function getBorrowerLoanDocUrl($doc_id) {

@@ -10,7 +10,7 @@
 		<div class="annoucement-msg-container">
 			<div class="alert alert-success annoucement-msg">
 				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<h4>We are here to help you find the best loans to find.</h4>	
+				<h4>{{ Lang::get('borrower-loanlisting.alert_msg_text') }}</h4>	
 			</div>
 		</div>				
 	</div>
@@ -19,30 +19,30 @@
 <form >
 	<div class="row">	
 		<!--<div class="col-sm-12"> -->
-			<div class="col-sm-3"> 														
+			<div class="col-sm-12 col-lg-3"> 														
 				<div class="form-group">	
-					<strong>Interest Rate</strong><br>							
+					<strong>{{ Lang::get('borrower-loanlisting.interest_rate') }}</strong><br>							
 					{{ Form::select('intrate_filter', $loanListing->filterIntRateList, $loanListing->filterIntRateValue, ["class" => "selectpicker"]) }} 
 				</div>	
 			</div>
 					
-			<div class="col-sm-3"> 
+			<div class="col-sm-12 col-lg-3"> 
 				<div class="form-group">								
-					<strong>Loan Amount</strong><br>							
+					<strong>{{ Lang::get('borrower-loanlisting.loan_amount') }}</strong><br>							
 					{{ Form::select('loanamt_filter', $loanListing->filterLoanAmtList, $loanListing->filterLoanAmtValue, ["class" => "selectpicker"]) }} 
 				</div>	
 			</div>
 
-			<div class="col-sm-3"> 														
+			<div class="col-sm-12 col-lg-3"> 														
 				<div class="form-group">							
-					<strong>Tenure</strong><br>							
+					<strong>{{ Lang::get('borrower-loanlisting.tenure') }}</strong><br>							
 					{{ Form::select('tenure_filter', $loanListing->filterTenureList, $loanListing->filterTenureValue, ["class" => "selectpicker"]) }} 
 				</div>	
 			</div>
 
-			<div class="col-sm-3"> 
+			<div class="col-sm-12 col-lg-3"> 
 				<div class="form-group">								
-					<strong>Borrower Grade</strong><br>							
+					<strong>{{ Lang::get('borrower-loanlisting.grade') }}</strong><br>							
 					{{ Form::select('grade_filter', $loanListing->filterGradeList, $loanListing->filterGradeValue, ["class" => "selectpicker"]) }} 
 
 				</div>	
@@ -53,31 +53,31 @@
 
 <div class="row">
 	<!--<div class="col-sm-12" >-->
-		<div class="col-sm-2" id="apply_filter_div" style="display:none">
-			<button type="submit" class="btn verification-button">
-				{{ Lang::get('Apply Filter') }}
-			</button>
-		</div>
+	<div class="col-sm-2" id="apply_filter_div" style="display:none">
+		<button type="submit" class="btn verification-button">
+			{{ Lang::get('borrower-loanlisting.apply_filter') }}			
+		</button>
+	</div>
+	<div class="col-sm-2">
+		<button type="button"  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
+			{{ Lang::get('borrower-loanlisting.show_filter') }}			
+		</button>
+	</div>
+
 </form>
-		<div class="col-sm-2">
-			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
-				{{ Lang::get('Show Filter') }}
-			</button>
-		</div>
 	<!--</div>-->
 </div>
 
 <div class="row">
 	<div class="col-sm-12 space-around"> 
-		
 
-		<?php $firstBlock = true; ?>
+	<?php $firstBlock = true; ?>
 		@foreach ($loanListing->loanList as $loanRow)
 			@if ($firstBlock) 
 				<div class="row">
 			@endif 
 			
-					<div class="col-sm-6">
+					<div class="col-sm-12 col-lg-6">
 						<div class="panel-body">
 							@include('widgets.loanlisting_widget', array('class'=>'', "loanRow"=>$loanRow))
 						</div>
@@ -110,14 +110,11 @@ function hideShowFilter() {
 	}
 
 } 
-
-function chumma() {
-	alert("chumma");
-}
-function redirecturl(loanurl){	
+/*Redirect the url to respected loandetails page*/
+function redirecturl(loanurl)
+{
 	window.location=loanurl;
 }
-	
 </script>
  @endsection
 @stop

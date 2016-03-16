@@ -45,14 +45,16 @@ return [
 
 		'local' => [
 			'driver' => 'local',
-			'root'   => storage_path().'/app',
+			'root'   => base_path(),
 		],
 
 		's3' => [
 			'driver' => 's3',
-			'key'    => 'AKIAJIJJ5XQS22ZIGYSQ',
-			'secret' => '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',
-			'region' => 'Singapore',
+			//~ 'key'    => 'AKIAJIJJ5XQS22ZIGYSQ',
+			//~ 'secret' => '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',
+			'key'    => 'AKIAIIWMUQ5ANCFQ52HQ',
+			'secret' => '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',
+			'region' => 'ap-southeast-1',
 			'bucket' => 'moneymatch',
 		],
 

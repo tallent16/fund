@@ -9,9 +9,9 @@
 						<table class="table table-loan table-border-custom text-left">		
 							<tbody>
 								<tr>
-									<th class="tab-head">Financial Ratio</th>
-									<th class="tab-head">Previous Year</th>	
-									<th class="tab-head">Current Year</th>				
+									<th class="tab-head">{{ Lang::get('borrower-profile.financial_ratio') }}</th>
+									<th class="tab-head">{{ Lang::get('borrower-profile.previous_year') }}</th>	
+									<th class="tab-head">{{ Lang::get('borrower-profile.current_year') }}</th>				
 								</tr>
 								@if(count($finacialRatioInfo)>0)
 									@var	$i	=1

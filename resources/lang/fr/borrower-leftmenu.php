@@ -20,15 +20,14 @@ return [
 	'dashboard'					=> 'Tableau de bord',	
 	'loans'						=> 'prêts',
 	'transcation'				=> 'transcation',
-	'banking'					=> 'Bancaire',
-	'support'					=> 'Soutien',
-	'settings'					=> 'Réglages',
+	'banking'					=> 'Bancaire',	
 	'pinnacle'					=> 'Pinnacle One',
 	'applyloans'				=> 'appliquer prêts',
 	'myloans'					=> 'Mes prêts',
 	'loanslist'					=> 'Annonce prêt',
 	'transhistory'				=> 'transcation Histoire',
 	'bankdetails'				=> 'Coordonnées bancaires',
-	'repayloans'				=> 'rembourser les prêts',
+	'repayloans'				=> 'rembourser les prêts',	
+	'withdraw'					=> 'Se désister',
 	
 	];

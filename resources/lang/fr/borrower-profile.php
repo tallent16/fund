@@ -13,11 +13,13 @@ return [
 	|
 	*/
 
-	'status'				=> 'STATUT',
 	'profile'				=> 'Profil',
 	'company_info'			=> 'INFORMATION D ENTREPRISE',
 	'director_info'			=> 'ADMINISTRATION INFO',
 	'profile_info'			=> 'PROFIL-INFORMATION',
+	'financial_info'		=> 'INFO FINANCIERE',
+	'bank_info'				=> 'BANK INFO',
+	'industry'				=> 'Industrie',
 	'business_name'			=> 'Nom de l entreprise',
 	'name_business'			=> 'LEAP NETWORKS PTE LTD',
 	'bank_code'				=> 'Code bancaire',
@@ -56,4 +58,15 @@ return [
 	'companyprofile'		=> 'Détail Profil de la société', 
 	'success'				=> 'Détails du profil soumis avec succès',
 	'save'					=> 'Profile Details enregistré avec succès',
+	'save_button'			=> 'sauvegarder',
+	'company_image'			=> 'image de l\'entreprise',
+	'company_thumb_image'	=> 'Société Thumbnail Image',
+	'company_video'			=> 'Société Vidéo',
+	'about_us'				=> 'À propos de nous',
+	'risk_industry' 		=> 'Industrie du risque',
+	'risk_strength'			=> 'Force des risques',
+	'risk_weakness'			=> 'Faiblesse des risques',
+	'financial_ratio'		=> 'Ratio financier',
+	'previous_year'			=> 'Année précédente',
+	'current_year'			=> 'Cette année',
 ];

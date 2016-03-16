@@ -21,7 +21,8 @@ class FileUpload {
 		
 		$s3BucketEnabled	=	false;
 		if ($s3BucketEnabled) {
-			//This will be implemented later 
+			$disk	=	Storage::disk('s3');
+			
 		} else {
 			return	url()."/".$destinationPath;
 		}

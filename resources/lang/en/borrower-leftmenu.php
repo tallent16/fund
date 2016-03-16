@@ -20,15 +20,14 @@ return [
 	'dashboard'					=> 'Dashboard',	
 	'loans'						=> 'Loans',
 	'transcation'				=> 'Transcation',
-	'banking'					=> 'Banking',
-	'support'					=> 'Support',
-	'settings'					=> 'Settings',
+	'banking'					=> 'Banking',	
 	'pinnacle'					=> 'Pinnacle One',
 	'applyloans'				=> 'Apply Loans',
 	'myloans'					=> 'My Loans',
 	'loanslist'					=> 'Loan Listing',
 	'transhistory'				=> 'Transcation History',
 	'bankdetails'				=> 'Bank Details',
-	'repayloans'				=> 'Repay Loans',
+	'repayloans'				=> 'Repay Loans',	
+	'withdraw'					=> 'Withdraw',
 	
 	];

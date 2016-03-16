@@ -15,6 +15,17 @@ class LoanDetailsModel extends TranWrapper {
 	public 	$purpose_singleline			=	"";
 	public 	$statusText  				=  	"";
 	public 	$avg_int_bid  				=  	"";
+	public 	$status						=  	"";
+	public 	$borrower_risk_grade		=  	"";
+	public 	$loan_id					=  	"";
+	public 	$loan_tenure				=  	"";
+	public	$perc_funded				=	"";
+	public	$days_to_go					=	"";
+	public	$isfeatured					=	"";
+	public	$no_of_bidders				=	"";
+	public	$total_bid					=	"";
+	public	$apply_amount				=	"";
+	public	$repayment_type				=	"";
 	public 	$directorInfo				= 	array();
 	public 	$bidInfo 					= 	array();
 	public 	$commentInfo 				= 	array();
@@ -61,6 +72,7 @@ class LoanDetailsModel extends TranWrapper {
 											borrowers.borrower_risk_grade,
 											loans.loan_id,
 											loans.loan_tenure,
+											round(ifnull(total_bid * 100 / apply_amount,0),2) perc_funded,
 											loans.target_interest,
 											if(loans.bid_close_date < now(),'Bid Closed',
 													datediff(loans.bid_close_date, now())) days_to_go,

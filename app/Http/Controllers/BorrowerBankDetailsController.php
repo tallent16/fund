@@ -21,8 +21,13 @@ class BorrowerBankDetailsController extends Controller {
 	public function __construct()
 	{	
 		$this->middleware('auth');
+		this->init();
 	}
 
+	public function littleMoreInit() {
+		
+		
+	}
 	/**
 	 * Show the application dashboard to the user.
 	 *

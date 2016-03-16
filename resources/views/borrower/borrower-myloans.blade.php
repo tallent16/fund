@@ -45,99 +45,86 @@
 		<div class="col-sm-12 col-lg-4"> 
 			<!-- summary panel starts here -->
 			<div class="panel panel-default">
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="pull-right">
-								<i class="fa fa-exclamation-circle"></i>
-							</div>
-						</div>
-					</div>
+				<div class="panel-body bid-table-space">
+					
 					<div class="col-md-12">
-						<div class="row space-around">
+						<div class="row">
 							<div class="col-md-3 col-sm-4 col-xs-4">
 								{{$LoanDetMod->no_of_bidders}}
 							</div>
-							<div class="col-md-6 col-sm-4 col-xs-4">
+							<div class="col-md-5 col-sm-4 col-xs-4">
 								{{$LoanDetMod->total_bid}}
 							</div>
-							<div class="col-md-3 col-sm-4 col-xs-4">
-								{{$LoanDetMod->days_to_go}}
+							<div class="col-md-4 col-sm-4 col-xs-4">
+								{{$LoanDetMod->days_to_go}}<span class="pull-right"><i class="fa fa-exclamation-circle"></i></span>
 							</div>
 						</div>
 						
-						<div class="row space-around bidders-value">
+						<div class="row bidders-value">
 							<div class="col-md-3 col-sm-4 col-xs-4">
 								Bidders
 							</div>
-							<div class="col-md-6 col-sm-4 col-xs-4">
+							<div class="col-md-5 col-sm-4 col-xs-4">
 								of {{$LoanDetMod->apply_amount}} Goal
 							</div>
-							<div class="col-md-3 col-sm-4 col-xs-4">
-								Days to go
+							<div class="col-md-4 col-sm-4 col-xs-4">
+								Days left
 							</div>
 						</div>
 						<div class="row  space-around">	
 								<div class="progress">
 									<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70"
-									aria-valuemin="0" aria-valuemax="100" style="width:70%">		
+									aria-valuemin="0" aria-valuemax="100" style="width:{{$LoanDetMod->perc_funded}}%">		
 									</div>
 								</div>
 							</div>	
 								
 						<div class="row  space-around">	
-							<div class="row">						
-								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-file-text"></i> 
-									<span class="bid-now-section"> Grade of Borrower:</span>
+							<div class="row">												
+								<div class="col-md-7 col-xs-7"> 									
+									<i class="fa fa-file-text"></i><span class="bid-now-section">Grade of Borrower:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->borrower_risk_grade}}</div>
 							</div>
 							
-							<div class="row">						
-								<div class="col-md-7 col-xs-7">
-									<i class="fa fa-database"></i>
-									<span class="bid-now-section"> Type of Loan:</span>
+							<div class="row">													
+								<div class="col-md-7 col-xs-7">									
+									<i class="fa fa-database"></i><span class="bid-now-section">Type of Loan:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->repayment_type}}</div>
 							</div>
 							
-							<div class="row">				 		
-								<div class="col-md-7 col-xs-7">
-									<i class="fa fa-archive"></i>
-									<span class="bid-now-section"> Tenure:</span>
+							<div class="row">											 		
+								<div class="col-md-7 col-xs-7">									
+									<i class="fa fa-archive"></i><span class="bid-now-section">Tenure:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->loan_tenure}}</div>
 							</div>
 							
-							<div class="row">							
-								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-inr"></i> 
-									<span class="bid-now-section"> Interest Range:</span>
+							<div class="row">										
+								<div class="col-md-7 col-xs-7"> 									
+									<i class="fa fa-inr fa-lg"></i><span class="bid-now-section"> Interest Range:</span>
 								</div>
-								<div class="col-md-5 col-xs-5">{{$LoanDetMod->target_interest}}%</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->target_interest}} %</div>
 							</div>
 							
 							<div class="row">						
 								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-line-chart"></i> 
-									<span class="bid-now-section"> Average Interest Bidded:</span>
+									<i class="fa fa-bar-chart-o "></i><span class="bid-now-section">Average Interest Bidded:</span>
 								</div>
-								<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}}%</div>
+								<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}} %</div>
 							</div>
 							
 							<div class="row">					
 								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-usd"></i> 
-									<span class="bid-now-section"> Amount bidded:</span>
+									<i class="fa fa-dollar fa-lg"></i><span class="bid-now-section"> Amount bidded:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->total_bid}}</div>
 							</div>
 							
 							<div class="row">						
 								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-info-circle"></i> 
-									<span class="bid-now-section"> Status:</span>
+									<i class="fa fa-info-circle fa-lg"></i><span class="bid-now-section">Status:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->statusText}}</div>
 							</div>

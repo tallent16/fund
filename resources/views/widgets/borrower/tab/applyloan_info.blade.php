@@ -49,31 +49,30 @@
 							</div>	
 							
 							<div class="row">		
-								<div class="col-xs-5">											
+								<div class="col-xs-5 col-lg-5 col-sm-5">											
 									<label>{{ Lang::get('borrower-applyloan.loan_tenure') }}</label>												
 								</div>
-								<div class="col-xs-4">	
+								<div class="col-xs-7 col-lg-4 col-sm-4">	
 									
-									{{ Form::select('loan_tenure', array("3"=>"3 Months","6"=>"6 Months","9"=>"9 Months","12"=>"12 Months"), 
-															$BorModLoan->loan_tenure, 
-															['class' => 'selectpicker text-right']) }}	
-													
-								</div>
-								<div class="col-xs-3">										
+										{{ Form::select('loan_tenure', $BorModLoan->loan_tenure_list, $BorModLoan->loan_tenure,
+																			["class" => "selectpicker text-right"]) }}									
+											
+								</div> 
+								<div class="col-lg-3 col-sm-3">										
 								</div>
 							</div>
 						
 							<div class="row">		
-								<div class="col-xs-5">											
+								<div class="col-xs-5 col-lg-5 col-sm-5">											
 									<label>{{ Lang::get('borrower-applyloan.target_int') }}</label>												
 								</div>
-								<div class="col-xs-4">													
+								<div class="col-xs-7 col-lg-4 col-sm-4">													
 									<input type="text" class="form-control select-width text-right" 
 											name="target_interest"												
 											id="target_interest"
 											value="{{$BorModLoan->target_interest}}" >																	
 								</div>
-								<div class="col-xs-3">	
+								<div class="col-lg-3 col-sm-3">	
 								</div>
 							</div>			
 					</div>
@@ -154,17 +153,17 @@
 							</div>	
 							
 							<div class="row">		
-								<div class="col-xs-5">											
+								<div class="col-xs-5 col-lg-5 col-sm-5">											
 									<label>{{ Lang::get('borrower-applyloan.minimum_limit') }}</label>												
 								</div>
-								<div class="col-xs-4">														 
+								<div class="col-xs-7 col-lg-4 col-sm-4">														 
 									<input 	type="text" 
 											class="form-control select-width text-right"
 											 name="min_for_partial_sub"
 											 value="{{$BorModLoan->min_for_partial_sub}}">	
 																							
 								</div>
-								<div class="col-xs-3">	
+								<div class="col-lg-3 col-sm-3">	
 								</div>	
 							</div>	
 						

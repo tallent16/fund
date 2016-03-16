@@ -4,7 +4,7 @@ use	\App\models\BorrowerTransactionModel;
 use Response;
 use Request;
 
-class BorrowerTransHistoryController extends Controller {
+class BorrowerTransHistoryController extends MoneyMatchController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -22,13 +22,17 @@ class BorrowerTransHistoryController extends Controller {
 	 *
 	 * @return void
 	 */
+	 
+	public $tranModel;
+	
 	public function __construct()
 	{	
 		$this->middleware('auth');
+		$this->init();
 	}
 	
 	public function littleMoreInit() {
-		$this->transactionModel = new BorrowerTransactionModel();
+		$this->tranModel = new BorrowerTransactionModel();
 	}	
 
 	/**
@@ -39,19 +43,32 @@ class BorrowerTransHistoryController extends Controller {
 	public function indexAction()
 	{
 		$transType 	=	'All';
-		$fromDate	=	strtotime("-12 Months");
-		$toDate		=	strtotime("now");
-		
+		$fromDate	=	date("d-m-Y", strtotime("-12 Months"));
+		$toDate		=	date("d-m-Y", strtotime("now"));
 
-		echo date('d-m-Y', $fromDate);
-		die;
 		
 		if (isset($_REQUEST["fromdate"])) {
-			echo $_REQUEST["fromdate"];
+			$fromDate	=	$_REQUEST["fromdate"];
 		}
 		
+		if (isset($_REQUEST["todate"])) {
+			$toDate 	=	$_REQUEST["todate"];
+		}
+		
+		if (isset($_REQUEST["transtype"])) {
+			$transType = $_REQUEST["transtype"];
+		}
+
+		
+		$this->tranModel->viewTransList($fromDate, $toDate, $transType);
+		
+		$withArry	=	array(	"tranModel" => $this->tranModel	, 
+								"fromDate" => $fromDate, 
+								"toDate" => $toDate,
+								"tranType" => $transType);
+		
 		return view('borrower.borrower-transcationhistory')
-				->with("classname","fa fa-credit-card fa-fw user-icon"); 
+				->with($withArry); 
 	}
 
 }

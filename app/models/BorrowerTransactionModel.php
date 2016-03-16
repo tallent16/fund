@@ -1,23 +1,37 @@
 <?php namespace App\models;
 use Config;
 use DB;
+use Lang;
 
 class BorrowerTransactionModel extends TranWrapper {
 	public	$loanList = array();
 	public  $tranList = array();
+	public	$tranTypeFilter;
+	public	$fromDate;
+	public  $toDate;
+	public  $tranType;
 	
 	public function viewTransList($fromDate, $toDate, $tranType) {
-		$borrowId 	= getCurrentBorrowerID();
+		$this->tranTypeFilter = array (	"Disbursals"	=>	Lang::get("Disbursal"),
+										"Fees"		=>	Lang::get("Levies"),
+										"Repayment"	=>	Lang::get("Repayment"),
+										"All"		=>	Lang::get("All")
+									);
+		$this->fromDate = $fromDate;
+		$this->toDate = $toDate;
+		$this->tranType = $tranType;
+		
+		$borrowId 	= $this->getCurrentBorrowerID();
 
 		$lnListSql	=	"SELECT loans.loan_id,
 								loans.loan_reference_number,
-								loans.apply_date,
-								loans.bid_close_date,
-								loans.apply_amount,
-								ifnull(loans.loan_sactioned_amount, bids.total_bid_amount) bid_sanctioned_amount,
+								DATE_FORMAT(loans.apply_date, '%d-%m-%Y') apply_date,
+								DATE_FORMAT(loans.bid_close_date, '%d-%m-%Y') bid_close_date,
+								round(loans.apply_amount,2) apply_amount,
+								round(ifnull(loans.loan_sactioned_amount, bids.total_bid_amount),2) bid_sanctioned_amount,
 								loans.target_interest,
-								loans.final_interest_rate,
-								loans.loan_sactioned_amount - loans.total_principal_repaid balance_os,
+								round(loans.final_interest_rate,2) final_interest_rate,
+								round(loans.loan_sactioned_amount - loans.total_principal_repaid,2) balance_os,
 								loans.status
 						FROM	loans left outer join 
 									(	SELECT 	loan_id, sum(bid_amount) total_bid_amount
@@ -28,10 +42,10 @@ class BorrowerTransactionModel extends TranWrapper {
 						
 						
 		$disbSql	=	"SELECT	loan_id,
-								'Disbursement',
+								'Disbursement' tran_type,
 								disbursements.disbursement_date tran_date,
-								disbursements.amount_disbursed,
-								'Amount Disbursed',
+								disbursements.amount_disbursed tran_amt,
+								'Amount Disbursed Less Fees' transdetail,
 								amount_disbursed loan_balance,
 								1 display_order
 						FROM	disbursements
@@ -39,86 +53,92 @@ class BorrowerTransactionModel extends TranWrapper {
 						AND		loan_id = :loan_idparm ";
 						
 		$levySql	=	"SELECT	loan_id,
-								'Levies ',
-								disbursements.disbursement_date  tran_date,
-								disbursements.total_fees_levied,
-								'Total Fees Levied',
+								'Levies ' tran_type,
+								disbursements.disbursement_date tran_date,
+								disbursements.total_fees_levied tran_amt,
+								'Processing Fees Levied' transdetail,
 								total_fees_levied loan_balance,
 								2 display_order
 						FROM	disbursements
 						where	borrower_id = {$borrowId} 
 						AND		loan_id = :loan_idparm ";
 						
-		$prinSql	=	"SELECT 	loan_id,
-								'Repayment',
-								trans_date disbursement_date  tran_date,
-								principal_paid, 
-								'Principal Component',
+		$prinSql	=	"SELECT loan_id,
+								'Repayment' tran_type,
+								borrower_repayments.trans_date tran_date,
+								principal_paid tran_amt, 
+								'Principal Component of Repayment' transdetail,
 								(-1) * principal_paid loan_balance,
 								1 display_order
 						FROM	borrower_repayments 
 						where	borrower_id = {$borrowId}
 						AND		loan_id = :loan_idparm ";
 						
-		$intrSql	=	"SELECT 	loan_id,
-								'Repayment',
-								trans_date  tran_date,
-								interest_paid, 
-								'Interest Component',
+		$intrSql	=	"SELECT loan_id,
+								'Repayment' tran_type,
+								borrower_repayments.trans_date tran_date,
+								interest_paid tran_amt, 
+								'Interest Component of Repayment' transdetail,
 								0 loan_balance,
 								2 display_order
 						FROM	borrower_repayments
 						where	borrower_id = {$borrowId}
 						AND		loan_id = :loan_idparm ";
 						
-		$penlSql	=	"SELECT 	loan_id,
-								'Repayment',
-								trans_date  tran_date,
-								penalty_paid, 
-								'Penalty for late payment',
+		$penlSql	=	"SELECT loan_id,
+								'Repayment' tran_type,
+								borrower_repayments.trans_date tran_date,
+								penalty_paid tran_amt, 
+								'Penalty for late payment' transdetail,
 								0 loan_balance,
 								3 display_order
 						FROM	borrower_repayments
 						where	borrower_id = {$borrowId}
 						AND		loan_id = :loan_idparm ";
 						
-		$orderby	=	" order by loan_id, tran_date, display_order ";
+		$orderby	=	" ) loantrans where tran_amt > 0 
+						and	tran_date between '" . $this->getDbDateFormat($fromDate) . "' and '".
+						$this->getDbDateFormat($toDate) . "' order by loan_id, tran_date, display_order ";
 		
+		$selectCol	=	"	SELECT	loan_id,
+									tran_type,
+									date_format(tran_date, '%d-%m-%Y') tran_date,
+									round(tran_amt,2) tran_amt,
+									transdetail,
+									round(loan_balance,2) loan_balance,
+									display_order FROM ( ";
 		switch ($tranType) {
 			case 'Disbursals':
-				$mainSql	=	$disbSql.$orderby;
+				$mainSql	=	$selectCol . $disbSql. $orderby;
 				break;
 				
 			case 'Fees':
-				$mainSql	=	$levySql.$orderby;
+				$mainSql	=	$selectCol . $levySql. $orderby;
 				break;
 			
 			case 'Repayment':
-				$mainSql	=	"SELECT * FROM ( ".
-								$prinSql. " UNION ".
-								$intrSql. " UNION ".
-								$penlSql. " ) ".$orderby;
+				$mainSql	=	$selectCol . $prinSql. " UNION ". $intrSql. " UNION ".
+								$penlSql. $orderby;
 				break;
 
 			case 'All':
-				$mainSql	=	"SELECT * FROM ( ".
+				$mainSql	=	$selectCol . 
 								$disbSql. " UNION ".
 								$levySql. " UNION ".
 								$prinSql. " UNION ".
 								$intrSql. " UNION ".
-								$penlSql. " ) ".$orderby;
+								$penlSql. $orderby;
 				break;
 		}
 								
-		$lnListRs			=	$this->dbFetchAll($lnListSql);
-		foreach ($lnListRs as $lnListRow) {
+		$this->loanList			=	$this->dbFetchAll($lnListSql);
+		foreach ($this->loanList as $lnListRow) {
 			$loan_id 		=	$lnListRow->loan_id;
-			$tranListRs		=	$this->dbFetchWithParam($mainSql, ['loan_idparm' => $loan_id]);
-			
-			
+			$transListSql	=	str_replace(":loan_idparm", $loan_id, $mainSql);
+			$tranListRs		=	$this->dbFetchAll($transListSql);
+			$this->tranList[$loan_id] = $tranListRs;
 		}
-			
-			
+		return;
 	
 		
 	}

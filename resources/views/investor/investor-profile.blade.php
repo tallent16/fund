@@ -33,7 +33,7 @@
 				</div><!-------------end of---panel heading---------------------->	
 				
 				<div class="panel-body table-loan applyloan table-bordered">
-					<div class="col-sm-6">
+					<div class="col-sm-6 input-space">
 						
 						<div class="row">		
 							<div class="col-xs-4">											
@@ -81,7 +81,7 @@
 						
 						<div class="row">		
 							<div class="col-xs-4">											
-								<label>Mobile Number verified status</label>												
+								<label>Mobile Number status</label>												
 							</div>
 												
 							<div class="col-xs-8">													
@@ -125,7 +125,7 @@
 						
 					
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-6 input-space">
 								<div class="row">		
 							<div class="col-xs-4">											
 								<label>Bank Name</label>												

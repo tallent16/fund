@@ -3024,7 +3024,7 @@ select[multiple].form-group-lg .form-control {
 .btn:hover,
 .btn:focus,
 .btn.focus {
-  color: #333;
+  color: #fff;
   text-decoration: none;
 }
 .btn:active,
@@ -6407,9 +6407,9 @@ button.close {
 	}		
 }
 @media (max-width: 360px) {
-	.nav-tabs > li{
+/*	.nav-tabs > li{
 		float:none;
-	}	
+	}	*/
 }
 @media (max-width: 767px) {
   .visible-xs {
@@ -9022,7 +9022,7 @@ canvas.round {
 	font-weight: 600;
 }
 .settings-menu{ 
-	margin:10em 0 0 0;
+	margin:20em 0 0 0;
 }
 /****************************HEADER*************************************/
 .page-header-title{
@@ -9110,13 +9110,18 @@ canvas.round {
 	color:#222;
 	font-size:24px;	
 }
-.bank-details  .pagination > li > a{
+.bank-details .pagination > li > a{
 	background-color:#F0EDEF;
+}
+.bank-details .pagination > .disabled > a{	
+	background:transparent;
+	color:#ccc;
 }
 .directorinfo .pagination{
 	margin:0;
 }
-.directorinfo .panel-primary > .panel-headsection, .applyloan .panel-headsection{
+.directorinfo .panel-primary > .panel-headsection,
+ .applyloan .panel-headsection{
 	padding:5px;
 }
 /*#financial_info .tab-head{
@@ -9148,10 +9153,7 @@ ol li{
 }
 .tab-content .active{ 
 	color:#4B4949;
-}/*
-.form-inline .row{ 
-	margin:5px 0 0 0;
-} */
+}
 .applyloan .btn-group.bootstrap-select {
     width: 100%;
 }
@@ -9227,7 +9229,7 @@ ol li{
 }
 .bid-now-section{
 	color:#8B170A;
-	margin: 0 0 0 8px;
+	margin: 0 0 0 10px;
 }
 .space-around{
 	margin:20px 0 0 0;
@@ -9279,7 +9281,7 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 	cursor:pointer;
 }
 .loan-list-image img{
-	margin: 0 0 0 -14px;
+	margin: 0 0 0 -15px;
     height: 205px;  
   }
 .panel-white .progress, .space-around .progress{
@@ -9295,7 +9297,9 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 .title-loanlist{
 	padding:0 0 5px 10px;
 }
-.loanlist-wrapper .pagination > .active > a, .loanlist-wrapper .pagination > .active > a:hover, .loanlist-wrapper .pagination > .active > a:focus{
+.loanlist-wrapper .pagination > .active > a, 
+.loanlist-wrapper .pagination > .active > a:hover, 
+.loanlist-wrapper .pagination > .active > a:focus{
 	background-color: #8B170A;
     border-color: #8B170A;
 }
@@ -9362,7 +9366,12 @@ table.table.tab-label {
 .no-image{
 	background-color:rgba(0, 0, 0, 0.8);
 }
-
+.bid-table-space .space-around{
+	margin:10px 0 0 0;	
+}
+.bid-table-space {
+	font-size:13px;
+}
 /*********************Transcation History*******************************/
 .button-black, .button-black:hover{											
 	border:none;
@@ -9376,6 +9385,9 @@ table.table.tab-label {
 }
 #transhistory-container td{
     border: none;
+}
+#trans-history tr {
+    border-bottom: 1px solid #ccc;
 }
 #transhistory-container table{
 	margin-bottom:0;
@@ -9405,7 +9417,6 @@ table.table.tab-label {
 .borrower-settings .panel-body {
     padding: 40px;
 }
-/*---------------------------End of Borrower----------------------------*/
 /*********************Investor Dashboard********************************/
 #accordion .panel-body{
 	padding:0;
@@ -9448,7 +9459,8 @@ table#account-summary, .table-border-custom{
         margin: 0 0 0 250px; 
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
-    }        
+    }       
+     
 }
 @media(min-width:361px) and (max-width:768px) {
 	.loan-list-image .imageoverlap img{
@@ -9459,11 +9471,11 @@ table#account-summary, .table-border-custom{
 	.verification-button, .verification-button:hover{
 		margin: 0 0 15px 0;
 	}
+	.nav-tabs > li{
+		float:none;
+	}
 }
-@media(min-width:1280px)and (max-width:1919px) {
-	/*.loan-list-image img{
-		height:247px;
-	}*/	
+@media(min-width:1280px)and (max-width:1919px) {	
 	.jfilestyle input{   
 		margin:0;
 	}
@@ -9482,5 +9494,10 @@ table#account-summary, .table-border-custom{
 	}
 	.jfilestyle input{   
 		margin: 0 0 0 10px;
+	}	
+}
+@media (max-width: 1920px) {
+	.loan-list-image img{
+		height:193px;
 	}
 }
