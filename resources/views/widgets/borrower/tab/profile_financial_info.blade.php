@@ -4,7 +4,7 @@
 	<div class="panel panel-default directorinfo"> 						
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-12 col-lg-6">
 					<div class="table-responsive"><!---table start-->
 						<table class="table table-loan table-border-custom text-left">		
 							<tbody>
@@ -57,7 +57,7 @@
 					</div>
 				</div>
 				
-				<div class="col-sm-6">			
+				<div class="col-sm-12 col-lg-6">			
 					<div class="table-responsive"><!---table start-->
 						<table class="table table-loan table-border-custom  text-left">		
 							<tbody>

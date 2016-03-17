@@ -259,12 +259,9 @@ class BorrowerProfileModel extends TranWrapper {
 			$file		=	$postArray['company_image'];
 			$imagePath	=	$destinationPath."/".$borrowerId."/profile/image";
 			$fileUploadObj->createIfNotExists($imagePath);
-			//~ if(!File::exists($imagePath)) {
-				//~ File::makeDirectory($imagePath, 0755, true);
-			//~ }
 			$fileUploadObj->storeFile($imagePath ,$file);
-			$filename 		= 	$file->getClientOriginalName();
-			$company_image	=	$imagePath."/".$filename;
+			$filename 			= 	$file->getClientOriginalName();
+			$company_image		=	$imagePath."/".$filename;
 			$updateDataArry		=	array(	"company_image"=>$company_image,
 											"company_image_thumbnail"=>$company_image
 											);
@@ -273,27 +270,21 @@ class BorrowerProfileModel extends TranWrapper {
 			$file			=	$postArray['company_thumbnail'];
 			$thumbnailPath	=	$destinationPath."/".$borrowerId."/profile/thumbnail";
 			$fileUploadObj->createIfNotExists($thumbnailPath);
-			//~ if(!File::exists($thumbnailPath)) {
-				//~ File::makeDirectory($thumbnailPath, 0755, true);
-			//~ }
 			$fileUploadObj->storeFile($thumbnailPath ,$file);
 			$filename 									= 	$file->getClientOriginalName();
 			$company_thumbnail							=	$thumbnailPath."/".$filename;
 			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
 			
 		}
-		if(isset($postArray['company_video'])){
-			$file			=	$postArray['company_video'];
-			$videoPath		=	$destinationPath."/".$borrowerId."/profile/video";
-			$fileUploadObj->createIfNotExists($videoPath);
-			//~ if(!File::exists($videoPath)) {
-				//~ File::makeDirectory($videoPath, 0755, true);
-			//~ }
-			$fileUploadObj->storeFile($thumbnailPath ,$file);
-			$filename 								= 	$file->getClientOriginalName();
-			$company_video							=	$thumbnailPath."/".$filename;
-			$updateDataArry["company_video_url"]	=	$company_video;
-		}
+		//~ if(isset($postArray['company_video'])){
+			//~ $file			=	$postArray['company_video'];
+			//~ $videoPath		=	$destinationPath."/".$borrowerId."/profile/video";
+			//~ $fileUploadObj->createIfNotExists($videoPath);
+			//~ $fileUploadObj->storeFile($thumbnailPath ,$file);
+			//~ $filename 								= 	$file->getClientOriginalName();
+			//~ $company_video							=	$thumbnailPath."/".$filename;
+			//~ $updateDataArry["company_video_url"]	=	$company_video;
+		//~ }
 		
 		$dataArray = array(	'business_name' 				=> ($business_name!="")?$business_name:null,
 							'bo_id'							=> ($business_organisation!="")?$business_organisation:null,

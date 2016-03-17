@@ -13,6 +13,7 @@ return [
 	|
 	*/
 	
+	'page_heading'					=> 'Loan Angebot',
 	'alert_msg_text'				=> 'Wir sind hier , um Ihnen die besten Darlehen finden zu finden.',
 	'interest_rate'					=> 'Zinsrate',
 	'loan_amount'					=> 'Darlehensbetrag',

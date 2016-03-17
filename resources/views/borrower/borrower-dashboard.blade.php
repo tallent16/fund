@@ -115,7 +115,7 @@
 		}
 	</script>
 @endsection
-@section('page_heading','Dashboard')
+@section('page_heading',Lang::get('borrower-dashboard.page_heading') )
 @section('section')  
          @var $borrowerLoans 	= $BorDashMod->loan_details;
          @var $borCurLoans 		= $BorDashMod->curloans;

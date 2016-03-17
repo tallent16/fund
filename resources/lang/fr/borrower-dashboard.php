@@ -13,6 +13,7 @@ return [
 	|
 	*/
  
+	'page_heading'			=> 'Tableau de bord',
 	'annocement_section'	=> 'Annonce Section : Lorem ipsum dolor sit amet, consectetur adipiscing elit , sed ne TEMPOR eiusmod ut labore et dolore incididunt magna aliqua . Ut enim ad minim veniam , quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat . ' ,
 	'current_loan'			=> 'prêt actuel',
 	'companyname'			=> 'MKM Car Leasing Pvt Ltd',

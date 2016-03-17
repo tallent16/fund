@@ -6,18 +6,18 @@
 	</script>
 	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
 @endsection
-@section('page_heading','My Loans') )
+@section('page_heading',Lang::get('borrower-loaninfo.page_heading') )
 @section('section')    
 @var	$borrowerAllList	=	$BorModMyLoanInfo->allloan_details
 
-<div class="col-sm-12"> 			
+<div class="col-sm-12 space-around"> 			
 	<div class="row">			
 			
-			<div class="col-sm-12 space-around"> 
+			<div class="col-sm-12"> 
 				<div class="panel panel-primary panel-container">
 					
 					<div class="panel-heading panel-headsection">					
-						LOAN INFO
+						{{ Lang::get('borrower-loaninfo.loaninfo') }}
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
@@ -30,37 +30,37 @@
 									<table class="table tab-label">		
 										<tbody>																								
 											<tr>
-												<td>Loan Reference</td>														
+												<td>{{ Lang::get('borrower-loaninfo.loan_refer') }}</td>														
 											</tr>
 											<tr>
-												<td>Date Applied</td>												
+												<td>{{ Lang::get('borrower-loaninfo.date_applied') }}</td>												
 											</tr>
 											<tr>
-												<td>Status</td>												
+												<td>{{ Lang::get('borrower-loaninfo.status') }}</td>												
 											</tr>
 											<tr>
-												<td>Loan Type</td>												
+												<td>{{ Lang::get('borrower-loaninfo.loan_type') }}</td>												
 											</tr>
 											<tr>
-												<td>Bid Type</td>												
+												<td>{{ Lang::get('borrower-loaninfo.bid_type') }}</td>												
 											</tr>
 											<tr>
-												<td>Target Interest%</td>												
+												<td>{{ Lang::get('borrower-loaninfo.target_interest') }} %</td>												
 											</tr>
 											<tr>
-												<td>Effective Interest%</td>												
+												<td>{{ Lang::get('borrower-loaninfo.effective_interest') }} %</td>												
 											</tr>
 											<tr>
-												<td>Amount Applied</td>												
+												<td>{{ Lang::get('borrower-loaninfo.amount_applied') }}</td>												
 											</tr>
 											<tr>
-												<td>Amount Realized</td>												
+												<td>{{ Lang::get('borrower-loaninfo.amount_realized') }}</td>												
 											</tr>
 											<tr>
-												<td>Repayments till date</td>												
+												<td>{{ Lang::get('borrower-loaninfo.repayment_tilldate') }}</td>												
 											</tr>
 											<tr>
-												<td>Principal Outstanding</td>												
+												<td>{{ Lang::get('borrower-loaninfo.principal_outstanding') }}</td>												
 											</tr>
 										</tbody>
 									</table>	
@@ -135,7 +135,7 @@
 													<tr>
 														<td><a href="{{ url ($bid_url) }}"
 																class="btn button-grey">
-																View All Bids
+																{{ Lang::get('borrower-loaninfo.view_all_bids') }}
 															</a>														
 														</td>												
 													</tr>
@@ -163,7 +163,7 @@
 															<button type="button" 
 																	class="btn button-grey repayment_schedule_btn"
 																	data-loan-id="{{$loanRow->loan_id}}">
-																	Repayment Schedule
+																	{{ Lang::get('borrower-loaninfo.repayment_schedule') }}
 															</button>												
 														</td>											
 													</tr>
@@ -185,7 +185,7 @@
 						</div><!---row--->
 						@else
 							<p>
-								No Loan Found For this Borrower
+								{{ Lang::get('borrower-loaninfo.no_loan_found') }}
 							</p>
 						@endif
 					</div>	<!---col 12--->
@@ -196,7 +196,7 @@
 	<div><!---row--->
 </div><!---col 12--->
 <input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
- @section ('popup-box_panel_title','All Repayment Schedule')
+ @section ('popup-box_panel_title',Lang::get('borrower-loaninfo.all_repayment_schedule'))
 	@section ('popup-box_panel_body')
 		
 	@endsection

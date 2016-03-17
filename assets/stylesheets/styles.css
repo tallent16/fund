@@ -4438,7 +4438,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   background-color: transparent;
 }
 .navbar-default .navbar-toggle {
-  border-color: #ddd;
+  border-color: #888888;
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
@@ -9257,6 +9257,7 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 	background-image: url('../../img/label.png');   
     color: #fff;
     background-repeat: no-repeat;
+    background-size:95% 95%;
 }
 .img-arrow{	
 	width: 5%; 
@@ -9486,9 +9487,9 @@ table#account-summary, .table-border-custom{
 	}
 }
 @media (min-width: 1920px) {
-	.tab-bid-label{
+	/*.tab-bid-label{
 		background-position: 35% 0;
-	}	
+	}	*/
 	.loan-list-image .imageoverlap img {
 		width: auto;
 	}
@@ -9499,5 +9500,5 @@ table#account-summary, .table-border-custom{
 @media (max-width: 1920px) {
 	.loan-list-image img{
 		height:193px;
-	}
+	}	
 }

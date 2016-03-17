@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('page_heading','Loan Listing')
+@section('page_heading',Lang::get('borrower-loanlisting.page_heading'))
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 @endsection

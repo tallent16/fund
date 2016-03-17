@@ -12,7 +12,8 @@ return [
 	| you want to customize your views to better match your application.
 	|
 	*/
-
+	
+	'page_heading'			=> 'Instrumententafel',
 	'annocement_section'	=> 'Ankündigung Abschnitt : Lorem ipsum dolor sit amet, consectetur adipiscing elit , sed do TEMPOR eiusmod incididunt ut labore et dolore magna aliqua . Ut enim ad minim veniam , quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
 	'current_loan'			=> 'tigen Darlehens',
 	'companyname'			=> 'MKM Autoleasing Pvt Ltd',

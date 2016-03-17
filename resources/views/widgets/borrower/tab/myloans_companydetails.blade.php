@@ -22,7 +22,7 @@
 
 			<div class="col-md-12">
 				<div class="panel-subhead">
-				Directory summary
+				{{ Lang::get('borrower-myloans.directory_summary')}}
 				</div>
 				@if(count($directorInfo)>0)
 					@foreach($directorInfo as $directorRow)
@@ -35,22 +35,22 @@
 	
 			<div class="col-md-12">
 				<div class="panel-subhead">
-					Rich Snapshot
+					{{ Lang::get('borrower-myloans.rich_snapshot')}}
 				</div>
 				<div class="row">
-					<div class="col-md-2">Industry:</div>
+					<div class="col-md-2">{{ Lang::get('borrower-myloans.industry')}}:</div>
 					<div class="col-md-10">
 						{{$LoanDetMod->risk_industry}}
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-2">Strength:</div>
+					<div class="col-md-2">{{ Lang::get('borrower-myloans.strength')}}:</div>
 					<div class="col-md-10">
 						{{$LoanDetMod->risk_strength}}
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-2">Weakness:</div>
+					<div class="col-md-2">{{ Lang::get('borrower-myloans.weakness')}}:</div>
 					<div class="col-md-10">
 						{{$LoanDetMod->risk_weakness}}
 					</div>
@@ -96,7 +96,7 @@
 						<table class="table table-loan">		
 							<tbody>
 								<tr>
-									<th class="tab-head" colspan="2">FINANCIALS</th>																	
+									<th class="tab-head" colspan="2">{{ Lang::get('borrower-myloans.financials')}}</th>																	
 								</tr>
 								@if(count($finacialInfo)>0)
 									@foreach($finacialInfo as $finacialRow)
@@ -115,9 +115,3 @@
 
 		</div>
 	</div>
-
-
-
-
-
-

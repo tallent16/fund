@@ -13,6 +13,7 @@ return [
 	|
 	*/
 	
+	'page_heading'					=> 'offre de prêt',
 	'alert_msg_text'				=> 'Nous sommes ici pour vous aider à trouver les meilleurs prêts pour trouver.',
 	'interest_rate'					=> 'Taux d\'intérêt',
 	'loan_amount'					=> 'Montant du prêt',

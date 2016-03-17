@@ -6,7 +6,7 @@
 	</script>
 	<script src="{{ asset("js/common.js") }}" type="text/javascript"></script>
 @endsection
-@section('page_heading','My Loans'))
+@section('page_heading',Lang::get('borrower-loaninfo.page_heading'))
 @section('section')     
 @var	$pos 			= 	strpos(base64_decode($loan_id), "bids");
 @var	$commnetInfo	=	$LoanDetMod->commentInfo	
@@ -17,12 +17,12 @@
 		<div class="col-sm-12 col-lg-8 ">							
 			<ul class="nav nav-tabs">
 				<li {{ ($pos === false)?"class='active'":""}}>
-					<a data-toggle="tab" href="#home">LOAN DETAILS</a>
+					<a data-toggle="tab" href="#home">{{ Lang::get('borrower-myloans.loan_details') }}</a>
 				</li>
-				<li><a data-toggle="tab" href="#menu1">COMPANY DETAILS</a></li>
-				<li><a data-toggle="tab" href="#menu2">LOAN UPDATES</a></li>
+				<li><a data-toggle="tab" href="#menu1">{{ Lang::get('borrower-myloans.company_details') }}</a></li>
+				<li><a data-toggle="tab" href="#menu2">{{ Lang::get('borrower-myloans.loan_updates') }}</a></li>
 				<li  {{ ($pos !== false)?"class='active'":""}}>
-					<a data-toggle="tab" href="#menu3">BID INFO</a>
+					<a data-toggle="tab" href="#menu3">{{ Lang::get('borrower-myloans.bid_info') }}</a>
 				</li>
 			</ul>
 
@@ -62,13 +62,13 @@
 						
 						<div class="row bidders-value">
 							<div class="col-md-3 col-sm-4 col-xs-4">
-								Bidders
+								{{ Lang::get('borrower-myloans.bidders') }}
 							</div>
 							<div class="col-md-5 col-sm-4 col-xs-4">
-								of {{$LoanDetMod->apply_amount}} Goal
+								{{ Lang::get('borrower-myloans.of') }} {{$LoanDetMod->apply_amount}} {{ Lang::get('borrower-myloans.goal') }}
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-4">
-								Days left
+								{{ Lang::get('borrower-myloans.days_left') }}
 							</div>
 						</div>
 						<div class="row  space-around">	
@@ -82,49 +82,49 @@
 						<div class="row  space-around">	
 							<div class="row">												
 								<div class="col-md-7 col-xs-7"> 									
-									<i class="fa fa-file-text"></i><span class="bid-now-section">Grade of Borrower:</span>
+									<i class="fa fa-file-text"></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.grade_borrower') }}:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->borrower_risk_grade}}</div>
 							</div>
 							
 							<div class="row">													
 								<div class="col-md-7 col-xs-7">									
-									<i class="fa fa-database"></i><span class="bid-now-section">Type of Loan:</span>
+									<i class="fa fa-database"></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.loan_type') }}:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->repayment_type}}</div>
 							</div>
 							
 							<div class="row">											 		
 								<div class="col-md-7 col-xs-7">									
-									<i class="fa fa-archive"></i><span class="bid-now-section">Tenure:</span>
+									<i class="fa fa-archive"></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.tenure') }}:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->loan_tenure}}</div>
 							</div>
 							
 							<div class="row">										
 								<div class="col-md-7 col-xs-7"> 									
-									<i class="fa fa-inr fa-lg"></i><span class="bid-now-section"> Interest Range:</span>
+									<i class="fa fa-inr fa-lg"></i><span class="bid-now-section"> {{ Lang::get('borrower-myloans.interest_range') }}:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->target_interest}} %</div>
 							</div>
 							
 							<div class="row">						
 								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-bar-chart-o "></i><span class="bid-now-section">Average Interest Bidded:</span>
+									<i class="fa fa-bar-chart-o "></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.avg_interest_bid') }}:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}} %</div>
 							</div>
 							
 							<div class="row">					
 								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-dollar fa-lg"></i><span class="bid-now-section"> Amount bidded:</span>
+									<i class="fa fa-dollar fa-lg"></i><span class="bid-now-section"> {{ Lang::get('borrower-myloans.amt_bidded') }}:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->total_bid}}</div>
 							</div>
 							
 							<div class="row">						
 								<div class="col-md-7 col-xs-7"> 
-									<i class="fa fa-info-circle fa-lg"></i><span class="bid-now-section">Status:</span>
+									<i class="fa fa-info-circle fa-lg"></i><span class="bid-now-section">{{ Lang::get('borrower-loaninfo.status') }}:</span>
 								</div>
 								<div class="col-md-5 col-xs-5">{{$LoanDetMod->statusText}}</div>
 							</div>
@@ -143,7 +143,7 @@
 								<span class="pull-left"><i class="fa fa-comments-o"></i></span> 
 							</div>			
 							<div class="col-xs-10">	
-								Comments  
+								{{ Lang::get('borrower-myloans.comments') }}  
 							</div>													
 						</div>							
 					</div>	<!--end panel head-->
@@ -153,7 +153,7 @@
 							@include('widgets.common.myloans_comments',array("commnetInfo"=>$commnetInfo)) 
 						@else
 							<p>
-								No Comments Found
+								{{ Lang::get('borrower-myloans.no_comments') }} 
 							</p>
 						@endif
 					</div>	<!--end panel body-->					

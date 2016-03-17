@@ -7,10 +7,13 @@ class FileUpload {
 	
 	public function storeFile ($destinationPath,$file) {
 		
-		$s3BucketEnabled	=	false;
+		$s3BucketEnabled	=	Config::get("moneymatch_settings.s3_bucket_enabled");
 		if ($s3BucketEnabled) {
-			//This will be implemented later 
-
+			$filename 				= 	$file->getClientOriginalName();
+			$fullDestinationPath	=	$destinationPath."/".$filename;
+			$disk					=	Storage::disk('s3');
+			$disk->put($fullDestinationPath,file_get_contents($file));
+			$disk->setVisibility($fullDestinationPath, 'public');
 		} else {
 			$filename = $file->getClientOriginalName();
 			$file->move($destinationPath, $filename);
@@ -19,10 +22,12 @@ class FileUpload {
 
 	public function getFile ($destinationPath) {
 		
-		$s3BucketEnabled	=	false;
+		$s3BucketEnabled	=	Config::get("moneymatch_settings.s3_bucket_enabled");
 		if ($s3BucketEnabled) {
 			$disk	=	Storage::disk('s3');
-			
+			$url = $disk->getDriver()->getAdapter()->getClient()->getObjectUrl(Config::get("filesystems.disks.s3.bucket"),
+																	$destinationPath);
+			return	$url;
 		} else {
 			return	url()."/".$destinationPath;
 		}
@@ -32,21 +37,13 @@ class FileUpload {
 		// This method will look for the existence of the destination path and will create the folder 
 		// if the folder does not exist
 
-		$s3BucketEnabled = false; // S3 to be implemented later
+		$s3BucketEnabled = Config::get("moneymatch_settings.s3_bucket_enabled");
 		
 		if (!$s3BucketEnabled) {
-			$basePath = base_path();
+			
 			if(!File::exists($destinationPath)) {
 				File::makeDirectory($destinationPath, 0755, true);
 			}
-		} else {
-			// Get the bucket details and create a folder in the bucket system
-			$disk = Storage::disk('s3');
-			if(!File::exists($destinationPath)) {
-				File::makeDirectory($destinationPath, 0755, true);
-			}
-			
-			
 		}
 	
 	}

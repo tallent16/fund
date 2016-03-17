@@ -78,7 +78,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 {
   //Route::get('investor/dashboard',array('middleware' => 'auth', 'uses' => 'InvestorDashboardController@indexAction'));
     Route::get('investor/dashboard', 'InvestorDashboardController@indexAction');
-    Route::get('investor/profile', 'InvestorProfileController@indexAction');
+    Route::match(['get', 'post'],'investor/profile', 'InvestorProfileController@indexAction');
 	Route::get('investor/loanslist', 'LoanListingController@indexAction');
 
     Route::get('investor/loandetails', 'InvestorLoanDetailsController@indexAction');

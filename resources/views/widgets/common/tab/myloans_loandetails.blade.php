@@ -30,7 +30,7 @@
 
 		<div class="col-md-12">	
 			<div class="panel-subhead">
-				PURPOSE OF THE LOAN
+				{{ Lang::get('borrower-myloans.purpose_loan')}}
 			</div>
 			<P>
 				{{$LoanDetMod->purpose}}
@@ -39,7 +39,7 @@
 
 		<div class="col-md-12">
 			<div class="panel-subhead">
-				ABOUT US
+				{{ Lang::get('borrower-myloans.about_us')}}
 			</div>
 			<p>
 				{{$LoanDetMod->about_us}}
@@ -51,7 +51,7 @@
 				<table class="table table-loan">		
 					<tbody>
 						<tr>
-							<th class="tab-head-red">FINANCIAL RATIO</th>
+							<th class="tab-head-red">{{ Lang::get('borrower-myloans.financial_ratio')}}</th>
 							<th class="tab-head">{{date("Y",strtotime("-1 year"))}}</th>	
 							<th class="tab-head">{{date("Y")}}</th>				
 						</tr>
@@ -73,13 +73,13 @@
 			<div class="col-md-12">
 				<div class="col-md-6">	
 					<div class="pull-left">	
-						<button type="submit" class="btn verification-button">DOWNLOAD INFORMATION</button>
+						<button type="submit" class="btn verification-button">{{ Lang::get('borrower-myloans.download_info')}}</button>
 					</div>
 				</div>
 				
 				<div class="col-md-6">	
 					<div class="pull-right social-share">	  
-						Share us on : <a href="">{{ Html::image('img/twitter.png') }}</a>
+						{{ Lang::get('borrower-myloans.share_us')}} : <a href="">{{ Html::image('img/twitter.png') }}</a>
 						<a href="">{{ Html::image('img/facebook.png') }}</a>
 						<a href="">{{ Html::image('img/mail.png') }}</a>
 					</div>
@@ -87,12 +87,5 @@
 			</div>
 		</div>
 
-
 	</div><!---panel body--->
 </div><!----panel container-->
-
-
-
-
-
-

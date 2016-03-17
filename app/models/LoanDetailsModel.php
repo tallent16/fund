@@ -190,7 +190,7 @@ class LoanDetailsModel extends TranWrapper {
 											bid_id
 								FROM 		loan_bids	
 								WHERE		loan_id	=	{$loan_id}
-								AND			bid_status	=	2
+								AND			(bid_status	=	2	OR	bid_status	=	1)
 								ORDER BY	bid_interest_rate,bid_amount";
 		
 		

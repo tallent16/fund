@@ -19,9 +19,9 @@
 							<table class="table table-bidinfo">		
 								<tbody>
 									<tr>
-										<th>BIDDER NAME</th>
-										<th>INTEREST RATE</th>	
-										<th>BID AMOUNT</th>				
+										<th>{{ Lang::get('borrower-myloans.bidder_name') }}</th>
+										<th>{{ Lang::get('borrower-myloans.interest_rate') }}</th>	
+										<th>{{ Lang::get('borrower-myloans.bid_amount') }}</th>				
 									</tr>
 										@if($bidInfoCnt	>	0)
 											@var	$i	=	1;
@@ -32,14 +32,14 @@
 													@var	$tdRowClass	=	"tab-row-orange"
 												@endif
 												<tr>
-													<td class="tab-bid-label">Bidder #{{$i}}</td>
+													<td class="tab-bid-label">{{ Lang::get('borrower-myloans.bidder') }} #{{$i}}</td>
 													<td class="{{$tdRowClass}}">{{$bidRow['bid_interest_rate']}}%</td>	
 													<td class="{{$tdRowClass}}">{{$bidRow['bid_amount']}}</td>		
 												</tr>	
 												@var	$i++;
 											@endforeach
 										@else
-												<tr><td colspan="3">No Bidder Information Found</td></tr>
+												<tr><td colspan="3">{{ Lang::get('borrower-myloans.no_bidder_found') }}</td></tr>
 										@endif
 								</tbody>
 							</table>	
