@@ -24,7 +24,7 @@ class BorrowerMakePaymentController extends Controller {
 	}
 
 	/**
-	 * Show the application dashboard to the user.
+	 * Show the application make payment to the user.
 	 *
 	 * @return Response
 	 */

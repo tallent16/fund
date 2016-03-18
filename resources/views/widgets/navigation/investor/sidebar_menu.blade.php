@@ -40,10 +40,7 @@
                                     <a href="{{ url ('investor/withdraw') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
                                 </li>                                                                                            
                             </ul>
-                        </li>
-                         <li>
-                            <a href="{{ url ('support') }}"><i class="fa fa-edit fa-fw"></i>{{ Lang::get('borrower-leftmenu.support') }} </a>
-                        </li>
+                        </li>                         
                     </ul>
                      <ul class="nav settings-menu" id="side-menu">	                 
                         <li>

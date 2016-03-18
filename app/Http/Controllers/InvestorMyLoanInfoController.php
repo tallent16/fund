@@ -1,5 +1,6 @@
 <?php 
 namespace App\Http\Controllers;
+use	\App\models\InvestorMyLoanInfoModel;
 use Request;
 class InvestorMyLoanInfoController extends MoneyMatchController {
 
@@ -8,11 +9,16 @@ class InvestorMyLoanInfoController extends MoneyMatchController {
 		$this->init();
 	}
 	
-	//render the borrower Dashboard page
-	public function indexAction() {		
-		
-		return view('investor.investor-myloaninfo')					
-					->with("classname","fa fa-gear fa-fw user-icon"); 
+	public function littleMoreInit() {
+		$this->investorMyLoanInfoModel	=	new InvestorMyLoanInfoModel;
 	}
-
+	
+	public function indexAction() {
+		$withArry	=	array(	"InvModMyLoanInfo"=>$this->investorMyLoanInfoModel,
+								"classname"=>"fa fa-usd fa-fw user-icon"
+							);	
+		$this->investorMyLoanInfoModel->getInvestorAllLoanDetails();	
+		return view('investor.investor-myloaninfo')
+			->with($withArry);
+	}
 }

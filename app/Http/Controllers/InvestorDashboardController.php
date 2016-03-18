@@ -8,7 +8,7 @@ class InvestorDashboardController extends MoneyMatchController {
 		$this->init();
 	}
 	
-	//render the borrower Dashboard page
+	//render the investor dashboard page
 	public function indexAction() {		
 		
 		return view('investor.investor-dashboard')					

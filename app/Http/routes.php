@@ -67,7 +67,7 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::get('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 	
 	Route::get('borrower/transhistory', 'BorrowerTransHistoryController@indexAction'); 
-	Route::get('borrower/bankdetails', 'BorrowerBankDetailsController@indexAction');
+	Route::get('borrower/bankdetails', 'BankProcessController@indexAction');
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');
 	Route::get('borrower/settings', 'BorrowerSettingsController@indexAction');
 	Route::get('borrower/makepayment', 'BorrowerMakePaymentController@indexAction');
@@ -81,11 +81,11 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::match(['get', 'post'],'investor/profile', 'InvestorProfileController@indexAction');
 	Route::get('investor/loanslist', 'LoanListingController@indexAction');
 
-    Route::get('investor/loandetails', 'InvestorLoanDetailsController@indexAction');
+  //  Route::get('investor/loandetails', 'InvestorLoanDetailsController@indexAction');
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
     Route::get('investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
-    Route::get('investor/bankdetails', 'InvestorBankDetailsController@indexAction'); 
+    Route::get('investor/bankdetails', 'BankProcessController@indexAction'); 
     Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  
 });
 

@@ -8965,10 +8965,21 @@ canvas.round {
 }
 /*# sourceMappingURL=styles.css.map */
 /*---------------------------CUSTOM CSS STARTS HERE-------------------**/
+/****************************Common css*********************************/
+.cursor-pointer{
+	cursor:pointer;
+}
+.annoucement-msg-container{
+	margin:0;
+}
+.annoucement-msg{
+	background-color: #8B170A;
+	color: #fff;
+}
+.tab-fontsize{
+	font-size:10px;	 
+}
 /******************************Login Page*******************************/
-/*.loan_title{
-	display:none;
-}*/
 .login-logo{
 	display: inline-block;
 	margin: 25px 0 0 0;
@@ -8977,16 +8988,16 @@ canvas.round {
 	background-color:#F6942C;
 	border:none;
 }
-.register-style{
-	background-color:#fff;
-	margin-top:25px;
-}
 .block-header a{
 	color:#C0BBBE;
 }
 .form-group a{
 	color:#EF4F1F;
 	text-decoration:none;
+}
+.register-style{
+	background-color:#fff;
+	margin-top:25px;
 }
 /******************************Register page****************************/
 .register-button{
@@ -8999,20 +9010,17 @@ canvas.round {
 	color:#fff;	
 	border:none;
 }
-.block-title{
-	color:#fff;
-}
 .header-register{
 	background-color:#222;
 	color:#fff;	
 	padding:5px;
 }
-/************************SIDEBAR NAVIGATION*****************************/
-.active{
-	color:#F6942C;
+.block-title{
+	color:#fff;
 }
-.nav > li > a .active{
-	color:#F6942C; 
+/************************SIDEBAR NAVIGATION*****************************/
+.active, .nav > li > a .active{
+	color:#F6942C;
 }
 .sidebar .sidebar-balance {
     padding: 15px;
@@ -9031,9 +9039,6 @@ canvas.round {
 	font-size: 32px;
 	color: rgb(255, 255, 255);
 }
-.user-icon{
-	color:#fff;
-}
 .status-label-section{
 	margin: 42px -66px 0px 0px;
 	float: right;
@@ -9044,16 +9049,6 @@ canvas.round {
 	border:1px solid #F6942C;	
 }
 /**********************BORROWER DASHBOARD*******************************/
-.cursor-pointer{
-	cursor:pointer;
-}
-.annoucement-msg-container{
-	margin:0;
-}
-.annoucement-msg{
-	background-color: #8B170A;
-	color: #fff;
-}
 .panel-container{
 	border:none;
 }
@@ -9083,9 +9078,6 @@ canvas.round {
 .totalamount{
 	background-color:#F6942C;
 	color:#fff;	
-}
-.tab-fontsize{
-	font-size:10px;	 
 }
 /************Profile (company info,director info,profile info)**********/
 .directorinfo td:nth-child(n+2) {

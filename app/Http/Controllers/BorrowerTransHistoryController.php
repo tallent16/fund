@@ -36,7 +36,7 @@ class BorrowerTransHistoryController extends MoneyMatchController {
 	}	
 
 	/**
-	 * Show the application dashboard to the user.
+	 * Show the application transcation history to the user.
 	 *
 	 * @return Response
 	 */

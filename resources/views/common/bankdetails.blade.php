@@ -18,44 +18,48 @@
 						</div>													
 					</div>							
 				</div><!--end panel head-->
+				
+				
 										
 				<div class="table-responsive"><!---table start-->
-					<table class="table table-loan text-left .tab-fontsizebig">							
-						<tbody>
-							<tr>
-								<td class="tab-left-head col-md-3"><span>Bank Code</span></td>
-								<td class="col-md-3">
-									<input type="text" name="bank_code" value="1000" class="form-control">
-								</td>
-								<td class="col-md-6"></td>
-							</tr>
-							<tr>
-								<td class="tab-left-head">Bank Name</td>
-								<td><input type="text" name="bank_name" value="OCBC Bank"  class="form-control"></td>
-								<td border="0"></td>
-							</tr>
-							<tr>
-								<td class="tab-left-head">Branch Code</td>
-								<td><input type="text" name="bank_code" value="501"  class="form-control"></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td class="tab-left-head">Bank Account Number</td>
-								<td><input type="text" name="bank_account_number" value="5011234567"  class="form-control"></td>
-								<td></td>
-							</tr>	
-							<tr>
-								<td class="tab-left-head">Active Status</td>
-								<td>Inactive</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td class="tab-left-head">Verified Status</td>
-								<td>Verified</td>
-								<td></td>
-							</tr>															
-						</tbody>
-					</table>							 
+					<div class="bank-list" id="" >
+						<table class="table table-loan text-left .tab-fontsizebig">							
+							<tbody>
+								<tr>
+									<td class="tab-left-head col-md-3"><span>Bank Code</span></td>
+									<td class="col-md-3">
+										<input type="text" name="bank_code" value="1000" class="form-control">
+									</td>
+									<td class="col-md-6"></td>
+								</tr>
+								<tr>
+									<td class="tab-left-head">Bank Name</td>
+									<td><input type="text" name="bank_name" value="OCBC Bank"  class="form-control"></td>
+									<td border="0"></td>
+								</tr>
+								<tr>
+									<td class="tab-left-head">Branch Code</td>
+									<td><input type="text" name="bank_code" value="501"  class="form-control"></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="tab-left-head">Bank Account Number</td>
+									<td><input type="text" name="bank_account_number" value="5011234567"  class="form-control"></td>
+									<td></td>
+								</tr>	
+								<tr>
+									<td class="tab-left-head">Active Status</td>
+									<td>Inactive</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="tab-left-head">Verified Status</td>
+									<td>Verified</td>
+									<td></td>
+								</tr>															
+							</tbody>
+						</table>	
+					</div>
 				</div><!---table end---> 
 				
 				<div class="pull-left">

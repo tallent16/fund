@@ -5,7 +5,7 @@ use Auth;
 use fileupload\FileUpload;
 use File;
 class TranWrapper extends MoneyMatchModel {
-
+		
 	public function CheckUserName($userName)	{
 		
 		$sql	= "	SELECT 	count(*) cnt 
@@ -90,6 +90,25 @@ class TranWrapper extends MoneyMatchModel {
 		return	Auth::user()->user_id;
 	}
 	
+	public function getUserType() {
+		$user_id	=	Auth::user()->user_id;
+		
+		$sql		=	"	SELECT 	usertype 
+							FROM	users
+							WHERE	user_id = {$user_id}";
+		
+		$result		=	$this->dbFetchAll($sql);
+		
+		if (count($result) > 0) {
+			$userType = $result[0]->usertype;
+			return $userType;
+		}
+		
+		return -1; //Not a possibility since the user will be there in order that 
+					// he is authorized to use it. so Duh!!!
+
+	}
+	
 	public function getCurrentBorrowerID() {
 		
 		$user_id	=	Auth::user()->user_id;
@@ -107,6 +126,26 @@ class TranWrapper extends MoneyMatchModel {
 		}
 		return $borrower_id;
 	}
+	
+	public function getCurrentInvestorID() {
+		
+		$user_id	=	Auth::user()->user_id;
+		
+		$sql= "	SELECT 	investor_id
+				FROM 	investors 
+				WHERE 	user_id = '".$user_id."'";
+		
+		$result 	= $this->dbFetchAll($sql);
+		
+		if(isset($result[0])) {
+			$investor_id = $result[0]->investor_id;
+		}else{
+			$investor_id = 0;
+		}
+		return $investor_id;
+	}
+
+	
 	
 	public function getBusinessOrganisationList() {
 		

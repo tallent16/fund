@@ -24,7 +24,7 @@ class BorrowerRepayLoansController extends Controller {
 	}
 
 	/**
-	 * Show the application dashboard to the user.
+	 * Show the application repay loans to the user.
 	 *
 	 * @return Response
 	 */

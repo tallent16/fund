@@ -14,14 +14,14 @@
 <form method="get">
 	<div class="row">	
 		<!--<div class="col-sm-12"> -->
-		<div class="col-sm-3"> 														
+		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 				<strong>{{ Lang::get('borrower-transcationhistory.filter_transcations')}}</strong><br>	
 				{{ Form::select('transtype', $tranModel->tranTypeFilter, $tranModel->tranType, ["class" => "selectpicker"]) }} 
 			</div>	
 		</div>
 				
-		<div class="col-sm-3"> 														
+		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('borrower-transcationhistory.from_date') }}</strong><br>							
 				<input id="fromdate" name="fromdate" value="{{$tranModel->fromDate}}" 
@@ -29,7 +29,7 @@
 			</div>	
 		</div>
 
-		<div class="col-sm-3"> 
+		<div class="col-sm-6 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('borrower-transcationhistory.to_date') }}</strong><br>							
 				<input id="todate" name="todate" value="{{$tranModel->toDate}}"
@@ -43,19 +43,19 @@
 
 <div class="row">
 	<!--<div class="col-sm-12" >-->
-		<div class="col-sm-2" id="apply_filter_div" style="display:none">
+		<div class="col-sm-3 col-lg-2" id="apply_filter_div" style="display:none">
 			<button type="submit" class="btn verification-button">
 				{{ Lang::get('borrower-loanlisting.apply_filter') }}
 			</button>
 		</div>
 </form>
-		<div class="col-sm-2">
+		<div class="col-sm-4 col-lg-2">
 			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
 				{{ Lang::get('borrower-loanlisting.show_filter') }}
 			</button>
 		</div>
 	<!--</div>-->
-		<div class="col-sm-3"> 
+		<div class="col-sm-5 col-lg-8"> 
 			<div class="form-group">								
 				<button type="submit" class="btn verification-button">{{ Lang::get('borrower-transcationhistory.export_excel') }}</button>		
 			</div>	
