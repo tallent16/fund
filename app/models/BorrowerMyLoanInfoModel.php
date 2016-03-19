@@ -46,8 +46,8 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 											end as bid_type,
 											loans.target_interest,
 											ROUND(loans.apply_amount,2) amount_applied ,
-											ROUND(loans.loan_sactioned_amount,2) amount_realized,
-											 ROUND((loans.loan_sactioned_amount - loans.loan_sactioned_amount),2) outstanding
+											ROUND(loans.loan_sanctioned_amount,2) amount_realized,
+											 ROUND((loans.apply_amount - loans.loan_sanctioned_amount),2) outstanding
 									FROM 	loans,
 											borrowers 
 									WHERE	borrowers.borrower_id		=	{$current_borrower_id}

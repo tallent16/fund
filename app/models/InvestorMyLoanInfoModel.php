@@ -1,40 +1,51 @@
 <?php namespace App\models;
 class InvestorMyLoanInfoModel extends TranWrapper {
 
-	public $allLoanInfo		= 	array();
+	public $allLoanInfo				= 	array();
+	public $filterloanStatusList	= 	array();
+	public $filterloanStatusValue	= 	'all';
 	
-	public function getInvestorAllLoanDetails() {
-		$this->getInvestorLoanList();
+	public function getInvestorAllLoanDetails($filterLoanStatus	=	"all") {
+		$this->getInvestorLoanList($filterLoanStatus);
+		$this->processDropDowns();
 	}
 		
-	public function getInvestorLoanList() {
+	public function getInvestorLoanList($filterLoanStatus) {
 		
-		$current_inverstor_id	=	 $this->getCurrentInvestorID();
+		$this->filterloanStatusValue	= 	$filterLoanStatus;
+		$loanStatusWhere				=	" loans.status " . ($filterLoanStatus == "all"? " IN(3,6,9) ":
+												"=	{$filterLoanStatus}"." ");
 		
-		$loanlist_sql			= "	SELECT 	loans.loan_id,
-											loans.borrower_id,
-											loans.loan_reference_number,
-											borrowers.business_name borrower_name,
-											borrowers.borrower_risk_grade,
-											loans.target_interest,
-											ROUND(loans.apply_amount,2) amount_applied ,
-											'' amount_offered ,
-											'' amount_accepted ,
-											loan_bids.bid_interest_rate insterest_bid ,
-											'' status,
-											'Loan Details' viewStatus
-									FROM 	loan_bids,
-											loans, 
-											borrowers,
-											investors
-									WHERE	investors.investor_id		=	{$current_inverstor_id}
-									AND		investors.investor_id		=	loan_bids.investor_id
-									AND		loan_bids.loan_id			=	loans.loan_id
-									AND		loans.borrower_id			=	borrowers.borrower_id
-									LIMIT 4";
+		$current_inverstor_id			=	 $this->getCurrentInvestorID();
 		
-		$loanlist_rs		= 	$this->dbFetchAll($loanlist_sql);
-		$rowIndex			=	0;
+		$loanlist_sql					= "	SELECT 	loans.loan_id,
+													loans.borrower_id,
+													loans.loan_reference_number,
+													borrowers.business_name borrower_name,
+													borrowers.borrower_risk_grade,
+													loans.target_interest,
+													ROUND(loans.apply_amount,2) amount_applied ,
+													ROUND(loan_bids.bid_amount,2) amount_offered ,
+													ROUND(loan_bids.accepted_amount,2) amount_accepted ,
+													loan_bids.bid_interest_rate insterest_bid ,
+													case loan_bids.bid_status 
+														   when 1 then 'Bidded' 
+														   when 2 then 'Bid Accepted'
+														   when 3 then 'Bid Not Accepted'
+													end as status,
+													'Loan Details' viewStatus
+											FROM 	loan_bids,
+													loans, 
+													borrowers
+											WHERE 	loan_bids.loan_id = loans.loan_id
+											AND 	loans.borrower_id = borrowers.borrower_id
+											AND 	loan_bids.investor_id =  {$current_inverstor_id}
+											AND 	{$loanStatusWhere}
+											LIMIT 	4";
+
+		$loanlist_rs				= 	$this->dbFetchAll($loanlist_sql);
+		$rowIndex					=	0;
+		
 		if ($loanlist_rs) {
 			foreach ($loanlist_rs as $loanRow) {
 				$rowValue	=	$loanRow;
@@ -67,4 +78,29 @@ class InvestorMyLoanInfoModel extends TranWrapper {
 		return	$repayschedlist_rs;
 	}
 	
+	public function processDropDowns() {
+		
+		$filterSql		=	"	SELECT	codelist_id,
+										codelist_code,
+										codelist_value,
+										expression
+								FROM	codelist_details
+								WHERE	codelist_id =	7
+								AND		codelist_code in (3,6,9)";
+								
+		$filter_rs		= 	$this->dbFetchAll($filterSql);
+
+		if (!$filter_rs) {
+			throw exception ("Code List Master / Detail information not correct");
+			return;
+		}
+		$this->filterloanStatusList['all'] 	=	'All Loans';
+		foreach($filter_rs as $filter_row) {
+
+			$codeCode 								= 	$filter_row->codelist_code;
+			$codeValue 								= 	$filter_row->codelist_value;
+			$this->filterloanStatusList[$codeCode] 	=	$codeValue;
+		}
+		
+	} // End process_dropdown
 }

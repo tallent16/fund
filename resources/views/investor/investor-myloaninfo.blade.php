@@ -17,6 +17,30 @@
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
+						<div id="filter_area">
+							<form >
+								<div class="row">	
+									<div class="col-sm-12 col-lg-3"> 														
+										<div class="form-group"><br>	
+											<strong>{{ Lang::get('Loan Status') }}</strong>							
+											{{ 
+												Form::select('loanstatus_filter', 
+																$InvModMyLoanInfo->filterloanStatusList, 
+																$InvModMyLoanInfo->filterloanStatusValue,
+																["class" => "selectpicker"]) 
+											}} 
+										</div>
+									</div>
+									<div class="col-sm-12 col-lg-3"> 														
+										<div class="form-group"><br><br>			
+											<button type="submit" class="btn verification-button">
+												{{ Lang::get('borrower-loanlisting.apply_filter') }}			
+											</button>
+										</div>	
+									</div>	
+								</div>
+							</form>
+						</div>
 						<div class="row"> 
 							@if(count($investortAllLoan) > 0)
 								<div class="col-sm-12 col-lg-2">										

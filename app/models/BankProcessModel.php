@@ -20,12 +20,7 @@ class BankProcessModel extends TranWrapper {
 	public	$typePrefix;
 	public	$userType;
 	public	$bankListRs = array();
-	
-	public 	$bank_code						= 	array();
-	public 	$bank_name						= 	array();
-	public 	$branch_code					= 	array();
-	public 	$bank_account_number			= 	array();
-	
+	public  $transtype;
 	
 	public function __construct($attributes = array()){	
 		
@@ -39,7 +34,6 @@ class BankProcessModel extends TranWrapper {
 	
 	function getBanksList() {
 
-			
 		$bankListSql	=	"	SELECT	{$this->typePrefix}_bankid bankid,
 										bank_code,
 										bank_name,
@@ -52,35 +46,51 @@ class BankProcessModel extends TranWrapper {
 								FROM	{$this->typePrefix}_banks
 								WHERE	{$this->typePrefix}_id = {$this->inv_or_borr_id}
 								ORDER BY orderby ";
-	//	echo $bankListSql;
+		
 		$this->bankListRs	=	$this->dbFetchAll($bankListSql);
 		return;
 	}
 	
-	function updateBankDetails() {
+	function updateBankDetails($postArray) {
 		$updateSql	=	"	UPDATE	{$this->typePrefix}_banks
-							SET		bank_code 				=	{$_REQUEST['bank_code']},
-									bank_name 				=	{$_REQUEST['bank_name']},
-									branch_code 			=	{$_REQUEST['branch_code']},
-									bank_account_number		=	{$_REQUEST['bank_account_number']}
-							WHERE	{$this->typePrefix}_bankid 	=	{$_REQUEST['bankid']} ";
+							SET		bank_code 				=	{$postArray['bank_code']},
+									bank_name 				=	{$postArray['bank_name']},
+									branch_code 			=	{$postArray['branch_code']},
+									bank_account_number		=	{$postArray['bank_account_number']}
+							WHERE	{$this->typePrefix}_bankid 	=	{$postArray['bankid']} ";
 		
 		$this->dbExecuteSql($updateSql);
 		return; 
 	
 	}
 	
-	function addBankDetails() {
+	function addBankDetails($postArray) {
+		/*echo '<pre>',print_r($postArray),'</pre>';
+		die;*/
+		
 		$insertSql	=	"	INSERT INTO {$this->typePrefix}_banks 
 							(	bank_code, bank_name, 
 								branch_code, bank_account_number, 
 								verified_status, active_status) VALUES 
-							(	{$_REQUEST['bank_code']}, {$_REQUEST['bank_name']},
-								{$_REQUEST['branch_code']}, {$_REQUEST['bank_account_number']},
+							(	{$postArray['bank_code']}, {$postArray['bank_name']},
+								{$postArray['branch_code']}, {$postArray['bank_account_number']},
 								0, 0)";
 								
 		$this->dbExecuteSql($insertSql);
 		return;
+		
+	}
+	
+	function processBankDetails($postArray) {
+	/*	echo '<pre>',print_r($postArray['bank_name']),'</pre>';
+		die;*/
+		$transtype	=	$postArray['transtype'];
+		if($transtype	==	"add") {
+			$this->addBankDetails($postArray);
+			echo 'Bank Added Successfully';
+		}else{
+			$this->updateBankDetails($postArray);
+		}
 		
 	}
 	

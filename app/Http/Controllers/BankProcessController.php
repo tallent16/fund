@@ -32,10 +32,22 @@ class BankProcessController extends MoneyMatchController {
 	 */
 	public function indexAction()
 	{
+		
+		$submitted	=	false;
+		if (Request::isMethod('post')) {
+			$postArray	=	Request::all();
+			$result		=	$this->bankProcessModel->processBankDetails($postArray);
+			$submitted	=	true;
+		}
+		
+		
 		$this->bankProcessModel->getBanksList();
-		$withArry		=	array(	"modelbankdet"=>$this->bankProcessModel);
+		
+		$withArry		=	array(		"modelbankdet"=>$this->bankProcessModel
+									,"fa fa-university fa-fw user-icon"	);
+									
 		return view('common.bankdetails') 
-					->with("classname","fa fa-university fa-fw user-icon"); 
+					->with($withArry); 
 	}
 
 }

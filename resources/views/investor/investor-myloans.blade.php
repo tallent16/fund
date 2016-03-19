@@ -10,13 +10,27 @@
 					
 		<div class="col-sm-12 col-lg-8 ">							
 			<ul class="nav nav-tabs">
-				<li class="active"><a data-toggle="tab" href="#home">LOAN DETAILS</a></li>			
+				<li class="active">
+					<a data-toggle="tab" href="#home">{{Lang::get('LOAN DETAILS')}}</a>
+				</li>			
+				<li>
+					<a data-toggle="tab" href="#company_details">{{Lang::get('COMPANY DETAILS')}}</a>
+				</li>			
+				<li>
+					<a data-toggle="tab" href="#payment_schedule">{{Lang::get('PAYMENT SCHEDULE')}}</a>
+				</li>			
 			</ul>
 
 			<div class="tab-content myloan-wrapper">
 				<div id="home" class="tab-pane fade in active">
 					@include('widgets.common.tab.myloans_loandetails')
-				</div>				
+				</div>
+				<div id="company_details" class="tab-pane fade">
+					@include('widgets.borrower.tab.myloans_companydetails')
+				</div>
+				<div id="payment_schedule" class="tab-pane fade">
+					@include('widgets.investor.tab.myloans_payment_schedule')
+				</div>			
 			</div>
 		</div>
 					

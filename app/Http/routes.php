@@ -28,6 +28,10 @@ Route::group(['prefix' => ''], function() {
     define('REPAYMENT_TYPE_ONE_TIME', '1');
     define('REPAYMENT_TYPE_INTEREST_ONLY', '2');
     define('REPAYMENT_TYPE_EMI', '3');
+    define('BANK_DETAILS_VERIFIED', '2');
+    define('BANK_DETAILS_UNVERIFIED', '1');
+    define('USER_TYPE_BORROWER', '1');
+    define('USER_TYPE_INVESTOR', '2');
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
@@ -67,7 +71,8 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::get('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 	
 	Route::get('borrower/transhistory', 'BorrowerTransHistoryController@indexAction'); 
-	Route::get('borrower/bankdetails', 'BankProcessController@indexAction');
+	//Route::get('borrower/bankdetails', 'BankProcessController@indexAction');
+	Route::match(['get', 'post'],'borrower/bankdetails', 'BankProcessController@indexAction');
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');
 	Route::get('borrower/settings', 'BorrowerSettingsController@indexAction');
 	Route::get('borrower/makepayment', 'BorrowerMakePaymentController@indexAction');

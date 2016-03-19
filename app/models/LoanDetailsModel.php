@@ -1,6 +1,9 @@
 <?php namespace App\models;
 class LoanDetailsModel extends TranWrapper {
 
+	public	$inv_or_borr_id				=	"";
+	public	$typePrefix					=	"";
+	public	$userType					=	"";
 	public	$borrower_id				=	"";
 	public	$company_name				=	"";
 	public	$company_image				=	"";
@@ -31,6 +34,18 @@ class LoanDetailsModel extends TranWrapper {
 	public 	$commentInfo 				= 	array();
 	public 	$finacialRatioInfo 			= 	array();
 	public 	$finacialInfo 				= 	array();
+	public 	$paymentScheduleInfo 		= 	array();
+	
+	
+	public function __construct($attributes = array()){	
+		
+		// This will be called only from the borrower / Investors' model so this will be investor or borrower
+		$this->userType 		= 	$this->getUserType();
+		$this->inv_or_borr_id	=	($this->userType == 1)? $this->getCurrentBorrowerID(): 
+															$this->getCurrentInvestorID();
+		$this->typePrefix		=	($this->userType == 1)? "borrower":
+															"investor";
+	}
 	
 	public function getLoanDetails($loan_id) {
 		
@@ -38,9 +53,17 @@ class LoanDetailsModel extends TranWrapper {
 		$this->getLoanFinacialRatio();
 		$this->getLoanFinacial();
 		$this->getLoanDirector();
-		$this->getLoanBids($loan_id);
 		$this->getBidAverageInterest($loan_id);
-		$this->getLoanComments($loan_id);
+		$this->getLoanComments($loan_id);	
+		
+		switch($this->userType) {
+			case	USER_TYPE_INVESTOR:
+				$this->getPaymentSchedule($loan_id);
+				break;
+			case	USER_TYPE_BORROWER:
+				$this->getLoanBids($loan_id);
+				break;
+		}
 	}
 		
 	public function getLoan($loan_id) {
@@ -264,6 +287,49 @@ class LoanDetailsModel extends TranWrapper {
 			}
 		}
 		return $finacial_rs;
+	}
+	
+			
+	public function getPaymentSchedule($loan_id) {
+		
+			$paymentschedule_sql		= 	"	SELECT 		IFNULL(DATE_FORMAT(borrower_repayments.trans_date,'%d/%m/%Y'),'--') 
+																										payment_date, 
+															IFNULL(ROUND(interest_paid * investor_ratio,2),'--') int_paid, 
+															IFNULL(ROUND(amount_paid * investor_ratio,2),'--') amt_paid,
+															IFNULL(ROUND(principal_paid * investor_ratio,2),'--') princ_paid, 
+															IFNULL(ROUND(penalty_paid * investor_ratio, 2),'--') penal_paid, 
+															DATE_FORMAT(repayment_schedule_date,'%d/%m/%Y') schd_date, 
+															ROUND(repayment_scheduled_amount * investor_ratio,2) schd_amt,
+															if (isnull(borrower_repayments.amount_paid), 'Unpaid', 'Paid') status
+												FROM 		loan_repayment_schedule 
+															LEFT OUTER JOIN borrower_repayments 
+																ON 	(loan_repayment_schedule.loan_id = borrower_repayments.loan_id
+																AND  borrower_repayments.repayment_schedule_id = 
+																			loan_repayment_schedule.repayment_schedule_id), 
+															( SELECT 	loans.loan_id, 
+																		(sum(loan_bids.bid_amount)
+																				/ loans.loan_sanctioned_amount) investor_ratio 
+																FROM 	loans, 
+																		loan_bids	
+																WHERE loans.loan_id = {$loan_id} 
+																AND loan_bids.loan_id = {$loan_id} 
+																AND loan_bids.investor_id = {$this->inv_or_borr_id}
+															) xxx
+											WHERE loan_repayment_schedule.loan_id = {$loan_id}";
+			
+		echo $paymentschedule_sql;
+		$paymentschedule_rs	= 	$this->dbFetchAll($paymentschedule_sql);
+			
+		if ($paymentschedule_rs) {
+			foreach ($paymentschedule_rs as $paymentRow) {
+				$newrow = count($this->paymentScheduleInfo);
+				$newrow ++;
+				foreach ($paymentRow as $colname => $colvalue) {
+					$this->paymentScheduleInfo[$newrow][$colname] = $colvalue;
+				}
+			}
+		}
+		return $paymentschedule_rs;
 	}
 	
 	public function updateCommentReply($postArray) {

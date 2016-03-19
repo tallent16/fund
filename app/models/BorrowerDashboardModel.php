@@ -29,7 +29,7 @@ class BorrowerDashboardModel extends TranWrapper {
 										   loans.final_interest_rate inst_rate,
 										   no_of_installment,
 										   ROUND(total_repayments,2) total_repayments,
-										   ROUND((loans.loan_sactioned_amount - loans.loan_sactioned_amount),2) tot_prin_outstanding,
+										   ROUND((loans.loan_sanctioned_amount - loans.loan_sanctioned_amount),2) tot_prin_outstanding,
 											case repayment_status 
 											   when 1 then 'Unpaid' 
 											   when 2 then 'Paid'
@@ -108,7 +108,7 @@ class BorrowerDashboardModel extends TranWrapper {
 												borrowers.business_name,
 												business_organisations.bo_name business_organisation,
 												loans.purpose,
-												ROUND(loans.loan_sactioned_amount,2) amount
+												ROUND(loans.loan_sanctioned_amount,2) amount
 									FROM		borrowers
 									LEFT JOIN 	business_organisations
 									ON			borrowers.bo_id	= business_organisations.bo_id,

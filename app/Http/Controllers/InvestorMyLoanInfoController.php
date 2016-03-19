@@ -14,10 +14,16 @@ class InvestorMyLoanInfoController extends MoneyMatchController {
 	}
 	
 	public function indexAction() {
+		
+		$filterLoanStatus_filter 	= 'all';
+		
+		if (isset($_REQUEST["loanstatus_filter"])) 
+			$filterLoanStatus_filter 	= $_REQUEST["loanstatus_filter"];
+			
 		$withArry	=	array(	"InvModMyLoanInfo"=>$this->investorMyLoanInfoModel,
 								"classname"=>"fa fa-usd fa-fw user-icon"
 							);	
-		$this->investorMyLoanInfoModel->getInvestorAllLoanDetails();	
+		$this->investorMyLoanInfoModel->getInvestorAllLoanDetails($filterLoanStatus_filter);	
 		return view('investor.investor-myloaninfo')
 			->with($withArry);
 	}

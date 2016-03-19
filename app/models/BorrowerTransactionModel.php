@@ -28,10 +28,10 @@ class BorrowerTransactionModel extends TranWrapper {
 								DATE_FORMAT(loans.apply_date, '%d-%m-%Y') apply_date,
 								DATE_FORMAT(loans.bid_close_date, '%d-%m-%Y') bid_close_date,
 								round(loans.apply_amount,2) apply_amount,
-								round(ifnull(loans.loan_sactioned_amount, bids.total_bid_amount),2) bid_sanctioned_amount,
+								round(ifnull(loans.loan_sanctioned_amount, bids.total_bid_amount),2) bid_sanctioned_amount,
 								loans.target_interest,
 								round(loans.final_interest_rate,2) final_interest_rate,
-								round(loans.loan_sactioned_amount - loans.total_principal_repaid,2) balance_os,
+								round(loans.loan_sanctioned_amount - loans.total_principal_repaid,2) balance_os,
 								loans.status
 						FROM	loans left outer join 
 									(	SELECT 	loan_id, sum(bid_amount) total_bid_amount
@@ -130,6 +130,7 @@ class BorrowerTransactionModel extends TranWrapper {
 								$penlSql. $orderby;
 				break;
 		}
+
 								
 		$this->loanList			=	$this->dbFetchAll($lnListSql);
 		foreach ($this->loanList as $lnListRow) {
