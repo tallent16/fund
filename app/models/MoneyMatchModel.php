@@ -110,7 +110,7 @@ class MoneyMatchModel extends Model {
 		$pdoDB = DB::connection()->getPdo();
 		$query = $pdoDB->prepare($sqlStatement);
 		$query->execute();
-		$sqlStat_rs 	= 	$query->fetch();
+		$sqlStat_rs 	= 	$query->fetch(\PDO::FETCH_ASSOC);
 		return	$sqlStat_rs;
 	}
 	

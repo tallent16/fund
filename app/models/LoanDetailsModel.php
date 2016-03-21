@@ -29,8 +29,10 @@ class LoanDetailsModel extends TranWrapper {
 	public	$total_bid					=	"";
 	public	$apply_amount				=	"";
 	public	$repayment_type				=	"";
+	public	$loan_status				=	"";
 	public 	$directorInfo				= 	array();
 	public 	$bidInfo 					= 	array();
+	public 	$bidDetail 					= 	array();
 	public 	$commentInfo 				= 	array();
 	public 	$finacialRatioInfo 			= 	array();
 	public 	$finacialInfo 				= 	array();
@@ -59,6 +61,7 @@ class LoanDetailsModel extends TranWrapper {
 		switch($this->userType) {
 			case	USER_TYPE_INVESTOR:
 				$this->getPaymentSchedule($loan_id);
+				$this->getBidDetails($loan_id);
 				break;
 			case	USER_TYPE_BORROWER:
 				$this->getLoanBids($loan_id);
@@ -106,11 +109,11 @@ class LoanDetailsModel extends TranWrapper {
 											case loans.status 
 												   when 1 then 'New' 
 												   when 2 then 'Submitted for Approval'
-												   when 3 then 'Pending Comments'
-												   when 4 then 'Approved for Bid'
-												   when 5 then 'Bid Closed'
-												   when 6 then 'Loan Disbursed'
-												   when 7 then 'Repayments Complete'
+												   when 3 then 'Approved'
+												   when 4 then 'Pending Comments'
+												   when 5 then 'Closed for Bids'
+												   when 6 then 'Disbursed'
+												   when 9 then 'Repayments Complete'
 											end as statusText,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 
@@ -118,7 +121,8 @@ class LoanDetailsModel extends TranWrapper {
 												   when 3 then 'EMI'
 											end as repayment_type,
 											loans.purpose_singleline,
-											loans.purpose
+											loans.purpose,
+											loans.status	loan_status
 									FROM 	loans
 											LEFT OUTER JOIN 
 											(	SELECT	loan_id, 
@@ -288,8 +292,24 @@ class LoanDetailsModel extends TranWrapper {
 		}
 		return $finacial_rs;
 	}
+
+	public function getBidDetails($loan_id) {
+		
+		$bid_sql	= 	"		SELECT 		*
+								FROM 		loan_bids	
+								WHERE		loan_id	=	{$loan_id}
+								AND			investor_id	= {$this->inv_or_borr_id}";
+		
+		
+		$bid_rs		= 	$this->dbFetchRow($bid_sql);
+		
+		if ($bid_rs) {
+			$this->bidDetail	=	$bid_rs;
+		}
+		return $bid_rs;
+	}
 	
-			
+	
 	public function getPaymentSchedule($loan_id) {
 		
 			$paymentschedule_sql		= 	"	SELECT 		IFNULL(DATE_FORMAT(borrower_repayments.trans_date,'%d/%m/%Y'),'--') 
@@ -317,7 +337,6 @@ class LoanDetailsModel extends TranWrapper {
 															) xxx
 											WHERE loan_repayment_schedule.loan_id = {$loan_id}";
 			
-		echo $paymentschedule_sql;
 		$paymentschedule_rs	= 	$this->dbFetchAll($paymentschedule_sql);
 			
 		if ($paymentschedule_rs) {
@@ -345,5 +364,51 @@ class LoanDetailsModel extends TranWrapper {
 				return -1;
 			}
 			return	$commentId;
+	}
+	
+	public function processBid($postArray) {
+		
+		$transType 	= $postArray['bid_trantype'];
+		if($transType	==	"add") {
+			$this->insertBidInfo($postArray);
+		}else{
+			$this->updateBidInfo($postArray);
+		}
+	}
+	
+	public function insertBidInfo($postArray) {
+		
+		$bid_amount				=	($postArray['bid_amount']!="")?$postArray['bid_amount']:null;
+		$bid_interest_rate		=	($postArray['bid_interest_rate']!="")?$postArray['bid_interest_rate']:null;
+		
+		$dataArray 				= 	array(	'loan_id'			=> $postArray['loan_id'],
+											'investor_id'		=> $this->inv_or_borr_id,
+											'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
+											'bid_amount' 		=> $bid_amount,
+											'bid_interest_rate' => $bid_interest_rate,
+											'bid_status' 		=> LOAN_BIDS_STATUS_OPEN);
+							
+		$loanBidId =  $this->dbInsert('loan_bids', $dataArray, true);
+		return $loanBidId;
+	}
+	
+	public function updateBidInfo($postArray) {
+		
+		$bid_amount				=	($postArray['bid_amount']!="")?$postArray['bid_amount']:null;
+		$bid_interest_rate		=	($postArray['bid_interest_rate']!="")?$postArray['bid_interest_rate']:null;
+		if($postArray['isCancelButton']	==	"yes") {
+			
+			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
+												'bid_status' 		=> LOAN_BIDS_STATUS_REJECTED);
+		}else{
+			$dataArray 				= 	array(	'borrower_id'		=> $borrower_id,
+												'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
+												'bid_amount' 		=> $bid_amount,
+												'bid_interest_rate' => $bid_interest_rate,
+												'bid_status' 		=> LOAN_BIDS_STATUS_ACCEPTED);
+		}
+							
+		$whereArry					=	array("investor_id" =>"{$this->inv_or_borr_id}");
+		$this->dbUpdate('loan_bids', $dataArray, $whereArry);
 	}
 }

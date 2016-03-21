@@ -34,17 +34,21 @@ class BankProcessController extends MoneyMatchController {
 	{
 		
 		$submitted	=	false;
+		$tranType	=	"edit";
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
 			$result		=	$this->bankProcessModel->processBankDetails($postArray);
 			$submitted	=	true;
+			$tranType	=	$postArray['transtype'];
 		}
 		
 		
 		$this->bankProcessModel->getBanksList();
 		
-		$withArry		=	array(		"modelbankdet"=>$this->bankProcessModel
-									,"fa fa-university fa-fw user-icon"	);
+		$withArry		=	array(	"modelbankdet"=>$this->bankProcessModel,
+									"classname"=>"fa fa-university fa-fw user-icon",
+									"submitted"=>$submitted,
+									"tranType"=>$tranType	);
 									
 		return view('common.bankdetails') 
 					->with($withArry); 

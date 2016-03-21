@@ -1,34 +1,39 @@
 $(document).ready(function (){  
-	/*List one record at a time*/
 	
-    
+	/*List one record at a time*/	    
 	$("#next").click(function(){
-		 if ($(".divs div.bank-list:visible").next().length != 0){
-            $(".divs div:visible").next().show().prev().hide();
+		if($(this).parents().hasClass("disabled"))
+			return;
+		 if ($(".divs div.bank-list:visible").next().length != 0){			
+            $(".divs div.bank-list:visible").next().show().prev().hide();                     
          }
-        else {
-		    $(".divs div.bank-list:visible").hide();
-            $(".divs div.bank-list:first").show();
-        }
-       /* changeDropDown	=	$('.divs div.bank-list:not(:hidden)').attr("id");
-        resetDirectorDropDown(changeDropDown);*/
-        console.log($('.divs div.bank-list:visible').attr("id"));
-		console.log($('.divs div.bank-list:visible').next().attr("id"));
+        else {			
+		    $(".divs div.bank-list:visible").hide();		    
+            $(".divs div.bank-list:first").show();            
+        }     
         return false;
     });
 
     $("#prev").click(function(){
+		if($(this).parents().hasClass("disabled"))
+			return;
         if ($(".divs div.bank-list:visible").prev().length != 0)
-            $(".divs div:visible").prev().show().next().hide();
+            $(".divs div.bank-list:visible").prev().show().next().hide();
         else {
             $(".divs div.bank-list:visible").hide();
             $(".divs div.bank-list:last").show();
-        }
-         changeDropDown	=	$('.divs div.bank-list:not(:hidden)').attr("id");
-		
+        }       
         return false;
     });
 	/*end of list*/
+	
+	//Disable the pagination function ,button and the input fields when status is verified 
+	jQuery('.form-control').on('input', function() {		
+		$("#add-bank").addClass('disabled');
+		$(".pagination li").addClass('disabled');
+		$("#next").attr('id','');
+		$("#prev").attr('id','');
+	});
 	
 	/*Add a bank*/
 	$("#add-bank").click(function(){
@@ -49,10 +54,9 @@ $(document).ready(function (){
 		$("#max_bank").val(counterstr);
 		$(".divs div.bank-list:visible").hide();
         $(".divs div.bank-list:last").show();
+        $(".bankdet-pagi").hide();
+        
 	}
 	/*End of add bank*/
-/*	
-	$("#save_button").click(function(){
-      $("#isSaveButton").val("yes");
-    });*/
+
 });

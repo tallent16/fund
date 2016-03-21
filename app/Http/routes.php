@@ -21,7 +21,8 @@ Route::group(['prefix' => ''], function() {
     define('BORROWER_STATUS_NEW_PROFILE','1');
     define('BORROWER_STATUS_NEW','1');
     define('BORROWER_STATUS_SUBMITTED_FOR_APPROVAL','2');
-    define('BORROWER_STATUS_COMMENTS_ON_ADMIN','3');
+    define('BORROWER_STATUS_APPROVED','3');
+    define('BORROWER_STATUS_COMMENTS_ON_ADMIN','4');
     define('BORROWER_STATUS_VERIFIED','4');
     define('BORROWER_BANK_STATUS_VERIFIED','2');
     define('BORROWER_BANK_STATUS_UNVERIFIED','1');
@@ -30,8 +31,21 @@ Route::group(['prefix' => ''], function() {
     define('REPAYMENT_TYPE_EMI', '3');
     define('BANK_DETAILS_VERIFIED', '2');
     define('BANK_DETAILS_UNVERIFIED', '1');
+    define('BANK_DETAILS_ACTIVE', '1');
+    define('BANK_DETAILS_INACTIVE', '2');
     define('USER_TYPE_BORROWER', '1');
     define('USER_TYPE_INVESTOR', '2');
+    define('LOAN_STATUS_NEW', '1');
+    define('LOAN_STATUS_SUBMITTED_FOR_APPROVAL', '2');
+    define('LOAN_STATUS_APPROVED', '3');
+    define('LOAN_STATUS_PENDING_COMMENTS', '4');
+    define('LOAN_STATUS_CLOSED_FOR_BIDS', '5');
+    define('LOAN_STATUS_DISBURSED', '6');
+    define('LOAN_STATUS_UNSUCCESSFUL_LOAN', '7');
+    define('LOAN_STATUS_CANCELLED', '8');
+    define('LOAN_BIDS_STATUS_OPEN', '1');
+    define('LOAN_BIDS_STATUS_ACCEPTED', '2');
+    define('LOAN_BIDS_STATUS_REJECTED', '3');
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
@@ -88,7 +102,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 
   //  Route::get('investor/loandetails', 'InvestorLoanDetailsController@indexAction');
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
-    Route::get('investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
+    Route::match(['get', 'post'],'investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
     Route::get('investor/bankdetails', 'BankProcessController@indexAction'); 
     Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  

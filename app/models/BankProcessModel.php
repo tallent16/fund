@@ -47,53 +47,60 @@ class BankProcessModel extends TranWrapper {
 								WHERE	{$this->typePrefix}_id = {$this->inv_or_borr_id}
 								ORDER BY orderby ";
 		
-		$this->bankListRs	=	$this->dbFetchAll($bankListSql);
+		$this->bankListRs	=	$this->dbFetchAll($bankListSql);		
 		return;
 	}
 	
 	function updateBankDetails($postArray) {
-		$updateSql	=	"	UPDATE	{$this->typePrefix}_banks
-							SET		bank_code 				=	{$postArray['bank_code']},
-									bank_name 				=	{$postArray['bank_name']},
-									branch_code 			=	{$postArray['branch_code']},
-									bank_account_number		=	{$postArray['bank_account_number']}
-							WHERE	{$this->typePrefix}_bankid 	=	{$postArray['bankid']} ";
 		
-		$this->dbExecuteSql($updateSql);
+		$bankcode		=	$postArray['bankcode'];
+		$bankname		=	$postArray['bankname'];
+		$branchcode		=	$postArray['branchcode'];
+		$bankaccnumber	=	$postArray['bankaccnumber'];
+		$bankid			=	$postArray['bankid'];
+		
+		$updateSql	=	"	UPDATE	{$this->typePrefix}_banks
+							SET		bank_code 				=	'".$bankcode."',
+									bank_name 				=	'".$bankname."',
+									branch_code 			=	'".$branchcode."',
+									bank_account_number		=	'".$bankaccnumber."'
+							WHERE	{$this->typePrefix}_bankid 	=	$bankid ";
+		
+		$this->dbExecuteSql($updateSql);	
 		return; 
 	
 	}
 	
 	function addBankDetails($postArray) {
-		/*echo '<pre>',print_r($postArray),'</pre>';
-		die;*/
+	
+		$bankcode		=	$postArray['bankcode'];
+		$bankname		=	$postArray['bankname'];
+		$branchcode		=	$postArray['branchcode'];
+		$bankaccnumber	=	$postArray['bankaccnumber'];
 		
 		$insertSql	=	"	INSERT INTO {$this->typePrefix}_banks 
-							(	bank_code, bank_name, 
+							(	{$this->typePrefix}_id,
+								bank_code, bank_name, 
 								branch_code, bank_account_number, 
 								verified_status, active_status) VALUES 
-							(	{$postArray['bank_code']}, {$postArray['bank_name']},
-								{$postArray['branch_code']}, {$postArray['bank_account_number']},
+							(	{$this->inv_or_borr_id},
+								'".$bankcode."','".$bankname."',
+								'".$branchcode."','".$bankaccnumber."',
 								0, 0)";
-								
-		$this->dbExecuteSql($insertSql);
-		return;
 		
+		$this->dbExecuteSql($insertSql);
+		return true;		
 	}
 	
 	function processBankDetails($postArray) {
-	/*	echo '<pre>',print_r($postArray['bank_name']),'</pre>';
-		die;*/
+	
 		$transtype	=	$postArray['transtype'];
 		if($transtype	==	"add") {
-			$this->addBankDetails($postArray);
-			echo 'Bank Added Successfully';
+			$this->addBankDetails($postArray);			
 		}else{
 			$this->updateBankDetails($postArray);
-		}
-		
-	}
-	
+		}		
+	}	
 }
 	
 	

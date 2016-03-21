@@ -16,13 +16,19 @@ class LoanDetailsController extends MoneyMatchController {
 	
 	public function indexAction($loan_id) {
 		
+		if (Request::isMethod('post')) {
+			$postArray	=	Request::all();
+			print_r($postArray);
+			die;
+			$this->processBid($postArray);
+		}
 		$sourceId	=	explode("_",base64_decode($loan_id));
 		$this->loanDetailsModel->getLoanDetails($sourceId[0]);
-		switch(Auth::user()->usertype) {
-				case 1:
+		switch($this->loanDetailsModel->userType) {
+				case USER_TYPE_BORROWER:
 					$viewTemplate	=	"borrower.borrower-myloans";
 					break;
-				case 2:
+				case USER_TYPE_INVESTOR:
 					$viewTemplate	=	"investor.investor-myloans";
 					break;
 			}	

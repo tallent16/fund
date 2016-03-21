@@ -9102,13 +9102,6 @@ canvas.round {
 	color:#222;
 	font-size:24px;	
 }
-.bank-details .pagination > li > a{
-	background-color:#F0EDEF;
-}
-.bank-details .pagination > .disabled > a{	
-	background:transparent;
-	color:#ccc;
-}
 .directorinfo .pagination{
 	margin:0;
 }
@@ -9396,6 +9389,16 @@ table.table.tab-label {
 	color: #fff;
     border: none;
     padding: 3px 25px;	
+}
+.bankdet-pagi .pagination{ 
+	margin:0;
+}
+.bank-details .pagination > li > a{
+	background-color:#F0EDEF;
+}
+.bank-details .pagination .disabled > a{	
+	background:transparent;
+	color:#ccc;
 }
 /******************************Settings*********************************/
 .button-red .button-red:hover{ 
