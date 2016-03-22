@@ -88,67 +88,84 @@
 	</div>	
 	<!-- Investor Bid section starts here -->
 	@if($LoanDetMod->userType	==	USER_TYPE_INVESTOR)
-		<div class="row space-around">
-			<div class="text-center">	
-				<button type="button" 
-						class="btn verification-button"
-						id="bid_now">
-						{{Lang::get('BID NOW')}}
-					<i class="fa fa-gavel"></i>
-				</button>
-			</div>
-		</div>
-		@var	$bidCnt	=	count($LoanDetMod->bidDetail)
-		<form method="post" id="form-bid" style="display:none">
-			<input type="hidden" name="_token" value="{{ csrf_token() }}">	
-			<input 	type="hidden" 
-					name="bid_trantype"
-					value="{{($bidCnt	==	0)?'new':'edit'}}"
-					/>
-			<input 	type="hidden" 
-					name="isCancelButton"
-					id="isCancelButton"
-					value="no"
-					/>
-			<input 	type="hidden" 
-					name="loan_id"
-					value="{{$LoanDetMod->loan_id}}"
-					/>
+		@if($LoanDetMod->loan_status	==	LOAN_STATUS_APPROVED)
 			<div class="row space-around">
-				<div class="col-md-6 col-xs-6">	
-					<strong>{{Lang::get('Bid Amount')}}</strong><br>
-					<input 	type="text" 
-							name="bid_amount"
-							class="form-control">
-				</div>
-				<div class="col-md-6 col-xs-6">	
-					<strong>{{Lang::get('Bid Interest')}}</strong><br>
-					<input 	type="text" 
-							name="bid_interest_rate"
-							class="form-control">
-				</div>
-			</div>
-			<div class="row space-around">
-				<div class="col-md-5 col-xs-5">	
-					<button type="submit" 
+				<div class="text-center">	
+					<button type="button" 
 							class="btn verification-button"
-							>{{Lang::get('Submit')}}
+							id="bid_now">
+							{{Lang::get('BID NOW')}}
+						<i class="fa fa-gavel"></i>
 					</button>
 				</div>
-				@if($bidCnt > 0)
-					@if( ($LoanDetMod->bidDetail['bid_status'] ==	LOAN_BIDS_STATUS_OPEN)
-							|| ($LoanDetMod->bidDetail['bid_status'] ==	LOAN_BIDS_STATUS_ACCEPTED))
-						<div class="col-md-5 col-xs-5">	
-							<button type="submit" 
-									class="btn verification-button"
-									id="cancel_bid">
-									{{Lang::get('Cancel')}}
-							</button>
-						</div>
-					@endif
-				@endif
 			</div>
-		</form>
+			@var	$bidCnt				=	count($LoanDetMod->bidDetail)
+			@var	$bid_amount			=	isset($LoanDetMod->bidDetail['bid_amount'])?$LoanDetMod->bidDetail['bid_amount']:''
+			@if( isset($LoanDetMod->bidDetail['bid_interest_rate']) )
+				@var	$bid_interest_rate	=	$LoanDetMod->bidDetail['bid_interest_rate']
+			@else
+				@var	$bid_interest_rate	=	''
+			@endif
+			@if( isset($LoanDetMod->bidDetail['bid_id']) )
+				@var	$bid_id	=	$LoanDetMod->bidDetail['bid_id']
+			@else
+				@var	$bid_id	=	''
+			@endif
+			
+			<form method="post" id="form-bid" style="display:none">
+				<input type="hidden" name="_token" value="{{ csrf_token() }}">	
+				<input type="hidden" name="bid_id" value="{{ $bid_id }}">	
+				<input 	type="hidden" 
+						name="bid_trantype"
+						value="{{($bidCnt	==	0)?'new':'edit'}}"
+						/>
+				<input 	type="hidden" 
+						name="isCancelButton"
+						id="isCancelButton"
+						value="no"
+						/>
+				<input 	type="hidden" 
+						name="loan_id"
+						value="{{$LoanDetMod->loan_id}}"
+						/>
+				<div class="row space-around">
+					<div class="col-md-6 col-xs-6">	
+						<strong>{{Lang::get('Bid Amount')}}</strong><br>
+						<input 	type="text" 
+								name="bid_amount"
+								value="{{$bid_amount}}"
+								class="form-control">
+					</div>
+					<div class="col-md-6 col-xs-6">	
+						<strong>{{Lang::get('Bid Interest')}}</strong><br>
+						<input 	type="text" 
+								name="bid_interest_rate"
+								value="{{$bid_interest_rate}}"
+								class="form-control">
+					</div>
+				</div>
+				<div class="row space-around">
+					<div class="col-md-5 col-xs-5">	
+						<button type="submit" 
+								class="btn verification-button"
+								>{{Lang::get('Submit')}}
+						</button>
+					</div>
+					@if($bidCnt > 0)
+						@if( ($LoanDetMod->bidDetail['bid_status'] ==	LOAN_BIDS_STATUS_OPEN)
+								|| ($LoanDetMod->bidDetail['bid_status'] ==	LOAN_BIDS_STATUS_ACCEPTED))
+							<div class="col-md-5 col-xs-5">	
+								<button type="submit" 
+										class="btn verification-button"
+										id="cancel_bid">
+										{{Lang::get('Cancel')}}
+								</button>
+							</div>
+						@endif
+					@endif
+				</div>
+			</form>
+		@endif	
 	@endif
 	<!-- Investor Bid section ends here -->
 </div>

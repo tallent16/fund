@@ -9,7 +9,12 @@ $(document).ready(function (){
 		var replyID	=	$(this).attr("data-reply-id");
 		$("#commentBoxInput-"+replyID).focus();
 	});
-    $(".submit_comment").on('click',function(){
+  callSubmitReplyActionFunc();
+
+   
+});
+function callSubmitReplyActionFunc() { 
+	 $(".submit_reply").on('click',function(){
 		var commentID	=	$(this).attr("id");
 		var loanID		=	$("#loanID-"+commentID).val();
 		var userID		=	$("#commentUser-"+commentID).val();
@@ -25,7 +30,7 @@ $(document).ready(function (){
 			// process the form
 			$.ajax({
 				type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-				url         : baseUrl+'/ajax/borrower/send_comment', // the url where we want to POST
+				url         : replyUrl, // the url where we want to POST
 				data        : data,
 				dataType    : 'json'
 			})
@@ -40,6 +45,5 @@ $(document).ready(function (){
 					}
 				});
 		}
-	});
-
-});
+	});	
+}

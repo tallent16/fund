@@ -86,18 +86,17 @@ class BankProcessModel extends TranWrapper {
 							(	{$this->inv_or_borr_id},
 								'".$bankcode."','".$bankname."',
 								'".$branchcode."','".$bankaccnumber."',
-								0, 0)";
+								1, 2)";
 		
 		$this->dbExecuteSql($insertSql);
 		return true;		
 	}
 	
-	function processBankDetails($postArray) {
-	
+	function processBankDetails($postArray) {		
 		$transtype	=	$postArray['transtype'];
 		if($transtype	==	"add") {
 			$this->addBankDetails($postArray);			
-		}else{
+		}else{			
 			$this->updateBankDetails($postArray);
 		}		
 	}	

@@ -130,6 +130,7 @@ class LoanDetailsModel extends TranWrapper {
 														sum(bid_amount) total_bid
 												FROM	loan_bids
 												WHERE	loan_bids.loan_id	=	{$loan_id}
+												AND		(bid_status	=	2	OR	bid_status	=	1)
 												) loan_bids on 
 											loan_bids.loan_id = loans.loan_id
 											LEFT OUTER JOIN 
@@ -245,7 +246,7 @@ class LoanDetailsModel extends TranWrapper {
 												WHERE		loan_id	=	{$loan_id}
 											) loan_bids_tot
 								WHERE		loan_id	=	{$loan_id}
-								AND			bid_status	=	2
+								AND			(bid_status	=	2	OR	bid_status	=	1)
 								";
 		
 		
@@ -295,10 +296,16 @@ class LoanDetailsModel extends TranWrapper {
 
 	public function getBidDetails($loan_id) {
 		
-		$bid_sql	= 	"		SELECT 		*
+		$bid_sql	= 	"		SELECT 		bid_id,
+											bid_datetime,
+											ROUND(bid_amount,2) bid_amount,
+											bid_interest_rate,
+											bid_status,
+											accepted_amount
 								FROM 		loan_bids	
 								WHERE		loan_id	=	{$loan_id}
-								AND			investor_id	= {$this->inv_or_borr_id}";
+								AND			investor_id	= {$this->inv_or_borr_id}
+								AND			(bid_status	=	2	OR	bid_status	=	1)";
 		
 		
 		$bid_rs		= 	$this->dbFetchRow($bid_sql);
@@ -366,10 +373,25 @@ class LoanDetailsModel extends TranWrapper {
 			return	$commentId;
 	}
 	
+	public function insertComment($postArray) {
+			
+		$dataArray = array(	'in_response_to'				=> NULL,
+							'comments_text'					=> $postArray['commentTxt'],
+							'commented_by_user'				=> $postArray['userID'],
+							'loan_id' 						=> $postArray['loanID'],
+							'comment_datetime' 				=> date("Y-m-d h:i:sa"));
+							
+			$commentId =  $this->dbInsert('loan_comments', $dataArray, true);
+			if ($commentId < 0) {
+				return -1;
+			}
+			return	$commentId;
+	}
+	
 	public function processBid($postArray) {
 		
 		$transType 	= $postArray['bid_trantype'];
-		if($transType	==	"add") {
+		if($transType	==	"new") {
 			$this->insertBidInfo($postArray);
 		}else{
 			$this->updateBidInfo($postArray);
@@ -396,19 +418,19 @@ class LoanDetailsModel extends TranWrapper {
 		
 		$bid_amount				=	($postArray['bid_amount']!="")?$postArray['bid_amount']:null;
 		$bid_interest_rate		=	($postArray['bid_interest_rate']!="")?$postArray['bid_interest_rate']:null;
+		$bid_id					=	$postArray['bid_id'];
 		if($postArray['isCancelButton']	==	"yes") {
 			
 			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
-												'bid_status' 		=> LOAN_BIDS_STATUS_REJECTED);
+												'bid_status' 		=> LOAN_BIDS_STATUS_CANCELLED);
 		}else{
-			$dataArray 				= 	array(	'borrower_id'		=> $borrower_id,
-												'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
+			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
 												'bid_amount' 		=> $bid_amount,
 												'bid_interest_rate' => $bid_interest_rate,
 												'bid_status' 		=> LOAN_BIDS_STATUS_ACCEPTED);
 		}
 							
-		$whereArry					=	array("investor_id" =>"{$this->inv_or_borr_id}");
+		$whereArry					=	array("bid_id" =>"{$bid_id}");
 		$this->dbUpdate('loan_bids', $dataArray, $whereArry);
 	}
 }

@@ -46,6 +46,7 @@ Route::group(['prefix' => ''], function() {
     define('LOAN_BIDS_STATUS_OPEN', '1');
     define('LOAN_BIDS_STATUS_ACCEPTED', '2');
     define('LOAN_BIDS_STATUS_REJECTED', '3');
+    define('LOAN_BIDS_STATUS_CANCELLED', '4');
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
@@ -73,8 +74,7 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::get('borrower/docdownload/{doc_id}','BorrowerApplyLoanController@downloadAction');
 	
 	Route::get('borrower/myloans/{loan_id}', 'LoanDetailsController@indexAction');	
-	Route::post('ajax/borrower/send_comment', 'LoanDetailsController@ajaxSubmitReplyAction');	
-	Route::get('ajax/borrower/send_comment', 'LoanDetailsController@ajaxSubmitReplyAction');	
+	Route::post('ajax/borrower/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	
 	
 	Route::get('borrower/loanslist', 'LoanListingController@indexAction');	 
 	/*Route::get('borrower/loanlist', function() {
@@ -106,6 +106,8 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
     Route::get('investor/bankdetails', 'BankProcessController@indexAction'); 
     Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  
+    Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
+    Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	
 });
 
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');

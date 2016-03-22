@@ -2,7 +2,8 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script>
-		var baseUrl	=	"{{url()}}"
+		var 	baseUrl	=	"{{url()}}"
+		var 	replyUrl=	baseUrl+'/ajax/borrower/send_reply'
 	</script>
 	<script src="{{ asset("js/common.js") }}" type="text/javascript"></script>
 @endsection

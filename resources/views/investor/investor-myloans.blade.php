@@ -2,11 +2,29 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 	<script src="{{ url("js/loan-details.js") }}" type="text/javascript"></script>		
+	<script>
+		var baseUrl	=	"{{url()}}"
+		var replyUrl=	baseUrl+'/ajax/investor/send_reply'
+	</script>
+	<script src="{{ url("js/common.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading','My Loans'))
 @section('section')     
-
-<div class="col-sm-12 space-around"> 			
+<input id="hidden_token" name="_token" type="hidden" value="{{csrf_token()}}">
+@var	$commnetInfo	=	$LoanDetMod->commentInfo	
+<div class="col-sm-12 space-around"> 	
+	@if($submitted)
+		<div class="row annoucement-msg-container">
+			<div class="alert alert-success">
+				<a aria-label="close" data-dismiss="alert" class="close" href="#">×</a>	
+					@if($subType	==	"yes")
+						{{Lang::get('Bid Cancelled Successfully')}}
+					@else
+						{{Lang::get('Bid Submitted Successfully')}}
+					@endif			
+			</div>
+		</div>		
+	@endif
 	<div class="row">	
 					
 		<div class="col-sm-12 col-lg-8 ">							
@@ -61,42 +79,13 @@
 					</div>	<!--end panel head-->
 
 					<div class="panel-body"><!--panel body--> 
-						<div class="col-md-12 comments-section">		
-							<div class="row">						
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Mathew</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>
-								<div class="col-md-12">
-									<p>My prayers that yout financial goal will be met with a little extra.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>		
-															
-							</div>
-							<div class="row">								
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Amanda</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>		
-								<div class="col-md-12">
-									<p>I'm excitedly waiting for the next step.Have a great weekend!.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>
-															
-							</div>
-							<div class="row">								
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Xavier</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>		
-								<div class="col-md-12">
-									<p>Thank you all so very much for your continued support.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>													
-							</div>
-							<div class="row">							
-								<div class="col-md-6"><i class="fa fa-user panel-subhead"></i>  <span class="loan-comments">Anthony</span></div>
-								<div class="col-md-6 text-right"><span class="loan-comments">about a month ago</span></div>	
-								<div class="col-md-12">
-									<p>I've been keeping a blog for a number of years. The blog posts are short and the Overall feel is of my debt consolidation.</p>
-									<p class="loan-comments text-right">reply</p>
-								</div>															
-							</div>
-						</div>
+						@if(count($commnetInfo) > 0)
+							@include('widgets.common.myloans_comments',array("commnetInfo"=>$commnetInfo)) 
+						@else
+							<p>
+								{{ Lang::get('borrower-myloans.no_comments') }} 
+							</p>
+						@endif
 					</div>	<!--end panel body-->					
 				</div>
 				

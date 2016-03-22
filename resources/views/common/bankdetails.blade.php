@@ -47,6 +47,14 @@
 									@var	$i	=	1
 									@foreach($bankdetails as $bankdetailRow)
 									
+									
+								<!--	@if($bankdetailRow->verified_status	==	BANK_DETAILS_VERIFIED)
+									   @var $disablestatus_buttonadd = ""
+											@else
+										@var $disablestatus_buttonadd = "disabled"									
+									@endif	-->
+									
+									
 										<!--Disable the edit record table when click add button-->
 										@var $bankListRow	=	"" 							  
 										@if($i	!=1)
@@ -65,7 +73,7 @@
 										<div class="bank-list" id="{{$bankdetailRow->bankid}}"
 											{{$bankListRow}}>
 											@if($bankdetailRow->verified_status	==	BANK_DETAILS_UNVERIFIED)
-												<form method="post">
+												<form method="post" id="update_form-{{$bankdetailRow->bankid}}">
 													<input type="hidden" name="_token" value="{{ csrf_token() }}">
 													<input type="hidden" name="transtype" value="edit">
 													<input type="hidden" name="bankid" value="{{ $bankdetailRow->bankid }}">
@@ -158,6 +166,11 @@
 															@else
 															   Unverified
 															@endif	
+																<input type="hidden" 
+																		id="verified_status_{{$bankdetailRow->bankid}}" 
+																		name="verified_status_{{$bankdetailRow->bankid}}" 
+																		value="{{$bankdetailRow->verified_status}}" 
+																		/>
 														</div>
 													</div>													
 													
@@ -168,11 +181,11 @@
 												</div>
 											</div>										
 											
-											@if($bankdetailRow->verified_status	==	BANK_DETAILS_UNVERIFIED)
+									<!--	@if($bankdetailRow->verified_status	==	BANK_DETAILS_UNVERIFIED)
 														<div class="pull-right">
-															<button type="submit" id="save_button" class="btn button-orange">UPDATE</button>	
+															<button type="submit" id="update_button" class="btn button-orange">UPDATE</button>	
 														</div>																						
-											@endif	
+											@endif	--->
 											</form>	
 											
 										</div>
@@ -203,7 +216,8 @@
 				</div>
 						
 				<div class="col-sm-6">	
-					<div class="pull-right">					
+					<div class="pull-right">	
+						<button type="submit" id="update_button" class="btn button-orange">UPDATE</button>					
 						<button type="submit" id="add-bank" class="btn button-orange">ADD</button>	
 					</div>				
 			</div>

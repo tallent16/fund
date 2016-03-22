@@ -16,14 +16,18 @@ class LoanDetailsController extends MoneyMatchController {
 	
 	public function indexAction($loan_id) {
 		
+		$submitted	=	false;
+		$subType	=	"";
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
-			print_r($postArray);
-			die;
-			$this->processBid($postArray);
+			$this->loanDetailsModel->processBid($postArray);
+			$submitted	=	true;
+			$subType	=	$postArray['isCancelButton'];
+			
 		}
 		$sourceId	=	explode("_",base64_decode($loan_id));
 		$this->loanDetailsModel->getLoanDetails($sourceId[0]);
+		
 		switch($this->loanDetailsModel->userType) {
 				case USER_TYPE_BORROWER:
 					$viewTemplate	=	"borrower.borrower-myloans";
@@ -31,11 +35,25 @@ class LoanDetailsController extends MoneyMatchController {
 				case USER_TYPE_INVESTOR:
 					$viewTemplate	=	"investor.investor-myloans";
 					break;
-			}	
+		}	
+		$withArry	=	array(	"LoanDetMod"=>$this->loanDetailsModel,
+								"classname"=>"fa fa-money fa-fw user-icon",
+								"loan_id"=>$loan_id,
+								"submitted"=>$submitted,
+								"subType"=>$subType
+								);
 		return view($viewTemplate)
-			->with("classname","fa fa-money fa-fw user-icon")
-			->with("loan_id",$loan_id)
-			->with("LoanDetMod",$this->loanDetailsModel);
+			->with($withArry);
+	}
+	
+	public function ajaxSubmitCommentAction() {
+		$postArray	=	Request::all();
+		$result		=	$this->loanDetailsModel->insertComment($postArray);
+		if($result) {
+			return json_encode(array("status"=>"success","comment_id"=>$result));
+		}else{
+			return json_encode(array("status"=>"failed","comment_id"=>""));
+		}
 	}
 	
 	public function ajaxSubmitReplyAction() {
