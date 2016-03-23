@@ -3024,7 +3024,7 @@ select[multiple].form-group-lg .form-control {
 .btn:hover,
 .btn:focus,
 .btn.focus {
-  color: #fff;
+  color: #333;
   text-decoration: none;
 }
 .btn:active,
@@ -9204,13 +9204,30 @@ ol li{
 	z-index: 1;
 	width:20%;
 }
-.loan-comments{
-	font-weight:bold;
+.loan-comments{	
 	margin-left: 8px;
 }
 .mainCommentDivBlock > div:nth-child(even) {
     background-color:#F5F5F5;
-    padding: 5px;
+    padding: 2px;
+    margin-bottom:20px;
+}
+.mainCommentDivBlock > div:nth-child(odd) {
+    border:1px solid #CECCCA;
+    padding: 2px;
+    margin-bottom:20px;
+}
+.comments-reply{
+	padding: 5px;
+    border: 1px solid #DEDEDE;
+    cursor: pointer;
+    background-color: #fff;
+}
+.mainCommentDivBlock textarea{
+	border: 1px solid #E0DED9;
+}
+.mainCommentDivBlock p{
+	margin-left: 24px;
 }
 .bid-now-section{
 	color:#8B170A;
@@ -9262,14 +9279,15 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 .loan-list-container{
 	border:6px solid #333;	
 	background-color: #333;
+	overflow: hidden;
 }
 .loan-list-container:hover{
 	cursor:pointer;
 }
 .loan-list-image img{
 	margin: 0 0 0 -15px;
-    height: 205px;  
-  }
+    height: 205px;     
+}
 .panel-white .progress, .space-around .progress{
 	height:8px;
 	margin-bottom:0;
@@ -9455,11 +9473,15 @@ table#account-summary, .table-border-custom{
         margin: 0 0 0 250px; 
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
-    }       
-     
+    }      
 }
 @media(min-width:361px) and (max-width:768px) {
-	.loan-list-image .imageoverlap img{
+	/*.loan-list-image .imageoverlap img{
+		width:45%;
+    }*/
+}
+@media(min-width:768px)and (max-width:800px) {
+	.loan-list-image .imageoverlap{
 		width:45%;
     }
 }
@@ -9471,10 +9493,18 @@ table#account-summary, .table-border-custom{
 		float:none;
 	}
 }
+@media(max-width:980px) {
+	.loan-list-image .imageoverlap{
+		width:30%;
+    }
+}
 @media(min-width:1280px)and (max-width:1919px) {	
 	.jfilestyle input{   
 		margin:0;
 	}
+	.loan-list-image .imageoverlap{
+		width:100%;
+    }
 }
 @media(min-width:1281px){
 	.jfilestyle input{   

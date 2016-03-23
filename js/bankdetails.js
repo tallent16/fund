@@ -2,9 +2,9 @@ var $zDiv = $('.divs > div.bank-list'),
 $prNx = $('#prev, #next'),
 n = $zDiv.length,
 c = 0; // current
-$(document).ready(function (){  
-		
-	//Disable the pagination function ,button and the input fields when status is verified 
+$(document).ready(function (){
+	
+	//Disable the pagination function when status is verified 
 	jQuery('.form-control').on('input', function() {	
 		$(".pagination li").addClass('disabled');
 		$("#next").addClass('disabled');
@@ -12,18 +12,17 @@ $(document).ready(function (){
 	});
 
 	/*Add a bank*/
-	$("#add-bank").click(function(){
+	$("#add_button").click(function(){
        addNewBankRow();
     });  
 	/*End of add bank*/
 	
 	$("#update_button").click( function() {
-		var cur_id=$zDiv.eq(c).attr("id");
-		$('#update_form-'+cur_id).submit();
-	});
+		var cur_id = $zDiv.eq(c).attr("id");		
+		$('#update_form-'+cur_id).submit();			
+	});		 
 	
 });
-
 function addNewBankRow() {
 	
 	htmlTemplate = $("#bankTemplate").html();
@@ -41,6 +40,7 @@ function addNewBankRow() {
 	$(".bankdet-pagi").hide();
 	
 }
+
 /*Pagination*/
 function toggView(){ 
   // content:
@@ -84,11 +84,11 @@ function showhidebuttons(cur_id){
 	
 	var full_ID = $('#verified_status_' + cur_id).val();
 	if(full_ID == 1){
-		$('#add-bank').hide();
+		$('#add_button').hide();
 		$('#update_button').show();
 	}
 	else {
-		$('#add-bank').show();
+		$('#add_button').show();
 		$('#update_button').hide();
 	}
 	

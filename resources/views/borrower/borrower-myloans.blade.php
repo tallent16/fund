@@ -32,7 +32,7 @@
 					@include('widgets.common.tab.myloans_loandetails') 
 				</div>
 				<div id="menu1" class="tab-pane fade">
-					@include('widgets.borrower.tab.myloans_companydetails')
+					@include('widgets.common.tab.myloans_companydetails')
 				</div>
 				<div id="menu2" class="tab-pane fade">
 					@include('widgets.borrower.tab.myloans_loanupdates')
@@ -43,10 +43,10 @@
 			</div>
 		</div>
 					
-		<div class="col-sm-12 col-lg-4"> 
+		<div class="col-sm-12 col-lg-4 bid-table-space"> 
 			<!-- summary panel starts here -->
 			<div class="panel panel-default">
-				<div class="panel-body bid-table-space">
+				<div class="panel-body ">
 					@include('widgets.common.myloans_summary') 
 				</div>
 			</div>

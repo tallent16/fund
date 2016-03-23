@@ -32,7 +32,7 @@ Route::group(['prefix' => ''], function() {
     define('BANK_DETAILS_VERIFIED', '2');
     define('BANK_DETAILS_UNVERIFIED', '1');
     define('BANK_DETAILS_ACTIVE', '1');
-    define('BANK_DETAILS_INACTIVE', '2');
+    define('BANK_DETAILS_INACTIVE', '0');
     define('USER_TYPE_BORROWER', '1');
     define('USER_TYPE_INVESTOR', '2');
     define('LOAN_STATUS_NEW', '1');
@@ -104,7 +104,8 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
     Route::match(['get', 'post'],'investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
-    Route::get('investor/bankdetails', 'BankProcessController@indexAction'); 
+    Route::match(['get', 'post'],'investor/bankdetails', 'BankProcessController@indexAction');
+   // Route::get('investor/bankdetails', 'BankProcessController@indexAction'); 
     Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	

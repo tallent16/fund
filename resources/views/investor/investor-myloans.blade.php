@@ -8,7 +8,7 @@
 	</script>
 	<script src="{{ url("js/common.js") }}" type="text/javascript"></script>
 @endsection
-@section('page_heading','My Loans'))
+@section('page_heading',Lang::get('My Loans'))
 @section('section')     
 <input id="hidden_token" name="_token" type="hidden" value="{{csrf_token()}}">
 @var	$commnetInfo	=	$LoanDetMod->commentInfo	
@@ -45,7 +45,7 @@
 					@include('widgets.common.tab.myloans_loandetails')
 				</div>
 				<div id="company_details" class="tab-pane fade">
-					@include('widgets.borrower.tab.myloans_companydetails')
+					@include('widgets.common.tab.myloans_companydetails')
 				</div>
 				<div id="payment_schedule" class="tab-pane fade">
 					@include('widgets.investor.tab.myloans_payment_schedule')
@@ -53,11 +53,11 @@
 			</div>
 		</div>
 					
-		<div class="col-sm-12 col-lg-4"> 
+		<div class="col-sm-12 col-lg-4 bid-table-space"> 
 			<!--<div class="row">-->
 				
 				<div class="panel panel-default">
-					<div class="panel-body">
+					<div class="panel-body ">
 						@include('widgets.common.myloans_summary') 
 					</div>
 				</div>
@@ -79,13 +79,7 @@
 					</div>	<!--end panel head-->
 
 					<div class="panel-body"><!--panel body--> 
-						@if(count($commnetInfo) > 0)
-							@include('widgets.common.myloans_comments',array("commnetInfo"=>$commnetInfo)) 
-						@else
-							<p>
-								{{ Lang::get('borrower-myloans.no_comments') }} 
-							</p>
-						@endif
+						@include('widgets.common.myloans_comments',array("commnetInfo"=>$commnetInfo)) 
 					</div>	<!--end panel body-->					
 				</div>
 				

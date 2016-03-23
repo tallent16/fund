@@ -1,6 +1,6 @@
 $(document).ready(function (){ 
 	// date picker
-	$('#dob').datetimepicker({
+	$('#date_of_birth').datetimepicker({
 		autoclose: true,
 		minView: 2,
 		format: 'dd/mm/yyyy'

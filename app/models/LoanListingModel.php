@@ -5,6 +5,9 @@ use Config;
 
 class LoanListingModel extends TranWrapper {
 	
+	public	$inv_or_borr_id		=	"";
+	public	$typePrefix			=	"";
+	public	$userType			=	"";
 	public $filterIntRateList	= array();
 	public $filterLoanAmtList 	= array();
 	public $filterTenureList 	= array();
@@ -16,6 +19,16 @@ class LoanListingModel extends TranWrapper {
 	public $filterLoanAmtValue	= 'all';
 	public $filterTenureValue 	= 'all';
 	public $filterGradeValue 	= 'all';
+	
+	public function __construct(){	
+		
+		// This will be called only from the borrower / Investors' model so this will be investor or borrower
+		$this->userType 		= 	$this->getUserType();
+		$this->inv_or_borr_id	=	($this->userType == 1)? $this->getCurrentBorrowerID(): 
+															$this->getCurrentInvestorID();
+		$this->typePrefix		=	($this->userType == 1)? "borrower":
+															"investor";
+	}
 	
 	public function processDropDowns() {
 		$intRateCode	=	17;

@@ -86,7 +86,7 @@ class BankProcessModel extends TranWrapper {
 							(	{$this->inv_or_borr_id},
 								'".$bankcode."','".$bankname."',
 								'".$branchcode."','".$bankaccnumber."',
-								1, 2)";
+								1, 0)";
 		
 		$this->dbExecuteSql($insertSql);
 		return true;		

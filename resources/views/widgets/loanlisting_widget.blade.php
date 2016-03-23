@@ -1,4 +1,4 @@
-@var $loanurl = "borrower/myloans/".base64_encode($loanRow->loan_id)
+@var $loanurl = $loanListing->typePrefix."/myloans/".base64_encode($loanRow->loan_id)
 @var $loanurl = url($loanurl)
 <div class="row loan-list-container" onclick="redirecturl('{{ $loanurl }}')">
 	<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	

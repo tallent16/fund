@@ -6,7 +6,7 @@
 @section('page_heading','Banking') 
 @section('status_button')						
 		<!--------Status Button Section---->		
-			  <h4><span class="label label-default status-label">Status</span></h3>														
+			  <h4><span class="label label-default status-label">{{ Lang::get('Status') }}</span></h3>														
 @endsection
 @section('section') 
 
@@ -14,13 +14,13 @@
 	@if($submitted)
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="annoucement-msg-container">
+			<div class="annoucement-msg-container" id="success-alert">
 				<div class="alert alert-success">
 					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						@if($tranType	==	"add")							
-							Bank Details added successfully
+							{{ Lang::get('Bank Details added successfully') }}
 						@else
-							Bank Details updated successfully
+							{{ Lang::get('Bank Details updated successfully') }}
 						@endif	
 				</div>
 			</div>
@@ -34,7 +34,7 @@
 					<div class="panel-heading panel-headsection"><!--panel head-->
 						<div class="row">
 							<div class="col-xs-12">
-								<span class="pull-left">Bank Details</span> 
+								<span class="pull-left">{{ Lang::get('Bank Details') }}</span> 
 							</div>													
 						</div>							
 					</div><!--end panel head-->
@@ -46,15 +46,7 @@
 										
 									@var	$i	=	1
 									@foreach($bankdetails as $bankdetailRow)
-									
-									
-								<!--	@if($bankdetailRow->verified_status	==	BANK_DETAILS_VERIFIED)
-									   @var $disablestatus_buttonadd = ""
-											@else
-										@var $disablestatus_buttonadd = "disabled"									
-									@endif	-->
-									
-									
+								
 										<!--Disable the edit record table when click add button-->
 										@var $bankListRow	=	"" 							  
 										@if($i	!=1)
@@ -83,7 +75,7 @@
 												<div class="col-sm-12 col-lg-6 input-space">
 													<div class="row">		
 														<div class="col-xs-4">											
-															<label>Bank Code</label>												
+															<label>{{ Lang::get('Bank Code') }}</label>												
 														</div>
 																			
 														<div class="col-xs-8">													
@@ -98,7 +90,7 @@
 													
 													<div class="row">		
 														<div class="col-xs-4">											
-															<label>Bank Name</label>												
+															<label>{{ Lang::get('Bank Name') }}</label>												
 														</div>
 																			
 														<div class="col-xs-8">													
@@ -113,14 +105,14 @@
 													
 													<div class="row">		
 														<div class="col-xs-4">											
-															<label>Branch Code</label>												
+															<label>{{ Lang::get('Branch Code') }}</label>												
 														</div>
 																			
 														<div class="col-xs-8">													
 																	<input type="text" 
 																	id="branchcode_{{$i}}" 
 																	name="branchcode" 
-																	value="{{$bankdetailRow->bank_code}}" 
+																	value="{{$bankdetailRow->branch_code}}" 
 																	class="form-control"
 																	{{$disablestatus}}/>
 														</div>
@@ -128,7 +120,7 @@
 													
 													<div class="row">		
 														<div class="col-xs-4">											
-															<label>Bank Account Number</label>												
+															<label>{{ Lang::get('Bank Account Number') }}</label>												
 														</div>
 																			
 														<div class="col-xs-8">													
@@ -143,7 +135,7 @@
 													
 													<div class="row">		
 														<div class="col-xs-4">											
-															<label>Active Status</label>												
+															<label>{{ Lang::get('Active Status') }}</label>												
 														</div>
 																			
 														<div class="col-xs-8">													
@@ -157,7 +149,7 @@
 													
 													<div class="row">		
 														<div class="col-xs-4">											
-															<label>Verified Status</label>												
+															<label>{{ Lang::get('Verified Status') }}</label>												
 														</div>
 																			
 														<div class="col-xs-8">													
@@ -179,15 +171,8 @@
 												
 												<div class="col-sm-6">
 												</div>
-											</div>										
-											
-									<!--	@if($bankdetailRow->verified_status	==	BANK_DETAILS_UNVERIFIED)
-														<div class="pull-right">
-															<button type="submit" id="update_button" class="btn button-orange">UPDATE</button>	
-														</div>																						
-											@endif	--->
-											</form>	
-											
+											</div>								
+											</form>												
 										</div>
 											@var	$i++
 										@endforeach										
@@ -217,10 +202,10 @@
 						
 				<div class="col-sm-6">	
 					<div class="pull-right">	
-						<button type="submit" id="update_button" class="btn button-orange">UPDATE</button>					
-						<button type="submit" id="add-bank" class="btn button-orange">ADD</button>	
+						<button type="submit" id="update_button" class="btn button-orange">{{ Lang::get('UPDATE') }}</button>					
+						<button type="submit" id="add_button" class="btn button-orange">{{ Lang::get('ADD') }}</button>	
 					</div>				
-			</div>
+				</div>
 			
 		</div>
 	</div>		
@@ -240,7 +225,7 @@
 						
 						<div class="row">		
 							<div class="col-xs-4">											
-								<label>Bank Code</label>												
+								<label>{{ Lang::get('Bank Code') }}</label>												
 							</div>
 												
 							<div class="col-xs-8">													
@@ -255,7 +240,7 @@
 						
 						<div class="row">		
 							<div class="col-xs-4">											
-								<label>Bank Name</label>												
+								<label>{{ Lang::get('Bank Name') }}</label>												
 							</div>
 												
 							<div class="col-xs-8">													
@@ -268,7 +253,7 @@
 						
 						<div class="row">		
 							<div class="col-xs-4">											
-								<label>Branch Code</label>												
+								<label>{{ Lang::get('Branch Code') }}</label>												
 							</div>
 												
 							<div class="col-xs-8">													
@@ -281,7 +266,7 @@
 						
 						<div class="row">		
 							<div class="col-xs-4">											
-								<label>Bank Account Number</label>												
+								<label>{{ Lang::get('Bank Account Number') }}</label>												
 							</div>
 												
 							<div class="col-xs-8">													
@@ -294,21 +279,21 @@
 						
 						<div class="row">		
 							<div class="col-xs-4">											
-								<label>Active Status</label>												
+								<label>{{ Lang::get('Active Status') }}</label>												
 							</div>
 												
 							<div class="col-xs-8">													
-								InActive
+								<label>{{ Lang::get('InActive') }}</label>	
 							</div>
 						</div>
 						
 						<div class="row">		
 							<div class="col-xs-4">											
-								<label>Verified Status</label>												
+								<label>{{ Lang::get('Verified Status') }}</label>												
 							</div>
 												
 							<div class="col-xs-8">													
-								Unverified
+								<label>{{ Lang::get('Unverified') }}</label>	
 							</div>
 						</div>
 						<div class="col-sm-6"></div>
@@ -317,7 +302,7 @@
 							
 				<div class="col-sm-12">	 
 					<div class="pull-right">
-						<button type="submit" id="save_button" class="btn button-orange">SAVE</button>	
+						<button type="submit" id="save_button" class="btn button-orange">{{ Lang::get('SAVE') }}</button>	
 					</div>
 				</div>
 			</form>		
