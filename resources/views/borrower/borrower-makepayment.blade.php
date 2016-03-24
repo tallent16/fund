@@ -20,54 +20,117 @@
 				</div>                           
 			</div><!-------------end of---panel heading---------------------->	
 			
-			<div class="table-responsive">				
-				<table class="table text-left table-loan">					
-					<tbody>
-						<tr>
-							<td class="tab-left-head col-md-3">Loan Reference Number</th>
-							<td class="col-md-3">
-								<input type="text" name="bank_code" value="1018" class="form-control">
-							</td>	
-							<td class="col-md-6"></td>																		
-						</tr>
-						<tr>
-							<td class="tab-left-head">Due Date for Repayment</th>						
-							<td>
-							<div class="controls">
-										<div class="input-group">
+			
+<div class="panel-body apply-loan">
+			<div class="row">
+					<div class="col-sm-12 col-lg-6 input-space">
+						
+						<div class="row">		
+							<div class="col-xs-12 col-sm-4">											
+								<label>{{ Lang::get('Loan Reference Number') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-8">													
+										<input type="text" name="bank_code" value="1018" class="form-control" disabled>	
+							</div>
+						</div>
+						
+						<div class="row">		
+							<div class="col-xs-12 col-sm-4">											
+								<label>{{ Lang::get('Scheduled Date') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-8">	
+									<div class="controls">
+									<div class="input-group">												
 											<input 	type="text" 
-													id="duedate" 
+													id="schduledate" 
 													name="duedate"
 													value=""
 													class="date-picker form-control"
-													readonly />	
-											<label class="input-group-addon btn" for="duedate">
-												<span class="glyphicon glyphicon-calendar"></span>
-											</label>
-										</div>													
-									</div>
-							</td>		
-							<td></td>																			
-						</tr>	
-						<tr>
-							<td class="tab-left-head">Amount Due</td>
-							<td><input type="text" name="bank_code" value="1000" class="form-control"></td>		
-							<td></td>																				
-						</tr>	
-						<tr>
-							<td class="tab-left-head">Penalty</td>
-							<td><input type="text" name="bank_code" value="500" class="form-control"></td>	
-							<td></td>																					
-						</tr>	
-						<tr>
-							<td class="tab-left-head">Total due</td>		
-							<td><input type="text" name="bank_code" value="2000" class="form-control"></td>		
-							<td></td>																			
-						</tr>										
-					</tbody>
-				</table>	
-				</div>						
-			</div><!-----table responsive--->				
+													readonly disabled/>		
+										<label class="input-group-addon btn" for="schduledate" disabled>
+											<span class="glyphicon glyphicon-calendar"></span>
+										</label>
+										</div>
+										</div>
+							</div>
+						</div>
+						
+						<div class="row">		
+							<div class="col-xs-12 col-sm-4">											
+								<label>{{ Lang::get('Installment Amount') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-8">													
+										<input type="text" name="bank_code" value="1000" class="form-control" disabled>
+							</div>
+						</div>
+						
+						<div class="row">		
+							<div class="col-xs-12 col-sm-4">											
+								<label>{{ Lang::get('Actual Payment Date') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-8">	
+									<div class="controls">
+									<div class="input-group">												
+											<input 	type="text" 
+													id="actualdate" 
+													name="duedate"
+													value=""
+													class="date-picker form-control"
+													readonly disabled/>		
+										<label class="input-group-addon btn" for="actualdate" disabled>
+											<span class="glyphicon glyphicon-calendar"></span>
+										</label>
+										</div>
+										</div>
+							</div>
+						</div>
+						
+						<div class="row">		
+							<div class="col-xs-12 col-sm-4">											
+								<label>{{ Lang::get('Penalty') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-8">													
+										<input type="text" name="bank_code" value="1000" class="form-control" disabled>
+							</div>
+						</div>
+						
+						
+					</div>
+					
+					<div class="col-sm-12 col-lg-6 input-space">
+						
+						
+						
+						<div class="row">		
+							<div class="col-xs-12 col-sm-4">											
+								<label>{{ Lang::get('Total due') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-8">													
+										<input type="text" name="bank_code" value="1000" class="form-control" disabled>
+							</div>
+						</div>
+						<div class="row">		
+							<div class="col-xs-12 col-sm-4">											
+								<label>{{ Lang::get('Remarks') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-8">													
+										<textarea rows="6" id="" class="form-control" ></textarea>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+		
+									
+	</div>		
+			
 			
 		</div><!-----panel--->      
 		
@@ -77,7 +140,7 @@
 					<button type="submit" 
 						class="btn verification-button"	>
 					<i class="fa pull-right"></i>
-					Submit for Payment
+					Submit for Approval
 				</button>
 			</div>
 		</div>		

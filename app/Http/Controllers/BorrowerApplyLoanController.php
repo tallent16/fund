@@ -29,6 +29,10 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		// Edit borrower loan passing loan id parameter
 		if (null !== $laon_id) {
 			$sourceId =	base64_decode($laon_id);
+			$loanStatus		=	$this->borrowerApplyLoanModel->getLoanStatus($sourceId);
+			if($loanStatus	==	LOAN_STATUS_CANCELLED) {
+				return redirect()->to('borrower/myloaninfo');
+			}
 			return $this->getBorrowerLoanDetails('edit', $sourceId);
 		} 
 	}

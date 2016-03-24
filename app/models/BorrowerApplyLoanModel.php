@@ -80,6 +80,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 												   when 5 then 'disabled'
 												   when 6 then 'disabled'
 												   when 7 then 'disabled'
+												   when 9 then 'disabled'
 											end as viewStatus,
 											case loans.status 
 												   when 1 then 'New' 
@@ -88,11 +89,12 @@ class BorrowerApplyLoanModel extends TranWrapper {
 												   when 4 then 'Approved for Bid'
 												   when 5 then 'Bid Closed'
 												   when 6 then 'Loan Disbursed'
-												   when 7 then 'Repayments Complete'
+												   when 7 then 'Unsuccessful Loan'
+												   when 9 then 'Repayments Complete'
 											end as statusText,
 											loans.comments,
 											loans.final_interest_rate,
-											loans.loan_sactioned_amount,
+											loans.loan_sanctioned_amount,
 											loans.trans_fees,
 											loans.total_disbursed,
 											loans.total_principal_repaid,

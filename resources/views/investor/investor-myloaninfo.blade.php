@@ -2,7 +2,7 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 @endsection
-@section('page_heading','My Loans') )
+@section('page_heading',Lang::get('My Loans') )
 @section('section')    
 @var	$investortAllLoan	=	$InvModMyLoanInfo->allLoanInfo
 
@@ -43,9 +43,11 @@
 						</div>
 						<div class="row"> 
 							@if(count($investortAllLoan) > 0)
-								<div class="col-sm-12 col-lg-2">										
+								<div class="col-sm-5 col-lg-2">		
+									<a class="btn btn-lg loan-detail-button" style="visibility:hidden;">Hidden Field														
+									</a>								
 									<div class="table-responsive"><!---table start-->
-										<table class="table tab-label">		
+										<table class="table text-left">		
 											<tbody>																								
 												<tr>
 													<td>{{ Lang::get('Loan Reference')}}</td>														
@@ -57,7 +59,7 @@
 													<td>{{ Lang::get('Grade')}}</td>												
 												</tr>
 												<tr>
-													<td>{{ Lang::get('Target Interest Range')}}</td>												
+													<td>{{ Lang::get('Target Interest')}}</td>												
 												</tr>
 												<tr>
 													<td>{{ Lang::get('Amount Applied')}}</td>												
@@ -79,7 +81,8 @@
 									</div>							
 								</div> <!----col--2--->
 							
-								<div class="col-sm-12 col-lg-10 loan-details">
+								<div class="col-sm-7 col-lg-10 loan-details">
+									
 									@foreach($investortAllLoan as $loanRow)
 										@var	$loan_url	=	'investor/myloans/'.base64_encode($loanRow->loan_id)
 										<div class="col-sm-12 col-lg-3 text-center">									
@@ -141,7 +144,12 @@
 																	--
 																@endif
 															</td>											
-														</tr>												
+														</tr>	
+														<tr>
+															<td>
+																
+															</td>
+														</tr>											
 													</tbody>
 												</table>	
 											</div>

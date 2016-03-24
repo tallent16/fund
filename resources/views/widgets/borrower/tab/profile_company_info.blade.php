@@ -12,13 +12,13 @@
 			<div class="row">
 				<fieldset {{ $modelBorPrf->viewStatus }}>
 					
-					<div class="col-md-6 input-space">
+					<div class="col-md-6 col-xs-12 input-space">
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.business_name') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<input 	type="text" 
 										id="business_name" 
 										name="business_name"
@@ -29,11 +29,11 @@
 						</div>		
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.business_org') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 									<select class="selectpicker"
 											id="business_organisation" 
 											name="business_organisation"
@@ -44,11 +44,11 @@
 						</div>		
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.regis_num') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 									<input 	type="text" 
 											id="business_registration_number" 
 											name="business_registration_number"
@@ -59,11 +59,11 @@
 						</div>		
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.industry') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								{{ Form::select('industry',$modelBorPrf->industryInfo , 
 															$modelBorPrf->industry, 
 															['class' => 'selectpicker text-right']) }}								
@@ -71,11 +71,11 @@
 						</div>		
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.date_incorp') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<div class="controls">
 									<div class="input-group">
 										<input 	type="text" 
@@ -93,11 +93,11 @@
 						</div>	
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.operation_since') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<div class="controls">
 									<div class="input-group">
 										<input 	type="text"  
@@ -115,11 +115,11 @@
 						</div>	
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.paid_capital') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<input 	type="text" 
 											id="paid_up_capital" 
 											name="paid_up_capital"
@@ -130,11 +130,11 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.company_image') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">									
+							<div class="col-xs-12 col-sm-7">									
 									<input 	type="file" 
 												class="jfilestyle" 
 												data-buttonBefore="true" 
@@ -145,11 +145,11 @@
 							
 							
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.company_thumb_image') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">									
+							<div class="col-xs-12 col-sm-7">									
 								<input 	type="file" 
 										class="jfilestyle" 
 										data-buttonBefore="true" 
@@ -161,14 +161,14 @@
 									
 					</div>
 					   
-					<div class="col-md-6 input-space">	
+					<div class="col-md-6 col-xs-12 input-space">	
 							
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.reg_address') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<textarea	id="registered_address" 
 												name="registered_address"
 												class="form-control"
@@ -177,11 +177,11 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.mailing_address') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 									<textarea	id="mailing_address" 
 												name="mailing_address"
 												class="form-control"
@@ -190,11 +190,11 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.contact_person') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<input 	type="text" 
 											id="contact_person" 
 											name="contact_person"
@@ -205,11 +205,11 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.contact_mobile') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<input 	type="text" 
 											id="contact_person_mobile" 
 											name="contact_person_mobile"
@@ -220,11 +220,11 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-5">											
+							<div class="col-xs-12 col-sm-5">											
 								<label>{{ Lang::get('borrower-profile.no_employees') }}</label>												
 							</div>
 												
-							<div class="col-xs-7">													
+							<div class="col-xs-12 col-sm-7">													
 								<input 	type="text" 
 											id="number_of_employees" 
 											name="number_of_employees"

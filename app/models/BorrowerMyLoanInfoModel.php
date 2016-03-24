@@ -23,7 +23,8 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 												   when 4 then 'Approved for Bid'
 												   when 5 then 'Bid Closed'
 												   when 6 then 'Loan Disbursed'
-												   when 7 then 'Repayments Complete'
+												   when 7 then 'Unsuccessful Loan'
+												   when 9 then 'Repayment Complete'
 											end as statusText,
 											case loans.status 
 												   when 1 then 'Edit Loan' 
@@ -33,6 +34,7 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 												   when 5 then 'Loan Details'
 												   when 6 then 'Loan Details'
 												   when 7 then 'Loan Details'
+												   when 9 then 'Loan Details'
 											end as viewStatus,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 
@@ -51,7 +53,8 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 									FROM 	loans,
 											borrowers 
 									WHERE	borrowers.borrower_id		=	{$current_borrower_id}
-									AND		borrowers.borrower_id			=	loans.borrower_id
+									AND		borrowers.borrower_id		=	loans.borrower_id
+									AND		loans.status		!=	8
 									LIMIT 4";
 		
 		$loanlist_rs		= 	$this->dbFetchAll($loanlist_sql);
@@ -86,6 +89,13 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 		
 		$repayschedlist_rs		= 	$this->dbFetchAll($loanlist_sql);
 		return	$repayschedlist_rs;
+	}
+	
+	public function updateLoanStatus($loanId) {
+		
+		$dataArray	=	array('status' => LOAN_STATUS_CANCELLED);
+		$whereArry	=	array("loan_id" =>"{$loanId}");
+		$this->dbUpdate('loans', $dataArray, $whereArry);
 	}
 	
 }

@@ -16,6 +16,13 @@ class LoanDetailsController extends MoneyMatchController {
 	
 	public function indexAction($loan_id) {
 		
+		$sourceId	=	explode("_",base64_decode($loan_id));
+		if($this->loanDetailsModel->userType	==	USER_TYPE_BORROWER)	{
+			$loanStatus		=	$this->loanDetailsModel->getLoanStatus($sourceId[0]);
+			if($loanStatus	==	LOAN_STATUS_CANCELLED) {
+				return redirect()->to('borrower/myloaninfo');
+			}
+		}
 		$submitted	=	false;
 		$subType	=	"";
 		if (Request::isMethod('post')) {
@@ -25,7 +32,7 @@ class LoanDetailsController extends MoneyMatchController {
 			$subType	=	$postArray['isCancelButton'];
 			
 		}
-		$sourceId	=	explode("_",base64_decode($loan_id));
+		
 		$this->loanDetailsModel->getLoanDetails($sourceId[0]);
 		
 		switch($this->loanDetailsModel->userType) {

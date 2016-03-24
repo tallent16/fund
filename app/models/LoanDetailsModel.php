@@ -113,6 +113,7 @@ class LoanDetailsModel extends TranWrapper {
 												   when 4 then 'Pending Comments'
 												   when 5 then 'Closed for Bids'
 												   when 6 then 'Disbursed'
+												   when 7 then 'Unsuccessful Loan'
 												   when 9 then 'Repayments Complete'
 											end as statusText,
 											case loans.repayment_type 

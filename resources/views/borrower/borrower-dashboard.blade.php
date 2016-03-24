@@ -213,7 +213,7 @@
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th class="loantaken">{{ Lang::get('borrower-dashboard.loan_taken') }}</th>
+										<th class="tab-head-red">{{ Lang::get('borrower-dashboard.loan_taken') }}</th>
 										<th class="totalamount">{{ Lang::get('borrower-dashboard.total_amount') }}</th>										
 									</tr>
 								</thead>

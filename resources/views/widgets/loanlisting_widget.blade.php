@@ -34,7 +34,7 @@
 			</div>
 
 			<div class="table-responsive"><!---table start-->
-				<table class="table" style="font-size:0.7em">		
+				<table class="table">		
 					<tbody>
 						<tr>
 							<th>{{ Lang::get('borrower-loanlisting.funded') }}</td>
@@ -63,7 +63,7 @@
 				</table>	
 			</div>											
 		</div>	<!--row- panel white-->
-		<div class="row panel-footer" style="font-size:0.90em">
+		<div class="row panel-footer">
 			<div class="text-center">{{ Lang::get('borrower-loanlisting.repayment_type') }}: 
 				<span class="panel-subhead">{{ Lang::get('borrower-loanlisting.monthly_install') }}</span>
 			</div>									

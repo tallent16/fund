@@ -8979,6 +8979,32 @@ canvas.round {
 .tab-fontsize{
 	font-size:10px;	 
 }
+.tab-head{
+	background-color: #383838;
+	color:#fff;	
+}
+.tab-content .active{ 
+	color:#4B4949;
+}
+.tab-head-red{
+	background-color:#A52D26;
+	color:#fff;	
+}
+.tab-left-head{
+	background-color:#EAEBED;	
+}
+.controls .input-group{
+	width:100%;	
+}
+.input-space .row{
+	margin:5px 0 0 0;
+}
+.verification-button, .verification-button:hover{
+	background-color: #F6942C;
+	color: #fff;
+	border: none;
+	width: auto;
+}
 /******************************Login Page*******************************/
 .login-logo{
 	display: inline-block;
@@ -9066,37 +9092,26 @@ canvas.round {
 }
 .panel-bodysection{
 	padding-top:0;	
-}
-.tab-head{
-	background-color: #383838;
-	color:#fff;	
-}
+}/*
 .loantaken{
 	background-color:#8B170A;
 	color:#fff;	
-}
+}*/
 .totalamount{
 	background-color:#F6942C;
 	color:#fff;	
 }
-/************Profile (company info,director info,profile info)**********/
+/***Profile (company info,director info,profile info,financial info and bankinfo)***/
 .directorinfo td:nth-child(n+2) {
     background-color: #fff;
-}
-.verification-button, .verification-button:hover{
-	background-color: #F6942C;
-	color: #fff;
-	border: none;
-	/*margin: 0 0 35px 0;	
-	padding: 10px;*/
-	width: auto;
 }
 .directorinfo .select-width, .applyloan .select-width, 
 .form-inline .btn-group.bootstrap-select.select-width, 
 .form-horizontal .btn-group.bootstrap-select.select-width{  
 	width:100%; 
 }
-.directorinfo .pagination > li > a, .bank-details  .pagination > li > a{
+.directorinfo .pagination > li > a, 
+.bank-details  .pagination > li > a{
 	background-color:#F9F9F9;
 	border:none;
 	color:#222;
@@ -9109,13 +9124,6 @@ canvas.round {
  .applyloan .panel-headsection{
 	padding:5px;
 }
-/*#financial_info .tab-head{
-	background-color: #868686;
-}*/
-.controls .input-group{
-	width:100%;
-	/*display: inline-table;*/
-}
 #company_info .btn.selectpicker {
     margin-bottom: -10px;
 }
@@ -9126,9 +9134,6 @@ canvas.round {
 .applyloan{
 	background-color:#F9F9F9;	
 }
-.input-space .row{
-	margin:5px 0 0 0;
-}
 ol li{
 	margin:10px 0 0 0;
 	list-style-type: lower-roman;
@@ -9136,15 +9141,11 @@ ol li{
 .list-type li{
 	list-style-type: decimal;
 }
-.tab-content .active{ 
-	color:#4B4949;
-}
 .applyloan .btn-group.bootstrap-select {
     width: 100%;
 }
 .jfilestyle input{
-    border: none; 
-  /*  margin: 0 0 0 20px;*/
+    border: none;   
 }
 .jfilestyle label {
     background-color: #8D8D8D;
@@ -9154,21 +9155,14 @@ ol li{
     text-align: center;
     font-weight: bold;
 }
+#documents_submitted a {
+    color: #333;
+}
 .block-content p a{
 	color:#F6942C;
 	font-weight:bold;
 }
-#documents_submitted a {
-    color: #333;
-}
 /***********************My loans****************************************/
-.tab-head-red{
-	background-color:#A52D26;
-	color:#fff;	
-}
-.tab-left-head{
-	background-color:#EAEBED;	
-}
 .table-loan{
 	background-color:#F5F5F5;	
 }
@@ -9286,7 +9280,13 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 }
 .loan-list-image img{
 	margin: 0 0 0 -15px;
-    height: 205px;     
+    height: 181px;     
+}
+.loan-list-container table ,.panel-footer{
+	font-size:0.9em;
+}
+.loan-list-container .table-responsive{
+	margin-bottom:0;
 }
 .panel-white .progress, .space-around .progress{
 	height:8px;
@@ -9314,7 +9314,7 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
     border: none;
 }
 .loan-list-image .imageoverlap img {
-    width: 100%;
+    width: 90%;
     height: auto;
 }
 .loan-list-image .imageoverlap{
@@ -9339,7 +9339,7 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 }
 table.table.tab-label {
     text-align: left;
-    margin: 42% 0 0 0;
+    margin: 40% 0 0 0;
 }
 .button-grey, .button-grey:hover{
 	background-color: #7E7E7E;
@@ -9418,6 +9418,9 @@ table.table.tab-label {
 	background:transparent;
 	color:#ccc;
 }
+.bank-list .tab-left-head{
+	padding:5px;
+}
 /******************************Settings*********************************/
 .button-red .button-red:hover{ 
 	background-color: #901E17;
@@ -9453,7 +9456,62 @@ table#account-summary, .table-border-custom{
 	border: 1px solid #ccc;
 }
 /*******************************Custom Responsive css*******************/
-@media (max-width: 360px) {
+
+@media(max-width:1920px) {
+	.jfilestyle input{   
+		margin:0;
+	}
+	.loan-list-image .imageoverlap{
+		width:90%;
+    }
+	.jfilestyle input{   
+		margin: 0 0 0 10px;
+	}
+	table.table.tab-label {   
+		margin: 30% 0 0 0;
+	}
+}
+@media(max-width:1280px) {
+	.loan-list-image img {
+		height: 198px;
+	}
+	.jfilestyle input{   
+		margin: 0 0 0 10px;
+	}
+	.loan-list-image .imageoverlap img {
+		width: auto;
+	}
+	table.table.tab-label {   
+		margin: 53% 0 0 0;
+	}
+}
+@media(max-width:980px) {
+	.loan-list-image .imageoverlap{
+		width:30%;
+    }
+}
+@media(max-width:800px) {
+	.verification-button, .verification-button:hover{
+		margin: 0 0 15px 0;
+	}
+	.nav-tabs > li{
+		float:none;
+	}
+}
+@media(min-width:768px)and (max-width:800px) {
+	.loan-list-image .imageoverlap{
+		width:45%;
+    }
+}
+@media(min-width:768px) {
+    #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 250px; 
+        padding: 0 30px;
+        border-left: 1px solid #e7e7e7;
+    }      
+}
+@media(max-width: 360px) {
 	.status-label-section{
 		margin: 0 8px 0 0;	 
 		float:none;
@@ -9466,64 +9524,7 @@ table#account-summary, .table-border-custom{
 		width: 315px;
 		height:190px;
 	}	
-}
-@media(min-width:768px) {
-    #page-wrapper {
-        position: inherit;
-        margin: 0 0 0 250px; 
-        padding: 0 30px;
-        border-left: 1px solid #e7e7e7;
-    }      
-}
-@media(min-width:361px) and (max-width:768px) {
-	/*.loan-list-image .imageoverlap img{
-		width:45%;
-    }*/
-}
-@media(min-width:768px)and (max-width:800px) {
-	.loan-list-image .imageoverlap{
-		width:45%;
-    }
-}
-@media(max-width:800px) {
-	.verification-button, .verification-button:hover{
-		margin: 0 0 15px 0;
+	.loan-list-image .imageoverlap {
+		width: 60%;
 	}
-	.nav-tabs > li{
-		float:none;
-	}
-}
-@media(max-width:980px) {
-	.loan-list-image .imageoverlap{
-		width:30%;
-    }
-}
-@media(min-width:1280px)and (max-width:1919px) {	
-	.jfilestyle input{   
-		margin:0;
-	}
-	.loan-list-image .imageoverlap{
-		width:100%;
-    }
-}
-@media(min-width:1281px){
-	.jfilestyle input{   
-		margin: 0 0 0 10px;
-	}
-}
-@media (min-width: 1920px) {
-	/*.tab-bid-label{
-		background-position: 35% 0;
-	}	*/
-	.loan-list-image .imageoverlap img {
-		width: auto;
-	}
-	.jfilestyle input{   
-		margin: 0 0 0 10px;
-	}	
-}
-@media (max-width: 1920px) {
-	.loan-list-image img{
-		height:193px;
-	}	
 }

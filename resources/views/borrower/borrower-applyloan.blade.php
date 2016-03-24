@@ -37,6 +37,7 @@
  <h4><span class="label label-default status-label">{{$BorModLoan->statusText}}</span></h3>														
 @endsection
 @section('section')
+
 <div class="col-sm-12 space-around"> 
 	
 	<div class="row">

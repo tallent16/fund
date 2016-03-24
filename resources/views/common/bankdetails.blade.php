@@ -74,11 +74,11 @@
 										<div class="row">
 												<div class="col-sm-12 col-lg-6 input-space">
 													<div class="row">		
-														<div class="col-xs-4">											
+														<div class="col-xs-12 col-sm-4">											
 															<label>{{ Lang::get('Bank Code') }}</label>												
 														</div>
 																			
-														<div class="col-xs-8">													
+														<div class="col-xs-12 col-sm-8">													
 																	<input type="text" 
 																	id="bankcode_{{$i}}" 
 																	name="bankcode" 
@@ -89,11 +89,11 @@
 													</div>
 													
 													<div class="row">		
-														<div class="col-xs-4">											
+														<div class="col-xs-12 col-sm-4">											
 															<label>{{ Lang::get('Bank Name') }}</label>												
 														</div>
 																			
-														<div class="col-xs-8">													
+														<div class="col-xs-12 col-sm-8">													
 																	<input type="text" 
 																	id="bankname_{{$i}}" 
 																	name="bankname" 
@@ -104,11 +104,11 @@
 													</div>
 													
 													<div class="row">		
-														<div class="col-xs-4">											
+														<div class="col-xs-12 col-sm-4">											
 															<label>{{ Lang::get('Branch Code') }}</label>												
 														</div>
 																			
-														<div class="col-xs-8">													
+														<div class="col-xs-12 col-sm-8">													
 																	<input type="text" 
 																	id="branchcode_{{$i}}" 
 																	name="branchcode" 
@@ -119,11 +119,11 @@
 													</div>
 													
 													<div class="row">		
-														<div class="col-xs-4">											
+														<div class="col-xs-12 col-sm-4">											
 															<label>{{ Lang::get('Bank Account Number') }}</label>												
 														</div>
 																			
-														<div class="col-xs-8">													
+														<div class="col-xs-12 col-sm-8">													
 																	<input type="text" 
 																	id="bankaccnumber_{{$i}}" 
 																	name="bankaccnumber" 
@@ -134,29 +134,29 @@
 													</div>
 													
 													<div class="row">		
-														<div class="col-xs-4">											
+														<div class="col-xs-12 col-sm-4">											
 															<label>{{ Lang::get('Active Status') }}</label>												
 														</div>
 																			
-														<div class="col-xs-8">													
+														<div class="col-xs-12 col-sm-8">													
 															@if ($bankdetailRow->active_status == BANK_DETAILS_ACTIVE)
-															   Active
+															<div class="tab-left-head">  Active </div>
 															@else
-															   InActive
+															<div class="tab-left-head">  InActive </div>
 															@endif	
 														</div>
 													</div>
 													
 													<div class="row">		
-														<div class="col-xs-4">											
+														<div class="col-xs-12 col-sm-4">											
 															<label>{{ Lang::get('Verified Status') }}</label>												
 														</div>
 																			
-														<div class="col-xs-8">													
+														<div class="col-xs-12 col-sm-8">													
 															@if ($bankdetailRow->verified_status == BANK_DETAILS_VERIFIED)
-															   Verified
+															<div class="tab-left-head">   Verified </div>
 															@else
-															   Unverified
+															<div class="tab-left-head">    Unverified </div>
 															@endif	
 																<input type="hidden" 
 																		id="verified_status_{{$bankdetailRow->bankid}}" 
@@ -224,11 +224,11 @@
 					<div class="col-sm-6 input-space">
 						
 						<div class="row">		
-							<div class="col-xs-4">											
+							<div class="col-xs-12 col-sm-4">											
 								<label>{{ Lang::get('Bank Code') }}</label>												
 							</div>
 												
-							<div class="col-xs-8">													
+							<div class="col-xs-12 col-sm-8">													
 										<input type="text" 
 										id="bankcode_x" 
 										name="bankcode" 													
@@ -239,11 +239,11 @@
 						
 						
 						<div class="row">		
-							<div class="col-xs-4">											
+							<div class="col-xs-12 col-sm-4">											
 								<label>{{ Lang::get('Bank Name') }}</label>												
 							</div>
 												
-							<div class="col-xs-8">													
+							<div class="col-xs-12 col-sm-8">													
 										<input type="text" 
 										id="bankname_x" 
 										name="bankname" 													
@@ -252,11 +252,11 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-4">											
+							<div class="col-xs-12 col-sm-4">											
 								<label>{{ Lang::get('Branch Code') }}</label>												
 							</div>
 												
-							<div class="col-xs-8">													
+							<div class="col-xs-12 col-sm-8">													
 										<input type="text" 
 										id="branchcode_x" 
 										name="branchcode" 													
@@ -265,11 +265,11 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-4">											
+							<div class="col-xs-12 col-sm-4">											
 								<label>{{ Lang::get('Bank Account Number') }}</label>												
 							</div>
 												
-							<div class="col-xs-8">													
+							<div class="col-xs-12 col-sm-8">													
 										<input type="text" 
 										id="bankaccnumber_x" 
 										name="bankaccnumber" 													
@@ -278,22 +278,22 @@
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-4">											
-								<label>{{ Lang::get('Active Status') }}</label>												
+							<div class="col-xs-12 col-sm-4">											
+							<div class="tab-left-head"> <label>{{ Lang::get('Active Status') }}</label>		</div>										
 							</div>
 												
-							<div class="col-xs-8">													
-								<label>{{ Lang::get('InActive') }}</label>	
+							<div class="col-xs-12 col-sm-8">													
+							<div class="tab-left-head"> <label>{{ Lang::get('InActive') }}</label>	</div>
 							</div>
 						</div>
 						
 						<div class="row">		
-							<div class="col-xs-4">											
-								<label>{{ Lang::get('Verified Status') }}</label>												
+							<div class="col-xs-12 col-sm-4">											
+							<div class="tab-left-head"> <label>{{ Lang::get('Verified Status') }}</label>	</div>											
 							</div>
 												
-							<div class="col-xs-8">													
-								<label>{{ Lang::get('Unverified') }}</label>	
+							<div class="col-xs-12 col-sm-8">													
+							<div class="tab-left-head"> <label>{{ Lang::get('Unverified') }}</label>	</div>
 							</div>
 						</div>
 						<div class="col-sm-6"></div>

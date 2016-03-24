@@ -294,4 +294,14 @@ class TranWrapper extends MoneyMatchModel {
 
 	}
 	
+	public function getLoanStatus($loan_id) {
+		
+		$loan_sql	= "	SELECT 	status 
+						FROM 	loans 
+						WHERE 	loan_id = '".$loan_id."'";
+				
+		$loan_rs	= 	$this->dbFetchOne($loan_sql);
+		return $loan_rs;
+	}
+	
 }
