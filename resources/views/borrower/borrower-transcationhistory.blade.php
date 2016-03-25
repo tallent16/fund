@@ -2,7 +2,33 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script> 
-	<script src="{{ url('js/borrower-transhistory.js') }}" type="text/javascript"></script> 
+	<script>
+		$(document).ready(function(){ 
+			 $.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('#hidden_token').val()
+				}
+			});
+			$(".trans_detail_icon").on('click',function(){
+				$.ajax({
+					type        : "POST", // define the type of HTTP verb we want to use (POST for our form)
+					url         : "{{url()}}/borrower/ajax/trans_detail", // the url where we want to POST
+					data        : {loan_id:$(this).attr("data-loan-id")},
+					dataType    : 'json'
+				}).done(function(data) {
+					showTransDetailPopupFunc(data);
+				});
+			});
+		}); 
+		function showTransDetailPopupFunc(data) {
+			$("#span_loan_ref_no").html(data.row.loan_ref_no);
+			$("#span_bid_close_date").html(data.row.bid_close_date);
+			$("#span_sanctioned_amount").html(data.row.sanctioned_amount);
+			$("#span_interest_rate").html(data.row.interest_rate);
+			$("#span_balance_outstanding").html(data.row.balance_outstanding);
+			$('#transaction_detail').modal('show');
+		}
+	</script> 
 @endsection
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
@@ -66,70 +92,101 @@
 <div class="row">
 	<div class="col-sm-12"> 
 		<div class="table-responsive applyloan" id="transhistory-container"> 
-			<table class="table tab-fontsize">
+			<table class="table tab-fontsize" id="open-close">
 				<thead>
 					<tr>
 						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.apply_date') }}</th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.bid_closedate') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.apply_amt') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.amt_realized') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.target_interest') }}%</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.realized_interest') }} %</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.balance_outstanding') }}</th>	
+						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.trans_date') }}</th>
+						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.trans_type') }}</th>
+						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.trans_amt') }}</th>
+						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.trans_details') }}</th>
 					</tr>
 				</thead>
-				
 				<tbody>
-					@foreach ($tranModel->loanList as $loanRow)
-						<tr>
-							<td>{{$loanRow->loan_reference_number}}</td>
-							<td>{{$loanRow->apply_date}}</td>
-							<td>{{$loanRow->bid_close_date}}</td>
-							<td class="text-right">{{$loanRow->apply_amount}}</td>
-							<td class="text-right">{{$loanRow->bid_sanctioned_amount}}</td>
-							<td class="text-right">{{$loanRow->target_interest}}</td>
-							<td class="text-right">{{$loanRow->final_interest_rate}}</td>
-							<td class="text-right">{{$loanRow->balance_os}}</td>
-						</tr>		
-						<?php
-						$loan_id		= 	$loanRow->loan_id;
-						$loanTrans	 	=	$tranModel->tranList[$loan_id];
-						?>
-						@if (count($loanTrans) > 0)
-							<tr>
-								<td colspan="9">										
-									<div class="col-sm-2"></div>
-									<div class="col-sm-10">										
-										<div class="table-responsive" id="trans-history">
-											<table class="table text-left">
-												<tr>														
-													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_type') }}</th>
-													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_date') }}</th>
-													<th class="text-right">{{ Lang::get('borrower-transcationhistory.trans_amt') }}</th>
-													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_details') }}</th>
-												</tr>							
-												@foreach ($loanTrans as $loanTransRow)
-												<tr>
-													<td>{{ Lang::get($loanTransRow->tran_type)}}</td>
-													<td>{{$loanTransRow->tran_date}}</td>
-													<td class="text-right">{{$loanTransRow->tran_amt}}</td>
-													<td>{{ Lang::get($loanTransRow->transdetail)}}</td>
-												</tr>
-												@endforeach
-											</table>
-										</div>
-									</div>
+					@if (count($tranModel->tranList) > 0)
+						@foreach ($tranModel->tranList as $loanRow)
+							<tr class="odd" id="{{$loanRow->loan_id}}" role="row">
+								<td>
+									{{$loanRow->loan_reference_number}}
+									<i 	class="fa fa-exclamation-circle	 trans_detail_icon" 
+										style="cursor:pointer;"
+										data-loan-id="{{$loanRow->loan_id}}"></i>
 								</td>
+								<td>{{$loanRow->tran_date}}</td>
+								<td>{{ Lang::get($loanRow->tran_type)}}</td>
+								<td class="text-right">{{$loanRow->tran_amt}}</td>
+								<td>{{ Lang::get($loanRow->transdetail)}}</td>
 							</tr>
-						@endif
-					@endforeach
+						@endforeach		
+					@endif
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
 </div>
+
+<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
+ @section ('popup-box_panel_title',Lang::get('Transaction Detail'))
+	@section ('popup-box_panel_body')
+	 <div class="form-horizontal">
+		<div class="form-group">
+			<div class="col-sm-5 col-md-5">
+				{{Lang::get('Loan Reference Number')}}:
+			</div>
+			<div class="col-sm-7 col-md-7">
+				<span id="span_loan_ref_no">
+					loan-ref-4
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5 col-md-5">
+				{{Lang::get('Bid Close Date')}}:
+			</div>
+			<div class="col-sm-7 col-md-7">
+				<span id="span_bid_close_date">
+					01-03-2016
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5 col-md-5">
+				{{Lang::get('Sanctioned Amount')}}:
+			</div>
+			<div class="col-sm-7 col-md-7">
+				<span id="span_sanctioned_amount">
+					100000.00
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5 col-md-5">
+				{{Lang::get('Interest Rate')}}:
+			</div>
+			<div class="col-sm-7 col-md-7">
+				<span id="span_interest_rate">
+					10%
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5 col-md-5">
+				{{Lang::get('Balance Outstanding')}}:
+			</div>
+			<div class="col-sm-7 col-md-7">
+				<span id="span_balance_outstanding">
+					0.00
+				</span>
+			</div>
+		</div>
+	</div>
+	@endsection
+	@include('widgets.modal_box.panel', array(	'id'=>'transaction_detail',
+												'aria_labelledby'=>'transaction_detail',
+												'as'=>'popup-box',
+												'class'=>'',
+											))
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
 <script>
 	
@@ -157,6 +214,22 @@ $(document).ready(function(){
 	format: 'dd/mm/yyyy' 
 
 	}); 
+	
+	 // Add event listener for opening and closing details
+
+	$( ".details-control" ).click(function() {
+		var loan_id = $(this).parent().attr("id");		
+		if($(this).parent().hasClass("shown")){
+			$("#"+loan_id).removeClass("shown");
+			$("#tran_row_"+loan_id).hide();
+		}
+		else{
+			$("#"+loan_id).addClass("shown");
+			$("#tran_row_"+loan_id).show();				
+		}
+	});
+    
+    
 }); 
 </script>  
 @endsection  

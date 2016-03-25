@@ -1,10 +1,10 @@
 <?php 
 namespace App\Http\Controllers;
-use	\App\models\BorrowerTransHistoryModel;
+use	\App\models\BorrowerLoanSummaryModel;
 use Response;
 use Request;
 
-class BorrowerTransHistoryController extends MoneyMatchController {
+class BorrowerLoanSummaryController extends MoneyMatchController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class BorrowerTransHistoryController extends MoneyMatchController {
 	}
 	
 	public function littleMoreInit() {
-		$this->tranModel = new BorrowerTransHistoryModel();
+		$this->tranModel = new BorrowerLoanSummaryModel();
 	}	
 
 	/**
@@ -40,7 +40,8 @@ class BorrowerTransHistoryController extends MoneyMatchController {
 	 *
 	 * @return Response
 	 */
-	public function indexAction() {
+	public function indexAction()
+	{
 		$transType 	=	'All';
 		$fromDate	=	date("d-m-Y", strtotime("-12 Months"));
 		$toDate		=	date("d-m-Y", strtotime("now"));
@@ -64,16 +65,11 @@ class BorrowerTransHistoryController extends MoneyMatchController {
 		$withArry	=	array(	"tranModel" => $this->tranModel	, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
-								"tranType" => $transType);
+								"tranType" => $transType,
+								"classname"=>"fa fa-list-alt fa-fw");
 		
-		return view('borrower.borrower-transcationhistory')
+		return view('borrower.borrower-loansummary')
 				->with($withArry); 
-	}
-	
-	public function ajaxTransationAction() {
-		$loan_id 		= 	Request::get('loan_id');
-		$response_data 	= 	$this->tranModel->getBorrowerTransactionDetail($loan_id);
-		return json_encode(array("row"=>$response_data));
 	}
 
 }

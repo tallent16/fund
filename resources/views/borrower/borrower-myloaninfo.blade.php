@@ -88,7 +88,7 @@
 											</a>				
 																	
 										<div class="table-responsive"><!---table start-->
-											<table class="table table-loan loan-list-table">		
+											<table class="table applyloan loan-list-table">		
 												<tbody>												
 													<tr>
 														<td class="tab-head">

@@ -28,6 +28,9 @@
 			<a href="#"><i class="fa fa-sitemap fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
 			<ul class="nav nav-second-level">
 				<li>
+					<a href="{{ url ('borrower/loansummary') }}">{{ Lang::get('Loan Summary') }}</a>
+				</li> 
+				<li>
 					<a href="{{ url ('borrower/transhistory') }}">{{ Lang::get('borrower-leftmenu.transhistory') }}</a>
 				</li>  
 				<li>

@@ -21,8 +21,8 @@ Route::group(['prefix' => ''], function() {
     define('BORROWER_STATUS_NEW_PROFILE','1');
     define('BORROWER_STATUS_NEW','1');
     define('BORROWER_STATUS_SUBMITTED_FOR_APPROVAL','2');
-    define('BORROWER_STATUS_APPROVED','3');
-    define('BORROWER_STATUS_COMMENTS_ON_ADMIN','4');
+    define('BORROWER_STATUS_APPROVED','4');
+    define('BORROWER_STATUS_COMMENTS_ON_ADMIN','3');
     define('BORROWER_STATUS_VERIFIED','4');
     define('BORROWER_BANK_STATUS_VERIFIED','2');
     define('BORROWER_BANK_STATUS_UNVERIFIED','1');
@@ -85,7 +85,9 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::post('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 	Route::get('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 	
+	Route::get('borrower/loansummary', 'BorrowerLoanSummaryController@indexAction'); 
 	Route::get('borrower/transhistory', 'BorrowerTransHistoryController@indexAction'); 
+	Route::post('borrower/ajax/trans_detail', 'BorrowerTransHistoryController@ajaxTransationAction'); 
 	//Route::get('borrower/bankdetails', 'BankProcessController@indexAction');
 	Route::match(['get', 'post'],'borrower/bankdetails', 'BankProcessController@indexAction');
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');

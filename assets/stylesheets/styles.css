@@ -8969,15 +8969,17 @@ canvas.round {
 .cursor-pointer{
 	cursor:pointer;
 }
-.annoucement-msg-container{
+.annoucement-msg-container,
+.directorinfo .pagination,
+.bankdet-pagi .pagination{
 	margin:0;
 }
-.annoucement-msg{
+.annoucement-msg,.tab-head-red{
 	background-color: #8B170A;
 	color: #fff;
 }
 .tab-fontsize{
-	font-size:10px;	 
+	font-size: 0.7em;
 }
 .tab-head{
 	background-color: #383838;
@@ -8985,10 +8987,6 @@ canvas.round {
 }
 .tab-content .active{ 
 	color:#4B4949;
-}
-.tab-head-red{
-	background-color:#A52D26;
-	color:#fff;	
 }
 .tab-left-head{
 	background-color:#EAEBED;	
@@ -8999,11 +8997,43 @@ canvas.round {
 .input-space .row{
 	margin:5px 0 0 0;
 }
+.space-around{
+	margin:20px 0 0 0;
+}
 .verification-button, .verification-button:hover{
 	background-color: #F6942C;
 	color: #fff;
 	border: none;
 	width: auto;
+}
+.button-grey, .button-grey:hover{
+	background-color: #7E7E7E;
+    color: #fff;
+    border: none;
+    padding: 3px 8px;	
+}
+.loan-detail-button, .loan-detail-button:hover{
+	background-color: #E88C2A;
+	color: #fff;
+	border: none;
+	padding: 3px 20px;
+	margin:20px 0;
+}
+.button-black, .button-black:hover{											
+	border:none;
+	color:#fff;
+}
+.button-orange, .button-orange:hover{
+	background-color: #F1922E;
+	color: #fff;
+    border: none;
+    padding: 3px 25px;	
+}
+.button-red .button-red:hover{ 
+	background-color: #901E17;
+	color: #fff;
+    border: none;
+    padding: 3px 25px;
 }
 /******************************Login Page*******************************/
 .login-logo{
@@ -9045,7 +9075,9 @@ canvas.round {
 	color:#fff;
 }
 /************************SIDEBAR NAVIGATION*****************************/
-.active, .nav > li > a .active{
+.active, 
+.bidders-value,
+.nav > li > a .active{
 	color:#F6942C;
 }
 .sidebar .sidebar-balance {
@@ -9075,7 +9107,7 @@ canvas.round {
 	border:1px solid #F6942C;	
 }
 /**********************BORROWER DASHBOARD*******************************/
-.panel-container{
+.panel-container, .jfilestyle input{
 	border:none;
 }
 .panel-primary > .panel-headsection{
@@ -9092,23 +9124,15 @@ canvas.round {
 }
 .panel-bodysection{
 	padding-top:0;	
-}/*
-.loantaken{
-	background-color:#8B170A;
-	color:#fff;	
-}*/
+}
 .totalamount{
 	background-color:#F6942C;
 	color:#fff;	
 }
-/***Profile (company info,director info,profile info,financial info and bankinfo)***/
+/***********Profile (company info,director info,************************
+ ********** profile info,financial info and bankinfo)*******************/
 .directorinfo td:nth-child(n+2) {
     background-color: #fff;
-}
-.directorinfo .select-width, .applyloan .select-width, 
-.form-inline .btn-group.bootstrap-select.select-width, 
-.form-horizontal .btn-group.bootstrap-select.select-width{  
-	width:100%; 
 }
 .directorinfo .pagination > li > a, 
 .bank-details  .pagination > li > a{
@@ -9117,11 +9141,8 @@ canvas.round {
 	color:#222;
 	font-size:24px;	
 }
-.directorinfo .pagination{
-	margin:0;
-}
 .directorinfo .panel-primary > .panel-headsection,
- .applyloan .panel-headsection{
+.applyloan .panel-headsection{
 	padding:5px;
 }
 #company_info .btn.selectpicker {
@@ -9134,18 +9155,8 @@ canvas.round {
 .applyloan{
 	background-color:#F9F9F9;	
 }
-ol li{
-	margin:10px 0 0 0;
-	list-style-type: lower-roman;
-}
-.list-type li{
-	list-style-type: decimal;
-}
 .applyloan .btn-group.bootstrap-select {
     width: 100%;
-}
-.jfilestyle input{
-    border: none;   
 }
 .jfilestyle label {
     background-color: #8D8D8D;
@@ -9158,46 +9169,7 @@ ol li{
 #documents_submitted a {
     color: #333;
 }
-.block-content p a{
-	color:#F6942C;
-	font-weight:bold;
-}
 /***********************My loans****************************************/
-.table-loan{
-	background-color:#F5F5F5;	
-}
-.social-share img{
-	border-radius:50px;
-	width:30px;
-	margin:0 5px 0 0;
-}
-.myloan-wrapper table tr td:first-child{
-	text-align:left;
-}
-.panel-container img{
-	margin:-1px 0 0 0;
-}
-.img-container {
-    position: relative;
-    text-align: center;
-}
-.text-bottom {
-    position: absolute;
-    font-size: 18px;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    color:#fff;
-}
-.img-container img { 
-    width: 100%;
-    height: auto;   
-}
-.imageoverlap{
-	position: absolute;	
-	z-index: 1;
-	width:20%;
-}
 .loan-comments{	
 	margin-left: 8px;
 }
@@ -9227,17 +9199,51 @@ ol li{
 	color:#8B170A;
 	margin: 0 0 0 10px;
 }
-.space-around{
-	margin:20px 0 0 0;
-}
-.bidders-value{
-	color:#F6942C;
-}
 .myloans .panel-body{
 	overflow-y: scroll;
     max-height: 300px;
 }
-table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
+/*---------------------LoanDetails TAB--------------------------------*/
+.social-share img{
+	border-radius:50px;
+	width:30px;
+	margin:0 5px 0 0;
+}
+.myloan-wrapper table tr td:first-child{
+	text-align:left;
+}
+.panel-container img{
+	margin:-1px 0 0 0;
+}
+.img-container {
+    position: relative;  
+}
+.img-container img { 
+    width: 100%;
+    height: auto;   
+}
+.imageoverlap{
+	position: absolute;	
+	z-index: 1;
+	width:20%;
+}
+.text-bottom {
+    position: absolute;
+    font-size: 18px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color:#fff;
+    background-color:rgba(0, 0, 0, 0.8);
+}
+.img-arrow{	
+	width: 5%; 
+    top: 80px;
+	left:-4px;
+}
+/*---------------------BidInfo TAB-------------------------------------*/
+table.table.table-bidinfo tr td,
+table.table.table-bidinfo tr th{
     border: none;
     text-align: center;
 }
@@ -9255,11 +9261,7 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
     background-repeat: no-repeat;
     background-size:95% 95%;
 }
-.img-arrow{	
-	width: 5%; 
-    top: 80px;
-	left:-4px;
-}
+/**********************Loan Listing*************************************/
 .panel-white{
 	background-color:#fff;
 	padding:10px;
@@ -9282,20 +9284,22 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 	margin: 0 0 0 -15px;
     height: 181px;     
 }
-.loan-list-container table ,.panel-footer{
+.loan-list-container table ,
+.panel-footer,
+.bid-table-space{
 	font-size:0.9em;
 }
-.loan-list-container .table-responsive{
+.loan-list-container .table-responsive,
+.panel-white .table{
 	margin-bottom:0;
 }
 .panel-white .progress, .space-around .progress{
 	height:8px;
 	margin-bottom:0;
 }
-.panel-white .table{
-	margin-bottom:0;
-}
-.panel-white .table td, .loan-info-wrapper .table td, .myloan-wrapper .table td{
+.panel-white .table td, 
+.loan-info-wrapper .table td, 
+.myloan-wrapper .table td{
     border: none;
 }
 .title-loanlist{
@@ -9320,7 +9324,8 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
 .loan-list-image .imageoverlap{
 	 width: 60%;
 }
-.loanlist-wrapper .btn-default, .loanlist-wrapper .open > .dropdown-toggle.btn-default, 
+.loanlist-wrapper .btn-default, 
+.loanlist-wrapper .open > .dropdown-toggle.btn-default, 
 .loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a:focus,
 .loanlist-wrapper .bootstrap-select .dropdown-menu > .selected > a{
 	color: #fff;
@@ -9328,7 +9333,8 @@ table.table.table-bidinfo tr td,table.table.table-bidinfo tr th{
     border-color: #333;
     border-radius: 0;
 }
-.loanlist-wrapper .dropdown-menu > li > a, .loanlist-wrapper .dropdown-menu{
+.loanlist-wrapper .dropdown-menu > li > a, 
+.loanlist-wrapper .dropdown-menu{
 	background-color: #333;
 	color:#fff;
 	border-radius: 0;
@@ -9341,19 +9347,6 @@ table.table.tab-label {
     text-align: left;
     margin: 40% 0 0 0;
 }
-.button-grey, .button-grey:hover{
-	background-color: #7E7E7E;
-    color: #fff;
-    border: none;
-    padding: 3px 8px;	
-}
-.loan-detail-button, .loan-detail-button:hover{
-	background-color: #E88C2A;
-	color: #fff;
-	border: none;
-	padding: 3px 20px;
-	margin:20px 0;
-}
 .loan-info-wrapper{
 	background-color: #EAEBED;
 	border: 1px solid #ccc;
@@ -9364,23 +9357,14 @@ table.table.tab-label {
 	border-radius:0;
 	border:none;
 }
-.loan-details{
-	background-color:#fff;
-}
-.no-image{
-	background-color:rgba(0, 0, 0, 0.8);
-}
 .bid-table-space .space-around{
 	margin:10px 0 0 0;	
 }
-.bid-table-space {
-	font-size:13px;
+/**********************MyloanInfo**************************************/
+.loan-details{
+	background-color:#fff;
 }
 /*********************Transcation History*******************************/
-.button-black, .button-black:hover{											
-	border:none;
-	color:#fff;
-}
 #trans-history .table th{  
     background-color: #E2E2E2;
 }
@@ -9397,20 +9381,18 @@ table.table.tab-label {
 	margin-bottom:0;
 	border: 1px solid #ccc;	
 }
+td.details-control {
+    background: url('../../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../../img/details_close.png') no-repeat center center;
+}
 /****************************MyloanInfo*********************************/
 .loan-list-table tr:last-child td:last-child {
     padding: 0 0 72% 0;
 }
 /****************************Bank Details*******************************/
-.button-orange, .button-orange:hover{
-	background-color: #F1922E;
-	color: #fff;
-    border: none;
-    padding: 3px 25px;	
-}
-.bankdet-pagi .pagination{ 
-	margin:0;
-}
 .bank-details .pagination > li > a{
 	background-color:#F0EDEF;
 }
@@ -9422,12 +9404,6 @@ table.table.tab-label {
 	padding:5px;
 }
 /******************************Settings*********************************/
-.button-red .button-red:hover{ 
-	background-color: #901E17;
-	color: #fff;
-    border: none;
-    padding: 3px 25px;
-}
 .font-bold{
 	font-weight:bold;
 }
@@ -9448,15 +9424,14 @@ table.table.tab-label {
 #accordion .panel-body, #account-summary td{
 	border:none;
 } 
+table#account-summary, .table-border-custom{
+	border: 1px solid #ccc;
+}
 #accordion .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child, 
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child{
 	border-radius:0;
 }
-table#account-summary, .table-border-custom{
-	border: 1px solid #ccc;
-}
 /*******************************Custom Responsive css*******************/
-
 @media(max-width:1920px) {
 	.jfilestyle input{   
 		margin:0;
@@ -9496,15 +9471,13 @@ table#account-summary, .table-border-custom{
 	}
 	.nav-tabs > li{
 		float:none;
-	}
-}
-@media(min-width:768px)and (max-width:800px) {
+	}   
 	.loan-list-image .imageoverlap{
-		width:45%;
+		width:40%;
     }
 }
-@media(min-width:768px) {
-    #page-wrapper {
+@media(min-width:768px){
+	  #page-wrapper {
         position: inherit;
         margin: 0 0 0 250px; 
         padding: 0 30px;
@@ -9525,6 +9498,6 @@ table#account-summary, .table-border-custom{
 		height:190px;
 	}	
 	.loan-list-image .imageoverlap {
-		width: 60%;
+		width: 50%;
 	}
 }

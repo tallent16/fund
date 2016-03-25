@@ -14,7 +14,7 @@
 			
 				<div class="row">
 					<div class="col-md-12">
-						
+						@if($bidInfoCnt	>	0)
 						<div class="table-responsive"><!---table start-->
 							<table class="table table-bidinfo">		
 								<tbody>
@@ -23,7 +23,7 @@
 										<th>{{ Lang::get('borrower-myloans.interest_rate') }}</th>	
 										<th>{{ Lang::get('borrower-myloans.bid_amount') }}</th>				
 									</tr>
-										@if($bidInfoCnt	>	0)
+										
 											@var	$i	=	1;
 											@foreach($bidInfo as $bidRow)
 												@if($bidInfoCnt	==	$i)
