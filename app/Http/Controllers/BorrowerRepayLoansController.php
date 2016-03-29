@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 use	\App\models\BorrowerRepayLoansModel;
-use Response;
-class BorrowerRepayLoansController extends Controller {
+use Request;
+class BorrowerRepayLoansController extends MoneyMatchController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -22,10 +22,11 @@ class BorrowerRepayLoansController extends Controller {
 	public function __construct()
 	{	
 		$this->middleware('auth');
+		$this->init();		
 	}
 
 	public function littleMoreInit() {
-		$this->repayloan = new BorrowerRepayLoansModel();
+		$this->repayloanmodel= new BorrowerRepayLoansModel();
 	}
 
 	/**
@@ -35,8 +36,15 @@ class BorrowerRepayLoansController extends Controller {
 	 */
 	public function indexAction()
 	{
-		return view('borrower.borrower-repayloans')
-			->with("classname","fa fa-university fa-fw user-icon"); 
+						
+		$this->repayloanmodel->getUnpaidLoans();
+		
+		$withArry	=	array("modelrepayloan"=>$this->repayloanmodel,
+								"classname" => "fa fa-university fa-fw user-icon"
+								);
+								
+		return view('borrower.borrower-repayloans')			
+				->with($withArry); 
 	}
 
 }

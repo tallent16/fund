@@ -9360,10 +9360,6 @@ table.table.tab-label {
 .bid-table-space .space-around{
 	margin:10px 0 0 0;	
 }
-/**********************MyloanInfo**************************************/
-.loan-details{
-	background-color:#fff;
-}
 /*********************Transcation History*******************************/
 #trans-history .table th{  
     background-color: #E2E2E2;
@@ -9389,6 +9385,9 @@ tr.shown td.details-control {
     background: url('../../img/details_close.png') no-repeat center center;
 }
 /****************************MyloanInfo*********************************/
+.loan-details{
+	background-color:#fff;
+}
 .loan-list-table tr:last-child td:last-child {
     padding: 0 0 72% 0;
 }

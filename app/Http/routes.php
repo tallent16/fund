@@ -29,6 +29,8 @@ Route::group(['prefix' => ''], function() {
     define('REPAYMENT_TYPE_ONE_TIME', '1');
     define('REPAYMENT_TYPE_INTEREST_ONLY', '2');
     define('REPAYMENT_TYPE_EMI', '3');
+    define('BORROWER_REPAYMENT_STATUS_UNPAID', '1');  
+    define('BORROWER_REPAYMENT_STATUS_PAID', '2');
     define('BANK_DETAILS_VERIFIED', '2');
     define('BANK_DETAILS_UNVERIFIED', '1');
     define('BANK_DETAILS_ACTIVE', '1');

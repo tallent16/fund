@@ -64,7 +64,7 @@
 											
 			<!--</div> -->
 
-		<!--	<div class="row">	--->
+		<!--<div class="row">--->
 				<div class="panel panel-primary panel-container myloans">
 					
 					<div class="panel-heading panel-headsection"><!--panel head-->
@@ -73,7 +73,7 @@
 								<span class="pull-left"><i class="fa fa-comments-o"></i></span> 
 							</div>			
 							<div class="col-xs-10">	
-								Comments  
+								{{Lang::get('Comments')}}
 							</div>													
 						</div>							
 					</div>	<!--end panel head-->

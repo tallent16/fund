@@ -3,14 +3,14 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	
 @endsection
-@section('page_heading','Dashboard')
+@section('page_heading',Lang::get('Dashboard'))
 @section('section')
 		<div class="col-sm-12 space-around"> 
 			<!--First row--->
 			<div class="row annoucement-msg-container">
 				<div class="alert alert-danger annoucement-msg">
 					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>	
-					Announcement section				
+					{{ Lang::get('Announcement section')}}		
 				</div>
 			</div>
 			<!--first row end-->
@@ -24,7 +24,7 @@
 						<div class="panel-heading panel-headsection"><!--panel head-->
 							<div class="row">
 								<div class="col-xs-10 col-lg-11">
-									<span class="pull-left">FEATURED LOANS</span> 
+									<span class="pull-left">{{Lang::get('FEATURED LOANS')}}</span> 
 								</div>
 								<div class="col-xs-2 col-lg-1">
 									<i class="fa fa-caret-right cursor-pointer"></i>
@@ -36,10 +36,10 @@
 								<input 	type="hidden" id="current_loan_index" 
 										value="0" />
 							   <div class="panel-subhead" id="cur_loan_subhead">
-								 	MKM Car leasing Pte Ltd
+								 	{{Lang::get('MKM Car leasing Pte Ltd')}}
 								</div>
 							   <div  id="cur_loan_content">
-								   Borrower mainly conducts Visual Arts enrichment programs for playgroups,nursies and kindergartens. Business model has changed since 2010, it started out as a retail outlet selling children art and craft products like Modeling Clay.
+								   {{Lang::get('Borrower mainly conducts Visual Arts enrichment programs for playgroups,nursies and kindergartens. Business model has changed since 2010, it started out as a retail outlet selling children art and craft products like Modeling Clay.')}}
 								</div>
 						</div>	<!--end panel body-->
 						<div class="table-responsive"><!---table start-->
@@ -47,39 +47,39 @@
 								<tbody>
 									<tr>
 										<td  class="tab-left-head">
-											Rate%
+										{{Lang::get('Rate%')}}
 										</td> 
 										<td >
-											10%
+											{{Lang::get('10%')}}
 										</td>										
 									</tr>	
 									<tr>
 										<td class="tab-left-head" >
-											Tenure
+											{{Lang::get('Tenure')}}
 										</td> 
 										<td >
-											1 Year
+											{{Lang::get('1 Year')}}
 										</td>										
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
-											Amount
+											{{Lang::get('Amount')}}
 										</td> 
 										<td >
-											$1,000
+											{{Lang::get('$1,000')}}
 										</td>										
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
-											Type of Repayment
+											{{Lang::get('Type of Repayment')}}
 										</td> 
 										<td>
-											Montly Repayment
+											{{Lang::get('Montly Repayment')}}
 										</td>										
 									</tr>
 									<tr>
 										<td class="tab-left-head">
-											Bid Type
+											{{Lang::get('Bid Type')}}
 										</td> 
 										<td >
 											

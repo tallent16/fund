@@ -64,7 +64,8 @@ class BorrowerTransHistoryController extends MoneyMatchController {
 		$withArry	=	array(	"tranModel" => $this->tranModel	, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
-								"tranType" => $transType);
+								"tranType" => $transType,
+								"classname"=>"fa fa-list-ul fa-fw");
 		
 		return view('borrower.borrower-transcationhistory')
 				->with($withArry); 
