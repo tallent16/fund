@@ -30,19 +30,29 @@
 					<tbody>
 					
 						@var $repayloanlist = $modelrepayloan->unpaidLoanList;
+					
 							@if (count($modelrepayloan->unpaidLoanList) > 0)
 								
 								@var $i=1
-								@foreach ($repayloanlist as $loanRow)
-										@var $button_enable	= "disabled" 
+							
+								@foreach ($repayloanlist as $list => $loanRow)
+									
 										
 										@if($loanRow->repayment_status == 1)
+										
 											@if($i == 1)
+												@if($loanRow->repayment_status == $i)
 												@var $button_enable = ""
+												@endif
+											@else
+												@var $button_enable = "disabled"
 											@endif	
-											@var $i++			
+											
+											
+										@else
+											@var $button_enable = "disabled"
 										@endif
-										 
+										 @var $i++
 									<tr>
 										<td>{{$loanRow->ref}}</td>
 										<td>{{$loanRow->schd_date}}</td>
@@ -50,9 +60,9 @@
 										<td>{{$loanRow->schd_amount}}</td>
 										<td>{{$loanRow->penalty}}</td>							
 										<td>
-											<a href="{{ url ('borrower/makepayment') }}">
-											<button type="submit" class="button-orange" {{$button_enable}}>{{ Lang::get('REPAY')}}</button> 
-											</a>	
+												<a href="{{ url ('borrower/makepayment/'.base64_encode($loanRow->repayment_schedule_id)) }}">
+												<button type="submit" id="{{$loanRow->repayment_schedule_id}}" class="button-orange" {{$button_enable}}>{{ Lang::get('REPAY')}}</button> 
+												</a>	
 										</td>								
 									</tr>	
 								@endforeach	

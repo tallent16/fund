@@ -29,8 +29,7 @@ class LoanDetailsController extends MoneyMatchController {
 			$postArray	=	Request::all();
 			$this->loanDetailsModel->processBid($postArray);
 			$submitted	=	true;
-			$subType	=	$postArray['isCancelButton'];
-			
+			$subType	=	$postArray['isCancelButton'];			
 		}
 		
 		$this->loanDetailsModel->getLoanDetails($sourceId[0]);

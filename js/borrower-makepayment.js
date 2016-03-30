@@ -10,4 +10,7 @@ $(document).ready(function (){
 		minView: 2,
 		format: 'dd/mm/yyyy'
 	});   
+	$("#save_form_payment").submit(function() {
+		$("input").removeAttr("disabled");
+	});
 });

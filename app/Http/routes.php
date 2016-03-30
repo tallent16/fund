@@ -94,7 +94,8 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::match(['get', 'post'],'borrower/bankdetails', 'BankProcessController@indexAction');
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');
 	Route::get('borrower/settings', 'BorrowerSettingsController@indexAction');
-	Route::get('borrower/makepayment', 'BorrowerMakePaymentController@indexAction');
+	//Route::get('borrower/makepayment/{repayment_id}', 'BorrowerRepayLoansController@paymentAction');
+	Route::match(['get', 'post'],'borrower/makepayment/{repayment_id}', 'BorrowerRepayLoansController@paymentAction');
 });
 
 // The routes (or pages that are applicable for investor users only

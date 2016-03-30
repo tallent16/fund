@@ -36,15 +36,30 @@ class BorrowerRepayLoansController extends MoneyMatchController {
 	 */
 	public function indexAction()
 	{
-						
-		$this->repayloanmodel->getUnpaidLoans();
-		
+		$this->repayloanmodel->getUnpaidLoans();	
 		$withArry	=	array("modelrepayloan"=>$this->repayloanmodel,
 								"classname" => "fa fa-university fa-fw user-icon"
-								);
-								
+								);								
 		return view('borrower.borrower-repayloans')			
 				->with($withArry); 
+	}
+	
+	public function paymentAction($repayment_id)
+	{
+		$installmentId = base64_decode($repayment_id);				
+		$this->repayloanmodel->newRepayment($installmentId);
+		
+		$submitted	=	false;
+		if (Request::isMethod('post')) {
+			$postArray	=	Request::all();
+			$result		=	$this->repayloanmodel->saveRepayment($postArray);
+			$submitted	=	true;
+		}		
+		
+		$withaArry	=	array("modelrepayloanpayment"=>$this->repayloanmodel,
+								"submitted"=>$submitted);
+		return view('borrower.borrower-makepayment')
+				->with($withaArry);
 	}
 
 }
