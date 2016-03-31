@@ -26,15 +26,9 @@ class InvestorProfileModel extends TranWrapper {
 		
 	public function getInvestorProfile() {
 		
-		$current_user_id	=	 $this->getCurrentuserID();
+		$current_user_id		=	 $this->getCurrentuserID();
 		
-		$investorlist_sql	= 	"	SELECT 	investors.investor_id ,
-											investors.user_id,
-											users.firstname,
-											users.lastname,
-											users.username displayname,
-											users.email,
-											users.mobile,
+		$investorprofile_sql	= 	"	SELECT 	investors.investor_id ,
 											ifnull(DATE_FORMAT(investors.date_of_birth,'%d/%m/%Y'),'') date_of_birth,
 											investors.nric_number,
 											case investors.status 
@@ -59,11 +53,29 @@ class InvestorProfileModel extends TranWrapper {
 									WHERE	investors.user_id	=	{$current_user_id}
 									AND		investors.user_id	=	users.user_id";
 		
-		$investorlist_rs	= 	$this->dbFetchAll($investorlist_sql);
+		$investorprofile_rs		= 	$this->dbFetchAll($investorprofile_sql);
 	
-		if ($investorlist_rs) {
+		if ($investorprofile_rs) {
 		
-			$vars = get_object_vars ( $investorlist_rs[0] );
+			$vars = get_object_vars ( $investorprofile_rs[0] );
+			foreach($vars as $key=>$value) {
+				$this->{$key} = $value;
+			}
+		}
+		$userprofile_sql	= 	"	SELECT 	users.firstname,
+											users.lastname,
+											users.username displayname,
+											users.email,
+											users.mobile,
+											users.user_id
+									FROM 	users
+									WHERE	users.user_id	=	{$current_user_id}";
+		
+		$userprofile_rs		= 	$this->dbFetchAll($userprofile_sql);
+	
+		if ($userprofile_rs) {
+		
+			$vars = get_object_vars ( $userprofile_rs[0] );
 			foreach($vars as $key=>$value) {
 				$this->{$key} = $value;
 			}
@@ -163,6 +175,21 @@ class InvestorProfileModel extends TranWrapper {
 			$this->dbUpdate('investor_banks', $dataArray, $whereArry);
 			return $investorBankId;
 		}
+	}
+	
+	public function CheckFieldExists($postArray) {
+		
+		if($postArray['field_name']	==	"username") {
+			$userName	=	$postArray['field_value'];
+			$id			=	$postArray['user_id'];
+			return	$this->CheckExistingUserName($userName,$id);
+			
+		}else{
+			$userEmail	=	$postArray['field_value'];
+			$id			=	$postArray['user_id'];
+			return	$this->CheckExistingUserEmail($userEmail,$id);
+		}
+		return $investorBankId;
 	}
 	
 }

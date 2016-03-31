@@ -73,7 +73,7 @@ class TranWrapper extends MoneyMatchModel {
 		$sql	= "	SELECT 	count(*) cnt 
 					FROM 	users 
 					WHERE 	activation = '".$code."' 
-					AND 	(status = 0 OR status is NULL)";
+					AND 	(status = 1 OR status is NULL)";
 				
 		$cnt 	= 	$this->dbFetchOne($sql);
 		return ($cnt == 0)?false:true;
@@ -82,7 +82,7 @@ class TranWrapper extends MoneyMatchModel {
 	public function updateCodeStatus($code) {
 	
 		$whereArry	=	array("activation" =>"{$code}");
-		$this->dbUpdate('users', array('status' => 1), $whereArry);
+		$this->dbUpdate('users', array('status' => 2,'email_verified' => 1), $whereArry);
 	}
 	
 	public function getCurrentuserID() {

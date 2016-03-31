@@ -104,6 +104,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
   //Route::get('investor/dashboard',array('middleware' => 'auth', 'uses' => 'InvestorDashboardController@indexAction'));
     Route::get('investor/dashboard', 'InvestorDashboardController@indexAction');
     Route::match(['get', 'post'],'investor/profile', 'InvestorProfileController@indexAction');
+    Route::post('investor/checkFieldExists', 'InvestorProfileController@ajaxCheckFieldExistsAction');
 	Route::get('investor/loanslist', 'LoanListingController@indexAction');
 
   //  Route::get('investor/loandetails', 'InvestorLoanDetailsController@indexAction');
@@ -115,6 +116,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	
+   	
 });
 
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');

@@ -35,7 +35,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	}
 	
 	public function getUnpaidLoans() {
-	//	print_r($this->borrowerId);
+	
 		$unpaidloan_sql	=	"	SELECT 	repayment_schedule_id,
 										repayment_status,
 										loan_reference_number ref, 
@@ -68,8 +68,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 								WHERE	loans.loan_id = loan_repayment.loan_id ";
 								
 		$this->unpaidLoanList	=	$this->dbFetchAll($unpaidloan_sql);	
-		//echo '<pre>',print_r($unpaidLoanList),'</pre>';
-		//die;
+	
 		return;
 
 	}
@@ -78,7 +77,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		$this->repaymentSchdId		=	$installmentId;	
 		
 			// Check if the Installment is overdue or not
-			$repaySched_sql	=	"	SELECT 	if(datediff(now(), repayment_schedule_date) < 0, 
+			$repaySched_sql	=	"	SELECT 	if(datediff(now(), repayment_schedule_date) > 0, 
 													'Overdue', 'Not Overdue') overdue,
 											repayment_scheduled_amount,
 											repayment_schedule_date,
@@ -89,10 +88,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									
 			$repaySched_rs	=	$this->dbFetchAll($repaySched_sql);
 			
-			$todaysdatesql			= "SELECT CURDATE()";
-			$this->todaydate		= $this->dbFetchOne($todaysdatesql);
-			
-			//~ print_r($repaySched_sql);
+			$actualdatesql			= "SELECT CURDATE()";
+			$this->todaydate		= $this->dbFetchOne($actualdatesql);
+						
 			if (count($repaySched_rs) > 0) {
 				// There will be only one row here so we are directly taking the values of the first row
 				$this->isOverdue	=	$repaySched_rs[0]->overdue;
@@ -107,26 +105,17 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			
 			if ($this->isOverdue == 'Overdue') {
 				// Calculate the penalty amount
-				//~ $penalty_sql	=	"	SELECT	(if (penalty_type_applicable in (1,3), 
-													//~ {$this->schedAmount} * 
-														//~ power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
-														//~ datediff(now(), {$this->schedDate})), 0) + 
-												//~ if (penalty_type_applicable in (2,3),
-														//~ ifnull(penalty_fixed_amount, 0), 0) -
-												//~ {$this->schedAmount}, 0) penalty 
-										//~ FROM	loans
-										//~ WHERE	loan_id = {$this->loanId}";
 				$penalty_sql	=	"	SELECT	if (penalty_type_applicable in (1,3), 
 													{$this->schedAmount} * 
 														power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
-														datediff(now(), {$this->schedDate})) + 
+														datediff(now(), '{$this->schedDate}')) + 
 												if (penalty_type_applicable in (2,3),
 														ifnull(penalty_fixed_amount, 0), 0) -
 												{$this->schedAmount}, 0) penalty 
 										FROM	loans
 										WHERE	loan_id = {$this->loanId}";
 				$this->penaltyAmt	=	$this->dbFetchOne($penalty_sql);
-			}
+				}
 
 			// Calculate the Principal & Interest & get the loan_reference Number
 			$intAmount_sql	=	"	SELECT	round((loan_sanctioned_amount - sum(principal_paid)) * 
@@ -154,8 +143,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	
 	
 	public function saveRepayment($postArray) {
-		//print_r($postArray["actualdate"]);
-		
+				
 		// Values expected from the request
 		// For the borrowers' table
 		$this->loanId 			= 	$postArray["loan_id"];
@@ -178,19 +166,18 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		//  Status: 1 (unverified --> Hardcode)
 
 		$paymentInsert_data	=	array(
-									'loan_id' => $this->loanId,
 									'trans_date' => $this->trans_date,
 									'trans_type' => 2,
-									'xref_id' => $this->repaymentSchdId,
-									'trans_in_out' => $transInOrOut,
+								//	'xref_id' => $this->repaymentSchdId,
+								//	'trans_in_out' => $transInOrOut,
 									'trans_amount' => $this->amountPaid,
-									'currency' => 'SGD',
+									'currency' => $currency,
 									'trans_reference_number' => $transReference,
 									'status' => 1,
 									'remarks' => $this->remarks);
 
 		$paymentId 			=	$this->dbInsert("payments", $paymentInsert_data, 1);
-		
+
 		$repayInsert_data	=	array(
 									'loan_id' => $this->loanId,
 									'trans_date' => $this->trans_date,
@@ -200,10 +187,10 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									'interest_paid' => $this->interestAmount,
 									'principal_paid' => $this->principalAmount,
 									'penalty_paid' => $this->penaltyAmt,
-									'payment_id' => $paymentId,
+									'payment_id' => $paymentId ,
 									'status' => 1,
 									'remarks' => $this->remarks);
-									
+							
 		$this->dbInsert("borrower_repayments", $repayInsert_data, 0);
 		
 	}

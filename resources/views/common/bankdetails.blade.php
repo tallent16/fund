@@ -4,12 +4,7 @@
 	<script src="{{ url('js/bankdetails.js') }}" type="text/javascript"></script>	
 @endsection
 @section('page_heading','Banking') 
-@section('status_button')						
-		<!--------Status Button Section---->		
-			  <h4><span class="label label-default status-label">{{ Lang::get('Status') }}</span></h3>														
-@endsection
 @section('section') 
-
 <div class="col-sm-12 bank-details space-around"> 
 	@if($submitted)
 	<div class="row">

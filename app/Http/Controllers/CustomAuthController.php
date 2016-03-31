@@ -45,7 +45,7 @@ class CustomAuthController extends MoneyMatchController {
 			$password="";
 		}
               
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => 1 ])) {  
+        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => 2,'email_verified' => 1 ])) {  
             //echo "success";  
             return redirect()->intended($this->redirectPath());
         }else {  

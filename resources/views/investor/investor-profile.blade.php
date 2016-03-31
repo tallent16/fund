@@ -5,6 +5,9 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
+	<script>
+		var baseUrl	=	"{{url()}}";
+	</script>
 	<script src="{{ url('js/investor-profile.js') }}" type="text/javascript"></script>
 @endsection
 @section('page_heading',Lang::get('Profile') )
@@ -39,9 +42,10 @@
 		@endif
 		<fieldset {{$InvPrfMod->viewStatus}} >
 			<form method="post" id="form-profile" name="form-profile">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 					<input type="hidden" name="trantype" value="{{ $trantype }}">
 					<input type="hidden" name="investor_id" value="{{ $InvPrfMod->investor_id }}">
+					<input type="hidden" id="user_id" value="{{ $InvPrfMod->user_id }}">
 					<input type="hidden" name="investor_bankid" value="{{ $InvPrfMod->investor_bankid }}">
 				<div class="col-sm-12 col-lg-12"> 
 			
@@ -86,8 +90,15 @@
 									</div>
 														
 								<div class="col-xs-12 col-sm-6 col-lg-8">													
-											<input type="text" name="displayname" 
-											value="{{$InvPrfMod->displayname}}" class="form-control">
+											<input type="text" 
+													name="displayname" 
+													id="displayname" 
+													value="{{$InvPrfMod->displayname}}" 
+													onchange="checkDisplayName(this.value);"
+													class="form-control">
+											<label 	style="display: none;" 
+													class="control-label label_displayname_error" 
+													></label>
 									</div>
 								</div>
 								
@@ -97,8 +108,15 @@
 									</div>
 														
 									<div class="col-xs-12 col-sm-6 col-lg-8">												
-											<input type="text" name="email" 
-											value="{{$InvPrfMod->email}}" class="form-control">
+											<input type="text" 
+													name="email" 
+													id="email" 
+													value="{{$InvPrfMod->email}}" 
+													onchange="checkEmail(this.value);"
+													class="form-control">
+											<label 	style="display: none;" 
+													class="control-label label_email_error" 
+													></label>
 									</div>
 								</div>
 								

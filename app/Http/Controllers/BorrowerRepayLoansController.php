@@ -38,7 +38,7 @@ class BorrowerRepayLoansController extends MoneyMatchController {
 	{
 		$this->repayloanmodel->getUnpaidLoans();	
 		$withArry	=	array("modelrepayloan"=>$this->repayloanmodel,
-								"classname" => "fa fa-university fa-fw user-icon"
+								"classname" => "fa fa-credit-card fa-fw user-icon"
 								);								
 		return view('borrower.borrower-repayloans')			
 				->with($withArry); 
@@ -57,6 +57,7 @@ class BorrowerRepayLoansController extends MoneyMatchController {
 		}		
 		
 		$withaArry	=	array("modelrepayloanpayment"=>$this->repayloanmodel,
+								"classname" => "fa fa-cc fa-fw user-icon",
 								"submitted"=>$submitted);
 		return view('borrower.borrower-makepayment')
 				->with($withaArry);

@@ -22,53 +22,53 @@
 							<th class="tab-head">{{ Lang::get('LOAN REFERENCE NUMBER')}}</th>
 							<th class="tab-head">{{ Lang::get('SCHDELUED DATE')}}</th>
 							<th class="tab-head">{{ Lang::get('LOAN PERIOD')}}</th>
-							<th class="tab-head">{{ Lang::get('SCHDELUED AMOUNT')}}</th>
-							<th class="tab-head">{{ Lang::get('PENALTY')}}</th>							
+							<th class="tab-head text-right">{{ Lang::get('SCHDELUED AMOUNT')}}</th>
+							<th class="tab-head text-right">{{ Lang::get('PENALTY')}}</th>							
 							<th class="tab-head"></th>								
 						</tr>
 					</thead>
 					<tbody>
-					
-						@var $repayloanlist = $modelrepayloan->unpaidLoanList;
-					
-							@if (count($modelrepayloan->unpaidLoanList) > 0)
+				
+					@var $repayloanlist = $modelrepayloan->unpaidLoanList;
+				
+						@if (count($modelrepayloan->unpaidLoanList) > 0)
+							
+							@var $i=1
+						
+							@foreach ($repayloanlist as $list => $loanRow)
+																		
+								@if($loanRow->repayment_status == 1)
 								
-								@var $i=1
-							
-								@foreach ($repayloanlist as $list => $loanRow)
-									
-										
-										@if($loanRow->repayment_status == 1)
-										
-											@if($i == 1)
-												@if($loanRow->repayment_status == $i)
-												@var $button_enable = ""
-												@endif
-											@else
-												@var $button_enable = "disabled"
-											@endif	
-											
-											
-										@else
-											@var $button_enable = "disabled"
+									@if($i == 1)
+										@if($loanRow->repayment_status == $i)
+										@var $button_enable = ""
 										@endif
-										 @var $i++
-									<tr>
-										<td>{{$loanRow->ref}}</td>
-										<td>{{$loanRow->schd_date}}</td>
-										<td>{{$loanRow->inst_period}}</td>
-										<td>{{$loanRow->schd_amount}}</td>
-										<td>{{$loanRow->penalty}}</td>							
-										<td>
-												<a href="{{ url ('borrower/makepayment/'.base64_encode($loanRow->repayment_schedule_id)) }}">
-												<button type="submit" id="{{$loanRow->repayment_schedule_id}}" class="button-orange" {{$button_enable}}>{{ Lang::get('REPAY')}}</button> 
-												</a>	
-										</td>								
-									</tr>	
-								@endforeach	
-							
-							@endif
+									@else
+										@var $button_enable = "style=display:none;"
+									@endif	
 									
+									
+								@else
+									@var $button_enable = "style=display:none;"
+								@endif
+								
+								@var $i++
+								<tr>
+									<td>{{$loanRow->ref}}</td>
+									<td>{{$loanRow->schd_date}}</td>
+									<td>{{$loanRow->inst_period}}</td>
+									<td class="text-right">{{$loanRow->schd_amount}}</td>
+									<td class="text-right">{{round($loanRow->penalty,2)}}</td>							
+									<td>
+										<a href="{{ url ('borrower/makepayment/'.base64_encode($loanRow->repayment_schedule_id)) }}">
+										<button type="submit" id="{{$loanRow->repayment_schedule_id}}" class="button-orange" {{$button_enable}}>{{ Lang::get('REPAY')}}</button> 
+										</a>	
+									</td>								
+								</tr>	
+							@endforeach	
+						
+						@endif
+								
 					</tbody>
 				</table>						
 			</div><!-----table responsive--->	

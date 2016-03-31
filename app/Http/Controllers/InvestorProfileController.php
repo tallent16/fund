@@ -33,5 +33,18 @@ class InvestorProfileController extends MoneyMatchController {
 		return view('investor.investor-profile')					
 					->with($withArry); 
 	}
+	//render the borrower Dashboard page
+	public function ajaxCheckFieldExistsAction() {		
+		
+		$postArray	=	Request::all();
+		$result		=	$this->investorProfileModel->CheckFieldExists($postArray);
+		if($result) {
+			echo "2";
+			return;
+		}else{
+			echo "1";
+			return;
+		}
+	}
 
 }

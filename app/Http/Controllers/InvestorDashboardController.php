@@ -16,8 +16,13 @@ class InvestorDashboardController extends MoneyMatchController {
 	//render the investor dashboard page
 	public function indexAction() {		
 		
+		$this->investorDashboardModel->getInvestorDashboardDetails();
+		
+		$withArry		=	array(	"InvDashMod"=>$this->investorDashboardModel,
+									"classname"=>"fa fa-gear fa-fw user-icon"
+								);
 		return view('investor.investor-dashboard')					
-					->with("classname","fa fa-gear fa-fw user-icon"); 
+					->with($withArry); 
 	}
 
 }
