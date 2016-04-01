@@ -25,8 +25,8 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$risk_strength  				=  	"";
 	public 	$risk_weakness  				=  	"";
 	public 	$comments  						=  	"";
-	public 	$status  						=  	"";
-	public 	$statusText  					=  	"";
+	public 	$status  						=  	BORROWER_STATUS_NEW_PROFILE;
+	public 	$statusText  					=  	"New profile";
 	public 	$viewStatus  					=  	"";
 	public 	$company_image  				=  	"";
 	public 	$company_image_thumbnail		=  	"";

@@ -8969,6 +8969,10 @@ canvas.round {
 .cursor-pointer{
 	cursor:pointer;
 }
+.input-required::after {
+    content: "*";
+    color: red;
+}
 .annoucement-msg-container,
 .directorinfo .pagination,
 .bankdet-pagi .pagination{
@@ -8999,6 +9003,9 @@ canvas.round {
 }
 .space-around{
 	margin:20px 0 0 0;
+}
+label.input-group-addon.btn {
+    color: #333;
 }
 .verification-button, .verification-button:hover{
 	background-color: #F6942C;
@@ -9166,7 +9173,7 @@ canvas.round {
     text-align: center;
     font-weight: bold;
 }
-#documents_submitted a {
+#documents_submitted a{
     color: #333;
 }
 /***********************My loans****************************************/
@@ -9399,8 +9406,9 @@ tr.shown td.details-control {
 	background:transparent;
 	color:#ccc;
 }
-.bank-list .tab-left-head{
+.bank-list .table-border-custom{
 	padding:5px;
+	border-radius:5px;
 }
 /******************************Settings*********************************/
 .font-bold{

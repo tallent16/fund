@@ -82,7 +82,7 @@ class TranWrapper extends MoneyMatchModel {
 	public function updateCodeStatus($code) {
 	
 		$whereArry	=	array("activation" =>"{$code}");
-		$this->dbUpdate('users', array('status' => 2,'email_verified' => 1), $whereArry);
+		$this->dbUpdate('users', array('status' => USER_STATUS_VERIFIED,'email_verified' => USER_EMAIL_VERIFIED), $whereArry);
 	}
 	
 	public function getCurrentuserID() {

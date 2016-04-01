@@ -1,7 +1,9 @@
  <ul class="nav" id="side-menu">
-                      <!--  <li class="sidebar-balance">
-                            <div class="head-balance">{{ Lang::get('borrower-leftmenu.balance') }} : $100,000</div>                             
-                        </li>-->
+                      <li class="sidebar-balance">
+                            <div class="head-balance">{{ Lang::get('borrower-leftmenu.balance') }} : 
+								{{ InvBal::available_balance() }}
+							</div>                             
+                        </li>
                          <li>
                             <a href="{{ url ('investor/dashboard') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
                         </li>

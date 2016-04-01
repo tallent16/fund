@@ -75,25 +75,25 @@
 									{{ Lang::get('borrower-profile.company_info') }}
 								</a>
 							</li>
-							<li>
+							<li class="disabled">
 								<a 	data-toggle="tab"
 									href="#director_info">
 									{{ Lang::get('borrower-profile.directors_info') }}
 								</a>
 							</li>	  
-							<li>
+							<li class="disabled">
 								<a 	data-toggle="tab"
 									href="#profile_info">
 									{{ Lang::get('borrower-profile.profile_info') }}
 								</a>
 							</li>	
-							<li>
+							<li class="disabled">
 								<a 	data-toggle="tab"
 									href="#financial_info">
 									{{ Lang::get('borrower-profile.financial_info') }}
 								</a>
 							</li>	
-							<li>
+							<li class="disabled">
 								<a 	data-toggle="tab"
 									href="#bank_info">
 									{{ Lang::get('borrower-profile.bank_info') }}
@@ -136,9 +136,15 @@
 										{{ Lang::get('borrower-profile.save_button') }}
 									</button>
 								@endif
-								
+								<button type="button" 
+											id="next_button"
+											data-tab-id="company_info"
+										class="btn verification-button" >
+										<i class="fa pull-right"></i>
+										{{ Lang::get('Next') }}
+									</button>
 									
-								<button type="submit" 
+								<button type="submit" style="display:none"
 										class="btn verification-button {{$modelBorPrf->viewStatus}}"
 										 {{$modelBorPrf->viewStatus}}>
 									<i class="fa pull-right"></i>

@@ -135,9 +135,9 @@
 																			
 														<div class="col-xs-12 col-sm-8">													
 															@if ($bankdetailRow->active_status == BANK_DETAILS_ACTIVE)
-															<div class="tab-left-head">  Active </div>
+															<div class="table-border-custom">  Active </div>
 															@else
-															<div class="tab-left-head">  InActive </div>
+															<div class="table-border-custom">  InActive </div>
 															@endif	
 														</div>
 													</div>
@@ -149,9 +149,9 @@
 																			
 														<div class="col-xs-12 col-sm-8">													
 															@if ($bankdetailRow->verified_status == BANK_DETAILS_VERIFIED)
-															<div class="tab-left-head">   Verified </div>
+															<div class="table-border-custom">   Verified </div>
 															@else
-															<div class="tab-left-head">    Unverified </div>
+															<div class="table-border-custom">    Unverified </div>
 															@endif	
 																<input type="hidden" 
 																		id="verified_status_{{$bankdetailRow->bankid}}" 
@@ -274,21 +274,21 @@
 						
 						<div class="row">		
 							<div class="col-xs-12 col-sm-4">											
-							<div class="tab-left-head"> <label>{{ Lang::get('Active Status') }}</label>		</div>										
+							<div class="table-border-custom"> <label>{{ Lang::get('Active Status') }}</label>		</div>										
 							</div>
 												
 							<div class="col-xs-12 col-sm-8">													
-							<div class="tab-left-head"> <label>{{ Lang::get('InActive') }}</label>	</div>
+							<div class="table-border-custom"> <label>{{ Lang::get('InActive') }}</label>	</div>
 							</div>
 						</div>
 						
 						<div class="row">		
 							<div class="col-xs-12 col-sm-4">											
-							<div class="tab-left-head"> <label>{{ Lang::get('Verified Status') }}</label>	</div>											
+							<div class="table-border-custom"> <label>{{ Lang::get('Verified Status') }}</label>	</div>											
 							</div>
 												
 							<div class="col-xs-12 col-sm-8">													
-							<div class="tab-left-head"> <label>{{ Lang::get('Unverified') }}</label>	</div>
+							<div class="table-border-custom"> <label>{{ Lang::get('Unverified') }}</label>	</div>
 							</div>
 						</div>
 						<div class="col-sm-6"></div>

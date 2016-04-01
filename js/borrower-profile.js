@@ -67,7 +67,63 @@ $(document).ready(function (){
 		format: 'dd/mm/yyyy'
 	});
   
+	 $(".nav-tabs > li").click(function(){
+        if($(this).hasClass("disabled"))
+            return false;
+    });
+    
+	 $("#next_button").click(function(){
+		 $('span.error').remove();
+		 $('div.has-error').removeClass("has-error");
+		var active = $("ul.nav-tabs li.active a");
+        var	cur_tab		=	active.attr("href");
+        cur_tab			=	cur_tab.replace("#","");
+        switch(cur_tab) {
+			case	'company_info':
+				  if(!validateTab(cur_tab)) {
+						$('.nav-tabs a[href="#director_info"]').tab('show');
+						$('a[href="#director_info"]').parent().removeClass("disabled");
+					}
+				break;
+			case	'director_info':
+				  if(validateTab('company_info')) {
+						$('.nav-tabs a[href="#company_info"]').tab('show');
+						return;
+					}
+					$('.nav-tabs a[href="#profile_info"]').tab('show');
+					$('a[href="#profile_info"]').parent().removeClass("disabled");
+				break;
+			case	'profile_info':
+				  if(validateTab('company_info')) {
+						$('.nav-tabs a[href="#company_info"]').tab('show');
+						return;
+					}
+					if(!validateTab(cur_tab)) {
+						$('.nav-tabs a[href="#financial_info"]').tab('show');
+						$('a[href="#financial_info"]').parent().removeClass("disabled");
+					}
+					
+				break;
+				
+		}
+    });
 });
+
+function validateTab(cur_tab) {
+	
+	$("#"+cur_tab+" :input.required").each(function(){
+		var	input_id	=	$(this).attr("id");
+		var inputVal 	= 	$(this).val();
+		var $parentTag = $("#"+input_id+"_parent");
+		if(inputVal == ''){
+			$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+		}
+	});
+	if ($("#"+cur_tab).has('div.has-error').length > 0)
+		return true;
+	else
+		return false;
+}
 function addNewDirectorRow(){
 		
 		htmlTemplate = $("#directorTemplate").html();

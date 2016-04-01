@@ -1,8 +1,7 @@
 <?php namespace App\models;
 class BorrowerRepayLoansModel extends TranWrapper {
 	
-	public	$unpaidLoanList		=	array();	
-
+	public	$unpaidLoanList		=	array();
 	public	$loanId				=	0;
 	public	$loanRefNumber		=	"";
 	public	$borrowerId			=	0;
@@ -18,9 +17,6 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	public 	$todaydate			=  "";
 	public  $remarks			=  "";
 	
-	
-	
-	
 	public function __construct($attributes = array()){	
 		
 		// This will be called only from the borrower modules only
@@ -28,10 +24,8 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		if ($this->userType != 1) {
 			// This is not a borrower. Just exit throwing an error
 			return -1;
-		}
-		
-		$this->borrowerId	=	$this->getCurrentBorrowerID();
-		
+		}		
+		$this->borrowerId	=	$this->getCurrentBorrowerID();		
 	}
 	
 	public function getUnpaidLoans() {
@@ -76,71 +70,68 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	public function newRepayment ($installmentId) {
 		$this->repaymentSchdId		=	$installmentId;	
 		
-			// Check if the Installment is overdue or not
-			$repaySched_sql	=	"	SELECT 	if(datediff(now(), repayment_schedule_date) > 0, 
-													'Overdue', 'Not Overdue') overdue,
-											repayment_scheduled_amount,
-											repayment_schedule_date,
-											loan_id,
-											borrower_id
-									FROM	loan_repayment_schedule 
-									WHERE	repayment_schedule_id = {$installmentId} ";
-									
-			$repaySched_rs	=	$this->dbFetchAll($repaySched_sql);
-			
-			$actualdatesql			= "SELECT CURDATE()";
-			$this->todaydate		= $this->dbFetchOne($actualdatesql);
-						
-			if (count($repaySched_rs) > 0) {
-				// There will be only one row here so we are directly taking the values of the first row
-				$this->isOverdue	=	$repaySched_rs[0]->overdue;
-				$this->schedAmount	=	$repaySched_rs[0]->repayment_scheduled_amount;
-				$this->schedDate	=	$repaySched_rs[0]->repayment_schedule_date;
-				$this->loanId		=	$repaySched_rs[0]->loan_id;
-				$this->borrowerId	=	$repaySched_rs[0]->borrower_id;
-			} else {
-				// This is an error condition. Can't be true
-				return -1;
-			}
-			
-			if ($this->isOverdue == 'Overdue') {
-				// Calculate the penalty amount
-				$penalty_sql	=	"	SELECT	if (penalty_type_applicable in (1,3), 
-													{$this->schedAmount} * 
-														power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
-														datediff(now(), '{$this->schedDate}')) + 
-												if (penalty_type_applicable in (2,3),
-														ifnull(penalty_fixed_amount, 0), 0) -
-												{$this->schedAmount}, 0) penalty 
-										FROM	loans
-										WHERE	loan_id = {$this->loanId}";
-				$this->penaltyAmt	=	$this->dbFetchOne($penalty_sql);
-				}
-
-			// Calculate the Principal & Interest & get the loan_reference Number
-			$intAmount_sql	=	"	SELECT	round((loan_sanctioned_amount - sum(principal_paid)) * 
-												(final_interest_rate / 1200), 2) interest_amount,
-											loan_reference_number
-									FROM	borrower_repayments, loans
-									WHERE	loans.loan_id = {$this->loanId}
-									AND		borrower_repayments.loan_id = loans.loan_id 
-									AND		borrower_repayments.status = 2";
-
-
-			$intAmount_Rs	=	$this->dbFetchAll($intAmount_sql);
-			if (count($intAmount_Rs) > 0) {
-				$this->loanRefNumber	=	$intAmount_Rs[0]->loan_reference_number;
-				$this->interestAmount	=	$intAmount_Rs[0]->interest_amount;
-				$this->principalAmount	=	$this->schedAmount - $this->interestAmount;
-				$this->amountPaid		=	$this->schedAmount + $this->penaltyAmt;
-			} else {
-				// Not possible -- Just return -1 
-				return -1;
-			}
+		// Check if the Installment is overdue or not
+		$repaySched_sql	=	"	SELECT 	if(datediff(now(), repayment_schedule_date) > 0, 
+												'Overdue', 'Not Overdue') overdue,
+										repayment_scheduled_amount,
+										repayment_schedule_date,
+										loan_id,
+										borrower_id
+								FROM	loan_repayment_schedule 
+								WHERE	repayment_schedule_id = {$installmentId} ";
+								
+		$repaySched_rs	=	$this->dbFetchAll($repaySched_sql);
 		
+		$actualdatesql			= "SELECT CURDATE()";
+		$this->todaydate		= $this->dbFetchOne($actualdatesql);
+					
+		if (count($repaySched_rs) > 0) {
+			// There will be only one row here so we are directly taking the values of the first row
+			$this->isOverdue	=	$repaySched_rs[0]->overdue;
+			$this->schedAmount	=	$repaySched_rs[0]->repayment_scheduled_amount;
+			$this->schedDate	=	$repaySched_rs[0]->repayment_schedule_date;
+			$this->loanId		=	$repaySched_rs[0]->loan_id;
+			$this->borrowerId	=	$repaySched_rs[0]->borrower_id;
+		} else {
+			// This is an error condition. Can't be true
+			return -1;
+		}
 		
-	}
-	
+		if ($this->isOverdue == 'Overdue') {
+			// Calculate the penalty amount
+			$penalty_sql	=	"	SELECT	if (penalty_type_applicable in (1,3), 
+												{$this->schedAmount} * 
+													power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
+													datediff(now(), '{$this->schedDate}')) + 
+											if (penalty_type_applicable in (2,3),
+													ifnull(penalty_fixed_amount, 0), 0) -
+											{$this->schedAmount}, 0) penalty 
+									FROM	loans
+									WHERE	loan_id = {$this->loanId}";
+			$this->penaltyAmt	=	$this->dbFetchOne($penalty_sql);
+			}
+
+		// Calculate the Principal & Interest & get the loan_reference Number
+		$intAmount_sql	=	"	SELECT	round((loan_sanctioned_amount - sum(principal_paid)) * 
+											(final_interest_rate / 1200), 2) interest_amount,
+										loan_reference_number
+								FROM	borrower_repayments, loans
+								WHERE	loans.loan_id = {$this->loanId}
+								AND		borrower_repayments.loan_id = loans.loan_id 
+								AND		borrower_repayments.status = 2";
+
+
+		$intAmount_Rs	=	$this->dbFetchAll($intAmount_sql);
+		if (count($intAmount_Rs) > 0) {
+			$this->loanRefNumber	=	$intAmount_Rs[0]->loan_reference_number;
+			$this->interestAmount	=	$intAmount_Rs[0]->interest_amount;
+			$this->principalAmount	=	$this->schedAmount - $this->interestAmount;
+			$this->amountPaid		=	$this->schedAmount + $this->penaltyAmt;
+		} else {
+			// Not possible -- Just return -1 
+			return -1;
+		}	
+	}	
 	
 	public function saveRepayment($postArray) {
 				
@@ -167,9 +158,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 
 		$paymentInsert_data	=	array(
 									'trans_date' => $this->trans_date,
-									'trans_type' => 2,
-								//	'xref_id' => $this->repaymentSchdId,
-								//	'trans_in_out' => $transInOrOut,
+									'trans_type' => 2,							
 									'trans_amount' => $this->amountPaid,
 									'currency' => $currency,
 									'trans_reference_number' => $transReference,
@@ -191,7 +180,6 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									'status' => 1,
 									'remarks' => $this->remarks);
 							
-		$this->dbInsert("borrower_repayments", $repayInsert_data, 0);
-		
+		$this->dbInsert("borrower_repayments", $repayInsert_data, 0);		
 	}
 }
