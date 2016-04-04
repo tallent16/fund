@@ -47,3 +47,50 @@ function callSubmitReplyActionFunc() {
 		}
 	});	
 }
+function onFocusNumberField($thisField) {
+	if ($($thisField).attr("decimal") !== undefined) {
+		console.log($($thisField).val());
+		console.log($thisField);
+		$valueofNumber = numeral($($thisField).val()).value();
+		$($thisField).attr("placeholder", "0");
+		if ($valueofNumber == 0) {
+			$($thisField).val("");
+		}
+
+	}
+	//  $($thisField).select()
+}
+
+function onBlurNumberField($thisField) {
+	$valueofNumber = $($thisField).val();
+	$decimal	= $($thisField).attr("decimal")
+	$format		= "0,000.00";
+	
+	switch ($decimal) {
+		case "0":
+			$format = "0,000";
+			break;
+			
+		case "2":
+			$format = "0,000.00"
+			break;
+			
+		case "4":
+			$format = "0,000.0000";
+			break;
+			
+		case "5":
+			$format = "0,000.00000";
+			break;
+			
+		case "8":
+			$format = "0,000.00000000";
+			break;
+		
+	}
+	
+	$formatNumber = numeral($valueofNumber).format($format);
+	
+	$($thisField).val($formatNumber);
+	
+}

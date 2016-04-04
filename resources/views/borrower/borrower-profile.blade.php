@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')	
 @section('styles')
-	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
+	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 	
+	
 @endsection
 @section('bottomscripts')
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
@@ -13,6 +14,9 @@
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>		 	
+	<script src="{{ url('js/common.js') }}" type="text/javascript"></script>		 	
+	
+	<script src="{{ url('js/numeral.min.js') }}" type="text/javascript"></script>		 	
 @endsection 
 @section('page_heading',Lang::get('borrower-profile.profile'))
 @section('status_button')						
@@ -144,7 +148,9 @@
 										{{ Lang::get('Next') }}
 									</button>
 									
-								<button type="submit" style="display:none"
+								<button type="submit" 
+										style="display:none"
+										id="submit_button"
 										class="btn verification-button {{$modelBorPrf->viewStatus}}"
 										 {{$modelBorPrf->viewStatus}}>
 									<i class="fa pull-right"></i>
@@ -168,24 +174,28 @@
 				
 				<tr>
 					<td class="col-md-3">
-						{{ Lang::get('borrower-profile.director_name') }}
+						<label class="input-required">
+							{{ Lang::get('borrower-profile.director_name') }}
+						</label>
 					</td>
-					<td class="col-md-3">
+					<td class="col-md-3"  id="name_XXX_parent">
 						<input 	type="text" 
 								id="name_XXX" 
 								name="director_row[name][]"
-								class="form-control"
+								class="form-control required"
 								/>
 					</td>		
 				</tr>
 				<tr>
 					<td class="col-md-3">
-						{{ Lang::get('borrower-profile.director_info') }}
+						<label class="input-required">
+							{{ Lang::get('borrower-profile.director_info') }}
+						</label>
 					</td>
-					<td class="col-md-3">
+					<td class="col-md-3" 	id="directors_profile_XXX_parent">
 						<textarea	id="directors_profile_XXX" 
 									name="director_row[directors_profile][]"
-									class="form-control"
+									class="form-control required"
 								></textarea>
 					</td>		
 				</tr>												

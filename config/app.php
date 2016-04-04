@@ -199,6 +199,7 @@ return [
 		'Form'=> 'Illuminate\Html\FormFacade', 
 		'Html'=> 'Illuminate\Html\HtmlFacade',
 		'InvBal'=> 'MoneyMatch\Helpers\InvestorHelper',
+		'BorProfile'=> 'MoneyMatch\Helpers\BorrowerHelper',
 
 	],
 

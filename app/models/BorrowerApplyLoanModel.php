@@ -75,8 +75,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											case loans.status 
 												   when 1 then '' 
 												   when 2 then 'disabled'
-												   when 3 then ''
-												   when 4 then 'disabled'
+												   when 3 then 'disabled'
+												   when 4 then ''
 												   when 5 then 'disabled'
 												   when 6 then 'disabled'
 												   when 7 then 'disabled'
@@ -85,8 +85,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											case loans.status 
 												   when 1 then 'New' 
 												   when 2 then 'Submitted for Approval'
-												   when 3 then 'Pending Comments'
-												   when 4 then 'Approved for Bid'
+												   when 3 then 'Approved for Bid'
+												   when 4 then 'Pending Comments'
 												   when 5 then 'Bid Closed'
 												   when 6 then 'Loan Disbursed'
 												   when 7 then 'Unsuccessful Loan'
@@ -198,11 +198,13 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$bid_close_date				= 	$this->getDbDateFormat($bid_close_date);
 		$bid_type		 				= 	$postArray['bid_type'];
 		$partial_sub_allowed 			= 	$postArray['partial_sub_allowed'];
-		$min_for_partial_sub 			= 	$this->makeFloat($postArray['min_for_partial_sub']);
-	
+		if(isset($postArray['min_for_partial_sub']))
+			$min_for_partial_sub 			= 	$this->makeFloat($postArray['min_for_partial_sub']);
+		else
+			$min_for_partial_sub 			= 	"";
 		$repayment_type 				= 	$postArray['payment_type'];
 		$final_interest_rate 			= 	$postArray['target_interest'];
-		$loan_sactioned_amount 			= 	$apply_amount;
+		$loan_sanctioned_amount 		= 	$apply_amount;
 		$trans_fees						=	($apply_amount*4)/100 ;
 		$total_disbursed				=	$apply_amount	-	$trans_fees;
 		
@@ -219,7 +221,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 							'min_for_partial_sub' 			=> ($min_for_partial_sub!="")?$min_for_partial_sub:null,
 							'repayment_type' 				=> $repayment_type,
 							'final_interest_rate' 			=> ($final_interest_rate!="")?$final_interest_rate:null,
-							'loan_sactioned_amount' 		=> $loan_sactioned_amount,
+							'loan_sanctioned_amount' 		=> $loan_sanctioned_amount,
 							'trans_fees' 					=> $trans_fees,
 							'status' 						=> $status,
 							'total_disbursed' 				=> $total_disbursed);
@@ -282,9 +284,17 @@ class BorrowerApplyLoanModel extends TranWrapper {
 							return -1;
 						}
 					}else{
-						$whereArry	=	array("loan_id" =>"{$loan_id}","loan_doc_id" =>"{$loan_doc_id}");
-						$this->dbUpdate('loan_docs_submitted', $dataArray, $whereArry);
+						if($this->checkLoanDocumentUpdate($loan_doc_id,$loan_id)) {
+							$whereArry	=	array("loan_id" =>"{$loan_id}","loan_doc_id" =>"{$loan_doc_id}");
+							$this->dbUpdate('loan_docs_submitted', $dataArray, $whereArry);
+						}else{
+							$result =  $this->dbInsert('loan_docs_submitted', $dataArray, true);
+							if ($result < 0) {
+								return -1;
+							}
+						}
 					}
+					
 			// Insert or Update the loan documents list	
 				$fileUploadObj->storeFile($destinationPath ,$file);
 			}
@@ -351,7 +361,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			switch ($codeId) {
 			
 				case 19:
-					$this->loan_tenure_list[$codeExpr] 	=	$codeValue;
+					$this->loan_tenure_list[$codeCode] 	=	$codeValue;
 					break;
 
 			}

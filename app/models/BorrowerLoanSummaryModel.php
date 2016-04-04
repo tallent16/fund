@@ -22,7 +22,7 @@ class BorrowerLoanSummaryModel extends TranWrapper {
 		$this->tranType = $tranType;
 		
 		$borrowId 	= $this->getCurrentBorrowerID();
-
+ 
 		$lnListSql	=	"SELECT loans.loan_id,
 								loans.loan_reference_number,
 								DATE_FORMAT(loans.apply_date, '%d-%m-%Y') apply_date,
@@ -65,36 +65,39 @@ class BorrowerLoanSummaryModel extends TranWrapper {
 						
 		$prinSql	=	"SELECT loan_id,
 								'Repayment' tran_type,
-								borrower_repayments.trans_date tran_date,
-								principal_paid tran_amt, 
+								borrower_repayment_schedule.repayment_actual_date tran_date,
+								principal_component tran_amt, 
 								'Principal Component of Repayment' transdetail,
-								(-1) * principal_paid loan_balance,
+								(-1) * principal_component loan_balance,
 								1 display_order
-						FROM	borrower_repayments 
+						FROM	borrower_repayment_schedule 
 						where	borrower_id = {$borrowId}
-						AND		loan_id = :loan_idparm ";
+						AND		loan_id = :loan_idparm 
+						AND		repayment_status = 3";
 						
 		$intrSql	=	"SELECT loan_id,
 								'Repayment' tran_type,
-								borrower_repayments.trans_date tran_date,
-								interest_paid tran_amt, 
+								borrower_repayment_schedule.repayment_actual_date tran_date,
+								interest_component tran_amt, 
 								'Interest Component of Repayment' transdetail,
 								0 loan_balance,
 								2 display_order
-						FROM	borrower_repayments
+						FROM	borrower_repayment_schedule
 						where	borrower_id = {$borrowId}
-						AND		loan_id = :loan_idparm ";
+						AND		loan_id = :loan_idparm 
+						AND		repayment_status = 3";
 						
 		$penlSql	=	"SELECT loan_id,
 								'Repayment' tran_type,
-								borrower_repayments.trans_date tran_date,
-								penalty_paid tran_amt, 
+								borrower_repayment_schedule.repayment_actual_date tran_date,
+								repayment_penalty_amount tran_amt, 
 								'Penalty for late payment' transdetail,
 								0 loan_balance,
 								3 display_order
-						FROM	borrower_repayments
+						FROM	borrower_repayment_schedule
 						where	borrower_id = {$borrowId}
-						AND		loan_id = :loan_idparm ";
+						AND		loan_id = :loan_idparm 
+						AND		repayment_status = 3";
 						
 		$orderby	=	" ) loantrans where tran_amt > 0 
 						and	tran_date between '" . $this->getDbDateFormat($fromDate) . "' and '".
@@ -131,7 +134,7 @@ class BorrowerLoanSummaryModel extends TranWrapper {
 				break;
 		}
 
-								
+	
 		$this->loanList			=	$this->dbFetchAll($lnListSql);
 		foreach ($this->loanList as $lnListRow) {
 			$loan_id 		=	$lnListRow->loan_id;

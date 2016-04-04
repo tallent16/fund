@@ -516,8 +516,8 @@ class BorrowerProfileModel extends TranWrapper {
 				$newrow = count($this->finacialRatioInfo);
 				$newrow ++;
 				$this->finacialRatioInfo[$newrow]['ratio_name'] 	= 	$finRatioRow->codelist_value;
-				$this->finacialRatioInfo[$newrow]['current_ratio'] 	= 	"";
-				$this->finacialRatioInfo[$newrow]['previous_ratio'] = 	"";
+				$this->finacialRatioInfo[$newrow]['current_ratio'] 	= 	"0.00";
+				$this->finacialRatioInfo[$newrow]['previous_ratio'] = 	"0.00";
 			}
 		}
 		return $finacialRation_rs;
@@ -532,7 +532,7 @@ class BorrowerProfileModel extends TranWrapper {
 				$newrow = count($this->finacialInfo);
 				$newrow ++;
 				$this->finacialInfo[$newrow]['indicator_name'] 		= 	$finacialRow->codelist_value;
-				$this->finacialInfo[$newrow]['indicator_value'] 	= 	"";
+				$this->finacialInfo[$newrow]['indicator_value'] 	= 	"0.00";
 				$this->finacialInfo[$newrow]['currency'] 			= 	"";
 			}
 		}

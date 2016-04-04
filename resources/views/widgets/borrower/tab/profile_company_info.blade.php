@@ -157,6 +157,10 @@
 												name="company_image"
 												id="company_image"
 												/>									
+									<input 	type="hidden" 
+												id="company_image_hidden"
+												value="{{ $modelBorPrf->company_image }}"
+												/>									
 							</div>
 						</div>
 							

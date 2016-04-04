@@ -304,4 +304,14 @@ class TranWrapper extends MoneyMatchModel {
 		return $loan_rs;
 	}
 	
+	public function checkLoanDocumentUpdate($loan_doc_id,$loan_id) {
+		
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	loan_docs_submitted 
+					WHERE 	loan_doc_id = '".$loan_doc_id."' 
+					AND 	loan_id ={$loan_id}";
+				
+		$cnt 	= $this->dbFetchOne($sql);
+		return ($cnt == 0)?false:true;
+	}
 }

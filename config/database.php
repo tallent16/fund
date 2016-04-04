@@ -55,7 +55,7 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => env('DB_HOST', 'localhost'),
-			'database'  => env('DB_DATABASE', 'moneymatch'),
+			'database'  => env('DB_DATABASE', 'moneymatch_new'),
 			'username'  => env('DB_USERNAME', 'moneyadmin'),
 			'password'  => env('DB_PASSWORD', 'letmein1'),
 			'charset'   => 'utf8',

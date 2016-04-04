@@ -25,7 +25,7 @@
 						
 						<div class="row">									
 									<div class="col-sm-5 col-lg-2 ">
-										<span>Date Of Request</span>
+										<span>Invested in Loans</span>
 									</div>
 									<div class="col-sm-7 col-lg-3">
 										<input type="text" name="date_of_request" value="1000" class="form-control">
@@ -35,7 +35,7 @@
 						</div>	
 						<div class="row">									
 									<div class="col-sm-5 col-lg-2 ">
-										<span>Amount Available</span>
+										<span>Reserved for Investments</span>
 									</div>
 									<div class="col-sm-7 col-lg-3">
 										<input type="text" name="amt_avail" value="1000" class="form-control">
@@ -45,7 +45,7 @@
 						</div>	
 						<div class="row">									
 									<div class="col-sm-5 col-lg-2 ">
-										<span>Withdrawal Amount</span>
+										<span>Available for investment</span>
 									</div>
 									<div class="col-sm-7 col-lg-3">
 										<input type="text" name="withdraw_amt" value="1000" class="form-control">
@@ -53,22 +53,11 @@
 									<div class="col-xs-12 col-lg-7">
 									</div>							
 						</div>		
-						<div class="row">							
-							<div class="col-lg-2 col-sm-6"></div>
-								<div class="col-lg-3 col-sm-6">
-									<div class="text-right">							
-										<button type="submit" class="btn button-orange">Submit</button>	
-									</div>
-								</div>
-							<div class="col-lg-7">	</div>							
-						</div>		
-				</div>	
-				<hr>
-				<div class="row input-space">	
-					<div class="row">			
+							
+						<div class="row">			
 										
 									<div class="col-sm-5 col-lg-2 ">
-										<span>Bank Account Number</span>
+										<span>Request Date	</span>
 									</div>
 									<div class="col-sm-7 col-lg-3">
 										<input type="text" name="bank_acc_num" value="1000" class="form-control">
@@ -80,7 +69,7 @@
 						<div class="row">			
 									
 									<div class="col-sm-5 col-lg-2 ">
-										<span>One Time Password</span>
+										<span>Withdraw Amount</span>
 									</div>
 									<div class="col-sm-7 col-lg-3">
 										<input type="text" name="date_of_request" value="1000" class="form-control">
@@ -88,125 +77,24 @@
 									<div class="col-xs-12 col-lg-7">
 									</div>	
 						
-						</div>	
-						<div class="row">			
-									
-									<div class="col-sm-5 col-lg-2 ">
-										<span>Retype Password</span>
-									</div>
-									<div class="col-sm-7 col-lg-3">
-										<input type="text" name="date_of_request" value="1000" class="form-control">
-									</div>
-									<div class="col-xs-12 col-lg-7">
-									</div>	
-							
-						</div>		
+						</div>
+						
 						<div class="row">							
 							<div class="col-lg-2 col-sm-6"></div>
 								<div class="col-lg-3 col-sm-6">
 									<div class="text-right">							
-										<button type="submit" class="btn button-orange">Confirm</button>	
+										<button type="submit" class="btn button-orange">Submit</button>	
 									</div>
 								</div>
 							<div class="col-lg-7">	</div>							
-						</div>								
-									
-					</div>		
-									
-									
-									
-									
-				<!--	<div class="table-responsive"><!---table start-->
-				<!--		<table class="table table-loan text-left .tab-fontsizebig table-bordered">							
-							<tbody>
-								<tr>
-									<td class="tab-left-head col-md-3"><span>Date Of Request</span></td>
-									<td class="col-md-3">
-										<input type="text" name="date_of_request" value="1000" class="form-control">
-									</td>
-									<td class="col-md-6"></td>
-								</tr>
-								<tr>
-									<td class="tab-left-head">Amount Available</td>
-									<td><input type="text" name="amount_avail" value="50000"  class="form-control"></td>
-									<td border="0"></td>
-								</tr>
-								<tr>
-									<td class="tab-left-head">Withdrawal Amount</td>
-									<td><input type="text" name="withdrawal amount" value="1000"  class="form-control"></td>
-									<td></td>
-								</tr>																						
-							</tbody>
-						</table>							 
-					</div><!---table end---> 
-			
-					
-				
-				<!--	<div class="row">
-						<div class="col-sm-12">		
-							<div class="col-sm-3"></div>
-							<div class="col-sm-3">
-								<div class="text-center">							
-									<button type="submit" class="btn button-orange">Submit</button>	
-								</div>
-							</div>
-							<div class="col-sm-3"></div>
-							<div class="col-sm-3"></div>							
-						</div>				
-					</div>-->
+						</div>	
+				</div>	
+							
+
 					
 				</div>	
 			</div>
-					
-			<!--	</div>	-->	
-			<!-------panel------>	
-			
-		<!--	<div class="col-sm-12 space-around">	
-				<div class="row">
-								
-										
-						<div class="table-responsive"><!---table start-->
-					<!--		<table class="table table-loan text-left .tab-fontsizebig table-bordered">							
-								<tbody>
-									<tr>
-										<td class="tab-left-head col-md-3"><span>Bank Account Number</span></td>
-										<td class="col-md-3">
-											<input type="text" name="bank_account_num" value="1232465" class="form-control">
-										</td>
-										<td class="col-md-6"></td>
-									</tr>
-									<tr>
-										<td class="tab-left-head">One time Password</td>
-										<td><input type="password" name="one_time_password" value="*******"  class="form-control"></td>
-										<td border="0"></td>
-									</tr>
-									<tr>
-										<td class="tab-left-head">Re-type Password</td>
-										<td><input type="password" name="retype_password" value="********"  class="form-control"></td>
-										<td></td>
-									</tr>																						
-								</tbody>
-							</table>							 
-						</div><!---table end---> 
-					
-					
-				<!--		<div class="row">
-							<div class="col-sm-12">		
-								<div class="col-sm-3"></div>
-								<div class="col-sm-3">
-									<div class="text-center">							
-										<button type="submit" class="btn button-orange">Confirm</button>	
-									</div>
-								</div>
-								<div class="col-sm-3"></div>
-								<div class="col-sm-3"></div>							
-							</div>				
-						</div>
-				
-				</div>	
-			</div>
-			
-			</div>-->
+	
 	</div>
 	
 </div><!-----col 12------->

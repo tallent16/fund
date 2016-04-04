@@ -94,7 +94,7 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::match(['get', 'post'],'borrower/bankdetails', 'BankProcessController@indexAction');
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');
 	Route::get('borrower/settings', 'BorrowerSettingsController@indexAction');	
-	Route::match(['get', 'post'],'borrower/makepayment/{repayment_id}', 'BorrowerRepayLoansController@paymentAction');
+	Route::match(['get', 'post'],'borrower/makepayment/{repayment_id}/{loan_id}', 'BorrowerRepayLoansController@paymentAction');
 });
 
 // The routes (or pages that are applicable for investor users only
@@ -110,6 +110,8 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
     Route::match(['get', 'post'],'investor/bankdetails', 'BankProcessController@indexAction');  
     Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  
+   // Route::get('investor/deposit', 'InvestorDepositController@indexAction');  
+    Route::match(['get', 'post'],'investor/deposit', 'InvestorDepositController@indexAction');  
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	   	
 });

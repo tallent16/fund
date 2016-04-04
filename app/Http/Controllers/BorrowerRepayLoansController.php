@@ -44,10 +44,12 @@ class BorrowerRepayLoansController extends MoneyMatchController {
 				->with($withArry); 
 	}
 	
-	public function paymentAction($repayment_id)
+	public function paymentAction($repayment_id,$loan_id)
 	{
-		$installmentId = base64_decode($repayment_id);				
-		$this->repayloanmodel->newRepayment($installmentId);
+		$installmentId = base64_decode($repayment_id);	
+		$loanid	= 	base64_decode($loan_id);
+					
+		$this->repayloanmodel->newRepayment($installmentId,$loanid);
 		
 		$submitted	=	false;
 		if (Request::isMethod('post')) {

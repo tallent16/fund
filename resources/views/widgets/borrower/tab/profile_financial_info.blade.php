@@ -18,34 +18,40 @@
 									@foreach($finacialRatioInfo as $finRatioRow)
 										<tr>
 											<td class="tab-left-head">
-												{{$finRatioRow['ratio_name']}}
+												<label class="input-required">
+													{{$finRatioRow['ratio_name']}}
+												</label>
 												<input 	type="hidden" 
 														id="ratio_id_{{$i}}" 
 														name="finacialRatio_row[ratio_id][]"
 														value="{{$i}}"
 														class="form-control text-right"
+													
 														/>
 												<input 	type="hidden" 
 														id="ratio_name_{{$i}}" 
 														name="finacialRatio_row[ratio_name][]"
 														value="{{$finRatioRow['ratio_name']}}"
 														class="form-control text-right"
+														
 														/>
 											</td>
-											<td>
+											<td id="previous_ratio_{{$i}}_parent">
 												<input 	type="text" 
 														id="previous_ratio_{{$i}}" 
 														name="finacialRatio_row[previous_ratio][]"
 														value="{{$finRatioRow['previous_ratio']}}"
-														class="form-control"
+														class="form-control  amount-align required"
+														decimal="2"
 														{{ $modelBorPrf->viewStatus }} />
 											</td>	
-											<td>
+											<td id="current_ratio_{{$i}}_parent">
 												<input 	type="text" 
 														id="current_ratio_{{$i}}" 
 														name="finacialRatio_row[current_ratio][]"
 														value="{{$finRatioRow['current_ratio']}}"
-														class="form-control"
+														class="form-control  amount-align  required"
+														decimal="2"
 														{{ $modelBorPrf->viewStatus }} />
 											</td>	
 										</tr>
@@ -69,7 +75,9 @@
 									@foreach($finacialInfo as $finacialRow)
 										<tr>
 											<td class="tab-left-head">
-												{{$finacialRow['indicator_name']}}
+												<label class="input-required">
+													{{$finacialRow['indicator_name']}}
+												</label>
 												<input 	type="hidden" 
 														id="indicator_id_{{$i}}" 
 														name="finacial_row[indicator_id][]"
@@ -84,12 +92,13 @@
 														/>
 														
 											</td>
-											<td>
+											<td id="indicator_value_{{$i}}_parent">
 												<input 	type="text" 
 														id="indicator_value_{{$i}}" 
 														name="finacial_row[indicator_value][]"
 														value="{{$finacialRow['indicator_value']}}"
-														class="form-control"
+														class="form-control  amount-align  required"
+														decimal=2
 														{{ $modelBorPrf->viewStatus }} />
 											</td>										
 										</tr>		

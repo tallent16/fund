@@ -49,44 +49,47 @@ class BorrowerTransHistoryModel extends TranWrapper {
 						WHERE	disbursements.borrower_id 	= {$borrowId}
 						AND		disbursements.loan_id		=	loans.loan_id";
 						
-		$prinSql	=	"SELECT borrower_repayments.loan_id,
+		$prinSql	=	"SELECT borrower_repayment_schedule.loan_id,
 								loans.loan_reference_number,
 								'Repayment' tran_type,
-								borrower_repayments.trans_date tran_date,
-								principal_paid tran_amt, 
+								borrower_repayment_schedule.repayment_actual_date tran_date,
+								principal_component tran_amt, 
 								'Principal Component of Repayment' transdetail,
-								(-1) * principal_paid loan_balance,
+								(-1) * principal_component loan_balance,
 								1 display_order
-						FROM	borrower_repayments,
+						FROM	borrower_repayment_schedule,
 								loans
-						WHERE	borrower_repayments.borrower_id = {$borrowId}
-						AND		borrower_repayments.loan_id		=	loans.loan_id";
+						WHERE	borrower_repayment_schedule.borrower_id = {$borrowId}
+						AND		borrower_repayment_schedule.loan_id		=	loans.loan_id
+						AND		repayment_status = 3";
 						
-		$intrSql	=	"SELECT borrower_repayments.loan_id,
+		$intrSql	=	"SELECT borrower_repayment_schedule.loan_id,
 								loans.loan_reference_number,
 								'Repayment' tran_type,
-								borrower_repayments.trans_date tran_date,
-								interest_paid tran_amt, 
+								borrower_repayment_schedule.repayment_actual_date tran_date,
+								interest_component tran_amt, 
 								'Interest Component of Repayment' transdetail,
 								0 loan_balance,
 								2 display_order
-						FROM	borrower_repayments,
+						FROM	borrower_repayment_schedule,
 								loans
-						WHERE	borrower_repayments.borrower_id = {$borrowId}
-						AND		borrower_repayments.loan_id		=	loans.loan_id";
+						WHERE	borrower_repayment_schedule.borrower_id = {$borrowId}
+						AND		borrower_repayment_schedule.loan_id		=	loans.loan_id
+						AND		repayment_status = 3";
 						
-		$penlSql	=	"SELECT borrower_repayments.loan_id,
+		$penlSql	=	"SELECT borrower_repayment_schedule.loan_id,
 								loans.loan_reference_number,
 								'Repayment' tran_type,
-								borrower_repayments.trans_date tran_date,
-								penalty_paid tran_amt, 
+								borrower_repayment_schedule.repayment_actual_date tran_date,
+								repayment_penalty_amount tran_amt, 
 								'Penalty for late payment' transdetail,
 								0 loan_balance,
 								3 display_order
-						FROM	borrower_repayments,
+						FROM	borrower_repayment_schedule,
 								loans
-						WHERE	borrower_repayments.borrower_id = {$borrowId}
-						AND		borrower_repayments.loan_id		=	loans.loan_id";
+						WHERE	borrower_repayment_schedule.borrower_id = {$borrowId}
+						AND		borrower_repayment_schedule.loan_id		=	loans.loan_id
+						AND		repayment_status = 3";
 						
 		$orderby	=	" ) loantrans WHERE tran_amt > 0 
 						AND	tran_date BETWEEN '" . $this->getDbDateFormat($fromDate) . "' and '".
@@ -141,12 +144,11 @@ class BorrowerTransHistoryModel extends TranWrapper {
 											DATE_FORMAT(loans.bid_close_date,'%d-%m-%Y') bid_close_date,
 											ROUND(loans.loan_sanctioned_amount,2) sanctioned_amount,
 											loans.final_interest_rate interest_rate,
-											ROUND(loans.loan_sanctioned_amount - 
-												(
-													SELECT 	SUM(borrower_repayments.principal_paid)
-													FROM	borrower_repayments
-													WHERE	borrower_repayments.borrower_id		=	{$current_borrower_id}
-													AND		borrower_repayments.loan_id			=	{$loan_id}
+											ROUND((	SELECT 	SUM(borrower_repayment_schedule.principal_component)
+													FROM	borrower_repayment_schedule
+													WHERE	borrower_repayment_schedule.borrower_id		=	{$current_borrower_id}
+													AND		borrower_repayment_schedule.loan_id			=	{$loan_id}
+													AND		repayment_status != 3
 												)
 											,2) balance_outstanding
 									FROM 	loans

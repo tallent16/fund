@@ -40,6 +40,9 @@
                                 </li> 
                                  <li>
                                     <a href="{{ url ('investor/withdraw') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
+                                </li> 
+                                 <li>
+                                    <a href="{{ url ('investor/deposit') }}">{{ Lang::get('Deposit') }}</a>
                                 </li>                                                                                            
                             </ul>
                         </li>                         

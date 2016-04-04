@@ -4,8 +4,7 @@
 	<div class="panel panel-default directorinfo applyloan"> 						
 		<div class="panel-body">	
 			<div class="col-sm-12 col-lg-7">	
-			
-						<form class="form-inline">																			 										
+				
 							<div class="row">	
 								<div class="col-xs-3">																				
 									<label>{{ Lang::get('borrower-profile.select') }}:</label>											
@@ -19,8 +18,13 @@
 									</select>											
 								</div>										
 							</div><!--row-->
-							
-						</form>					
+						</br>
+							<div class="row" id="director_error_info" style="display:none">	
+								<div class="col-xs-12">																				
+									<label class="error"
+											id="director_error_label">There is error</label>											
+								</div>																					 
+							</div><!--row-->
 						</br>
 						<div class="row">
 						<div class="panel-primary panel-container">
@@ -42,25 +46,29 @@
 											<tbody>
 												<tr>
 													<td class="col-md-3">
-														{{ Lang::get('borrower-profile.director_name') }}
+														<label class="input-required">
+															{{ Lang::get('borrower-profile.director_name') }}
+														</label>
 													</td>
-													<td class="col-md-3">
+													<td class="col-md-3" id="name_{{$i}}_parent">
 														<input 	type="text"  
 																id="name_{{$i}}" 
 																name="director_row[name][]"
 																value="{{ $directorRow['name'] }}"
-																class="form-control"
+																class="form-control required"
 																 {{$modelBorPrf->viewStatus}}/>
 													</td>		
 												</tr>
 												<tr>
 													<td class="col-md-3">
-														{{ Lang::get('borrower-profile.director_info') }}
+														<label class="input-required">
+															{{ Lang::get('borrower-profile.director_info') }}
+														</label>
 													</td>
-													<td class="col-md-3">
+													<td class="col-md-3"  id="directors_profile_{{$i}}_parent">
 														<textarea	id="directors_profile_{{$i}}" 
 																	name="director_row[directors_profile][]"
-																	class="form-control"
+																	class="form-control required"
 																 {{$modelBorPrf->viewStatus}}
 																 >{{ $directorRow['directors_profile'] }}</textarea>
 													</td>		

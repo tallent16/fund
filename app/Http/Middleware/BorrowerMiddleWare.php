@@ -1,7 +1,7 @@
 <?php namespace App\Http\Middleware;
 
 use Closure;
-
+use BorProfile;
 class BorrowerMiddleWare {
 
 	/**
@@ -16,10 +16,22 @@ class BorrowerMiddleWare {
         if ($request->user() == null) {
             return redirect('auth/login');
         }
-
         if ($request->user()->usertype != 1) {
            abort(403);
         }
+		$profileStatus	=	BorProfile::checkProfileStatus();
+		$LoanAllowingStatus	=	BorProfile::getBorrowerLoanAllowingStatus();
+		if($profileStatus	==	0	||	$profileStatus	==BORROWER_STATUS_NEW_PROFILE
+								||	$profileStatus	==BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) {
+			if($request->url()	!=	url('borrower/profile')) {
+				return redirect()->to('borrower/profile');
+			}
+		}
+		if($LoanAllowingStatus	==	0	) {
+			if($request->url()	==	url('borrower/applyloan')) {
+				return redirect()->to('borrower/profile');
+			}
+		}
 		
         return $next($request);
     }

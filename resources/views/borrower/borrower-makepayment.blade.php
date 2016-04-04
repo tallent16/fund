@@ -27,10 +27,11 @@
 	@var $repayloanpayment = $modelrepayloanpayment;
 			
 		<form method="post" id="save_form_payment">
-			<input  type="hidden" name="_token" 		 value="{{ csrf_token() }}">
-			<input  type="hidden" name="loan_id" 		 value="{{$modelrepayloanpayment->loanId}}"			 class="form-control">	
-			<input  type="hidden" name="borrower_id" 	 value="{{$modelrepayloanpayment->borrowerId}}" 	 class="form-control">	
-			<input  type="hidden" name="repaymentSchdId" value="{{$modelrepayloanpayment->repaymentSchdId}}" class="form-control">	
+			<input  type="hidden" name="_token" 		 	value="{{ csrf_token() }}">
+			<input  type="hidden" name="loan_id" 		 	value="{{$modelrepayloanpayment->loanId}}"			 	class="form-control">	
+			<input  type="hidden" name="borrower_id" 	 	value="{{$modelrepayloanpayment->borrowerId}}" 	 		class="form-control">	
+			<input  type="hidden" name="repaymentSchdId" 	value="{{$modelrepayloanpayment->repaymentSchdId}}"		class="form-control">	
+			<input  type="hidden" name="installment_number" value="{{$modelrepayloanpayment->installmentNumber}}" 	class="form-control">	
 				
 		<div class="panel panel-primary panel-container">
 			<div class="panel-heading panel-headsection">
@@ -146,7 +147,7 @@
 											<input 	type="text" 
 													id="actualdate" 
 													name="actualdate"
-													value="{{date('d-m-Y', strtotime($modelrepayloanpayment->todaydate))}}"
+													value="{{date('d-m-Y', strtotime($modelrepayloanpayment->repaymentDate))}}"
 													class="form-control"
 													readonly disabled/>											
 									</div>
