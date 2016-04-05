@@ -9,62 +9,9 @@
 @endsection
 @section('page_heading','Transcation History')
 @section('section')    
-		
+	@var	$tranList	=	$tranModel->tranList;
 	<div class="col-sm-12 space-around">	
-		<div class="row"> 
-		
-				<!--col-12--->	
-				<div class="col-sm-12"> 
-					<button type="submit" class="btn button-black tab-head">ALL</button>			
-					<button type="submit" class="btn button-black tab-head">REPAYMENTS</button>			
-					<button type="submit" class="btn button-black tab-head">FEES</button>			
-				</div>
-				<!--col--5-->	
-				<div class="col-lg-5 space-around"> 
-					
-					<div class="col-lg-4">
-						<label>FROM DATE</label>
-					</div>
-								
-					<div class="col-lg-8">						
-						<div class="controls">							
-							<div class="input-group">								
-								<input id="fromdate" type="text" class="date-picker form-control" />
-								<label for="fromdate" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
-								</label>
-							</div>													
-						</div>		
-					</div>
-					
-				</div>
-				<!--col--5-->	
-				<div class="col-lg-5 space-around">
-					
-					<div class="col-lg-4">
-						
-						<label>TO DATE</label>
-					</div>
-						
-					<div class="col-lg-8">
-						<div class="controls">
-							<div class="input-group">
-								<input id="todate" type="text" class="date-picker form-control" />
-								<label for="todate" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
-								</label>
-							</div>													
-						</div>
-					</div>	
-				</div>
-				<!--col--4-->		
-				<div class="col-lg-2 text-right space-around"> 														
-						<button type="submit" class="btn verification-button">GO</button>							
-						<button type="submit" class="btn verification-button">EXPORT</button>		
-				</div>
-				<!---all--cols--end--in header-->	
-			<!--</div><!--col-12-->			
-						
-		</div><!--row-->
-		<!----table----row-->		
+				<!----table----row-->		
 		<div class="row">
 			<div class="col-sm-12 space-around"> 
 				
@@ -81,46 +28,20 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>1018</td>
-								<td>25 Nov 2016</td>
-								<td>Deposits</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>											
-							</tr>							
-							<tr>
-								<td>1019</td>
-								<td>25 Nov 2016</td>
-								<td>Deposits</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>											
-							</tr>
-							<tr>
-								<td>1020</td>
-								<td>25 Nov 2016</td>
-								<td>Deposits</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>											
-							</tr>
-							<tr>
-								<td>1021</td>
-								<td>25 Nov 2016</td>
-								<td>Deposits</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>											
-							</tr>
-							<tr>
-								<td>1022</td>
-								<td>25 Nov 2016</td>
-								<td>Deposits</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>
-								<td>$1,000.00</td>											
-							</tr>
+							@if(count($tranList) > 0)
+								@var	$closingBalance	=	0
+								@foreach($tranList as $tranListRow)
+									@var	$closingBalance	=	$closingBalance+(($tranListRow->trans_amount)*($tranListRow->plus_or_minus))
+									<tr>
+										<td>{{$tranListRow->trans_reference_number}}</td>
+										<td>{{$tranListRow->trans_date}}</td>
+										<td>{{$tranListRow->trans_type}}</td>
+										<td>{{$tranListRow->trans_amount}}</td>
+										<td>{{$tranListRow->remarks}}</td>
+										<td>{{$closingBalance}}</td>											
+									</tr>							
+								@endforeach
+							@endif
 						</tbody>
 					</table>						
 				</div>

@@ -1,5 +1,6 @@
 <?php 
 namespace App\Http\Controllers;
+use	\App\models\InvestorTransHistoryModel;
 use Request;
 class InvestorTransHistoryController extends MoneyMatchController {
 
@@ -8,11 +9,18 @@ class InvestorTransHistoryController extends MoneyMatchController {
 		$this->init();
 	}
 	
+	public function littleMoreInit() {
+		$this->tranModel = new InvestorTransHistoryModel();
+	}	
+
 	//render the Investor Transcation History
 	public function indexAction() {		
 		
+		$this->tranModel->getInvestorTransList();
+		$withArry	=	array(	"tranModel" => $this->tranModel,
+								"classname"=>"fa fa-credit-card fa-fw user-icon");
 		return view('investor.investor-transcationhistory')					
-					->with("classname","fa fa-credit-card fa-fw user-icon"); 
+					->with($withArry); 
 	}
 	
 }

@@ -1,10 +1,121 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	
+		<script>
+		 var current_loansJson	=	{{$InvDashMod->featuredLoanJson}}		
+		 var barchartJson		=	{{$InvDashMod->barChartJson}}		
+		$(document).ready(function(){
+			$('.fa-caret-right').on("click", function() {
+				var curLoanLen	=	current_loansJson.length;
+				var curLoanInd	=	$("#current_loan_index").val();
+				if( curLoanLen > 0) {
+					changeCurLoanInd	=	parseInt(curLoanInd)+1;
+					if(	changeCurLoanInd >  parseInt(curLoanLen-1)) {
+						changeCurLoanInd	=	0;
+					}
+					setCurrentLoanFunc(changeCurLoanInd);
+					$("#current_loan_index").val(changeCurLoanInd);
+				}
+			});
+			//~ repaymentBarChartFunc();
+		});
+		
+		//~ function repaymentBarChartFunc(){
+			//~ var datasetsArry	=	[];
+			//~ var colors = [];
+			
+			//~ colors.push({
+					//~ fillColor: "rgba(151,187,205,0.5)",
+					//~ strokeColor: "rgba(151,187,205,0.8)",
+					//~ highlightFill: "rgba(151,187,205,0.75)",
+					//~ highlightStroke: "rgba(151,187,205,1)",
+			//~ });
+			//~ colors.push({
+					//~ fillColor : "rgba(95,137,250,0.5)",
+					//~ strokeColor : "rgba(95,137,250,0.9)",
+					//~ highlightFill: "rgba(95,137,250,0.75)",
+					//~ highlightStroke: "rgba(95,137,250,1)"
+			//~ });
+			//~ colors.push({
+					//~ fillColor : "rgba(245,75,75,0.5)",
+					//~ strokeColor : "rgba(245,75,75,0.8)",
+					//~ highlightFill : "rgba(245,75,75,0.75)",
+					//~ highlightStroke : "rgba(245,75,75,1)"
+			//~ });
+			//~ colors.push({
+					//~ fillColor : "rgba(98,223,114,0.5)",
+					//~ strokeColor : "rgba(98,223,114,0.8)",
+					//~ highlightFill : "rgba(98,223,114,0.75)",
+					//~ highlightStroke : "rgba(98,223,114,1)",
+			//~ });
+			//~ var dataLabel		=	"";
+			 //~ if(barchartJson.length > 0){
+				//~ dataLabel	=	 (barchartJson[0].barChartLabel).split(',');
+				//~ $.each( barchartJson, function( key ) {
+					//~ colorIndex	=	key;
+					//~ if(key > 3)
+						//~ colorIndex	=	0;
+					//~ var dataArry	=	[];
+					//~ datasetsArry.push({
+						   //~ label:barchartJson[key].loan_ref ,
+							//~ fillColor : colors[colorIndex].fillColor,
+							//~ strokeColor : colors[colorIndex].strokeColor,
+							//~ highlightFill: colors[colorIndex].highlightFill,
+							//~ highlightStroke: colors[colorIndex].highlightStroke,
+							//~ data : (barchartJson[key].barChartValue).split(',')
+						//~ });
+				//~ });
+			//~ }
+			//~ console.log(datasetsArry);
+			//~ var bdata = {
+			  //~ labels : dataLabel, 			  
+			  //~ width:10,
+				//~ datasets : datasetsArry
+			//~ }
+
+			//~ var options = {
+					//~ responsive:true
+			//~ }
+
+			//~ var cbar = document.getElementById("cbar").getContext("2d");
+			//~ var barChart = new Chart(cbar).Bar(bdata, options);	
+			//~ var legend = barChart.generateLegend();
+
+			//~ $('#cbarlegend').append(legend);
+		//~ }
+		function setCurrentLoanFunc(currentIndex){
+			var currentlist	=	current_loansJson[currentIndex];
+			
+			$("#cur_loan_subhead").html(currentlist.business_name);
+			$("#cur_loan_content").html(currentlist.purpose);
+			$("#cur_loan_rate").html(currentlist.rate+"%");
+			$("#cur_loan_duration").html(currentlist.duration);
+			$("#cur_loan_amount").html(currentlist.amount);
+			$("#cur_loan_repayment_type").html(currentlist.repayment_type);
+			$("#cur_loan_bid_type").html(currentlist.bid_type);
+		}
+		//~ function setwidth(){
+			//~ Chart.types.Bar.extend({
+				//~ name: "bar",
+				//~ draw: function(){
+					//~ this.options.barValueSpacing = this.chart.width / 8;
+					//~ Chart.types.Bar.prototype.draw.apply(this, arguments);
+					//~ }
+				//~ });
+		//~ }
+	</script>
 @endsection
 @section('page_heading',Lang::get('Dashboard'))
 @section('section')
+		@var $fundsDepolyedInfo 	= $InvDashMod->fundsDepolyedInfo;
+		@var $invUnderBidInfo 		= $InvDashMod->invUnderBidInfo;
+		@var $overDueInfo 			= $InvDashMod->overDueInfo;
+		@var $Investments_verified 	= $InvDashMod->invested_amount;
+		@var $Investments_pending 	= $InvDashMod->pending_investment;
+		@var $deposits_verified 	= $InvDashMod->deposits;
+		@var $deposits_pending 		= $InvDashMod->pending_deposits;
+		@var $withdrawals_verified 	= $InvDashMod->withdrawals;
+		@var $withdrawals_pending	= $InvDashMod->pending_withdrawals;
 		<div class="col-sm-12 space-around"> 
 			<!--First row--->
 			<div class="row annoucement-msg-container">
@@ -36,10 +147,14 @@
 								<input 	type="hidden" id="current_loan_index" 
 										value="0" />
 							   <div class="panel-subhead" id="cur_loan_subhead">
-								 	{{Lang::get('MKM Car leasing Pte Ltd')}}
+								 	@if(isset($invFeatureLoans[0]))
+											{{$invFeatureLoans[0]->business_name}}
+										@endif
 								</div>
 							   <div  id="cur_loan_content">
-								   {{Lang::get('Borrower mainly conducts Visual Arts enrichment programs for playgroups,nursies and kindergartens. Business model has changed since 2010, it started out as a retail outlet selling children art and craft products like Modeling Clay.')}}
+								 	@if(isset($invFeatureLoans[0]))
+										{{$invFeatureLoans[0]->purpose}}
+									@endif
 								</div>
 						</div>	<!--end panel body-->
 						<div class="table-responsive"><!---table start-->
@@ -49,40 +164,50 @@
 										<td  class="tab-left-head">
 										{{Lang::get('Rate%')}}
 										</td> 
-										<td >
-											{{Lang::get('10%')}}
+										<td  id="cur_loan_rate" >
+											 @if(isset($invFeatureLoans[0]))
+												{{$invFeatureLoans[0]->rate}}%
+											@endif
 										</td>										
 									</tr>	
 									<tr>
 										<td class="tab-left-head" >
 											{{Lang::get('Tenure')}}
 										</td> 
-										<td >
-											{{Lang::get('1 Year')}}
+										<td  id="cur_loan_duration">
+											 @if(isset($invFeatureLoans[0]))
+												{{$invFeatureLoans[0]->duration}}
+											@endif
 										</td>										
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
 											{{Lang::get('Amount')}}
 										</td> 
-										<td >
-											{{Lang::get('$1,000')}}
+										<td  id="cur_loan_amount">
+											 @if(isset($invFeatureLoans[0]))
+												{{$invFeatureLoans[0]->amount}}
+											@endif
 										</td>										
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
 											{{Lang::get('Type of Repayment')}}
 										</td> 
-										<td>
-											{{Lang::get('Montly Repayment')}}
+										<td  id="cur_loan_repayment_type">
+											 @if(isset($invFeatureLoans[0]))
+												{{$invFeatureLoans[0]->repayment_type}}
+											@endif
 										</td>										
 									</tr>
 									<tr>
 										<td class="tab-left-head">
 											{{Lang::get('Bid Type')}}
 										</td> 
-										<td >
-											
+										<td  id="cur_loan_bid_type">
+											 @if(isset($invFeatureLoans[0]))
+												{{$invFeatureLoans[0]->bid_type}}
+											@endif
 										</td>										
 									</tr>									
 								</tbody>
@@ -101,41 +226,65 @@
 							@endsection
 							@include('widgets.panel', array('header'=>true, 'as'=>'cchart4'))
 						</div>								
-					</div>
-					
+					</div>	
+							@var	$deposits_verified			=	!empty($deposits_verified)?$deposits_verified:0.00
+							@var	$deposits_pending			=	!empty($deposits_pending)?$deposits_pending:0.00
+							@var	$Investments_verified		=	!empty($Investments_verified)?$Investments_verified:0.00
+							@var	$Investments_pending		=	!empty($Investments_pending)?$Investments_pending:0.00
+							@var	$withdrawals_verified		=	!empty($withdrawals_verified)?$withdrawals_verified:0.00
+							@var	$withdrawals_pending		=	!empty($withdrawals_pending)?$withdrawals_pending:0.00
+							@var	$ava_for_invest_verified	=	$deposits_verified -(($Investments_verified+$withdrawals_verified))
+							@var	$ava_for_invest_pending		=	$deposits_pending -(($Investments_pending+$withdrawals_pending))
+							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
 							<div class="table-responsive">                         
 									<table class="table tab-fontsizebig table-loan text-left" id="account-summary">
 										<thead>
 											<tr>
 												<th class="tab-head">ACCOUNT SUMMARY</th>
-												<th class="tab-head">Current</th>
-												<th class="tab-head">Pending</th>										
+												<th class="tab-head">Verified</th>
+												<th class="tab-head">Pending Approval</th>										
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<td class="text-left tab-left-head">Investments</td>
-												<td class="text-center">90,000.00</td>
-												<td class="text-center">10,000.00</td>										
+												<td class="text-center">
+													{{$Investments_verified}}
+												</td>
+												<td class="text-center">
+													{{$Investments_pending}}
+												</td>										
 											</tr>
 											<tr>
-												<td class="text-left tab-left-head">Withdrawals under process</td>
-												<td class="text-center"></td>
-												<td class="text-center"></td>										
+												<td class="text-left tab-left-head">Deposits</td>
+												<td class="text-center">
+													{{$deposits_verified}}
+												</td>	
+												<td class="text-center">
+													{{$deposits_pending}}
+												</td>	
+																							
 											</tr>	
 											<tr> 
-												<td class="text-left tab-left-head">Deposit under process</td>
-												<td class="text-center">10,000.00</td>
-												<td class="text-center"></td>										
-											</tr>
-											<tr> 
-												<td class="text-left tab-left-head">Investments under Bid</td>
-												<td class="text-center">5,000.00</td>
-												<td class="text-center"></td>										
-											</tr>
+												<td class="text-left tab-left-head">Withdrawals</td>
+												<td class="text-center">
+													{{$withdrawals_verified}}
+												</td>	
+												<td class="text-center">
+													{{$withdrawals_pending}}
+												</td>	
+																				
+											</tr>@var	$ava_for_invest_verified	=	$deposits_verified -(($Investments_verified+$withdrawals_verified))
+							@var	$ava_for_invest_pending		=	$deposits_pending -(($Investments_pending+$withdrawals_pending))
+							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
 											<tr>
-												<td class="text-left tab-left-head">Total Balance</td>
-												<td class="text-center">95,000.00</td>
+												<td class="text-left tab-left-head">Available for investment</td>
+												<td class="text-center">{{$ava_for_invest_verified}}</td>
+												<td class="text-center">{{$ava_for_invest_pending}}</td>										
+											</tr>										
+											<tr>
+												<td class="text-left tab-left-head">Grand Total</td>
+												<td class="text-center">{{$grand_total}}</td>										
 												<td class="text-center"></td>										
 											</tr>										
 										</tbody>
@@ -181,19 +330,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								
+								@foreach($fundsDepolyedInfo as $loanRow)
 									<tr>
-										<td>Name 1</td>
-										<td>C</td>
-										<td>s$1,000.00</td>
-										<td>$1,000.00</td>
-										<td>01 JAN 2016</td>
-										<td>12</td>
-										<td>Monthly Repayment</td>
-										<td>10%</td>
-										<td>$1,000.00</td>
-										<td>$1,000.00</td>
+										<td>{{$loanRow['business_name']}}</td>
+										<td>{{$loanRow['borrower_risk_grade']}}</td>
+										<td>{{$loanRow['loan_sanctioned_amount']}}</td>
+										<td>{{$loanRow['bid_amount']}}</td>
+										<td>{{$loanRow['date_of_investment']}}%</td>
+										<td>{{$loanRow['loan_tenure']}}</td>
+										<td>{{$loanRow['bid_type']}}</td>
+										<td>{{$loanRow['bid_interest_rate']}}</td>
+										<td>{{$loanRow['interest_paid']}}</td>
+										<td>{{$loanRow['principal_amount_paid']}}</td>
 									</tr>				
+								@endforeach	
 												
 							</tbody>
 						</table>						
@@ -233,20 +383,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								
+								@foreach($invUnderBidInfo as $loanRow)
 									<tr>
-										<td>Name 1</td>
-										<td>C</td>
-										<td>s$1,000.00</td>
-										<td>$1,000.00</td>
-										<td>01 JAN 2016</td>
-										<td>31 JAN 2016</td>
-										<td>12</td>
-										<td>Monthly Repayment</td>	
+										<td>{{$loanRow['business_name']}}</td>
+										<td>{{$loanRow['borrower_risk_grade']}}</td>
+										<td>{{$loanRow['apply_amount']}}</td>
+										<td>{{$loanRow['bid_amount']}}</td>
+										<td>{{$loanRow['date_of_investment']}}%</td>
+										<td>{{$loanRow['bid_close_date']}}</td>
+										<td>{{$loanRow['loan_tenure']}}</td>
+										<td>{{$loanRow['bid_type']}}</td>
 										<td></td>
-										<td></td>									
+										<td></td>
 									</tr>				
-												
+								@endforeach	
 							</tbody>
 						</table>											
 					</div><!-----third row end--->	
@@ -278,28 +428,21 @@
 									<th class="tab-head">TOTAL AMOUNT OF LOAN</th>
 									<th class="tab-head">AMOUNT OVERDUE</th>
 									<th class="tab-head">OVERDUE SINCE</th>
-									<th class="tab-head">REMARKS</th>	
-									<th class="tab-head"></th>
-									<th class="tab-head"></th>
-									<th class="tab-head"></th>
-									<th class="tab-head"></th>																							
+									<th class="tab-head" colspan="5"></th>	
+																																
 								</tr>
 							</thead>
 							<tbody>
-								
+								@foreach($overDueInfo as $loanRow)
 									<tr>
-										<td>Name 1</td>
-										<td>C</td>
-										<td>s$1,000.00</td>
-										<td>$1,000.00</td>
-										<td>25 JAN 2016</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>																		
+										<td>{{$loanRow['business_name']}}</td>
+										<td>{{$loanRow['borrower_risk_grade']}}</td>
+										<td>{{$loanRow['accepted_amount']}}</td>
+										<td>{{$loanRow['payment_schedule_amount']}}</td>
+										<td>{{$loanRow['overdue_since']}}</td>
+										<td colspan="5"></td>
 									</tr>				
-												
+								@endforeach
 							</tbody>
 						</table>		
 						</div>									

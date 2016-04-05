@@ -37,13 +37,13 @@
                               <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{ url ('investor/bankdetails') }}">{{ Lang::get('borrower-leftmenu.bankdetails') }}</a>
-                                </li> 
-                                 <li>
-                                    <a href="{{ url ('investor/withdraw') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
-                                </li> 
+                                </li>                                 
                                  <li>
                                     <a href="{{ url ('investor/deposit') }}">{{ Lang::get('Deposit') }}</a>
-                                </li>                                                                                            
+                                </li>               
+                                 <li>
+                                    <a href="{{ url ('investor/withdraw') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
+                                </li>                                                                              
                             </ul>
                         </li>                         
                     </ul>

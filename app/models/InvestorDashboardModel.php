@@ -1,13 +1,18 @@
 <?php namespace App\models;
 class InvestorDashboardModel extends TranWrapper {
 
-	public $featuredLoanInfo	= 	array();
-	public $featuredLoanJson	= 	"";
-	public $barChartJson		= 	"";
-	public $fundsDepolyedInfo	= 	array();
-	public $invUnderBidInfo		= 	array();
-	public $overDueInfo			= 	array();
-	public $invAccountSummary	= 	array();
+	public	$featuredLoanInfo	= 	array();
+	public	$featuredLoanJson	= 	"";
+	public	$barChartJson			= 	"";
+	public	$fundsDepolyedInfo		= 	array();
+	public	$invUnderBidInfo		= 	array();
+	public	$overDueInfo			= 	array();
+	public	$invested_amount 		=	0;
+	public	$pending_investment 	=	0;
+	public	$deposits 				=	0;
+	public	$pending_deposits 		=	0;
+	public	$withdrawals			=	0;
+	public	$pending_withdrawals 	=	0;
 	
 	public function getInvestorDashboardDetails() {
 		
@@ -62,58 +67,60 @@ class InvestorDashboardModel extends TranWrapper {
 		
 		$current_inverstor_id			=	 $this->getCurrentInvestorID();
 		$barchart_rs					=	array();
-		$barchart_sql					=	"	SELECT 	trans_month, 
-														round(sum((repayment * interest_wt_ratio)) / 
-																sum((bal_os *principal_wt_ratio)) * 1200, 2) roi
-												FROM	(	SELECT 	loans.loan_id, 
-																	date_format(trans_date, '%Y %m') trans_month, 
-																	loan_bids.bid_amount / loans.loan_sanctioned_amount principal_wt_ratio,
-																	loan_bids.bid_amount / loans.loan_sanctioned_amount 
-																		* loan_bids.bid_interest_rate / loans.final_interest_rate interest_wt_ratio,
-																	loan_sanctioned_amount -  (	SELECT	ifnull(sum(principal_paid),0)
-																		FROM	borrower_repayments a
-																		WHERE	a.trans_date < borrower_repayments.trans_date
-																		AND		a.loan_id     = borrower_repayments.loan_id) bal_os,
-																	(interest_paid + penalty_paid) repayment
-															FROM 	loan_bids,
-																	loans, 
-																	borrower_repayments
-															WHERE 	bid_status = 2 
-															AND 	investor_id = {$current_inverstor_id}
-															AND		loans.loan_id = loan_bids.loan_id
-															AND		loans.loan_id = borrower_repayments.loan_id
-														) xx
-												GROUP BY trans_month";
+		$barchart_sql					=	"	SELECT	pay_period,
+														SUM(interest_amount),
+														SUM(bal_os),
+														ROUND(SUM(interest_amount) * 1200 / SUM(bal_os), 2) 
+												FROM 	(
+														SELECT 	date_format(payment_date, '%Y%m') pay_period,
+															main_irs.loan_id,
+															interest_amount, 
+															bid_interest_rate,        
+															interest_amount * 1200 / bid_interest_rate bal_os
+														FROM	investor_repayment_schedule main_irs,
+															loan_bids
+														WHERE	status = 3
+														AND		main_irs.investor_id = {$current_inverstor_id}
+														AND		main_irs.loan_id = loan_bids.loan_id
+														AND		main_irs.investor_id = loan_bids.investor_id ) repay
+												GROUP BY pay_period";
+												
+		$barchart_rs					= 	$this->dbFetchAll($barchart_sql);
+		return	$barchart_rs;
+												
 	}
 	
 	public function getInvestorFundsDepolyed() {
 		
 		$current_inverstor_id			=	 $this->getCurrentInvestorID();
 		$fundsdepolyed_rs				=
-		$fundsdepolyed_sql				= "	SELECT 	loans.loan_id,
-													borrowers.business_name borrower_name,
-													borrowers.borrower_risk_grade grade,
-													loans.final_interest_rate,	
-													ROUND(loans.apply_amount,2) amount_applied,
-													'' amount_invested,
-													'' date_of_investment,
-													loans.loan_tenure,
-													case loans.repayment_type 
-													   when 1 then 'Bullet' 
-													   when 2 then 'Monthly Interest'
-													   when 3 then 'EMI'
-													end as repayment_type,
-													'' insterest_paid,
-													'' principal_paid
-											FROM 	loans, 
-													borrowers
-											WHERE 	loans.loan_id	IN
-																(
-																	SELECT 	loan_id
-																	FROM	loan_bids
-																	WHERE	investor_id	=	{$current_inverstor_id}
-																)
-											AND		loans.borrower_id = borrowers.borrower_id";
+		$fundsdepolyed_sql				= "SELECT	borrowers.business_name,
+													borrowers.borrower_risk_grade,
+													loan_sanctioned_amount,
+													bid_amount,
+													date_format(bid_datetime, '%d-%m-%y') date_of_investment
+													loan_tenure,
+													case loans.bid_type 
+														   when 1 then 'Open Bid' 
+														   when 2 then 'Closed Bid'
+														   when 3 then 'Fixed Interest'
+													end as bid_type,
+													bid_interest_rate,
+														(	SELECT	sum(principal_amount) principal_amount_paid
+														FROM	investor_repayment_schedule
+															WHERE	loan_id = loans.loan_id
+														AND	status =  3),
+													(	SELECT	sum(interest_amount)
+														FROM	investor_repayment_schedule
+														WHERE	loan_id = loans.loan_id
+														AND	status =  3) interest_paid
+											FROM	borrowers,
+													loans,
+													loan_bids
+											WHERE	loans.borrower_id = borrowers.borrower_id
+											AND		loans.loan_id = loan_bids.loan_id
+											AND		loans.status = 6
+											AND		loan_bids.investor_id = {$current_inverstor_id}";
 		$fundsdepolyed_rs				= 	$this->dbFetchAll($fundsdepolyed_sql);
 		if ($fundsdepolyed_rs) {
 			foreach ($fundsdepolyed_rs as $loanRow) {
@@ -131,28 +138,25 @@ class InvestorDashboardModel extends TranWrapper {
 		
 		$current_inverstor_id			=	 $this->getCurrentInvestorID();
 		$loanUnderBid_rs				=	array();
-		$loanUnderBid_sql				= "	SELECT 	loans.loan_id,
-													borrowers.business_name borrower_name,
-													borrowers.borrower_risk_grade grade,
-													ROUND(loans.apply_amount,2) amount_applied,
-													'' amount_invested,
-													'' date_of_investment,
-													loans.loan_tenure,
-													case loans.repayment_type 
-													   when 1 then 'Bullet' 
-													   when 2 then 'Monthly Interest'
-													   when 3 then 'EMI'
-													end as repayment_type,
-													loans.bid_close_date
-											FROM 	loans, 
-													borrowers
-											WHERE 	loans.loan_id	IN
-																(
-																	SELECT 	loan_id
-																	FROM	loan_bids
-																	WHERE	investor_id	=	{$current_inverstor_id}
-																)
-											AND		loans.borrower_id = borrowers.borrower_id";
+		$loanUnderBid_sql				= "SELECT	borrowers.business_name,
+													borrowers.borrower_risk_grade,
+													apply_amount,
+													bid_amount,
+													date_format(bid_datetime, '%d-%m-%y') date_of_investment,
+													date_format(bid_close_date, '%d-%m-%y') bid_close_date,
+													loan_tenure,
+													case loans.bid_type 
+														   when 1 then 'Open Bid' 
+														   when 2 then 'Closed Bid'
+														   when 3 then 'Fixed Interest'
+													end as bid_type
+											FROM	borrowers,
+													loans,
+													loan_bids
+											WHERE	loans.borrower_id = borrowers.borrower_id
+											AND		loans.loan_id = loan_bids.loan_id
+											AND		loan_bids.investor_id = {$current_inverstor_id}
+											AND		loans.status in (3, 5)";
 		$loanUnderBid_rs				= 	$this->dbFetchAll($loanUnderBid_sql);
 		if ($loanUnderBid_rs) {
 			foreach ($loanUnderBid_rs as $loanRow) {
@@ -171,22 +175,24 @@ class InvestorDashboardModel extends TranWrapper {
 		$current_inverstor_id			=	 $this->getCurrentInvestorID();
 		$overDue_rs						=	array();
 		
-		$overDue_sql					= "	SELECT 	loans.loan_id,
-													borrowers.business_name borrower_name,
-													borrowers.borrower_risk_grade grade
-													ROUND(loans.apply_amount,2) amount_applied,
-													'' amount_overdue,
-													'' overdue_since,
-													'' remarks,
-											FROM 	loans, 
-													borrowers
-											WHERE 	loans.loan_id	IN
-																(
-																	SELECT 	loan_id
-																	FROM	loan_bids
-																	WHERE	investor_id	=	{$current_inverstor_id}
-																)
-											AND		loans.borrower_id = borrowers.borrower_id";
+		$overDue_sql					= "SELECT	borrowers.business_name,
+													borrowers.borrower_risk_grade,
+													accepted_amount,
+													payment_schedule_amount,
+													datediff(now(),payment_scheduled_date)  overdue_since
+													installment_number
+											FROM	borrowers,
+													loans,
+													loan_bids,
+													investor_repayment_schedule
+											WHERE	loans.borrower_id = borrowers.borrower_id
+											AND		loans.loan_id = loan_bids.loan_id
+											AND		investor_repayment_schedule.loan_id = loans.loan_id
+											AND		investor_repayment_schedule.investor_id = loan_bids.investor_id
+											AND		payment_scheduled_date < now()
+											AND		investor_repayment_schedule.status != 3
+											AND		loan_bids.investor_id = {$current_inverstor_id}
+											AND		loans.status = 6";
 		$overDue_rs						= 	$this->dbFetchAll($overDue_sql);
 		if ($overDue_rs) {
 			foreach ($overDue_rs as $loanRow) {
@@ -203,13 +209,49 @@ class InvestorDashboardModel extends TranWrapper {
 	public function getInvestorAccountSummary() {
 		
 		$current_inverstor_id			=	 $this->getCurrentInvestorID();
-		$accSummary_rs					=	array();
 		
-		$accSummary_sql					= "";
-		$accSummary_rs					= 	$this->dbFetchAll($accSummary_sql);
-		$this->invAccountSummary		=	$accSummary_rs;
-		return $accSummary_rs;
+		$invested_amount_sql			= 	"	SELECT 	ROUND(SUM(principal_amount),2) 
+												FROM 	investor_repayment_schedule
+												WHERE	status != 3 
+												AND 	investor_id = {$current_inverstor_id}";
+	
+		$this->invested_amount			=	$this->dbFetchOne($invested_amount_sql);
+		
+		$pending_investment_sql			=	"	SELECT	ROUND(SUM(bid_amount),2)  
+												FROM	loan_bids 
+												WHERE	bid_status = 1 
+												AND		investor_id = {$current_inverstor_id}";
+												
+		$this->pending_investment		=	$this->dbFetchOne($pending_investment_sql);
+	
+		$deposits_sql					=	"	SELECT 	ROUND(SUM(trans_amount),2) 
+												FROM	investor_bank_transactions
+												WHERE	investor_id = {$current_inverstor_id}
+												AND		status = 2
+												AND		trans_type = 1"; 
+		$this->deposits					=	$this->dbFetchOne($deposits_sql);
+
+		$pending_deposits_sql			=	"	SELECT 	ROUND(SUM(trans_amount),2) 
+												FROM	investor_bank_transactions
+												WHERE	investor_id = {$current_inverstor_id}
+												AND		status = 1
+												AND		trans_type = 1"; 
+												
+		$this->pending_deposits			=	$this->dbFetchOne($pending_deposits_sql);
+		
+		$withdrawals_sql				=	"	SELECT 	SUM(trans_amount)
+												FROM	investor_bank_transactions
+												WHERE	investor_id = {$current_inverstor_id}
+												AND		status = 2
+												AND		trans_type = 2"; 
+		$this->withdrawals				=	$this->dbFetchOne($pending_deposits_sql);
+		
+		$pending_withdrawals_sql		=	"	SELECT 	SUM(trans_amount)
+												FROM	investor_bank_transactions
+												WHERE	investor_id = {$current_inverstor_id}
+												AND		status = 1
+												AND		trans_type = 2"; 
+		$this->pending_withdrawals		=	$this->dbFetchOne($pending_deposits_sql);
+
 	}
-	
-	
 }

@@ -30,7 +30,8 @@ Route::group(['prefix' => ''], function() {
     define('REPAYMENT_TYPE_INTEREST_ONLY', '2');
     define('REPAYMENT_TYPE_EMI', '3');
     define('BORROWER_REPAYMENT_STATUS_UNPAID', '1');  
-    define('BORROWER_REPAYMENT_STATUS_PAID', '2');
+    define('BORROWER_REPAYMENT_STATUS_UNVERIFIED', '2');
+    define('BORROWER_REPAYMENT_STATUS_PAID', '3');
     define('BANK_DETAILS_VERIFIED', '2');
     define('BANK_DETAILS_UNVERIFIED', '1');
     define('BANK_DETAILS_ACTIVE', '1');
@@ -53,6 +54,15 @@ Route::group(['prefix' => ''], function() {
     define('LOAN_BIDS_STATUS_ACCEPTED', '2');
     define('LOAN_BIDS_STATUS_REJECTED', '3');
     define('LOAN_BIDS_STATUS_CANCELLED', '4');
+    define('INVESTOR_BANK_TRANSCATION_STATUS', '1');  
+    define('INVESTOR_BANK_TRANSCATION_DEPOSIT', '1');
+    define('INVESTOR_BANK_TRANSCATION_WITHDRAWAL', '2');
+    define('PAYMENT_STATUS_UNVERIFIED','1');
+    define('PAYMENT_STATUS_VERIFIED','2');   
+    define('PAYMENT_TRANSCATION_LOAN_DISBURSEMENT','1');
+    define('PAYMENT_TRANSCATION_LOAN_REPAYMENT','2');
+    define('PAYMENT_TRANSCATION_INVESTOR_DEPOSIT','3');
+    define('PAYMENT_TRANSCATION_INVESTOR_WITHDRAWAL','4');
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
@@ -108,10 +118,9 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
     Route::match(['get', 'post'],'investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
-    Route::match(['get', 'post'],'investor/bankdetails', 'BankProcessController@indexAction');  
-    Route::get('investor/withdraw', 'InvestorWithdrawController@indexAction');  
-   // Route::get('investor/deposit', 'InvestorDepositController@indexAction');  
-    Route::match(['get', 'post'],'investor/deposit', 'InvestorDepositController@indexAction');  
+    Route::match(['get', 'post'],'investor/bankdetails', 'BankProcessController@indexAction');   
+    Route::match(['get', 'post'],'investor/deposit', 'InvestorBankController@indexAction'); 
+    Route::match(['get', 'post'],'investor/withdraw', 'InvestorBankController@withdrawAction');  
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	   	
 });
