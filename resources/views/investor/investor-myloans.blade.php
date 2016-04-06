@@ -1,7 +1,17 @@
 @extends('layouts.dashboard')
+@section('styles')
+<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<style>
+	.ui-front {
+		z-index: 1000000;
+	}
+</style>
+@endsection
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 	<script src="{{ url("js/loan-details.js") }}" type="text/javascript"></script>		
+	<script src="{{ url("js/common.js") }}" type="text/javascript"></script>		
+	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script>
 		var baseUrl	=	"{{url()}}"
 		var replyUrl=	baseUrl+'/ajax/investor/send_reply'

@@ -16,7 +16,10 @@
 			
 			<div class="page-header-title"><i class="{{(isset($classname)?$classname:'')}}"></i>@yield('page_heading')</div>
 			          
-            <ul class="nav navbar-top-links navbar-right">           
+            <ul class="nav navbar-top-links navbar-right">
+				@if(Auth::check())    
+					<li class="block-title">{{Auth::user()->username}}</li>       
+				@endif
                 <!-- /.dropdown -->               
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">

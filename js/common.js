@@ -94,3 +94,23 @@ function onBlurNumberField($thisField) {
 	$($thisField).val($formatNumber);
 	
 }
+function showDialog($title, $message) {
+	
+	$title = "Money Match Management System";
+	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
+						
+	$('body').append(htmlelement);
+	
+	$( "#dialog-message" ).dialog({
+      modal: true,
+      buttons: {
+        Ok: function() {
+		  $( this ).dialog( "close" );
+          $( this ).dialog( "destroy" );
+          $( this ).remove();
+        }
+      }
+    });
+	
+
+}

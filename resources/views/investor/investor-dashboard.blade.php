@@ -17,72 +17,54 @@
 					$("#current_loan_index").val(changeCurLoanInd);
 				}
 			});
-			//~ repaymentBarChartFunc();
+			repaymentBarChartFunc();
 		});
 		
-		//~ function repaymentBarChartFunc(){
-			//~ var datasetsArry	=	[];
-			//~ var colors = [];
-			
-			//~ colors.push({
-					//~ fillColor: "rgba(151,187,205,0.5)",
-					//~ strokeColor: "rgba(151,187,205,0.8)",
-					//~ highlightFill: "rgba(151,187,205,0.75)",
-					//~ highlightStroke: "rgba(151,187,205,1)",
-			//~ });
-			//~ colors.push({
-					//~ fillColor : "rgba(95,137,250,0.5)",
-					//~ strokeColor : "rgba(95,137,250,0.9)",
-					//~ highlightFill: "rgba(95,137,250,0.75)",
-					//~ highlightStroke: "rgba(95,137,250,1)"
-			//~ });
-			//~ colors.push({
-					//~ fillColor : "rgba(245,75,75,0.5)",
-					//~ strokeColor : "rgba(245,75,75,0.8)",
-					//~ highlightFill : "rgba(245,75,75,0.75)",
-					//~ highlightStroke : "rgba(245,75,75,1)"
-			//~ });
-			//~ colors.push({
-					//~ fillColor : "rgba(98,223,114,0.5)",
-					//~ strokeColor : "rgba(98,223,114,0.8)",
-					//~ highlightFill : "rgba(98,223,114,0.75)",
-					//~ highlightStroke : "rgba(98,223,114,1)",
-			//~ });
-			//~ var dataLabel		=	"";
-			 //~ if(barchartJson.length > 0){
-				//~ dataLabel	=	 (barchartJson[0].barChartLabel).split(',');
-				//~ $.each( barchartJson, function( key ) {
-					//~ colorIndex	=	key;
-					//~ if(key > 3)
-						//~ colorIndex	=	0;
-					//~ var dataArry	=	[];
-					//~ datasetsArry.push({
-						   //~ label:barchartJson[key].loan_ref ,
-							//~ fillColor : colors[colorIndex].fillColor,
-							//~ strokeColor : colors[colorIndex].strokeColor,
-							//~ highlightFill: colors[colorIndex].highlightFill,
-							//~ highlightStroke: colors[colorIndex].highlightStroke,
-							//~ data : (barchartJson[key].barChartValue).split(',')
-						//~ });
-				//~ });
-			//~ }
-			//~ console.log(datasetsArry);
-			//~ var bdata = {
-			  //~ labels : dataLabel, 			  
-			  //~ width:10,
-				//~ datasets : datasetsArry
-			//~ }
+		function repaymentBarChartFunc(){
+			var datasetsArry	=	[];
+			var dataLabelArry	=	[];
+			var datavalueArry	=	[];
+			var colors = [];
+		
+			colors.push({
+					fillColor : "rgba(245,75,75,0.5)",
+					strokeColor : "rgba(245,75,75,0.8)",
+					highlightFill : "rgba(245,75,75,0.75)",
+					highlightStroke : "rgba(245,75,75,1)"
+			});
+			 if(barchartJson.length > 0){
+				$.each( barchartJson, function( key ) {
+				
+					dataLabelArry.push(barchartJson[key].pay_period);
+					datavalueArry.push(barchartJson[key].percentage_payment);
+				});
+				datasetsArry.push({
+					  
+						label: "",
+						fillColor : colors[0].fillColor,
+						strokeColor : colors[0].strokeColor,
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: colors[0].highlightFill,
+						pointHighlightStroke: colors[0].highlightStroke,
+						//~ data: datavalueArry
+						data: datavalueArry
+					});
+				
+			}
+			var bdata = {
+			  labels :dataLabelArry , 			  
+			  width:10,
+				datasets : datasetsArry
+			}
 
-			//~ var options = {
-					//~ responsive:true
-			//~ }
+			var options = {
+					responsive:true
+			}
 
-			//~ var cbar = document.getElementById("cbar").getContext("2d");
-			//~ var barChart = new Chart(cbar).Bar(bdata, options);	
-			//~ var legend = barChart.generateLegend();
-
-			//~ $('#cbarlegend').append(legend);
-		//~ }
+			var cbar = document.getElementById("cbar").getContext("2d");
+			var barChart = new Chart(cbar).Line(bdata, options);	
+		}
 		function setCurrentLoanFunc(currentIndex){
 			var currentlist	=	current_loansJson[currentIndex];
 			
@@ -107,15 +89,16 @@
 @endsection
 @section('page_heading',Lang::get('Dashboard'))
 @section('section')
-		@var $fundsDepolyedInfo 	= $InvDashMod->fundsDepolyedInfo;
-		@var $invUnderBidInfo 		= $InvDashMod->invUnderBidInfo;
-		@var $overDueInfo 			= $InvDashMod->overDueInfo;
-		@var $Investments_verified 	= $InvDashMod->invested_amount;
-		@var $Investments_pending 	= $InvDashMod->pending_investment;
-		@var $deposits_verified 	= $InvDashMod->deposits;
-		@var $deposits_pending 		= $InvDashMod->pending_deposits;
-		@var $withdrawals_verified 	= $InvDashMod->withdrawals;
-		@var $withdrawals_pending	= $InvDashMod->pending_withdrawals;
+		@var 	$fundsDepolyedInfo 		= 	$InvDashMod->fundsDepolyedInfo;
+		@var 	$invUnderBidInfo 		= 	$InvDashMod->invUnderBidInfo;
+		@var 	$overDueInfo 			= 	$InvDashMod->overDueInfo;
+		@var 	$Investments_verified 	= 	$InvDashMod->invested_amount;
+		@var 	$Investments_pending 	= 	$InvDashMod->pending_investment;
+		@var 	$deposits_verified 		= 	$InvDashMod->deposits;
+		@var 	$deposits_pending 		= 	$InvDashMod->pending_deposits;
+		@var 	$withdrawals_verified 	= 	$InvDashMod->withdrawals;
+		@var 	$withdrawals_pending	= 	$InvDashMod->pending_withdrawals;
+		@var	$invFeatureLoans		=	$InvDashMod->featuredLoanInfo;
 		<div class="col-sm-12 space-around"> 
 			<!--First row--->
 			<div class="row annoucement-msg-container">
@@ -135,7 +118,13 @@
 						<div class="panel-heading panel-headsection"><!--panel head-->
 							<div class="row">
 								<div class="col-xs-10 col-lg-11">
-									<span class="pull-left">{{Lang::get('FEATURED LOANS')}}</span> 
+									<span class="pull-left">
+										@if( $InvDashMod->isFeaturedLoanInfo	==	"yes" )
+											{{Lang::get('FEATURED LOANS')}}
+										@else
+											{{Lang::get('Available LOANS')}}
+										@endif
+									</span> 
 								</div>
 								<div class="col-xs-2 col-lg-1">
 									<i class="fa fa-caret-right cursor-pointer"></i>

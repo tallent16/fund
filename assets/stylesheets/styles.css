@@ -8445,6 +8445,8 @@ body {
 
 .navbar-top-links {
     margin-right: 0;
+    display: inline-block;
+	margin-left: 1em;
 }
 
 .navbar-top-links li {
@@ -9122,7 +9124,7 @@ label.input-group-addon.btn {
 	color: rgb(255, 255, 255);
 }
 .status-label-section{
-	margin: 42px -66px 0px 0px;
+	margin: 3em -11em 0 0;
 	float: right;
 }
 .status-label{
@@ -9515,7 +9517,7 @@ table#account-summary, .table-border-custom{
 		text-align:right;
 	}	
 	.page-header-title{
-		margin:0;
+		margin: auto;
 	}	
 	.loan-list-image img{
 		width: 315px;

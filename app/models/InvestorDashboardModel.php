@@ -13,6 +13,7 @@ class InvestorDashboardModel extends TranWrapper {
 	public	$pending_deposits 		=	0;
 	public	$withdrawals			=	0;
 	public	$pending_withdrawals 	=	0;
+	public	$isFeaturedLoanInfo 	=	"";
 	
 	public function getInvestorDashboardDetails() {
 		
@@ -34,8 +35,8 @@ class InvestorDashboardModel extends TranWrapper {
 		
 		$loanlist_sql					= "	SELECT	borrowers.business_name,
 													loans.purpose,
-													loans.final_interest_rate rate,
-													loans.loan_tenure,
+													IFNULL(loans.target_interest,0.00) rate,
+													loans.loan_tenure duration,
 													ROUND(loans.loan_sanctioned_amount,2) amount,
 													case loans.repayment_type 
 														   when 1 then 'Bullet' 
@@ -60,6 +61,32 @@ class InvestorDashboardModel extends TranWrapper {
 											AND		loans.borrower_id	=	borrowers.borrower_id
 											";
 		$loanlist_rs				= 	$this->dbFetchAll($loanlist_sql);
+		if($loanlist_rs) {
+			$this->isFeaturedLoanInfo	=	"yes";
+		}else{
+			$this->isFeaturedLoanInfo	=	"no";
+			$loanlist_sql					= "	SELECT	loans.loan_id,borrowers.business_name,
+													loans.purpose,
+													IFNULL(loans.target_interest,0.00) rate,
+													loans.loan_tenure duration,
+													ROUND(loans.loan_sanctioned_amount,2) amount,
+													case loans.repayment_type 
+														   when 1 then 'Bullet' 
+														   when 2 then 'Monthly Interest'
+														   when 3 then 'EMI'
+													end as repayment_type,
+													case loans.bid_type 
+														   when 1 then 'Open Bid' 
+														   when 2 then 'Closed Bid'
+														   when 3 then 'Fixed Interest'
+													end as bid_type
+											FROM	loans,
+													borrowers
+											WHERE	loans.status = 3
+											AND		loans.borrower_id	=	borrowers.borrower_id
+											";
+		$loanlist_rs				= 	$this->dbFetchAll($loanlist_sql);
+		}
 		return	$loanlist_rs;
 	}
 	
@@ -70,9 +97,9 @@ class InvestorDashboardModel extends TranWrapper {
 		$barchart_sql					=	"	SELECT	pay_period,
 														SUM(interest_amount),
 														SUM(bal_os),
-														ROUND(SUM(interest_amount) * 1200 / SUM(bal_os), 2) 
+														ROUND(SUM(interest_amount) * 1200 / SUM(bal_os), 2) percentage_payment
 												FROM 	(
-														SELECT 	date_format(payment_date, '%Y%m') pay_period,
+														SELECT 	date_format(payment_date, '%b %y') pay_period,
 															main_irs.loan_id,
 															interest_amount, 
 															bid_interest_rate,        

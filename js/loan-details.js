@@ -10,6 +10,15 @@ $(document).ready(function (){
 		$(this).hide();
 		$('#form-bid').show();
     });
+    
+	$("#form-bid").on('submit',function(event){
+		var	available_balance	=	$("#available_balance").val();
+		var	bid_amount			=	$("#bid_amount").val();
+		if(bid_amount > available_balance) {
+			showDialog("","You have insufficient balance to bid");
+			event.preventDefault();
+		}
+	});
 
     $("#cancel_bid").click(function(){
 		$('#isCancelButton').val("yes");
@@ -51,3 +60,4 @@ $(document).ready(function (){
 	});
 
 });
+

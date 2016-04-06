@@ -32,7 +32,11 @@
 						@if(Auth::user()->usertype	==	3)
 							@var	$userProfile	=	'adminnn/profile'
 						@endif
-						
+						@if(Auth::check())
+							<li class="block-title">
+								<a>{{Auth::user()->username}}</a>
+							</li>  
+						@endif
 						<li>
 							<a href="{{ url($userProfile)}}">
 								<i class="fa fa-user"></i>

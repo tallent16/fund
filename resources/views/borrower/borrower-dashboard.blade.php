@@ -63,6 +63,7 @@
 			var dataLabel		=	"";
 			 if(barchartJson.length > 0){
 				dataLabel	=	 (barchartJson[0].barChartLabel).split(',');
+				var barcount = 0;
 				$.each( barchartJson, function( key ) {
 					colorIndex	=	key;
 					if(key > 3)
@@ -76,21 +77,32 @@
 							highlightStroke: colors[colorIndex].highlightStroke,
 							data : (barchartJson[key].barChartValue).split(',')
 						});
+					
+					loansCount = ((barchartJson[key].barChartValue).split(',')).length
+					
+					barCount = dataLabel.length * loansCount;
 				});
 			}
 			console.log(datasetsArry);
 			var bdata = {
 			  labels : dataLabel, 			  
-			  width:10,
 				datasets : datasetsArry
 			}
 
 			var options = {
-					responsive:true
+					responsive:true,
 			}
 
+			Chart.types.Bar.extend({
+				name: "BarWidth",
+				draw: function(){
+					this.options.barValueSpacing = this.chart.width / barCount;
+					Chart.types.Bar.prototype.draw.apply(this, arguments);
+				}
+			});
+
 			var cbar = document.getElementById("cbar").getContext("2d");
-			var barChart = new Chart(cbar).Bar(bdata, options);	
+			var barChart = new Chart(cbar).BarWidth(bdata, options);	
 			var legend = barChart.generateLegend();
 
 			$('#cbarlegend').append(legend);

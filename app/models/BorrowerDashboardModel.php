@@ -98,8 +98,8 @@ class BorrowerDashboardModel extends TranWrapper {
 				
 		$barchartdetails_sql	=	"	SELECT  loans.loan_id,
 												loans.loan_reference_number loan_ref,
-												date_format(repayment_actual_date, '%b %y') barChartLabel,
-												repayment_scheduled_amount + ifnull(repayment_penalty_amount, 0) barChartValue
+												group_concat(date_format(repayment_actual_date, '%b %y')) barChartLabel,
+												group_concat(repayment_scheduled_amount + ifnull(repayment_penalty_amount, 0)) barChartValue
 										FROM 	borrower_repayment_schedule,
 												loans,
 												( 	SELECT	distinct date_format(repayment_actual_date, '%Y%m') payment_period
@@ -107,8 +107,8 @@ class BorrowerDashboardModel extends TranWrapper {
 															WHERE	repayment_actual_date is not null
 															ORDER BY	date_format(repayment_actual_date, '%Y%m')
 															 LIMIT 0, 3) limit_payment_month
-										WHERE 	repayment_status = {$current_borrower_id}
-										and	loans.borrower_id = 2
+										WHERE 	repayment_status = 3
+										and	loans.borrower_id = {$current_borrower_id}
 										and	loans.loan_id = borrower_repayment_schedule.loan_id
 										and	limit_payment_month.payment_period = date_format(repayment_actual_date, '%Y%m')";
 		

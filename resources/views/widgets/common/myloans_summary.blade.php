@@ -90,7 +90,10 @@
 	@if($LoanDetMod->userType	==	USER_TYPE_INVESTOR)
 		@if($LoanDetMod->loan_status	==	LOAN_STATUS_APPROVED)
 			<div class="row space-around">
-				<div class="text-center">	
+				<div class="text-center">
+					<input 	type="hidden" 
+							value="{{ InvBal::available_balance() }}"
+							id="available_balance" />
 					<button type="button" 
 							class="btn verification-button"
 							id="bid_now">
@@ -133,6 +136,7 @@
 						<strong>{{Lang::get('Bid Amount')}}</strong><br>
 						<input 	type="text" 
 								name="bid_amount"
+								id="bid_amount"
 								value="{{$bid_amount}}"
 								class="form-control">
 					</div>
@@ -171,24 +175,26 @@
 	
 	<!-- Borrwer Cancel button	Starts here -->
 	@if($LoanDetMod->userType	==	USER_TYPE_BORROWER)
-		<div class="row space-around">
-			<div class="text-center">	
-				@switch($LoanDetMod->loan_status)
-					@case(LOAN_STATUS_NEW)
-					@case(LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-					@case(LOAN_STATUS_APPROVED)
-					@case(LOAN_STATUS_PENDING_COMMENTS)
-					@case(LOAN_STATUS_CLOSED_FOR_BIDS)
-					@var	$url	='borrower/cancelloan/'.base64_encode($LoanDetMod->loan_id)
-						<a 	class="btn btn-lg loan-detail-button" 
-							href="{{url($url)}}">
-							{{Lang::get('Cancel Loan')}}
-						</a>
-					@break
-					
-				@endswitch 
+		@if(	$LoanDetMod->inv_or_borr_id		==	$LoanDetMod->borrower_id)
+			<div class="row space-around">
+				<div class="text-center">	
+					@switch($LoanDetMod->loan_status)
+						@case(LOAN_STATUS_NEW)
+						@case(LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+						@case(LOAN_STATUS_APPROVED)
+						@case(LOAN_STATUS_PENDING_COMMENTS)
+						@case(LOAN_STATUS_CLOSED_FOR_BIDS)
+						@var	$url	='borrower/cancelloan/'.base64_encode($LoanDetMod->loan_id)
+							<a 	class="btn btn-lg loan-detail-button" 
+								href="{{url($url)}}">
+								{{Lang::get('Cancel Loan')}}
+							</a>
+						@break
+						
+					@endswitch 
+				</div>
 			</div>
-		</div>
+		@endif
 	@endif
 	<!-- Borrwer Cancel button	Ends here -->
 </div>
