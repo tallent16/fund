@@ -12,6 +12,20 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script>
+		var months = {
+		 '01':'Jan',
+		 '02':'Feb',
+		 '03':'Mar',
+		 '04':'Apr',
+		 '05':'May',
+		 '06':'Jun',
+		 '07':'Jul',
+		 '08':'Aug',
+		 '09':'Sep',
+		 '10':'Oct',
+		 '11':'Nov',
+		 '12':'Dec',
+		}
 	 var current_loansJson	=	{{$BorDashMod->current_loansJson}}		
 	 var barchartJson		=	{{$BorDashMod->barchart_detJson}}		
 		$(document).ready(function(){
@@ -61,8 +75,13 @@
 					highlightStroke : "rgba(98,223,114,1)",
 			});
 			var dataLabel		=	"";
+			var dataLabelNew	=	[];
 			 if(barchartJson.length > 0){
 				dataLabel	=	 (barchartJson[0].barChartLabel).split(',');
+				$.each( dataLabel, function( key ) {
+					var	monYear	=	(dataLabel[key]).split(' ');
+					dataLabelNew.push(months[monYear[1]]+" "+monYear[0]);
+				});
 				var barcount = 0;
 				$.each( barchartJson, function( key ) {
 					colorIndex	=	key;
@@ -82,30 +101,31 @@
 					
 					barCount = dataLabel.length * loansCount;
 				});
-			}
-			console.log(datasetsArry);
-			var bdata = {
-			  labels : dataLabel, 			  
-				datasets : datasetsArry
-			}
-
-			var options = {
-					responsive:true,
-			}
-
-			Chart.types.Bar.extend({
-				name: "BarWidth",
-				draw: function(){
-					this.options.barValueSpacing = this.chart.width / barCount;
-					Chart.types.Bar.prototype.draw.apply(this, arguments);
+			
+				var bdata = {
+				  //~ labels : dataLabel, 			  
+				  labels : dataLabelNew, 			  
+					datasets : datasetsArry
 				}
-			});
 
-			var cbar = document.getElementById("cbar").getContext("2d");
-			var barChart = new Chart(cbar).BarWidth(bdata, options);	
-			var legend = barChart.generateLegend();
+				var options = {
+						responsive:true,
+				}
 
-			$('#cbarlegend').append(legend);
+				Chart.types.Bar.extend({
+					name: "BarWidth",
+					draw: function(){
+						this.options.barValueSpacing = this.chart.width / barCount;
+						Chart.types.Bar.prototype.draw.apply(this, arguments);
+					}
+				});
+
+				var cbar = document.getElementById("cbar").getContext("2d");
+				var barChart = new Chart(cbar).BarWidth(bdata, options);	
+				var legend = barChart.generateLegend();
+
+				$('#cbarlegend').append(legend);
+			}
 		}
 		function setCurrentLoanFunc(currentIndex){
 			var currentlist	=	current_loansJson[currentIndex];
