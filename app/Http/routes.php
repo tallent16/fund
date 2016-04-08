@@ -75,8 +75,10 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
-    Route::get('admin',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
+   // Route::get('admin',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
     Route::get('admin/login',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
+    
+    Route::get('admin/manageborrowers', 'AdminManageBorrowersController@indexAction');
 });
 
 // The routes (or pages that are applicable for Borrower Users only

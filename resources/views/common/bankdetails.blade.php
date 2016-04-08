@@ -123,7 +123,7 @@
 																	id="bankaccnumber_{{$i}}" 
 																	name="bankaccnumber" 
 																	value="{{$bankdetailRow->bank_account_number}}" 
-																	class="form-control"
+																	class="form-control text-right"
 																	{{$disablestatus}} />
 														</div>
 													</div>

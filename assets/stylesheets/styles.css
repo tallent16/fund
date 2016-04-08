@@ -8968,6 +8968,13 @@ canvas.round {
 /*# sourceMappingURL=styles.css.map */
 /*---------------------------CUSTOM CSS STARTS HERE-------------------**/
 /****************************Common css*********************************/
+.borrower-admin .list-unstyled li a{
+	color:#222;
+}
+.borrower-admin .dropdown-menu{
+	right:0;
+	left:auto;
+}
 .cursor-pointer{
 	cursor:pointer;
 }

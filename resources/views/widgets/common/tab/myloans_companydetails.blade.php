@@ -102,7 +102,7 @@
 									@foreach($finacialInfo as $finacialRow)
 										<tr>
 											<td class="tab-left-head">{{$finacialRow['indicator_name']}}</td>
-											<td>{{$finacialRow['indicator_value']}}</td>										
+											<td class="text-right">{{$finacialRow['indicator_value']}}</td>										
 										</tr>		
 									@endforeach
 								@endif			

@@ -52,15 +52,15 @@
 					<tbody>
 						<tr>
 							<th class="tab-head-red">{{ Lang::get('borrower-myloans.financial_ratio')}}</th>
-							<th class="tab-head">{{date("Y",strtotime("-1 year"))}}</th>	
-							<th class="tab-head">{{date("Y")}}</th>				
+							<th class="tab-head text-right">{{date("Y",strtotime("-1 year"))}}</th>	
+							<th class="tab-head text-right">{{date("Y")}}</th>				
 						</tr>
 						@if(count($finacialRatioInfo)>0)
 							@foreach($finacialRatioInfo as $finRatioRow)
 								<tr>
 									<td class="tab-left-head">{{$finRatioRow['ratio_name']}}</td>
-									<td>{{$finRatioRow['current_ratio']}}</td>	
-									<td>{{$finRatioRow['previous_ratio']}}</td>		
+									<td class="text-right">{{$finRatioRow['current_ratio']}}</td>	
+									<td class="text-right">{{$finRatioRow['previous_ratio']}}</td>		
 								</tr>			
 							@endforeach
 						@endif

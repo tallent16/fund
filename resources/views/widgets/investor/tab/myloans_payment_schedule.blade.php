@@ -1,5 +1,5 @@
 	@var	$paymentInfo		=	$LoanDetMod->paymentScheduleInfo;
-	@var	$paymentInfoCnt			=	count($paymentInfo);
+	@var	$paymentInfoCnt		=	count($paymentInfo);
 	<div class="panel panel-primary panel-container">
 		<div class="panel-body">
 					
@@ -20,19 +20,19 @@
 								<tbody>
 									<tr>
 										<th class="tab-head">{{ Lang::get('Date') }}</th>
-										<th class="tab-head">{{ Lang::get('Amount') }}</th>	
+										<th class="tab-head text-right">{{ Lang::get('Amount') }}</th>	
 										<th class="tab-head">{{ Lang::get('Status') }}</th>				
 										<th class="tab-head">{{ Lang::get('Date Paid') }}</th>				
-										<th class="tab-head">{{ Lang::get('Penalty') }}</th>				
-									</tr>
-										@if($paymentInfo	>	0)
+										<th class="tab-head text-right">{{ Lang::get('Penalty') }}</th>				
+									</tr>									
+										@if($paymentInfoCnt	>	0)										
 											@var	$i	=	1;
 											@foreach($paymentInfo as $paymentRow)
 												<tr>
 													<td>
 														{{$paymentRow['schd_date']}}
 													</td>
-													<td>
+													<td class="text-right">
 														{{$paymentRow['schd_amt']}}
 													</td>
 													<td>
@@ -41,10 +41,9 @@
 													<td>
 														{{$paymentRow['payment_date']}}
 													</td>
-													<td>
+													<td class="text-right">
 														{{$paymentRow['penal_paid']}}
-													</td>
-													
+													</td>													
 												</tr>	
 												@var	$i++;
 											@endforeach
@@ -54,6 +53,7 @@
 								</tbody>
 							</table>	
 						</div>					
+						
 						
 					</div>
 				</div>

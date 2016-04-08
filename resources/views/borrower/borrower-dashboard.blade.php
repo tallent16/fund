@@ -299,11 +299,11 @@
 										<td>{{$loanRow['loan_reference_number']}}</td>
 										<td>{{$loanRow['last_payment']}}</td>
 										<td>{{$loanRow['next_payment']}}</td>
-										<td>{{$loanRow['amount_paid']}}</td>
-										<td>{{$loanRow['inst_rate']}}%</td>
-										<td>{{$loanRow['no_of_installment']}}</td>
-										<td>{{$loanRow['total_repayments']}}</td>
-										<td>{{$loanRow['tot_prin_outstanding']}}</td>
+										<td class="text-right">{{$loanRow['amount_paid']}}</td>
+										<td class="text-right">{{$loanRow['inst_rate']}}%</td>
+										<td class="text-right">{{$loanRow['no_of_installment']}}</td>
+										<td class="text-right">{{$loanRow['total_repayments']}}</td>
+										<td class="text-right">{{$loanRow['tot_prin_outstanding']}}</td>
 										<td>{{$loanRow['repayment_status']}}</td>
 									</tr>				
 								@endforeach						

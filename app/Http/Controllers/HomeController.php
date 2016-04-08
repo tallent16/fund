@@ -20,7 +20,7 @@ class HomeController extends MoneyMatchController {
 					return redirect('investor/dashboard');
 					break;
 				case 3:
-					return redirect('admin');
+					return redirect('admin/manageborrowers');
 					break;
 			}	
 		}
@@ -39,7 +39,7 @@ class HomeController extends MoneyMatchController {
 					return redirect('investor/dashboard');
 					break;
 				case 3:
-					return redirect('admin');
+					return redirect('admin/manageborrowers');
 					break;
 			}	
 			

@@ -22,9 +22,9 @@
 								<th class="tab-head">TRANSCATION REFERENCE</th>
 								<th class="tab-head">TRANSCATION DATE</th>
 								<th class="tab-head">TRANSCATION TYPE</th>
-								<th class="tab-head">AMOUNT</th>
+								<th class="tab-head text-right">AMOUNT</th>
 								<th class="tab-head">REMARKS</th>
-								<th class="tab-head">CLOSING BALANCE</th>																
+								<th class="tab-head text-right">CLOSING BALANCE</th>																
 							</tr>
 						</thead>
 						<tbody>
@@ -36,9 +36,9 @@
 										<td>{{$tranListRow->trans_reference_number}}</td>
 										<td>{{$tranListRow->trans_date}}</td>
 										<td>{{$tranListRow->trans_type}}</td>
-										<td>{{$tranListRow->trans_amount}}</td>
+										<td class="text-right">{{$tranListRow->trans_amount}}</td>
 										<td>{{$tranListRow->remarks}}</td>
-										<td>{{$closingBalance}}</td>											
+										<td class="text-right">{{$closingBalance}}</td>											
 									</tr>							
 								@endforeach
 							@endif
