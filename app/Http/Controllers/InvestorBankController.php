@@ -25,7 +25,7 @@ class InvestorBankController extends MoneyMatchController {
 		}		
 		$this->depositmodel->getprocessdeposit();
 		$withArry	=	array("modeldeposit"=>$this->depositmodel,
-								"classname" => "fa fa-credit-card fa-fw user-icon",
+								"classname" => "fa fa fa-database fa-fw",
 								"submitted" =>$submitted);
 		return view('investor.investor-deposit')
 					->with($withArry);  
@@ -42,7 +42,7 @@ class InvestorBankController extends MoneyMatchController {
 		}		
 		$this->depositmodel->getprocessdeposit();
 		$withaArry	=	array("modelwithdraw"=>$this->depositmodel,
-								"classname" => "fa fa-cc fa-fw user-icon",
+								"classname" => "fa fa-credit-card fa-fw",
 								"submitted"=>$submitted);
 		return view('investor.investor-withdraw')
 				->with($withaArry);		

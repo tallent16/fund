@@ -9009,7 +9009,7 @@ canvas.round {
 	color: #fff;
 }
 .tab-fontsize{
-	font-size: 0.7em;
+	font-size: 0.9em;
 }
 .tab-head{
 	background-color: #383838;
@@ -9457,6 +9457,9 @@ tr.shown td.details-control {
 #accordion .panel-body, #account-summary td{
 	border:none;
 } 
+table#account-summary{
+	background-color:#fff;
+}
 table#account-summary, .table-border-custom{
 	border: 1px solid #ccc;
 }

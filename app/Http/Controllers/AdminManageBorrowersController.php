@@ -14,14 +14,13 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	}
 	
 	public function indexAction(){
-	$withArry	=	array(	"adminbormodel"=>$this->adminborModel,
-								"classname"=>"fa fa-reply fa-fw user-icon"
-							);	
-							
-	return view('admin.admin-manageborrowers')
-			->with($withArry);
-	
+		
+		$this->adminborModel->getBorrowerListInfo();				
+		$withArry	=	array(		"adminbormodel"=>$this->adminborModel,
+									"classname"=>"fa fa-reply fa-fw user-icon"
+								);	
+		return view('admin.admin-manageborrowers')
+				->with($withArry);
+		
 	}
-
-	
 }

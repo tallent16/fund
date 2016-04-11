@@ -5,14 +5,14 @@
 							</div>                             
                         </li>
                          <li>
-                            <a href="{{ url ('investor/dashboard') }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
+                            <a href="{{ url ('investor/dashboard') }}"><i class="fa fa-tachometer fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
                         </li>
                         <li> 
 							<a href="{{ url ('investor/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
                         </li>                 
                                                                      
                         <li>
-                            <a href="#"><i class="fa fa-money fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-file-image-o fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">                              
                                  <li> 
                                     <a href="{{ url ('investor/loanslist') }}">{{ Lang::get('borrower-leftmenu.loanslist') }}</a> 
@@ -24,7 +24,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-list-ul fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{ url ('investor/transhistory') }}">{{ Lang::get('borrower-leftmenu.transhistory') }}</a>

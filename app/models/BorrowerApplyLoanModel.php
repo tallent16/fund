@@ -33,6 +33,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $total_penalties_paid  			=  	"";
 	public $loan_product_image  			=  	"";
 	public $loan_video_url  				=  	"";
+	public $format_date						= 	"";
+	
 
 	public $document_details				= 	array();
 	public $submitted_document_details		= 	array();
@@ -57,7 +59,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.loan_reference_number,
 											loans.borrower_id,
 											loans.purpose,
-											loans.purpose_singleline,
+											loans.purpose_singleline,											
 											ifnull(DATE_FORMAT(loans.apply_date,'%d/%m/%Y'),'') apply_date,
 											ROUND(loans.apply_amount,2) apply_amount ,
 											loans.loan_currency_code,
@@ -181,9 +183,11 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$loanId	= $postArray['loan_id'];
 		} else {
 			$loanId = 0;
-		}
+		}		
 		
-		$loan_reference_number 			=	"Loan-Ref-";
+					
+		$loan_reference_number 			=	"L-";
+		$format_date 					= 	date('Ym');
 		$borrower_id					= 	$this->getCurrentBorrowerID();
 		$purpose						= 	$postArray['laon_purpose'];
 		$purpose_singleline				= 	$postArray['purpose_singleline'];
@@ -226,17 +230,17 @@ class BorrowerApplyLoanModel extends TranWrapper {
 							'status' 						=> $status,
 							'total_disbursed' 				=> $total_disbursed);
 							
-	//~ echo "<pre>",print_r($dataArray),"</pre>";
-		//~ die;	
+	// echo "<pre>",print_r($dataArray),"</pre>";
+		
 		if ($transType != "edit") {
 			$loanId =  $this->dbInsert('loans', $dataArray, true);
 			if ($loanId < 0) {
 				return -1;
 			}
-			// Update the loan_reference_number to the newly added row
-			$dataArray 	= 	array( 'loan_reference_number'	=> $loan_reference_number.$loanId);
-			$whereArry	=	array("loan_id" =>"{$loanId}");
-			$result = $this->dbUpdate('loans', $dataArray, $whereArry );
+			// Update the loan_reference_number to the newly added row		
+			$dataArray 	   = array( 'loan_reference_number'	=> $loan_reference_number.$format_date."-".$loanId);
+			$whereArry	   = array("loan_id" =>"{$loanId}");
+			$result 	   = $this->dbUpdate('loans', $dataArray, $whereArry );
 			return $loanId;
 		}else{
 			$whereArry								=	array("loan_id" =>"{$loanId}");

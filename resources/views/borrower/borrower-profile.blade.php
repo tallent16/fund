@@ -102,7 +102,16 @@
 									href="#bank_info">
 									{{ Lang::get('borrower-profile.bank_info') }}
 								</a>
-							</li>						   							
+							</li>	
+						
+							<li>
+								<a 	data-toggle="tab"
+									href="#comments">
+									{{ Lang::get('COMMENTS') }}
+								</a>
+							</li>	
+						<!--	@if(Auth::user()->username == "admin")-->
+						<!--	@endif		-->			   							
 						</ul>	
 				
 					<div class="tab-content">
@@ -125,6 +134,10 @@
 						<!-----Five Tab content starts----->
 							@include('widgets.borrower.tab.profile_bank_info')
 						<!-----Five Tab content ends----->	
+						
+						<!-----Sixth Tab content starts----->
+							@include('widgets.borrower.tab.profile_comments')
+						<!-----Sixth Tab content ends----->
 						
 					</div>	<!---col ends-->	
 				

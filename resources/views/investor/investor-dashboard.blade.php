@@ -122,7 +122,7 @@
 										@if( $InvDashMod->isFeaturedLoanInfo	==	"yes" )
 											{{Lang::get('FEATURED LOANS')}}
 										@else
-											{{Lang::get('Available LOANS')}}
+											{{Lang::get('AVAILABLE LOANS')}}
 										@endif
 									</span> 
 								</div>
@@ -147,7 +147,7 @@
 								</div>
 						</div>	<!--end panel body-->
 						<div class="table-responsive"><!---table start-->
-							<table class="table table-loan .tab-fontsizebig text-left">								
+							<table class="table text-left">								
 								<tbody>
 									<tr>
 										<td  class="tab-left-head">
@@ -226,40 +226,40 @@
 							@var	$ava_for_invest_pending		=	$deposits_pending -(($Investments_pending+$withdrawals_pending))
 							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
 							<div class="table-responsive">                         
-									<table class="table tab-fontsizebig table-loan text-left" id="account-summary">
+									<table class="table" id="account-summary">
 										<thead>
 											<tr>
-												<th class="tab-head">ACCOUNT SUMMARY</th>
-												<th class="tab-head">Verified</th>
-												<th class="tab-head">Pending Approval</th>										
+												<th class="tab-head text-left">ACCOUNT SUMMARY</th>
+												<th class="tab-head text-right">Verified</th>
+												<th class="tab-head text-right">Pending Approval</th>										
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<td class="text-left tab-left-head">Investments</td>
-												<td class="text-center">
+												<td class="text-right">
 													{{$Investments_verified}}
 												</td>
-												<td class="text-center">
+												<td class="text-right">
 													{{$Investments_pending}}
 												</td>										
 											</tr>
 											<tr>
 												<td class="text-left tab-left-head">Deposits</td>
-												<td class="text-center">
+												<td class="text-right">
 													{{$deposits_verified}}
 												</td>	
-												<td class="text-center">
+												<td class="text-right">
 													{{$deposits_pending}}
 												</td>	
 																							
 											</tr>	
 											<tr> 
 												<td class="text-left tab-left-head">Withdrawals</td>
-												<td class="text-center">
+												<td class="text-right">
 													{{$withdrawals_verified}}
 												</td>	
-												<td class="text-center">
+												<td class="text-right">
 													{{$withdrawals_pending}}
 												</td>	
 																				
@@ -268,13 +268,13 @@
 							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
 											<tr>
 												<td class="text-left tab-left-head">Available for investment</td>
-												<td class="text-center">{{$ava_for_invest_verified}}</td>
-												<td class="text-center">{{$ava_for_invest_pending}}</td>										
+												<td class="text-right">{{$ava_for_invest_verified}}</td>
+												<td class="text-right">{{$ava_for_invest_pending}}</td>										
 											</tr>										
 											<tr>
 												<td class="text-left tab-left-head">Grand Total</td>
-												<td class="text-center">{{$grand_total}}</td>										
-												<td class="text-center"></td>										
+												<td class="text-right">{{$grand_total}}</td>										
+												<td class="text-right"></td>										
 											</tr>										
 										</tbody>
 									</table>                     
@@ -308,14 +308,14 @@
 								<tr>
 									<th class="tab-head">BORROWER'S NAME</th>
 									<th class="tab-head">GRADE</th>
-									<th class="tab-head">TOTAL AMOUNT OF LOAN</th>
-									<th class="tab-head">AMOUNT INVESTED</th>
+									<th class="tab-head text-right">TOTAL AMOUNT OF LOAN</th>
+									<th class="tab-head text-right">AMOUNT INVESTED</th>
 									<th class="tab-head">DATE OF INVESTMENT</th>
-									<th class="tab-head">TENURE OF LOAN</th>
+									<th class="tab-head text-right">TENURE OF LOAN</th>
 									<th class="tab-head">TYPE OF LOAN</th>
-									<th class="tab-head">RATE OF INTEREST</th>
-									<th class="tab-head">INTEREST PAID</th>
-									<th class="tab-head">PRINCIPAL PAID</th>
+									<th class="tab-head text-right">RATE OF INTEREST</th>
+									<th class="tab-head text-right">INTEREST PAID</th>
+									<th class="tab-head text-right">PRINCIPAL PAID</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -323,14 +323,14 @@
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
 										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td>{{$loanRow['loan_sanctioned_amount']}}</td>
-										<td>{{$loanRow['bid_amount']}}</td>
+										<td class="text-right">{{$loanRow['loan_sanctioned_amount']}}</td>
+										<td class="text-right">{{$loanRow['bid_amount']}}</td>
 										<td>{{$loanRow['date_of_investment']}}%</td>
-										<td>{{$loanRow['loan_tenure']}}</td>
+										<td class="text-right">{{$loanRow['loan_tenure']}}</td>
 										<td>{{$loanRow['bid_type']}}</td>
-										<td>{{$loanRow['bid_interest_rate']}}</td>
-										<td>{{$loanRow['interest_paid']}}</td>
-										<td>{{$loanRow['principal_amount_paid']}}</td>
+										<td class="text-right">{{$loanRow['bid_interest_rate']}}</td>
+										<td class="text-right">{{$loanRow['interest_paid']}}</td>
+										<td class="text-right">{{$loanRow['principal_amount_paid']}}</td>
 									</tr>				
 								@endforeach	
 												
@@ -361,11 +361,11 @@
 								<tr>
 									<th class="tab-head">BORROWER'S NAME</th>
 									<th class="tab-head">GRADE</th>
-									<th class="tab-head">TOTAL AMOUNT OF LOAN</th>
-									<th class="tab-head">AMOUNT INVESTED</th>
+									<th class="tab-head text-right">TOTAL AMOUNT OF LOAN</th>
+									<th class="tab-head text-right">AMOUNT INVESTED</th>
 									<th class="tab-head">DATE OF INVESTMENT</th>
 									<th class="tab-head">BID CLOSE DATE</th>
-									<th class="tab-head">TENURE OF LOAN</th>
+									<th class="tab-head text-right">TENURE OF LOAN</th>
 									<th class="tab-head">TYPE OF LOAN</th>	
 									<th class="tab-head"></th>	
 									<th class="tab-head"></th>									
@@ -376,11 +376,11 @@
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
 										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td>{{$loanRow['apply_amount']}}</td>
-										<td>{{$loanRow['bid_amount']}}</td>
+										<td class="text-right">{{$loanRow['apply_amount']}}</td>
+										<td class="text-right">{{$loanRow['bid_amount']}}</td>
 										<td>{{$loanRow['date_of_investment']}}%</td>
 										<td>{{$loanRow['bid_close_date']}}</td>
-										<td>{{$loanRow['loan_tenure']}}</td>
+										<td class="text-right">{{$loanRow['loan_tenure']}}</td>
 										<td>{{$loanRow['bid_type']}}</td>
 										<td></td>
 										<td></td>
@@ -414,9 +414,9 @@
 								<tr>
 									<th class="tab-head">BORROWER'S NAME</th>
 									<th class="tab-head">GRADE</th>
-									<th class="tab-head">TOTAL AMOUNT OF LOAN</th>
-									<th class="tab-head">AMOUNT OVERDUE</th>
-									<th class="tab-head">OVERDUE SINCE</th>
+									<th class="tab-head text-right">TOTAL AMOUNT OF LOAN</th>
+									<th class="tab-head text-right">AMOUNT OVERDUE</th>
+									<th class="tab-head text-right">OVERDUE SINCE</th>
 									<th class="tab-head" colspan="5"></th>	
 																																
 								</tr>
@@ -426,9 +426,9 @@
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
 										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td>{{$loanRow['accepted_amount']}}</td>
-										<td>{{$loanRow['payment_schedule_amount']}}</td>
-										<td>{{$loanRow['overdue_since']}}</td>
+										<td class="text-right">{{$loanRow['accepted_amount']}}</td>
+										<td class="text-right">{{$loanRow['payment_schedule_amount']}}</td>
+										<td class="text-right">{{$loanRow['overdue_since']}}</td>
 										<td colspan="5"></td>
 									</tr>				
 								@endforeach
@@ -442,19 +442,6 @@
       </div>
     </div>
   </div> 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				
+
           @endsection  
 @stop

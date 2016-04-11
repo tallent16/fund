@@ -22,7 +22,7 @@ return [
 	'duration'				=> 'Dauer',
 	'amount'				=> 'Menge',
 	'year'					=> 'Jahr',
-	'bar_chart'				=> 'Balkendiagramm',
+	'bar_chart'				=> 'Aktuelle Tilgungen',
 	'loan_taken'			=> 'Kredit aufgenommen',
 	'total_amount'			=> 'Gesamtbetrag genommen',
 	'loan_overview'			=> 'KREDIT ÜBERBLICK',

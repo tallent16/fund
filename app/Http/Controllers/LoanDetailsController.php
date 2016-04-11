@@ -43,7 +43,7 @@ class LoanDetailsController extends MoneyMatchController {
 					break;
 		}	
 		$withArry	=	array(	"LoanDetMod"=>$this->loanDetailsModel,
-								"classname"=>"fa fa-money fa-fw user-icon",
+								"classname"=>"fa fa-file-text fa-fw",
 								"loan_id"=>$loan_id,
 								"submitted"=>$submitted,
 								"subType"=>$subType

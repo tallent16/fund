@@ -45,14 +45,14 @@
 			{{ Lang::get('borrower-leftmenu.balance') }} : $100,000 		
 		</li>-->
 		<li class="{{$class}}">
-			<a href="{{ $dashboardUrl }}"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
+			<a href="{{ $dashboardUrl }}"><i class="fa fa-tachometer fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
 		</li>
 		<li> 
 			<a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
 		</li>               
 									 
 		<li class="{{$class}}">
-			<a href="#"><i class="fa fa-money fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
+			<a href="#"><i class="fa fa-file-image-o fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
 			<ul class="nav nav-second-level">
 				<li class="{{$class1}}">
 					<a 	href="{{ $applyLoanUrl }}"
@@ -73,7 +73,7 @@
 		<!-- /.nav-second-level -->
 		</li>
 		<li class="{{$class}}">
-			<a href="#"><i class="fa fa-sitemap fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
+			<a href="#"><i class="fa fa-list-ul fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
 			<ul class="nav nav-second-level">
 				<li class="{{$class}}">
 					<a href="{{ $loanSummaryUrl }}">{{ Lang::get('Loan Summary') }}</a>

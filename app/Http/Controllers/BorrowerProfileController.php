@@ -27,7 +27,7 @@ class BorrowerProfileController extends MoneyMatchController {
 		$this->borrowerProfileModel->getBorrowerDetails();
 		
 		$withArry		=	array(	"modelBorPrf"=>$this->borrowerProfileModel,
-									"classname"=>"fa fa-usd fa-fw user-icon",
+									"classname"=>"fa fa-user fa-fw",
 									"submitted"=>$submitted
 								);
 		return view('borrower.borrower-profile')

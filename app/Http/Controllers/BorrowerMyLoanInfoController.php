@@ -15,7 +15,7 @@ class BorrowerMyLoanInfoController extends MoneyMatchController {
 	
 	public function indexAction() {
 		$withArry	=	array(	"BorModMyLoanInfo"=>$this->borrowerMyLoanInfoModel,
-								"classname"=>"fa fa-usd fa-fw user-icon"
+								"classname"=>"fa fa-file-text fa-fw"
 							);	
 		$this->borrowerMyLoanInfoModel->getBorrowerAllLoanDetails();	
 		return view('borrower.borrower-myloaninfo')

@@ -117,7 +117,7 @@ class MoneyMatchModel extends Model {
 	public function dbFetchWithParam($sqlStatment, $paramArray) {
 		
 		try {
-			$resultRs 	=	DB::select($sqlStatement, $paramArray);
+			$resultRs 	=	DB::select($sqlStatment, $paramArray);
 		} catch (\Exception $e) {
 			$this->dbErrorHandler($e);
 			return false;

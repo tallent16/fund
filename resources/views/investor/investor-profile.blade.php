@@ -160,7 +160,7 @@
 														
 									<div class="col-xs-12 col-sm-6 col-lg-8">													
 											<input type="text" name="nric_number" 
-											value="{{$InvPrfMod->nric_number}}" class="form-control">
+											value="{{$InvPrfMod->nric_number}}" class="form-control text-right">
 									</div>
 								</div>
 								
@@ -186,7 +186,7 @@
 														
 									<div class="col-xs-12 col-sm-6 col-lg-8">												
 											<input type="text" name="bank_account_number" 
-											value="{{$InvPrfMod->bank_account_number}}" class="form-control">
+											value="{{$InvPrfMod->bank_account_number}}" class="form-control text-right">
 									</div>
 								</div>
 								

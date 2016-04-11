@@ -27,7 +27,7 @@ class InvestorProfileController extends MoneyMatchController {
 		$this->investorProfileModel->getInvestorDetails();
 
 		$withArry		=	array(	"InvPrfMod"=>$this->investorProfileModel,
-									"classname"=>"fa fa-usd fa-fw user-icon",
+									"classname"=>"fa fa-user fa-fw",
 									"submitted"=>$submitted
 								);
 		return view('investor.investor-profile')					

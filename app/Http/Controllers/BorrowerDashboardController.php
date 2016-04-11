@@ -22,7 +22,7 @@ class BorrowerDashboardController extends MoneyMatchController {
 		$this->borrowerDashboardModel->getBorrowerDashboardDetails();
 		return view('borrower.borrower-dashboard')
 					->with("BorDashMod",$this->borrowerDashboardModel)
-					->with("classname","fa fa-gear fa-fw user-icon"); 
+					->with("classname","fa fa-tachometer fa-fw"); 
 	}
 
 }

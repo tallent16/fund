@@ -66,7 +66,7 @@ class BorrowerLoanSummaryController extends MoneyMatchController {
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
 								"tranType" => $transType,
-								"classname"=>"fa fa-list-alt fa-fw");
+								"classname"=>"fa fa fa-list fa-fw");
 		
 		return view('borrower.borrower-loansummary')
 				->with($withArry); 

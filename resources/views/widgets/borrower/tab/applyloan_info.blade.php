@@ -98,6 +98,19 @@
 						
 							<div class="row">		
 								<div class="col-xs-12 col-sm-5">											
+									<label>{{ Lang::get('Loan Reference Number') }}</label>												
+								</div>
+															
+								<div class="col-xs-12 col-sm-7" id="loan_ref_num_parent">													
+									<input type="text" class="form-control select-width amount-align" 
+											name="loan_ref_num"												
+											id="loan_ref_num"																									
+											value="{{$BorModLoan->loan_reference_number}}" disabled >										
+								</div>
+							</div>
+						
+							<div class="row">		
+								<div class="col-xs-12 col-sm-5">											
 									<label class="input-required">{{ Lang::get('borrower-applyloan.bid_type') }}</label>												
 								</div>
 															

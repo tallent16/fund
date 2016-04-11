@@ -22,7 +22,7 @@ return [
 	'duration'				=> 'Duration',
 	'amount'				=> 'Amount',
 	'year'					=> 'Year',
-	'bar_chart'				=> 'Bar Chart',
+	'bar_chart'				=> 'Recent Repayments',
 	'loan_taken'			=> 'Loan Taken',
 	'total_amount'			=> 'Total amount taken',
 	'loan_overview'			=> 'LOAN OVERVIEW',	

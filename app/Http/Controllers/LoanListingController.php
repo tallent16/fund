@@ -43,7 +43,7 @@ class LoanListingController extends MoneyMatchController {
 		$this->loanListing->getLoanList($filterIntRate, $filterLoanAmt, $filterTenure, $filterGrade);
 		$this->loanListing->processDropDowns();
 
-		$withArry	=	array(	"loanListing" => $this->loanListing	, "classname"=>"fa fa-list fa-fw user-icon");
+		$withArry	=	array(	"loanListing" => $this->loanListing	, "classname"=>"fa fa-list-alt fa-fw");
 		return view('common.loanlisting')
 			->with($withArry); 
 			

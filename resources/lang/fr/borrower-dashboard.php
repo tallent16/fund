@@ -22,7 +22,7 @@ return [
 	'duration'				=> 'Durée',
 	'amount'				=> 'Montant',
 	'year'					=> 'An', 
-	'bar_chart'				=> 'Diagramme à bandes',
+	'bar_chart'				=> 'remboursements récents',
 	'loan_taken'			=> 'emprunt',
 	'total_amount'			=> 'montant total pris', 
 	'loan_overview'			=> 'PRÊT APERÇU',	

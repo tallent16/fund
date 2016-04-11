@@ -18,7 +18,7 @@ class InvestorTransHistoryController extends MoneyMatchController {
 		
 		$this->tranModel->getInvestorTransList();
 		$withArry	=	array(	"tranModel" => $this->tranModel,
-								"classname"=>"fa fa-credit-card fa-fw user-icon");
+								"classname"=>"fa fa-list-ul fa-fw");
 		return view('investor.investor-transcationhistory')					
 					->with($withArry); 
 	}

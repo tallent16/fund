@@ -15,7 +15,7 @@
 		</div>				
 	</div>
 </div>
-<div id="filter_area" style="display:none">
+<div id="filter_area">
 <form >
 	<div class="row">	
 		<!--<div class="col-sm-12"> -->
@@ -50,9 +50,9 @@
 		<!--</div>-->
 	</div>
 </div>
-
+<!--
 <div class="row">
-	<!--<div class="col-sm-12" >-->
+	
 	<div class="col-sm-3" id="apply_filter_div" style="display:none">
 		<button type="submit" class="btn verification-button">
 			{{ Lang::get('borrower-loanlisting.apply_filter') }}			
@@ -63,11 +63,9 @@
 			{{ Lang::get('borrower-loanlisting.show_filter') }}			
 		</button>
 	</div>
-
+	
+</div>-->
 </form>
-	<!--</div>-->
-</div>
-
 <div class="row">
 	<div class="col-sm-12 space-around"> 
 

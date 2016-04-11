@@ -47,9 +47,12 @@ Route::group(['prefix' => ''], function() {
     define('LOAN_STATUS_APPROVED', '3');
     define('LOAN_STATUS_PENDING_COMMENTS', '4');
     define('LOAN_STATUS_CLOSED_FOR_BIDS', '5');
-    define('LOAN_STATUS_DISBURSED', '6');
-    define('LOAN_STATUS_UNSUCCESSFUL_LOAN', '7');
+    define('LOAN_STATUS_BIDS_ACCEPTED', '6');
+    define('LOAN_STATUS_DISBURSED', '7');
     define('LOAN_STATUS_CANCELLED', '8');
+    define('LOAN_STATUS_UNSUCCESSFUL_LOAN', '9');
+    define('LOAN_STATUS_LOAN_REPAID', '10');
+
     define('LOAN_BIDS_STATUS_OPEN', '1');
     define('LOAN_BIDS_STATUS_ACCEPTED', '2');
     define('LOAN_BIDS_STATUS_REJECTED', '3');

@@ -102,7 +102,7 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 				break;
 		}
 		$withArry	=	array(	"BorModLoan"=>$this->borrowerApplyLoanModel,
-									"classname"=>"fa fa-usd fa-fw user-icon"
+									"classname"=>"fa fa-file-image-o fa-fw"
 								);
 		return view('borrower.borrower-applyloan')
 				->with($withArry);

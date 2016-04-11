@@ -285,11 +285,11 @@
 									<th class="tab-head">{{ Lang::get('borrower-dashboard.loan_refer') }}</th>
 									<th class="tab-head">{{ Lang::get('borrower-dashboard.last_payment') }}</th>
 									<th class="tab-head">{{ Lang::get('borrower-dashboard.next_payment') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.amount_paid') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.interest_rate') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.installments') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.repayment_amount') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.principal_amount') }}</th>
+									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.amount_paid') }}</th>
+									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.interest_rate') }}</th>
+									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.installments') }}</th>
+									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.repayment_amount') }}</th>
+									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.principal_amount') }}</th>
 									<th class="tab-head">{{ Lang::get('borrower-dashboard.lastest_status') }}</th>
 								</tr>
 							</thead>
