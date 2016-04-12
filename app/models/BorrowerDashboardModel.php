@@ -50,10 +50,10 @@ class BorrowerDashboardModel extends TranWrapper {
 												AND	repayment_schedule_date < now()) repayment_status
 									FROM	loans
 									WHERE	borrower_id = {$current_borrower_id}
-									AND		loans.status = 6";
+									AND		loans.status = 7";
 									
 		$loandetails_rs		= 	$this->dbFetchAll($loandetails_sql);
-			
+		
 		if ($loandetails_rs) {
 			foreach ($loandetails_rs as $loanRow) {
 				$newrow = count($this->loan_details);
@@ -82,7 +82,7 @@ class BorrowerDashboardModel extends TranWrapper {
 												loans
 									WHERE  		borrowers.borrower_id = {$current_borrower_id}
 									AND    		borrowers.borrower_id = loans.borrower_id
-									AND			loans.status IN (3,5,6)";
+									AND			loans.status IN (3,5,7)";
 									
 		$current_loans_rs		= 	$this->dbFetchAll($loandetails_sql);
 			

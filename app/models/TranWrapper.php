@@ -314,4 +314,21 @@ class TranWrapper extends MoneyMatchModel {
 		$cnt 	= $this->dbFetchOne($sql);
 		return ($cnt == 0)?false:true;
 	}
+	
+	public function getUseridByBorrowerID($bor_id) {
+		
+		
+		$sql= "	SELECT 	user_id
+				FROM 	borrowers 
+				WHERE 	borrower_id= '".$bor_id."'";
+		
+		$result 	= $this->dbFetchAll($sql);
+		
+		if(isset($result[0])) {
+			$user_id = $result[0]->user_id;
+		}else{
+			$user_id = 0;
+		}
+		return $user_id;
+	}
 }

@@ -46,18 +46,22 @@ class BorrowerProfileModel extends TranWrapper {
 	protected $table 						= 	'borrowers';
 	
 	protected $primaryKey = 'borrower_id';
-	public function getBorrowerDetails() {
+	public function getBorrowerDetails($bor_id=null) {
 		
-		$this->getBorrowerCompanyInfo();
-		$this->getBorrowerDirectorInfo();
-		$this->getBorrowerFinacialRatio();
-		$this->getBorrowerFinacial();
-		$this->processDropDowns();
+		$this->getBorrowerCompanyInfo($bor_id);
+		$this->getBorrowerDirectorInfo($bor_id);
+		$this->getBorrowerFinacialRatio($bor_id);
+		$this->getBorrowerFinacial($bor_id);
+		$this->processDropDowns($bor_id);
 	}
 		
-	public function getBorrowerCompanyInfo() {
+	public function getBorrowerCompanyInfo($bor_id) {
 		
-		$current_user_id	=	 $this->getCurrentuserID();
+		if($bor_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByBorrowerID($bor_id);
+		}
 		
 		$sql= "	SELECT 	borrowers.borrower_id,
 						borrowers.user_id,
@@ -121,9 +125,13 @@ class BorrowerProfileModel extends TranWrapper {
 		}
 	}
 	
-	public function getBorrowerDirectorInfo() {
+	public function getBorrowerDirectorInfo($bor_id) {
 		
-		$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		if($bor_id	==	null){
+			$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		}else{
+					$current_borrower_id	=	$bor_id;
+		}
 		
 		$sql= "	SELECT 	id,
 						borrower_id,
@@ -152,10 +160,14 @@ class BorrowerProfileModel extends TranWrapper {
 		return $result;
 	}
 	
-	public function getBorrowerDirectorList() {
+	public function getBorrowerDirectorList($bor_id) {
 		
 		$directorList			=	array();
-		$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		if($bor_id	==	null){
+			$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		}else{
+			$current_borrower_id	=	$bor_id;
+		}
 		
 		$sql= "	SELECT 	id,
 						borrower_id,
@@ -445,7 +457,7 @@ class BorrowerProfileModel extends TranWrapper {
 		}
 	}
 	
-	public function processDropDowns() {
+	public function processDropDowns($bor_id) {
 		
 		$industry_sql				=	"	SELECT	codelist_id,
 													codelist_code,
@@ -463,15 +475,19 @@ class BorrowerProfileModel extends TranWrapper {
 			}
 		}
 		
-		$this->directorSelectOptions	=	$this->constructSelectOption($this->getBorrowerDirectorList(),
+		$this->directorSelectOptions	=	$this->constructSelectOption($this->getBorrowerDirectorList($bor_id),
 															'name', 'id',"", "");		
 		$this->busin_organSelectOptions	=	$this->constructSelectOption($this->getBusinessOrganisationList(),
 															'bo_name', 'bo_id',$this->bo_id, "");		
 	}
 	
-	public function getBorrowerFinacialRatio() {
+	public function getBorrowerFinacialRatio($bor_id) {
 		
-		$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		if($bor_id	==	null){
+			$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		}else{
+			$current_borrower_id	=	$bor_id;
+		}
 		$finacialRation_rs		= 	 $this->getFinacialRatioList($current_borrower_id);
 			
 		if ($finacialRation_rs) {
@@ -488,9 +504,13 @@ class BorrowerProfileModel extends TranWrapper {
 		return $finacialRation_rs;
 	}
 			
-	public function getBorrowerFinacial() {
+	public function getBorrowerFinacial($bor_id) {
 		
-		$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		if($bor_id	==	null){
+			$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		}else{
+			$current_borrower_id	=	$bor_id;
+		}
 		$finacial_rs			= 	 $this->getFinacialList($current_borrower_id);
 			
 		if ($finacial_rs) {

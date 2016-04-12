@@ -9467,6 +9467,30 @@ table#account-summary, .table-border-custom{
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child{
 	border-radius:0;
 }
+/*******************************Admin Manage Borrower*******************/
+.borrower-admin a {
+    color: #333;
+    text-decoration: none;
+}
+.borrower-admin .table > tbody > tr> td{
+	vertical-align:middle;
+}
+/*******************************ADMIN Manage Bids***********************/
+#bidsummary tbody > tr > td,
+#bidsummary tbody > tr > th{
+	border:none;
+}
+#bidsummary tbody > tr:last-child,
+#bidsummary tbody > tr:nth-last-child(2){
+	border-bottom:none;
+}
+#bidsummary tbody > tr{
+	border-bottom:1px solid #ccc;
+}
+#managebids table{
+	background-color:#fff;
+	border-top: none;
+}
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   

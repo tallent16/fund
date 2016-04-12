@@ -38,6 +38,7 @@ Route::group(['prefix' => ''], function() {
     define('BANK_DETAILS_INACTIVE', '0');
     define('USER_TYPE_BORROWER', '1');
     define('USER_TYPE_INVESTOR', '2');
+    define('USER_TYPE_ADMIN', '3');
     define('USER_STATUS_UNVERIFIED', '1');
     define('USER_STATUS_VERIFIED', '2');
     define('USER_EMAIL_UNVERIFIED', '0');
@@ -82,6 +83,9 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::get('admin/login',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
     
     Route::get('admin/manageborrowers', 'AdminManageBorrowersController@indexAction');
+    Route::get('admin/loanlisting', 'AdminLoanListingController@indexAction');
+    Route::get('admin/managebids', 'AdminManageBidsController@indexAction');
+    Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
 });
 
 // The routes (or pages that are applicable for Borrower Users only

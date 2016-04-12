@@ -25,6 +25,12 @@
 @endsection
 @section('section')   
 		
+		@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+			|| (Auth::user()->usertype	==	USER_TYPE_ADMIN))
+			@var	$canViewCommentsTab	=	"yes"
+		@else
+			@var	$canViewCommentsTab	=	"no"
+		@endif
 		@if($modelBorPrf->borrower_id	==	"")
 			@var	$trantype	=	"add"
 		@else
@@ -103,13 +109,14 @@
 									{{ Lang::get('borrower-profile.bank_info') }}
 								</a>
 							</li>	
-						
-							<li>
-								<a 	data-toggle="tab"
-									href="#comments">
-									{{ Lang::get('COMMENTS') }}
-								</a>
-							</li>	
+							@if($canViewCommentsTab	==	"yes")
+								<li>
+									<a 	data-toggle="tab"
+										href="#comments">
+										{{ Lang::get('COMMENTS') }}
+									</a>
+								</li>	
+							@endif
 						<!--	@if(Auth::user()->username == "admin")-->
 						<!--	@endif		-->			   							
 						</ul>	
@@ -134,10 +141,11 @@
 						<!-----Five Tab content starts----->
 							@include('widgets.borrower.tab.profile_bank_info')
 						<!-----Five Tab content ends----->	
-						
-						<!-----Sixth Tab content starts----->
-							@include('widgets.borrower.tab.profile_comments')
-						<!-----Sixth Tab content ends----->
+						@if($canViewCommentsTab	==	"yes")
+							<!-----Sixth Tab content starts----->
+								@include('widgets.borrower.tab.profile_comments')
+							<!-----Sixth Tab content ends----->
+						@endif
 						
 					</div>	<!---col ends-->	
 				

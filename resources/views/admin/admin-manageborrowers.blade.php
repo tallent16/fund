@@ -6,7 +6,29 @@
 @section('section')  
 @var	$adminBorModel	=	$adminbormodel->borrowerListInfo
 <div class="col-sm-12 space-around">
+	<form action="" method="get">
+		<div class="row">	
+			<div class="col-sm-12 col-lg-3"> 														
+				<div class="form-group"><br>	
+					<strong>{{ Lang::get('Borrower Status') }}</strong>							
+					{{ 
+						Form::select('borrowerstatus_filter',$adminbormodel->filterBorrowerStatusList, 
+										$adminbormodel->filterBorrowerStatusValue,
+										["class" => "selectpicker"]) 
+					}} 
+				</div>
+			</div>
+			<div class="col-sm-12 col-lg-3"> 														
+				<div class="form-group"><br><br>			
+					<button type="submit" class="btn verification-button">
+						{{ Lang::get('borrower-loanlisting.apply_filter') }}			
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</form>
 	<div class="row">
+		
 		<div class="col-lg-12 col-md-12 borrower-admin">
 			<div class="panel panel-primary panel-container">
 				
@@ -36,19 +58,84 @@
 							</thead>
 							<tbody>	
 									@foreach($adminBorModel as $BorRow)
+										@var	$borProUrl	=	url('admin/borrower/profile/')
+										@var	$borProUrl	=	$borProUrl."/".base64_encode($BorRow['borrower_id'])
 										<tr>
 											<td>
 												<div class="checkbox">
 													<label><input type="checkbox" value=""></label>
 												</div>
 											</td>
-											<td>{{$BorRow['email']}}</td>
-											<td>{{$BorRow['business_name']}}</td>
-											<td>{{$BorRow['contact_person']}}</td>
-											<td>{{$BorRow['industry']}}</td>
-											<td class="text-right">{{$BorRow['active_loan']}}</td>
-											<td class="text-right">{{$BorRow['tot_bal_outstanding']}}</td>
-											<td>{{$BorRow['status']}}</td>
+											<td>
+												@if(($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+																|| ($BorRow['status']	==	BORROWER_STATUS_VERIFIED))
+													<a href="{{$borProUrl}}">
+														{{$BorRow['email']}}
+													</a>
+												@else
+													{{$BorRow['email']}}
+												@endif
+											</td>
+											<td>
+												@if(($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+																|| ($BorRow['status']	==	BORROWER_STATUS_VERIFIED))
+													<a href="{{$borProUrl}}">
+														{{$BorRow['business_name']}}
+													</a>
+												@else
+													{{$BorRow['business_name']}}
+												@endif
+											</td>
+											<td>
+												@if(($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+																|| ($BorRow['status']	==	BORROWER_STATUS_VERIFIED))
+												<a href="{{$borProUrl}}">
+													{{$BorRow['contact_person']}}
+												</a>
+												@else
+													{{$BorRow['contact_person']}}
+												@endif
+											</td>
+											<td>
+												@if(($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+																|| ($BorRow['status']	==	BORROWER_STATUS_VERIFIED))
+													<a href="{{$borProUrl}}">
+														{{$BorRow['industry']}}
+													</a>
+												@else
+													{{$BorRow['industry']}}
+												@endif
+											</td>
+											<td class="text-right">
+												@if(($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+																|| ($BorRow['status']	==	BORROWER_STATUS_VERIFIED))
+													<a href="{{$borProUrl}}">
+														{{$BorRow['active_loan']}}
+													</a>
+												@else
+													{{$BorRow['active_loan']}}
+												@endif
+											</td>
+											<td class="text-right">
+												@if(($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+																|| ($BorRow['status']	==	BORROWER_STATUS_VERIFIED))
+													<a href="{{$borProUrl}}">
+														{{$BorRow['tot_bal_outstanding']}}
+													</a>
+												@else
+													{{$BorRow['tot_bal_outstanding']}}
+												@endif
+											</td>
+											<td>
+												@if(($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+																|| ($BorRow['status']	==	BORROWER_STATUS_VERIFIED))
+													<a href="{{$borProUrl}}">
+														{{$BorRow['status']}}
+													</a>
+												@else
+													{{$BorRow['status']}}
+												@endif
+											</td>
 											<td>
 												<ul class="list-unstyled">
 													<li class="dropdown">
@@ -67,8 +154,6 @@
 															</li>
 															<li><a href="#"><i class="fa fa-user fa-fw"></i>{{ Lang::get('Delete') }}</a>
 															</li>
-															<li><a href="#"><i class="fa fa-user fa-fw"></i>{{ Lang::get('View/Edit') }}</a>
-															</li>                     
 														</ul>	
 													</li>
 												</ul>											
@@ -90,7 +175,7 @@
 								<button type="submit" 
 									class="btn verification-button"	>
 									<i class="fa pull-right"></i>
-									{{ Lang::get('Approval')}}
+									{{ Lang::get('Approve')}}
 								</button>
 							<button type="submit" 
 									class="btn verification-button"	>
