@@ -41,6 +41,8 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$industryInfo					= 	array();
 	public 	$finacialRatioInfo 				= 	array();
 	public 	$finacialInfo 					= 	array();
+	public 	$gradeInfo 						= 	array();
+	public 	$commentsInfo 					= 	array();
 	public 	$directorSelectOptions			= 	"";
 	public 	$busin_organSelectOptions		= 	"";
 	protected $table 						= 	'borrowers';
@@ -52,6 +54,7 @@ class BorrowerProfileModel extends TranWrapper {
 		$this->getBorrowerDirectorInfo($bor_id);
 		$this->getBorrowerFinacialRatio($bor_id);
 		$this->getBorrowerFinacial($bor_id);
+		$this->getBorrowerProfileComments($bor_id);
 		$this->processDropDowns($bor_id);
 	}
 		
@@ -100,6 +103,7 @@ class BorrowerProfileModel extends TranWrapper {
 						borrowers.company_image,
 						borrowers.company_image_thumbnail,
 						borrowers.company_video_url,
+						borrowers.borrower_risk_grade grade,
 						borrower_banks.borrower_bankid,
 						borrower_banks.bank_name,
 						borrower_banks.branch_code,
@@ -475,6 +479,23 @@ class BorrowerProfileModel extends TranWrapper {
 			}
 		}
 		
+		$grade_sql					=	"	SELECT	codelist_id,
+													codelist_code,
+													codelist_value,
+													expression
+											FROM	codelist_details
+											WHERE	codelist_id = 20
+											AND		codelist_code!=6";
+											
+		$grade_rs					= 	$this->dbFetchAll($grade_sql);
+		if ($grade_rs) {
+			foreach($grade_rs as $gradeRow) {
+				$gradeRowIndex	=	$gradeRow->codelist_value;
+				$gradeRowvalue	=	$gradeRow->codelist_value;
+				$this->gradeInfo[$gradeRowIndex]	=	$gradeRowvalue;
+			}
+		}
+		
 		$this->directorSelectOptions	=	$this->constructSelectOption($this->getBorrowerDirectorList($bor_id),
 															'name', 'id',"", "");		
 		$this->busin_organSelectOptions	=	$this->constructSelectOption($this->getBusinessOrganisationList(),
@@ -558,4 +579,39 @@ class BorrowerProfileModel extends TranWrapper {
 		}
 		return $finacial_rs;
 	}
+	
+	
+	public function getBorrowerProfileComments($bor_id) {
+		
+		
+		if($bor_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByBorrowerID($bor_id);
+		}
+		
+		$comments_sql	= 	"	SELECT 	profile_comments_id,
+										user_type,
+										user_id,
+										input_tab,
+										comments,
+										comment_status
+								FROM 	profile_comments
+								WHERE	user_id	=	{$current_user_id}";
+				
+		$comments_rs	=	$this->dbFetchAll($comments_sql);	
+		if ($comments_rs) {
+			foreach ($comments_rs as $commentRow) {
+				$newrow = count($this->commentsInfo);
+				$newrow ++;
+				foreach ($commentRow as $colname => $colvalue) {
+					$this->commentsInfo[$newrow][$colname] = $colvalue;
+				}
+			}
+		}else{
+			$comments_rs	=	 array();	
+		}
+		return	$comments_rs;
+	}
+	
 }

@@ -67,6 +67,9 @@ Route::group(['prefix' => ''], function() {
     define('PAYMENT_TRANSCATION_LOAN_REPAYMENT','2');
     define('PAYMENT_TRANSCATION_INVESTOR_DEPOSIT','3');
     define('PAYMENT_TRANSCATION_INVESTOR_WITHDRAWAL','4');
+    define('BORROWER_COMMENT_OPEN','1');
+    define('BORROWER_COMMENT_CLOSED','2');
+    
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
@@ -84,7 +87,9 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     
     Route::get('admin/manageborrowers', 'AdminManageBorrowersController@indexAction');
     Route::get('admin/loanlisting', 'AdminLoanListingController@indexAction');
-    Route::get('admin/managebids', 'AdminManageBidsController@indexAction');
+    Route::get('admin/managebids/{loan_id}', 'AdminManageBidsController@indexAction');
+    Route::get('admin/loanapproval', 'AdminLoanApprovalController@indexAction'); 
+    Route::get('admin/disburseloan', 'AdminDisburseLoanController@indexAction');
     Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
 });
 

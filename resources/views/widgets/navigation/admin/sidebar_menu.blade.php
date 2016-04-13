@@ -15,10 +15,13 @@
 					<a href="{{ url ('admin/loanlisting') }}">{{ Lang::get('Loan Listing') }}</a>
 				</li> 
 				<li>
-					<a href="{{ url ('admin/approvalmode') }}">{{ Lang::get('View Loan in Approval Mode') }}</a>
+					<a href="{{ url ('admin/loanapproval') }}">{{ Lang::get('Loan Approval') }}</a>
 				</li> 
 				<li>
 					<a href="{{ url ('admin/managebids') }}">{{ Lang::get('Manage Bids') }}</a>
+				</li>
+				<li>
+					<a href="{{ url ('admin/disburseloan') }}">{{ Lang::get('Loan Disbursal') }}</a>
 				</li>
 			</ul>
 	</li>

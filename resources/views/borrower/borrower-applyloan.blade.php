@@ -13,8 +13,8 @@
 	<script src="{{ url('js/numeral.min.js') }}"></script>  
 	
 	<script>
-		$(document).ready(function(){			
-			
+		$(document).ready(function(){		
+			 
 			$(".borrower_doc_download").on("click",function(){
 				var	loan_doc_url	=	$(this).attr("data-download-url");
 					loan_doc_url	=	loan_doc_url+"_"+ new Date().getTime();

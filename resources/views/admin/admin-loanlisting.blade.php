@@ -74,7 +74,7 @@
 <div class="row">
 	<div class="col-sm-12"> 
 		<div class="table-responsive applyloan"> 
-			<table class="table tab-fontsize" id="open-close">
+			<table class="table tab-fontsize table-border-custom" id="open-close">
 				<thead>
 					<tr>
 						<th class="tab-head">{{ Lang::get('Loan Reference Number') }}</th>
@@ -155,7 +155,7 @@ $(document).ready(function(){
 	}); 
 	
 	// Add event listener for opening and closing transcation details
-	$(".details-control").click(function() {
+	/*$(".details-control").click(function() {
 		var loan_id = $(this).parent().attr("id");		
 		if($(this).parent().hasClass("shown")){
 			$("#"+loan_id).removeClass("shown");
@@ -165,7 +165,7 @@ $(document).ready(function(){
 			$("#"+loan_id).addClass("shown");
 			$("#tran_row_"+loan_id).show();				
 		}
-	});
+	});*/
         
 }); 
 </script>  

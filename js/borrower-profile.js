@@ -73,10 +73,19 @@ $(document).ready(function (){
 		if($(this).hasClass("disabled"))
             return false;
         if($(this).find("a").attr("href")	==	"#bank_info") {
+			if($("#screen_mode").val()	==	"borrower"){
+				
+				if($("#borrower_status").val()	==	""){
+					$("#next_button").hide();
+					$("#submit_button").show();
+				}
+			}
+		}
+        if($(this).find("a").attr("href")	==	"#comments") {
 			$("#next_button").hide();
 			$("#submit_button").show();
 		}
-    });
+	});
     
 	 $("#next_button").click(function(){
 		callTabValidateFunc();
@@ -168,12 +177,27 @@ function callTabValidateFunc() {
 		if(cur_tab	==	"financial_info") {
 			$('.nav-tabs a[href="#bank_info"]').tab('show');
 			$('a[href="#bank_info"]').parent().removeClass("disabled");
-			$("#next_button").hide();
-			$("#submit_button").show();
+			if($("#screen_mode").val()	==	"borrower"){
+				if($("#borrower_status").val()	==	""){
+					$("#next_button").hide();
+					$("#submit_button").show();
+				}
+			}
 			return true;
 		}
 	}
-
+	if(cur_tab	==	"bank_info") {
+		if($("#screen_mode").val()	==	"borrower"){
+			if($("#borrower_status").val()	==	"corrections_required"){
+				$('.nav-tabs a[href="#comments"]').tab('show');
+				$("#next_button").hide();
+				$("#submit_button").show();
+			}
+		}else{
+			$('.nav-tabs a[href="#comments"]').tab('show');
+			$("#next_button").hide();
+		}
+	}
 }
 function validateTab(cur_tab) {
 	

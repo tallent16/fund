@@ -9199,7 +9199,7 @@ label.input-group-addon.btn {
     text-align: center;
     font-weight: bold;
 }
-#documents_submitted a{
+#documents_submitted a,#loan_details a{
     color: #333;
 }
 /***********************My loans****************************************/
@@ -9475,10 +9475,11 @@ table#account-summary, .table-border-custom{
 .borrower-admin .table > tbody > tr> td{
 	vertical-align:middle;
 }
-/*******************************ADMIN Manage Bids***********************/
+/*******************************Admin Manage Bids***********************/
 #bidsummary tbody > tr > td,
 #bidsummary tbody > tr > th{
 	border:none;
+	vertical-align: middle;
 }
 #bidsummary tbody > tr:last-child,
 #bidsummary tbody > tr:nth-last-child(2){
@@ -9487,9 +9488,12 @@ table#account-summary, .table-border-custom{
 #bidsummary tbody > tr{
 	border-bottom:1px solid #ccc;
 }
-#managebids table{
+#managebids table,#loan_details table{
 	background-color:#fff;
 	border-top: none;
+}
+#loan_details .button-grey{
+	margin: 0 0 5px 0;
 }
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {

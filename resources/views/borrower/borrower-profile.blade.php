@@ -31,10 +31,28 @@
 		@else
 			@var	$canViewCommentsTab	=	"no"
 		@endif
+		@if($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+			@var	$borrower_status	=	"corrections_required"
+		@else
+			@var	$borrower_status	=	""
+		@endif
 		@if($modelBorPrf->borrower_id	==	"")
 			@var	$trantype	=	"add"
 		@else
 			@var	$trantype	=	"edit"
+		@endif
+		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+			{{ '';$modelBorPrf->viewStatus	=	"disabled";''}}
+			@var	$screenMode	=	"admin"
+			@if( ($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) 
+				|| ($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED) )
+				@var	$gradeStatus	=	""
+			@else
+				@var	$gradeStatus	=	"disabled"
+			@endif
+		@else
+			@var	$screenMode	=	"borrower"
+			@var	$gradeStatus	=	"disabled"
 		@endif
 		<!-----Body Content----->
 		<div class="col-sm-12 space-around"> 
@@ -56,17 +74,19 @@
 				</div> 	
 			@endif
 			<!--comments----->
-			@if(!$submitted && $modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="annoucement-msg-container">
-							<div class="alert alert-danger annoucement-msg">
-								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-								{{$modelBorPrf->comments}}
+			@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+				@if(!$submitted && $modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="annoucement-msg-container">
+								<div class="alert alert-danger annoucement-msg">
+									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									{{$modelBorPrf->comments}}
+								</div>
 							</div>
-						</div>
-					</div> 
-				</div> 	
+						</div> 
+					</div> 	
+				@endif
 			@endif
 			<form method="post" id="form-profile" name="form-profile" enctype="multipart/form-data">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -74,6 +94,8 @@
 				<input type="hidden" id="isSaveButton" name="isSaveButton" value="">
 				<input type="hidden" name="borrower_id" value="{{ $modelBorPrf->borrower_id }}">
 				<input type="hidden" name="borrower_bankid" value="{{ $modelBorPrf->borrower_bankid }}">
+				<input type="hidden" id="screen_mode" value="{{$screenMode}}">
+				<input type="hidden" id="borrower_status" value="{{$borrower_status}}">
 				<div class="row">	
 					
 					<div class="col-lg-12 col-md-6 col-xs-12">
@@ -152,14 +174,16 @@
 					<div class="row"> 
 						<div class="col-sm-12"> 
 							<div class="pull-right">
-								@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
-									||	($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) )
-									<button type="submit" 
-											id="save_button"
-										class="btn verification-button" >
-										<i class="fa pull-right"></i>
-										{{ Lang::get('borrower-profile.save_button') }}
-									</button>
+								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+										||	($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) )
+										<button type="submit" 
+												id="save_button"
+											class="btn verification-button" >
+											<i class="fa pull-right"></i>
+											{{ Lang::get('borrower-profile.save_button') }}
+										</button>
+									@endif
 								@endif
 								<button type="button" 
 											id="next_button"
@@ -168,15 +192,16 @@
 										<i class="fa pull-right"></i>
 										{{ Lang::get('Next') }}
 									</button>
-									
-								<button type="submit" 
-										style="display:none"
-										id="submit_button"
-										class="btn verification-button {{$modelBorPrf->viewStatus}}"
-										 {{$modelBorPrf->viewStatus}}>
-									<i class="fa pull-right"></i>
-									{{ Lang::get('borrower-profile.submit_verification') }}
-								</button>
+								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									<button type="submit" 
+											style="display:none"
+											id="submit_button"
+											class="btn verification-button {{$modelBorPrf->viewStatus}}"
+											 {{$modelBorPrf->viewStatus}}>
+										<i class="fa pull-right"></i>
+										{{ Lang::get('borrower-profile.submit_verification') }}
+									</button>
+								@endif
 								
 							</div>
 						</div> 

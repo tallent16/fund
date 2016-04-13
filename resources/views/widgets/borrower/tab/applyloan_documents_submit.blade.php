@@ -16,6 +16,7 @@
 							@if(isset($BorModLoan->submitted_document_details[$documentRowIndex]))
 								@var	$doc_file	=	$BorModLoan->submitted_document_details[$documentRowIndex]
 							@endif
+							
 							<div class="row">
 								<div class="col-sm-6">
 									{{ $i.". ".$documentRow['short_name']}}
@@ -24,15 +25,15 @@
 										title="{{ $documentRow['doc_name'] }}">
 										<i class="fa fa-question"></i></a>
 								</div>
-								<div class="col-sm-5" id="documents_{{$i}}_parent">
-										<input 	type="hidden" 
-												name="document_ids[]"
-												value="{{$documentRowIndex}}">
+								<div class="col-sm-5" id="documents_{{$i}}_parent">										
 										<input 	type="file" 
 												class="jfilestyle required" 
 												data-buttonBefore="true" 
 												name="documents[]"
 												id="documents_{{$i}}">	
+										<input 	type="hidden" 
+												name="document_ids[]"
+												value="{{$documentRowIndex}}">
 										<input 	type="hidden" 
 												id="documents_{{$i}}_hidden"
 												value="{{$doc_file}}">	
