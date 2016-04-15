@@ -24,6 +24,8 @@ Route::group(['prefix' => ''], function() {
     define('BORROWER_STATUS_APPROVED','4');
     define('BORROWER_STATUS_COMMENTS_ON_ADMIN','3');
     define('BORROWER_STATUS_VERIFIED','4');
+    define('BORROWER_STATUS_DELETED','5');
+    define('BORROWER_STATUS_REJECTED','6');
     define('BORROWER_BANK_STATUS_VERIFIED','2');
     define('BORROWER_BANK_STATUS_UNVERIFIED','1');
     define('REPAYMENT_TYPE_ONE_TIME', '1');
@@ -87,10 +89,15 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     
     Route::get('admin/manageborrowers', 'AdminManageBorrowersController@indexAction');
     Route::get('admin/loanlisting', 'AdminLoanListingController@indexAction');
-    Route::get('admin/managebids/{loan_id}', 'AdminManageBidsController@indexAction');
-    Route::get('admin/loanapproval', 'AdminLoanApprovalController@indexAction'); 
-    Route::get('admin/disburseloan', 'AdminDisburseLoanController@indexAction');
+    Route::get('admin/managebids/{loan_id}', 'AdminManageBidsController@getLoanDetailsAction');
+    Route::post('admin/bidclose', 'AdminManageBidsController@bidCloseAction');
+    Route::post('admin/bidaccept', 'AdminManageBidsController@acceptBidsAction');
+    Route::post('admin/loancancel', 'AdminManageBidsController@loanCancelAction');
+    Route::post('admin/loanapproval', 'AdminLoanApprovalController@indexAction'); 
+    Route::post('admin/disburseloan', 'AdminDisburseLoanController@indexAction');
     Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
+    Route::get('admin/borrower/updateprofile/{status}/{bor_id}', 'AdminManageBorrowersController@updateProfileStatusAction');
+    Route::post('admin/borrower/updateprofile', 'AdminManageBorrowersController@updateBulkProfileStatusAction');
 });
 
 // The routes (or pages that are applicable for Borrower Users only

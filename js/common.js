@@ -96,21 +96,68 @@ function onBlurNumberField($thisField) {
 }
 function showDialog($title, $message) {
 	
-	$title = "Money Match Management System";
+	$title = "Fund Yourselves Now";
 	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
 						
 	$('body').append(htmlelement);
 	
 	$( "#dialog-message" ).dialog({
-      modal: true,
-      buttons: {
-        Ok: function() {
-		  $( this ).dialog( "close" );
-          $( this ).dialog( "destroy" );
-          $( this ).remove();
-        }
-      }
+		modal: true,
+		buttons: {
+			Ok: function() {
+			$( this ).dialog( "close" );
+			$( this ).dialog( "destroy" );
+			$( this ).remove();
+			}
+		}
     });
-	
+}
 
+function showDialogWithOkCancel($title, $message, $callback) {
+	$title = "Fund Yourselves Now";
+	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
+	$('body').append(htmlelement);
+
+	var buttonClicked = false;
+	var retval = 1;
+	$( "#dialog-message" ).dialog({
+		modal: true,
+		buttons: [
+				{
+					text: "Ok",
+					click: function() {
+						$( this ).dialog( "close" );
+						$( this ).dialog( "destroy");
+						$( this ).remove();
+						window[$callback] (1);
+						
+				}
+				},
+				{
+					text: "Cancel",
+					click: function() {
+						$( this ).dialog( "close" );
+						$( this ).dialog( "destroy" );
+						$( this ).remove();
+						window[$callback] (-1);
+					}
+				}
+				]
+	});
+	
+}
+
+function checkall_list(obj,classname){
+
+	if(obj.checked) { 
+		
+		$('.'+classname).each(function() { 
+			this.checked = true; 
+		});
+	}else{
+		
+		$('.'+classname).each(function() { 
+			this.checked = false;                       
+		});         
+	}
 }

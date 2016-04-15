@@ -159,7 +159,7 @@ $('.date-picker').datetimepicker({
 				</div><!----row--->
 				
 				<div class="row">		
-					<div class="col-xs-12">
+					<div class="col-xs-12 space-around">
 						<button type="button" class="btn verification-button">
 							Disburse Loan</button>
 					</div>

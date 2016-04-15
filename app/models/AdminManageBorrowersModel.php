@@ -43,7 +43,13 @@ class AdminManageBorrowersModel extends TranWrapper {
 												AND		repayment_status != :repaidStatus 
 												AND 	borrowers.borrower_id = borrower_repayment_schedule.borrower_id 
 											) tot_bal_outstanding, 
-											borrowers.status
+											case borrowers.status 
+												   when 1 then 'New profile' 
+												   when 2 then 'Submitted for verification'
+												   when 3 then 'Corrections required'
+												   when 4 then 'Verified'
+											end as statusText,
+											borrowers.status 
 									FROM 	borrowers, 
 											loans lns, 
 											users 

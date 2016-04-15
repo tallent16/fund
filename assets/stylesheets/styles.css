@@ -2271,11 +2271,11 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.42857143;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #ddd;
 }
 .table > thead > tr > th {
-  vertical-align: bottom;
+  vertical-align: middle;
   border-bottom: 2px solid #ddd;
 }
 .table > caption + thead > tr:first-child > th,
@@ -2330,7 +2330,7 @@ table td[class*="col-"],
 table th[class*="col-"] {
   position: static;
   display: table-cell;
-  float: none;
+  float: none; 
 }
 .table > thead > tr > td.active,
 .table > tbody > tr > td.active,
@@ -8981,7 +8981,7 @@ canvas.round {
 .input-required::after {
     content: "*";
     color: red;
-}
+}/*
 .tooltip{
     display: inline;
     position: relative;
@@ -8998,7 +8998,7 @@ canvas.round {
     position: absolute;
     z-index: 98;
     width: 220px;
-}
+}*/
 .annoucement-msg-container,
 .directorinfo .pagination,
 .bankdet-pagi .pagination{
@@ -9475,14 +9475,20 @@ table#account-summary, .table-border-custom{
 .borrower-admin .table > tbody > tr> td{
 	vertical-align:middle;
 }
+.disable-indication {
+	background-color: #999;
+}
+.disabled {
+	cursor: default;
+	pointer-events: none;
+}
 /*******************************Admin Manage Bids***********************/
 #bidsummary tbody > tr > td,
 #bidsummary tbody > tr > th{
 	border:none;
 	vertical-align: middle;
 }
-#bidsummary tbody > tr:last-child,
-#bidsummary tbody > tr:nth-last-child(2){
+#bidsummary tbody > tr:last-child{
 	border-bottom:none;
 }
 #bidsummary tbody > tr{
@@ -9508,6 +9514,11 @@ table#account-summary, .table-border-custom{
 	}
 	table.table.tab-label {   
 		margin: 30% 0 0 0;
+	}	
+}
+@media (min-width:1280px) and (max-width:1920px) {
+	.borrower-admin .table-responsive{
+		overflow:visible;
 	}
 }
 @media(max-width:1280px) {
@@ -9563,5 +9574,9 @@ table#account-summary, .table-border-custom{
 	}	
 	.loan-list-image .imageoverlap {
 		width: 50%;
+	}
+	.table-responsive {
+		border:none;
+		overflow-y: auto;
 	}
 }

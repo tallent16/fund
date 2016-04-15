@@ -26,14 +26,14 @@
 														name="finacialRatio_row[ratio_id][]"
 														value="{{$i}}"
 														class="form-control text-right"
-													
+														{{ $modelBorPrf->viewStatus }}
 														/>
 												<input 	type="hidden" 
 														id="ratio_name_{{$i}}" 
 														name="finacialRatio_row[ratio_name][]"
 														value="{{$finRatioRow['ratio_name']}}"
 														class="form-control text-right"
-														
+														{{ $modelBorPrf->viewStatus }}
 														/>
 											</td>
 											<td id="previous_ratio_{{$i}}_parent">
@@ -83,12 +83,14 @@
 														name="finacial_row[indicator_id][]"
 														value="{{$i}}"
 														class="form-control"
+														{{ $modelBorPrf->viewStatus }}
 														/>
 												<input 	type="hidden" 
 														id="indicator_name_{{$i}}" 
 														name="finacial_row[indicator_name][]"
 														value="{{$finacialRow['indicator_name']}}"
 														class="form-control"
+														{{ $modelBorPrf->viewStatus }}
 														/>
 														
 											</td>

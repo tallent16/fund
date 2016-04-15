@@ -331,4 +331,53 @@ class TranWrapper extends MoneyMatchModel {
 		}
 		return $user_id;
 	}
+	
+	public function CheckBorrowerExists($bor_id)	{
+		
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	borrowers 
+					WHERE 	borrower_id = '".$bor_id."'";
+		$cnt 	=	$this->dbFetchOne($sql);
+		return ($cnt == 0)?false:true;
+	}
+	
+	public function getBorrowerProfileStatus($bor_id) {
+		
+		
+		$sql= "	SELECT 	status
+				FROM 	borrowers 
+				WHERE 	borrower_id= '".$bor_id."'";
+		
+		$result 	= $this->dbFetchAll($sql);
+		
+		if(isset($result[0])) {
+			$status = $result[0]->status;
+		}else{
+			$status = 0;
+		}
+		return $status;
+	}
+	
+	public function getBorrowerActiveLoanStatus($bor_id) {
+		
+		$argArray		=	[
+							"approved" => LOAN_STATUS_APPROVED,
+							"closed" => LOAN_STATUS_CLOSED_FOR_BIDS,
+							"disbursed" => LOAN_STATUS_DISBURSED,
+							"repaid" 	=> LOAN_STATUS_LOAN_REPAID
+							];
+		$activeloan_sql	= "	SELECT 	COUNT(loans.loan_id) active_loan
+							FROM 	loans 
+							WHERE 	loans.status IN (:approved, :closed,:disbursed,:repaid)
+							AND 	loans.borrower_id = lns.borrower_id";
+		
+		$result 		= 	$this->dbFetchWithParam($activeloan_sql,$argArray);
+		
+		if(isset($result[0])) {
+			$active_loan = $result[0]->active_loan;
+		}else{
+			$active_loan = 0;
+		}
+		return $active_loan;
+	}
 }

@@ -45,6 +45,7 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$commentsInfo 					= 	array();
 	public 	$directorSelectOptions			= 	"";
 	public 	$busin_organSelectOptions		= 	"";
+	public 	$comments_count					= 	0;
 	protected $table 						= 	'borrowers';
 	
 	protected $primaryKey = 'borrower_id';
@@ -55,6 +56,7 @@ class BorrowerProfileModel extends TranWrapper {
 		$this->getBorrowerFinacialRatio($bor_id);
 		$this->getBorrowerFinacial($bor_id);
 		$this->getBorrowerProfileComments($bor_id);
+		$this->getOpenCommentsCount($bor_id);
 		$this->processDropDowns($bor_id);
 	}
 		
@@ -147,7 +149,7 @@ class BorrowerProfileModel extends TranWrapper {
 						accomplishments,
 						directors_profile
 				FROM 	borrower_directors
-				WHERE	borrower_id	=	{$current_borrower_id}";
+				WHERE	borrower_id	='".$current_borrower_id."'";
 		
 		
 		$result		= $this->dbFetchAll($sql);
@@ -183,7 +185,7 @@ class BorrowerProfileModel extends TranWrapper {
 						accomplishments,
 						directors_profile
 				FROM 	borrower_directors
-				WHERE	borrower_id	=	{$current_borrower_id}";
+				WHERE	borrower_id	='".$current_borrower_id."'";
 		
 		
 		$dir_rs		= $this->dbFetchAll($sql);
@@ -580,7 +582,6 @@ class BorrowerProfileModel extends TranWrapper {
 		return $finacial_rs;
 	}
 	
-	
 	public function getBorrowerProfileComments($bor_id) {
 		
 		
@@ -612,6 +613,92 @@ class BorrowerProfileModel extends TranWrapper {
 			$comments_rs	=	 array();	
 		}
 		return	$comments_rs;
+	}
+	
+	public function getOpenCommentsCount($bor_id) {
+		
+		
+		if($bor_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByBorrowerID($bor_id);
+		}
+		
+		$comments_sql			= 	"	SELECT 	count(profile_comments_id) cnt
+										FROM 	profile_comments
+										WHERE	user_id	=	{$current_user_id}
+										AND		comment_status	=".BORROWER_COMMENT_OPEN;
+				
+		$this->comments_count	=	$this->dbFetchOne($comments_sql);	
+	}
+	
+	public function saveComments($commentRows,$borrowerId) {
+		
+		$numRows = count($commentRows['input_tab']);
+		$rowIndex = 0;
+		$userID		=	$this->getUseridByBorrowerID($borrowerId);
+		$userType	=	USER_TYPE_BORROWER;
+		if($numRows	>	0){
+			$whereArry		=	array("user_id" => $userID);
+			$this->dbDelete("profile_comments",$whereArry);
+			
+			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+				
+				$comments					= $commentRows['comments'][$rowIndex];
+				$input_tab					= $commentRows['input_tab'][$rowIndex];
+				$comment_status				= $commentRows['comment_status_hidden'][$rowIndex];
+				
+				// Construct the data array
+				$dataArray = array(	
+								'user_type' 				=> $userType,
+								'user_id'					=> $userID,
+								'input_tab'	 				=> $input_tab,
+								'comments'					=> $comments,
+								'comment_status'			=> $comment_status,
+								'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));		
+								
+				
+				// Insert the rows (for all types of transaction)
+				$result =  $this->dbInsert('profile_comments', $dataArray, true);
+				if ($result < 0) {
+					return -1;
+				}
+			}
+		}
+		return 1;
+	}
+	
+	public function updateBorrowerGrade($postArray,$borrowerId) {
+		
+		$dataArray = array(	'borrower_risk_grade' 	=>	$postArray['grade'] );
+		$whereArry	=	array("borrower_id" =>"{$borrowerId}");
+		$this->dbUpdate('borrowers', $dataArray, $whereArry);
+		return $borrowerId;
+	}
+	
+	public function updateBorrowerStatus($dataArray,$borrowerId) {
+		
+		$whereArry	=	array("borrower_id" =>"{$borrowerId}");
+		$this->dbUpdate('borrowers', $dataArray, $whereArry);
+		return $borrowerId;
+	}
+	
+	public function updateBulkBorrowerStatus($postArray,$processType) {
+		
+		switch($processType){
+			case	"approve":
+					$dataArray = array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
+					break;
+			case	"delete":
+					$dataArray = array(	'status' 	=>	BORROWER_STATUS_DELETED );
+					break;
+			case	"reject":
+					$dataArray = array(	'status' 	=>	BORROWER_STATUS_REJECTED );
+					break;
+		}
+		foreach($postArray['borrower_ids'] as $borRow) {
+			$this->updateBorrowerStatus($dataArray,$borRow);
+		}
 	}
 	
 }

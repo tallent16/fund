@@ -42,7 +42,8 @@
 	</div>	
 		
 	<div class="col-sm-12">
-		<div class="row">
+		
+		<div class="row">			
 			<div class="col-sm-9">
 				Short name
 				<a 	href="#" 
@@ -64,6 +65,7 @@
 					{{ Lang::get('Available') }}														
 			</div>
 		</div>		
+		
 		<div class="row">
 			<div class="col-sm-9">
 				Short name
@@ -86,12 +88,13 @@
 					{{ Lang::get('Available') }}														
 			</div>
 		</div>		
+		
 		<div class="row">
 			<div class="col-sm-9">
-				Short name
+			Short name
 				<a 	href="#" 
 					data-toggle="tooltip" data-placement="top" 
-					title="full test">
+					title="full test">	
 					<i class="fa fa-question"></i></a>
 			</div>
 			<div class="col-sm-2 text-right" id="documents_parent">					
@@ -107,7 +110,7 @@
 			<div class="col-sm-1 text-right">				
 					{{ Lang::get('Available') }}														
 			</div>
-		</div>							
+		</div>	
 		
 	</div>	
 

@@ -97,7 +97,7 @@
 								<td class="text-right">3</td>
 								<td>Closed</td>
 								<td>12-04-2016</td>
-								<td>Disturbed</td>
+								<td>Disbursed</td>
 							</tr>
 							<tr class="odd" id="12" role="row">								
 								<td>L-125465</td>
@@ -107,7 +107,7 @@
 								<td class="text-right">3</td>
 								<td>Closed</td>
 								<td>12-04-2016</td>
-								<td>Disturbed</td>
+								<td>Disbursed</td>
 							</tr>
 							<tr class="odd" id="13" role="row">								
 								<td>L-125465</td>
@@ -117,7 +117,7 @@
 								<td class="text-right">3</td>
 								<td>Closed</td>
 								<td>12-04-2016</td>
-								<td>Disturbed</td>
+								<td>Disbursed</td>
 							</tr>
 					
 				</tbody>

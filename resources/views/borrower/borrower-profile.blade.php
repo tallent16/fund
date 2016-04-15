@@ -24,6 +24,10 @@
 		<h4><span class="label label-default status-label">{{$modelBorPrf->statusText}}</span></h4>							
 @endsection
 @section('section')   
+		@var	$inputTabInfo	=	array("company info"=>"company info","director info"=>"director info")
+		@var	$inputTabInfo["profile info"]	=	"profile info"
+		@var	$inputTabInfo["finacial info"]	=	"finacial info"
+		@var	$inputTabInfo["bank info"]		=	"bank info"
 		
 		@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
 			|| (Auth::user()->usertype	==	USER_TYPE_ADMIN))
@@ -49,6 +53,11 @@
 				@var	$gradeStatus	=	""
 			@else
 				@var	$gradeStatus	=	"disabled"
+			@endif
+			@if( ($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL))
+					@var	$commentButtonsVisibe	=	""
+			@else
+					@var	$commentButtonsVisibe	=	"disabled"
 			@endif
 		@else
 			@var	$screenMode	=	"borrower"
@@ -89,13 +98,14 @@
 				@endif
 			@endif
 			<form method="post" id="form-profile" name="form-profile" enctype="multipart/form-data">
-				<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="trantype" value="{{ $trantype }}">
 				<input type="hidden" id="isSaveButton" name="isSaveButton" value="">
 				<input type="hidden" name="borrower_id" value="{{ $modelBorPrf->borrower_id }}">
 				<input type="hidden" name="borrower_bankid" value="{{ $modelBorPrf->borrower_bankid }}">
 				<input type="hidden" id="screen_mode" value="{{$screenMode}}">
 				<input type="hidden" id="borrower_status" value="{{$borrower_status}}">
+				<input type="hidden" name="admin_process" id="admin_process" value="">
 				<div class="row">	
 					
 					<div class="col-lg-12 col-md-6 col-xs-12">
@@ -203,6 +213,20 @@
 									</button>
 								@endif
 								
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+										@if($modelBorPrf->comments_count	>	0)
+											<button type="button"
+													id="returnback_button"
+													style="display:none"
+													class="btn verification-button"
+												<i class="fa pull-right"></i>
+												{{ Lang::get('Return to Borrower') }}
+											</button>
+										@endif
+									@endif
+								@endif
+								
 							</div>
 						</div> 
 					</div> 
@@ -213,6 +237,7 @@
  </div>
 <div style="display:none">
 <input type="hidden" id="max_director" value= "{{ count($modelBorPrf->director_details) }}" />
+<input type="hidden" id="max_comment" value= "{{ count($modelBorPrf->commentsInfo) }}" />
 	<div  id="directorTemplate">
 		<div id="XXX" class="dir-list">
 			<div class="table-responsive">
@@ -295,6 +320,47 @@
 			</table></div>
 		</div>
 	</div>
+	<div id="commentTemplate">
+		<div class="row" id="comment-row-XXX">
+			<div class="col-xs-12 space-around">
+				<div class="col-xs-1">
+					<input 	type="checkbox" 
+							name="comment_row[comment_id][]" 
+							id="comment_id_XXX"
+							data-row-id="XXX"
+							class="select_comment"
+							value=""><br>
+				</div>
+				
+				<div class="col-xs-4">
+					{{ Form::select('comment_row[input_tab][]',$inputTabInfo,'' , 
+											['class' => 'inputTabDropDown text-right required',
+											'id'=>'input_tab_XXX']) 
+					}}
+				</div>
+				<div class="col-xs-5" id="comments_XXX_parent">
+					<textarea 	rows="4" 
+								cols="50" 
+								class="form-control"
+								name="comment_row[comments][]" 
+								id="comments_XXX"
+								></textarea>
+				</div>
+				<div class="col-xs-2 text-right">
+					<input 	type="checkbox" 
+							name="comment_row[comment_status][]" 
+							id="comment_status_XXX"
+							class="commentClass"
+							>
+					<input 	type="hidden" 
+							name="comment_row[comment_status_hidden][]" 
+							id="comment_status_hidden_XXX"
+							value="1">
+				</div>
+			</div>
+		</div>
+	</div>
+	<form action="" method="post" id="form-comment"></form>
 </div>
 
   @endsection  
