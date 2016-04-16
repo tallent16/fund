@@ -109,6 +109,12 @@ $(document).ready(function (){
 					event.preventDefault();
 				if(validateTab("bank_info"))
 					event.preventDefault();
+				if($("#borrower_status").val()	==	"corrections_required") {
+					if(checkAdminAllCommentsClosed()){
+						showDialog("","Please close the corrections and submit again for approval");
+						event.preventDefault();
+					}
+				}
 				$("#next_button").hide();
 				$("#submit_button").show();
 			}
@@ -413,4 +419,15 @@ function delCommentRow(){
 				$("#comment-row-"+rowID).remove();
 		});
 	}
+}
+/* 	This function check the all comments are closed if yes 
+ * borrower allow to submit for approval
+*/ 
+function checkAdminAllCommentsClosed(){
+	var	no_of_comments			=	$(".commentClass:not(#comment_status_XXX)").length;
+	var	no_of_checked_comments	=	$(".commentClass:not(#comment_status_XXX):checked").length;
+	//~ alert("no_of_comments:"+no_of_comments+" | no_of_checked_comments:"+no_of_checked_comments);
+	if(no_of_comments	!=	no_of_checked_comments)
+		return true;
+	return false;
 }

@@ -33,6 +33,8 @@ class AdminManageBidsController extends MoneyMatchController {
 	public function acceptBidsAction() {
 		$loan_id = $_REQUEST['loan_id'];
 
+		$retval = $this->bidsModel->acceptBids($loan_id);
+		
 		$this->bidsModel->getLoanBids($loan_id);
 		return view('admin.admin-managebids')->with(["bidsModel" => $this->bidsModel]);
 

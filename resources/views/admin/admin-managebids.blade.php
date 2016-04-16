@@ -15,60 +15,151 @@
 			<input type="hidden" name="loan_id" value="{{$bidsModel->loan_id}}" />
 			<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 			<div class="panel-body applyloan"><!--panel body-->					
+				<!-- Hidden Variables -->
+				<input 	type="hidden" id="partial_sub_allowed" 
+						value="{{$bidsModel->partial_sub_allowed}}"/>
 				
+				<input 	type="hidden" id="loan_apply_amount" 
+						value="{{$bidsModel->apply_amount}}"/>
+
+				<input type="hidden" id="min_for_partial_sub" 
+						value="{{$bidsModel->min_for_partial_sub}}"/>
+				
+				<input type="hidden" id="loan_status" 
+						value="{{$bidsModel->loan_status}}"/>
+
+				<input type="hidden" name="final_interest_rate" id="wt_avg_int"/>
+
+				<!-- End of Hidden Variables -->
+
 				<div class="col-sm-12" id="managebids"><!--col-sm-12-->	
-									
 					<div class="row"><!--row--1-->
-						
 						<div class="table-responsive">
 							<table class="table table-bordered .tab-fontsize text-left" id="loandetails">		
 								<tbody>
 									<tr>
-										<td class="tab-left-head col-sm-3">Purpose of Loan</td>
-										<td class="col-sm-3">{{$bidsModel->purpose_singleline}}</td>
-										<td class="tab-left-head col-sm-3">Bid Close Date</td>
-										<td class="col-sm-3">{{$bidsModel->bid_close_date}}
-										</td>																				  
+										<td class="tab-left-head col-sm-3">
+											{{Lang::get('Loan Reference Number')}}
+										</td>	
+
+										<td>
+											{{$bidsModel->loan_reference_number}}
+										</td>
+
+										<td class="tab-left-head col-sm-3">
+											{{Lang::get('Loan Amount')}}
+										</td>
+
+										<td>
+											{{number_format($bidsModel->apply_amount, 2, ".", ",")}}
+										</td>
+
 									</tr>
 									
 									<tr>
-										<td class="tab-left-head">Loan Amount</td>
-										<td>{{number_format($bidsModel->apply_amount, 2, ".", ",")}}
-										<input type="hidden" id="loan_apply_amount" value="{{$bidsModel->apply_amount}}"/>
+										<td class="tab-left-head col-sm-3">
+											{{Lang::get('Apply Date')}}
 										</td>
-										<td class="tab-left-head">Accept Partial Subscription</td>								
-										<td>{{($bidsModel->partial_sub_allowed == 1)?
+										
+										<td class="col-sm-3">
+											{{$bidsModel->apply_date}}
+										</td>
+										
+										<td class="tab-left-head col-sm-3">
+											{{Lang::get('Bid Close Date')}}
+										</td>
+										
+										<td class="col-sm-3">
+											{{$bidsModel->bid_close_date}}
+										</td>		  
+									</tr>
+
+									<tr>
+										<td class="tab-left-head col-sm-3">
+											{{Lang::get('Purpose of Loan')}}
+										</td>
+										
+										<td class="col-sm-3">
+											{{$bidsModel->purpose_singleline}}
+										</td>
+
+										<td class="tab-left-head col-sm-3">
+											{{Lang::get('Tenure of Loan')}}
+										</td>
+											
+										<td class="col-sm-3">
+											{{$bidsModel->loan_tenure}}
+										</td>
+									</tr>
+									
+									<tr>
+										<td class="tab-left-head">
+											{{Lang::get('Accept Partial Funding')}}
+										</td>								
+										
+										<td>
+											{{($bidsModel->partial_sub_allowed == 1)?
 											Lang::get('Yes'):Lang::get('No')}}
-											<input type="hidden" id="partial_sub_allowed" 
-											value="{{$bidsModel->partial_sub_allowed}}"/>
 										</td>
+										
+										<td class="tab-left-head">
+											{{Lang::get('Minimum Funding')}}
+										</td>
+										
+										<td>
+											{{number_format($bidsModel->min_for_partial_sub, 2, ".", ",")}}
+										</td>
+										
 									</tr>
+									
 									<tr>
-										<td class="tab-left-head">Tenure of Loan</td></td>	
-										<td>{{$bidsModel->loan_tenure}}</td>
-										<td class="tab-left-head">Minimum Limit For Partial Subscription</td>								
-										<td>{{number_format($bidsModel->min_for_partial_sub, 2, ".", ",")}}
-										<input type="hidden" id="min_for_partial_sub" 
-										value="{{$bidsModel->min_for_partial_sub}}"/>
-										</td>					
+										<td class="tab-left-head">
+											{{Lang::get('Target Interest %')}}
+										</td>	
+										
+										<td>
+											{{number_format($bidsModel->target_interest, 2, ".", ",")}}
+										</td>
+										
+										<td class="tab-left-head">
+											{{Lang::get('Final Interest %')}}
+										</td>	
+										
+										<td class="col-sm-3" id="final_interest_rate">
+											{{number_format($bidsModel->final_interest_rate, 2, ".", ",")}}
+										</td>
+
 									</tr>
+									
 									<tr>
-										<td class="tab-left-head">Target Interest%</td>	
-										<td>{{number_format($bidsModel->target_interest, 2, ".", ",")}}</td>
-										<td class="tab-left-head">Payment Type</td>								
-										<td>{{Lang::get($bidsModel->repayment_type)}}</td>						
-									</tr>
-									<tr>
-										<td class="tab-left-head">Loan Reference Number</td>	
-										<td>{{$bidsModel->loan_reference_number}}</td>
-										<td class="tab-left-head">Status</td>								
-										<td>{{Lang::get($bidsModel->loan_status_text)}}
-										<input type="hidden" id="loan_status" value="{{$bidsModel->loan_status}}"/>
-										</td>					
+
+										<td class="tab-left-head">
+											{{Lang::get('Payment Type')}}
+										</td>								
+										
+										<td>
+											{{Lang::get($bidsModel->repayment_type)}}
+										</td>						
+
+										<td class="tab-left-head">
+											{{Lang::get('Bid Type')}}
+										</td>								
+
+										<td class="col-sm-3">
+											{{Lang::get($bidsModel->bid_type)}}
+										</td>										
+										
 									</tr>	
 									<tr>
-										<td class="tab-left-head">Bid Type</td>								
-										<td class="col-sm-3">{{Lang::get($bidsModel->bid_type)}}</td>												
+										<td class="tab-left-head">
+											{{Lang::get('Loan Status')}}
+										</td>								
+
+										<td>
+											{{Lang::get($bidsModel->loan_status_text)}}
+										</td>					
+
+												
 									</tr>				
 								</tbody>
 							</table>
@@ -92,9 +183,14 @@
 											{{Lang::get('Accepted Amount')}}</th>
 									</tr>
 									<?php $total_accepted_amount = 0;
-									$rownum = 1;
+									$rownum = 0;
 									?>
 									@foreach($bidsModel->loanBids as $loanbidRow)
+										<?php 
+											$total_accepted_amount = $total_accepted_amount + 
+																		$loanbidRow->accepted_amount; 
+											$rownum++;							
+										?>
 										<tr>
 											<td class="col-sm-4 text-left">
 												{{$loanbidRow->username}}
@@ -120,32 +216,32 @@
 												<input 	name="accepted_amount[{{$loanbidRow->investor_id}}]" 
 														id="accepted_amount_{{$rownum}}"
 														rownum="{{$rownum}}"
+														decimal="2"
 														value=
 														"{{number_format($loanbidRow->accepted_amount, 2, '.',',')}}"
+														
 														type="text" 
-														onchange="accepted_amount_changed()"
 														class="form-control text-right accepted_amount" 
+														
 														{{($bidsModel->loan_status==LOAN_STATUS_CLOSED_FOR_BIDS)?
-															'':'disabled'}}
-												/>
+															'':'disabled'}}/>
+												
 											</td>	
 										</tr>
 									@endforeach
 										<tr>
-											<td class="col-sm-6 text-right" colspan=3>
+											<td class="col-sm-6 text-right" colspan=4>
 												{{Lang::get("Total")}}
 											</td>
 											
 											<td class="col-sm-2 text-right">
 												<input type="text"
 														class="form-control text-right"
-														id="wt_avg_int"/>
-											</td>
-											
-											<td class="col-sm-2 text-right">
-												<input type="text"
-														class="form-control text-right"
-														id="total_accepted_amount"/>
+														id="total_accepted_amount"
+														value="{{number_format($total_accepted_amount, 2, '.', ',')}}"
+														
+														disabled
+														/>
 											</td>
 												
 										
@@ -203,26 +299,67 @@
 	var formValid = false;
 	
 	$(document).ready(function() {
-		accepted_amount_changed();
+		// The Weighted average interest is not stored in DB till the loan is accepted
+		// For simplicity, we are calculating the Wt Average Interest each time this page loads
+		calcAvgInterest();
+		
+		$(".accepted_amount").on("focus", function() {
+			onFocusNumberField(this);
+		})
+		
+		$(".accepted_amount").on("blur", function() {
+			onBlurNumberField(this)
+		})
+		
+		$(".accepted_amount").on("change", function() {
+			// When the accepted amount is changed, check whether the total accepted
+			// amount is greater than the loan apply amount
+			var this_accept_amt 	= numeral($(this).val()).value();
+			var rownum 				= $(this).attr("rownum");
+			var this_bid_amt		= numeral($("#bid_amount_"+rownum).val()).value()
+			var	apply_amount 		= numeral($("#loan_apply_amount").val()).value();
+			var loan_accept_amt 	= 0;
+			
+			if (this_accept_amt > this_bid_amt) {
+				showDialog("", "{{Lang::get('Acccepted amount cannot be more than the Bid Amount')}}");
+				$(this).val("0.00");
+				return;
+			}
+
+			$(".accepted_amount").each (function() {
+				bid_accepted_amount	= numeral($(this).val()).value();
+				loan_accept_amt	+= bid_accepted_amount;
+			})		
+
+			if (loan_accept_amt > apply_amount) {
+				showDialog("", "{{Lang::get('Total acccepted amount cannot be more than the Loan Applied Amount')}}");
+				$(this).val("0.00");
+				return;
+			}
+			$("#total_accepted_amount").val(numeral(loan_accept_amt).format("0,000.00"))
+			calcAvgInterest();
+		})
 		
 	})
 	
 	$("form").submit(function(event) {
+		// This function is called when the form is submitted, after the button clicked event function
+		// of each button is called. The button clicked event holds the validation for the respective
+		// actions. The global variable formValid is updated in these functions
 		if (!formValid) 
 			event.preventDefault();
 
 	})
 
-
 	function bidCloseClicked() {
 		var bid_amount = 0;
 		$(".bid_amount").each (function() {
-			bid_amount = bid_amount + Number($(this).val().valueOf());
+			bid_amount = bid_amount + numeral($(this).val()).value();
 		})
 		
 		if (Number($("#loan_apply_amount").val()) > bid_amount) {
-			if (Number($("#partial_sub_allowed").val()) == 1) {
-				if (Number($("#min_for_partial_sub").val()) > bid_amount) {
+			if (numeral($("#partial_sub_allowed").val()).value() == 1) {
+				if (numeral($("#min_for_partial_sub").val()).value() > bid_amount) {
 					showDialog("", "{{Lang::get('Loan has not been sufficiently subscribed. Cannot close bids')}}");
 					formValid = false;
 				} else {
@@ -240,12 +377,12 @@
 	function acceptBidClicked() {
 		var accepted_amount = 0;
 		$(".accepted_amount").each (function() {
-			accepted_amount = accepted_amount + Number($(this).val().valueOf());
+			accepted_amount = accepted_amount + numeral($(this).val()).value();
 		})
 		
-		if (Number($("#loan_apply_amount").val()) > accepted_amount) {
-			if (Number($("#partial_sub_allowed").val()) == 1) {
-				if (Number($("#min_for_partial_sub").val()) > accepted_amount) {
+		if (numeral($("#loan_apply_amount").val()).value() > accepted_amount) {
+			if (numeral($("#partial_sub_allowed").val()).value() == 1) {
+				if (numeral($("#min_for_partial_sub").val()).value() > accepted_amount) {
 					showDialog("", "{{Lang::get('Loan has not been sufficiently subscribed .Cannot close bids')}}");
 					formValid = false;
 				} else {
@@ -262,6 +399,9 @@
 	}
 	
 	function cancelLoanClicked() {
+		// The dialog box utility of jQuery is asynchronous. The execution of the Javascript code will not wait
+		// for the user input. Therefore we have a callback function to re-trigger the submission if the 
+		// user confirms cancellation
 		
 		if (formValid) {
 			return;
@@ -272,6 +412,8 @@
 	}
 	
 	function cancelLoanFeedback(retval) {
+		// This is called from the showDialogWithOkCancel as a callback when the user clicks one of the 
+		// OK or Cancel buttons.
 		if (retval == 1) {
 			formValid = true;
 			$("#cancelbutton").click()
@@ -283,35 +425,28 @@
 	function disburseLoanClicked() {
 		formValid = true;
 	}
-	
 
-	function accepted_amount_changed() {
-		
-
-		
-		var accepted_amount 	= 0;
-		var	apply_amount 		= Number($("#loan_apply_amount").val());
-		var partial_sub_allowed = Number($("#partial_sub_allowed").val());
-		var partial_limit		= Number($("#min_for_partial_sub").val());
+	function calcAvgInterest() {
+		var loan_accept_amt 	= numeral($("#total_accepted_amount").val()).value();
+		var	apply_amount 		= numeral($("#loan_apply_amount").val()).value();
+		var partial_sub_allowed = numeral($("#partial_sub_allowed").val()).value();
+		var partial_limit		= numeral($("#min_for_partial_sub").val()).value();
 		var	wtAvgInterest		= 0;
-		
-		$(".accepted_amount").each (function() {
-			bid_accepted_amount	= Number($(this).val().valueOf());
-			
-		})
 
-		$(".accepted_amount").each (function() {
-			accepted_amount = accepted_amount + bid_accepted_amount;
-			rownum			= $(this).attr("rownum");
-			bid_interest	= Number($("bid_interest_"+rownum).val());
-			wtAvgInterest	= wtAvgInterest + 
-								(accepted_amount / bid_accepted_amount) * bid_interest;
-			
-		})
+		if (loan_accept_amt > 0) {
+			$(".accepted_amount").each (function() {
+				rownum				= $(this).attr("rownum");
+				bid_accepted_amount	= numeral($(this).val()).value();
+				bid_interest		= numeral($("#bid_interest_"+rownum).val()).value();
+				wtAvgInterest		= wtAvgInterest + 
+									(bid_accepted_amount / loan_accept_amt) * bid_interest;
 
-		$("#total_accepted_amount").val(numeral(accepted_amount).format("0,000.00"));
+			})
+
+		}
+		wtAvgInterest 	=	Math.round10(wtAvgInterest, -2);
 		$("#wt_avg_int").val(numeral(wtAvgInterest).format("0,000.00"));
-		
+		$("#final_interest_rate").text(numeral(wtAvgInterest).format("0,000.00"));
 		
 	}
 	</script>

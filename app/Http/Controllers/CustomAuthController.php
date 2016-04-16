@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;  
 use Auth;  
 use Request;
-
+use BorProfile;
 class CustomAuthController extends MoneyMatchController {
 	/**
 	 * The Guard implementation.
@@ -47,7 +47,22 @@ class CustomAuthController extends MoneyMatchController {
               
         if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => 2,'email_verified' => 1 ])) {  
             //echo "success";  
-            return redirect()->intended($this->redirectPath());
+            $userType			=	Auth::user()->usertype;
+           
+            /*If the user is borrower then check the status,
+             *Status is deleted or reject not allow logout and thrown error
+             */ 
+             if($userType	==	USER_TYPE_BORROWER) {
+				$profileStatus	=	BorProfile::checkProfileStatus();
+				if( ($profileStatus	==	BORROWER_STATUS_DELETED)
+					|| ( $profileStatus	==	BORROWER_STATUS_REJECTED ) ) {
+					Auth::logout();
+					return redirect($this->loginPath())
+							->withErrors(['email' => "You cannot access the account"]);
+				}
+			}
+			
+			return redirect()->intended($this->redirectPath());
         }else {  
 		
             return redirect($this->loginPath())

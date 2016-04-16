@@ -104,7 +104,7 @@
 				<input type="hidden" name="borrower_id" value="{{ $modelBorPrf->borrower_id }}">
 				<input type="hidden" name="borrower_bankid" value="{{ $modelBorPrf->borrower_bankid }}">
 				<input type="hidden" id="screen_mode" value="{{$screenMode}}">
-				<input type="hidden" id="borrower_status" value="{{$borrower_status}}">
+				<input type="hidden" name="hidden_borrower_status" id="borrower_status" value="{{$borrower_status}}">
 				<input type="hidden" name="admin_process" id="admin_process" value="">
 				<div class="row">	
 					
@@ -329,7 +329,10 @@
 							id="comment_id_XXX"
 							data-row-id="XXX"
 							class="select_comment"
-							value=""><br>
+							value="">
+							<input 	type="hidden" 
+									name="comment_row[comment_id_hidden][]"
+									value="">
 				</div>
 				
 				<div class="col-xs-4">

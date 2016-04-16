@@ -82,6 +82,9 @@
 													name="comment_row[comment_status_hidden][]" 
 													id="comment_status_hidden_{{$i}}"
 													value="{{$commentRow['comment_status']}}">
+											<input 	type="hidden" 
+														name="comment_row[comment_id_hidden][]"
+														value="{{ $commentRow['profile_comments_id']}}">
 										</div>
 									</div>
 								</div>

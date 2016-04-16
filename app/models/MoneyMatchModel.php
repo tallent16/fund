@@ -136,4 +136,16 @@ class MoneyMatchModel extends Model {
 	public function dbErrorHandler($e) {
 		Log::error($e->getMessage());
 	}
+	
+	public function dbEnableQueryLog() {
+		DB::enableQueryLog();
+	}
+	
+	public function dbGetLog() {
+		return DB::getQueryLog();
+	}
+	
+	public function dbDisableQueryLog() {
+		DB::disableQueryLog();
+	}
 }

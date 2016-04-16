@@ -9550,6 +9550,16 @@ table#account-summary, .table-border-custom{
 	.loan-list-image .imageoverlap{
 		width:40%;
     }
+   
+}
+@media(min-width:768px) and (max-width:980px) {
+	.disburse-loan .row div:nth-last-child(2),
+    .disburse-loan .row div:last-child{
+		margin:5px 0 0 0;
+    }
+    .input-space .row{
+		margin:5px 0 0 0;
+    }
 }
 @media(min-width:768px){
 	  #page-wrapper {
@@ -9557,7 +9567,7 @@ table#account-summary, .table-border-custom{
         margin: 0 0 0 250px; 
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
-    }      
+    }          
 }
 @media(max-width: 360px) {
 	.status-label-section{

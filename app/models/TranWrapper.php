@@ -51,8 +51,9 @@ class TranWrapper extends MoneyMatchModel {
 		
 			$email		=	$postArray['email'];
 			$subject	=	$postArray['subject'];
+			$template	=	$postArray['template'];
 			
-			\Mail::send('emails.confirmation', $postArray, function($message) use ($email,$subject) {
+			\Mail::send($template, $postArray, function($message) use ($email,$subject) {
 				
 				$message->to($email)->subject($subject);
 			});
@@ -379,5 +380,24 @@ class TranWrapper extends MoneyMatchModel {
 			$active_loan = 0;
 		}
 		return $active_loan;
+	}
+	
+	public function getBorrowerIdByUserInfo($borrowerId) {
+		
+		
+		$borruser_sql		= "	SELECT 	user_id,
+										username,
+										email
+								FROM 	users 
+								WHERE 	user_id =(
+													SELECT 	user_id
+													FROM	borrowers
+													WHERE	borrower_id={$borrowerId}
+												)
+								";
+		
+		$borruser_rs 		= 	$this->dbFetchAll($borruser_sql);
+		
+		return $borruser_rs[0];
 	}
 }

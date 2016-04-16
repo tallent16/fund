@@ -50,7 +50,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 						break;
 				case	"return_borrower":
 						$dataArray = array(	'status' 	=>	BORROWER_STATUS_COMMENTS_ON_ADMIN );
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id);
+						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"return_borrower");
 						break;
 				case	"update_grade":
 						$result		=	$this->borrowerProfileModel->updateBorrowerGrade($postArray,$bor_id);
@@ -81,7 +81,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 			case	"approve":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
 					if($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) {
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id);
+						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
 					}
 					break;
 			case	"delete":

@@ -106,6 +106,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				
 				$mailArry	=	array(	"email"=>$postArray['EmailAddress'],
 										"subject"=>"Email verification",
+										"template"=>"emails.confirmation",
 										"confirmation_url"=>url()."/activation/".$activation,
 								);
 				$this->sendMail($mailArry);

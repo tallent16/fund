@@ -18,6 +18,41 @@ Route::get('/', function()
 
 // global contants for all requests
 Route::group(['prefix' => ''], function() {
+	/* Code Master Codes */
+	define('USER_STATUS', '1');
+	define('BORROWER_STATUS', '2');
+	define('INVESTOR_STATUS', '3');
+	define('BUSINESS_ORGANISATION', '5'); // THIS IS NOT USED.. 4 IS MISSING
+	define('LOAN_BID_TYPE', '6');
+	define('LOAN_STATUS', '7');
+	define('LOAN_REPAYMENT_TYPE', '8');
+	define('LOAN_DOC_STATUS', '9');
+	define('PAYMENT_TRANS_TYPE', '10');
+	define('PAYMENT_STATUS', '11');
+	define('USER_TYPE', '12');
+	define('FINANCIAL_RATIOS', '13');
+	define('FINANCIAL_NUMBERS', '14');
+	define('INDUSTRIES', '15');
+	define('LOAN_PURPOSES', '16');
+	define('INTEREST_RATE_FILTER', '17');
+	define('LOAN_AMOUNT_FILTER', '18');
+	define('LOAN_TENURE_FILTER', '19');
+	define('BORROWER_GRADES', '20');
+	define('BID_STATUS', '21');
+	define('INVESTMENT_STATUS', '22');
+	define('BANK_VERIFIED_STATUS', '23');
+	define('ACTIVE_STATUS', '24');
+	define('REPAYMENT_STATUS', '25');
+	define('PROFILE_COMMENT_STATUS', '26');
+	define('LOAN_FEES_APPLICABLE', '27');
+	define('PENALTY_FEES_APPLICABLE', '28');
+
+	
+	/* Code Master Details */
+    define('USER_STATUS_UNVERIFIED', '1');
+    define('USER_STATUS_VERIFIED', '2');
+
+
     define('BORROWER_STATUS_NEW_PROFILE','1');
     define('BORROWER_STATUS_NEW','1');
     define('BORROWER_STATUS_SUBMITTED_FOR_APPROVAL','2');
@@ -26,25 +61,20 @@ Route::group(['prefix' => ''], function() {
     define('BORROWER_STATUS_VERIFIED','4');
     define('BORROWER_STATUS_DELETED','5');
     define('BORROWER_STATUS_REJECTED','6');
-    define('BORROWER_BANK_STATUS_VERIFIED','2');
-    define('BORROWER_BANK_STATUS_UNVERIFIED','1');
-    define('REPAYMENT_TYPE_ONE_TIME', '1');
-    define('REPAYMENT_TYPE_INTEREST_ONLY', '2');
-    define('REPAYMENT_TYPE_EMI', '3');
-    define('BORROWER_REPAYMENT_STATUS_UNPAID', '1');  
-    define('BORROWER_REPAYMENT_STATUS_UNVERIFIED', '2');
-    define('BORROWER_REPAYMENT_STATUS_PAID', '3');
-    define('BANK_DETAILS_VERIFIED', '2');
-    define('BANK_DETAILS_UNVERIFIED', '1');
-    define('BANK_DETAILS_ACTIVE', '1');
-    define('BANK_DETAILS_INACTIVE', '0');
-    define('USER_TYPE_BORROWER', '1');
-    define('USER_TYPE_INVESTOR', '2');
-    define('USER_TYPE_ADMIN', '3');
-    define('USER_STATUS_UNVERIFIED', '1');
-    define('USER_STATUS_VERIFIED', '2');
-    define('USER_EMAIL_UNVERIFIED', '0');
-    define('USER_EMAIL_VERIFIED', '1');
+    
+    define('INVESTOR_STATUS_NEW_PROFILE','1');
+    define('INVESTOR_STATUS_NEW','1');
+    define('INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL','2');
+    define('INVESTOR_STATUS_APPROVED','4');
+    define('INVESTOR_STATUS_COMMENTS_ON_ADMIN','3');
+    define('INVESTOR_STATUS_VERIFIED','4');
+    define('INVESTOR_STATUS_DELETED','5');
+    define('INVESTOR_STATUS_REJECTED','6');
+
+    define('LOAN_BID_TYPE_OPEN_AUCTION','1');
+    define('LOAN_BID_TYPE_CLOSED_AUCTION','1');
+    define('LOAN_BID_TYPE_FIXED_INTEREST','1');
+
     define('LOAN_STATUS_NEW', '1');
     define('LOAN_STATUS_SUBMITTED_FOR_APPROVAL', '2');
     define('LOAN_STATUS_APPROVED', '3');
@@ -55,6 +85,40 @@ Route::group(['prefix' => ''], function() {
     define('LOAN_STATUS_CANCELLED', '8');
     define('LOAN_STATUS_UNSUCCESSFUL_LOAN', '9');
     define('LOAN_STATUS_LOAN_REPAID', '10');
+
+
+
+    /* To do 
+     * delete the two status and use BANK_VERIFIED_STATUS instead
+     */
+    define('BORROWER_BANK_STATUS_VERIFIED','2');
+    define('BORROWER_BANK_STATUS_UNVERIFIED','1');
+	// End of Todo
+
+
+    define('BANK_VERIFIED_STATUS_VERIFIED','2');
+    define('BANK_VERIFIED_STATUS_UNVERIFIED','1');
+
+
+    define('REPAYMENT_TYPE_ONE_TIME', '1');
+    define('REPAYMENT_TYPE_INTEREST_ONLY', '2');
+    define('REPAYMENT_TYPE_EMI', '3');
+    
+    define('BORROWER_REPAYMENT_STATUS_UNPAID', '1');  
+    define('BORROWER_REPAYMENT_STATUS_UNVERIFIED', '2');
+    define('BORROWER_REPAYMENT_STATUS_PAID', '3');
+
+    define('BANK_DETAILS_VERIFIED', '2');
+    define('BANK_DETAILS_UNVERIFIED', '1');
+    
+    define('BANK_DETAILS_ACTIVE', '1');
+    define('BANK_DETAILS_INACTIVE', '0');
+    
+    define('USER_TYPE_BORROWER', '1');
+    define('USER_TYPE_INVESTOR', '2');
+    define('USER_TYPE_ADMIN', '3');
+    define('USER_EMAIL_UNVERIFIED', '0');
+    define('USER_EMAIL_VERIFIED', '1');
 
     define('LOAN_BIDS_STATUS_OPEN', '1');
     define('LOAN_BIDS_STATUS_ACCEPTED', '2');
@@ -71,6 +135,12 @@ Route::group(['prefix' => ''], function() {
     define('PAYMENT_TRANSCATION_INVESTOR_WITHDRAWAL','4');
     define('BORROWER_COMMENT_OPEN','1');
     define('BORROWER_COMMENT_CLOSED','2');
+    define('PROCESS_FEES_APPLICABLE_PERCENT_ONLY', '2');
+    define('PROCESS_FEES_APPLICABLE_FIXEDFEES_ONLY', '2');
+    define('PROCESS_FEES_APPLICABLE_BOTH', '3');
+
+
+
     
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
@@ -94,7 +164,8 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/bidaccept', 'AdminManageBidsController@acceptBidsAction');
     Route::post('admin/loancancel', 'AdminManageBidsController@loanCancelAction');
     Route::post('admin/loanapproval', 'AdminLoanApprovalController@indexAction'); 
-    Route::post('admin/disburseloan', 'AdminDisburseLoanController@indexAction');
+    Route::post('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@showDisburseLoanAction');
+    Route::get('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@showDisburseLoanAction');
     Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
     Route::get('admin/borrower/updateprofile/{status}/{bor_id}', 'AdminManageBorrowersController@updateProfileStatusAction');
     Route::post('admin/borrower/updateprofile', 'AdminManageBorrowersController@updateBulkProfileStatusAction');

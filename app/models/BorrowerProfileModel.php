@@ -227,21 +227,23 @@ class BorrowerProfileModel extends TranWrapper {
 			$finacialRows = $postArray['finacial_row'];
 			$this->updateBorrowerFinacialInfo($finacialRows,$borrowerId);
 		}
-		
+		if (isset($postArray['hidden_borrower_status']) && $postArray['hidden_borrower_status']	==	"corrections_required" ) {
+			if (isset($postArray['comment_row'])) {
+				$this->saveComments($postArray['comment_row'],$borrowerId);
+			}
+		}
 		$this->updateBorrowerBankInfo($postArray,$borrowerId,$transType);
 	}
 	
 	public function updateBorrowerInfo($postArray,$transType) {
 		
-		if($postArray['isSaveButton']	==	"yes") {
-			$status		=	BORROWER_STATUS_NEW_PROFILE;	
-		}else{
-			$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
-		}
+	
 		if ($transType == "edit") {
 			$borrowerId	= $postArray['borrower_id'];
+			$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
 		} else {
 			$borrowerId = 0;
+			$status		=	BORROWER_STATUS_NEW_PROFILE;	
 		}
 		$business_name 					=	$postArray['business_name'];
 		$business_organisation			= 	$postArray['business_organisation'];
@@ -321,9 +323,15 @@ class BorrowerProfileModel extends TranWrapper {
 							'mailing_address' 				=> ($mailing_address!="")?$mailing_address:null,
 							'company_profile' 				=> ($company_profile!="")?$company_profile:null,
 							'company_aboutus' 				=> ($company_aboutus!="")?$company_aboutus:null,
-							'status' 						=> ($status!="")?$status:null,
 							'user_id' 						=> $current_user_id);
-		
+							
+		if ($transType == "edit") {
+			if($postArray['isSaveButton']	!=	"yes") {
+				$dataArray['status'] = $status;
+			}
+		}else{
+			$dataArray['status'] = $status;
+		}
 		if(count($updateDataArry) > 0) {
 			foreach($updateDataArry as $key=>$value) {
 				$dataArray[$key]	=	$value;
@@ -634,34 +642,46 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function saveComments($commentRows,$borrowerId) {
 		
-		$numRows = count($commentRows['input_tab']);
+		$numRows = count($commentRows['comment_status_hidden']);
 		$rowIndex = 0;
 		$userID		=	$this->getUseridByBorrowerID($borrowerId);
 		$userType	=	USER_TYPE_BORROWER;
 		if($numRows	>	0){
-			$whereArry		=	array("user_id" => $userID);
-			$this->dbDelete("profile_comments",$whereArry);
-			
+			if($this->getUserType()	==	USER_TYPE_ADMIN){
+				$whereArry		=	array("user_id" => $userID);
+				$this->dbDelete("profile_comments",$whereArry);
+			}
 			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 				
-				$comments					= $commentRows['comments'][$rowIndex];
-				$input_tab					= $commentRows['input_tab'][$rowIndex];
 				$comment_status				= $commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id					= $commentRows['comment_id_hidden'][$rowIndex];
 				
-				// Construct the data array
-				$dataArray = array(	
-								'user_type' 				=> $userType,
-								'user_id'					=> $userID,
-								'input_tab'	 				=> $input_tab,
-								'comments'					=> $comments,
-								'comment_status'			=> $comment_status,
-								'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));		
-								
-				
-				// Insert the rows (for all types of transaction)
-				$result =  $this->dbInsert('profile_comments', $dataArray, true);
-				if ($result < 0) {
-					return -1;
+				if($this->getUserType()	==	USER_TYPE_ADMIN) {	
+					
+					$comments					= $commentRows['comments'][$rowIndex];
+					$input_tab					= $commentRows['input_tab'][$rowIndex];
+					// Construct the data array
+					$dataArray = array(	
+									'user_type' 				=> $userType,
+									'user_id'					=> $userID,
+									'input_tab'	 				=> $input_tab,
+									'comments'					=> $comments,
+									'comment_status'			=> $comment_status,
+									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+										
+					// Insert the rows (for all types of transaction)
+					$result =  $this->dbInsert('profile_comments', $dataArray, true);
+					if ($result < 0) {
+						return -1;
+					}
+				}else{
+					
+					$dataArray = array(
+										'comment_status'			=> $comment_status,
+										'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y"))
+									);	
+					$whereArry	=	array("profile_comments_id" =>"{$comment_id}");
+					$this->dbUpdate('profile_comments', $dataArray, $whereArry);
 				}
 			}
 		}
@@ -676,10 +696,30 @@ class BorrowerProfileModel extends TranWrapper {
 		return $borrowerId;
 	}
 	
-	public function updateBorrowerStatus($dataArray,$borrowerId) {
+	public function updateBorrowerStatus($dataArray,$borrowerId,$status=null) {
 		
 		$whereArry	=	array("borrower_id" =>"{$borrowerId}");
 		$this->dbUpdate('borrowers', $dataArray, $whereArry);
+		$borrUserInfo	=	$this->getBorrowerIdByUserInfo($borrowerId);
+		
+		if($status	==	"approve") {
+			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									"subject"=>"Money Match - Borrower Approval",
+									"template"=>"emails.borrApporvalTemplate",
+									"username"=>$borrUserInfo->username,
+									"useremail"=>$borrUserInfo->email
+								);
+			$this->sendMail($mailArray);
+		}
+		if($status	==	"return_borrower") {
+			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									"subject"=>"Money Match - Borrower Correction Required",
+									"template"=>"emails.borrCorrectionRequiredTemplate",
+									"username"=>$borrUserInfo->username,
+									"useremail"=>$borrUserInfo->email
+								);
+			$this->sendMail($mailArray);
+		}
 		return $borrowerId;
 	}
 	
@@ -688,16 +728,19 @@ class BorrowerProfileModel extends TranWrapper {
 		switch($processType){
 			case	"approve":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
+					$status	=	"approve";
 					break;
 			case	"delete":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_DELETED );
+					$status	=	null;
 					break;
 			case	"reject":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_REJECTED );
+					$status	=	null;
 					break;
 		}
 		foreach($postArray['borrower_ids'] as $borRow) {
-			$this->updateBorrowerStatus($dataArray,$borRow);
+			$this->updateBorrowerStatus($dataArray,$borRow,$status);
 		}
 	}
 	
