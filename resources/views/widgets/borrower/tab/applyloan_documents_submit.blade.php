@@ -11,7 +11,7 @@
 						@var	$i	=	1
 						@foreach($loanDocuments as $documentRow)
 							@var	$documentRowIndex	=	$documentRow['loan_doc_id']
-							<!---doc--rule--1-->
+							<!---doc--rule--->
 							@var	$doc_file	=	""
 							@if(isset($BorModLoan->submitted_document_details[$documentRowIndex]))
 								@var	$doc_file	=	$BorModLoan->submitted_document_details[$documentRowIndex]

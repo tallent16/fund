@@ -102,14 +102,15 @@
 							<div class="pull-right">
 								<button type="button" id="add_comment_button"	class="btn verification-button">
 								<i class="fa pull-right"></i>
-								Add Comment</button>
+								{{ Lang::get('Add Comment')}}
+								</button>
 								<button type="button" id="delete_comment_button"  class="btn verification-button">
 								<i class="fa pull-right"></i>
-								Remove Comment
+								{{ Lang::get('Remove Comment')}}
 								</button>
 								<button type="button" id="save_comment_button" class="btn verification-button">
 								<i class="fa pull-right"></i>
-								Save Comment
+								{{ Lang::get('Save Comment')}}
 								</button>
 							</div>
 						</div>

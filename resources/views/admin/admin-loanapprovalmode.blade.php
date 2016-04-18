@@ -10,7 +10,7 @@
 			<div class="panel-heading panel-headsection"><!--panel head-->
 				<div class="row">
 					<div class="col-sm-12">
-						<span class="pull-left">LOAN APPROVAL</span> 														
+						<span class="pull-left">{{ Lang::get('LOAN APPROVAL')}}</span> 														
 					</div>																
 				</div>					
 			</div><!--panel head end-->
@@ -18,13 +18,13 @@
 			<div class="panel-body applyloan table-border-custom">				
 				<div class="col-sm-12 text-right"> 					
 					<button type="button" class="btn verification-button">
-						Approve</button>
+						{{ Lang::get('Approve')}}</button>
 					<button type="button" class="btn verification-button">						
-						Cancel</button>
+						{{ Lang::get('Cancel')}}</button>
 					<button type="button" class="btn verification-button">						
-						Save Comments</button>
+						{{ Lang::get('Save Comments')}}</button>
 					<button type="button" class="btn verification-button">						
-						Return to Borrower</button>					
+						{{ Lang::get('Return to Borrower')}}</button>					
 				</div>
 			
 		

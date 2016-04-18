@@ -21,7 +21,7 @@
 				</div>
                 <div class="block-content block-content-full block-content-narrow">                    
 				{{ Html::image('img/404.jpg',"",['class' => 'img-responsive']) }} 
-				<p class="text-center">Visit Homepage <a href="{{ url('') }}">Click</a></p>
+				<p class="text-center">{{Lang::get('Visit Homepage')}} <a href="{{ url('') }}">{{Lang::get('Click')}}</a></p>
                 </div>
                 
             </div>

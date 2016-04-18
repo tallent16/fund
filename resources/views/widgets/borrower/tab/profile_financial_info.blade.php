@@ -68,7 +68,7 @@
 						<table class="table table-loan table-border-custom  text-left">		
 							<tbody>
 								<tr>
-									<th class="tab-head" colspan="2">Financials</th>																	
+									<th class="tab-head" colspan="2">{{ Lang::get('Financials')}}</th>																	
 								</tr>
 								@if(count($finacialInfo)>0)
 									@var	$i	=1

@@ -34,7 +34,7 @@
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title"><strong>you donot have permission to access the page.</strong></div>
+				<div class="title"><strong>{{Lang::get('you donot have permission to access the page.')}}</strong></div>
 			</div>
 		</div>
 	</body>

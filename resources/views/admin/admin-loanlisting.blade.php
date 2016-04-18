@@ -12,18 +12,18 @@
 		
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
-				<strong>All Transcations</strong><br>	
+				<strong>{{ Lang::get('All Transcations')}}</strong><br>	
 					 <div class="dropdown selectpicker">
-						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">All
+						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{ Lang::get('All')}}
 						<span class="caret"></span></button>
 						<ul class="dropdown-menu">
-						<li><a href="#">New</a></li>
-						<li><a href="#">Submitted</a></li>
-						<li><a href="#">Comments by Admin</a></li>
-						<li><a href="#">Bids Closed</a></li>
-						<li><a href="#">Bids Accepted</a></li>
-						<li><a href="#">Loan Disbursed</a></li>
-						<li><a href="#">Repayment Complete</a></li>
+						<li><a href="#">{{ Lang::get('New')}}</a></li>
+						<li><a href="#">{{ Lang::get('Submitted')}}</a></li>
+						<li><a href="#">{{ Lang::get('Comments by Admin')}}</a></li>
+						<li><a href="#">{{ Lang::get('Bids Closed')}}</a></li>
+						<li><a href="#">{{ Lang::get('Bids Accepted')}}</a></li>
+						<li><a href="#">{{ Lang::get('Loan Disbursed')}}</a></li>
+						<li><a href="#">{{ Lang::get('Repayment Complete')}}</a></li>
 						</ul>
 					</div>
 				
@@ -32,7 +32,7 @@
 				
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
-				<strong>From Date</strong><br>							
+				<strong>{{ Lang::get('From Date')}}</strong><br>							
 				<input id="fromdate" name="fromdate" value="" 
 						type="text" class="date-picker form-control" />
 			</div>	
@@ -40,7 +40,7 @@
 
 		<div class="col-sm-6 col-lg-3"> 
 			<div class="form-group">								
-				<strong>To Date</strong><br>							
+				<strong>{{ Lang::get('To Date')}}</strong><br>							
 				<input id="todate" name="todate" value=""
 						type="text" class="date-picker form-control" />
 			</div>	
@@ -55,7 +55,7 @@
 		<div class="col-sm-3 col-lg-2" id="apply_filter_div" style="display:none">
 			<div class="form-group">	
 				<button type="submit" class="btn verification-button">
-					Apply Filter
+					{{ Lang::get('Apply Filter')}}
 				</button>
 			</div>
 		</div>
@@ -63,7 +63,7 @@
 		<div class="col-sm-4 col-lg-2">
 			<div class="form-group">	
 				<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
-					Show Filter
+					{{ Lang::get('Show Filter')}}
 				</button>
 			</div>
 		</div>
@@ -90,34 +90,34 @@
 				<tbody>
 					
 							<tr class="odd" id="11" role="row">								
-								<td>L-125465</td>
-								<td>Name</td>
-								<td class="text-right">1256558</td>
-								<td class="text-right">15%</td>
-								<td class="text-right">3</td>
-								<td>Closed</td>
-								<td>12-04-2016</td>
-								<td>Disbursed</td>
+								<td>{{ Lang::get('L-125465')}}</td>
+								<td>{{ Lang::get('Name')}}</td>
+								<td class="text-right">{{ Lang::get('1256558')}}</td>
+								<td class="text-right">{{ Lang::get('15%')}}</td>
+								<td class="text-right">{{ Lang::get('3')}}</td>
+								<td>{{ Lang::get('Closed')}}</td>
+								<td>{{ Lang::get('12-04-2016')}}</td>
+								<td>{{ Lang::get('Disbursed')}}</td>
 							</tr>
-							<tr class="odd" id="12" role="row">								
-								<td>L-125465</td>
-								<td>Name</td>
-								<td class="text-right">1256558</td>
-								<td class="text-right">15%</td>
-								<td class="text-right">3</td>
-								<td>Closed</td>
-								<td>12-04-2016</td>
-								<td>Disbursed</td>
+							<tr class="odd" id="11" role="row">								
+								<td>{{ Lang::get('L-125465')}}</td>
+								<td>{{ Lang::get('Name')}}</td>
+								<td class="text-right">{{ Lang::get('1256558')}}</td>
+								<td class="text-right">{{ Lang::get('15%')}}</td>
+								<td class="text-right">{{ Lang::get('3')}}</td>
+								<td>{{ Lang::get('Closed')}}</td>
+								<td>{{ Lang::get('12-04-2016')}}</td>
+								<td>{{ Lang::get('Disbursed')}}</td>
 							</tr>
-							<tr class="odd" id="13" role="row">								
-								<td>L-125465</td>
-								<td>Name</td>
-								<td class="text-right">1256558</td>
-								<td class="text-right">15%</td>
-								<td class="text-right">3</td>
-								<td>Closed</td>
-								<td>12-04-2016</td>
-								<td>Disbursed</td>
+							<tr class="odd" id="11" role="row">								
+								<td>{{ Lang::get('L-125465')}}</td>
+								<td>{{ Lang::get('Name')}}</td>
+								<td class="text-right">{{ Lang::get('1256558')}}</td>
+								<td class="text-right">{{ Lang::get('15%')}}</td>
+								<td class="text-right">{{ Lang::get('3')}}</td>
+								<td>{{ Lang::get('Closed')}}</td>
+								<td>{{ Lang::get('12-04-2016')}}</td>
+								<td>{{ Lang::get('Disbursed')}}</td>
 							</tr>
 					
 				</tbody>
@@ -147,7 +147,13 @@ function hideShowFilter() {
 	
 $(document).ready(function(){ 
 	// date picker
-	$('.date-picker').datetimepicker({
+	$('#fromdate').datetimepicker({
+	autoclose: true, 
+	minView: 2,
+	format: 'dd/mm/yyyy' 
+
+	}); 
+	$('#todate').datetimepicker({
 	autoclose: true, 
 	minView: 2,
 	format: 'dd/mm/yyyy' 

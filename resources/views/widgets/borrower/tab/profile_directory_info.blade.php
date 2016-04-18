@@ -22,7 +22,7 @@
 							<div class="row" id="director_error_info" style="display:none">	
 								<div class="col-xs-12">																				
 									<label class="error"
-											id="director_error_label">There is error</label>											
+											id="director_error_label">{{ Lang::get('There is error')}}</label>											
 								</div>																					 
 							</div><!--row-->
 						</br>

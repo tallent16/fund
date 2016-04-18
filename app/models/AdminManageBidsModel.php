@@ -154,10 +154,6 @@ class AdminManageBidsModel extends TranWrapper {
 		
 				
 
-		$bidsClose_sql	=	"	UPDATE	loans
-								SET		loans.status = :bids_close_status,
-										final_interest_rate = :final_interest_rate
-								WHERE	loans.loan_id = :loan_id ";
 		
 		$tableName		=	"loans";
 		$dataArray		=	[

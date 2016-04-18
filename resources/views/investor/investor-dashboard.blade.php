@@ -229,14 +229,14 @@
 									<table class="table" id="account-summary">
 										<thead>
 											<tr>
-												<th class="tab-head text-left">ACCOUNT SUMMARY</th>
-												<th class="tab-head text-right">Verified</th>
-												<th class="tab-head text-right">Pending Approval</th>										
+												<th class="tab-head text-left">{{Lang::get('ACCOUNT SUMMARY')}}</th>
+												<th class="tab-head text-right">{{Lang::get('Verified')}}</th>
+												<th class="tab-head text-right">{{Lang::get('Pending Approval')}}</th>										
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td class="text-left tab-left-head">Investments</td>
+												<td class="text-left tab-left-head">{{Lang::get('Investments')}}</td>
 												<td class="text-right">
 													{{$Investments_verified}}
 												</td>
@@ -245,7 +245,7 @@
 												</td>										
 											</tr>
 											<tr>
-												<td class="text-left tab-left-head">Deposits</td>
+												<td class="text-left tab-left-head">{{Lang::get('Deposits')}}</td>
 												<td class="text-right">
 													{{$deposits_verified}}
 												</td>	
@@ -255,7 +255,7 @@
 																							
 											</tr>	
 											<tr> 
-												<td class="text-left tab-left-head">Withdrawals</td>
+												<td class="text-left tab-left-head">{{Lang::get('Withdrawals')}}</td>
 												<td class="text-right">
 													{{$withdrawals_verified}}
 												</td>	
@@ -267,12 +267,12 @@
 							@var	$ava_for_invest_pending		=	$deposits_pending -(($Investments_pending+$withdrawals_pending))
 							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
 											<tr>
-												<td class="text-left tab-left-head">Available for investment</td>
+												<td class="text-left tab-left-head">{{Lang::get('Available for investment')}}</td>
 												<td class="text-right">{{$ava_for_invest_verified}}</td>
 												<td class="text-right">{{$ava_for_invest_pending}}</td>										
 											</tr>										
 											<tr>
-												<td class="text-left tab-left-head">Grand Total</td>
+												<td class="text-left tab-left-head">{{Lang::get('Grand Total')}}</td>
 												<td class="text-right">{{$grand_total}}</td>										
 												<td class="text-right"></td>										
 											</tr>										
@@ -292,7 +292,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1"> FUNDS DEPLOYED 
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{{Lang::get('FUNDS DEPLOYED')}}
           <span class="pull-right"><i class="fa fa-caret-down cursor-pointer"></i></span></a>
         </h4>
       
@@ -306,16 +306,16 @@
 						<table class="table tab-fontsize">
 							<thead>
 								<tr>
-									<th class="tab-head">BORROWER'S NAME</th>
-									<th class="tab-head">GRADE</th>
-									<th class="tab-head text-right">TOTAL AMOUNT OF LOAN</th>
-									<th class="tab-head text-right">AMOUNT INVESTED</th>
-									<th class="tab-head">DATE OF INVESTMENT</th>
-									<th class="tab-head text-right">TENURE OF LOAN</th>
-									<th class="tab-head">TYPE OF LOAN</th>
-									<th class="tab-head text-right">RATE OF INTEREST</th>
-									<th class="tab-head text-right">INTEREST PAID</th>
-									<th class="tab-head text-right">PRINCIPAL PAID</th>
+									<th class="tab-head">{{Lang::get('BORROWER\'S NAME')}}</th>
+									<th class="tab-head">{{Lang::get('GRADE')}}</th>
+									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
+									<th class="tab-head text-right">{{Lang::get('AMOUNT INVESTED')}}</th>
+									<th class="tab-head">{{Lang::get('DATE OF INVESTMENT')}}</th>
+									<th class="tab-head text-right">{{Lang::get('TENURE OF LOAN')}}</th>
+									<th class="tab-head">{{Lang::get('TYPE OF LOAN')}}</th>
+									<th class="tab-head text-right">{{Lang::get('RATE OF INTEREST')}}</th>
+									<th class="tab-head text-right">{{Lang::get('INTEREST PAID')}}</th>
+									<th class="tab-head text-right">{{Lang::get('PRINCIPAL PAID')}}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -346,7 +346,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">INVESTMENTS UNDER BID
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">{{Lang::get('INVESTMENTS UNDER BID')}}
             <span class="pull-right"><i class="fa fa-caret-down cursor-pointer"></i></span></a>
         </h4>
       </div>
@@ -359,14 +359,14 @@
 						<table class="table tab-fontsize">
 							<thead>
 								<tr>
-									<th class="tab-head">BORROWER'S NAME</th>
-									<th class="tab-head">GRADE</th>
-									<th class="tab-head text-right">TOTAL AMOUNT OF LOAN</th>
-									<th class="tab-head text-right">AMOUNT INVESTED</th>
-									<th class="tab-head">DATE OF INVESTMENT</th>
-									<th class="tab-head">BID CLOSE DATE</th>
-									<th class="tab-head text-right">TENURE OF LOAN</th>
-									<th class="tab-head">TYPE OF LOAN</th>	
+									<th class="tab-head">{{Lang::get('BORROWER\'S NAME')}}</th>
+									<th class="tab-head">{{Lang::get('GRADE')}}</th>
+									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
+									<th class="tab-head text-right">{{Lang::get('AMOUNT INVESTED')}}</th>
+									<th class="tab-head">{{Lang::get('DATE OF INVESTMENT')}}</th>
+									<th class="tab-head">{{Lang::get('BID CLOSE DATE')}}</th>
+									<th class="tab-head text-right">{{Lang::get('TENURE OF LOAN')}}</th>
+									<th class="tab-head">{{Lang::get('TYPE OF LOAN')}}</th>	
 									<th class="tab-head"></th>	
 									<th class="tab-head"></th>									
 								</tr>
@@ -400,7 +400,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">OVERDUE LOANS
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">{{Lang::get('OVERDUE LOANS')}}
             <span class="pull-right"><i class="fa fa-caret-down cursor-pointer"></i></span></a>
         </h4>
       </div>
@@ -412,11 +412,11 @@
 					<table class="table tab-fontsize">
 							<thead>
 								<tr>
-									<th class="tab-head">BORROWER'S NAME</th>
-									<th class="tab-head">GRADE</th>
-									<th class="tab-head text-right">TOTAL AMOUNT OF LOAN</th>
-									<th class="tab-head text-right">AMOUNT OVERDUE</th>
-									<th class="tab-head text-right">OVERDUE SINCE</th>
+									<th class="tab-head">{{Lang::get('BORROWER\'S NAME')}}</th>
+									<th class="tab-head">{{Lang::get('GRADE')}}</th>
+									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
+									<th class="tab-head text-right">{{Lang::get('AMOUNT OVERDUE')}}</th>
+									<th class="tab-head text-right">{{Lang::get('OVERDUE SINCE')}}</th>
 									<th class="tab-head" colspan="5"></th>	
 																																
 								</tr>
@@ -443,5 +443,5 @@
     </div>
   </div> 
 
-          @endsection  
+    @endsection  
 @stop

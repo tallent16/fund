@@ -1,6 +1,10 @@
 @extends('layouts.dashboard')
 @section('page_heading',Lang::get('Manage Loans') )
 @section('section')  
+<form method="post">
+	<input type="hidden" name="loan_id" value="{{$bidsModel->loan_id}}" />
+	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+
 <div class="col-sm-12 space-around">	
 	<div class="panel-primary panel-container disburse-loan">
 		
@@ -15,12 +19,12 @@
 			<div class="panel-body applyloan table-border-custom input-space">	
 				
 				<div class="row"><!-- Row 1 -->					
-					<div class="col-xs-12 col-sm-6 col-lg-2">
+					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
 							{{ Lang::get('Loan Reference No')}}
 						</label>
 					</div>								
-					<div class="col-xs-12 col-sm-6 col-lg-3">
+					<div class="col-xs-12 col-sm-7 col-lg-3">
 						<input 	type="text" 
 								class="form-control"
 								name="loan_reference_number"
@@ -29,35 +33,35 @@
 								disabled>	
 					</div>	
 				
-					<div class="col-xs-12 col-sm-6 col-lg-2">
+					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
 							{{ Lang::get('Disbursement Date') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3 controls">
+					<div class="col-xs-12 col-sm-7 col-lg-3 controls">
 						<div class="input-group">
-							<input 	id="date-picker" 
+							<input 	id="disbursement_date" 
 									type="text" 
-									class="date-picker form-control" 
-									name="bid_close_date"
-									value="" />
-							<label for="date-picker" class="input-group-addon btn">
+									class="disbursement_date form-control" 
+									name="disbursement_date"
+									required
+									value="{{$bidsModel->system_date}}" />
+
+							<label for="disbursement_date" class="input-group-addon btn">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</label>
 						</div>
 					</div>
-					<div class="col-lg-2">
-						
-					</div>
+					
 				</div> <!-- Row 1 -->
 				
 				<div class="row"><!-- Row 2 -->	
-					<div class="col-xs-12 col-sm-6 col-lg-2">
+					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
 							{{ Lang::get('Sanctioned Amount') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3">									
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
 						<input 	type="text" 
 								class="form-control text-right"
 								name="loan_sanctioned_amount"
@@ -67,99 +71,117 @@
 								disabled>	
 					</div>
 			
-					<div class="col-xs-12 col-sm-6 col-lg-2">
+					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
-							{{ Lang::get('Fixed Fees') }}
+							{{ Lang::get('Fees Type Applicable') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3">									
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
 						<input 	type="text" 
 								class="form-control text-right"
-								name="fixed_fees"												
-								id="fixed_fees" 											
-								value="150">	
+								name="fees_type_applicable"												
+								id="fees_type_applicable" 											
+								value="{{ Lang::get($bidsModel->codelist_value) }}"
+								disabled>	
 					</div>
-					<div class="col-lg-2">
-						
-					</div>
+					
 				</div><!-- Row 2 -->
 				
 				<div class="row"><!-- Row 3-->			
-					<div class="col-xs-12 col-sm-6 col-lg-2">
+					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
 							{{ Lang::get('Processing Fee (%)') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3">									
+					<div class="col-xs-12 col-sm-7 col-lg-3">	
 						<input 	type="text" 
 								class="form-control text-right"
-								name="processing_fee"												
-								id="processing_fee" 											
-								value="4.00">	
+								name="loan_fees_percent"												
+								id="loan_fees_percent" 											
+								value="{{number_format($bidsModel->loan_fees_percent, 2, '.', ',')}}"
+								disabled>	
 					</div>
 					
-					<div class="col-xs-12 col-sm-6 col-lg-2">
-							<label>{{ Lang::get('Total Fees') }}</label>
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+							<label>{{ Lang::get('Fixed Fees') }}</label>
 					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3">									
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
 						<input 	type="text" 
 								class="form-control text-right"
-								name="total_fees"												
-								id="total_fees" 											
-								value="3750" disabled>	
+								name="loan_fixed_fees"												
+								id="loan_fixed_fees" 											
+								value="{{number_format($bidsModel->loan_fixed_fees, 2, '.', ',')}}" 
+								disabled>	
 					</div>	
-					<div class="col-lg-2">
-						
-					</div>			
+							
 				</div><!-- Row 3 -->
 				
 				<div class="row"><!-- Row 4-->
-					<div class="col-xs-12 col-sm-6 col-lg-2">
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label>
+							{{ Lang::get('Total Processing Fees') }}
+						</label>
+					</div>	
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
+						<input 	type="text" 
+								class="form-control text-right"
+								name="loan_process_fees"												
+								id="loan_process_fees" 											
+								value="{{number_format($bidsModel->loan_process_fees, 2, '.', ',')}}" 
+								disabled>	
+					</div>
+								
+					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
 							{{ Lang::get('Amount Disbursed') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3">									
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
 						<input 	type="text" 
 								class="form-control text-right"
-								name="amount_disburse"												
-								id="amount_disburse" 											
-								value="86,250.00" disabled>	
+								name="amount_disbursed"												
+								id="amount_disbursed" 											
+								value="{{number_format($bidsModel->amount_disbursed, 2, '.', ',')}}"
+								disabled
+								>	
 					</div>
-								
-					<div class="col-xs-12 col-sm-6 col-lg-2">
-						<label>
-							{{ Lang::get('Payment Reference') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3">									
-						<input 	type="text" 
-								class="form-control"
-								name="payment_ref"												
-								id="payment_ref" 											
-								value="NEFT TRANSFER - A20290">	
-					</div>
-					<div class="col-lg-2">
-						
-					</div>
+
+					
 				</div>  <!-- Row 4 -->	
 					
 				<div class="row">  <!-- Row 5-->				
-					<div class="col-xs-12 col-sm-6 col-lg-2">
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label for="payment_ref">
+							{{ Lang::get('Payment Reference') }}
+						</label>
+					</div>	
+
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
+						<input 	type="text" 
+								class="form-control"
+								name="payment_ref"												
+								id="payment_ref"
+								required 											
+								value="">	
+					</div>
+
+					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>	
 							{{ Lang::get('Remarks') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-6 col-lg-3">									
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
 						<textarea rows="3" class="form-control" 
-								name="remarks" name="remarks"></textarea>	
-					</div>					
+								name="remarks" 
+								id="remarks"></textarea>	
+					</div>	
+									
 				</div>  <!-- Row 5 -->		
 
 				<div class="row">		
-					<div class="col-xs-12 space-around">
-						<button type="button" class="btn verification-button">
-							Disburse Loan</button>
+					<div class="col-xs-12">
+						<button type="submit" class="btn verification-button">
+							{{ Lang::get('Disburse Loan')}}</button>
 					</div>
 				</div>
 				
@@ -167,20 +189,37 @@
 	
 	</div><!----panel-container--->
 </div>
+</form>
+
 @endsection  
 
 @section('bottomscripts')
 <script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
+<script src="{{ url('js/moment.js') }}" type="text/javascript"></script>	
+	
+
 <script>		
 $(document).ready(function(){ 
 // date picker
-$('.date-picker').datetimepicker({
+$('.disbursement_date').datetimepicker({
 	autoclose: true, 
 	minView: 2,
-	format: 'dd/mm/yyyy' 
+	format: 'dd-mm-yyyy' 
 	}); 
 }); 
+
+$("form").submit(function(event) {
+	system_date = {{$bidsModel->system_date}};
+	disburse_date = $("#disbursement_date").val();
+	
+	// Disbursement date cannot be a future date
+	if (moment(system_date).isBefore(disburse_date)) {
+		showDialog("", "{{Lang::get('Disbursement Date should not be a future date')}}");
+		event.preventDefault();
+	}
+	
+})
 </script>
 @endsection
 

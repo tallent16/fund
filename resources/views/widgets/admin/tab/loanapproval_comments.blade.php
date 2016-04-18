@@ -13,10 +13,10 @@
 											<input type="checkbox" name="check" ><br>
 										</div>
 									<div class="col-xs-9 col-lg-9">
-										<span class="pull-left">Comments</span> 
+										<span class="pull-left">{{Lang::get('Comments')}}</span> 
 									</div>
 									<div class="col-xs-2 col-lg-2 text-right">
-										Closed
+										{{Lang::get('Closed')}}
 									</div>
 								</div>
 							</div>
@@ -24,51 +24,51 @@
 							
 						</div>
 					</div>
-							<div class="row">
-								<div class="col-xs-12 space-around">
-									<div class="col-xs-1">
-										<input type="checkbox" name="check" ><br>
-									</div>
-									<div class="col-xs-9">
-										<textarea rows="4" cols="50" class="form-control" disabled>
-										
-										</textarea>
-									</div>
-									<div class="col-xs-2 text-right">
-										Closed
-									</div>
-								</div>
+					<div class="row">
+						<div class="col-xs-12 space-around">
+							<div class="col-xs-1">
+								<input type="checkbox" name="check" ><br>
 							</div>
-							<div class="row">
-								<div class="col-xs-12 space-around">
-									<div class="col-xs-1">
-										<input type="checkbox" name="check" ><br>
-									</div>
-									<div class="col-xs-9">
-										<textarea rows="4" cols="50" class="form-control" disabled>
-										
-										</textarea>
-									</div>
-									<div class="col-xs-2 text-right">
-										Closed
-									</div>
-								</div>
+							<div class="col-xs-9">
+								<textarea rows="4" cols="50" class="form-control" disabled>
+								
+								</textarea>
 							</div>
-							<div class="row">
-								<div class="col-xs-12 space-around">
-									<div class="col-xs-1">
-										<input type="checkbox" name="check" ><br>
-									</div>
-									<div class="col-xs-9">
-										<textarea rows="4" cols="50" class="form-control" disabled>
-										
-										</textarea>
-									</div>
-									<div class="col-xs-2 text-right">
-										Closed
-									</div>
-								</div>
+							<div class="col-xs-2 text-right">
+								{{Lang::get('Closed')}}
 							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 space-around">
+							<div class="col-xs-1">
+								<input type="checkbox" name="check" ><br>
+							</div>
+							<div class="col-xs-9">
+								<textarea rows="4" cols="50" class="form-control" disabled>
+								
+								</textarea>
+							</div>
+							<div class="col-xs-2 text-right">
+								{{Lang::get('Closed')}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 space-around">
+							<div class="col-xs-1">
+								<input type="checkbox" name="check" ><br>
+							</div>
+							<div class="col-xs-9">
+								<textarea rows="4" cols="50" class="form-control" disabled>
+								
+								</textarea>
+							</div>
+							<div class="col-xs-2 text-right">
+								{{Lang::get('Closed')}}
+							</div>
+						</div>
+					</div>
 				</div>
 				
 			</div>
@@ -77,14 +77,15 @@
 					<div class="pull-right">
 						<button type="button" id="add_comment_button"	class="btn verification-button">
 						<i class="fa pull-right"></i>
-						Add Comments</button>
+						{{Lang::get('Add Comments')}}
+						</button>
 						<button type="button" id="delete_comment_button"  class="btn verification-button">
 						<i class="fa pull-right"></i>
-						Delete Comments
+						{{Lang::get('Delete Comments')}}
 						</button>
 						<button type="button" id="save_comment_button" class="btn verification-button">
 						<i class="fa pull-right"></i>
-						Close Comments
+						{{Lang::get('Close Comments')}}
 						</button>
 					</div>
 				</div>

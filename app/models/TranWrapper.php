@@ -370,7 +370,7 @@ class TranWrapper extends MoneyMatchModel {
 		$activeloan_sql	= "	SELECT 	COUNT(loans.loan_id) active_loan
 							FROM 	loans 
 							WHERE 	loans.status IN (:approved, :closed,:disbursed,:repaid)
-							AND 	loans.borrower_id = lns.borrower_id";
+							AND 	loans.borrower_id ={$bor_id}";
 		
 		$result 		= 	$this->dbFetchWithParam($activeloan_sql,$argArray);
 		
@@ -399,5 +399,93 @@ class TranWrapper extends MoneyMatchModel {
 		$borruser_rs 		= 	$this->dbFetchAll($borruser_sql);
 		
 		return $borruser_rs[0];
+	}
+	
+	public function getUseridByInvestorID($inv_id) {
+		
+		
+		$sql= "	SELECT 	user_id
+				FROM 	investors 
+				WHERE 	investor_id= '".$inv_id."'";
+		
+		$result 	= $this->dbFetchAll($sql);
+		
+		if(isset($result[0])) {
+			$user_id = $result[0]->user_id;
+		}else{
+			$user_id = 0;
+		}
+		return $user_id;
+	}
+	
+	public function CheckInvestorExists($inv_id)	{
+		
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	investors 
+					WHERE 	investor_id = '".$inv_id."'";
+		$cnt 	=	$this->dbFetchOne($sql);
+		return ($cnt == 0)?false:true;
+	}
+	
+	public function getInvestorProfileStatus($inv_id) {
+		
+		
+		$sql= "	SELECT 	status
+				FROM 	investors 
+				WHERE 	investor_id= '".$inv_id."'";
+		
+		$result 	= $this->dbFetchAll($sql);
+		
+		if(isset($result[0])) {
+			$status = $result[0]->status;
+		}else{
+			$status = 0;
+		}
+		return $status;
+	}
+	
+	public function getInvestorActiveLoanStatus($inv_id) {
+		
+		$argArray		=	[
+							"bid_open" => LOAN_BIDS_STATUS_OPEN,
+							"bid_accepted" => LOAN_BIDS_STATUS_ACCEPTED,
+							"repayment_complete" => LOAN_STATUS_LOAN_REPAID
+							];
+		$activeloan_sql	= "	SELECT 	COUNT(*)
+							FROM 	loan_bids,
+									loans
+							WHERE 	(loan_bids.bid_status = (:bid_open) 
+										OR loan_bids.bid_status = (:bid_accepted))
+							AND 	loans.status != (:repayment_complete)
+							AND 	loan_bids.investor_id = {$inv_id}
+							AND		loan_bids.loan_id	=	loans.loan_id";
+		
+		$result 		= 	$this->dbFetchWithParam($activeloan_sql,$argArray);
+		
+		if(isset($result[0])) {
+			$active_loan = $result[0]->active_loan;
+		}else{
+			$active_loan = 0;
+		}
+		return $active_loan;
+	}
+	
+	public function getInvestorIdByUserInfo($investorId) {
+		
+		
+		$invuser_sql		= "	SELECT 	user_id,
+										username,
+										email
+								FROM 	users 
+								WHERE 	user_id =(
+													SELECT 	user_id
+													FROM	investors
+													WHERE	investor_id={$investorId}
+												)
+								";
+		
+		$invuser_rs 		= 	$this->dbFetchAll($invuser_sql);
+		
+		return $invuser_rs[0];
 	}
 }

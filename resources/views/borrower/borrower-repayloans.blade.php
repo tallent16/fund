@@ -2,7 +2,7 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 @endsection
-@section('page_heading','Repay Loans') 
+@section('page_heading',Lang::get('Repay Loans')) 
 @section('section')     
 	<div class="col-sm-12 space-around"> 			
 	
@@ -10,7 +10,7 @@
 			<div class="panel-heading panel-headsection">
 				<div class="row">
 				   <div class="col-xs-12">
-						REPAY LOANS
+						{{ Lang::get('REPAY LOANS')}}
 					</div>									
 				</div>                           
 			</div><!-------------end of---panel heading---------------------->	

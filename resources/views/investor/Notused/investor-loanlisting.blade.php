@@ -2,13 +2,13 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 @endsection
-@section('page_heading','Loan Listing')
+@section('page_heading',Lang::get('Loan Listing'))
 @section('section')     
 <div class="col-sm-12 text-center space-around">
 	<div class="annoucement-msg-container">
 		<div class="alert alert-success annoucement-msg">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<h4>We are here to help you find the best loans to find.</h4>	
+			<h4>{{Lang::get('We are here to help you find the best loans to find.')}}</h4>	
 		</div>
 	</div>				
 </div>

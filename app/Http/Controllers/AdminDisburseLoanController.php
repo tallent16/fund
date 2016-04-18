@@ -22,5 +22,12 @@ class AdminDisburseLoanController extends MoneyMatchController {
 		return view('admin.admin-disburseloan')->with(["bidsModel" => $this->bidsModel]);
 		
 	}
+	
+	public function saveDisburseLoanAction() {
+		$this->bidsModel->saveDisburseDetails();
+		return redirect('admin/loanlisting');
+	
+	}	
+	
 
 }

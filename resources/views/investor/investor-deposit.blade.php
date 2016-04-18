@@ -22,7 +22,7 @@
 		<div class="panel-heading panel-headsection"><!--panel head-->
 			<div class="row">
 				<div class="col-xs-12">
-					<span class="pull-left">REQUEST DEPOSIT</span> 
+					<span class="pull-left">{{Lang::get('REQUEST DEPOSIT')}}</span> 
 				</div>													
 			</div>							
 		</div><!--end panel head-->
@@ -37,7 +37,7 @@
 				
 					<div class="row">									
 						<div class="col-sm-5 col-lg-2 ">
-							<label>Available Balance</label>
+							<label>{{Lang::get('Available Balance')}}</label>
 						</div>
 						<div class="col-sm-7 col-lg-3">
 							<input type="text" 
@@ -53,7 +53,7 @@
 						
 					<div class="row">										
 						<div class="col-sm-5 col-lg-2 ">
-							<label>Deposit Date</label>
+							<label>{{Lang::get('Deposit Date')}}</label>
 						</div>
 						<div class="col-sm-7 col-lg-3">
 							<input type="text" 
@@ -68,7 +68,7 @@
 					
 					<div class="row">									
 						<div class="col-sm-5 col-lg-2 ">
-							<label class="input-required">Deposit Amount</label>
+							<label class="input-required">{{Lang::get('Deposit Amount')}}</label>
 						</div>
 						<div class="col-sm-7 col-lg-3">
 							<input type="text" 
@@ -81,7 +81,7 @@
 					
 					<div class="row">									
 						<div class="col-sm-5 col-lg-2 ">
-							<label class="input-required">Transaction Reference</label>
+							<label class="input-required">{{Lang::get('Transaction Reference')}}</label>
 						</div>
 						<div class="col-sm-7 col-lg-3">
 							<input type="text" 
@@ -94,7 +94,7 @@
 					
 					<div class="row">									
 						<div class="col-sm-5 col-lg-2 ">
-							<label>Remarks</label>
+							<label>{{Lang::get('Remarks')}}</label>
 						</div>
 						<div class="col-sm-7 col-lg-3">
 							<textarea rows="3" 
@@ -110,7 +110,7 @@
 						<div class="col-lg-2 col-sm-6"></div>
 							<div class="col-lg-3 col-sm-6">
 								<div class="text-right">							
-									<button type="submit" class="btn button-orange">Submit</button>	
+									<button type="submit" class="btn button-orange">{{Lang::get('Submit')}}</button>	
 								</div>
 							</div>
 						<div class="col-lg-7">	</div>							

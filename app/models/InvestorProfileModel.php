@@ -18,15 +18,21 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$bank_account_number  			=  	"";
 	public 	$branch_code  					=  	"";
 	public 	$bank_code						=  	"";
+	public 	$commentsInfo 					= 	array();
+	public 	$comments_count					= 	0;
 		
-	public function getInvestorDetails() {
+	public function getInvestorDetails($inv_id=null) {
 		
-		$this->getInvestorProfile();
+		$this->getInvestorProfile($inv_id);
 	}
 		
-	public function getInvestorProfile() {
+	public function getInvestorProfile($inv_id) {
 		
-		$current_user_id		=	 $this->getCurrentuserID();
+		if($inv_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByInvestorID($inv_id);
+		}
 		
 		$investorprofile_sql	= 	"	SELECT 	investors.investor_id ,
 											ifnull(DATE_FORMAT(investors.date_of_birth,'%d/%m/%Y'),'') date_of_birth,
@@ -88,6 +94,13 @@ class InvestorProfileModel extends TranWrapper {
 		$investorId		=	$this->updateInvestorInfo($postArray,$transType);
 		
 		$this->updateInvestorBankInfo($postArray,$investorId,$transType);
+		
+		if (isset($postArray['hidden_investor_status']) && $postArray['hidden_investor_status']	==	"corrections_required" ) {
+			if (isset($postArray['comment_row'])) {
+				$this->saveComments($postArray['comment_row'],$borrowerId);
+			}
+		}
+		
 		return $investorId;
 	}
 	
@@ -192,4 +205,150 @@ class InvestorProfileModel extends TranWrapper {
 		return $investorBankId;
 	}
 	
+	
+	public function getInvestorProfileComments($inv_id) {
+		
+		
+		if($inv_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByInvestorID($inv_id);
+		}
+		
+		$comments_sql	= 	"	SELECT 	profile_comments_id,
+										user_type,
+										user_id,
+										input_tab,
+										comments,
+										comment_status
+								FROM 	profile_comments
+								WHERE	user_id	=	{$current_user_id}";
+				
+		$comments_rs	=	$this->dbFetchAll($comments_sql);	
+		if ($comments_rs) {
+			foreach ($comments_rs as $commentRow) {
+				$newrow = count($this->commentsInfo);
+				$newrow ++;
+				foreach ($commentRow as $colname => $colvalue) {
+					$this->commentsInfo[$newrow][$colname] = $colvalue;
+				}
+			}
+		}else{
+			$comments_rs	=	 array();	
+		}
+		return	$comments_rs;
+	}
+	
+	public function getOpenCommentsCount($inv_id) {
+		
+		
+		if($inv_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByInvestorID($inv_id);
+		}
+		
+		$comments_sql			= 	"	SELECT 	count(profile_comments_id) cnt
+										FROM 	profile_comments
+										WHERE	user_id	=	{$current_user_id}
+										AND		comment_status	=".PROFILE_COMMENT_OPEN;
+				
+		$this->comments_count	=	$this->dbFetchOne($comments_sql);	
+	}
+	
+	public function saveComments($commentRows,$investorId) {
+		
+		$numRows = count($commentRows['comment_status_hidden']);
+		$rowIndex = 0;
+		$userID		=	$this->getUseridByInvestorID($investorId);
+		$userType	=	USER_TYPE_INVESTOR_;
+		if($numRows	>	0){
+			if($this->getUserType()	==	USER_TYPE_ADMIN){
+				$whereArry		=	array("user_id" => $userID);
+				$this->dbDelete("profile_comments",$whereArry);
+			}
+			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+				
+				$comment_status				= $commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id					= $commentRows['comment_id_hidden'][$rowIndex];
+				
+				if($this->getUserType()	==	USER_TYPE_ADMIN) {	
+					
+					$comments					= $commentRows['comments'][$rowIndex];
+					$input_tab					= $commentRows['input_tab'][$rowIndex];
+					// Construct the data array
+					$dataArray = array(	
+									'user_type' 				=> $userType,
+									'user_id'					=> $userID,
+									'input_tab'	 				=> $input_tab,
+									'comments'					=> $comments,
+									'comment_status'			=> $comment_status,
+									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+										
+					// Insert the rows (for all types of transaction)
+					$result =  $this->dbInsert('profile_comments', $dataArray, true);
+					if ($result < 0) {
+						return -1;
+					}
+				}else{
+					
+					$dataArray = array(
+										'comment_status'			=> $comment_status,
+										'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y"))
+									);	
+					$whereArry	=	array("profile_comments_id" =>"{$comment_id}");
+					$this->dbUpdate('profile_comments', $dataArray, $whereArry);
+				}
+			}
+		}
+		return 1;
+	}
+	
+	public function updateInvestorStatus($dataArray,$investorId,$status=null) {
+		
+		$whereArry	=	array("investor_id" =>"{$investorId}");
+		$this->dbUpdate('investors', $dataArray, $whereArry);
+		$invUserInfo	=	$this->getInvestorIdByUserInfo($investorId);
+		
+		if($status	==	"approve") {
+			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									"subject"=>"Money Match - Investor Approval",
+									"template"=>"emails.ApporvalTemplate",
+									"username"=>$invUserInfo->username,
+									"useremail"=>$invUserInfo->email
+								);
+			$this->sendMail($mailArray);
+		}
+		if($status	==	"return_invetor") {
+			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									"subject"=>"Money Match - Investor Correction Required",
+									"template"=>"emails.CorrectionRequiredTemplate",
+									"username"=>$invUserInfo->username,
+									"useremail"=>$invUserInfo->email
+								);
+			$this->sendMail($mailArray);
+		}
+		return $investorId;
+	}
+	
+	public function updateBulkInvestorStatus($postArray,$processType) {
+		
+		switch($processType){
+			case	"approve":
+					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_APPROVED );
+					$status	=	"approve";
+					break;
+			case	"delete":
+					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_DELETED );
+					$status	=	null;
+					break;
+			case	"reject":
+					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_REJECTED);
+					$status	=	null;
+					break;
+		}
+		foreach($postArray['investor_ids'] as $invRow) {
+			$this->updateInvestorStatus($dataArray,$invRow,$status);
+		}
+	}
 }

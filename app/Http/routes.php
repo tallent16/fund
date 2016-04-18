@@ -135,6 +135,10 @@ Route::group(['prefix' => ''], function() {
     define('PAYMENT_TRANSCATION_INVESTOR_WITHDRAWAL','4');
     define('BORROWER_COMMENT_OPEN','1');
     define('BORROWER_COMMENT_CLOSED','2');
+    
+    define('PROFILE_COMMENT_OPEN','1');
+    define('PROFILE_COMMENT_CLOSED','2');
+    
     define('PROCESS_FEES_APPLICABLE_PERCENT_ONLY', '2');
     define('PROCESS_FEES_APPLICABLE_FIXEDFEES_ONLY', '2');
     define('PROCESS_FEES_APPLICABLE_BOTH', '3');
@@ -158,17 +162,22 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::get('admin/login',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
     
     Route::get('admin/manageborrowers', 'AdminManageBorrowersController@indexAction');
+    Route::get('admin/manageinvestors', 'AdminManageInvestorsController@indexAction');
     Route::get('admin/loanlisting', 'AdminLoanListingController@indexAction');
     Route::get('admin/managebids/{loan_id}', 'AdminManageBidsController@getLoanDetailsAction');
     Route::post('admin/bidclose', 'AdminManageBidsController@bidCloseAction');
     Route::post('admin/bidaccept', 'AdminManageBidsController@acceptBidsAction');
     Route::post('admin/loancancel', 'AdminManageBidsController@loanCancelAction');
     Route::post('admin/loanapproval', 'AdminLoanApprovalController@indexAction'); 
-    Route::post('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@showDisburseLoanAction');
+    Route::post('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@saveDisburseLoanAction');
     Route::get('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@showDisburseLoanAction');
     Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
     Route::get('admin/borrower/updateprofile/{status}/{bor_id}', 'AdminManageBorrowersController@updateProfileStatusAction');
     Route::post('admin/borrower/updateprofile', 'AdminManageBorrowersController@updateBulkProfileStatusAction');
+    
+    Route::get('admin/investor/profile/{inv_id}', 'AdminManageInvestorsController@viewProfileAction');
+    Route::get('admin/investor/updateprofile/{status}/{inv_id}', 'AdminManageInvestorsController@updateProfileStatusAction');
+    Route::post('admin/investor/updateprofile', 'AdminManageInvestorsController@updateBulkProfileStatusAction');
 });
 
 // The routes (or pages that are applicable for Borrower Users only

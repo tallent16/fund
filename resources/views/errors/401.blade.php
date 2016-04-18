@@ -35,7 +35,7 @@
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">System Error. Please contact your system admin</div>
+				<div class="title">{{Lang::get('System Error. Please contact your system admin')}}</div>
 			</div>
 		</div>
 	</body>
