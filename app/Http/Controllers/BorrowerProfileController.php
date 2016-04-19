@@ -24,11 +24,12 @@ class BorrowerProfileController extends MoneyMatchController {
 			$submitted	=	true;
 		}
 		
-		$this->borrowerProfileModel->getBorrowerDetails();
+		$this->borrowerProfileModel->getBorrowerDetails(); 
 		
 		$withArry		=	array(	"modelBorPrf"=>$this->borrowerProfileModel,
 									"classname"=>"fa fa-user fa-fw",
-									"submitted"=>$submitted
+									"submitted"=>$submitted ,
+									"InvBorPrf"=>$this->borrowerProfileModel
 								);
 		return view('borrower.borrower-profile')
 					->with($withArry);

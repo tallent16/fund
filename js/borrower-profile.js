@@ -67,26 +67,29 @@ $(document).ready(function (){
 		format: 'dd/mm/yyyy'
 	});
   
-	 $(".nav-tabs > li").click(function(){
-		$("#next_button").show();
-		$("#submit_button").hide();
-		if($(this).hasClass("disabled"))
-            return false;
-        if($(this).find("a").attr("href")	==	"#bank_info") {
-			if($("#screen_mode").val()	==	"borrower"){
-				
-				if($("#borrower_status").val()	==	""){
-					$("#next_button").hide();
-					$("#submit_button").show();
+		 $(".nav-tabs > li").click(function(){
+			$("#next_button").show();
+			$("#submit_button").hide();
+			$("#returnback_button").hide();
+			$("#approve_profile_button").hide();
+			if($(this).hasClass("disabled"))
+				return false;
+			if($(this).find("a").attr("href")	==	"#bank_info") {
+				if($("#screen_mode").val()	==	"borrower"){
+					
+					if($("#borrower_status").val()	==	""){
+						$("#next_button").hide();
+						$("#submit_button").show();
+					}
 				}
 			}
-		}
-        if($(this).find("a").attr("href")	==	"#comments") {
-			$("#next_button").hide();
-			$("#submit_button").show();
-			$("#returnback_button").show();
-		}
-	});
+			if($(this).find("a").attr("href")	==	"#comments") {
+				$("#next_button").hide();
+				$("#submit_button").show();
+				$("#returnback_button").show();
+				$("#approve_profile_button").show();
+			}
+		});
     
 	 $("#next_button").click(function(){
 		callTabValidateFunc();
@@ -120,77 +123,6 @@ $(document).ready(function (){
 			}
 		}
 	});
-	/*=========================================================================================================
-	 * Admin Manage Borrowers jquery event function starts
-	 * ========================================================================================================*/
-	 
-	/* This click event is create new comments
-	 * by the admin
-	 */ 
-	$("#add_comment_button").click(function(){
-       addNewCommentRow();
-    });
-	/* This click event is delete comments
-	 * by the admin
-	 */ 
-	$("#delete_comment_button").click(function(){
-	   delCommentRow();
-    });
-	/* This click event is submit comments
-	 * by the admin
-	 */ 
-	$("#save_comment_button").click(function(){
-		var comments	=	new Array();
-		var	errMessage	=	"";
-		var	i			=	0
-		$('span.error').remove();
-		$('.has-error').removeClass("has-error");
-		
-		if ($(".select_comment").length > 0){
-			$(".select_comment").each(function() {
-				var rowID	=	$(this).attr("data-row-id");
-				if(rowID	!=	"XXX"){
-					if($("#comments_"+rowID).val()	==	"") {
-						$parentTag	=	$("#comments_"+rowID+"_parent");;
-						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
-					}
-				}
-			});
-			if ($("#commentBoxContainer").has('.has-error').length == 0){
-				$("#admin_process").val("save_comments");
-				$("#form-profile").submit();	
-			}
-		}
-    });
-    $("#select_all_comments").click(function(){
-		checkall_list(this,"select_comment");
-	});
-    $(".commentClass").click(function(){
-		var	commentId	=	$(this).attr("id");
-		var	id			=	commentId.replace("comment_status_","");
-		if($(this).is(":checked")) {
-			$("#comment_status_hidden_"+id).val(2);
-		}else{
-			$("#comment_status_hidden_"+id).val(1);
-		}
-	});
-	/* This click event is update borrower status
-	 * by the admin
-	 */ 
-	$("#returnback_button").click(function(){
-       $("#admin_process").val("return_borrower");
-       $("#form-profile").submit();
-    });
-	/* This click event is update borrower grade
-	 * by the admin
-	 */ 
-	$("#update_grade").click(function(){
-       $("#admin_process").val("update_grade");
-       $("#form-profile").submit();
-    });
-    /*=========================================================================================================
-	 * Admin Manage Borrowers jquery event function ends
-	 * ========================================================================================================*/
 	 
 	callcheckAllTabFilledFunc();
 	
@@ -277,6 +209,7 @@ function callTabValidateFunc() {
 			$('.nav-tabs a[href="#comments"]').tab('show');
 			$("#next_button").hide();
 			$("#returnback_button").show();
+			$("#approve_profile_button").show();
 		}
 	}
 }
@@ -383,51 +316,4 @@ function checkTabFilled(cur_tab) {
 		return true;
 	else
 		return false;
-}
-/* 	This function get commentTemplate and create new comment
-*/ 
-function addNewCommentRow(){
-		
-		htmlTemplate = $("#commentTemplate").html();
-		counterint = parseInt($("#max_comment").val());
-
-		counterint++;
-		counterstr = counterint.toString();
-
-		htmlTemplate = htmlTemplate.replace(/XXX/g, counterstr);
-		$("#commentBoxContainer").append(htmlTemplate);
-		$("#input_tab_"+counterstr).selectpicker("refresh");
-		$("#max_comment").val(counterstr);
-		
-		$(".commentClass").click(function(){
-			var	commentId	=	$(this).attr("id");
-			var	id			=	commentId.replace("comment_status_","");
-			if($(this).is(":checked")) {
-				$("#comment_status_hidden_"+id).val(2);
-			}else{
-				$("#comment_status_hidden_"+id).val(1);
-			}
-	});
-}
-/* 	This function delete the selected comments
-*/ 
-function delCommentRow(){
-	if ($(".select_comment:checked").length > 0){
-		$(".select_comment:checked").each(function() {
-			var rowID	=	$(this).attr("data-row-id");
-			if(rowID	!=	"XXX")
-				$("#comment-row-"+rowID).remove();
-		});
-	}
-}
-/* 	This function check the all comments are closed if yes 
- * borrower allow to submit for approval
-*/ 
-function checkAdminAllCommentsClosed(){
-	var	no_of_comments			=	$(".commentClass:not(#comment_status_XXX)").length;
-	var	no_of_checked_comments	=	$(".commentClass:not(#comment_status_XXX):checked").length;
-	//~ alert("no_of_comments:"+no_of_comments+" | no_of_checked_comments:"+no_of_checked_comments);
-	if(no_of_comments	!=	no_of_checked_comments)
-		return true;
-	return false;
 }

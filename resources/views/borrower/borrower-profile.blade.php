@@ -14,8 +14,6 @@
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>		 	
-	<script src="{{ url('js/common.js') }}" type="text/javascript"></script>		 	
-	
 	<script src="{{ url('js/numeral.min.js') }}" type="text/javascript"></script>		 	
 @endsection 
 @section('page_heading',Lang::get('borrower-profile.profile'))
@@ -175,7 +173,7 @@
 						<!-----Five Tab content ends----->	
 						@if($canViewCommentsTab	==	"yes")
 							<!-----Sixth Tab content starts----->
-								@include('widgets.borrower.tab.profile_comments')
+								@include('widgets.common.tab.profile_comments')
 							<!-----Sixth Tab content ends----->
 						@endif
 						
@@ -220,6 +218,7 @@
 													id="returnback_button"
 													style="display:none"
 													class="btn verification-button"
+													data-screen-type="borrower"
 												<i class="fa pull-right"></i>
 												{{ Lang::get('Return to Borrower') }}
 											</button>
@@ -227,6 +226,20 @@
 									@endif
 								@endif
 								
+							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+								@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+									@if($modelBorPrf->comments_count	==	0)
+										<button type="button"
+												id="approve_profile_button"
+												style="display:none"
+												class="btn verification-button"
+												data-screen-type="borrower"
+											<i class="fa pull-right"></i>
+											{{ Lang::get('Approve Profile') }}
+										</button>
+									@endif
+								@endif
+							@endif
 							</div>
 						</div> 
 					</div> 

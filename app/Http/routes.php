@@ -175,7 +175,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::get('admin/borrower/updateprofile/{status}/{bor_id}', 'AdminManageBorrowersController@updateProfileStatusAction');
     Route::post('admin/borrower/updateprofile', 'AdminManageBorrowersController@updateBulkProfileStatusAction');
     
-    Route::get('admin/investor/profile/{inv_id}', 'AdminManageInvestorsController@viewProfileAction');
+    Route::match(['get', 'post'],'admin/investor/profile/{inv_id}', 'AdminManageInvestorsController@viewProfileAction');
     Route::get('admin/investor/updateprofile/{status}/{inv_id}', 'AdminManageInvestorsController@updateProfileStatusAction');
     Route::post('admin/investor/updateprofile', 'AdminManageInvestorsController@updateBulkProfileStatusAction');
 });

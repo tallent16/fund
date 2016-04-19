@@ -28,7 +28,9 @@ class InvestorProfileController extends MoneyMatchController {
 
 		$withArry		=	array(	"InvPrfMod"=>$this->investorProfileModel,
 									"classname"=>"fa fa-user fa-fw",
-									"submitted"=>$submitted
+									"submitted"=>$submitted	,
+									"InvBorPrf"=>$this->investorProfileModel
+									
 								);
 		return view('investor.investor-profile')					
 					->with($withArry); 

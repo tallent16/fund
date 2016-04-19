@@ -9596,8 +9596,10 @@ table#account-summary, .table-border-custom{
 	.table-responsive {
 		border:none;
 		overflow-y: auto;
-	}
+	}	
+}
+@media(max-width: 320px) {
 	nav .block-title{
-		text-align:left;
+		width:auto;
 	}
 }

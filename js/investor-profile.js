@@ -13,14 +13,52 @@ $(document).ready(function (){
 	});   
 	
 	$("#form-profile").submit(function(e) {
-		var	email		=	$("#email").val();
-		var	username	=	$("#displayname").val();
-		checkDisplayName(username);
-		checkEmail(email);
-		if ($("#form-profile").has('div.has-error').length > 0)
-			e.preventDefault();
 		
+		if($("#screen_mode").val()	==	"investor"){
+			var	email		=	$("#email").val();
+			var	username	=	$("#displayname").val();
+			checkDisplayName(username);
+			checkEmail(email);
+			var	isSaveButtonClicked		=	$("#isSaveButton").val();
+			
+			if(isSaveButtonClicked	!=	"yes") {
+				if($("#investor_status").val()	==	"corrections_required") {
+					
+					if(checkAdminAllCommentsClosed()){
+						showDialog("","Please close the corrections and submit again for approval");
+						event.preventDefault();
+					}
+				}
+			}
+			if ($("#form-profile").has('div.has-error').length > 0)
+				e.preventDefault();
+		}
 	});
+	$("#next_button").click(function(){
+		
+		$('.nav-tabs a[href="#comments_info"]').tab('show');
+		$("#next_button").hide();
+		$("#submit_button").show();
+		$("#returnback_button").show();
+		$("#approve_profile_button").show();
+	});
+	$(".nav-tabs > li").click(function(){
+		$("#next_button").show();
+		$("#submit_button").hide();
+		$("#returnback_button").hide();
+		$("#approve_profile_button").hide();
+
+		if($(this).find("a").attr("href")	==	"#comments_info") {
+			$("#next_button").hide();
+			$("#submit_button").show();
+			$("#returnback_button").show();
+			$("#approve_profile_button").show();
+		}
+	});
+	
+	$("#save_button").click(function(){
+      $("#isSaveButton").val("yes");
+    });
 });
 function checkDisplayName(value) {
 	if((value!='')) {
@@ -94,3 +132,5 @@ function validateEmail($email) {
   var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
   return emailReg.test( $email );
 }
+
+

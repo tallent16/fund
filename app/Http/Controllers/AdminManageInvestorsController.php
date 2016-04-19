@@ -63,6 +63,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		}
 		$this->investorProfileModel->getInvestorDetails($inv_id);
 		$withArry	=	array(		"InvPrfMod"=>$this->investorProfileModel,
+									"InvBorPrf"=>$this->investorProfileModel,
 									"classname"=>"fa fa-reply fa-fw user-icon",
 									"submitted"=>$submitted
 								);	

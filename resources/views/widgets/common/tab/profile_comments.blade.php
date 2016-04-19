@@ -1,4 +1,5 @@
-@var	$commentsInfo	=	$modelBorPrf->commentsInfo
+
+@var	$commentsInfo	=	$InvBorPrf->commentsInfo
 @if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 	@var	$showCommentSelectAll	=	"yes"
 	@var	$editCommentInput		=	""
@@ -7,7 +8,7 @@
 	@var	$editCommentInput		=	"disabled"
 @endif
 
-<div id="comments" class="tab-pane fade">  
+<div id="comments_info" class="tab-pane fade">  
 	<div class="panel panel-default directorinfo applyloan"> 
 		<div class="panel-body">
 			<div class="row">
@@ -23,9 +24,11 @@
 											<input type="checkbox" id="select_all_comments" ><br>
 										</div>
 									@endif
-									<div class="col-xs-9 col-lg-4">
-										<span class="pull-left">{{ Lang::get('Input Tab') }}</span> 
-									</div>
+									@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+										<div class="col-xs-9 col-lg-4">
+											<span class="pull-left">{{ Lang::get('Input Tab') }}</span> 
+										</div>
+									@endif
 									<div class="col-xs-9 col-lg-5">
 										<span class="pull-left">{{ Lang::get('Comments') }}</span> 
 									</div>
@@ -57,13 +60,15 @@
 														value="{{ $commentRow['profile_comments_id']}}"><br>
 											</div>
 										@endif
-										<div class="col-xs-4">
-											{{ Form::select('comment_row[input_tab][]',$inputTabInfo, $commentRow['input_tab'] , 
-																	['class' => 'inputTabDropDown selectpicker text-right required',
-																	'id'=>'input_tab_'.$i
-																	,($editCommentInput=="")?null:$editCommentInput]) 
-											}}
-										</div>
+										@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+											<div class="col-xs-4">
+												{{ Form::select('comment_row[input_tab][]',$inputTabInfo, $commentRow['input_tab'] , 
+																		['class' => 'inputTabDropDown selectpicker text-right required',
+																		'id'=>'input_tab_'.$i
+																		,($editCommentInput=="")?null:$editCommentInput]) 
+												}}
+											</div>
+										@endif
 										<div class="col-xs-5" id="comments_{{$i}}_parent">
 											<textarea 	rows="4" 
 														cols="50" 

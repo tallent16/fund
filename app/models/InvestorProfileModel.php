@@ -24,6 +24,8 @@ class InvestorProfileModel extends TranWrapper {
 	public function getInvestorDetails($inv_id=null) {
 		
 		$this->getInvestorProfile($inv_id);
+		$this->getInvestorProfileComments($inv_id);
+		$this->getOpenCommentsCount($inv_id);
 	}
 		
 	public function getInvestorProfile($inv_id) {
@@ -37,13 +39,18 @@ class InvestorProfileModel extends TranWrapper {
 		$investorprofile_sql	= 	"	SELECT 	investors.investor_id ,
 											ifnull(DATE_FORMAT(investors.date_of_birth,'%d/%m/%Y'),'') date_of_birth,
 											investors.nric_number,
+											investors.status,
 											case investors.status 
-												   when 1 then 'New profile' 
-												   when 4 then 'Verified'
+													when 1 then 'New profile' 
+													when 2 then 'Submitted for verification'
+													when 3 then 'Corrections required'
+													when 4 then 'Verified'
 											end as statusText,
 											case investors.status 
-												   when 1 then '' 
-												   when 4 then 'disabled'
+													when 1 then '' 
+													when 2 then 'disabled' 
+													when 3 then '' 
+													when 4 then 'disabled'
 											end as viewStatus,
 											investor_banks.investor_bankid,
 											investor_banks.bank_name,
@@ -90,14 +97,16 @@ class InvestorProfileModel extends TranWrapper {
 	
 	public function processProfile($postArray) {
 		
+		
 		$transType 		=	$postArray['trantype'];
 		$investorId		=	$this->updateInvestorInfo($postArray,$transType);
-		
+
 		$this->updateInvestorBankInfo($postArray,$investorId,$transType);
 		
-		if (isset($postArray['hidden_investor_status']) && $postArray['hidden_investor_status']	==	"corrections_required" ) {
+		if (isset($postArray['hidden_investor_status']) 
+				&& $postArray['hidden_investor_status']	==	"corrections_required" ) {
 			if (isset($postArray['comment_row'])) {
-				$this->saveComments($postArray['comment_row'],$borrowerId);
+				$this->saveComments($postArray['comment_row'],$investorId);
 			}
 		}
 		
@@ -108,8 +117,10 @@ class InvestorProfileModel extends TranWrapper {
 		
 		if ($transType == "edit") {
 			$investorId	= $postArray['investor_id'];
+			$status		=	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL;
 		} else {
 			$investorId = 0;
+			$status		=	INVESTOR_STATUS_NEW_PROFILE;
 		}
 	
 		$firstname 						=	$postArray['firstname'];
@@ -133,8 +144,14 @@ class InvestorProfileModel extends TranWrapper {
 									
 		$dataArray 		= 	array(	'date_of_birth' 				=> $date_of_birth,
 									'nric_number'					=> ($nric_number!="")?$nric_number:null,
-									'status' 						=> 1,
 									'user_id' 						=> $current_user_id);
+		if ($transType == "edit") {
+			if($postArray['isSaveButton']	!=	"yes") {
+				$dataArray['status'] = $status;
+			}
+		}else{
+			$dataArray['status'] = $status;
+		}
 		
 		
 	//~ echo "<pre>",print_r($dataArray),"</pre>";
@@ -261,7 +278,7 @@ class InvestorProfileModel extends TranWrapper {
 		$numRows = count($commentRows['comment_status_hidden']);
 		$rowIndex = 0;
 		$userID		=	$this->getUseridByInvestorID($investorId);
-		$userType	=	USER_TYPE_INVESTOR_;
+		$userType	=	USER_TYPE_INVESTOR;
 		if($numRows	>	0){
 			if($this->getUserType()	==	USER_TYPE_ADMIN){
 				$whereArry		=	array("user_id" => $userID);
@@ -275,12 +292,10 @@ class InvestorProfileModel extends TranWrapper {
 				if($this->getUserType()	==	USER_TYPE_ADMIN) {	
 					
 					$comments					= $commentRows['comments'][$rowIndex];
-					$input_tab					= $commentRows['input_tab'][$rowIndex];
 					// Construct the data array
 					$dataArray = array(	
 									'user_type' 				=> $userType,
 									'user_id'					=> $userID,
-									'input_tab'	 				=> $input_tab,
 									'comments'					=> $comments,
 									'comment_status'			=> $comment_status,
 									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));

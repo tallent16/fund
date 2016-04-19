@@ -62,7 +62,8 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$this->borrowerProfileModel->getBorrowerDetails($bor_id);
 		$withArry	=	array(		"modelBorPrf"=>$this->borrowerProfileModel,
 									"classname"=>"fa fa-reply fa-fw user-icon",
-									"submitted"=>$submitted
+									"submitted"=>$submitted ,
+									"InvBorPrf"=>$this->borrowerProfileModel
 								);	
 		return view('borrower.borrower-profile')
 				->with($withArry);
