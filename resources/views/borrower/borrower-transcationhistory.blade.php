@@ -92,14 +92,14 @@
 <div class="row">
 	<div class="col-sm-12"> 
 		<div class="table-responsive applyloan" id="transhistory-container"> 
-			<table class="table tab-fontsize" id="open-close">
+			<table class="table tab-fontsize text-left" id="open-close">
 				<thead>
 					<tr>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.trans_date') }}</th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.trans_type') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.trans_date') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.trans_type') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.trans_amt') }}</th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.trans_details') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.trans_details') }}</th>
 					</tr>
 				</thead>
 				<tbody>

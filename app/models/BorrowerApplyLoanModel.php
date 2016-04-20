@@ -53,7 +53,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		
 	public function getBorrowerLoanInfo($loan_id) {
 		
-		$current_borrower_id	=	 $this->getCurrentBorrowerID();
+		
 		
 		$loanlist_sql			= "	SELECT 	loans.loan_id,
 											loans.loan_reference_number,
@@ -68,9 +68,19 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											ifnull(DATE_FORMAT(loans.bid_open_date,'%d/%m/%Y'),'') bid_open_date,
 											ifnull(DATE_FORMAT(loans.bid_close_date,'%d/%m/%Y'),'') bid_close_date,
 											loans.bid_type,
+											case loans.bid_type 
+												   when 1 then 'Open Bid' 
+												   when 2 then 'Closed Bid'
+												   when 3 then 'Fixed Interest'
+											end as bidTypeText,
 											loans.partial_sub_allowed,
 											loans.min_for_partial_sub,
 											loans.repayment_type,
+											case loans.repayment_type 
+												   when 1 then 'Bullet' 
+												   when 2 then 'Monthly Interest'
+												   when 3 then 'EMI'
+											end as repaymentText,
 											loans.status,
 											loans.comments,
 											loans.final_interest_rate,

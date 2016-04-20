@@ -1,6 +1,16 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	 
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	
+	<script>
+		$(document).ready(function(){		
+			 
+			$(".borrower_doc_download").on("click",function(){
+				var	loan_doc_url	=	$(this).attr("data-download-url");
+					loan_doc_url	=	loan_doc_url+"_"+ new Date().getTime();
+					window.location	=	loan_doc_url;
+			});
+		});	
+	</script>	 
 	@endsection
 @section('page_heading',Lang::get('Manage Loans') )
 @section('section')  

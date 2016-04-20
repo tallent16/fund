@@ -16,14 +16,14 @@
 			<div class="col-sm-12 space-around"> 
 				
 				<div class="table-responsive applyloan"> 
-					<table class="table tab-fontsize table-striped table-border-custom">
+					<table class="table tab-fontsize table-striped table-border-custom text-left">
 						<thead>
 							<tr>
-								<th class="tab-head">{{Lang::get('TRANSCATION REFERENCE')}}</th>
-								<th class="tab-head">{{Lang::get('TRANSCATION DATE')}}</th>
-								<th class="tab-head">{{Lang::get('TRANSCATION TYPE')}}</th>
+								<th class="tab-head text-left">{{Lang::get('TRANSCATION REFERENCE')}}</th>
+								<th class="tab-head text-left">{{Lang::get('TRANSCATION DATE')}}</th>
+								<th class="tab-head text-left">{{Lang::get('TRANSCATION TYPE')}}</th>
 								<th class="tab-head text-right">{{Lang::get('AMOUNT')}}</th>
-								<th class="tab-head">{{Lang::get('REMARKS')}}</th>
+								<th class="tab-head text-left">{{Lang::get('REMARKS')}}</th>
 								<th class="tab-head text-right">{{Lang::get('CLOSING BALANCE')}}</th>																
 							</tr>
 						</thead>
@@ -36,7 +36,7 @@
 										<td>{{$tranListRow->trans_reference_number}}</td>
 										<td>{{$tranListRow->trans_date}}</td>
 										<td>{{$tranListRow->trans_type}}</td>
-										<td class="text-right">{{$tranListRow->trans_amount}}</td>
+										<td class="text-right">{{round($tranListRow->trans_amount,2)}}</td>
 										<td>{{$tranListRow->remarks}}</td>
 										<td class="text-right">{{$closingBalance}}</td>											
 									</tr>							

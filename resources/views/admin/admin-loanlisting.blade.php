@@ -12,23 +12,14 @@
 		
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
-				<strong>{{ Lang::get('All Transcations')}}</strong><br>	
-					 <div class="dropdown selectpicker">
-						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{ Lang::get('All')}}
-						<span class="caret"></span></button>
-						<ul class="dropdown-menu">
-						<li><a href="#">{{ Lang::get('New')}}</a></li>
-						<li><a href="#">{{ Lang::get('Submitted')}}</a></li>
-						<li><a href="#">{{ Lang::get('Comments by Admin')}}</a></li>
-						<li><a href="#">{{ Lang::get('Bids Closed')}}</a></li>
-						<li><a href="#">{{ Lang::get('Bids Accepted')}}</a></li>
-						<li><a href="#">{{ Lang::get('Loan Disbursed')}}</a></li>
-						<li><a href="#">{{ Lang::get('Repayment Complete')}}</a></li>
-						</ul>
-					</div>
+					<strong>{{ Lang::get('Filter Transcations') }}</strong><br>							
+					{{ Form::select('filter_transcations', $adminLoanListing->allTransList, $adminLoanListing->allTransValue, ["class" => "selectpicker"]) }} 
+			</div>
 				
-			</div>	
-		</div>
+		
+	</div>
+		
+		
 				
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
@@ -98,27 +89,7 @@
 								<td>{{ Lang::get('Closed')}}</td>
 								<td>{{ Lang::get('12-04-2016')}}</td>
 								<td>{{ Lang::get('Disbursed')}}</td>
-							</tr>
-							<tr class="odd" id="11" role="row">								
-								<td>{{ Lang::get('L-125465')}}</td>
-								<td>{{ Lang::get('Name')}}</td>
-								<td class="text-right">{{ Lang::get('1256558')}}</td>
-								<td class="text-right">{{ Lang::get('15%')}}</td>
-								<td class="text-right">{{ Lang::get('3')}}</td>
-								<td>{{ Lang::get('Closed')}}</td>
-								<td>{{ Lang::get('12-04-2016')}}</td>
-								<td>{{ Lang::get('Disbursed')}}</td>
-							</tr>
-							<tr class="odd" id="11" role="row">								
-								<td>{{ Lang::get('L-125465')}}</td>
-								<td>{{ Lang::get('Name')}}</td>
-								<td class="text-right">{{ Lang::get('1256558')}}</td>
-								<td class="text-right">{{ Lang::get('15%')}}</td>
-								<td class="text-right">{{ Lang::get('3')}}</td>
-								<td>{{ Lang::get('Closed')}}</td>
-								<td>{{ Lang::get('12-04-2016')}}</td>
-								<td>{{ Lang::get('Disbursed')}}</td>
-							</tr>
+							</tr>						
 					
 				</tbody>
 			</table>
@@ -158,21 +129,7 @@ $(document).ready(function(){
 	minView: 2,
 	format: 'dd/mm/yyyy' 
 
-	}); 
-	
-	// Add event listener for opening and closing transcation details
-	/*$(".details-control").click(function() {
-		var loan_id = $(this).parent().attr("id");		
-		if($(this).parent().hasClass("shown")){
-			$("#"+loan_id).removeClass("shown");
-			$("#tran_row_"+loan_id).hide();
-		}
-		else{
-			$("#"+loan_id).addClass("shown");
-			$("#tran_row_"+loan_id).show();				
-		}
-	});*/
-        
+	});         
 }); 
 </script>  
 @endsection  

@@ -9248,7 +9248,7 @@ nav .block-title{
 	margin:0 5px 0 0;
 }
 .myloan-wrapper table tr td:first-child{
-	text-align:left;
+	/*text-align:left;*/
 }
 .panel-container img{
 	margin:-1px 0 0 0;
@@ -9282,8 +9282,7 @@ nav .block-title{
 /*---------------------BidInfo TAB-------------------------------------*/
 table.table.table-bidinfo tr td,
 table.table.table-bidinfo tr th{
-    border: none;
-    text-align: center;
+    border: none;   
 }
 .tab-row-orange{
 	background-color:#F6942C;
@@ -9574,7 +9573,7 @@ table#account-summary, .table-border-custom{
         position: inherit;
         margin: 0 0 0 250px; 
         padding: 0 30px;
-        border-left: 1px solid #e7e7e7;
+        border-left: 1px solid #e7e7e7; 
     }          
 }
 @media(max-width: 360px) {

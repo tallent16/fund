@@ -1,4 +1,3 @@
-
 @var $loanDocuments = $BorModLoan->document_details;
 <div id="documents_submitted" class="tab-pane fade">
 	<div class="panel panel-default applyloan">   

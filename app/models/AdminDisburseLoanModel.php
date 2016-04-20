@@ -138,8 +138,8 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
 			$investors[] = $investorId;
-//			echo "<h1>Repayment Schedule for Investor # {$investorId} </h1>";
-//			$this->printEmi($this->investor_repayment[$investorId]);
+			echo "<h1>Repayment Schedule for Investor # {$investorId} </h1>";
+			$this->printEmi($this->investor_repayment[$investorId]);
 		}
 		
 		$totPrin	=	 0;
@@ -166,9 +166,9 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 //		echo "Total principal repaid is $totPrin <br>";
 //		echo "<pre>", print_r($this->repayment_schedule), "</pre>";
-//			echo "<h1>Repayment Schedule for Loan ID </h1>";
-//		$this->printEmi($this->repayment_schedule);
-//		die;
+			echo "<h1>Repayment Schedule for Loan ID </h1>";
+		$this->printEmi($this->repayment_schedule);
+		die;
 		
 	}
 	

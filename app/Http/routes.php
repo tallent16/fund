@@ -168,7 +168,8 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/bidclose', 'AdminManageBidsController@bidCloseAction');
     Route::post('admin/bidaccept', 'AdminManageBidsController@acceptBidsAction');
     Route::post('admin/loancancel', 'AdminManageBidsController@loanCancelAction');
-    Route::post('admin/loanapproval', 'AdminLoanApprovalController@indexAction'); 
+    Route::get('admin/loanapproval/{loan_id}', 'AdminLoanApprovalController@indexAction'); 
+    Route::get('admin/loandocdownload/{doc_id}', 'AdminLoanApprovalController@downloadLoanDocumentAction'); 
     Route::post('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@saveDisburseLoanAction');
     Route::get('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@showDisburseLoanAction');
     Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');

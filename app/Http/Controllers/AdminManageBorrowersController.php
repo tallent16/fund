@@ -12,7 +12,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	}
 	
 	public function littleMoreInit() {
-		$this->adminborModel	=	new AdminManageBorrowersModel;
+		$this->adminborModel		=	new AdminManageBorrowersModel;
 		$this->borrowerProfileModel	=	new BorrowerProfileModel;
 	}
 	
