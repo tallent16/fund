@@ -24,7 +24,7 @@
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
-				<input id="fromdate" name="fromdate" value="" 
+				<input id="fromdate" name="fromdate" value="{{$adminLoanListing->fromDate}}" 
 						type="text" class="date-picker form-control" />
 			</div>	
 		</div>
@@ -32,7 +32,7 @@
 		<div class="col-sm-6 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
-				<input id="todate" name="todate" value=""
+				<input id="todate" name="todate" value="{{$adminLoanListing->toDate}}"
 						type="text" class="date-picker form-control" />
 			</div>	
 		</div>
@@ -64,33 +64,86 @@
 
 <div class="row">
 	<div class="col-sm-12"> 
-		<div class="table-responsive applyloan"> 
-			<table class="table tab-fontsize table-border-custom" id="open-close">
+		<div class="table-responsive applyloan adminloanlisting"> 
+			<table class="table tab-fontsize table-border-custom text-left">
 				<thead>
 					<tr>
-						<th class="tab-head">{{ Lang::get('Loan Reference Number') }}</th>
-						<th class="tab-head">{{ Lang::get('Borrower Organisation Name') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('Loan Reference Number') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('Borrower Organisation Name') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('Loan Amount') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('Target Interest') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('Tenure') }}</th>
-						<th class="tab-head">{{ Lang::get('Bid Type') }}</th>
-						<th class="tab-head">{{ Lang::get('Bid Close Date') }}</th>
-						<th class="tab-head">{{ Lang::get('Status') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('Bid Close Date') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
 					</tr>
 				</thead>
-				<tbody>
-					
-							<tr class="odd" id="11" role="row">								
-								<td>{{ Lang::get('L-125465')}}</td>
-								<td>{{ Lang::get('Name')}}</td>
-								<td class="text-right">{{ Lang::get('1256558')}}</td>
-								<td class="text-right">{{ Lang::get('15%')}}</td>
-								<td class="text-right">{{ Lang::get('3')}}</td>
-								<td>{{ Lang::get('Closed')}}</td>
-								<td>{{ Lang::get('12-04-2016')}}</td>
-								<td>{{ Lang::get('Disbursed')}}</td>
-							</tr>						
-					
+				<tbody>	
+				
+					@if (count($adminLoanListing->loanListInfo) > 0)			
+							@foreach($adminLoanListing->loanListInfo as $loanlistRow)
+							
+							@var	$loan_id	=	base64_encode($loanlistRow->loan_id);
+							@if  ($loanlistRow->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+										@var	$actionUrl		=	url('admin/loanapproval/')
+										@var	$actionUrl		=	$actionUrl."/".$loan_id							
+							@elseif ($loanlistRow->status	==	LOAN_STATUS_APPROVED)																	
+										@var	$actionUrl		=	url('admin/managebids/')
+										@var	$actionUrl		=	$actionUrl."/".$loan_id					
+							@elseif ($loanlistRow->status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
+										@var	$actionUrl		=	url('admin/managebids/')
+										@var	$actionUrl		=	$actionUrl."/".$loan_id		
+							@elseif	($loanlistRow->status == LOAN_STATUS_BIDS_ACCEPTED)													
+										@var	$actionUrl		=	url('admin/disburseloan/')
+										@var	$actionUrl		=	$actionUrl."/".$loan_id									
+							@else
+										@var	$actionUrl		=	"javascript:void(0);"									
+							@endif
+								
+									<tr class="odd" id="11" role="row">								
+										<td class="text-left">
+											<a href="{{$actionUrl}}">
+												{{$loanlistRow->loan_reference_number}}
+											</a>
+										</td>
+										<td class="text-left">
+											<a href="{{$actionUrl}}">
+												{{$loanlistRow->business_name}}
+											</a>
+										</td>
+										<td class="text-right">
+											<a href="{{$actionUrl}}">
+												{{number_format($loanlistRow->loan_sanctioned_amount,2,'.',',')}}
+											</a>
+										</td>
+										<td class="text-right">
+											<a href="{{$actionUrl}}">
+												{{$loanlistRow->target_interest}}
+											</td>
+										<td class="text-right">
+											<a href="{{$actionUrl}}">
+												{{$loanlistRow->loan_tenure}}
+											</a>
+										</td>
+										<td class="text-left">
+											<a href="{{$actionUrl}}">
+												{{$loanlistRow->bid_type_name}}
+											</a>
+										</td>
+										<td class="text-left">
+											<a href="{{$actionUrl}}">
+												{{$loanlistRow->bid_close_date}}
+											</a>
+											</td>
+										<td class="text-left">
+											<a href="{{$actionUrl}}">
+												{{$loanlistRow->status}}
+											</a>
+										</td>
+									</tr>						
+							@endforeach
+						@endif				
+							
 				</tbody>
 			</table>
 		</div>

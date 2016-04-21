@@ -59,8 +59,8 @@
 									<td>{{$loanRow->ref}}</td>
 									<td>{{$loanRow->schd_date}}</td>
 									<td>{{$loanRow->inst_period}}</td>
-									<td class="text-right">{{round($loanRow->schd_amount,2)}}</td>
-									<td class="text-right">{{round($loanRow->penalty,2)}}</td>							
+									<td class="text-right">{{number_format($loanRow->schd_amount, 2, ".", ",")}}</td>
+									<td class="text-right">{{number_format($loanRow->penalty, 2, ".", ",")}}</td>							
 									<td>
 										<a href="{{ url ('borrower/makepayment/'.base64_encode($loanRow->repayment_schedule_id).'/'.base64_encode($loanRow->loan_id)) }}">																				
 										<button type="submit" id="{{$loanRow->repayment_schedule_id}}" class="button-orange" {{$button_enable}}>{{ Lang::get('REPAY')}}</button>

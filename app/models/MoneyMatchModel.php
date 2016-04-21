@@ -133,7 +133,7 @@ class MoneyMatchModel extends Model {
 		return $sqlStat_rs;		
 	}
 	
-	public function dbErrorHandler($e) {
+	public function dbErrorHandler($e) {		
 		Log::error($e->getMessage());
 	}
 	

@@ -9472,7 +9472,7 @@ table#account-summary, .table-border-custom{
 	border-radius:0;
 }
 /*******************************Admin Manage Borrower*******************/
-.borrower-admin a {
+.borrower-admin a ,.adminloanlisting a{
     color: #333;
     text-decoration: none;
 }

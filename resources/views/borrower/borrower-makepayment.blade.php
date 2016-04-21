@@ -68,7 +68,7 @@
 							<div class="col-xs-12 col-sm-8">													
 								<input type="text" 
 										name="principal_amount" 
-										value="{{round($modelrepayloanpayment->principalAmount,2)}}" 
+										value="{{number_format($modelrepayloanpayment->principalAmount, 2, '.', ',')}}" 
 										class="form-control text-right" disabled>	
 							</div>
 						</div>
@@ -81,7 +81,7 @@
 							<div class="col-xs-12 col-sm-8">													
 								<input 	type="text" 
 										name="interest_amount" 
-										value="{{round($modelrepayloanpayment->interestAmount,2)}}"
+										value="{{number_format($modelrepayloanpayment->interestAmount, 2, '.', ',')}}"
 										class="form-control text-right" disabled>	
 							</div>
 						</div>
@@ -94,7 +94,7 @@
 							<div class="col-xs-12 col-sm-8">													
 								<input  type="text" 
 										name="penalty_amount" 
-										value="{{round($modelrepayloanpayment->penaltyAmt,2)}}" 
+										value="{{number_format($modelrepayloanpayment->penaltyAmt, 2, '.', ',')}}" 
 										class="form-control text-right" disabled>
 							</div>
 						</div>
@@ -108,7 +108,7 @@
 								<input  type="text" 
 										name="amount_Paid" 
 										id="amount_Paid"
-										value="{{round($modelrepayloanpayment->amountPaid,2)}}" 
+										value="{{number_format($modelrepayloanpayment->amountPaid, 2, '.', ',')}}" 
 										class="form-control text-right" disabled>
 							</div>
 						</div>						

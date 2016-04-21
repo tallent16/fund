@@ -33,9 +33,9 @@ class AdminLoanListingController extends MoneyMatchController {
 			$all_Trans = $_REQUEST["filter_transcations"];
 		}
 		
-		$this->adminLoanListing->viewTransList($fromDate, $toDate, $all_Trans);		
-		
 		$this->adminLoanListing->processDropDowns();
+		
+		$this->adminLoanListing->viewTransList($fromDate, $toDate, $all_Trans);	
 
 		$withArry	=	array(	"adminLoanListing" => $this->adminLoanListing	, 
 								"fromDate" => $fromDate, 

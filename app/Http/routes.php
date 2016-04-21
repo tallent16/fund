@@ -46,6 +46,7 @@ Route::group(['prefix' => ''], function() {
 	define('PROFILE_COMMENT_STATUS', '26');
 	define('LOAN_FEES_APPLICABLE', '27');
 	define('PENALTY_FEES_APPLICABLE', '28');
+	define('INVESTOR_REPAYMENT_STATUS', '29');
 
 	
 	/* Code Master Details */
@@ -143,8 +144,8 @@ Route::group(['prefix' => ''], function() {
     define('PROCESS_FEES_APPLICABLE_FIXEDFEES_ONLY', '2');
     define('PROCESS_FEES_APPLICABLE_BOTH', '3');
 
-
-
+	define('INVESTOR_REPAYMENT_STATUS_UNPAID', '1');
+	define('INVESTOR_REPAYMENT_STATUS_PAID', '2');
     
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 

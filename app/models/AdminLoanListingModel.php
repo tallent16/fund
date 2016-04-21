@@ -7,17 +7,21 @@ class AdminLoanListingModel extends TranWrapper {
 	public  $allTransList					= array();
 	public  $allTransValue					= 'all';
 	public 	$filterStatusValue				= 'all';
+	public  $loanListInfo					= array();
+	public  $filter_code					= "11";
+	public  $fromDate						= "2016-03-01";
+	public  $toDate							= "2016-05-21";	
 	
 	public function processDropDowns() {
-		$allTransCode	=	7;
-		
+				
+				
 		$filterSql		=	"	SELECT	codelist_id,
 										codelist_code,
 										codelist_value,
 										expression
 								FROM	codelist_details
 								WHERE	codelist_id in (7) && 														
-										codelist_code not in (8,9)";
+										codelist_code not in (8,9) order by codelist_value";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);	
 		
@@ -48,12 +52,20 @@ class AdminLoanListingModel extends TranWrapper {
 	} // End process_dropdown
 	
 	public function viewTransList($fromDate, $toDate, $all_Trans) {
-						
+		
+		if (isset($_REQUEST['filter_transcations'])) {
+		 	$this->filter_code 	= $_REQUEST['filter_transcations'];
+			$this->fromDate		= $_REQUEST['fromdate'];
+			$this->toDate		= $_REQUEST['todate'];
+		} 
+			
+										
 		$lnListSql	=	"SELECT loans.loan_sanctioned_amount,
 								loans.loan_reference_number,
+								loans.loan_id,
 								( 	SELECT	codelist_value 
 									FROM	codelist_details
-									WHERE	codelist_id = :bidstatus_code
+									WHERE	codelist_id = :bidstatus_codeparam
 									AND		codelist_code = loans.bid_type) bid_type_name,
                                 loans.bid_type,								
 								DATE_FORMAT(loans.bid_close_date, '%d-%m-%Y') bid_close_date,	
@@ -61,36 +73,29 @@ class AdminLoanListingModel extends TranWrapper {
                                 loans.loan_tenure,										
 								( 	SELECT	codelist_value 
 									FROM	codelist_details
-									WHERE	codelist_id = :loanstatus_code
+									WHERE	codelist_id = :loanstatus_codeparam
 									AND		codelist_code = loans.status) bid_type_name,
 								loans.status ,
-                                borrowers.business_organisation                                                                                                                 
+                                borrowers.business_name                                                                                                                 
 						FROM	loans 
 								LEFT OUTER JOIN
 								borrowers
 								ON  loans.borrower_id = borrowers.borrower_id
-						WHERE   loans.status = :filter_code ";
+						WHERE  loans.status = if(:filter_codeparam = 11, loans.status, :filter_codeparam2)
+						AND		loans.bid_close_date BETWEEN :fromDate AND :toDate 
+						order by loans.bid_close_date";
 						
-		$dataArrayLoan		=	[
-									"bidstatus_code" => $all_Trans,
-									"loanstatus_code" => LOAN_FEES_APPLICABLE,
-									"filter_code" => $all_Trans
-								];
-									
-		$loanlist_rs			=	$this->dbFetchWithParam($lnListSql, $dataArrayLoan);
+		$dataArrayLoanList		=	[
+										"bidstatus_codeparam" => LOAN_BID_TYPE,
+										"loanstatus_codeparam" => LOAN_STATUS,						
+										"filter_codeparam" => $this->filter_code,
+										"filter_codeparam2" => $this->filter_code,
+										"fromDate" => $this->fromDate,
+										"toDate" => $this->toDate
+									];
+
+		$this->loanListInfo			=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
 		
-			
-		if (!$loanlist_rs) {
-			return -1;
-		}
-		foreach ($loanlist_rs as $loanlist_row) {
-			foreach ($loanlist_row as $colname => $value) {
-				$this->{$colname} = $value;
-			}
-		}
-		return;
-		
-		
-	}
-		
+		return ;		
+	}		
 }
