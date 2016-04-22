@@ -34,7 +34,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $loan_product_image  			=  	"";
 	public $loan_video_url  				=  	"";
 	public $format_date						= 	"";
-	
+	public	$commentsInfo					=	array();
+	public	$comments_count					=	0;
 
 	public $document_details				= 	array();
 	public $submitted_document_details		= 	array();
@@ -48,6 +49,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$this->getBorrowerLoanInfo($loan_id);
 		$this->getBorrowerDocumentListInfo();
 		$this->getBorrowerSubmittedDocumentInfo($loan_id);
+		$this->getLoanApplyComments($loan_id);
+		$this->getLoanApplyOpenCommentsCount($loan_id);
 		$this->processDropDowns();
 	}
 		
@@ -395,4 +398,116 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$loan_doc_full_path			=	$fileUploadObj->getFile($loandocumenturl_rs);
 		return $loan_doc_full_path;
 	}
+	
+	
+	public function getLoanApplyComments($loan_id) {
+		
+		$comments_sql	= 	"	SELECT 	loan_approval_comments_id,
+										loan_id,
+										comment_datetime,
+										comemnt_text,
+										comments_status
+								FROM 	loan_approval_comments
+								WHERE	loan_id	=	{$loan_id}";
+				
+		$comments_rs	=	$this->dbFetchAll($comments_sql);	
+		if ($comments_rs) {
+			foreach ($comments_rs as $commentRow) {
+				$newrow = count($this->commentsInfo);
+				$newrow ++;
+				foreach ($commentRow as $colname => $colvalue) {
+					$this->commentsInfo[$newrow][$colname] = $colvalue;
+				}
+			}
+		}else{
+			$comments_rs	=	 array();	
+		}
+		return	$comments_rs;
+	}
+	
+	public function getLoanApplyOpenCommentsCount($loan_id) {
+		
+		$comments_sql			= 	"	SELECT 	count(loan_approval_comments_id) cnt
+										FROM 	loan_approval_comments
+										WHERE	loan_id	=	{$loan_id}
+										AND		comments_status	=".PROFILE_COMMENT_OPEN;
+				
+		$this->comments_count	=	$this->dbFetchOne($comments_sql);	
+	}
+	
+	public function saveLoanApplyComments($commentRows,$loan_id) {
+		
+		$numRows = count($commentRows['comment_status_hidden']);
+		$rowIndex = 0;
+		
+		if($numRows	>	0){
+			if($this->getUserType()	==	USER_TYPE_ADMIN){
+				$whereArry		=	array("loan_id" => $loan_id);
+				$this->dbDelete("loan_approval_comments",$whereArry);
+			}
+			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+				
+				$comment_status				= $commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id					= $commentRows['comment_id_hidden'][$rowIndex];
+				
+				if($this->getUserType()	==	USER_TYPE_ADMIN) {	
+					
+					$comments					= $commentRows['comments'][$rowIndex];
+					// Construct the data array
+					$dataArray = array(	
+									
+									'loan_id'					=> $loan_id,
+									'comemnt_text'				=> $comments,
+									'comments_status'			=> $comment_status,
+									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+										
+					// Insert the rows (for all types of transaction)
+					$result =  $this->dbInsert('loan_approval_comments', $dataArray, true);
+					if ($result < 0) {
+						return -1;
+					}
+				}else{
+					
+					$dataArray = array(
+										'comments_status'			=> $comment_status,
+										'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y"))
+									);	
+					$whereArry	=	array("loan_approval_comments_id" =>"{$comment_id}");
+					$this->dbUpdate('loan_approval_comments', $dataArray, $whereArry);
+				}
+			}
+		}
+		return 1;
+	}
+	
+	
+	public function updateLoanApplyStatus($dataArray,$loanId,$borrowerId,$status=null) {
+		
+		$whereArry	=	array("loan_id" =>"{$loanId}");
+		$this->dbUpdate('loans', $dataArray, $whereArry);
+		$borrUserInfo	=	$this->getBorrowerIdByUserInfo($borrowerId);
+		
+		if($status	==	"approve") {
+			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									"subject"=>"Money Match - Borrower Loan Approval",
+									"template"=>"emails.borrLoanApporvalTemplate",
+									"body_content"=>"Congratulations your loan sucessfully verified",
+									"username"=>$borrUserInfo->username,
+									"useremail"=>$borrUserInfo->email
+								);
+			$this->sendMail($mailArray);
+		}
+		if($status	==	"return_borrower") {
+			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									"subject"=>"Money Match - Borrower Correction Required",
+									"template"=>"emails.borrLoanApporvalTemplate",
+									"body_content"=>"Correction required for your apllied loan ",
+									"username"=>$borrUserInfo->username,
+									"useremail"=>$borrUserInfo->email
+								);
+			$this->sendMail($mailArray);
+		}
+		return $loanId;
+	}
+	
 }

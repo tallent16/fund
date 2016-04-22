@@ -54,18 +54,18 @@
 							<table class="table tab-fontsize text-left">
 								<thead>
 									<tr>
-										<th class="tab-head">																			
+										<th class="tab-head text-center col-sm-1">																			
 											<label>
 												<input type="checkbox" id="select_all_list" value="Select All">
 											</label>											
 										</th>
-										<th class="tab-head text-left">{{ Lang::get('Email Id') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Business Name') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Industry') }}</th>
-										<th class="tab-head text-right">{{ Lang::get('Number of Active Loans') }}</th>
-										<th class="tab-head text-right">{{ Lang::get('Total Balance Outstanding') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Actions') }}</th>									
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Email Id') }}</th>
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Business Name') }}</th>
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Industry') }}</th>
+										<th class="tab-head text-right col-sm-1">{{ Lang::get('Active Loans') }}</th>
+										<th class="tab-head text-right col-sm-2">{{ Lang::get('Total Balance Outstanding') }}</th>
+										<th class="tab-head text-left col-sm-1">{{ Lang::get('Status') }}</th>
+										<th class="tab-head text-left col-sm-1 ">{{ Lang::get('Actions') }}</th>									
 									</tr>
 								</thead>
 								<tbody>	
@@ -73,8 +73,7 @@
 											@var	$borProUrl	=	url('admin/borrower/profile/')
 											@var	$borProUrl	=	$borProUrl."/".base64_encode($BorRow['borrower_id'])
 											<tr>
-												<td>
-													<div class="checkbox">
+												<td class="text-center">													
 														<label>
 															<input 	type="checkbox" 
 																	name="borrower_ids[]"
@@ -83,8 +82,7 @@
 																	data-email="{{$BorRow['email']}}"
 																	data-active-loan="{{$BorRow['active_loan']}}"
 																	value="{{$BorRow['borrower_id']}}">
-														</label>
-													</div>
+														</label>													
 												</td>
 												<td>
 													<a href="{{$borProUrl}}">
@@ -108,7 +106,7 @@
 												</td>
 												<td class="text-right">
 													<a href="{{$borProUrl}}">
-														{{$BorRow['tot_bal_outstanding']}}
+														{{number_format($BorRow['tot_bal_outstanding'],2,'.',',')}}
 													</a>
 												</td>
 												<td>
@@ -116,7 +114,7 @@
 														{{$BorRow['statusText']}}
 													</a>
 												</td>
-												<td>
+												<td class="text-center">
 													@var	$encode_bor_id	=	base64_encode($BorRow['borrower_id']);
 													@if($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
 														@var	$approveClass	=	""

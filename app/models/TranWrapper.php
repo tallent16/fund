@@ -488,4 +488,14 @@ class TranWrapper extends MoneyMatchModel {
 		
 		return $invuser_rs[0];
 	}
+	
+	public function CheckLoanExists($loan_id)	{
+		
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	loans 
+					WHERE 	loan_id = '".$loan_id."'";
+		$cnt 	=	$this->dbFetchOne($sql);
+		return ($cnt == 0)?false:true;
+	}
+	
 }

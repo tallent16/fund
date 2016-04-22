@@ -29,7 +29,7 @@ class AdminLoanListingController extends MoneyMatchController {
 			$toDate 	=	$_REQUEST["todate"];
 		}
 		
-		if (isset($_REQUEST["all_transcations"])) {
+		if (isset($_REQUEST["filter_transcations"])) {
 			$all_Trans = $_REQUEST["filter_transcations"];
 		}
 		

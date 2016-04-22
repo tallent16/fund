@@ -64,7 +64,7 @@
 
 <div class="row">
 	<div class="col-sm-12"> 
-		<div class="table-responsive applyloan adminloanlisting"> 
+		<div class="table-responsive applyloan borrower-admin"> 
 			<table class="table tab-fontsize table-border-custom text-left">
 				<thead>
 					<tr>
@@ -81,7 +81,7 @@
 				<tbody>	
 				
 					@if (count($adminLoanListing->loanListInfo) > 0)			
-							@foreach($adminLoanListing->loanListInfo as $loanlistRow)
+						@foreach($adminLoanListing->loanListInfo as $loanlistRow)
 							
 							@var	$loan_id	=	base64_encode($loanlistRow->loan_id);
 							@if  ($loanlistRow->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
@@ -89,10 +89,10 @@
 										@var	$actionUrl		=	$actionUrl."/".$loan_id							
 							@elseif ($loanlistRow->status	==	LOAN_STATUS_APPROVED)																	
 										@var	$actionUrl		=	url('admin/managebids/')
-										@var	$actionUrl		=	$actionUrl."/".$loan_id					
+										@var	$actionUrl		=	$actionUrl."/".base64_decode($loan_id)					
 							@elseif ($loanlistRow->status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
 										@var	$actionUrl		=	url('admin/managebids/')
-										@var	$actionUrl		=	$actionUrl."/".$loan_id		
+										@var	$actionUrl		=	$actionUrl."/".base64_decode($loan_id)		
 							@elseif	($loanlistRow->status == LOAN_STATUS_BIDS_ACCEPTED)													
 										@var	$actionUrl		=	url('admin/disburseloan/')
 										@var	$actionUrl		=	$actionUrl."/".$loan_id									
@@ -137,12 +137,12 @@
 											</td>
 										<td class="text-left">
 											<a href="{{$actionUrl}}">
-												{{$loanlistRow->status}}
+												{{$loanlistRow->loan_status_name}}
 											</a>
 										</td>
 									</tr>						
-							@endforeach
-						@endif				
+						@endforeach
+					@endif				
 							
 				</tbody>
 			</table>

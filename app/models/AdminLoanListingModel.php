@@ -5,12 +5,10 @@ use Config;
 class AdminLoanListingModel extends TranWrapper {
 	
 	public  $allTransList					= array();
-	public  $allTransValue					= 'all';
-	public 	$filterStatusValue				= 'all';
 	public  $loanListInfo					= array();
 	public  $filter_code					= "11";
-	public  $fromDate						= "2016-03-01";
-	public  $toDate							= "2016-05-21";	
+	public  $fromDate						= "";
+	public  $toDate							= "";	
 	
 	public function processDropDowns() {
 				
@@ -53,6 +51,9 @@ class AdminLoanListingModel extends TranWrapper {
 	
 	public function viewTransList($fromDate, $toDate, $all_Trans) {
 		
+		$this->fromDate		= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
+		$this->toDate		= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));
+			
 		if (isset($_REQUEST['filter_transcations'])) {
 		 	$this->filter_code 	= $_REQUEST['filter_transcations'];
 			$this->fromDate		= $_REQUEST['fromdate'];
@@ -74,7 +75,7 @@ class AdminLoanListingModel extends TranWrapper {
 								( 	SELECT	codelist_value 
 									FROM	codelist_details
 									WHERE	codelist_id = :loanstatus_codeparam
-									AND		codelist_code = loans.status) bid_type_name,
+									AND		codelist_code = loans.status) loan_status_name,
 								loans.status ,
                                 borrowers.business_name                                                                                                                 
 						FROM	loans 
@@ -90,8 +91,8 @@ class AdminLoanListingModel extends TranWrapper {
 										"loanstatus_codeparam" => LOAN_STATUS,						
 										"filter_codeparam" => $this->filter_code,
 										"filter_codeparam2" => $this->filter_code,
-										"fromDate" => $this->fromDate,
-										"toDate" => $this->toDate
+										"fromDate" => $this->getDbDateFormat($this->fromDate),
+										"toDate" => $this->getDbDateFormat($this->toDate)
 									];
 
 		$this->loanListInfo			=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);

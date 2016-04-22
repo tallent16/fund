@@ -1,5 +1,6 @@
 <?php 
 namespace App\Http\Controllers;
+use Request;
 use	\App\models\AdminLoanApprovalModel;
 use	\App\models\BorrowerApplyLoanModel;
 class AdminLoanApprovalController extends MoneyMatchController {
@@ -17,14 +18,51 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		
 	public function indexAction($loan_id){
 		
+		$submitted	=	false;
 		$sourceId =	base64_decode($loan_id);
 		$loanStatus		=	$this->borrowerApplyLoanModel->getLoanStatus($sourceId);
 		if($loanStatus	==	LOAN_STATUS_CANCELLED) {
 			return redirect()->to('admin/loanlisting');
 		}
+		 if(!$this->borrowerApplyLoanModel->CheckLoanExists($sourceId)){
+			return redirect()->to('admin/loanlisting');
+		}
+		if (Request::isMethod('post')) {
+			$postArray	=	Request::all();
+			$bor_id		=	$postArray['borrower_id'];
+			//~ print_r($postArray);
+			//~ die;
+			switch($postArray['admin_process']){
+				case	"save_comments":
+						$result		=	$this->borrowerApplyLoanModel->saveLoanApplyComments($postArray['comment_row'],
+																									$sourceId);
+						break;
+				case	"return_borrower":
+						$dataArray = array(	'status' 	=>	LOAN_STATUS_PENDING_COMMENTS );
+						$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
+																					$bor_id,"return_borrower");
+						break;
+				case	"approve":
+						$dataArray = array(	'status' 	=>	LOAN_STATUS_APPROVED );
+						$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
+																					$bor_id,"approve");
+						break;
+				case	"cancel":
+						$dataArray = array(	'status' 	=>	LOAN_STATUS_CANCELLED );
+						$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
+																					$bor_id,"cancel");
+						break;
+			}
+			
+			$submitted	=	true;
+		}
+		
 		$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId);
 		return view('admin.admin-loanapprovalmode')
-					->with(array("adminLoanApprMod"=>$this->borrowerApplyLoanModel));
+					->with(array("adminLoanApprMod"=>$this->borrowerApplyLoanModel,
+									"submitted"=>$submitted 
+								)
+						);
 				
 		
 	}

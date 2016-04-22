@@ -33,15 +33,15 @@
 		<div class="col-lg-12 col-md-12 borrower-admin">
 			<div class="panel panel-primary panel-container">
 				
-<!--
+
 					<div class="panel-heading panel-headsection">
 						<div class="row">
 						   <div class="col-xs-3">
-								<span class="pull-left">{{ Lang::get('Borrowers List') }}</span> 
+								<span class="pull-left">{{ Lang::get('Investors List') }}</span> 
 							</div>									
 						</div>                           
 					</div>				
--->
+
 					<div class="table-responsive">
 						<form method="post" id="form-manage-investor" action="{{url('admin/investor/updateprofile')}}">
 							<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
@@ -56,18 +56,18 @@
 							<table class="table tab-fontsize text-left">
 								<thead>
 									<tr>
-										<th class="tab-head">																			
+										<th class="tab-head text-center col-sm-1">																			
 											<label>
 												<input type="checkbox" id="select_all_list" value="Select All">
 											</label>											
 										</th>
-										<th class="tab-head text-left">{{ Lang::get('Email Id') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Name') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Mobile Number') }}</th>
-										<th class="tab-head text-right">{{ Lang::get('Number of Active Loans') }}</th>
-										<th class="tab-head text-right">{{ Lang::get('Available Balance') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
-										<th class="tab-head text-left">{{ Lang::get('Actions') }}</th>									
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Email Id') }}</th>
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Name') }}</th>
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Mobile Number') }}</th>
+										<th class="tab-head text-right col-sm-1">{{ Lang::get('Active Loans') }}</th>
+										<th class="tab-head text-right col-sm-2">{{ Lang::get('Available Balance') }}</th>
+										<th class="tab-head text-left col-sm-1">{{ Lang::get('Status') }}</th>
+										<th class="tab-head text-left col-sm-1">{{ Lang::get('Actions') }}</th>									
 									</tr>
 								</thead>
 								<tbody>	
@@ -75,8 +75,7 @@
 											@var	$invProUrl	=	url('admin/investor/profile/')
 											@var	$invProUrl	=	$invProUrl."/".base64_encode($InvRow['investor_id'])
 											<tr>
-												<td>
-													<div class="checkbox">
+												<td class="text-center">													
 														<label>
 															<input 	type="checkbox" 
 																	name="investor_ids[]"
@@ -85,8 +84,7 @@
 																	data-email="{{$InvRow['email']}}"
 																	data-active-loan="{{$InvRow['active_loan']}}"
 																	value="{{$InvRow['investor_id']}}">
-														</label>
-													</div>
+														</label>													
 												</td>
 												<td>
 													<a href="{{$invProUrl}}">
@@ -118,7 +116,7 @@
 														{{$InvRow['statusText']}}
 													</a>
 												</td>
-												<td>
+												<td class="text-center">
 													@var	$encode_inv_id	=	base64_encode($InvRow['investor_id']);
 													@if($InvRow['status']	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
 														@var	$approveClass	=	""

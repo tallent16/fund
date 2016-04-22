@@ -163,6 +163,13 @@
 	@var	$trantype		=	"edit"
 	@var	$page_heading	=	Lang::get('borrower-applyloan.edit_loan')
 @endif   
+@if($BorModLoan->status	==	LOAN_STATUS_PENDING_COMMENTS)
+	@var	$loan_status			=	"corrections_required"
+	@var	$canViewCommentsTab		=	"yes"
+@else
+	@var	$loan_status			=	""
+	@var	$canViewCommentsTab		=	""
+@endif
 @section('page_heading',$page_heading) )
 @section('status_button')						
 <!--------Status Button Section---->   
@@ -201,6 +208,7 @@
 				<input type="hidden" name="isSaveButton" id="isSaveButton" value="">	
 				<input type="hidden" name="loan_id" value="{{$BorModLoan->loan_id}}">	
 				<input type="hidden" name="trantype" value="{{ $trantype }}">
+				<input type="hidden" name="hidden_loan_status" id="hidden_loan_status" value="{{ $loan_status }}">
 				
 				
 				
@@ -218,7 +226,15 @@
 							href="#documents_submitted">
 							{{ Lang::get('borrower-applyloan.document_submit') }}
 						</a>
-					</li>								
+					</li>
+					@if($canViewCommentsTab	==	"yes")
+						<li>
+							<a 	data-toggle="tab"
+								href="#comments">
+								{{ Lang::get('COMMENTS') }}
+							</a>
+						</li>	
+					@endif							
 				</ul>					
 
 				<div class="tab-content">
@@ -227,7 +243,11 @@
 					@include('widgets.borrower.tab.applyloan_info')
 					<!-------second tab--starts------------------------>
 					@include('widgets.borrower.tab.applyloan_documents_submit')
-					
+					@if($canViewCommentsTab	==	"yes")
+						<!-----Sixth Tab content starts----->
+							@include('widgets.admin.tab.loanapproval_comments')	
+						<!-----Sixth Tab content ends----->
+					@endif
 				</div><!--tab content-->	
 			
 			

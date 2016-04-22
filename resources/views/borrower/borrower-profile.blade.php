@@ -142,7 +142,7 @@
 							@if($canViewCommentsTab	==	"yes")
 								<li>
 									<a 	data-toggle="tab"
-										href="#comments">
+										href="#comments_info">
 										{{ Lang::get('COMMENTS') }}
 									</a>
 								</li>	

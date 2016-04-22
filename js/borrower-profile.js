@@ -83,7 +83,7 @@ $(document).ready(function (){
 					}
 				}
 			}
-			if($(this).find("a").attr("href")	==	"#comments") {
+			if($(this).find("a").attr("href")	==	"#comments_info") {
 				$("#next_button").hide();
 				$("#submit_button").show();
 				$("#returnback_button").show();

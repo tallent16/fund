@@ -9472,7 +9472,7 @@ table#account-summary, .table-border-custom{
 	border-radius:0;
 }
 /*******************************Admin Manage Borrower*******************/
-.borrower-admin a ,.adminloanlisting a{
+.borrower-admin a{
     color: #333;
     text-decoration: none;
 }
@@ -9507,6 +9507,14 @@ table#account-summary, .table-border-custom{
 }
 #loan_details .button-grey{
 	margin: 0 0 5px 0;
+}
+#comments .verification-button{
+	margin: 10px 10px 10px 10px;
+}
+/****************************Admin Banking******************************/
+.action-style{
+	border: 1px solid rgb(165, 165, 165);
+	border-radius: 3px;
 }
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {

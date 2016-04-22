@@ -26,7 +26,21 @@
 			</ul>
 	</li>
 	<li>
-		<a href="{{ url ('admin/banking') }}"><i class="fa  fa-bank fa-fw"></i>{{ Lang::get('Banking') }} </a> 
+		<a href="{{ url ('admin/borrowersrepayment') }}"><i class="fa  fa-bank fa-fw"></i>{{ Lang::get('Banking') }} <span class="fa arrow"></span></a> 
+			<ul class="nav nav-second-level">
+				<li>
+					<a href="{{ url ('admin/borrowersrepaylist') }}">{{ Lang::get('Repayment List') }}</a>
+				</li> 
+				<li>
+					<a href="{{ url ('admin/borrowersrepayview') }}">{{ Lang::get('Repayment View') }}</a>
+				</li> 
+				<li>
+					<a href="{{ url ('admin/investordepositlist') }}">{{ Lang::get('Investor Deposit List') }}</a>
+				</li> 
+				<li>
+					<a href="{{ url ('admin/investordepositview') }}">{{ Lang::get('Investor Deposit View') }}</a>
+				</li> 
+			</ul>	
 	</li>
 	<li>
 		<a href="{{ url ('admin/reports') }}"><i class="fa fa-line-chart fa-fw"></i>{{ Lang::get('Reports') }} </a> 

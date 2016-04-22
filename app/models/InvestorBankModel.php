@@ -72,7 +72,7 @@ class InvestorBankModel extends TranWrapper {
 
 	$depositInsert_data			=	array(								
 									'investor_id' => $this->investid,									
-									'trans_type' => INVESTOR_BANK_TRANSCATION_DEPOSIT,	 						
+									'trans_type' => INVESTOR_BANK_TRANSCATION_STATUS_DEPOSIT,	 						
 									'trans_date' => $this->depositwithdrawdate,
 									'trans_amount' => $this->transamount,
 									'trans_currency' => $currency,
@@ -110,7 +110,7 @@ class InvestorBankModel extends TranWrapper {
 
 	$withdrawInsert_data		=	array(								
 									'investor_id' => $this->investid,									
-									'trans_type' => INVESTOR_BANK_TRANSCATION_WITHDRAWAL,	 						
+									'trans_type' => INVESTOR_BANK_TRANSCATION_STATUS_WITHDRAWAL,	 						
 									'trans_date' => $this->depositwithdrawdate,
 									'trans_amount' => $this->transamount,
 									'trans_currency' => $currency,

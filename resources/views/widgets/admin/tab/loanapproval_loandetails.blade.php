@@ -60,7 +60,7 @@
 						{{ $i.". ".$documentRow['short_name']}}
 						<a 	href="#" 
 							data-toggle="tooltip" data-placement="top" 
-							title="full test">
+							title="{{$documentRow['doc_name']}}">
 							<i class="fa fa-question"></i></a>
 					</div>
 					<div class="col-sm-2 text-right" id="documents_parent">
