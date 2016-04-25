@@ -37,7 +37,7 @@ class AdminLoanListingController extends MoneyMatchController {
 		
 		$this->adminLoanListing->viewTransList($fromDate, $toDate, $all_Trans);	
 
-		$withArry	=	array(	"adminLoanListing" => $this->adminLoanListing	, 
+		$withArry	=	array(	"adminLoanListing" => $this->adminLoanListing, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
 								"all_Trans" => $all_Trans,

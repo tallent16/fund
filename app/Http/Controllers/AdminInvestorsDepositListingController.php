@@ -15,9 +15,32 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		$this->adminInvestorsDepositList = new AdminInvestorsDepositListingModel();
 	}
 		
-	public function indexAction(){		
+	public function indexAction(){	
+		
+		$filter_status 	=	'All';
+		$fromDate	=	date("d-m-Y", strtotime("-12 Months"));
+		$toDate		=	date("d-m-Y", strtotime("now"));
+		
+		if (isset($_REQUEST["fromdate"])) {
+			$fromDate	=	$_REQUEST["fromdate"];
+		}
+		
+		if (isset($_REQUEST["todate"])) {
+			$toDate 	=	$_REQUEST["todate"];
+		}
+		
+		if (isset($_REQUEST["filter_status"])) {
+			$filter_status = $_REQUEST["filter_status"];
+		}	
 
-		$withArry	=	array(	"adminInvDepListMod" => $this->adminInvestorsDepositList, 								
+		$this->adminInvestorsDepositList->processDropDowns();
+		
+		$this->adminInvestorsDepositList->viewDepositList($fromDate, $toDate, $filter_status);	
+		
+		$withArry	=	array(	"adminInvDepListMod" => $this->adminInvestorsDepositList, 
+								"fromDate" => $fromDate, 
+								"toDate" => $toDate,
+								"all_Trans" => $filter_status,								
 								"classname"=>"fa fa-cc fa-fw"); 
 								
 		return view('admin.admin-investorsdepositlisting')

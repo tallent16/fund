@@ -19,7 +19,7 @@ class AdminLoanListingModel extends TranWrapper {
 										expression
 								FROM	codelist_details
 								WHERE	codelist_id in (7) && 														
-										codelist_code not in (8,9) order by codelist_value";
+										codelist_code NOT IN (8,9) ORDER BY codelist_value";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);	
 		

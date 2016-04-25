@@ -40,6 +40,12 @@
 				<li>
 					<a href="{{ url ('admin/investordepositview') }}">{{ Lang::get('Investor Deposit View') }}</a>
 				</li> 
+				<li>
+					<a href="{{ url ('admin/investorwithdrawallist') }}">{{ Lang::get('Investor Withdrawal List') }}</a>
+				</li> 
+				<li>
+					<a href="{{ url ('admin/investorwithdrawalview') }}">{{ Lang::get('Investor Withdrawal View') }}</a>
+				</li> 
 			</ul>	
 	</li>
 	<li>

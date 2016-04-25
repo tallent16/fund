@@ -6,7 +6,6 @@ $(document).ready(function (){
     });
 	$("#returnback_loanapply_button").click(function(){
 		
-		alert("comes here");
 		$("#admin_process").val("return_borrower");
 		
 		$("#form-profile").submit();

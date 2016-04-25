@@ -46,182 +46,101 @@
 									{{Lang::get('Actions')}}</th>
 							</tr>
 						</thead>
-						<body>
-							<tr>
-								<td class="text-center">									
-										<label>
-											<input 	type="checkbox" 
-													name="id"
-													class="select"											
-													value="">
-										</label>									
-								</td>
-								<td>
-									{{Lang::get('L-2016-28')}}
-								</td>
-								<td>
-									{{Lang::get('01-04-2016')}}
-								</td>
-								<td>
-									{{Lang::get('01-04-2016')}}
-								</td>
-								<td class="text-right">
-									{{Lang::get('12,345.00')}}
-								</td>
-								<td class="text-right">
-									{{Lang::get('2,500.00')}}
-								</td>
-								<td>
-									{{Lang::get('Approved')}}
-								</td>
-								<td class="text-center">
-									<ul class="list-unstyled">
-										<li class="dropdown">
-											<a class="dropdown-toggle" 
-												data-toggle="dropdown" href="#">
-												<i class="fa fa-caret-down fa-fw action-style"></i> 
+						<tbody>
+							@var $repayloanlist = $adminBorRepayListMod->repaymentLoanList;
+							@if (count($repayloanlist) > 0)
+								@foreach ($repayloanlist as $loanRow)
+									@var	$repSchUrl	=	url('admin/borrowersrepayview/')
+									@var	$repSchUrl	=	$repSchUrl."/".base64_encode($loanRow->installment_number)
+									@var	$repSchUrl	=	$repSchUrl."/".base64_encode($loanRow->loan_id)
+									@if($loanRow->repayment_status	==	"Not Approved")
+										@var	$encodeId	=	$loanRow->loan_id."_"
+										@var	$encodeId	=	$encodeId.$loanRow->installment_number
+										@var	$apprUrl	=	url('admin/borrowersrepayupdatestatus/')
+										@var	$apprUrl	=	$apprUrl."/".base64_encode($encodeId)
+										@var	$class		=	""
+									@else
+										@var	$apprUrl	=	"javascript:void(0);"
+										@var	$class		=	"disable-indication disabled"
+									@endif
+									@if($loanRow->repayment_status	!=	"Approved")
+										@var	$classrepaySch		=	""
+									@else
+										@var	$classrepaySch		=	"disable-indication disabled"
+									@endif
+									<tr>
+										<td class="text-center">									
+												<label>
+													<input 	type="checkbox" 
+															name="repayment_schedule[]"
+															class="select_repayment"											
+															value="">
+												</label>									
+										</td>
+										<td>
+											<a href="{{$repSchUrl}}">
+												{{$loanRow->ref}}
 											</a>
-											<ul class="dropdown-menu dropdown-user">
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('Edit/Approve') }}
-													</a>
-												</li> 
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('View') }}
-													</a>
-												</li> 
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('Approve Selected') }}
-													</a>
-												</li> 
-											</ul>
-										</li>
-									</ul>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-center">									
-										<label>
-											<input 	type="checkbox" 
-													name="id"
-													class="select"											
-													value="">
-										</label>																
-								</td>
-								<td>
-									{{Lang::get('L-2016-28')}}
-								</td>
-								<td>
-									{{Lang::get('01-04-2016')}}
-								</td>
-								<td>
-									{{Lang::get('01-04-2016')}}
-								</td>
-								<td class="text-right">
-									{{Lang::get('12,345.00')}}
-								</td>
-								<td class="text-right">
-									{{Lang::get('2,500.00')}}
-								</td>
-								<td>
-									{{Lang::get('Approved')}}
-								</td>
-								<td class="text-center">
-									<ul class="list-unstyled">
-										<li class="dropdown">
-											<a class="dropdown-toggle" 
-												data-toggle="dropdown" href="#">
-												<i class="fa fa-caret-down fa-fw action-style"></i> 
+										</td>
+										<td>
+											<a href="{{$repSchUrl}}">
+												{{$loanRow->schd_date}}
 											</a>
-											<ul class="dropdown-menu dropdown-user">
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('Edit/Approve') }}
-													</a>
-												</li> 
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('View') }}
-													</a>
-												</li> 
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('Approve Selected') }}
-													</a>
-												</li> 
-											</ul>
-										</li>
-									</ul>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-center">									
-										<label>
-											<input 	type="checkbox" 
-													name="id"
-													class="select"											
-													value="">
-										</label>																
-								</td>
-								<td>
-									{{Lang::get('L-2016-28')}}
-								</td>
-								<td>
-									{{Lang::get('01-04-2016')}}
-								</td>
-								<td>
-									{{Lang::get('01-04-2016')}}
-								</td>
-								<td class="text-right">
-									{{Lang::get('12,345.00')}}
-								</td>
-								<td class="text-right">
-									{{Lang::get('2,500.00')}}
-								</td>
-								<td>
-									{{Lang::get('Approved')}}
-								</td>
-								<td class="text-center">
-									<ul class="list-unstyled">
-										<li class="dropdown">
-											<a class="dropdown-toggle" 
-												data-toggle="dropdown" href="#">
-												<i class="fa fa-caret-down fa-fw action-style"></i> 
+										</td>
+										<td>
+											<a href="{{$repSchUrl}}">
+												{{$loanRow->act_date}}
 											</a>
-											<ul class="dropdown-menu dropdown-user">
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('Edit/Approve') }}
+										</td>
+										<td class="text-right">
+											<a href="{{$repSchUrl}}">
+												{{$loanRow->schd_amount}}
+											</a>
+										</td>
+										<td class="text-right">
+											<a href="{{$repSchUrl}}">
+												{{$loanRow->penalty}}
+											</a>
+										</td>
+										<td>
+											<a href="{{$repSchUrl}}">
+												{{$loanRow->repayment_status}}
+											</a>
+										</td>
+										<td class="text-center">
+											<ul class="list-unstyled">
+												<li class="dropdown">
+													<a class="dropdown-toggle" 
+														data-toggle="dropdown" href="#">
+														<i class="fa fa-caret-down fa-fw action-style"></i> 
 													</a>
-												</li> 
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('View') }}
-													</a>
-												</li> 
-												<li>													
-													<a href="">
-														<i class="fa fa-user fa-fw"></i>
-														{{ Lang::get('Approve Selected') }}
-													</a>
-												</li> 
+													<ul class="dropdown-menu dropdown-user">
+														<li>													
+															<a href="{{$repSchUrl}}" class="{{$classrepaySch}}">
+																<i class="fa fa-user fa-fw"></i>
+																{{ Lang::get('Edit/Approve') }}
+															</a>
+														</li> 
+														<li>													
+															<a href="">
+																<i class="fa fa-user fa-fw"></i>
+																{{ Lang::get('View') }}
+															</a>
+														</li> 
+														<li>													
+															<a href="" class="{{$class}}">
+																<i class="fa fa-user fa-fw"></i>
+																{{ Lang::get('Approve Selected') }}
+															</a>
+														</li> 
+													</ul>
+												</li>
 											</ul>
-										</li>
-									</ul>
-								</td>
-							</tr>
-						</body>
+										</td>
+									</tr>
+								@endforeach	
+							@endif
+						</tbody>
 					</table>					
 				</div>					
 			</div>	<!--panel-->

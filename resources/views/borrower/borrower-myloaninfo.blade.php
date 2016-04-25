@@ -73,7 +73,7 @@
 									
 									<div class="col-sm-12 col-lg-3 text-center">		
 											@if(($loanRow->status	==	BORROWER_STATUS_NEW) || 
-															($loanRow->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN))
+															($loanRow->status	==	LOAN_STATUS_PENDING_COMMENTS))
 												@var	$loan_url	=	'borrower/applyloan/'.base64_encode($loanRow->loan_id)
 												@var	$bid_url	=	'borrower/myloans/'
 												@var	$bid_url	=	$bid_url.base64_encode($loanRow->loan_id."_bids")

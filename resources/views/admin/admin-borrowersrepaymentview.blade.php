@@ -15,6 +15,7 @@
 @endsection
 @section('page_heading',Lang::get('Borrowers Repayment') )
 @section('section')  
+
 <div class="col-sm-12 space-around">
 	<div class="panel-primary panel-container disburse-loan">
 		
@@ -39,7 +40,7 @@
 							class="form-control"
 							name="loan_reference_number"
 							id="loan_ref_num" 											
-							value="L-2016-25"							 
+							value="{{$adminBorRepayViewMod->loanRefNumber}}"							 
 							disabled>	
 				</div>	
 			
@@ -54,7 +55,7 @@
 								type="text" 
 								class="scdule_date form-control" 
 								name="scdule_date"									
-								value="21-05-2016" 
+								value="{{$adminBorRepayViewMod->schedDate}}" 
 								disabled />
 
 						<label for="scdule_date" class="input-group-addon btn" disabled>
@@ -76,7 +77,7 @@
 								type="text" 
 								class="actual_date form-control" 
 								name="actual_date"									
-								value="21-04-2016" />
+								value="{{$adminBorRepayViewMod->repaymentDate}}" />
 
 						<label for="actual_date" class="input-group-addon btn">
 							<span class="glyphicon glyphicon-calendar"></span>
@@ -94,8 +95,8 @@
 							class="form-control text-right"
 							name="amount_paid"
 							id="amount_paid" 											
-							value="12002"							 
-							>	
+							value="{{$adminBorRepayViewMod->amountPaid}}"							 
+							disabled>	
 				</div>				
 			</div> <!-- Row 2 -->
 			
@@ -110,7 +111,7 @@
 								type="text" 
 								class="principal_amount form-control text-right" 
 								name="principal_amount"									
-								value="45258" 
+								value="{{$adminBorRepayViewMod->principalAmount}}"
 								disabled />						
 				</div>
 							
@@ -125,7 +126,7 @@
 							class="form-control text-right"
 							name="interest_amount"
 							id="interest_amount" 											
-							value="2456"							
+							value="{{$adminBorRepayViewMod->interestAmount}}"
 							disabled >	
 				</div>					
 			</div> <!-- Row 3 -->
@@ -141,7 +142,7 @@
 								type="text" 
 								class="penalty_amount form-control text-right" 
 								name="penalty_amount"									
-								value="1245" 
+								value="{{$adminBorRepayViewMod->penaltyAmt}}" 
 								disabled />						
 				</div>
 							
@@ -155,7 +156,7 @@
 							class="form-control text-right"
 							name="penalty_companyshare"
 							id="penalty_companyshare" 											
-							value="2558"							
+							value="{{$adminBorRepayViewMod->penaltyCompShare}}"							
 							disabled >	
 				</div>					
 			</div> <!-- Row 4 -->

@@ -182,6 +182,11 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$transType 	= $postArray['trantype'];
 		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType);
 		$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
+		if (isset($postArray['hidden_loan_status']) && $postArray['hidden_loan_status']	==	"corrections_required" ) {
+			if (isset($postArray['comment_row'])) {
+				$this->saveLoanApplyComments($postArray['comment_row'],$loanId);
+			}
+		}
 		return $loanId;
 	}
 	

@@ -32,17 +32,18 @@
 						event.preventDefault();
 					if(validateTab("documents_submitted"))
 						event.preventDefault();
+					if($("#hidden_loan_status").val()	==	"corrections_required") {
+						if(checkAdminAllCommentsClosed()){
+							showDialog("","Please close the corrections and submit again for approval");
+							event.preventDefault();
+						}
+					}	
 					$("#next_button").hide();
 					$("#submit_button").show();
 				}
 			
 			});
-			 $(".nav-tabs > li").click(function(){
-				//~ $("#next_button").show();
-				//~ $("#submit_button").hide();
-				if($(this).hasClass("disabled"))
-					return false;
-			});
+			
 			$("#next_button").click(function(){
 				
 				callTabValidateFunc();
@@ -74,6 +75,12 @@
 				if($(this).hasClass("disabled"))
 					return false;
 				if($(this).find("a").attr("href")	==	"#documents_submitted") {
+					if($("#hidden_loan_status").val()	==	""){
+						$("#next_button").hide();
+						$("#submit_button").show();
+					}
+				}
+				if($(this).find("a").attr("href")	==	"#comments") {
 					$("#next_button").hide();
 					$("#submit_button").show();
 				}
@@ -95,10 +102,20 @@
 				$('.nav-tabs a[href="#loans_info"]').tab('show');
 				return true;
 			}
-			$("#next_button").hide();
-			$("#submit_button").show();
-			$('.nav-tabs a[href="#documents_submitted"]').tab('show');
-			$('a[href="#documents_submitted"]').parent().removeClass("disabled");
+			if(cur_tab	==	"loans_info") {
+				$('.nav-tabs a[href="#documents_submitted"]').tab('show');
+				$('a[href="#documents_submitted"]').parent().removeClass("disabled");	
+				if($("#hidden_loan_status").val()	==	""){
+					$("#next_button").hide();
+					$("#submit_button").show();
+				}	
+			}
+			
+			if(cur_tab	==	"documents_submitted") {
+				$('.nav-tabs a[href="#comments"]').tab('show');
+				$("#next_button").hide();
+				$("#submit_button").show();
+			}
 			return false;
 		}
 		function validateTab(cur_tab) {

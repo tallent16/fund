@@ -1,6 +1,6 @@
 <?php 
 namespace App\Http\Controllers;
-use	\App\models\AdminBorrowersRepaymentListingModel;
+use	\App\models\BorrowerRepayLoansModel;
 class AdminBorrowersRepaymentListingController extends MoneyMatchController {
 	
 	public $adminBorrowerRepaymentList;
@@ -12,11 +12,12 @@ class AdminBorrowersRepaymentListingController extends MoneyMatchController {
 	}
 	
 	public function littleMoreInit() {
-		$this->adminBorrowerRepaymentList = new AdminBorrowersRepaymentListingModel();
+		$this->adminBorrowerRepaymentList = new BorrowerRepayLoansModel();
 	}
 		
 	public function indexAction(){		
 
+		$this->adminBorrowerRepaymentList->getAllBorrowerRepaymentLoans();
 		$withArry	=	array(	"adminBorRepayListMod" => $this->adminBorrowerRepaymentList, 								
 								"classname"=>"fa fa-cc fa-fw"); 
 								

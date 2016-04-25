@@ -8,6 +8,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	public	$interestAmount		=	0;
 	public	$principalAmount	=	0;
 	public	$penaltyAmt			=	0;
+	public	$penaltyCompShare	=	0;
 	public	$schedAmount		=	0;
 	public	$amountPaid			=	0;
 	public	$schedDate				;
@@ -76,7 +77,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		$repaySched_sql					=	"SELECT 	if(datediff(now(), repayment_schedule_date) > 0, 
 															'Overdue', 'Not Overdue') overdue,
 													repayment_scheduled_amount,
-													repayment_schedule_date,
+													date_format(repayment_schedule_date,'%d-%m-%Y') repayment_schedule_date ,
 													loan_id,installment_number,
 													borrower_id
 											FROM	borrower_repayment_schedule 
@@ -85,7 +86,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 								
 		$repaySched_rs					=	$this->dbFetchAll($repaySched_sql);
 			
-		$actualdatesql					= "SELECT CURDATE()";
+		$actualdatesql					= "SELECT date_format(CURDATE(),'%d-%m-%Y')";
 		$this->repaymentDate			= $this->dbFetchOne($actualdatesql);
 					
 		if (count($repaySched_rs) > 0) {			
@@ -100,21 +101,37 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			// This is an error condition. Can't be true
 			return -1;
 		}
-		
+		//~ echo 			$this->isOverdue;
 		if ($this->isOverdue == 'Overdue') {
 			// Calculate the penalty amount
-			$penalty_sql			=	"SELECT	if (penalty_type_applicable in (1,3), 
+			$dbFormattedschedDate	=	$this->getDbDateFormat($this->schedDate);
+			$penalty_sql			=	"SELECT	ROUND(if (penalty_type_applicable in (1,3), 
 													{$this->schedAmount} * 
 														power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
-														datediff(now(), '{$this->schedDate}')) + 
+														datediff(now(), '{$dbFormattedschedDate}')) + 
 												if (penalty_type_applicable in (2,3),
 														ifnull(penalty_fixed_amount, 0), 0) -
-												{$this->schedAmount}, 0) penalty 
+												{$this->schedAmount}, 0),2) penalty 
 										FROM	loans
 										WHERE	loan_id = {$this->loanId}";
 			$this->penaltyAmt		=	$this->dbFetchOne($penalty_sql);
+			
+			$penaltyComp_sql		=	"SELECT	penalty_fee_percent,
+												penalty_fee_minimum,
+												penalty_interest
+										FROM	system_settings";
+			$penaltyComp_rs			=	$this->dbFetchAll($penaltyComp_sql);
+			echo ((7951.06)*((1+24/36500)*(15/100)));
+			die;
+			if (count($penaltyComp_rs) > 0) {
+				$this->penaltyAmt		=	(7951.06*(1+
+												$penaltyComp_rs[0]->penalty_interest/36500)^15)-(
+													7951.06);
+				$this->penaltyCompShare	=	round(max(($this->schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/100)),
+														$penaltyComp_rs[0]->penalty_fee_minimum),2);
 			}
-
+		}
+	//~ echo "<pre>",$penalty_sql,"</pre>";die;
 		// Calculate the Principal & Interest & get the loan_reference Number
 		$intAmount_sql				=	"SELECT	round((loan_sanctioned_amount - sum(principal_component)) * 
 													(final_interest_rate / 1200), 2) interest_component,
@@ -190,4 +207,55 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			
 		$this->dbInsert("borrower_repayment_schedule", $repayInsert_data, 0);		
 	}
+	
+	public function getAllBorrowerRepaymentLoans() {
+	
+		$repaymentloan_sql			=	"SELECT 	loans.loan_id,
+													installment_number,
+													repayment_schedule_id,										
+													repayment_status,
+													loan_reference_number ref, 
+													repayment_schedule_date schd_date,
+													ifnull(repayment_actual_date ,'') act_date,
+													date_format(repayment_schedule_date ,'%Y-%m') inst_period,
+													ROUND(if (date(repayment_schedule_date) < date(now()),
+															if (penalty_type_applicable in (1,3), 
+																	repayment_scheduled_amount * 
+																		power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
+																			datediff(now(), repayment_schedule_date)), 0) + 
+															if (penalty_type_applicable in (2,3),
+																	ifnull(penalty_fixed_amount, 0), 0) -
+															repayment_scheduled_amount, 0),2) penalty,
+													ROUND(repayment_scheduled_amount,2) schd_amount,
+													CASE repayment_status
+														   when '1' and (datediff(now(), repayment_schedule_date) > 0)
+																	then	'Overdue'
+														   when '1' then  	'Unpaid'
+														   when '2' then 	'Not Approved'
+														   when '3' then 	'Approved'
+													END as repayment_status
+													
+													FROM	(
+																SELECT 		*	 
+																FROM 		borrower_repayment_schedule
+																WHERE 		repayment_status in (1,2)
+																GROUP BY 	loan_id
+																HAVING 		repayment_schedule_date = MIN(repayment_schedule_date)
+																UNION
+																SELECT 		* 
+																FROM 		borrower_repayment_schedule
+																WHERE 		repayment_status = 3
+																GROUP BY 	loan_id
+																HAVING 		repayment_schedule_date = MIN(repayment_schedule_date)
+																
+															) loan_repayment, 
+															loans
+													WHERE	loans.loan_id = loan_repayment.loan_id ";
+								
+		$this->repaymentLoanList	=	$this->dbFetchAll($repaymentloan_sql);	
+		
+		return;
+
+	}
+
 }

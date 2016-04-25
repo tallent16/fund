@@ -18,7 +18,7 @@
 	}); 
 	</script>
 	@endsection
-@section('page_heading',Lang::get('Investor Deposit') )
+@section('page_heading',Lang::get('Investor Withdrawals') )
 @section('section')  
 <div class="col-sm-12 space-around">
 	<form method="get">
@@ -27,14 +27,17 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 				<strong>{{ Lang::get('Filter Status')}}</strong><br>								
-					{{ Form::select('filter_status', $adminInvDepListMod->allTransList, $adminInvDepListMod->allTransValue, ["class" => "selectpicker"]) }} 
+					<select >
+						<option>Approved</option>
+						<option>Unapproved</option>
+					</select>
 			</div>	
 		</div>
 				
 		<div class="col-sm-4 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date') }}</strong><br>							
-				<input id="fromdate" name="fromdate" value="{{$adminInvDepListMod->fromDate}}" 
+				<input id="fromdate" name="fromdate" value="" 
 						type="text" class="fromdate form-control" />
 			</div>	
 		</div>
@@ -42,7 +45,7 @@
 		<div class="col-sm-4 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date') }}</strong><br>							
-				<input id="todate" name="todate" value="{{$adminInvDepListMod->toDate}}"
+				<input id="todate" name="todate" value=""
 						type="text" class="todate form-control" />
 			</div>	
 		</div>
@@ -68,7 +71,7 @@
 							{{ Lang::get('UnApprove Selected')}}
 						</button>
 						<button class="btn verification-button">
-							{{ Lang::get('New Deposit')}}
+							{{ Lang::get('New Withdrawal')}}
 						</button>
 						<button class="btn verification-button">
 							{{ Lang::get('Delete Selected')}}
@@ -94,9 +97,11 @@
 								<th class="tab-head text-left">
 									{{Lang::get('Investor Name')}}</th>
 								<th class="tab-head text-left">
-									{{Lang::get('Deposit Date')}}</th>
+									{{Lang::get('Request Date')}}</th>
+								<th class="tab-head text-left">
+									{{Lang::get('Settlement Date')}}</th>
 								<th class="tab-head text-right">
-									{{Lang::get('Deposit Amount')}}</th>							
+									{{Lang::get('Amount')}}</th>							
 								<th class="tab-head text-left">
 									{{Lang::get('Status')}}</th>
 								<th class="tab-head text-left">
@@ -104,8 +109,7 @@
 							</tr>
 						</thead>
 						<body>
-							@if (count($adminInvDepListMod->depositListInfo) > 0)			
-								@foreach($adminInvDepListMod->depositListInfo as $depositListRow)
+							
 									<tr>
 										<td class="text-center">									
 											<label>
@@ -116,16 +120,19 @@
 											</label>									
 										</td>
 										<td>
-											{{$depositListRow->firstname}}
+											Investor1
 										</td>
 										<td>
-											{{$depositListRow->trans_date}}
+											2016-04-12
+										</td>
+										<td>
+											2016-05-12
 										</td>
 										<td class="text-right">
-											{{number_format($depositListRow->trans_amount,2,'.',',')}}
+											12356.00
 										</td>
 										<td>
-											{{$depositListRow->trans_status_name}}
+										Unapproved
 										</td>								
 										<td>
 											<ul class="list-unstyled">
@@ -158,8 +165,7 @@
 											</ul>
 										</td>
 									</tr>
-								@endforeach
-							@endif	
+								
 						</body>
 					</table>					
 				</div>					
