@@ -15,8 +15,19 @@
 @endsection
 @section('page_heading',Lang::get('Investor Deposit') )
 @section('section')  
+
 <div class="col-sm-12 space-around">
-	<div class="panel-primary panel-container">
+	<div class="panel-primary panel-container" id="investor-deposit">
+		@var $editclass = ""
+		@var $addclass  = ""
+		@var $viewclass = ""
+		@if($adminInvDepViewMod->processbuttontype == "edit")
+					@var $editclass = "disabled"
+		@elseif($adminInvDepViewMod->processbuttontype == "add")		
+					@var $addclass  = "disabled"
+		@else
+					@var $viewclass = "disabled"
+		@endif
 		
 		<div class="panel-heading panel-headsection"><!--panel head-->
 			<div class="row">
@@ -35,12 +46,13 @@
 					</label>
 				</div>								
 				<div class="col-xs-12 col-sm-7 col-lg-3">
-					<input 	type="text" 
-							class="form-control"
-							name="investor_name"
-							id="investor_name" 											
-							value="Investor1"							 
-							>	
+					@if($editclass || $viewclass)
+							{{ Form::select('active_investors', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
+					@else
+							{{ Form::select('active_investors', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
+			
+					@endif
+			
 				</div>	
 			
 						
@@ -58,7 +70,8 @@
 								type="text" 
 								class="deposit_date form-control" 
 								name="deposit_date"									
-								value="24-04-2016" />
+								value="{{$adminInvDepViewMod->viewRecordsInfo['trans_date']}}" 
+								{{$viewclass}} />
 
 						<label for="deposit_date" class="input-group-addon btn">
 							<span class="glyphicon glyphicon-calendar"></span>
@@ -78,10 +91,10 @@
 				<div class="col-xs-12 col-sm-7 col-lg-3">					
 						<input 	id="deposit_amount" 
 								type="text" 
-								class="deposit_amount form-control text-right" 
+								class="deposit_amount form-control text-right " 
 								name="deposit_amount"									
-								value="45232" 
-								/>						
+								value="{{$adminInvDepViewMod->viewRecordsInfo['trans_amount']}}" 
+								{{$viewclass}} />						
 				</div>
 							
 							
@@ -97,10 +110,10 @@
 				<div class="col-xs-12 col-sm-7 col-lg-5">					
 						<input 	id="trans_ref_no" 
 								type="text" 
-								class="trans_ref_no form-control" 
+								class="trans_ref_no form-control " 
 								name="trans_ref_no"									
-								value="NG245" 
-								 />						
+								value="{{$adminInvDepViewMod->viewRecordsInfo['trans_reference_number']}}" 
+								{{$viewclass}}  />						
 				</div>
 			</div> <!-- Row 4 -->
 			
@@ -111,7 +124,8 @@
 					</label>
 				</div>								
 				<div class="col-xs-12 col-sm-7 col-lg-5">
-					<textarea rows="3" class="form-control">
+					<textarea rows="3" class="form-control " {{$viewclass}} >
+						{{$adminInvDepViewMod->viewRecordsInfo['remarks']}}
 					</textarea>	
 				</div>	
 			</div> <!-- Row 5 -->
@@ -119,10 +133,10 @@
 			<div class="row">
 				<div class="col-lg-12 space-around">
 					<div class="form-group">	
-						<button class="btn verification-button">
+						<button class="btn verification-button" {{$viewclass}} >
 							{{ Lang::get('Save')}}
 						</button>
-						<button class="btn verification-button">
+						<button class="btn verification-button" {{$viewclass}} >
 							{{ Lang::get('Approve')}}
 						</button>
 					</div>

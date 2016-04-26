@@ -8,6 +8,11 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 	public  $fromDate						= "";
 	public  $toDate							= "";	
 	
+	public  $allactiveinvestList			= array();
+	public  $invListInfo					= array();
+	public  $processbuttontype				= "";
+	public  $viewRecordsInfo				= array();
+	
 	public function processDropDowns() {
 				
 				
@@ -32,8 +37,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			$codeCode 	= 	$filter_row->codelist_code;
 			$codeValue 	= 	$filter_row->codelist_value;
 			$codeExpr 	= 	$filter_row->expression;
-			
-			
+						
 			switch ($codeId) {
 			
 				case 31:
@@ -42,14 +46,10 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 
 			}								
 					
-		}
-		
+		}		
 		
 	} // End process_dropdown
-	
-	
-	
-	
+		
 	public function viewDepositList($fromDate, $toDate, $filter_status) {
 		
 		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
@@ -62,22 +62,24 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			$this->toDate			= $_REQUEST['todate'];
 		} 
 		
-		$lnListSql	=	"SELECT users.firstname,
-								investor_bank_transactions.trans_date,
-								investor_bank_transactions.trans_amount,
-								( 	SELECT	expression
-									FROM	codelist_details
-									WHERE	codelist_id = :bankstatus_codeparam4
-									AND		codelist_code = investor_bank_transactions.status) trans_status_name
-						 FROM 	investors,
-								users,
-								investor_bank_transactions 
-						 WHERE  investors.user_id   	= users.user_id 
-						 AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
-						 AND 	investor_bank_transactions.status = if(:filter_codeparam = :unapprove_codeparam3, :unapproved_codeparam1, :approved_codeparam2)
-						 AND	investor_bank_transactions.trans_date 
-						 BETWEEN :fromDate AND :toDate 
-						 ORDER BY investor_bank_transactions.trans_date ";
+		$lnListSql				=	"SELECT users.firstname,
+											investors.investor_id,
+											investor_bank_transactions.payment_id,
+											investor_bank_transactions.trans_date,
+											investor_bank_transactions.trans_amount,
+											( 	SELECT	expression
+												FROM	codelist_details
+												WHERE	codelist_id = :bankstatus_codeparam4
+												AND		codelist_code = investor_bank_transactions.status) trans_status_name
+									 FROM 	investors,
+											users,
+											investor_bank_transactions 
+									 WHERE  investors.user_id   	= users.user_id 
+									 AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
+									 AND 	investor_bank_transactions.status = if(:filter_codeparam = :unapprove_codeparam3, :unapproved_codeparam1, :approved_codeparam2)
+									 AND	investor_bank_transactions.trans_date 
+									 BETWEEN :fromDate AND :toDate 
+									 ORDER BY investor_bank_transactions.trans_date ";
 						 
 		$dataArrayLoanList		=	[															
 										"filter_codeparam" => $this->filter_status,
@@ -94,7 +96,95 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		return ;		
 		
 	}
-		
-}
 	
-
+	
+	
+	public function processInvestorDropDowns($processtype,$investorId){
+        $this->processbuttontype = $processtype;
+		
+		if($this->processbuttontype == "view" || "edit" ){
+		$invfilterSql						=	"SELECT users.firstname,
+														investors.investor_id
+												 FROM   investors,users
+												 WHERE  investors.user_id = users.user_id 
+												 AND    users.status = 2
+												 AND    users.email_verified = 1
+												 AND 	investors.investor_id = {$investorId}";		
+			
+		}
+		else{
+		
+		$invfilterSql						=	"SELECT users.firstname,
+														investors.investor_id
+												 FROM   investors,users
+												 WHERE  investors.user_id = users.user_id 
+												 AND    users.status = 2
+												 AND    users.email_verified = 1";		
+		}	
+		/*$dataArrayInvList				= 	[															
+												"userstatus_codeparam" => "2",
+												"emailverified_codeparam" => "1"
+											]	
+											 								
+		$this->invListInfo				=	$this->dbFetchWithParam($filterSql, $dataArrayInvList);		*/				
+								
+		$invfilter_rs						= 	$this->dbFetchAll($invfilterSql);
+		
+		if (!$invfilter_rs	) {
+			throw exception ("Not correct");
+			return;
+		}	
+	   
+	   foreach($invfilter_rs as $invfilter_row) {
+		   
+		   $inv_name 					= 	$invfilter_row->firstname;
+		   $inv_id						=	$invfilter_row->investor_id;
+		   
+		   $this->allactiveinvestList[$inv_id] = $inv_name;
+		
+	   }
+	}		
+	
+	
+	public function processInvestorDeposits($processtype,$investorId,$paymentId){
+					
+		if($processtype == "view" || "edit" ){
+			$this->viewEditInvestorDeposits($processtype,$investorId,$paymentId);		
+		}		
+		else{
+			$this->addInvestorDeposits();			
+		}		
+	}
+	
+	public function addInvestorDeposits(){
+			
+			
+			
+	}	
+		
+	public function viewEditInvestorDeposits($processtype,$investorId,$paymentId){
+			
+			$viewRecordSql		= "SELECT 
+										payments.trans_amount,
+										payments.trans_date,
+										payments.trans_reference_number,
+										payments.remarks
+									FROM 
+										payments,investor_bank_transactions
+									WHERE 
+										investor_bank_transactions.payment_id = payments.payment_id 
+									AND investor_bank_transactions.investor_id = {$investorId}
+									AND investor_bank_transactions.trans_type = 1
+									AND payments.payment_id = {$paymentId} ";
+									
+			$this->viewRecordsInfo	= 	$this->dbFetchRow($viewRecordSql);
+			
+			if($processtype == "edit"){
+				
+			}
+			
+			
+	}	
+	
+	
+}

@@ -24,10 +24,18 @@ class AdminDisburseLoanController extends MoneyMatchController {
 	}
 	
 	public function saveDisburseLoanAction() {
-		$this->bidsModel->saveDisburseDetails();
+		$this->bidsModel->saveDisburseLoan();
 		return redirect('admin/loanlisting');
 	
 	}	
+	
+	public function ajaxGetLoanRepaySchedAction() {
+		$loanId =	$_REQUEST["loan_id"];
+		$disburseDate = $_REQUEST["disburse_date"];
+		$retval = $this->bidsModel->computeRepaySchedule($loanId, $disburseDate);
+		return $retval;
+	
+	}
 	
 
 }

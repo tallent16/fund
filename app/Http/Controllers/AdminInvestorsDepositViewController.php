@@ -16,7 +16,9 @@ class AdminInvestorsDepositViewController extends MoneyMatchController {
 	}
 		
 	public function indexAction(){		
-
+		
+		$this->adminInvestorDepositView->processInvestorDropDowns();
+		
 		$withArry	=	array(	"adminInvDepViewMod" => $this->adminInvestorDepositView, 								
 								"classname"=>"fa fa-cc fa-fw"); 
 								
@@ -24,5 +26,6 @@ class AdminInvestorsDepositViewController extends MoneyMatchController {
 				->with($withArry); 
 	
 	}
+	
 }
 

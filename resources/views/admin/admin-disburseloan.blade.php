@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 @section('page_heading',Lang::get('Manage Loans') )
 @section('section')  
-<form method="post">
-	<input type="hidden" name="loan_id" value="{{$bidsModel->loan_id}}" />
-	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+<form method="post" action="{{url('admin/savedisbursement')}}">
+	<input type="hidden" id="loan_id" name="loan_id" value="{{$bidsModel->loan_id}}" />
+	<input type="hidden" id="hidden_token" name="_token" value="{{ csrf_token() }}" />
 
 <div class="col-sm-12 space-around">	
 	<div class="panel-primary panel-container disburse-loan">
@@ -125,7 +125,7 @@
 					<div class="col-xs-12 col-sm-7 col-lg-3">									
 						<input 	type="text" 
 								class="form-control text-right"
-								name="loan_process_fees"												
+								name="loan_process_fees"											
 								id="loan_process_fees" 											
 								value="{{number_format($bidsModel->loan_process_fees, 2, '.', ',')}}" 
 								disabled>	
@@ -179,10 +179,18 @@
 				</div>  <!-- Row 5 -->		
 
 				<div class="row">		
-					<div class="col-xs-12">
+					<div class="col-xs-12  col-sm-7 col-lg-3">
+						<button type="button" class="btn verification-button" id="get_repay_schd">
+							{{ Lang::get('Show Repayment Schedule')}}</button>
+					</div>
+
+					<div class="col-xs-12 col-sm-7 col-lg-3">
 						<button type="submit" class="btn verification-button">
 							{{ Lang::get('Disburse Loan')}}</button>
 					</div>
+
+					
+					
 				</div>
 				
 			</div><!----panel-body--->
@@ -191,6 +199,10 @@
 </div>
 </form>
 
+<div id="payschd_popup" title="Repayment Schedule" style="display:none" >
+	
+
+</div>
 @endsection  
 
 @section('bottomscripts')
@@ -200,13 +212,22 @@
 	
 
 <script>		
+var baseUrl	=	"{{url('')}}"
+
 $(document).ready(function(){ 
-// date picker
-$('.disbursement_date').datetimepicker({
-	autoclose: true, 
-	minView: 2,
-	format: 'dd-mm-yyyy' 
+	// date picker
+	$('.disbursement_date').datetimepicker({
+		autoclose: true, 
+		minView: 2,
+		format: 'dd-mm-yyyy' 
 	}); 
+	
+   $.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('#hidden_token').val()
+		}
+	});
+
 }); 
 
 $("form").submit(function(event) {
@@ -219,7 +240,52 @@ $("form").submit(function(event) {
 		event.preventDefault();
 	}
 	
+	$("form input[type=text]").each (function() {
+		$(this).removeAttr("disabled")
+	})
+	
 })
+
+$("#get_repay_schd").on("click", function() {
+		
+	 $.ajax({
+		type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+		url         : baseUrl+'/ajax/getloanrepayschd', // the url where we want to POST
+		data        : {
+							loan_id:$('#loan_id').val(),
+							disburse_date:$('#disbursement_date').val()
+						},
+		dataType    : 'json'
+	}) // using the done promise callback
+	.done(function(data) {
+		var repaySchdTable	= 	"	<table> " +
+								"		<tr>" +
+								"			<th>Installment Number</th>" +
+								"			<th>Schedule Payment Date</th>" +
+								"			<th>Principal Amount</th>" +
+								"			<th>Interest Amount</th>" +
+								"			<th>Total Amount</th>" +
+								"		</tr>";
+										
+		for (arrIndex = 0; arrIndex < data.length; arrIndex++) {
+			repaySchdTable +=	"		<tr>"+
+								"			<td>"+(arrIndex + 1)+"</td> " +
+								"			<td>"+data[arrIndex]["payment_scheduled_date"]+"</td> " +
+								"			<td>"+data[arrIndex]["principal_amount"]+"</td> " +
+								"			<td>"+data[arrIndex]["interest_amount"]+"</td> " +
+								"			<td>"+data[arrIndex]["payment_schedule_amount"]+"</td> " +
+								"		</tr> "
+								
+			
+		}
+		
+		$("#payschd_popup").html(repaySchdTable);
+		$("#payschd_popup").dialog();
+	});
+	
+	
+})
+
 </script>
 @endsection
 

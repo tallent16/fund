@@ -171,28 +171,43 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     
     Route::get('admin/manageborrowers', 'AdminManageBorrowersController@indexAction');
     Route::get('admin/manageinvestors', 'AdminManageInvestorsController@indexAction');
+    Route::get('admin/borrower/updateprofile/{status}/{bor_id}', 'AdminManageBorrowersController@updateProfileStatusAction');   
+    Route::post('admin/borrower/updateprofile', 'AdminManageBorrowersController@updateBulkProfileStatusAction');
+    Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
+
+    
     Route::get('admin/loanlisting', 'AdminLoanListingController@indexAction');
     Route::get('admin/managebids/{loan_id}', 'AdminManageBidsController@getLoanDetailsAction');
     Route::post('admin/bidclose', 'AdminManageBidsController@bidCloseAction');
     Route::post('admin/bidaccept', 'AdminManageBidsController@acceptBidsAction');
     Route::post('admin/loancancel', 'AdminManageBidsController@loanCancelAction');
+
 	Route::match(['get', 'post'],'admin/loanapproval/{loan_id}', 'AdminLoanApprovalController@indexAction'); 
     Route::get('admin/loandocdownload/{doc_id}', 'AdminLoanApprovalController@downloadLoanDocumentAction'); 
-    Route::post('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@saveDisburseLoanAction');
+
     Route::get('admin/disburseloan/{loan_id}', 'AdminDisburseLoanController@showDisburseLoanAction');
-    Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
-    Route::get('admin/borrower/updateprofile/{status}/{bor_id}', 'AdminManageBorrowersController@updateProfileStatusAction');
-    Route::post('admin/borrower/updateprofile', 'AdminManageBorrowersController@updateBulkProfileStatusAction');
+    Route::post('admin/savedisbursement', 'AdminDisburseLoanController@saveDisburseLoanAction');
+
+	Route::post('ajax/getloanrepayschd', 'AdminDisburseLoanController@ajaxGetLoanRepaySchedAction');	
+  
     Route::get('admin/borrowersrepaylist', 'AdminBorrowersRepaymentListingController@indexAction');
-    Route::get('admin/borrowersrepayview/{installment_id}/{loan_id}', 'AdminBorrowersRepaymentViewController@indexAction');
+    Route::match(['get', 'post'],'admin/borrowersrepayview/{type}/{installment_id}/{loan_id}', 
+															'AdminBorrowersRepaymentViewController@indexAction');
+
+    Route::post('admin/ajax/recalculatePenality','AdminBorrowersRepaymentViewController@recalculatePenalityAction');
     Route::get('admin/investordepositlist', 'AdminInvestorsDepositListingController@indexAction');
-    Route::get('admin/investordepositview', 'AdminInvestorsDepositViewController@indexAction');
+    //Route::get('admin/investordepositview/{investor_name}', 'AdminInvestorsDepositViewController@indexAction');
+    Route::match(['get', 'post'],'admin/investordepositview/{type}/{payment_id}/{investor_id}', 'AdminInvestorsDepositListingController@viewDepositAction');
+    
     Route::get('admin/investorwithdrawallist', 'AdminInvestorsWithdrawalsListingController@indexAction');
     Route::get('admin/investorwithdrawalview', 'AdminInvestorsWithdrawalsViewController@indexAction');
     
     Route::match(['get', 'post'],'admin/investor/profile/{inv_id}', 'AdminManageInvestorsController@viewProfileAction');
     Route::get('admin/investor/updateprofile/{status}/{inv_id}', 'AdminManageInvestorsController@updateProfileStatusAction');
     Route::post('admin/investor/updateprofile', 'AdminManageInvestorsController@updateBulkProfileStatusAction');
+	
+
+    
 });
 
 // The routes (or pages that are applicable for Borrower Users only

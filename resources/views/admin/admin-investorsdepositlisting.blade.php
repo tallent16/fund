@@ -77,8 +77,12 @@
 				</div>
 			</div>
 			
-			<div class="panel panel-primary panel-container borrower-admin">						
+			<div class="panel panel-primary panel-container borrower-admin">					
 					
+				<form method="post" id="investor-listing" action="{{url('admin/investordepositview/')}}">
+				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="processType" id="processType" value="">				
+				
 				<div class="table-responsive">
 					<table class="table tab-fontsize text-left">
 						<thead>
@@ -106,6 +110,16 @@
 						<body>
 							@if (count($adminInvDepListMod->depositListInfo) > 0)			
 								@foreach($adminInvDepListMod->depositListInfo as $depositListRow)
+									@var	$invUrl	=	url('admin/investordepositview/')
+									@var	$invaddUrl	=	$invUrl."/add/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
+									@if($depositListRow->trans_status_name	==	"Unapproved")
+										@var	$inveditUrl	=	$invUrl."/edit/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
+										@var	$invviewUrl	=	$invUrl."/view/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
+									@else
+										@var	$inveditUrl	= "javascript:void(0);"
+										@var    $invaddUrl  = "javascript:void(0);"
+										@var	$invviewUrl	= $invUrl."/view/".base64_encode($depositListRow->investor_id)
+									@endif
 									<tr>
 										<td class="text-center">									
 											<label>
@@ -116,16 +130,24 @@
 											</label>									
 										</td>
 										<td>
-											{{$depositListRow->firstname}}
+											<a href="{{$invviewUrl}}">
+												{{$depositListRow->firstname}}
+											</a>
 										</td>
 										<td>
-											{{$depositListRow->trans_date}}
+											<a href="{{$invviewUrl}}">
+												{{$depositListRow->trans_date}}
+											</a>
 										</td>
 										<td class="text-right">
-											{{number_format($depositListRow->trans_amount,2,'.',',')}}
+											<a href="{{$invviewUrl}}">
+												{{number_format($depositListRow->trans_amount,2,'.',',')}}
+											</a>
 										</td>
 										<td>
-											{{$depositListRow->trans_status_name}}
+											<a href="{{$invviewUrl}}">
+												{{$depositListRow->trans_status_name}}
+											</a>
 										</td>								
 										<td>
 											<ul class="list-unstyled">
@@ -136,19 +158,19 @@
 													</a>
 													<ul class="dropdown-menu dropdown-user">
 														<li>													
-															<a href="">
+															<a href="{{$invaddUrl}}">
 																<i class="fa fa-user fa-fw"></i>
 																{{ Lang::get('Add Deposit') }}
 															</a>
 														</li> 
 														<li>													
-															<a href="">
+															<a href="{{$inveditUrl}}">
 																<i class="fa fa-user fa-fw"></i>
 																{{ Lang::get('Edit Deposit') }}
 															</a>
 														</li> 
 														<li>													
-															<a href="">
+															<a href="{{$invviewUrl}}">
 																<i class="fa fa-user fa-fw"></i>
 																{{ Lang::get('View Deposit') }}
 															</a>
@@ -162,7 +184,8 @@
 							@endif	
 						</body>
 					</table>					
-				</div>					
+				</div>		
+				</form>			
 			</div>	<!---panel-->
 
 </div>

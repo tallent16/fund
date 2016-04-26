@@ -17,6 +17,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	public  $isOverdue			=	0;	
 	public  $remarks			=  "";
 	public 	$installmentNumber	=  "";
+	public 	$transreference_no 	=  "";
+	public 	$repaymentStatus 	=  "";
+	public 	$paymentId 			=  0;
 	
 	public function __construct($attributes = array()){	
 		
@@ -71,7 +74,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	}
 
 	public function newRepayment ($installmentId,$loanid) {
-		$this->repaymentSchdId			=	$installmentId;	
+		
 		
 		// Check if the Installment is overdue or not
 		$repaySched_sql					=	"SELECT 	if(datediff(now(), repayment_schedule_date) > 0, 
@@ -79,9 +82,13 @@ class BorrowerRepayLoansModel extends TranWrapper {
 													repayment_scheduled_amount,
 													date_format(repayment_schedule_date,'%d-%m-%Y') repayment_schedule_date ,
 													loan_id,installment_number,
-													borrower_id
+													repayment_schedule_id,
+													borrower_id,
+													IFNULL(payment_id,0) payment_id,
+													remarks,
+													repayment_status
 											FROM	borrower_repayment_schedule 
-											WHERE	repayment_schedule_id = {$installmentId} 
+											WHERE	installment_number = {$installmentId} 
 											AND		loan_id = {$loanid} ";
 								
 		$repaySched_rs					=	$this->dbFetchAll($repaySched_sql);
@@ -96,7 +103,18 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$this->schedDate			=	$repaySched_rs[0]->repayment_schedule_date;
 			$this->loanId				=	$repaySched_rs[0]->loan_id;
 			$this->borrowerId			=	$repaySched_rs[0]->borrower_id;			
-			$this->installmentNumber	=	$repaySched_rs[0]->installment_number;			
+			$this->installmentNumber	=	$repaySched_rs[0]->installment_number;		
+			$this->repaymentSchdId		=	$repaySched_rs[0]->repayment_schedule_id;		
+			$this->remarks				=	$repaySched_rs[0]->remarks;		
+			$this->repaymentStatus		=	$repaySched_rs[0]->repayment_status;		
+			$this->paymentId			=	$repaySched_rs[0]->payment_id;		
+			if($repaySched_rs[0]->payment_id	!=	0) {
+				$payment_sql				=	"	SELECT trans_reference_number
+													FROM	payments
+													WHERE	payment_id={$repaySched_rs[0]->payment_id}";
+				
+				$this->transreference_no	=	$this->dbFetchOne($payment_sql);
+			}
 		} else {
 			// This is an error condition. Can't be true
 			return -1;
@@ -105,33 +123,31 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		if ($this->isOverdue == 'Overdue') {
 			// Calculate the penalty amount
 			$dbFormattedschedDate	=	$this->getDbDateFormat($this->schedDate);
-			$penalty_sql			=	"SELECT	ROUND(if (penalty_type_applicable in (1,3), 
-													{$this->schedAmount} * 
-														power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
-														datediff(now(), '{$dbFormattedschedDate}')) + 
-												if (penalty_type_applicable in (2,3),
-														ifnull(penalty_fixed_amount, 0), 0) -
-												{$this->schedAmount}, 0),2) penalty 
-										FROM	loans
-										WHERE	loan_id = {$this->loanId}";
-			$this->penaltyAmt		=	$this->dbFetchOne($penalty_sql);
+			$dbFormattedcurDate		=	$this->getDbDateFormat($this->repaymentDate);
 			
 			$penaltyComp_sql		=	"SELECT	penalty_fee_percent,
 												penalty_fee_minimum,
 												penalty_interest
 										FROM	system_settings";
+										
 			$penaltyComp_rs			=	$this->dbFetchAll($penaltyComp_sql);
-			echo ((7951.06)*((1+24/36500)*(15/100)));
-			die;
+			
+			$datetime1 = new \DateTime($dbFormattedschedDate);
+			$datetime2 = new \DateTime($dbFormattedcurDate);
+			$interval = $datetime1->diff($datetime2);
+			$delay_days	= $interval->format('%a');
+			
 			if (count($penaltyComp_rs) > 0) {
-				$this->penaltyAmt		=	(7951.06*(1+
-												$penaltyComp_rs[0]->penalty_interest/36500)^15)-(
-													7951.06);
-				$this->penaltyCompShare	=	round(max(($this->schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/100)),
-														$penaltyComp_rs[0]->penalty_fee_minimum),2);
+				if(strtotime($dbFormattedcurDate) > strtotime($dbFormattedschedDate)) {
+					
+					$this->penaltyAmt		=	round(($this->schedAmount*(1+
+												$penaltyComp_rs[0]->penalty_interest/36500)**$delay_days)-(
+													$this->schedAmount),2);
+					$this->penaltyCompShare	=	round(max(($this->schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/
+																		100)),$penaltyComp_rs[0]->penalty_fee_minimum),2);
+				}
 			}
 		}
-	//~ echo "<pre>",$penalty_sql,"</pre>";die;
 		// Calculate the Principal & Interest & get the loan_reference Number
 		$intAmount_sql				=	"SELECT	round((loan_sanctioned_amount - sum(principal_component)) * 
 													(final_interest_rate / 1200), 2) interest_component,
@@ -165,12 +181,21 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		$this->principalAmount		=	$postArray["principal_amount"];
 		$this->interestAmount		=	$postArray["interest_amount"];
 		$this->penaltyAmt			=	$postArray["penalty_amount"];
+		$this->penaltyCompShare		=	$postArray["penalty_companyshare"];
 	//	$this->trans_date			=	$this->repaymentDate;       //$this->getDbDateFormat($postArray["actualdate"]);
 		$this->repaymentSchdId		=	$postArray["repaymentSchdId"];
 		$this->remarks				=	$postArray["repay_remarks"];
 		$this->schedDate			=	$this->getDbDateFormat($postArray["duedate"]); 
+		$this->repaymentDate		=	$this->getDbDateFormat($postArray["actual_date"]); 
 		$this->installmentNumber	=	$postArray["installment_number"];
-		$repaymentStatus			=	BORROWER_REPAYMENT_STATUS_UNVERIFIED; // Hardcoded to signify Unverified 
+		$this->paymentId 			=	$postArray["payment_id"];
+		
+		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
+			$repaymentStatus			=	BORROWER_REPAYMENT_STATUS_PAID; 
+			
+		}else{
+			$repaymentStatus			=	BORROWER_REPAYMENT_STATUS_UNVERIFIED; 
+		}
 				
 		// For the Payments Table
 		//	$transInOrOut				=	1; // Hardcoded to signify inwards
@@ -179,33 +204,43 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		//	currency: SGD (hardcode)
 		//  trans_reference_number: Obtained from Screen
 		//  Status: 1 (unverified --> Hardcode)
-
-		$paymentInsert_data			=	array(
-										'trans_date' => $this->repaymentDate,
-										'trans_type' => PAYMENT_TRANSCATION_LOAN_REPAYMENT,							
-										'trans_amount' => $this->amountPaid,
-										'currency' => $currency,
-										'trans_reference_number' => $transReference,
-										'status' => PAYMENT_STATUS_UNVERIFIED,
-										'remarks' => $this->remarks);
 		
-		$paymentId 					=	$this->dbInsert("payments", $paymentInsert_data, 1);
-	
-		$repayInsert_data			=	array(								
-										'loan_id' => $this->loanId,
-										'borrower_id' => $this->borrowerId,
-										'installment_number' => $this->installmentNumber,	 						
-										'repayment_schedule_date' => $this->schedDate,
-										'repayment_scheduled_amount' => $this->amountPaid,
-										'principal_component' => $this->principalAmount,
-										'interest_component' => $this->interestAmount,
-										'repayment_status' => $repaymentStatus,
-										'payment_id' => $paymentId ,
-										'repayment_actual_date'	=> $this->repaymentDate,
-										'repayment_penalty_amount'	=> $this->penaltyAmt,									
-										'remarks' => $this->remarks);
+		$paymentInsert_data		=	array(
+											'trans_date' => $this->repaymentDate,
+											'trans_type' => PAYMENT_TRANSCATION_LOAN_REPAYMENT,							
+											'trans_amount' => $this->amountPaid,
+											'currency' => $currency,
+											'trans_reference_number' => $transReference,
+											'status' => PAYMENT_STATUS_VERIFIED,
+											'remarks' => $this->remarks);
+		if($this->paymentId	==	0) {	
+			$this->paymentId 		=	$this->dbInsert("payments", $paymentInsert_data, 1);
+		}else{
+			$whereArry	=	array("payment_id" =>"{$this->paymentId}");
+			$this->dbUpdate('payments', $paymentInsert_data, $whereArry);
+		}
+		
+			// Update the Borrower Repayment Schedule Table
+		$repayUpdateBor_data			=	array(								
+												'repayment_status' 				=> $repaymentStatus,
+												'payment_id' 					=> $this->paymentId ,
+												'repayment_actual_date'			=> $this->repaymentDate,
+												'repayment_penalty_interest'	=> $this->penaltyAmt,
+												'repayment_penalty_charges'		=> $this->penaltyCompShare,
+												'remarks' 						=> $this->remarks);
 			
-		$this->dbInsert("borrower_repayment_schedule", $repayInsert_data, 0);		
+		$whereArry	=	array("repayment_schedule_id" =>"{$this->repaymentSchdId}");
+		$this->dbUpdate('borrower_repayment_schedule', $repayUpdateBor_data, $whereArry);
+		
+			// Update the Investor Repayment Schedule Table
+		$repayUpdateInv_data			=	array(								
+												'status' 				=> $repaymentStatus,
+												'payment_date' 			=> $this->repaymentDate ,
+												'penalty_amount'		=> $this->penaltyAmt);
+			
+		$whereArry	=	array("loan_id" =>"{$this->loanId}",
+								"installment_number" =>"{$this->installmentNumber}");
+		$this->dbUpdate('investor_repayment_schedule', $repayUpdateInv_data, $whereArry);
 	}
 	
 	public function getAllBorrowerRepaymentLoans() {
@@ -257,5 +292,46 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		return;
 
 	}
-
+	public function recalculatePenality($postArray) {
+		
+		$schRepDate				=	$postArray['schRepDate'];
+		$actRepDate				=	$postArray['actRepDate'];
+		$principalAmt			=	$postArray['principalAmt'];
+		$interestAmt			=	$postArray['interestAmt'];
+		$schedAmount			=	$principalAmt	+	$interestAmt;
+		$dbFormattedschedDate	=	$this->getDbDateFormat($schRepDate);
+		$dbFormattedcurDate		=	$this->getDbDateFormat($actRepDate);
+		
+		if(strtotime($dbFormattedcurDate) > strtotime($dbFormattedschedDate)) {
+			
+			
+			$penaltyComp_sql		=	"SELECT	penalty_fee_percent,
+												penalty_fee_minimum,
+												penalty_interest
+										FROM	system_settings";
+										
+			$penaltyComp_rs			=	$this->dbFetchAll($penaltyComp_sql);
+			
+			$datetime1 = new \DateTime($dbFormattedschedDate);
+			$datetime2 = new \DateTime($dbFormattedcurDate);
+			$interval = $datetime1->diff($datetime2);
+			$delay_days	= $interval->format('%a');
+			
+			$penaltyAmt				=	round(($schedAmount*(1+
+													$penaltyComp_rs[0]->penalty_interest/36500)**$delay_days)-(
+													$schedAmount),2);
+			$penaltyCompShare		=	round(max(($schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/
+																100)),$penaltyComp_rs[0]->penalty_fee_minimum),2);
+			$amountPaid				=	$schedAmount	+	$penaltyAmt;
+		}else{
+			
+			$penaltyAmt				=	0;
+			$penaltyCompShare		=	0;
+			$amountPaid				=	$schedAmount	+	$penaltyAmt;
+		}
+		return	array(	"amountPaid"=>$amountPaid,
+						"penaltyAmt"=>$penaltyAmt,
+						"penaltyCompShare"=>$penaltyCompShare
+						);
+	}
 }

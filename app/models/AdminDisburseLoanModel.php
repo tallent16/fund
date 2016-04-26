@@ -14,6 +14,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 	public  $total_fees_levied = 0;
 	public	$amount_disbursed = 0;
 	public	$trans_reference_number = "";
+	public	$borrower_id = 0;
 	public	$remarks = "";
 	public	$loan_process_fees = 0;
 	public	$system_date = "";
@@ -31,10 +32,10 @@ class AdminDisburseLoanModel extends TranWrapper {
 	public 	$investor_repayment	= array();
 	
 	public function getDisburseDetails($loan_id) {
-
 		
 		$loanDtl_sql		=	"	SELECT	loan_id,
 											loan_reference_number,
+											borrower_id,
 											date_format(now(), '%d-%m-%Y') loan_process_date,
 											(	SELECT 	sum(accepted_amount) 
 												FROM	loan_bids
@@ -83,6 +84,9 @@ class AdminDisburseLoanModel extends TranWrapper {
 			
 		$this->amount_disbursed = $this->loan_sanctioned_amount - $this->loan_process_fees;
 
+	}
+	
+	function computeRepaySchedule($loan_id, $loanProcessDate) {
 
 		// Compute the pre-EMI days 
 		/* The first installment may be different from the other installments if the processing
@@ -91,9 +95,15 @@ class AdminDisburseLoanModel extends TranWrapper {
 		 * separately for the period of 24th April to 5th May (12 days)
 		 * 
 		 */
-		$currentDate		=	new DateTime();
-		$loanProcessDay		=	$currentDate->format('Y-m-d');
+		 
+		$this->getDisburseDetails($loan_id);
+		
+		$loanProcessDay		=	substr($loanProcessDate, 0,2);
+		$loanProcessDate 	=	substr($loanProcessDate, 6,4)."-".substr($loanProcessDate, 3,2)."-".
+								substr($loanProcessDate, 0,2);
+
 		$this->plusOneMonth	=	new DateInterval('P1M');
+		$currentDate		=	new DateTime();
 	
 		
 		if ($loanProcessDay < $this->monthly_pay_by_date) {
@@ -138,8 +148,6 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
 			$investors[] = $investorId;
-//			echo "<h1>Repayment Schedule for Investor # {$investorId} </h1>";
-//			$this->printEmi($this->investor_repayment[$investorId]);
 		}
 		
 		$totPrin	=	 0;
@@ -164,32 +172,114 @@ class AdminDisburseLoanModel extends TranWrapper {
 			$totPrin	=	 $totPrin + $prinAmt;
 		}
 		
-//		echo "Total principal repaid is $totPrin <br>";
-//		echo "<pre>", print_r($this->repayment_schedule), "</pre>";
-//			echo "<h1>Repayment Schedule for Loan ID </h1>";
-//		$this->printEmi($this->repayment_schedule);
-//		die;
+		$repaySched = json_encode($this->repayment_schedule);
+		return $repaySched;
+		
 		
 	}
 	
-	public function saveDisburseLoanAction() {
+	public function saveDisburseLoan() {
 		/* Validate the information since Javascript validation can be overriden in some
 		 * Extreme cases
 		 */
 
-		// Update Loans Table
+		// Steps for saving the disbursal
+		// Update Loans Table 
+		// Insert row into Payments Table
+		// Insert row into disbursement Table
+		// Insert rows into borrower_repayments_table
+		// Insert rows into investor_repayments_table
 		
-		$dataArray	=	["status"					=> 	LOAN_STATUS_DISBURSED,
-						 "loan_process_date" 		=>	$_REQUEST["disbursement_date"],
-						 "loan_sanctioned_amount" 	=>	$_REQUEST["loan_sanctioned_amount"],
-						 "trans_fees"				=>	$_REQUEST["loan_process_fees"],
-						 "total_disbursed"			=>	$_REQUEST["amount_disbursed"]];
+		$loan_id			=	$_REQUEST["loan_id"];
+		$loan_process_date 	=	$_REQUEST["disbursement_date"];
+		$disburseDate		=	$this->getDbDateFormat($loan_process_date);
+		$loan_process_fees	=	$this->makeFloat($_REQUEST["loan_process_fees"]);
+		$total_disbursed	=	$this->makeFloat($_REQUEST["amount_disbursed"]);
+		$loan_fixed_fees	=	$this->makeFloat($_REQUEST["loan_fixed_fees"]);
+		$loan_fees_percent	=	$this->makeFloat($_REQUEST["loan_fees_percent"]);
+		$paymentRef			=	$_REQUEST["payment_ref"];
+		$remarks			=	$_REQUEST["remarks"];
+		$this->getDisburseDetails($loan_id);
+		$this->computeRepaySchedule($loan_id, $loan_process_date);
+		
+
+		$dataArray	=	[	"status"			=> 	LOAN_STATUS_DISBURSED,
+							"loan_process_date" =>	$disburseDate,
+							"trans_fees"		=>	$loan_process_fees,
+							"total_disbursed"	=>	$total_disbursed];
 
 		$tableName	=	"loans";
-		$where		=	["loan_id"	=>	$REQUEST["loan_id"]];
+		$where		=	["loan_id"	=>	$loan_id];
 		
+	//	if (!$this->dbUpdate("loans", $dataArray, $where)) 
+//			return -1;
+			
+	
+		// Insert into Payments Table
+		$dataArray	=	[	"trans_date"		=>	$disburseDate,
+							"trans_type"		=>	PAYMENT_TRANSCATION_LOAN_DISBURSEMENT,
+							"trans_amount"		=>	$total_disbursed,
+							"currency"			=>	"SGD",
+							"trans_reference_number"	=>	$paymentRef,
+							"status"			=>	PAYMENT_STATUS_VERIFIED,
+							"remarks"			=>	$remarks];
 		
+		echo "<pre>", print_r($dataArray), "</pre>";
+		die;
 		
+		$paymentId	=	$this->dbInsert("payments", $dataArray, true);
+		
+		if (!$paymentId) 
+			return -1;
+			
+		// Insert into Disbursements table
+		$dataArray	=	[	"disbursement_date"	=>	$disburseDate,
+							"loan_id"			=>	$loan_id,
+							"borrower_id"		=>	$this->borrower_id,
+							"amount_disbursed"	=>	$total_disbursed,
+							"currency"			=>	"SGD",
+							"fixed_fees_levied" =>	$loan_fixed_fees,
+							"fees_percent_levied"	=>	$loan_fees_percent,
+							"total_fees_levied"	=>	$loan_process_fees,
+							"payment_id"		=>	$paymentId,
+							"remarks"			=>	$remarks,
+							"status"			=>	PAYMENT_STATUS_VERIFIED];
+
+		if (!$this->dbInsert("disbursements", $dataArray, false))
+			return -1;
+		
+		// Insert new rows in borrower_repayment_schedule
+		foreach ($this->repayment_schedule as $instNum => $repaySchd) {
+			$dataArray	=	[	"loan_id"						=>	$loan_id,
+								"borrower_id"					=>	$this->borrower_id,
+								"installment_number"			=>	$instNum,
+								"repayment_schedule_date"		=>	$repaySchd["payment_scheduled_date"],
+								"repayment_scheduled_amount"	=>	$repaySchd["payment_schedule_amount"],
+								"principal_component"			=>	$repaySchd["principal_amount"],
+								"interest_component"			=>	$repaySchd["interest_amount"],
+								"repayment_status"				=>	BORROWER_REPAYMENT_STATUS_UNPAID];
+								
+			$this->dbInsert("borrower_repayment_schedule", $dataArray, false);
+			
+		}
+
+		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
+			foreach ($invRepaySch as $instlNum => $instlDtls ) {
+				$dataArray	=	[	"loan_id"					=>	$loan_id,
+									"investor_id"				=>	$investorId,
+									"installment_number"		=>	$instlNum,
+									"payment_scheduled_date"	=>	$instlDtls["payment_scheduled_date"],
+									"principal_amount"			=>	$instlDtls["principal_amount"],
+									"interest_amount"			=>	$instlDtls["interest_amount"],
+									"payment_schedule_amount"	=>	$instlDtls["payment_schedule_amount"],
+									"status"					=>	BORROWER_REPAYMENT_STATUS_UNPAID ];
+				
+				$this->dbInsert("investor_repayment_schedule", $dataArray, false);
+			}
+		
+		}
+		
+		return 1;
 	}
 
 	public function fillInvestorRepaymentSchedule($investorId, $interestRate, $acceptAmount) {
@@ -257,30 +347,6 @@ class AdminDisburseLoanModel extends TranWrapper {
 	
 		
 	}
-	
-	public function printEmi($emiArray) {
-		echo "
-		<table>
-			<tr>
-				<td>Installment #</td>
-				<td>Payment Date</td>
-				<td>Principal</td>
-				<td>Interest</td>
-				<td>EMI</td>
-			</tr> ";
 
-		foreach ($emiArray as $instNum => $emiDtls) {
-			echo "<tr>
-					<td>{$instNum} </td>
-					<td>{$emiDtls['payment_scheduled_date']} </td>
-					<td>{$emiDtls['principal_amount']} </td>
-					<td>{$emiDtls['interest_amount']} </td>
-					<td>{$emiDtls['payment_schedule_amount']} </td>
-					</tr>";
-		}
-		
-		echo "</table>";
-		
-	}
 						
 }

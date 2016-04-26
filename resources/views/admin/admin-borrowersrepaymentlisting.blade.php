@@ -47,12 +47,20 @@
 							</tr>
 						</thead>
 						<tbody>
-							@var $repayloanlist = $adminBorRepayListMod->repaymentLoanList;
+							@var 	$repayloanlist 	= 	$adminBorRepayListMod->repaymentLoanList;
+							@var	$type			=	""
 							@if (count($repayloanlist) > 0)
 								@foreach ($repayloanlist as $loanRow)
-									@var	$repSchUrl	=	url('admin/borrowersrepayview/')
-									@var	$repSchUrl	=	$repSchUrl."/".base64_encode($loanRow->installment_number)
+									@var	$SchUrl		=	url('admin/borrowersrepayview/')
+									@var	$repSchUrl	=	$SchUrl."/edit/".base64_encode($loanRow->installment_number)
 									@var	$repSchUrl	=	$repSchUrl."/".base64_encode($loanRow->loan_id)
+									
+									@var	$repEditSchUrl	=	$SchUrl."/edit/".base64_encode($loanRow->installment_number)
+									@var	$repEditSchUrl	=	$repEditSchUrl."/".base64_encode($loanRow->loan_id)
+									
+									@var	$repViewSchUrl	=	$SchUrl."/view/".base64_encode($loanRow->installment_number)
+									@var	$repViewSchUrl	=	$repViewSchUrl."/".base64_encode($loanRow->loan_id)
+									
 									@if($loanRow->repayment_status	==	"Not Approved")
 										@var	$encodeId	=	$loanRow->loan_id."_"
 										@var	$encodeId	=	$encodeId.$loanRow->installment_number
@@ -115,14 +123,15 @@
 														<i class="fa fa-caret-down fa-fw action-style"></i> 
 													</a>
 													<ul class="dropdown-menu dropdown-user">
-														<li>													
-															<a href="{{$repSchUrl}}" class="{{$classrepaySch}}">
+														<li>	
+																											
+															<a href="{{$repEditSchUrl}}" class="{{$classrepaySch}}">
 																<i class="fa fa-user fa-fw"></i>
 																{{ Lang::get('Edit/Approve') }}
 															</a>
 														</li> 
 														<li>													
-															<a href="">
+															<a href="{{$repViewSchUrl}}">
 																<i class="fa fa-user fa-fw"></i>
 																{{ Lang::get('View') }}
 															</a>

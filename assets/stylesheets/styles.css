@@ -9183,8 +9183,11 @@ nav .block-title{
 .applyloan .panel-headsection{
 	padding:5px;
 }
-#company_info .btn.selectpicker {
-    margin-bottom: -10px;
+#company_info .btn.selectpicker, #investor-deposit .btn.selectpicker {
+    opacity: 1;
+    margin-bottom: -10px;    
+    color: #555;
+    background-color: #eee;
 }
 #financial_info .form-control{
 	text-align:right;

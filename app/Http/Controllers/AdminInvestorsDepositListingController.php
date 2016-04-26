@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 use	\App\models\AdminInvestorsDepositListingModel;
 class AdminInvestorsDepositListingController extends MoneyMatchController {
 	
-	public $adminInvestorDepositList;
+	public $adminInvestorDeposit;
 	
 	public function __construct() {	
 		
@@ -12,7 +12,7 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 	}
 	
 	public function littleMoreInit() {
-		$this->adminInvestorsDepositList = new AdminInvestorsDepositListingModel();
+		$this->adminInvestorsDeposit = new AdminInvestorsDepositListingModel();
 	}
 		
 	public function indexAction(){	
@@ -33,11 +33,11 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 			$filter_status = $_REQUEST["filter_status"];
 		}	
 
-		$this->adminInvestorsDepositList->processDropDowns();
+		$this->adminInvestorsDeposit->processDropDowns();
 		
-		$this->adminInvestorsDepositList->viewDepositList($fromDate, $toDate, $filter_status);	
+		$this->adminInvestorsDeposit->viewDepositList($fromDate, $toDate, $filter_status);	
 		
-		$withArry	=	array(	"adminInvDepListMod" => $this->adminInvestorsDepositList, 
+		$withArry	=	array(	"adminInvDepListMod" => $this->adminInvestorsDeposit, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
 								"all_Trans" => $filter_status,								
@@ -46,5 +46,30 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		return view('admin.admin-investorsdepositlisting')
 				->with($withArry); 
 	
+	}
+	public function viewDepositAction($type,$payment_id,$investor_id){
+		
+		$investorId 	= base64_decode($investor_id);
+		$processtype 	= $type;		
+		$paymentId 		= base64_decode($payment_id);
+				
+		$this->adminInvestorsDeposit->processInvestorDropDowns($processtype ,$investorId);
+		$this->adminInvestorsDeposit->processInvestorDeposits($processtype,$investorId,$paymentId);
+		
+		/* $submitted		= false;
+		 * if (Request::isMethod('post')) {
+			$postArray	=	Request::all();
+		//	$this->adminInvestorsDeposit->processInvestorDropDowns($investorId);
+			$submitted	=	true;
+		}*/
+		
+		
+		$withArry	=	array(	"adminInvDepViewMod" => $this->adminInvestorsDeposit, 								
+								"classname"=>"fa fa-cc fa-fw",
+								); 
+								
+		return view('admin.admin-investorsdepositview')
+				->with($withArry); 
+		
 	}
 }
