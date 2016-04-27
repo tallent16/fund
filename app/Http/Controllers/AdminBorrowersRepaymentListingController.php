@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 use	\App\models\BorrowerRepayLoansModel;
+use	Request;
 class AdminBorrowersRepaymentListingController extends MoneyMatchController {
 	
 	public $adminBorrowerRepaymentList;
@@ -24,5 +25,18 @@ class AdminBorrowersRepaymentListingController extends MoneyMatchController {
 		return view('admin.admin-borrowersrepaymentlisting')
 				->with($withArry); 
 	
+	}
+		
+	public function approveRepaymentAction($repayment_schedule_id){		
+
+		$this->adminBorrowerRepaymentList->approveBorrowerRepayment($repayment_schedule_id);
+		return redirect()->to('admin/borrowersrepaylist');
+	}
+		
+	public function bulkApproveRepaymentAction(){		
+		
+		$postArray	=	Request::all();
+		$this->adminBorrowerRepaymentList->bulkApproveBorrowerRepayment($postArray);
+		return redirect()->to('admin/borrowersrepaylist');
 	}
 }

@@ -211,12 +211,12 @@ class AdminDisburseLoanModel extends TranWrapper {
 		$tableName	=	"loans";
 		$where		=	["loan_id"	=>	$loan_id];
 		
-	//	if (!$this->dbUpdate("loans", $dataArray, $where)) 
-//			return -1;
+		if (!$this->dbUpdate("loans", $dataArray, $where)) 
+			return -1;
 			
 	
 		// Insert into Payments Table
-		$dataArray	=	[	"trans_date"		=>	$disburseDate,
+		$payData	=	[	"trans_date"		=>	$disburseDate,
 							"trans_type"		=>	PAYMENT_TRANSCATION_LOAN_DISBURSEMENT,
 							"trans_amount"		=>	$total_disbursed,
 							"currency"			=>	"SGD",
@@ -224,16 +224,13 @@ class AdminDisburseLoanModel extends TranWrapper {
 							"status"			=>	PAYMENT_STATUS_VERIFIED,
 							"remarks"			=>	$remarks];
 		
-		echo "<pre>", print_r($dataArray), "</pre>";
-		die;
-		
-		$paymentId	=	$this->dbInsert("payments", $dataArray, true);
+		$paymentId	=	$this->dbInsert("payments", $payData, true);
 		
 		if (!$paymentId) 
 			return -1;
 			
 		// Insert into Disbursements table
-		$dataArray	=	[	"disbursement_date"	=>	$disburseDate,
+		$disbData	=	[	"disbursement_date"	=>	$disburseDate,
 							"loan_id"			=>	$loan_id,
 							"borrower_id"		=>	$this->borrower_id,
 							"amount_disbursed"	=>	$total_disbursed,
@@ -245,12 +242,11 @@ class AdminDisburseLoanModel extends TranWrapper {
 							"remarks"			=>	$remarks,
 							"status"			=>	PAYMENT_STATUS_VERIFIED];
 
-		if (!$this->dbInsert("disbursements", $dataArray, false))
-			return -1;
+		$this->dbInsert("disbursements", $disbData, false);
 		
 		// Insert new rows in borrower_repayment_schedule
 		foreach ($this->repayment_schedule as $instNum => $repaySchd) {
-			$dataArray	=	[	"loan_id"						=>	$loan_id,
+			$borrSchdData	=	[	"loan_id"						=>	$loan_id,
 								"borrower_id"					=>	$this->borrower_id,
 								"installment_number"			=>	$instNum,
 								"repayment_schedule_date"		=>	$repaySchd["payment_scheduled_date"],
@@ -259,13 +255,13 @@ class AdminDisburseLoanModel extends TranWrapper {
 								"interest_component"			=>	$repaySchd["interest_amount"],
 								"repayment_status"				=>	BORROWER_REPAYMENT_STATUS_UNPAID];
 								
-			$this->dbInsert("borrower_repayment_schedule", $dataArray, false);
+			$this->dbInsert("borrower_repayment_schedule", $borrSchdData, false);
 			
 		}
 
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
 			foreach ($invRepaySch as $instlNum => $instlDtls ) {
-				$dataArray	=	[	"loan_id"					=>	$loan_id,
+				$invSchdData	=	[	"loan_id"					=>	$loan_id,
 									"investor_id"				=>	$investorId,
 									"installment_number"		=>	$instlNum,
 									"payment_scheduled_date"	=>	$instlDtls["payment_scheduled_date"],
@@ -274,7 +270,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 									"payment_schedule_amount"	=>	$instlDtls["payment_schedule_amount"],
 									"status"					=>	BORROWER_REPAYMENT_STATUS_UNPAID ];
 				
-				$this->dbInsert("investor_repayment_schedule", $dataArray, false);
+				$this->dbInsert("investor_repayment_schedule", $invSchdData, false);
 			}
 		
 		}

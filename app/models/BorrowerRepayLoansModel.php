@@ -172,7 +172,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	}	
 	
 	public function saveRepayment($postArray) {
-				
+		
+		//~ echo "<pre>",print_r($postArray),"</pre>"	;
+		//~ die;
 		// Values expected from the request
 		// For the borrowers' table
 		$this->loanId 				= 	$postArray["loan_id"];
@@ -192,9 +194,11 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			$repaymentStatus			=	BORROWER_REPAYMENT_STATUS_PAID; 
+			$paymentStatus				=	PAYMENT_STATUS_VERIFIED;
 			
 		}else{
 			$repaymentStatus			=	BORROWER_REPAYMENT_STATUS_UNVERIFIED; 
+			$paymentStatus				=	PAYMENT_STATUS_UNVERIFIED;
 		}
 				
 		// For the Payments Table
@@ -211,7 +215,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 											'trans_amount' => $this->amountPaid,
 											'currency' => $currency,
 											'trans_reference_number' => $transReference,
-											'status' => PAYMENT_STATUS_VERIFIED,
+											'status' => $paymentStatus,
 											'remarks' => $this->remarks);
 		if($this->paymentId	==	0) {	
 			$this->paymentId 		=	$this->dbInsert("payments", $paymentInsert_data, 1);
@@ -268,7 +272,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 														   when '1' then  	'Unpaid'
 														   when '2' then 	'Not Approved'
 														   when '3' then 	'Approved'
-													END as repayment_status
+													END as repayment_status,
+													repayment_status dataStatus,
+													IFNULL(payments.trans_reference_number,'') trans_reference_number
 													
 													FROM	(
 																SELECT 		*	 
@@ -283,7 +289,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 																GROUP BY 	loan_id
 																HAVING 		repayment_schedule_date = MIN(repayment_schedule_date)
 																
-															) loan_repayment, 
+															) loan_repayment
+															LEFT JOIN	payments
+															ON	loan_repayment.payment_id	=	payments.payment_id,
 															loans
 													WHERE	loans.loan_id = loan_repayment.loan_id ";
 								
@@ -333,5 +341,37 @@ class BorrowerRepayLoansModel extends TranWrapper {
 						"penaltyAmt"=>$penaltyAmt,
 						"penaltyCompShare"=>$penaltyCompShare
 						);
+	}
+	
+	public function approveBorrowerRepayment($repayment_schedule_id) {
+		$loanInstallmentIds	=	$this->getloanInstallmentIds($repayment_schedule_id);
+		$this->newRepayment ($loanInstallmentIds[0]->installment_number,$loanInstallmentIds[0]->loan_id);
+		$dataArray			=	array(
+										"loan_id"				=>	$this->loanId,
+										"borrower_id"			=>	$this->borrowerId,
+										"amount_Paid"			=>	$this->amountPaid,
+										"principal_amount"		=>	$this->principalAmount,
+										"interest_amount"		=>	$this->interestAmount,
+										"penalty_amount"		=>	$this->penaltyAmt,
+										"penalty_companyshare"	=>	$this->penaltyCompShare,
+										"repaymentSchdId"		=>	$this->repaymentSchdId,
+										"repay_remarks"			=>	$this->remarks,
+										"duedate"				=>	$this->schedDate,
+										"actual_date"			=>	$this->repaymentDate,
+										"installment_number"	=>	$this->installmentNumber,
+										"payment_id"			=>	$this->paymentId,
+										"isSaveButton"			=>	"no",
+										"trans_ref"				=>	$this->transreference_no
+									);
+		if($this->transreference_no!="") {
+				$this->saveRepayment($dataArray);
+		}
+	}
+	
+	public function bulkApproveBorrowerRepayment($postArray) {
+		
+		foreach($postArray['repayment_schedule'] as $repayment_schedule_id) {
+			$this->approveBorrowerRepayment($repayment_schedule_id);
+		}
 	}
 }

@@ -150,6 +150,7 @@ Route::group(['prefix' => ''], function() {
 
 	define('INVESTOR_REPAYMENT_STATUS_UNPAID', '1');
 	define('INVESTOR_REPAYMENT_STATUS_PAID', '2');
+	
 	define('INVESTOR_BANK_TRANS_STATUS_UNVERIFIED', '1');
 	define('INVESTOR_BANK_TRANS_STATUS_VERIFIED', '2');
 	
@@ -193,7 +194,13 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::get('admin/borrowersrepaylist', 'AdminBorrowersRepaymentListingController@indexAction');
     Route::match(['get', 'post'],'admin/borrowersrepayview/{type}/{installment_id}/{loan_id}', 
 															'AdminBorrowersRepaymentViewController@indexAction');
-
+															
+	Route::get('admin/approve/borrower/repayment/{repay_schde_id}', 
+													'AdminBorrowersRepaymentListingController@approveRepaymentAction');
+													
+	Route::post('admin/bulkapprove/borrowers/repayment', 
+													'AdminBorrowersRepaymentListingController@bulkApproveRepaymentAction');
+	
     Route::post('admin/ajax/recalculatePenality','AdminBorrowersRepaymentViewController@recalculatePenalityAction');
     Route::get('admin/investordepositlist', 'AdminInvestorsDepositListingController@indexAction');
     //Route::get('admin/investordepositview/{investor_name}', 'AdminInvestorsDepositViewController@indexAction');

@@ -52,10 +52,8 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		$investorId 	= base64_decode($investor_id);
 		$processtype 	= $type;		
 		$paymentId 		= base64_decode($payment_id);
-				
-		$this->adminInvestorsDeposit->processInvestorDropDowns($processtype ,$investorId);
-		$this->adminInvestorsDeposit->processInvestorDeposits($processtype,$investorId,$paymentId);
-		
+		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,
+													($paymentId)==""?0:$paymentId);		
 		/* $submitted		= false;
 		 * if (Request::isMethod('post')) {
 			$postArray	=	Request::all();

@@ -13,7 +13,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				alert(errMessage);
+				showDialog("",errMessage);
 				return false;
 			}
 			$("#processType").val("approve");
@@ -37,7 +37,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				alert(errMessage);
+				showDialog("",errMessage);
 				return false;
 			}
 			$("#processType").val("reject");
@@ -56,7 +56,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				alert(errMessage);
+				showDialog("",errMessage);
 				return false;
 			}
 			$("#processType").val("delete");

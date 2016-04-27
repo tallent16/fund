@@ -498,4 +498,18 @@ class TranWrapper extends MoneyMatchModel {
 		return ($cnt == 0)?false:true;
 	}
 	
+	
+	
+	public function getloanInstallmentIds($repayment_schedule_id) {
+		
+		$repayment_sql			= 	"	SELECT	loan_id,
+												installment_number
+										FROM	borrower_repayment_schedule
+										WHERE	repayment_schedule_id = {$repayment_schedule_id}";
+		
+		
+		$repayment_rs			= 	$this->dbFetchAll($repayment_sql);
+		return $repayment_rs;
+	}
+	
 }

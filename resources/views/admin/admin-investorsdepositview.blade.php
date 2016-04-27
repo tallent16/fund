@@ -70,7 +70,7 @@
 								type="text" 
 								class="deposit_date form-control" 
 								name="deposit_date"									
-								value="{{$adminInvDepViewMod->viewRecordsInfo['trans_date']}}" 
+								value="{{$adminInvDepViewMod->deposit_date}}" 
 								{{$viewclass}} />
 
 						<label for="deposit_date" class="input-group-addon btn">
@@ -93,7 +93,7 @@
 								type="text" 
 								class="deposit_amount form-control text-right " 
 								name="deposit_amount"									
-								value="{{$adminInvDepViewMod->viewRecordsInfo['trans_amount']}}" 
+								value="{{$adminInvDepViewMod->deposit_amount}}" 
 								{{$viewclass}} />						
 				</div>
 							
@@ -112,7 +112,7 @@
 								type="text" 
 								class="trans_ref_no form-control " 
 								name="trans_ref_no"									
-								value="{{$adminInvDepViewMod->viewRecordsInfo['trans_reference_number']}}" 
+								value="{{$adminInvDepViewMod->trans_ref_no}}" 
 								{{$viewclass}}  />						
 				</div>
 			</div> <!-- Row 4 -->
@@ -124,25 +124,25 @@
 					</label>
 				</div>								
 				<div class="col-xs-12 col-sm-7 col-lg-5">
-					<textarea rows="3" class="form-control " {{$viewclass}} >
-						{{$adminInvDepViewMod->viewRecordsInfo['remarks']}}
-					</textarea>	
+					<textarea 	rows="3" 
+								class="form-control " {{$viewclass}} 
+								>{{$adminInvDepViewMod->remarks}}</textarea>	
 				</div>	
 			</div> <!-- Row 5 -->
-			
-			<div class="row">
-				<div class="col-lg-12 space-around">
-					<div class="form-group">	
-						<button class="btn verification-button" {{$viewclass}} >
-							{{ Lang::get('Save')}}
-						</button>
-						<button class="btn verification-button" {{$viewclass}} >
-							{{ Lang::get('Approve')}}
-						</button>
+			@if($adminInvDepViewMod->processbuttontype != "view")
+				<div class="row">
+					<div class="col-lg-12 space-around">
+						<div class="form-group">	
+							<button class="btn verification-button" {{$viewclass}} >
+								{{ Lang::get('Save')}}
+							</button>
+							<button class="btn verification-button" {{$viewclass}} >
+								{{ Lang::get('Approve')}}
+							</button>
+						</div>
 					</div>
-				</div>
-			</div>			
-			
+				</div>			
+			@endif
 		</div>
 		
 	</div>				

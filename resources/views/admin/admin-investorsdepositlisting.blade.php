@@ -27,7 +27,10 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 				<strong>{{ Lang::get('Filter Status')}}</strong><br>								
-					{{ Form::select('filter_status', $adminInvDepListMod->allTransList, $adminInvDepListMod->allTransValue, ["class" => "selectpicker"]) }} 
+					{{ Form::select('filter_status', $adminInvDepListMod->allTransList, 
+													$adminInvDepListMod->filter_status, 
+													["class" => "selectpicker"]) 
+					}} 
 			</div>	
 		</div>
 				
@@ -111,7 +114,7 @@
 							@if (count($adminInvDepListMod->depositListInfo) > 0)			
 								@foreach($adminInvDepListMod->depositListInfo as $depositListRow)
 									@var	$invUrl	=	url('admin/investordepositview/')
-									@var	$invaddUrl	=	$invUrl."/add/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
+									@var	$invaddUrl	=	$invUrl."/add/0/".base64_encode($depositListRow->investor_id)
 									@if($depositListRow->trans_status_name	==	"Unapproved")
 										@var	$inveditUrl	=	$invUrl."/edit/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
 										@var	$invviewUrl	=	$invUrl."/view/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
@@ -130,22 +133,22 @@
 											</label>									
 										</td>
 										<td>
-											<a href="{{$invviewUrl}}">
+											<a href="{{$inveditUrl}}">
 												{{$depositListRow->firstname}}
 											</a>
 										</td>
 										<td>
-											<a href="{{$invviewUrl}}">
+											<a href="{{$inveditUrl}}">
 												{{$depositListRow->trans_date}}
 											</a>
 										</td>
 										<td class="text-right">
-											<a href="{{$invviewUrl}}">
+											<a href="{{$inveditUrl}}">
 												{{number_format($depositListRow->trans_amount,2,'.',',')}}
 											</a>
 										</td>
 										<td>
-											<a href="{{$invviewUrl}}">
+											<a href="{{$inveditUrl}}">
 												{{$depositListRow->trans_status_name}}
 											</a>
 										</td>								
