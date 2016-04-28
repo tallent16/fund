@@ -12,10 +12,14 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 	public  $invListInfo					= 	array();
 	public  $processbuttontype				= 	"";
 	public  $viewRecordsInfo				= 	array();
+	public	$investorId						=	"";
+	public	$trans_id						=	0;
+	public	$payment_id						=	0;
 	public	$deposit_date					=	"";
 	public	$deposit_amount					=	"";
 	public	$trans_ref_no					=	"";
 	public	$remarks						=	"";
+	public	$status							=	"";
 	
 	public function processDropDowns() {
 				
@@ -76,7 +80,9 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 													FROM	codelist_details
 													WHERE	codelist_id = :bankstatus_codeparam4
 													AND		codelist_code = investor_bank_transactions.status
-											) trans_status_name
+											) trans_status_name,
+											 investor_bank_transactions.status,
+											 investor_bank_transactions.trans_id
 									 FROM 	investors,
 											users,
 											investor_bank_transactions 
@@ -166,7 +172,9 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 										ROUND(payments.trans_amount,2) trans_amount,
 										date_format(payments.trans_date,'%d-%m-%Y') trans_date,
 										payments.trans_reference_number,
-										payments.remarks
+										payments.remarks,
+										investor_bank_transactions.trans_id,
+										investor_bank_transactions.status
 									FROM 
 										payments,investor_bank_transactions
 									WHERE 
@@ -183,15 +191,23 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 					$this->deposit_amount	=	$viewRecordRs[0]->trans_amount;
 					$this->trans_ref_no		=	$viewRecordRs[0]->trans_reference_number;
 					$this->remarks			=	$viewRecordRs[0]->remarks;
+					$this->trans_id			=	$viewRecordRs[0]->trans_id;
+					$this->status			=	$viewRecordRs[0]->status;
+					$this->payment_id		=	$paymentId;
 			}
 	}	
 	
 	public function saveInvestorDeposits($postArray) {
 		
-		$tranType		=	$postArray['tranType'];
-		$trans_id		=	$postArray['trans_id'];
-		$paymentId		=	$postArray['payment_id'];
-		
+		$tranType				=	$postArray['tranType'];
+		$trans_id				=	$postArray['trans_id'];
+		$paymentId				=	$postArray['payment_id'];
+		$this->investorId		=	$postArray['investor_id'];
+		$this->deposit_amount	=	$postArray['deposit_amount'];
+		$this->deposit_date		=	$this->getDbDateFormat($postArray['deposit_date']);
+		$this->trans_ref_no		=	$postArray['trans_ref_no'];
+		$this->remarks			=	$postArray['remarks'];
+		$currency				=	'SGD'; // Hardcoded value
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_VERIFIED; 
 			$paymentStatus				=	PAYMENT_STATUS_VERIFIED;
@@ -202,21 +218,21 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		}
 		
 		$depositpaymentInsert_data	=	array(
-										'trans_date' =>$this->depositwithdrawdate,
+										'trans_date' =>$this->deposit_date,
 										'trans_type' => PAYMENT_TRANSCATION_INVESTOR_DEPOSIT,							
-										'trans_amount' => $this->transamount,
+										'trans_amount' => $this->deposit_amount,
 										'currency' => $currency,
-										'trans_reference_number' => $this->transReference,
-										'status' => PAYMENT_STATUS_UNVERIFIED,
+										'trans_reference_number' => $this->trans_ref_no,
+										'status' => $paymentStatus,
 										'remarks' => $this->remarks);
 
 		$depositInsert_data			=	array(								
-										'investor_id' => $this->investid,									
-										'trans_type' => INVESTOR_BANK_TRANSCATION_STATUS_DEPOSIT,
-										'trans_date' => $this->depositwithdrawdate,
-										'trans_amount' => $this->transamount,
+										'investor_id' => $this->investorId,									
+										'trans_type' => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
+										'trans_date' => $this->deposit_date,
+										'trans_amount' => $this->deposit_amount,
 										'trans_currency' => $currency,
-										'status' => $status);	
+										'status' => $invBankTransStatus);	
 				
 		if($tranType	==	"add") {
 			
@@ -225,19 +241,129 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			$this->dbInsert("investor_bank_transactions", $depositInsert_data, 0);
 		}else{
 			
+			if($paymentId	==	0) {
+				$paymentId 			=	$this->dbInsert("payments", $depositpaymentInsert_data, 1);
+			}else{
+				
+				$wherePaymentArry	=	array("payment_id" =>"{$paymentId}");
+				$this->dbUpdate('payments', $depositpaymentInsert_data, $wherePaymentArry);
+			}
+			
 			$depositInsert_data['payment_id']	=	$paymentId;
 			$whereDepositArry					=	array("trans_id" =>"{$trans_id}");
-			if($paymentId	==	0) {
-				$paymentId 						=	$this->dbInsert("payments", $depositpaymentInsert_data, 1);
-			}
-			$depositInsert_data['payment_id']	=	$paymentId;
 			
 			$this->dbUpdate('investor_bank_transactions', $depositInsert_data, $whereDepositArry);
 		}
 		//Update the Investor Available balance amount
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			
+			$available_balance		=	$this->getInvestorAvailableBalanceById($this->investorId);
+			$resetAvailableBalance	=	$available_balance	+	$this->deposit_amount;
+			
+			$whereInvestorArray		=	array("investor_id"	=>	$this->investorId);
+			$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
+			
+			$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
 		}
 	}
 	
+	public function approveDeposit($trans_id) {
+		
+		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
+		$paymentId				=	$investorBankTranInfo[0]->payment_id;
+		$investorId				=	$investorBankTranInfo[0]->investor_id;
+		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
+		
+		// Update the Investor bank Transancation Status Approved
+		$whereDepositArry		=	array("trans_id" =>"{$trans_id}");
+		$depositdataArry		=	array("status"	=>	INVESTOR_BANK_TRANS_STATUS_VERIFIED);
+		$this->dbUpdate('investor_bank_transactions', $depositdataArry, $whereDepositArry);
+		
+		// Update the Investor payments Status Approved
+		$wherePaymentArry		=	array("payment_id" =>"{$paymentId}");
+		$depositPaymentArry		=	array("status"	=>	PAYMENT_STATUS_VERIFIED);
+		$this->dbUpdate('payments', $depositPaymentArry, $wherePaymentArry);
+		
+		// Update the Investor Avaliable balance 
+		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
+		$resetAvailableBalance	=	$available_balance	+	$depositAmt;
+		
+		$whereInvestorArray		=	array("investor_id"	=>	$investorId);
+		$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
+		
+		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
+	}
+	
+	public function unApproveDeposit($trans_id) {
+		
+		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
+		$paymentId				=	$investorBankTranInfo[0]->payment_id;
+		$investorId				=	$investorBankTranInfo[0]->investor_id;
+		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
+		
+		// Update the Investor bank Transancation Status Approved
+		$whereDepositArry		=	array("trans_id" =>"{$trans_id}");
+		$depositdataArry		=	array("status"	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED);
+		$this->dbUpdate('investor_bank_transactions', $depositdataArry, $whereDepositArry);
+		
+		// Update the Investor payments Status Approved
+		$wherePaymentArry		=	array("payment_id" =>"{$paymentId}");
+		$depositPaymentArry		=	array("status"	=>	PAYMENT_STATUS_UNVERIFIED);
+		$this->dbUpdate('payments', $depositPaymentArry, $wherePaymentArry);
+		
+		// Update the Investor Avaliable balance 
+		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
+		$resetAvailableBalance	=	$available_balance	-	$depositAmt;
+		
+		$whereInvestorArray		=	array("investor_id"	=>	$investorId);
+		$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
+		
+		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
+	}
+	
+	public function deleteDeposit($trans_id) {
+		
+		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
+		$paymentId				=	$investorBankTranInfo[0]->payment_id;
+		$investorId				=	$investorBankTranInfo[0]->investor_id;
+		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
+		
+		// Update the Investor Avaliable balance 
+		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
+		$resetAvailableBalance	=	$available_balance	-	$depositAmt;
+		
+		$whereInvestorArray		=	array("investor_id"	=>	$investorId);
+		$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
+		
+		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
+		
+		// Delete the Investor bank Transancation Record By the transaction ID
+		$whereDepositArry		=	array("trans_id" =>"{$trans_id}");
+		$this->dbDelete("investor_bank_transactions",$whereDepositArry);
+		
+		// Delete the Payment Record By the Payment ID
+		$wherePaymentArry		=	array("payment_id" =>"{$paymentId}");
+		$this->dbDelete("payments",$wherePaymentArry);
+	}
+	
+	public function bulkApproveDeposit($postArray) {
+		
+		foreach($postArray['transaction_id'] as $transaction_id) {
+			$this->approveDeposit($transaction_id);
+		}
+	}
+	
+	public function bulkUnApproveDeposit($postArray) {
+		
+		foreach($postArray['transaction_id'] as $transaction_id) {
+			$this->unApproveDeposit($transaction_id);
+		}
+	}
+	
+	public function bulkDeleteDeposit($postArray) {
+		
+		foreach($postArray['transaction_id'] as $transaction_id) {
+			$this->deleteDeposit($transaction_id);
+		}
+	}
 }

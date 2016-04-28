@@ -498,8 +498,6 @@ class TranWrapper extends MoneyMatchModel {
 		return ($cnt == 0)?false:true;
 	}
 	
-	
-	
 	public function getloanInstallmentIds($repayment_schedule_id) {
 		
 		$repayment_sql			= 	"	SELECT	loan_id,
@@ -510,6 +508,30 @@ class TranWrapper extends MoneyMatchModel {
 		
 		$repayment_rs			= 	$this->dbFetchAll($repayment_sql);
 		return $repayment_rs;
+	}
+	
+	public function getInvestorAvailableBalanceById($investor_id) {
+		
+		$investorAvbal_sql			= 	"	SELECT 	IFNULL(ROUND(available_balance,2),0) available_balance
+											FROM 	investors
+											WHERE	investor_id	=	{$investor_id}";
+		
+		
+		$investorAvbal_rs			= 	$this->dbFetchOne($investorAvbal_sql);
+		return $investorAvbal_rs;
+	}
+	
+	public function getInvesorBankTransInfoById($trans_id) {
+		
+		$invBankTran_sql			= 	"	SELECT	investor_id,
+													payment_id,
+													trans_amount
+											FROM	investor_bank_transactions
+											WHERE	trans_id = {$trans_id}";
+		
+		
+		$invBankTran_rs				= 	$this->dbFetchAll($invBankTran_sql);
+		return $invBankTran_rs;
 	}
 	
 }

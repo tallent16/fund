@@ -2,22 +2,9 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	<script>		
-	$(document).ready(function(){ 
-	// date picker
-	$('.fromdate').datetimepicker({
-		autoclose: true, 
-		minView: 2,
-		format: 'dd-mm-yyyy' 
-		}); 
-	$('.todate').datetimepicker({
-	autoclose: true, 
-	minView: 2,
-	format: 'dd-mm-yyyy' 
-	}); 
-	}); 
-	</script>
-	@endsection
+	<script src="{{ url("js/admin-investor-listing.js") }}" type="text/javascript"></script>
+	
+@endsection
 @section('page_heading',Lang::get('Investor Deposit') )
 @section('section')  
 <div class="col-sm-12 space-around">
@@ -64,16 +51,19 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group">	
-						<button class="btn verification-button">
+						<button class="btn verification-button"
+								id="bulk_approve_button">
 							{{ Lang::get('Approve Selected')}}
 						</button>
-						<button class="btn verification-button">
+						<button class="btn verification-button"
+								id="bulk_unapprove_button">
 							{{ Lang::get('UnApprove Selected')}}
 						</button>
 						<button class="btn verification-button">
 							{{ Lang::get('New Deposit')}}
 						</button>
-						<button class="btn verification-button">
+						<button class="btn verification-button"
+								id="bulk_delete_button">
 							{{ Lang::get('Delete Selected')}}
 						</button>
 					</div>
@@ -82,9 +72,17 @@
 			
 			<div class="panel panel-primary panel-container borrower-admin">					
 					
-				<form method="post" id="investor-listing" action="{{url('admin/investordepositview/')}}">
+				<form method="post" id="form-investor-listing" action="{{url('admin/investordepositlist/bulkaction')}}">
 				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="processType" id="processType" value="">				
+				<input 	type="hidden" 
+						name="default_verified_applicable" 
+						id="default_verified_applicable" 
+						value="{{INVESTOR_BANK_TRANS_STATUS_VERIFIED}}">				
+				<input 	type="hidden" 
+						name="default_unverified_applicable" 
+						id="default_unverified_applicable" 
+						value="{{INVESTOR_BANK_TRANS_STATUS_UNVERIFIED}}">				
 				
 				<div class="table-responsive">
 					<table class="table tab-fontsize text-left">
@@ -93,7 +91,7 @@
 								<th class="tab-head text-center">									
 										<label>
 											<input 	type="checkbox" 
-													name="id"
+													id="select_all_list"
 													class="select"											
 													value="">
 										</label>										
@@ -110,7 +108,7 @@
 									{{Lang::get('Actions')}}</th>
 							</tr>
 						</thead>
-						<body>
+						<tbody>
 							@if (count($adminInvDepListMod->depositListInfo) > 0)			
 								@foreach($adminInvDepListMod->depositListInfo as $depositListRow)
 									@var	$invUrl	=	url('admin/investordepositview/')
@@ -127,9 +125,13 @@
 										<td class="text-center">									
 											<label>
 												<input 	type="checkbox" 
-														name="id"
-														class="select"											
-														value="">
+														name="transaction_id[]"
+														class="select_investor_deposit"											
+														data-investor-name="{{$depositListRow->firstname}}"
+														data-depositDate="{{$depositListRow->trans_date}}"
+														data-depositAmount="{{$depositListRow->trans_amount}}"
+														data-status="{{$depositListRow->status}}"
+														value="{{$depositListRow->trans_id}}" />
 											</label>									
 										</td>
 										<td>
@@ -185,7 +187,7 @@
 									</tr>
 								@endforeach
 							@endif	
-						</body>
+						</tbody>
 					</table>					
 				</div>		
 				</form>			

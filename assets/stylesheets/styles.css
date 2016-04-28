@@ -9244,6 +9244,9 @@ nav .block-title{
 	overflow-y: scroll;
     max-height: 300px;
 }
+.loan-info-wrapper .loaninfo-label{
+	padding:11px 8px;
+}
 /*---------------------LoanDetails TAB--------------------------------*/
 .social-share img{
 	border-radius:50px;

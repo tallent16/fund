@@ -202,8 +202,11 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 													'AdminBorrowersRepaymentListingController@bulkApproveRepaymentAction');
 	
     Route::post('admin/ajax/recalculatePenality','AdminBorrowersRepaymentViewController@recalculatePenalityAction');
+    
     Route::get('admin/investordepositlist', 'AdminInvestorsDepositListingController@indexAction');
+    Route::post('admin/investordepositlist/bulkaction', 'AdminInvestorsDepositListingController@InvestorDepositListBulkAction');
     //Route::get('admin/investordepositview/{investor_name}', 'AdminInvestorsDepositViewController@indexAction');
+    
     Route::match(['get', 'post'],'admin/investordepositview/{type}/{payment_id}/{investor_id}', 'AdminInvestorsDepositListingController@viewDepositAction');
     
     Route::get('admin/investorwithdrawallist', 'AdminInvestorsWithdrawalsListingController@indexAction');

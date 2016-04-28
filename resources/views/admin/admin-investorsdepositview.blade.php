@@ -3,19 +3,56 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 	<script>		
-	$(document).ready(function(){ 
-	// date picker
-	$('.deposit_date').datetimepicker({
-		autoclose: true, 
-		minView: 2,
-		format: 'dd-mm-yyyy' 
+		$(document).ready(function(){ 
+			
+			 $.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('#hidden_token').val()
+				}
+			});
+			// date picker
+			$('.deposit_date').datetimepicker({
+				autoclose: true, 
+				minView: 2,
+				format: 'dd-mm-yyyy' 
+			}); 
+			$("#save_button").on("click",function(){
+				$("#isSaveButton").val("yes");
+			});
+			$("#approve_button").on("click",function(){
+				$("#isSaveButton").val("");
+				$("#submitType").val("approve");
+			});
+			$("#unapprove_button").on("click",function(){
+				$("#isSaveButton").val("");
+				$("#submitType").val("unapprove");
+			});
+			$("#save_form_payment").on("submit",function(e){
+				$('span.error').remove();
+				$('.has-error').removeClass("has-error");
+				var $parentTag = $("#trans_ref_parent");
+				$('[disabled]').removeAttr('disabled');
+				if($("#isSaveButton").val()	!=	"yes") {
+					if($("#trans_ref_no").val()	==	"") {
+						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+						e.preventDefault();
+					}
+				}
+			});
 		}); 
-	}); 
 	</script>
 @endsection
 @section('page_heading',Lang::get('Investor Deposit') )
 @section('section')  
 
+@if($submitted)
+	<div class="col-sm-12 space-around">
+		<div class="annoucement-msg-container">
+			<div class="alert alert-success">
+				{{Lang::get('Investor Deposit Updated Successfully updated')}}
+		</div>				
+	</div>
+@endif
 <div class="col-sm-12 space-around">
 	<div class="panel-primary panel-container" id="investor-deposit">
 		@var $editclass = ""
@@ -24,11 +61,13 @@
 		@if($adminInvDepViewMod->processbuttontype == "edit")
 					@var $editclass = "disabled"
 		@elseif($adminInvDepViewMod->processbuttontype == "add")		
-					@var $addclass  = "disabled"
+			@var $addclass  = "disabled"
 		@else
-					@var $viewclass = "disabled"
+			@var $viewclass = "disabled"
 		@endif
-		
+		@if($adminInvDepViewMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
+			@var $viewclass = "disabled"
+		@endif
 		<div class="panel-heading panel-headsection"><!--panel head-->
 			<div class="row">
 				<div class="col-sm-12">
@@ -39,6 +78,28 @@
 
 		<div class="panel-body applyloan table-border-custom input-space">	
 			
+			<form method="post" id="save_form_payment">
+				<input  type="hidden" 
+						name="_token"
+						id="hidden_token"
+						value="{{ csrf_token() }}" />
+				<input  type="hidden" 
+						name="tranType"
+						value="{{$processtype}}" />	
+				<input  type="hidden" 
+						name="trans_id" 
+						value="{{$adminInvDepViewMod->trans_id}}"/>	
+				<input  type="hidden" 
+						name="payment_id" 	
+						value="{{$adminInvDepViewMod->payment_id}}"	/>	
+				<input  type="hidden" 
+						name="isSaveButton" 
+						id="isSaveButton" 
+						value=""/>
+				<input  type="hidden" 
+						name="submitType" 
+						id="submitType" 
+						value=""/>
 			<div class="row"><!-- Row 1 -->					
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
@@ -47,9 +108,9 @@
 				</div>								
 				<div class="col-xs-12 col-sm-7 col-lg-3">
 					@if($editclass || $viewclass)
-							{{ Form::select('active_investors', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
+							{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
 					@else
-							{{ Form::select('active_investors', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
+							{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
 			
 					@endif
 			
@@ -107,7 +168,7 @@
 						{{ Lang::get('Transcation Reference No') }}
 					</label>
 				</div>	
-				<div class="col-xs-12 col-sm-7 col-lg-5">					
+				<div class="col-xs-12 col-sm-7 col-lg-5"  id="trans_ref_parent">					
 						<input 	id="trans_ref_no" 
 								type="text" 
 								class="trans_ref_no form-control " 
@@ -126,19 +187,33 @@
 				<div class="col-xs-12 col-sm-7 col-lg-5">
 					<textarea 	rows="3" 
 								class="form-control " {{$viewclass}} 
+								name="remarks"
 								>{{$adminInvDepViewMod->remarks}}</textarea>	
 				</div>	
 			</div> <!-- Row 5 -->
 			@if($adminInvDepViewMod->processbuttontype != "view")
 				<div class="row">
 					<div class="col-lg-12 space-around">
-						<div class="form-group">	
-							<button class="btn verification-button" {{$viewclass}} >
-								{{ Lang::get('Save')}}
-							</button>
-							<button class="btn verification-button" {{$viewclass}} >
-								{{ Lang::get('Approve')}}
-							</button>
+						<div class="form-group">
+							@if($adminInvDepViewMod->status	==	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED)
+								<button class="btn verification-button"
+										id="save_button"
+										{{$viewclass}} >
+									{{ Lang::get('Save')}}
+								</button>
+								<button class="btn verification-button" 
+										id="approve_button"
+										{{$viewclass}} >
+									{{ Lang::get('Approve')}}
+								</button>
+							@endif
+							@if($adminInvDepViewMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
+								<button class="btn verification-button" 
+										id="unapprove_button"
+										>
+									{{ Lang::get('UnApprove')}}
+								</button>
+							@endif
 						</div>
 					</div>
 				</div>			

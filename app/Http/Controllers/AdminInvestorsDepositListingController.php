@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 use	\App\models\AdminInvestorsDepositListingModel;
+use	Request;
 class AdminInvestorsDepositListingController extends MoneyMatchController {
 	
 	public $adminInvestorDeposit;
@@ -47,27 +48,70 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 				->with($withArry); 
 	
 	}
+	
 	public function viewDepositAction($type,$payment_id,$investor_id){
 		
 		$investorId 	= base64_decode($investor_id);
 		$processtype 	= $type;		
 		$paymentId 		= base64_decode($payment_id);
-		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,
-													($paymentId)==""?0:$paymentId);		
-		/* $submitted		= false;
-		 * if (Request::isMethod('post')) {
+		
+		$submitted		=	false;
+		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
-		//	$this->adminInvestorsDeposit->processInvestorDropDowns($investorId);
-			$submitted	=	true;
-		}*/
-		
-		
+			if($postArray['submitType']	==	"approve"){
+				$this->adminInvestorsDeposit->saveInvestorDeposits($postArray);
+			}else{
+				$this->adminInvestorsDeposit->unApproveDeposit($postArray['trans_id']);
+			}
+			$submitted		=	true;
+		}
+		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,$paymentId);
+	
 		$withArry	=	array(	"adminInvDepViewMod" => $this->adminInvestorsDeposit, 								
 								"classname"=>"fa fa-cc fa-fw",
+								"processtype"=>$processtype,
+								"submitted"=>$submitted
+								
 								); 
 								
 		return view('admin.admin-investorsdepositview')
 				->with($withArry); 
 		
+	}
+	
+	public function InvestorDepositListBulkAction(){
+		
+		$processtype 	=	Request::get('processType');
+		switch($processtype) {
+			case	'approve':
+				$this->bulkApproveDepositAction();
+				break;
+			case	'unapprove':
+				$this->bulkUnApproveDepositAction();
+				break;
+			case	'delete':
+				$this->bulkDeleteDepositAction();
+				break;
+		}		
+		return redirect()->to('admin/investordepositlist');
+	}
+	
+	public function bulkApproveDepositAction(){		
+		
+		$postArray	=	Request::all();
+		$this->adminInvestorsDeposit->bulkApproveDeposit($postArray);
+	}
+		
+	
+	public function bulkUnApproveDepositAction(){		
+		
+		$postArray	=	Request::all();
+		$this->adminInvestorsDeposit->bulkUnApproveDeposit($postArray);
+	}
+		
+	public function bulkDeleteDepositAction(){		
+		
+		$postArray	=	Request::all();
+		$this->adminInvestorsDeposit->bulkApproveBorrowerRepayment($postArray);
 	}
 }

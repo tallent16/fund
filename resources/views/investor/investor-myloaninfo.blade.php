@@ -1,6 +1,13 @@
 @extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>
+		$(document).ready(function(){   
+			var newHeight = $(".loan-list-table tr:nth-child(2) td").innerHeight();
+			$(".myloan-table-left-label tr:nth-child(2) td").css("height", newHeight+"px"); 
+
+		});
+	</script>
 @endsection
 @section('page_heading',Lang::get('My Loans') )
 @section('section')    
@@ -47,7 +54,7 @@
 									<a class="btn btn-lg loan-detail-button" style="visibility:hidden;">Hidden Field														
 									</a>								
 									<div class="table-responsive"><!---table start-->
-										<table class="table text-left">		
+										<table class="table text-left myloan-table-left-label">		
 											<tbody>																								
 												<tr>
 													<td>{{ Lang::get('Loan Reference')}}</td>														
@@ -71,11 +78,16 @@
 													<td>{{ Lang::get('Amount Accepted')}}</td>												
 												</tr>
 												<tr>
-													<td>{{ Lang::get('Interest %bid')}}</td>												
+													<td>{{ Lang::get('Interest % bid')}}</td>												
 												</tr>
 												<tr>
 													<td>{{ Lang::get('Status')}}</td>												
-												</tr>										
+												</tr>	
+												<tr>
+													<td>
+														
+													</td>
+												</tr>									
 											</tbody>
 										</table>	
 									</div>							
@@ -95,7 +107,7 @@
 												<table class="table applyloan loan-list-table">		
 													<tbody>												
 														<tr>
-															<td class="tab-head">{{$loanRow->loan_reference_number}}</td>																										
+															<td>{{$loanRow->loan_reference_number}}</td>																										
 														</tr>
 														<tr>
 															<td>{{$loanRow->borrower_name}}</td>														

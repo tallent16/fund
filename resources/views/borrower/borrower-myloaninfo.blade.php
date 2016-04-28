@@ -5,6 +5,44 @@
 		var baseUrl	=	"{{url('')}}"
 	</script>
 	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
+	<script>
+		$(document).ready(function(){   			
+			//$(".location table tbody tr").each(function() {
+			//	var newHeight = $(".loan-list-table tr:nth-child(2) td").innerHeight();
+			//	$(".myloan-table-left-label tr:nth-child(2) td").css("height", newHeight+"px"); 
+			//});
+			/*	$i=0;
+				$(".loaninfo-table-label tr:eq("+$i+")").each(function(){
+					
+					alert($(this).find('td:eq(0)').height());
+					var newHeight = $(this).find('td:eq(0)').innerHeight();	
+					
+					$(".loan-list-table tr:eq("+$i+")").each(function(){
+						alert("Inside second table"+$i);
+						$(this).find('td:eq(0)').css("height", newHeight+"px"); 
+						alert($(this).find('td:eq(0)').height());
+					});	
+					$i++;			
+				});*/
+		/*	$(".loaninfo-table-label").find('tr').each(function (i, el) {
+				var $tds = $(this).find('td'),
+							height = $tds.eq(0).innerHeight();
+				alert(height);
+				$(".loan-list-table").find('tr').each(function (i, el) {
+					$(this).find('td').eq(0).css("height", height+"px");
+					
+				});
+				
+			});*/
+		/*	$(".loaninfo-table-label tr").each(function(i) {
+				$(".loan-list-table tr").each(function (i, el) {
+					$(this).eq(i).innerHeight($(this).height());
+				});
+			});
+				*/
+				
+		});
+	</script>
 @endsection
 @section('page_heading',Lang::get('borrower-loaninfo.page_heading') )
 @section('section')    
@@ -24,11 +62,11 @@
 						@if(count($borrowerAllList) > 0)
 						<div class="row"> 
 							<!----col--2--->
-							<div class="col-sm-12 col-lg-2">
+							<div class="col-sm-6 col-lg-2">
 									<a class="btn btn-lg loan-detail-button" style="visibility:hidden;">Hidden Field														
 									</a>											
 								<div class="table-responsive"><!---table start-->
-									<table class="table text-left">		
+									<table class="table text-left loaninfo-table-label">		
 										<tbody>																								
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.loan_refer') }}</td>														
@@ -49,16 +87,16 @@
 												<td>{{ Lang::get('borrower-loaninfo.target_interest') }} %</td>												
 											</tr>
 											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.effective_interest') }} %</td>												
+												<td class="loaninfo-label">{{ Lang::get('borrower-loaninfo.effective_interest') }} %</td>												
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.amount_applied') }}</td>												
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.amount_realized') }}</td>												
-											</tr>
-											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.repayment_tilldate') }}</td>												
+											</tr> 
+											<tr> 
+												<td class="loaninfo-label">{{ Lang::get('borrower-loaninfo.repayment_tilldate') }}</td>												
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.principal_outstanding') }}</td>												
@@ -68,7 +106,7 @@
 								</div>							
 							</div> <!----col--2--->
 							<!---col--10-->
-							<div class="col-sm-12 col-lg-10 loan-details">
+							<div class="col-sm-6 col-lg-10 loan-details">
 									@foreach($borrowerAllList as $loanRow)
 									
 									<div class="col-sm-12 col-lg-3 text-center">		
@@ -91,7 +129,7 @@
 											<table class="table applyloan loan-list-table">		
 												<tbody>												
 													<tr>
-														<td class="tab-head">
+														<td>
 															{{$loanRow->loan_reference_number}}
 														</td>						
 													</tr>
