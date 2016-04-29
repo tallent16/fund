@@ -19,7 +19,8 @@ class AdminDisburseLoanController extends MoneyMatchController {
 		
 		$this->bidsModel->getDisburseDetails($loan_id);
 		
-		return view('admin.admin-disburseloan')->with(["bidsModel" => $this->bidsModel]);
+		return view('admin.admin-disburseloan')->with(array("bidsModel" => $this->bidsModel,
+													"classname"=>"fa fa-thumbs-up fa-fw"));	
 		
 	}
 	

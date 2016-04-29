@@ -14,7 +14,7 @@
 				<li>
 					<a href="{{ url ('admin/loanlisting') }}">{{ Lang::get('Loan Listing') }}</a>
 				</li> 
-				<li>
+			<!--	<li>
 					<a href="{{ url ('admin/loanapproval') }}">{{ Lang::get('Loan Approval') }}</a>
 				</li> 
 				<li>
@@ -22,7 +22,7 @@
 				</li>
 				<li>
 					<a href="{{ url ('admin/disburseloan') }}">{{ Lang::get('Loan Disbursal') }}</a>
-				</li>
+				</li>-->
 			</ul>
 	</li>
 	<li>
@@ -30,22 +30,13 @@
 			<ul class="nav nav-second-level">
 				<li>
 					<a href="{{ url ('admin/borrowersrepaylist') }}">{{ Lang::get('Repayment List') }}</a>
-				</li> 
-				<li>
-					<a href="{{ url ('admin/borrowersrepayview') }}">{{ Lang::get('Repayment View') }}</a>
-				</li> 
+				</li> 				
 				<li>
 					<a href="{{ url ('admin/investordepositlist') }}">{{ Lang::get('Investor Deposit List') }}</a>
-				</li> 
-				<li>
-					<a href="{{ url ('admin/investordepositview') }}">{{ Lang::get('Investor Deposit View') }}</a>
-				</li> 
+				</li> 				
 				<li>
 					<a href="{{ url ('admin/investorwithdrawallist') }}">{{ Lang::get('Investor Withdrawal List') }}</a>
-				</li> 
-				<li>
-					<a href="{{ url ('admin/investorwithdrawalview') }}">{{ Lang::get('Investor Withdrawal View') }}</a>
-				</li> 
+				</li> 				
 			</ul>	
 	</li>
 	<li>

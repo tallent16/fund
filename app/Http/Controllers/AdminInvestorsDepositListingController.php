@@ -52,20 +52,27 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 	public function viewDepositAction($type,$payment_id,$investor_id){
 		
 		$investorId 	= base64_decode($investor_id);
+		$investorId 	= ($investorId=="")?0:$investorId;
+		
 		$processtype 	= $type;		
+		
 		$paymentId 		= base64_decode($payment_id);
+		$paymentId 		= ($paymentId=="")?0:$paymentId;
 		
 		$submitted		=	false;
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
-			if($postArray['submitType']	==	"approve"){
+			if($postArray['submitType']	==	"approve" || $postArray['submitType']	==	"save"){
 				$this->adminInvestorsDeposit->saveInvestorDeposits($postArray);
 			}else{
 				$this->adminInvestorsDeposit->unApproveDeposit($postArray['trans_id']);
 			}
 			$submitted		=	true;
+			if($processtype	==	"add") {
+				return redirect()->to('admin/investordepositlist');
+			}
 		}
-		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,$paymentId);
+		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,($paymentId=="")?0:$paymentId);
 	
 		$withArry	=	array(	"adminInvDepViewMod" => $this->adminInvestorsDeposit, 								
 								"classname"=>"fa fa-cc fa-fw",
@@ -112,6 +119,6 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 	public function bulkDeleteDepositAction(){		
 		
 		$postArray	=	Request::all();
-		$this->adminInvestorsDeposit->bulkApproveBorrowerRepayment($postArray);
+		$this->adminInvestorsDeposit->bulkDeleteDeposit($postArray);
 	}
 }

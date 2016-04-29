@@ -13,7 +13,7 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Filter Transcations') }}</strong><br>							
-					{{ Form::select('filter_transcations', $adminLoanListing->allTransList, $adminLoanListing->allTransValue, ["class" => "selectpicker"]) }} 
+					{{ Form::select('filter_transcations', $adminLoanListing->allTransList, $adminLoanListing->filter_code, ["class" => "selectpicker"]) }} 
 			</div>
 				
 		

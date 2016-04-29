@@ -16,7 +16,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 	public	$trans_id						=	0;
 	public	$payment_id						=	0;
 	public	$deposit_date					=	"";
-	public	$deposit_amount					=	"";
+	public	$deposit_amount					=	"0.00";
 	public	$trans_ref_no					=	"";
 	public	$remarks						=	"";
 	public	$status							=	"";
@@ -168,6 +168,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 	
 	public function viewEditInvestorDeposits($processtype,$investorId,$paymentId){
 			
+			$this->deposit_date	=	date("d-m-Y");
 			$viewRecordSql		= "SELECT 
 										ROUND(payments.trans_amount,2) trans_amount,
 										date_format(payments.trans_date,'%d-%m-%Y') trans_date,
@@ -203,11 +204,12 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$trans_id				=	$postArray['trans_id'];
 		$paymentId				=	$postArray['payment_id'];
 		$this->investorId		=	$postArray['investor_id'];
-		$this->deposit_amount	=	$postArray['deposit_amount'];
+		$this->deposit_amount	=	$this->makeFloat($postArray['deposit_amount']);
 		$this->deposit_date		=	$this->getDbDateFormat($postArray['deposit_date']);
 		$this->trans_ref_no		=	$postArray['trans_ref_no'];
 		$this->remarks			=	$postArray['remarks'];
 		$currency				=	'SGD'; // Hardcoded value
+		
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_VERIFIED; 
 			$paymentStatus				=	PAYMENT_STATUS_VERIFIED;

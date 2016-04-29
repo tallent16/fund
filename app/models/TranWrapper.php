@@ -525,7 +525,9 @@ class TranWrapper extends MoneyMatchModel {
 		
 		$invBankTran_sql			= 	"	SELECT	investor_id,
 													payment_id,
-													trans_amount
+													trans_amount,
+													entry_date,
+													trans_date
 											FROM	investor_bank_transactions
 											WHERE	trans_id = {$trans_id}";
 		

@@ -60,7 +60,8 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId);
 		return view('admin.admin-loanapprovalmode')
 					->with(array("adminLoanApprMod"=>$this->borrowerApplyLoanModel,
-									"submitted"=>$submitted 
+									"submitted"=>$submitted,
+									"classname"=>"fa fa-check-circle fa-fw"
 								)
 						);
 				

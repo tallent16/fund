@@ -198,37 +198,28 @@
 	</div><!----panel-container--->
 </div>
 </form>
-
-<div id="payschd_popup" title="Repayment Schedule" style="display:none" >
-	
-
+<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
+ @section ('popup-box_panel_title',Lang::get('Repayment Schedule'))
+	@section ('popup-box_panel_body')
+		
+	@endsection
+	@include('widgets.modal_box.panel', array(	'id'=>'payschd_popup',
+												'aria_labelledby'=>'payschd_popup',
+												'as'=>'popup-box',
+												'class'=>'',
+											))
+<!--<div id="payschd_popup" title="Repayment Schedule" style="display:none" >-->	
 </div>
 @endsection  
 
 @section('bottomscripts')
-<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	 
+<script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>	 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 <script src="{{ url('js/moment.js') }}" type="text/javascript"></script>	
-	
+<script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>		
 
 <script>		
 var baseUrl	=	"{{url('')}}"
-
-$(document).ready(function(){ 
-	// date picker
-	$('.disbursement_date').datetimepicker({
-		autoclose: true, 
-		minView: 2,
-		format: 'dd-mm-yyyy' 
-	}); 
-	
-   $.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('#hidden_token').val()
-		}
-	});
-
-}); 
 
 $("form").submit(function(event) {
 	system_date = {{$bidsModel->system_date}};
@@ -245,48 +236,6 @@ $("form").submit(function(event) {
 	})
 	
 })
-
-$("#get_repay_schd").on("click", function() {
-		
-	 $.ajax({
-		type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-		url         : baseUrl+'/ajax/getloanrepayschd', // the url where we want to POST
-		data        : {
-							loan_id:$('#loan_id').val(),
-							disburse_date:$('#disbursement_date').val()
-						},
-		dataType    : 'json'
-	}) // using the done promise callback
-	.done(function(data) {
-		var repaySchdTable	= 	"	<table> " +
-								"		<tr>" +
-								"			<th>Installment Number</th>" +
-								"			<th>Schedule Payment Date</th>" +
-								"			<th>Principal Amount</th>" +
-								"			<th>Interest Amount</th>" +
-								"			<th>Total Amount</th>" +
-								"		</tr>";
-										
-		for (arrIndex = 0; arrIndex < data.length; arrIndex++) {
-			repaySchdTable +=	"		<tr>"+
-								"			<td>"+(arrIndex + 1)+"</td> " +
-								"			<td>"+data[arrIndex]["payment_scheduled_date"]+"</td> " +
-								"			<td>"+data[arrIndex]["principal_amount"]+"</td> " +
-								"			<td>"+data[arrIndex]["interest_amount"]+"</td> " +
-								"			<td>"+data[arrIndex]["payment_schedule_amount"]+"</td> " +
-								"		</tr> "
-								
-			
-		}
-		
-		$("#payschd_popup").html(repaySchdTable);
-		$("#payschd_popup").dialog();
-	});
-	
-	
-})
-
 </script>
 @endsection
-
 @stop

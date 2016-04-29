@@ -15,9 +15,11 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 	public	$investorId						=	"";
 	public	$request_date					=	"";
 	public	$settlement_date				=	"";
-	public	$deposit_amount					=	"";
+	public	$withdrawal_amount				=	0;
 	public	$trans_ref_no					=	"";
 	public	$remarks						=	"";
+	public	$avail_bal						=	0;
+	public	$status							=	"";
 	
 	public function processDropDowns() {
 				
@@ -83,7 +85,12 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 											) trans_status_name,
 											 investor_bank_transactions.status,
 											 investor_bank_transactions.trans_id,
-											 investor_bank_transactions.trans_type
+											 investor_bank_transactions.trans_type,
+											ROUND(( 	SELECT	available_balance
+												FROM	investors
+												WHERE	investor_id = investor_bank_transactions.investor_id 
+											),2) avail_bal
+											 
 									FROM 	investors,
 											users,
 											investor_bank_transactions 
@@ -168,11 +175,20 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 	
 	public function viewEditInvestorWithDraws($processtype,$investorId,$paymentId){
 			
+			$this->settlement_date		=	date("d-m-Y");
+			$this->request_date			=	date("d-m-Y");
 			$viewRecordSql		= "SELECT 
-										ROUND(payments.trans_amount,2) trans_amount,
-										date_format(payments.trans_date,'%d-%m-%Y') trans_date,
+										ROUND(payments.trans_amount,2) withdrawal_amount,
+										date_format(payments.trans_date,'%d-%m-%Y') settlement_date,
 										payments.trans_reference_number,
-										payments.remarks
+										payments.remarks,
+										investor_bank_transactions.trans_id,
+										investor_bank_transactions.status,
+										date_format(investor_bank_transactions.entry_date,'%d-%m-%Y') entry_date,
+										( 	SELECT	available_balance
+											FROM	investors
+											WHERE	investor_id = {$investorId}
+										) avail_bal
 									FROM 
 										payments,investor_bank_transactions
 									WHERE 
@@ -185,11 +201,15 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 			$viewRecordRs		= 	$this->dbFetchWithParam($viewRecordSql,$paramArray);
 			if (count($viewRecordRs) > 0) {
 			
-					$this->settlement_date	=	$viewRecordRs[0]->trans_date;
-					$this->deposit_date		=	$viewRecordRs[0]->trans_date;
-					$this->deposit_amount	=	$viewRecordRs[0]->trans_amount;
-					$this->trans_ref_no		=	$viewRecordRs[0]->trans_reference_number;
-					$this->remarks			=	$viewRecordRs[0]->remarks;
+					$this->settlement_date		=	$viewRecordRs[0]->settlement_date;
+					$this->request_date			=	$viewRecordRs[0]->entry_date;
+					$this->withdrawal_amount	=	$viewRecordRs[0]->withdrawal_amount;
+					$this->trans_ref_no			=	$viewRecordRs[0]->trans_reference_number;
+					$this->remarks				=	$viewRecordRs[0]->remarks;
+					$this->avail_bal			=	$viewRecordRs[0]->avail_bal;
+					$this->status				=	$viewRecordRs[0]->status;
+					$this->payment_id			=	$paymentId;
+					$this->trans_id				=	$viewRecordRs[0]->trans_id;
 			}
 	}	
 	
@@ -199,12 +219,24 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$trans_id					=	$postArray['trans_id'];
 		$paymentId					=	$postArray['payment_id'];
 		$this->investorId			=	$postArray['investor_id'];
-		$this->withdrawal_amount	=	$postArray['withdrawal_amount'];
-		$this->request_date			=	$postArray['request_date'];
-		$this->settlement_date		=	$postArray['settlement_date'];
+		$this->withdrawal_amount	=	$this->makeFloat($postArray['withdrawal_amount']);
+		$this->request_date			=	$this->getDbDateFormat($postArray['request_date']);
+		$this->settlement_date		=	$this->getDbDateFormat($postArray['settlement_date']);
 		$this->trans_ref_no			=	$postArray['trans_ref_no'];
 		$this->remarks				=	$postArray['remarks'];
+		$currency					=	'SGD'; // Hardcoded value
 		
+		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
+			$available_balance		=	$this->getInvestorAvailableBalanceById($this->investorId);
+			if($this->withdrawal_amount	>	$available_balance){
+				// Cannot Allow the process because withdrawal amount exceed the available amount
+				return	false;	
+			}
+			if(strtotime($this->request_date)	>	strtotime($this->settlement_date)){
+				// Cannot Allow the process because request_date should not be greater than settlement_date
+				return	false;	
+			}
+		}
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_VERIFIED; 
 			$paymentStatus				=	PAYMENT_STATUS_VERIFIED;
@@ -215,9 +247,9 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		}
 		
 		$withdrawpaymentInsert_data	=	array(
-											'entry_date' 				=>	$this->request_date,
+										
 											'trans_date' 				=>	$this->settlement_date,
-											'trans_type' 				=>	PAYMENT_TRANSCATION_INVESTOR_DEPOSIT,
+											'trans_type' 				=>	PAYMENT_TRANSCATION_INVESTOR_WITHDRAWAL,
 											'trans_amount' 				=> 	$this->withdrawal_amount,
 											'currency' 					=> 	$currency,
 											'trans_reference_number' 	=> 	$this->trans_ref_no,
@@ -256,17 +288,56 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		//Update the Investor Available balance amount
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			
-			$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
+			$available_balance		=	$this->getInvestorAvailableBalanceById($this->investorId);
 			$resetAvailableBalance	=	$available_balance	-	$this->withdrawal_amount;
 			
-			$whereInvestorArray		=	array("investor_id"	=>	$investorId);
-			$dataInvestorArray		=	array("available_balance"	=>	$available_balance);
+			$whereInvestorArray		=	array("investor_id"	=>	$this->investorId);
+			$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
 			
 			$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
 		}
 	}
 	
 	public function approveWithDraw($trans_id) {
+		
+		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
+		$paymentId				=	$investorBankTranInfo[0]->payment_id;
+		$investorId				=	$investorBankTranInfo[0]->investor_id;
+		$withdrawAmt			=	$investorBankTranInfo[0]->trans_amount;
+		$request_date			=	$investorBankTranInfo[0]->entry_date;
+		$settlement_date		=	$investorBankTranInfo[0]->trans_date;
+		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
+		
+		if($withdrawAmt	>	$available_balance){
+			// Cannot Allow the process because withdrawal amount exceed the available amount
+			return	false;	
+		}
+		if(strtotime($request_date)	>	strtotime($settlement_date)){
+			// Cannot Allow the process because request_date should not be greater than settlement_date
+			return	false;	
+		}
+		
+		// Update the Investor bank Transancation Status Approved
+		$withdrawWhereArry		=	array("trans_id" =>"{$trans_id}");
+		$withdrawDataArry		=	array("status"	=>	INVESTOR_BANK_TRANS_STATUS_VERIFIED);
+		$this->dbUpdate('investor_bank_transactions', $withdrawDataArry, $withdrawWhereArry);
+		
+		// Update the Investor payments Status Approved
+		$paymentWhereArry		=	array("payment_id" =>"{$paymentId}");
+		$paymentDataArry		=	array("status"	=>	PAYMENT_STATUS_VERIFIED);
+		$this->dbUpdate('payments', $paymentDataArry, $paymentWhereArry);
+		
+		// Update the Investor Avaliable balance 
+	
+		$resetAvailableBalance	=	$available_balance	-	$withdrawAmt;
+		
+		$investorWhereArray		=	array("investor_id"	=>	$investorId);
+		$investorDataArray			=	array("available_balance"	=>	$resetAvailableBalance);
+		
+		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
+	}
+	
+	public function unApproveWithDraw($trans_id) {
 		
 		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
@@ -285,37 +356,10 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		
 		// Update the Investor Avaliable balance 
 		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
-		$resetAvailableBalance	=	$available_balance	-	$withdrawAmt;
+		$resetAvailableBalance	=	$available_balance	+	$withdrawAmt;
 		
 		$investorWhereArray		=	array("investor_id"	=>	$investorId);
-		$investorDataArray			=	array("available_balance"	=>	$available_balance);
-		
-		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
-	}
-	
-	public function unApproveWithDraw($trans_id) {
-		
-		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
-		$paymentId				=	$investorBankTranInfo[0]->payment_id;
-		$investorId				=	$investorBankTranInfo[0]->investor_id;
-		$withdrawAmt			=	$investorBankTranInfo[0]->trans_amount;
-		
-		// Update the Investor bank Transancation Status Approved
-		$withdrawWhereArry		=	array("trans_id" =>"{$trans_id}");
-		$withdrawDataArry		=	array("status"	=>	INVESTOR_BANK_TRANS_STATUS_VERIFIED);
-		$this->dbUpdate('investor_bank_transactions', $withdrawDataArry, $withdrawWhereArry);
-		
-		// Update the Investor payments Status Approved
-		$paymentWhereArry		=	array("payment_id" =>"{$paymentId}");
-		$paymentDataArry		=	array("status"	=>	PAYMENT_STATUS_VERIFIED);
-		$this->dbUpdate('payments', $paymentDataArry, $paymentWhereArry);
-		
-		// Update the Investor Avaliable balance 
-		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
-		$resetAvailableBalance	=	$available_balance	+	$depositAmt;
-		
-		$investorWhereArray		=	array("investor_id"	=>	$investorId);
-		$investorDataArray		=	array("available_balance"	=>	$available_balance);
+		$investorDataArray		=	array("available_balance"	=>	$resetAvailableBalance);
 		
 		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
 	}
@@ -329,10 +373,10 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		
 		// Update the Investor Avaliable balance 
 		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
-		$resetAvailableBalance	=	$available_balance	-	$depositAmt;
+		$resetAvailableBalance	=	$available_balance	+	$withdrawAmt;
 		
 		$investorWhereArray		=	array("investor_id"	=>	$investorId);
-		$investorDataArray		=	array("available_balance"	=>	$available_balance);
+		$investorDataArray		=	array("available_balance"	=>	$resetAvailableBalance);
 		
 		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
 		
@@ -352,10 +396,10 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		}
 	}
 	
-	public function unApproveWithDraw($postArray) {
+	public function bulkunApproveWithDraw($postArray) {
 		
 		foreach($postArray['transaction_id'] as $transaction_id) {
-			$this->unApproveDeposit($transaction_id);
+			$this->unApproveWithDraw($transaction_id);
 		}
 	}
 	

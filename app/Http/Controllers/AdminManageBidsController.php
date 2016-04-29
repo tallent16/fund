@@ -17,7 +17,8 @@ class AdminManageBidsController extends MoneyMatchController {
 	public function getLoanDetailsAction($loan_id) {
 		$this->bidsModel->getLoanBids($loan_id);
 		
-		return view('admin.admin-managebids')->with(["bidsModel" => $this->bidsModel]);
+		return view('admin.admin-managebids')->with(array("bidsModel" => $this->bidsModel,
+														"classname"=>"fa fa-gavel fa-fw"));
 		
 	}
 		

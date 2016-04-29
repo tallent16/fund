@@ -4,8 +4,7 @@
 	<script>
 		$(document).ready(function(){   
 			var newHeight = $(".loan-list-table tr:nth-child(2) td").innerHeight();
-			$(".myloan-table-left-label tr:nth-child(2) td").css("height", newHeight+"px"); 
-
+			$(".myloan-table-left-label tr:nth-child(2) td").css("height", newHeight+"px");  //Borrower's Name label height updated based on right side data
 		});
 	</script>
 @endsection

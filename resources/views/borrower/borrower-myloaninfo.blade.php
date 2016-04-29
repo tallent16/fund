@@ -6,40 +6,22 @@
 	</script>
 	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
 	<script>
-		$(document).ready(function(){   			
-			//$(".location table tbody tr").each(function() {
-			//	var newHeight = $(".loan-list-table tr:nth-child(2) td").innerHeight();
-			//	$(".myloan-table-left-label tr:nth-child(2) td").css("height", newHeight+"px"); 
-			//});
-			/*	$i=0;
-				$(".loaninfo-table-label tr:eq("+$i+")").each(function(){
-					
-					alert($(this).find('td:eq(0)').height());
-					var newHeight = $(this).find('td:eq(0)').innerHeight();	
-					
-					$(".loan-list-table tr:eq("+$i+")").each(function(){
-						alert("Inside second table"+$i);
-						$(this).find('td:eq(0)').css("height", newHeight+"px"); 
-						alert($(this).find('td:eq(0)').height());
-					});	
-					$i++;			
-				});*/
-		/*	$(".loaninfo-table-label").find('tr').each(function (i, el) {
-				var $tds = $(this).find('td'),
-							height = $tds.eq(0).innerHeight();
-				alert(height);
-				$(".loan-list-table").find('tr').each(function (i, el) {
-					$(this).find('td').eq(0).css("height", height+"px");
-					
-				});
+		$(document).ready(function(){   	
+		
+			var newHeight1 = $(".loan-list-table tr:nth-child(7)").innerHeight();
+			$(".loaninfo-table-label tr:nth-child(7)").css("height", newHeight1+"px"); 	 //Effective interest label row height based on right side data
+			
+			var newHeight2 = $(".loaninfo-table-label tr:nth-child(7)").innerHeight(); 
+			$(".loan-list-table tr:nth-child(7)").css("height", newHeight2+"px"); 	     //Effective interest data row height based on left side label when screen size 1280px
+			
+			var newHeight3 = $(".loan-list-table tr:nth-child(10)").innerHeight();
+			$(".loaninfo-table-label tr:nth-child(10)").css("height", newHeight3+"px");	 //Repayments till date	row height based on right side data
 				
-			});*/
-		/*	$(".loaninfo-table-label tr").each(function(i) {
-				$(".loan-list-table tr").each(function (i, el) {
-					$(this).eq(i).innerHeight($(this).height());
-				});
-			});
-				*/
+			var newHeight4 = $(".loaninfo-table-label tr:nth-child(10)").innerHeight();
+			$(".loan-list-table tr:nth-child(10)").css("height", newHeight4+"px");       //Repayments till date	data row height based on left side label when screen size 1280px
+			
+			var newHeight5 = $(".loaninfo-table-label tr:nth-child(11)").innerHeight();
+			$(".loan-list-table tr:nth-child(11)").css("height", newHeight5+"px");       //Principal outstanding data based on left side label when screen size 1280px
 				
 		});
 	</script>
@@ -87,7 +69,7 @@
 												<td>{{ Lang::get('borrower-loaninfo.target_interest') }} %</td>												
 											</tr>
 											<tr>
-												<td class="loaninfo-label">{{ Lang::get('borrower-loaninfo.effective_interest') }} %</td>												
+												<td>{{ Lang::get('borrower-loaninfo.effective_interest') }} %</td>												
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.amount_applied') }}</td>												
@@ -96,7 +78,7 @@
 												<td>{{ Lang::get('borrower-loaninfo.amount_realized') }}</td>												
 											</tr> 
 											<tr> 
-												<td class="loaninfo-label">{{ Lang::get('borrower-loaninfo.repayment_tilldate') }}</td>												
+												<td>{{ Lang::get('borrower-loaninfo.repayment_tilldate') }}</td>												
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.principal_outstanding') }}</td>												

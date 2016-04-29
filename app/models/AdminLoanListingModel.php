@@ -6,7 +6,7 @@ class AdminLoanListingModel extends TranWrapper {
 	
 	public  $allTransList					= array();
 	public  $loanListInfo					= array();
-	public  $filter_code					= "11";
+	public  $filter_code					= "";
 	public  $fromDate						= "";
 	public  $toDate							= "";	
 	
@@ -51,9 +51,10 @@ class AdminLoanListingModel extends TranWrapper {
 	
 	public function viewTransList($fromDate, $toDate, $all_Trans) {
 		
-		$this->fromDate		= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
-		$this->toDate		= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));
-			
+		$this->fromDate			= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
+		$this->toDate			= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));
+		$this->filter_code 		= 	11;	
+		
 		if (isset($_REQUEST['filter_transcations'])) {
 		 	$this->filter_code 	= $_REQUEST['filter_transcations'];
 			$this->fromDate		= $_REQUEST['fromdate'];

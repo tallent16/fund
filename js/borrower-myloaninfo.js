@@ -22,13 +22,13 @@ $(document).ready(function (){
    
 function showRepaymentScheduleFunc(data) {
 	var	str;
-	str		=	"<table class='table'>";
+	str		=	"<div class='table-responsive'><table class='table'>";
 	str		=	str+"<thead><tr><th>Schedule Date</th>";
 	str		=	str+"<th>Schedule Amount</th>";
 	str		=	str+"<th>Status</th>";
 	str		=	str+"<th>Actual Date</th>";
 	str		=	str+"<th>Actual Amount</th></thead>";
-	str		=	str+"<thbody>";
+	str		=	str+"<tbody>";
 	if(data.rows.length > 0){
 		$.each( data.rows, function( key ) {
 			str	=	str+"<tr><td>";
@@ -45,7 +45,7 @@ function showRepaymentScheduleFunc(data) {
 	}else{
 		str	=	str+"<tr><td colspan='5'> No Repayment Schedule Found</td></tr>";
 	}
-	str	=	str+"</tbody></table>";
+	str	=	str+"</tbody></table></div>";
 	$("#repayment_information .modal-body").html(str);
 	$('#repayment_information').modal('show');
 }

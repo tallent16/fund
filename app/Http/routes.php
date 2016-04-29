@@ -210,7 +210,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::match(['get', 'post'],'admin/investordepositview/{type}/{payment_id}/{investor_id}', 'AdminInvestorsDepositListingController@viewDepositAction');
     
     Route::get('admin/investorwithdrawallist', 'AdminInvestorsWithdrawalsListingController@indexAction');
-    Route::get('admin/investorwithdrawalview', 'AdminInvestorsWithdrawalsViewController@indexAction');
+    Route::post('admin/investorwithdrawallist/bulkaction',			
+											'AdminInvestorsWithdrawalsListingController@InvestorWithDrawListBulkAction');
+     Route::match(['get', 'post'],'admin/investorwithdrawalview/{type}/{payment_id}/{investor_id}', 
+														'AdminInvestorsWithdrawalsListingController@viewWithDrawAction');
     
     Route::match(['get', 'post'],'admin/investor/profile/{inv_id}', 'AdminManageInvestorsController@viewProfileAction');
     Route::get('admin/investor/updateprofile/{status}/{inv_id}', 'AdminManageInvestorsController@updateProfileStatusAction');

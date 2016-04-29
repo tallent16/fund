@@ -2,7 +2,7 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	<script src="{{ url("js/admin-investor-listing.js") }}" type="text/javascript"></script>
+	<script src="{{ url("js/admin-investor-withdrawallisting.js") }}" type="text/javascript"></script>
 	@endsection
 @section('page_heading',Lang::get('Investor Withdrawals') )
 @section('section')  
@@ -58,7 +58,9 @@
 								id="bulk_unapprove_button">
 							{{ Lang::get('UnApprove Selected')}}
 						</button>
-						<button class="btn verification-button">
+						<button class="btn verification-button"
+								id="new_button"
+								data-url="{{url('admin/investorwithdrawalview/add/0/0')}}">
 							{{ Lang::get('New Withdrawal')}}
 						</button>
 						<button class="btn verification-button"
@@ -71,7 +73,7 @@
 			
 			<div class="panel panel-primary panel-container borrower-admin">						
 			
-				<form method="post" id="form-investor-listing" action="{{url('admin/investorwithdrawlist/bulkaction')}}">
+				<form method="post" id="form-investor-listing" action="{{url('admin/investorwithdrawallist/bulkaction')}}">
 					<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 					<input type="hidden" name="processType" id="processType" value="">				
 					<input 	type="hidden" 
@@ -126,10 +128,12 @@
 												<label>
 													<input 	type="checkbox" 
 														name="transaction_id[]"
-														class="select_investor_deposit"											
+														class="select_investor_withdraw"
 														data-investor-name="{{$withdrawListRow->username}}"
-														data-depositDate="{{$withdrawListRow->trans_date}}"
-														data-depositAmount="{{$withdrawListRow->trans_amount}}"
+														data-settlementDate="{{$withdrawListRow->trans_date}}"
+														data-requestDate="{{$withdrawListRow->entry_date}}"
+														data-withdrawAmt="{{$withdrawListRow->trans_amount}}"
+														data-availAmt="{{$withdrawListRow->avail_bal}}"
 														data-status="{{$withdrawListRow->status}}"
 														value="{{$withdrawListRow->trans_id}}" />
 												</label>									

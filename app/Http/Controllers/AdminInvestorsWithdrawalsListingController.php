@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 use	\App\models\AdminInvestorsWithdrawalsListingModel;
+use Request;
 class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 	
 	public $adminInvestorWithdrawalList;
@@ -52,15 +53,33 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 	public function viewWithDrawAction($type,$payment_id,$investor_id){
 		
 		$investorId 	= base64_decode($investor_id);
+		$investorId 	= ($investorId=="")?0:$investorId;
+		
 		$processtype 	= $type;		
+		
 		$paymentId 		= base64_decode($payment_id);
-		$this->adminInvWithDrawListMod->getInvestorsWithDrawInfo($processtype,$investorId,$paymentId);
-	
+		$paymentId 		= ($paymentId=="")?0:$paymentId;
+		if (Request::isMethod('post')) {
+			$postArray	=	Request::all();
+			if($postArray['submitType']	==	"approve" || $postArray['submitType']	==	"save"){
+				$this->adminInvestorWithdrawalList->saveInvestorWithDraws($postArray);
+			}else{
+				$this->adminInvestorWithdrawalList->unApproveWithDraw($postArray['trans_id']);
+			}
+			$submitted		=	true;
+			if($processtype	==	"add") {
+				return redirect()->to('admin/investorwithdrawallist');
+			}
+		}
+		$this->adminInvestorWithdrawalList->getInvestorsWithDrawInfo($processtype,$investorId,$paymentId);
+		$submitted		=	true;
 		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 								
 								"classname"=>"fa fa-cc fa-fw",
+								"processtype"=>$processtype,
+								"submitted"=>$submitted
 								); 
 								
-		return view('admin.admin-investorwithdrawalview')
+		return view('admin.admin-investorswithdrawalsview')
 				->with($withArry); 
 		
 	}
@@ -79,7 +98,7 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 				$this->bulkDeleteWithDrawAction();
 				break;
 		}		
-		return redirect()->to('admin/investorswithdrawalslisting');
+		return redirect()->to('admin/investorwithdrawallist');
 	}
 	
 
@@ -87,18 +106,18 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 	public function bulkApproveWithDrawAction(){		
 		
 		$postArray	=	Request::all();
-		$this->adminInvWithDrawListMod->bulkApproveWithDraw($postArray);
+		$this->adminInvestorWithdrawalList->bulkApproveWithDraw($postArray);
 	}
 		
 	public function bulkUnApproveWithDrawAction(){		
 		
 		$postArray	=	Request::all();
-		$this->adminInvWithDrawListMod->bulkUnApproveWithDraw($postArray);
+		$this->adminInvestorWithdrawalList->bulkUnApproveWithDraw($postArray);
 	}
 		
 	public function bulkDeleteWithDrawAction(){		
 		
 		$postArray	=	Request::all();
-		$this->adminInvWithDrawListMod->bulkDeleteWithDraw($postArray);
+		$this->adminInvestorWithdrawalList->bulkDeleteWithDraw($postArray);
 	}
 }

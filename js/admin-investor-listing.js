@@ -81,5 +81,8 @@ $(document).ready(function (){
     $("#select_all_list").click(function(){
 		checkall_list(this,"select_investor_deposit");
 	});
-   
+   $("#new_button").click(function(){
+	   var	url	=	$(this).attr("data-url");
+	   window.location	=	url;
+	});
 });

@@ -59,7 +59,11 @@
 								id="bulk_unapprove_button">
 							{{ Lang::get('UnApprove Selected')}}
 						</button>
-						<button class="btn verification-button">
+						@var	$Url	=	url('admin/investordepositview/')
+						@var	$addUrl	=	$Url."/add/0/0/"
+						<button class="btn verification-button"
+								data-url="{{$addUrl}}"
+								id="new_button">
 							{{ Lang::get('New Deposit')}}
 						</button>
 						<button class="btn verification-button"
@@ -104,7 +108,7 @@
 									{{Lang::get('Deposit Amount')}}</th>							
 								<th class="tab-head text-left">
 									{{Lang::get('Status')}}</th>
-								<th class="tab-head text-left">
+								<th class="tab-head text-center">
 									{{Lang::get('Actions')}}</th>
 							</tr>
 						</thead>
@@ -154,7 +158,7 @@
 												{{$depositListRow->trans_status_name}}
 											</a>
 										</td>								
-										<td>
+										<td class="text-center">
 											<ul class="list-unstyled">
 												<li class="dropdown">
 													<a class="dropdown-toggle" 

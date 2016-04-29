@@ -52,7 +52,7 @@
 										{{Lang::get('Penalty')}}</th>
 									<th class="tab-head text-left col-sm-1">
 										{{Lang::get('Status')}}</th>
-									<th class="tab-head text-left col-sm-1">
+									<th class="tab-head text-center col-sm-1">
 										{{Lang::get('Actions')}}</th>
 								</tr>
 							</thead>

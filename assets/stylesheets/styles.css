@@ -5831,7 +5831,7 @@ button.close {
 }
 @media (min-width: 768px) {
   .modal-dialog {
-    width: 600px;
+    width: 750px;
     margin: 30px auto;
   }
   .modal-content {
@@ -9243,9 +9243,6 @@ nav .block-title{
 .myloans .panel-body{
 	overflow-y: scroll;
     max-height: 300px;
-}
-.loan-info-wrapper .loaninfo-label{
-	padding:11px 8px;
 }
 /*---------------------LoanDetails TAB--------------------------------*/
 .social-share img{
