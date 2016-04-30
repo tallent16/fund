@@ -9559,7 +9559,7 @@ table#account-summary, .table-border-custom{
     }
 }
 @media(max-width:800px) {
-	.verification-button, .verification-button:hover{
+	.verification-button{
 		margin: 0 0 15px 0;
 	}
 	.nav-tabs > li{

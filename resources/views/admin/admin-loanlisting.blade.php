@@ -2,24 +2,19 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	@endsection
+@endsection
 @section('page_heading',Lang::get('Loan Listing') )
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" style="display:none">
 <form method="get">
-	<div class="row">	
-		
+	<div class="row">		
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Filter Transcations') }}</strong><br>							
 					{{ Form::select('filter_transcations', $adminLoanListing->allTransList, $adminLoanListing->filter_code, ["class" => "selectpicker"]) }} 
-			</div>
-				
-		
-	</div>
-		
-		
+			</div>		
+		</div>		
 				
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
@@ -36,30 +31,28 @@
 						type="text" class="date-picker form-control" />
 			</div>	
 		</div>
-
 		
 	</div>
 </div>
 
 <div class="row">	
-	<!--<div class="col-sm-12" >-->
-		<div class="col-sm-3 col-lg-2" id="apply_filter_div" style="display:none">
-			<div class="form-group">	
-				<button type="submit" class="btn verification-button">
-					{{ Lang::get('Apply Filter')}}
-				</button>
-			</div>
+	<div class="col-sm-3 col-lg-2" id="apply_filter_div" style="display:none">
+		<div class="form-group">	
+			<button type="submit" class="btn verification-button">
+				{{ Lang::get('Apply Filter')}}
+			</button>
 		</div>
-</form>
-		<div class="col-sm-4 col-lg-2">
-			<div class="form-group">	
-				<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
-					{{ Lang::get('Show Filter')}}
-				</button>
-			</div>
+	</div>
+</form>	
+	<div class="col-sm-4 col-lg-2">
+		<div class="form-group">	
+			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
+				{{ Lang::get('Show Filter')}}
+			</button>
 		</div>
-		<!--</div>-->		
-</div>
+	</div>	
+	
+</div><!-----First row----->
 
 
 <div class="row">
@@ -148,11 +141,10 @@
 			</table>
 		</div>
 	</div>
-</div>
+</div><!------second row------>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
-<script>
-	
+<script>	
 function hideShowFilter() {
 
 	hideShow = $("#hide_show_filter").html();
@@ -167,8 +159,7 @@ function hideShowFilter() {
 		$("#hide_show_filter").html("{{ Lang::get('Hide Filter') }}")
 	}
 
-} 
-	
+}	
 $(document).ready(function(){ 
 	// date picker
 	$('#fromdate').datetimepicker({

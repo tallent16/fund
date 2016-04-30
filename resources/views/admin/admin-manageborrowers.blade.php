@@ -2,44 +2,44 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url("js/admin-manage-borrower.js") }}" type="text/javascript"></script>
-	@endsection
+@endsection
 @section('page_heading',Lang::get('Manage Borrowers') )
 @section('section')  
 @var	$adminBorModel	=	$adminbormodel->borrowerListInfo
-<div class="col-sm-12 space-around">
-	<form action="" method="get">
-		<div class="row">	
-			<div class="col-sm-12 col-lg-3"> 														
-				<div class="form-group"><br>	
+<div class="col-sm-12 space-around">	
+	
+	<div class="row">
+		<form action="" method="get">
+			<div class="col-sm-12 col-lg-3">	
+				<div class="form-group">			
 					<strong>{{ Lang::get('Borrower Status') }}</strong>							
 					{{ 
 						Form::select('borrowerstatus_filter',$adminbormodel->filterBorrowerStatusList, 
 										$adminbormodel->filterBorrowerStatusValue,
 										["class" => "selectpicker"]) 
-					}} 
-				</div>
+					}} 		
+				</div>		
 			</div>
-			<div class="col-sm-12 col-lg-3"> 														
-				<div class="form-group"><br><br>			
-					<button type="submit" class="btn verification-button">
-						{{ Lang::get('borrower-loanlisting.apply_filter') }}			
-					</button>
-				</div>	
+			<div class="col-sm-12 col-lg-3 space-around">			
+				<button type="submit" class="btn verification-button">
+					{{ Lang::get('borrower-loanlisting.apply_filter') }}			
+				</button>				
 			</div>	
-		</div>
-	</form>
-	<div class="row">
-		
+		</form>
+	</div><!-------- First row--------------->
+	
+	<div class="row">		
 		<div class="col-lg-12 col-md-12 borrower-admin">
 			<div class="panel panel-primary panel-container">
 				
 					<div class="panel-heading panel-headsection">
 						<div class="row">
-						   <div class="col-xs-3">
+						   <div class="col-xs-6">
 								<span class="pull-left">{{ Lang::get('Borrowers List') }}</span> 
 							</div>									
 						</div>                           
-					</div>				
+					</div>			
+						
 					<div class="table-responsive">
 						<form method="post" id="form-manage-borrower" action="{{url('admin/borrower/updateprofile')}}">
 							<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
@@ -74,15 +74,15 @@
 											@var	$borProUrl	=	$borProUrl."/".base64_encode($BorRow['borrower_id'])
 											<tr>
 												<td class="text-center">													
-														<label>
-															<input 	type="checkbox" 
-																	name="borrower_ids[]"
-																	class="select_borrower_id"
-																	data-status="{{$BorRow['status']}}"
-																	data-email="{{$BorRow['email']}}"
-																	data-active-loan="{{$BorRow['active_loan']}}"
-																	value="{{$BorRow['borrower_id']}}">
-														</label>													
+													<label>
+														<input 	type="checkbox" 
+																name="borrower_ids[]"
+																class="select_borrower_id"
+																data-status="{{$BorRow['status']}}"
+																data-email="{{$BorRow['email']}}"
+																data-active-loan="{{$BorRow['active_loan']}}"
+																value="{{$BorRow['borrower_id']}}">
+													</label>													
 												</td>
 												<td>
 													<a href="{{$borProUrl}}">
@@ -176,42 +176,35 @@
 								</tbody>
 							</table>			
 						</form>			
-					</div><!-----third row end--->	
+					</div>	<!-----table responsive--->
+				</div> <!-----panel container--->
+				
+				<div class="row">
+					<div class="col-sm-12">							
+						<button type="button"
+								id="bulk_approve_button"
+								class="btn verification-button"	>
+								<i class="fa pull-right"></i>
+								{{ Lang::get('Approve')}}
+						</button>
+						<button type="button" 
+							id="bulk_reject_button"
+							class="btn verification-button"	>
+							<i class="fa pull-right"></i>
+							{{ Lang::get('Reject')}}
+						</button>
+						<button type="button"
+								id="bulk_delete_button"
+								class="btn verification-button"	>
+								<i class="fa pull-right"></i>
+								{{ Lang::get('Delete')}}
+						</button>
+					</div>										
+				</div> <!--------Button row--------------->			
 					
-					
-					
-		
-			</div>     
-			<div class="row">
-					<div class="col-sm-12">
-						
-						
-								<button type="button"
-										id="bulk_approve_button"
-										class="btn verification-button"	>
-										<i class="fa pull-right"></i>
-										{{ Lang::get('Approve')}}
-								</button>
-							<button type="button" 
-									id="bulk_reject_button"
-									class="btn verification-button"	>
-									<i class="fa pull-right"></i>
-									{{ Lang::get('Reject')}}
-								</button>
-								<button type="button"
-										id="bulk_delete_button"
-										class="btn verification-button"	>
-										<i class="fa pull-right"></i>
-										{{ Lang::get('Delete')}}
-								</button>
-						</div>
-										
-					</div>		
-		</div>
-		</div>
-	</div>
-</div>
-
-
+		</div><!-------- col--------------->
+	</div> <!-------- Second row--------------->
+	
+</div><!-------- col--------------->
 @endsection  
 @stop

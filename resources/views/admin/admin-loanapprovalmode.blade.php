@@ -1,9 +1,8 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script src="{{ url('js/admin-loan-apply.js') }}" type="text/javascript"></script>
-		 
-	@endsection
+	<script src="{{ url('js/admin-loan-apply.js') }}" type="text/javascript"></script>		 
+@endsection
 @section('page_heading',Lang::get('Manage Loans') )
 @section('section')  
 @if($adminLoanApprMod->status	==	LOAN_STATUS_PENDING_COMMENTS)
@@ -24,6 +23,7 @@
 	@var	$screenMode	=	"borrower"
 @endif
 <div class="col-sm-12 space-around">
+	
 	<div class="panel-primary panel-container">
 			@if($submitted)
 				<div class="row">
@@ -37,6 +37,7 @@
 					</div> 
 				</div> 	
 			@endif
+			
 			<div class="panel-heading panel-headsection"><!--panel head-->
 				<div class="row">
 					<div class="col-sm-12">
@@ -44,6 +45,7 @@
 					</div>																
 				</div>					
 			</div><!--panel head end-->
+			
 			<form method="post" id="form-profile" name="form-profile">
 				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 				<input type="hidden" id="screen_mode" value="{{$screenMode}}">
@@ -83,30 +85,32 @@
 							@endif
 						</div>
 					@endif
-			
-					<div class="col-lg-12 col-md-6 col-xs-12 space-around">
-						<ul class="nav nav-tabs">
-							<li class="active">
-								<a 	data-toggle="tab"
-									href="#loan_details">
-									{{ Lang::get('LOAN DETAILS') }}
-								</a>
-							</li>
-							<li>
-								<a 	data-toggle="tab"
-									href="#comments">
-									{{ Lang::get('COMMENTS') }}
-								</a>
-							</li>								
-						</ul>					
+					
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-xs-12">
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a 	data-toggle="tab"
+											href="#loan_details">
+											{{ Lang::get('LOAN DETAILS') }}
+										</a>
+									</li>
+									<li>
+										<a 	data-toggle="tab"
+											href="#comments">
+											{{ Lang::get('COMMENTS') }}
+										</a>
+									</li>								
+								</ul>					
 
-						<div class="tab-content">						
-							<!-------first-tab--------------------------------->
-							@include('widgets.admin.tab.loanapproval_loandetails')
-							<!-------second tab--starts------------------------>
-							@include('widgets.admin.tab.loanapproval_comments')						
-						</div><!--tab content-->
-					</div>	
+								<div class="tab-content">						
+									<!-------first-tab--------------------------------->
+									@include('widgets.admin.tab.loanapproval_loandetails')
+									<!-------second tab--starts------------------------>
+									@include('widgets.admin.tab.loanapproval_comments')						
+								</div><!--tab content-->
+							</div>	
+						</div>
 				</div><!--panel-body--->
 			</form>
 	

@@ -11,8 +11,7 @@
 				<tr>
 					<td class="tab-left-head col-sm-3">
 						{{ Lang::get('Purpose of Loan')}}
-					</td>
-					
+					</td>					
 					<td class="col-sm-3">
 						{{$adminLoanApprMod->purpose_singleline}}
 					</td>
@@ -21,7 +20,7 @@
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Loan Amount')}}</td>
-					<td>{{$adminLoanApprMod->apply_amount}}</td>
+					<td>{{number_format($adminLoanApprMod->apply_amount,2,'.',',')}}</td>
 					<td class="tab-left-head">{{ Lang::get('Accept Partial Subscription')}}</td>								
 					<td>{{$par_sub_allowed}}</td>						
 				</tr>
@@ -29,7 +28,7 @@
 					<td class="tab-left-head">{{ Lang::get('Tenure of Loan')}}</td></td>	
 					<td>{{$adminLoanApprMod->loan_tenure}}</td>
 					<td class="tab-left-head">{{ Lang::get('Minimum Limit For Partial Subscription')}}</td>								
-					<td>{{$adminLoanApprMod->min_for_partial_sub}}</td>					
+					<td>{{number_format($adminLoanApprMod->min_for_partial_sub,2,'.',',')}}</td>					
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Target Interest')}}%</td>	
@@ -86,8 +85,4 @@
 			@var	$i++;		
 		@endforeach		
 	</div>	
-
 </div>
-			
-			
-			

@@ -56,7 +56,7 @@ $(document).ready(function (){
 		}
     });
 	$("#bulk_delete_button").click(function(){
-		var	appr_applicable	=	$("#default_verified_applicable").val();
+		var	appr_applicable	=	$("#default_unverified_applicable").val();
 		var	errMessage		=	"";
 		if ($(".select_investor_deposit:checked").length > 0){
 			$(".select_investor_deposit:checked").each(function(key) {

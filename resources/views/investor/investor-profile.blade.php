@@ -95,22 +95,25 @@
 							</li>
 							<!--	@if(Auth::user()->username == "admin")-->
 							<!--	@endif		-->	
-							<li class="">
-								<a 	data-toggle="tab"
-									href="#comments_info">
-									{{ Lang::get('COMMENTS INFO') }}
-								</a>
-							</li>
+							@if($canViewCommentsTab	==	"yes")
+								<li class="">
+									<a 	data-toggle="tab"
+										href="#comments_info">
+										{{ Lang::get('COMMENTS INFO') }}
+									</a>
+								</li>
+							@endif
 						</ul>	
 				
 					<div class="tab-content">
 						<!-----First Tab content Starts----->
 							@include('widgets.investor.tab.investor_profile_info')
 						<!-----First Tab content end----->
-						
-						<!-----Second Tab content starts----->
-							@include('widgets.common.tab.profile_comments')
-						<!-----Second Tab content ends----->						
+						@if($canViewCommentsTab	==	"yes")
+							<!-----Second Tab content starts----->
+								@include('widgets.common.tab.profile_comments')
+							<!-----Second Tab content ends----->	
+						@endif					
 					</div>	<!---col ends-->	
 				</div>
 			</div>

@@ -201,12 +201,12 @@ function callTabValidateFunc() {
 	if(cur_tab	==	"bank_info") {
 		if($("#screen_mode").val()	==	"borrower"){
 			if($("#borrower_status").val()	==	"corrections_required"){
-				$('.nav-tabs a[href="#comments"]').tab('show');
+				$('.nav-tabs a[href="#comments_info"]').tab('show');
 				$("#next_button").hide();
 				$("#submit_button").show();
 			}
 		}else{
-			$('.nav-tabs a[href="#comments"]').tab('show');
+			$('.nav-tabs a[href="#comments_info"]').tab('show');
 			$("#next_button").hide();
 			$("#returnback_button").show();
 			$("#approve_profile_button").show();

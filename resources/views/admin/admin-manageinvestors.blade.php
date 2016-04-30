@@ -2,41 +2,41 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url("js/admin-manage-investor.js") }}" type="text/javascript"></script>
-	@endsection
+@endsection
 @section('page_heading',Lang::get('Manage Investor') )
 @section('section')  
 @var	$adminInvModel	=	$admininvModel->investorListInfo
 <div class="col-sm-12 space-around">
-	<form action="" method="get">
-		<div class="row">	
+	
+	<div class="row">	
+		<form action="" method="get">
 			<div class="col-sm-12 col-lg-3"> 														
-				<div class="form-group"><br>	
+				<div class="form-group">
 					<strong>{{ Lang::get('Investor Status') }}</strong>							
 					{{ 
 						Form::select('investorstatus_filter',$admininvModel->filterInvestorStatusList, 
 										$admininvModel->filterInvestorStatusValue,
 										["class" => "selectpicker"]) 
 					}} 
-				</div>
+				</div>	
 			</div>
-			<div class="col-sm-12 col-lg-3"> 														
-				<div class="form-group"><br><br>			
+			<div class="col-sm-12 col-lg-3"><br>
+				<div class="form-group">		
 					<button type="submit" class="btn verification-button">
 						{{ Lang::get('Apply Filter') }}			
-					</button>
-				</div>	
+					</button>	
+				</div>				
 			</div>	
-		</div>
-	</form>
-	<div class="row">
-		
+		</form>
+	</div><!-------- First row--------------->
+	
+	<div class="row">		
 		<div class="col-lg-12 col-md-12 borrower-admin">
-			<div class="panel panel-primary panel-container">
-				
+			<div class="panel panel-primary panel-container">				
 
 					<div class="panel-heading panel-headsection">
 						<div class="row">
-						   <div class="col-xs-3">
+						   <div class="col-xs-6">
 								<span class="pull-left">{{ Lang::get('Investors List') }}</span> 
 							</div>									
 						</div>                           
@@ -108,7 +108,7 @@
 												</td>
 												<td class="text-right">
 													<a href="{{$invProUrl}}">
-														{{$InvRow['available_balance']}}
+														{{number_format($InvRow['available_balance'],2,'.',',')}}
 													</a>
 												</td>
 												<td>
@@ -178,42 +178,34 @@
 								</tbody>
 							</table>			
 						</form>			
-					</div><!-----third row end--->	
-					
-					
-					
-		
-			</div>     
-			<div class="row">
-					<div class="col-sm-12">
-						
-						
-								<button type="button"
-										id="bulk_approve_button"
-										class="btn verification-button"	>
-										<i class="fa pull-right"></i>
-										{{ Lang::get('Approve')}}
-								</button>
-							<button type="button" 
-									id="bulk_reject_button"
-									class="btn verification-button"	>
-									<i class="fa pull-right"></i>
-									{{ Lang::get('Reject')}}
-								</button>
-								<button type="button"
-										id="bulk_delete_button"
-										class="btn verification-button"	>
-										<i class="fa pull-right"></i>
-										{{ Lang::get('Delete')}}
-								</button>
-						</div>
-										
-					</div>		
-		</div>
-		</div>
-	</div>
-</div>
-
-
+					</div><!-----table responsive--->
+				</div> <!-----panel container--->
+				<div class="row">
+					<div class="col-sm-12">						
+						<button type="button"
+								id="bulk_approve_button"
+								class="btn verification-button"	>
+								<i class="fa pull-right"></i>
+								{{ Lang::get('Approve')}}
+						</button>
+						<button type="button" 
+							id="bulk_reject_button"
+							class="btn verification-button"	>
+							<i class="fa pull-right"></i>
+							{{ Lang::get('Reject')}}
+						</button>
+						<button type="button"
+								id="bulk_delete_button"
+								class="btn verification-button"	>
+								<i class="fa pull-right"></i>
+								{{ Lang::get('Delete')}}
+						</button>
+					</div>										
+				</div>	<!--------Button row--------------->				
+			
+		</div><!-------- col--------------->
+	</div> <!-------- Second row--------------->
+	
+</div><!-------- col--------------->
 @endsection  
 @stop

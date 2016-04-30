@@ -2,9 +2,8 @@
 @section('page_heading',Lang::get('Manage Loans') )
 @section('section')  
 <form method="post" action="{{url('admin/savedisbursement')}}">
-	<input type="hidden" id="loan_id" name="loan_id" value="{{$bidsModel->loan_id}}" />
-	<input type="hidden" id="hidden_token" name="_token" value="{{ csrf_token() }}" />
-
+<input type="hidden" id="loan_id" name="loan_id" value="{{$bidsModel->loan_id}}" />
+<input type="hidden" id="hidden_token" name="_token" value="{{ csrf_token() }}" />
 <div class="col-sm-12 space-around">	
 	<div class="panel-primary panel-container disburse-loan">
 		
@@ -16,8 +15,8 @@
 				</div>					
 			</div><!--panel head end-->
 
-			<div class="panel-body applyloan table-border-custom input-space">	
-				
+			<div class="panel-body applyloan table-border-custom input-space">
+								
 				<div class="row"><!-- Row 1 -->					
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
@@ -178,23 +177,16 @@
 									
 				</div>  <!-- Row 5 -->		
 
-				<div class="row">		
-					<div class="col-xs-12  col-sm-7 col-lg-3">
+				<div class="row">	
+					<div class="col-xs-12 col-sm-7 col-lg-12">				
 						<button type="button" class="btn verification-button" id="get_repay_schd">
-							{{ Lang::get('Show Repayment Schedule')}}</button>
-					</div>
-
-					<div class="col-xs-12 col-sm-7 col-lg-3">
+							{{ Lang::get('Show Repayment Schedule')}}</button>					
 						<button type="submit" class="btn verification-button">
 							{{ Lang::get('Disburse Loan')}}</button>
-					</div>
-
-					
-					
+					</div>					
 				</div>
 				
-			</div><!----panel-body--->
-	
+			</div><!----panel-body--->	
 	</div><!----panel-container--->
 </div>
 </form>
@@ -211,13 +203,11 @@
 <!--<div id="payschd_popup" title="Repayment Schedule" style="display:none" >-->	
 </div>
 @endsection  
-
 @section('bottomscripts')
 <script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>	 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 <script src="{{ url('js/moment.js') }}" type="text/javascript"></script>	
-<script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>		
-
+<script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>
 <script>		
 var baseUrl	=	"{{url('')}}"
 
