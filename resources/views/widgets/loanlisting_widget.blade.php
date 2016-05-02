@@ -47,7 +47,7 @@
 							<td class="panel-subhead">
 								{{$loanRow->perc_funded}}</td>
 							<td class="panel-subhead">	
-								S${{$loanRow->apply_amount}}
+								S${{number_format($loanRow->apply_amount,2,'.',',')}}
 							</td>	
 							<td class="panel-subhead">
 								{{$loanRow->target_interest}}%

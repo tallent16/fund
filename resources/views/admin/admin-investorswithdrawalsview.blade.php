@@ -85,7 +85,7 @@
 @var $addclass  = ""
 @var $viewclass = ""
 @if($adminInvWithDrawListMod->processbuttontype == "edit")
-			@var $editclass = "disabled"
+	@var $editclass = "disabled"
 @elseif($adminInvWithDrawListMod->processbuttontype == "add")		
 	@var $addclass  = "disabled"
 @else
@@ -96,7 +96,7 @@
 @endif 
 
 <div class="col-sm-12 space-around">
-	<div class="panel-primary panel-container">
+	<div class="panel-primary panel-container" id="investor-withdrawal">
 		
 		<div class="panel-heading panel-headsection"><!--panel head-->
 			<div class="row">
@@ -139,14 +139,11 @@
 					</div>								
 					<div class="col-xs-12 col-sm-7 col-lg-3">
 						@if($editclass || $viewclass)
-									{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
-							@else
-									{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
-					
-							@endif
-					</div>	
-				
-							
+							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
+						@else
+							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
+						@endif
+					</div>							
 				</div> <!-- Row 1 -->
 				
 				<div class="row"><!-- Row 2 -->					
@@ -162,9 +159,7 @@
 									name="avail_bal"									
 									value="{{number_format($adminInvWithDrawListMod->avail_bal,2,'.',',')}}" 
 									disabled />		
-					</div>	
-				
-							
+					</div>
 				</div> <!-- Row 2 -->
 				
 				<div class="row"><!-- Row 3 -->				
@@ -206,9 +201,7 @@
 								<span class="glyphicon glyphicon-calendar"></span>
 							</label>
 						</div>
-					</div>				
-								
-						
+					</div>						
 				</div> <!-- Row 3 -->
 				
 				<div class="row"><!-- Row 4 -->				

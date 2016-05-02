@@ -36,9 +36,9 @@
 										<td>{{$tranListRow->trans_reference_number}}</td>
 										<td>{{$tranListRow->trans_date}}</td>
 										<td>{{$tranListRow->trans_type}}</td>
-										<td class="text-right">{{round($tranListRow->trans_amount,2)}}</td>
+										<td class="text-right">{{number_format($tranListRow->trans_amount,2,'.',',')}}</td>
 										<td>{{$tranListRow->remarks}}</td>
-										<td class="text-right">{{$closingBalance}}</td>											
+										<td class="text-right">{{number_format($closingBalance,2,'.',',')}}</td>											
 									</tr>							
 								@endforeach
 							@endif

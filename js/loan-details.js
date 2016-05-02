@@ -1,3 +1,4 @@
+var	formValid	=	false
 $(document).ready(function (){  
 	
 	$.ajaxSetup({
@@ -5,6 +6,14 @@ $(document).ready(function (){
 			'X-CSRF-TOKEN': $('#hidden_token').val()
 		}
 	});
+	$(".amount-align").on("focus", function() {
+		onFocusNumberField(this);
+	});
+
+	$(".amount-align").on("blur", function() {
+		onBlurNumberField(this)
+	});
+
 	/*List one record at a time*/	    
 	$("#bid_now").click(function(){
 		$(this).hide();
@@ -12,18 +21,43 @@ $(document).ready(function (){
     });
     
 	$("#form-bid").on('submit',function(event){
+		
 		var	available_balance	=	$("#available_balance").val();
-		var	bid_amount			=	$("#bid_amount").val();
-		if(bid_amount > available_balance) {
-			showDialog("","You have insufficient balance to bid");
-			event.preventDefault();
+		var	bid_amount			=	numeral($("#bid_amount").val()).value();
+		var	bid_interest_rate	=	numeral($("#bid_interest_rate").val()).value();
+		var	isCancelButton		=	$("#isCancelButton").val();
+		var	errorMesage			=	"";
+		getAvailableBalance();
+		AvailableBalance		=	$("#available_balance").val()
+		if(isCancelButton	==	"no") {
+			
+			if(bid_amount	<=	0) {
+				errorMesage			=	"Bid Amount Should be greater than zero <br>";
+			}
+					
+			if(bid_interest_rate	<=	0) {
+				errorMesage			=	"Bid Interest Rate Should be greater than zero <br>";
+			}
+			if(errorMesage	!=	""	) {
+				showDialog("",errorMesage);
+				event.preventDefault();
+			}
+			
+			if(	AvailableBalance	==	0) {
+				showDialog("","You have insufficient balance to bid");
+				event.preventDefault();
+			}
+			
+			if(bid_amount	>	AvailableBalance) {
+				showDialog("","Bid Amount should not be greater than Available Balance");
+				event.preventDefault();
+			}
 		}
+		if (!formValid) 
+			event.preventDefault();
+		
 	});
 
-    $("#cancel_bid").click(function(){
-		$('#isCancelButton').val("yes");
-    });
-	
 	 $("#newCommentBoxButton").on('click',function(){
 		
 		
@@ -58,6 +92,49 @@ $(document).ready(function (){
 				});
 		}
 	});
-
+	
 });
 
+
+function cancelLoanBidClicked() {
+	// The dialog box utility of jQuery is asynchronous. The execution of the Javascript code will not wait
+	// for the user input. Therefore we have a callback function to re-trigger the submission if the 
+	// user confirms cancellation
+	
+	if (formValid) {
+		return;
+	} 
+	
+	retval = showDialogWithOkCancel("", "Do you want to proceed with the cancellation Bid", "cancelLoanBidFeedback");
+	
+}
+
+function cancelLoanBidFeedback(retval) {
+	// This is called from the showDialogWithOkCancel as a callback when the user clicks one of the 
+	// OK or Cancel buttons.
+	if (retval == 1) {
+		formValid = true;
+		$('#isCancelButton').val("yes");
+		$("#cancel_bid").click()
+	} else {
+		formValid = false;
+	}
+}
+function LoanBidClicked() {
+	
+	formValid = true;
+	
+}
+
+function getAvailableBalance() {
+	
+	$.ajax({
+	  type: "POST",
+	  async : false,
+	  cache:false,
+	  url: baseUrl+"/investor/ajax/availableBalance",
+	  
+	}).done(function(data) {
+		$("#available_balance").val(data);
+	});
+}

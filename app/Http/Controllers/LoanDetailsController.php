@@ -27,8 +27,10 @@ class LoanDetailsController extends MoneyMatchController {
 		$subType	=	"";
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
-			$this->loanDetailsModel->processBid($postArray);
-			$submitted	=	true;
+			$result		=	$this->loanDetailsModel->processBid($postArray);
+			if($result) {
+				$submitted	=	true;
+			}
 			$subType	=	$postArray['isCancelButton'];			
 		}
 		
@@ -71,5 +73,10 @@ class LoanDetailsController extends MoneyMatchController {
 			return json_encode(array("status"=>"failed"));
 		}
 	}
-
+	
+	public function ajaxAvailableBalanceAction() {
+		$availableBalance		=	$this->loanDetailsModel->getInvestorAvailablBalance();
+		return $availableBalance;
+	}
+	
 }

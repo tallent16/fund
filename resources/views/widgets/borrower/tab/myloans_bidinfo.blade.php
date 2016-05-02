@@ -34,7 +34,7 @@
 												<tr>
 													<td class="tab-bid-label text-center">{{ Lang::get('borrower-myloans.bidder') }} #{{$i}}</td>
 													<td class="{{$tdRowClass}}">{{$bidRow['bid_interest_rate']}}%</td>	
-													<td class="{{$tdRowClass}} text-right">{{$bidRow['bid_amount']}}</td>		
+													<td class="{{$tdRowClass}} text-right">{{number_format($bidRow['bid_amount'],2,'.',',')}}</td>		
 												</tr>	
 												@var	$i++;
 											@endforeach

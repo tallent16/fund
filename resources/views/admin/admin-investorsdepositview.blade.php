@@ -58,7 +58,7 @@
 	<div class="col-sm-12 space-around">
 		<div class="annoucement-msg-container">
 			<div class="alert alert-success">
-				{{Lang::get('Investor Deposit Updated Successfully updated')}}
+				{{Lang::get('Investor Deposit Successfully Updated')}}
 		</div>				
 	</div>
 @endif
@@ -68,7 +68,7 @@
 		@var $addclass  = ""
 		@var $viewclass = ""
 		@if($adminInvDepViewMod->processbuttontype == "edit")
-					@var $editclass = "disabled"
+			@var $editclass = "disabled"
 		@elseif($adminInvDepViewMod->processbuttontype == "add")		
 			@var $addclass  = "disabled"
 		@else
@@ -122,11 +122,8 @@
 						@else
 								{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
 				
-						@endif
-				
-					</div>	
-				
-							
+						@endif				
+					</div>
 				</div> <!-- Row 1 -->
 				
 				<div class="row"><!-- Row 2 -->				
@@ -148,9 +145,7 @@
 								<span class="glyphicon glyphicon-calendar"></span>
 							</label>
 						</div>
-					</div>				
-								
-						
+					</div>
 				</div> <!-- Row 2 -->
 				
 				<div class="row"><!-- Row 3 -->				
@@ -168,8 +163,6 @@
 									value="{{number_format($adminInvDepViewMod->deposit_amount,2,'.',',')}}" 
 									{{$viewclass}} />						
 					</div>
-								
-								
 				</div> <!-- Row 3 -->
 							
 				

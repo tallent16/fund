@@ -175,7 +175,7 @@
 										</td> 
 										<td  id="cur_loan_amount">
 											 @if(isset($invFeatureLoans[0]))
-												{{$invFeatureLoans[0]->amount}}
+												{{number_format($invFeatureLoans[0]->amount,2,'.',',')}}
 											@endif
 										</td>										
 									</tr>
@@ -230,37 +230,37 @@
 										<thead>
 											<tr>
 												<th class="tab-head text-left">{{Lang::get('ACCOUNT SUMMARY')}}</th>
-												<th class="tab-head text-right">{{Lang::get('Verified')}}</th>
-												<th class="tab-head text-right">{{Lang::get('Pending Approval')}}</th>										
+												<th class="tab-head text-right">{{Lang::get('VERIFIED')}}</th>
+												<th class="tab-head text-right">{{Lang::get('PENDING APPROVAL')}}</th>										
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<td class="text-left tab-left-head">{{Lang::get('Investments')}}</td>
 												<td class="text-right">
-													{{$Investments_verified}}
+													{{number_format($Investments_verified,2,'.',',')}}
 												</td>
 												<td class="text-right">
-													{{$Investments_pending}}
+													{{number_format($Investments_pending,2,'.',',')}}
 												</td>										
 											</tr>
 											<tr>
 												<td class="text-left tab-left-head">{{Lang::get('Deposits')}}</td>
 												<td class="text-right">
-													{{$deposits_verified}}
+													{{number_format($deposits_verified,2,'.',',')}}
 												</td>	
 												<td class="text-right">
-													{{$deposits_pending}}
+													{{number_format($deposits_pending,2,'.',',')}}
 												</td>	
 																							
 											</tr>	
 											<tr> 
 												<td class="text-left tab-left-head">{{Lang::get('Withdrawals')}}</td>
 												<td class="text-right">
-													{{$withdrawals_verified}}
+													{{number_format($withdrawals_verified,2,'.',',')}}
 												</td>	
 												<td class="text-right">
-													{{$withdrawals_pending}}
+													{{number_format($withdrawals_pending,2,'.',',')}}
 												</td>	
 																				
 											</tr>@var	$ava_for_invest_verified	=	$deposits_verified -(($Investments_verified+$withdrawals_verified))
@@ -268,12 +268,12 @@
 							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
 											<tr>
 												<td class="text-left tab-left-head">{{Lang::get('Available for investment')}}</td>
-												<td class="text-right">{{$ava_for_invest_verified}}</td>
-												<td class="text-right">{{$ava_for_invest_pending}}</td>										
+												<td class="text-right">{{number_format($ava_for_invest_verified,2,'.',',')}}</td>
+												<td class="text-right">{{number_format($ava_for_invest_pending,2,'.',',')}}</td>										
 											</tr>										
 											<tr>
 												<td class="text-left tab-left-head">{{Lang::get('Grand Total')}}</td>
-												<td class="text-right">{{$grand_total}}</td>										
+												<td class="text-right">{{number_format($grand_total,2,'.',',')}}</td>										
 												<td class="text-right"></td>										
 											</tr>										
 										</tbody>
@@ -303,16 +303,16 @@
 						 <div class="panel panel-primary panel-container">
 								
 					<div class="table-responsive">
-						<table class="table tab-fontsize">
+						<table class="table tab-fontsize text-left">
 							<thead>
 								<tr>
-									<th class="tab-head">{{Lang::get('BORROWER\'S NAME')}}</th>
-									<th class="tab-head">{{Lang::get('GRADE')}}</th>
+									<th class="tab-head text-left">{{Lang::get('BORROWER\'S NAME')}}</th>
+									<th class="tab-head text-left">{{Lang::get('GRADE')}}</th>
 									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
 									<th class="tab-head text-right">{{Lang::get('AMOUNT INVESTED')}}</th>
-									<th class="tab-head">{{Lang::get('DATE OF INVESTMENT')}}</th>
+									<th class="tab-head text-left">{{Lang::get('DATE OF INVESTMENT')}}</th>
 									<th class="tab-head text-right">{{Lang::get('TENURE OF LOAN')}}</th>
-									<th class="tab-head">{{Lang::get('TYPE OF LOAN')}}</th>
+									<th class="tab-head text-left">{{Lang::get('TYPE OF LOAN')}}</th>
 									<th class="tab-head text-right">{{Lang::get('RATE OF INTEREST')}}</th>
 									<th class="tab-head text-right">{{Lang::get('INTEREST PAID')}}</th>
 									<th class="tab-head text-right">{{Lang::get('PRINCIPAL PAID')}}</th>
@@ -323,14 +323,14 @@
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
 										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td class="text-right">{{$loanRow['loan_sanctioned_amount']}}</td>
-										<td class="text-right">{{$loanRow['bid_amount']}}</td>
+										<td class="text-right">{{number_format($loanRow['loan_sanctioned_amount'],2,'.',',')}}</td>
+										<td class="text-right">{{number_format($loanRow['bid_amount'],2,'.',',')}}</td>
 										<td>{{$loanRow['date_of_investment']}}%</td>
 										<td class="text-right">{{$loanRow['loan_tenure']}}</td>
 										<td>{{$loanRow['bid_type']}}</td>
 										<td class="text-right">{{$loanRow['bid_interest_rate']}}</td>
-										<td class="text-right">{{$loanRow['interest_paid']}}</td>
-										<td class="text-right">{{$loanRow['principal_amount_paid']}}</td>
+										<td class="text-right">{{number_format($loanRow['interest_paid'],2,'.',',')}}</td>
+										<td class="text-right">{{number_format($loanRow['principal_amount_paid'],2,'.',',')}}</td>
 									</tr>				
 								@endforeach	
 												
@@ -356,19 +356,19 @@
          <div class="panel panel-primary panel-container">
 							
 					<div class="table-responsive">
-						<table class="table tab-fontsize">
+						<table class="table tab-fontsize text-left">
 							<thead>
 								<tr>
-									<th class="tab-head">{{Lang::get('BORROWER\'S NAME')}}</th>
-									<th class="tab-head">{{Lang::get('GRADE')}}</th>
+									<th class="tab-head text-left">{{Lang::get('BORROWER\'S NAME')}}</th>
+									<th class="tab-head text-left">{{Lang::get('GRADE')}}</th>
 									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
 									<th class="tab-head text-right">{{Lang::get('AMOUNT INVESTED')}}</th>
-									<th class="tab-head">{{Lang::get('DATE OF INVESTMENT')}}</th>
-									<th class="tab-head">{{Lang::get('BID CLOSE DATE')}}</th>
+									<th class="tab-head text-left">{{Lang::get('DATE OF INVESTMENT')}}</th>
+									<th class="tab-head text-left">{{Lang::get('BID CLOSE DATE')}}</th>
 									<th class="tab-head text-right">{{Lang::get('TENURE OF LOAN')}}</th>
-									<th class="tab-head">{{Lang::get('TYPE OF LOAN')}}</th>	
-									<th class="tab-head"></th>	
-									<th class="tab-head"></th>									
+									<th class="tab-head text-left">{{Lang::get('TYPE OF LOAN')}}</th>	
+									<th class="tab-head text-left"></th>	
+									<th class="tab-head text-left"></th>									
 								</tr>
 							</thead>
 							<tbody>
@@ -376,8 +376,8 @@
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
 										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td class="text-right">{{$loanRow['apply_amount']}}</td>
-										<td class="text-right">{{$loanRow['bid_amount']}}</td>
+										<td class="text-right">{{number_format($loanRow['apply_amount'],2,'.',',')}}</td>
+										<td class="text-right">{{number_format($loanRow['bid_amount'],2,'.',',')}}</td>
 										<td>{{$loanRow['date_of_investment']}}%</td>
 										<td>{{$loanRow['bid_close_date']}}</td>
 										<td class="text-right">{{$loanRow['loan_tenure']}}</td>
@@ -390,8 +390,7 @@
 						</table>											
 					</div><!-----third row end--->	
                 </div>              
-        
-        
+             
         
         
         </div>
@@ -409,25 +408,24 @@
         
 				 <div class="panel panel-primary panel-container">
 					<div class="table-responsive"><!---table start-->	
-					<table class="table tab-fontsize">
+					<table class="table tab-fontsize text-left">
 							<thead>
 								<tr>
-									<th class="tab-head">{{Lang::get('BORROWER\'S NAME')}}</th>
-									<th class="tab-head">{{Lang::get('GRADE')}}</th>
+									<th class="tab-head text-left">{{Lang::get('BORROWER\'S NAME')}}</th>
+									<th class="tab-head text-left">{{Lang::get('GRADE')}}</th>
 									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
 									<th class="tab-head text-right">{{Lang::get('AMOUNT OVERDUE')}}</th>
 									<th class="tab-head text-right">{{Lang::get('OVERDUE SINCE')}}</th>
-									<th class="tab-head" colspan="5"></th>	
-																																
+									<th class="tab-head" colspan="5"></th>																																	
 								</tr>
 							</thead>
 							<tbody>
 								@foreach($overDueInfo as $loanRow)
 									<tr>
-										<td>{{$loanRow['business_name']}}</td>
-										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td class="text-right">{{$loanRow['accepted_amount']}}</td>
-										<td class="text-right">{{$loanRow['payment_schedule_amount']}}</td>
+										<td class="text-left">{{$loanRow['business_name']}}</td>
+										<td class="text-left">{{$loanRow['borrower_risk_grade']}}</td>
+										<td class="text-right">{{number_format($loanRow['accepted_amount'],2,'.',',')}}</td>
+										<td class="text-right">{{number_format($loanRow['payment_schedule_amount'],2,'.',',')}}</td>
 										<td class="text-right">{{$loanRow['overdue_since']}}</td>
 										<td colspan="5"></td>
 									</tr>				

@@ -136,7 +136,7 @@
 									<input 	type="text" 
 												id="paid_up_capital" 
 												name="paid_up_capital"
-												value="{{ $modelBorPrf->paid_up_capital }}"
+												value="{{number_format($modelBorPrf->paid_up_capital,2,'.',',') 	 }}"
 												class="form-control text-right required"
 												/>						
 								</div>

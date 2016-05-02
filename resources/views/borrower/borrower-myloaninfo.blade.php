@@ -163,7 +163,7 @@
 													<tr>
 														<td>
 															@if($loanRow->amount_applied	!=	"")
-																{{$loanRow->amount_applied}}
+																{{number_format($loanRow->amount_applied,2,'.',',')}}
 															@else
 																--
 															@endif
@@ -173,7 +173,7 @@
 													<tr>
 														<td>
 															@if($loanRow->amount_realized	!=	"")
-																{{$loanRow->amount_realized}}
+																{{number_format($loanRow->amount_realized,2,'.',',')}}
 															@else
 																--
 															@endif															
@@ -191,7 +191,7 @@
 													<tr>
 														<td>
 															@if($loanRow->outstanding	!=	"")
-																{{$loanRow->outstanding}}
+																{{number_format($loanRow->outstanding,2,'.',',')}}
 															@else
 																--
 															@endif	

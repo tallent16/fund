@@ -16,7 +16,7 @@
 		var baseUrl	=	"{{url()}}"
 		var replyUrl=	baseUrl+'/ajax/investor/send_reply'
 	</script>
-	<script src="{{ url("js/common.js") }}" type="text/javascript"></script>
+	
 @endsection
 @section('page_heading',Lang::get('My Loans'))
 @section('section')     
@@ -44,10 +44,12 @@
 				</li>			
 				<li>
 					<a data-toggle="tab" href="#company_details">{{Lang::get('COMPANY DETAILS')}}</a>
-				</li>			
-				<li>
-					<a data-toggle="tab" href="#payment_schedule">{{Lang::get('PAYMENT SCHEDULE')}}</a>
-				</li>			
+				</li>	
+				@if($LoanDetMod->loan_status	==	LOAN_STATUS_DISBURSED)
+					<li>
+						<a data-toggle="tab" href="#payment_schedule">{{Lang::get('PAYMENT SCHEDULE')}}</a>
+					</li>	
+				@endif		
 			</ul>
 
 			<div class="tab-content myloan-wrapper">
@@ -57,9 +59,11 @@
 				<div id="company_details" class="tab-pane fade">
 					@include('widgets.common.tab.myloans_companydetails')
 				</div>
-				<div id="payment_schedule" class="tab-pane fade">
-					@include('widgets.investor.tab.myloans_payment_schedule')
-				</div>			
+				@if($LoanDetMod->loan_status	==	LOAN_STATUS_DISBURSED)
+					<div id="payment_schedule" class="tab-pane fade">
+						@include('widgets.investor.tab.myloans_payment_schedule')
+					</div>	
+				@endif		
 			</div>
 		</div>
 					

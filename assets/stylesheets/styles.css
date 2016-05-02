@@ -2563,6 +2563,7 @@ output {
   -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  margin:5px 0 0 0;
 }
 .form-control:focus {
   border-color: #66afe9;
@@ -9023,10 +9024,14 @@ canvas.round {
 }
 .controls .input-group{
 	width:100%;	
+	margin:5px 0 0 0;	
 }
+.controls .form-control{
+	margin:0;
+}/*
 .input-space .row{
 	margin:5px 0 0 0;
-}
+}*/
 .space-around{
 	margin:20px 0 0 0;
 }
@@ -9183,7 +9188,9 @@ nav .block-title{
 .applyloan .panel-headsection{
 	padding:5px;
 }
-#company_info .btn.selectpicker, #investor-deposit .btn.selectpicker {
+#company_info .btn.selectpicker, 
+#investor-deposit .btn.selectpicker,
+#investor-withdrawal .btn.selectpicker{
     opacity: 1;
     margin-bottom: -10px;    
     color: #555;
@@ -9198,6 +9205,7 @@ nav .block-title{
 }
 .applyloan .btn-group.bootstrap-select {
     width: 100%;
+    margin:5px 0 0 0;
 }
 .jfilestyle label {
     background-color: #8D8D8D;
@@ -9571,13 +9579,13 @@ table#account-summary, .table-border-custom{
    
 }
 @media(min-width:768px) and (max-width:980px) {
-	.disburse-loan .row div:nth-last-child(2),
-    .disburse-loan .row div:last-child{
+/*	.input-space .row div:nth-last-child(2),
+    .input-space .row div:last-child{
 		margin:5px 0 0 0;
     }
     .input-space .row{
 		margin:5px 0 0 0;
-    }
+    }*/
 }
 @media(min-width:768px){
 	  #page-wrapper {

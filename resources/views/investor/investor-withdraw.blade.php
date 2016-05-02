@@ -44,7 +44,7 @@
 							<input type="text" 
 									name="available_bal" 
 									id="available_bal"
-									value="{{round($modelwithdraw->available_bal,2)}}" 
+									value="{{number_format($modelwithdraw->available_bal,2,'.',',')}}" 
 									class="form-control text-right"
 									disabled>
 						</div>

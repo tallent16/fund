@@ -1,3 +1,11 @@
+@var	$allowBidInfo	=	"yes"
+@if($LoanDetMod->userType	==	USER_TYPE_BORROWER)
+	@if(	$LoanDetMod->inv_or_borr_id		==	$LoanDetMod->borrower_id)
+		@var	$allowBidInfo	=	"yes"
+	@else
+		@var	$allowBidInfo	=	"no"
+	@endif
+@endif
 <div class="col-md-12">
 	<div class="row">
 		<div class="col-md-3 col-sm-4 col-xs-4">
@@ -61,13 +69,15 @@
 			</div>
 			<div class="col-md-5 col-xs-5">{{$LoanDetMod->target_interest}} %</div>
 		</div>
-		
-		<div class="row">						
-			<div class="col-md-7 col-xs-7"> 
-				<i class="fa fa-bar-chart-o "></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.avg_interest_bid') }}:</span>
+		@if( ($LoanDetMod->bid_type	==	LOAN_BID_TYPE_OPEN_AUCTION) && 
+			($allowBidInfo	==	"yes") )
+			<div class="row">
+				<div class="col-md-7 col-xs-7"> 
+					<i class="fa fa-bar-chart-o "></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.avg_interest_bid') }}:</span>
+				</div>
+				<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}} %</div>
 			</div>
-			<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}} %</div>
-		</div>
+		@endif
 		
 		<div class="row">					
 			<div class="col-md-7 col-xs-7"> 
@@ -86,36 +96,53 @@
 			<div class="col-md-5 col-xs-5">{{$LoanDetMod->statusText}}</div>
 		</div>
 	</div>	
+	@var	$bidCnt				=	count($LoanDetMod->bidDetail)
 	<!-- Investor Bid section starts here -->
 	@if($LoanDetMod->userType	==	USER_TYPE_INVESTOR)
 		@if($LoanDetMod->loan_status	==	LOAN_STATUS_APPROVED)
 			<div class="row space-around">
 				<div class="text-center">
 					<input 	type="hidden" 
-							value="{{ InvBal::available_balance() }}"
+							value=""
 							id="available_balance" />
-					<button type="button" 
-							class="btn verification-button"
-							id="bid_now">
-							{{Lang::get('BID NOW')}}
-						<i class="fa fa-gavel"></i>
-					</button>
+					@if($bidCnt	==	0) 
+						<button type="button" 
+								class="btn verification-button"
+								id="bid_now">
+								{{Lang::get('BID NOW')}}
+							<i class="fa fa-gavel"></i>
+						</button>
+					@endif
 				</div>
 			</div>
-			@var	$bidCnt				=	count($LoanDetMod->bidDetail)
-			@var	$bid_amount			=	isset($LoanDetMod->bidDetail['bid_amount'])?$LoanDetMod->bidDetail['bid_amount']:''
+			@var	$bidTypeStatus	=	""
+			@if( isset($LoanDetMod->bidDetail['bid_amount']) )
+				@var	$bid_amount	=	$LoanDetMod->bidDetail['bid_amount']
+			@else
+				@var	$bid_amount	=	"0.00"
+			@endif
+			
 			@if( isset($LoanDetMod->bidDetail['bid_interest_rate']) )
 				@var	$bid_interest_rate	=	$LoanDetMod->bidDetail['bid_interest_rate']
 			@else
-				@var	$bid_interest_rate	=	''
+				@if($LoanDetMod->bid_type	==	LOAN_BID_TYPE_FIXED_INTEREST)
+					@var	$bid_interest_rate	=	$LoanDetMod->target_interest
+				@else
+					@var	$bid_interest_rate	=	"0.00"
+				@endif
 			@endif
+			
+			@if($LoanDetMod->bid_type	==	LOAN_BID_TYPE_FIXED_INTEREST)
+				@var	$bidTypeStatus	=	"readonly"
+			@endif
+			
 			@if( isset($LoanDetMod->bidDetail['bid_id']) )
 				@var	$bid_id	=	$LoanDetMod->bidDetail['bid_id']
 			@else
 				@var	$bid_id	=	''
 			@endif
 			
-			<form method="post" id="form-bid" style="display:none">
+			<form method="post" id="form-bid" {{($bidCnt	==	0)?"style='display:none'":""}} >
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 				<input type="hidden" name="bid_id" value="{{ $bid_id }}">	
 				<input 	type="hidden" 
@@ -131,6 +158,15 @@
 						name="loan_id"
 						value="{{$LoanDetMod->loan_id}}"
 						/>
+				<input 	type="hidden" 
+						id="bid_type"
+						value="{{$LoanDetMod->bid_type}}"
+						/>
+				
+				<input 	type="hidden" 
+						id="target_interest"
+						value="{{$LoanDetMod->target_interest}}"
+						/>
 				<div class="row space-around">
 					<div class="col-md-6 col-xs-6">	
 						<strong>{{Lang::get('Bid Amount')}}</strong><br>
@@ -138,21 +174,32 @@
 								name="bid_amount"
 								id="bid_amount"
 								value="{{$bid_amount}}"
+								decimal=2
+								class="form-control amount-align">
+								
+						<input 	type="hidden" 
+								name="prev_bid_amount"
+								value="{{$bid_amount}}"
 								class="form-control">
 					</div>
 					<div class="col-md-6 col-xs-6">	
 						<strong>{{Lang::get('Bid Interest')}}</strong><br>
 						<input 	type="text" 
 								name="bid_interest_rate"
+								id="bid_interest_rate"
 								value="{{$bid_interest_rate}}"
-								class="form-control">
+								decimal=2
+								class="form-control  amount-align"
+								{{$bidTypeStatus}} >
 					</div>
 				</div>
 				<div class="row space-around">
 					<div class="col-md-5 col-xs-5">	
 						<button type="submit" 
+								id="submit_bid"
+								onclick="LoanBidClicked()"
 								class="btn verification-button"
-								>{{Lang::get('Submit')}}
+								>{{Lang::get('Submit Bid')}}
 						</button>
 					</div>
 					@if($bidCnt > 0)
@@ -161,8 +208,9 @@
 							<div class="col-md-5 col-xs-5">	
 								<button type="submit" 
 										class="btn verification-button"
-										id="cancel_bid">
-										{{Lang::get('Cancel')}}
+										id="cancel_bid"
+										onclick="cancelLoanBidClicked()">
+										{{Lang::get('Cancel Bid')}}
 								</button>
 							</div>
 						@endif

@@ -76,8 +76,8 @@ Route::group(['prefix' => ''], function() {
     define('INVESTOR_STATUS_REJECTED','6');
 
     define('LOAN_BID_TYPE_OPEN_AUCTION','1');
-    define('LOAN_BID_TYPE_CLOSED_AUCTION','1');
-    define('LOAN_BID_TYPE_FIXED_INTEREST','1');
+    define('LOAN_BID_TYPE_CLOSED_AUCTION','2');
+    define('LOAN_BID_TYPE_FIXED_INTEREST','3');
 
     define('LOAN_STATUS_NEW', '1');
     define('LOAN_STATUS_SUBMITTED_FOR_APPROVAL', '2');
@@ -267,6 +267,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::match(['get', 'post'],'investor/withdraw', 'InvestorBankController@withdrawAction');  
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	   	
+    Route::post('investor/ajax/availableBalance', 'LoanDetailsController@ajaxAvailableBalanceAction');	   	
 });
 
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');

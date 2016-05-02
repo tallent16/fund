@@ -221,7 +221,7 @@
 										</td>
 										<td  id="cur_loan_amount">
 											@if(isset($borCurLoans[0]))
-												{{$borCurLoans[0]->amount}}
+												{{number_format($borCurLoans[0]->amount,2,'.',',')}}
 											@endif
 										</td>
 									</tr>										
@@ -257,7 +257,7 @@
 											@foreach($borCurLoans as $curLoan)
 												@var $totalLoanAmount = $totalLoanAmount	+	$curLoan->amount
 											@endforeach
-											{{$totalLoanAmount}}
+											{{number_format($totalLoanAmount,2,'.',',')}}
 										</td>										
 									</tr>										
 								</tbody>
@@ -299,11 +299,11 @@
 										<td>{{$loanRow['loan_reference_number']}}</td>
 										<td>{{$loanRow['last_payment']}}</td>
 										<td>{{$loanRow['next_payment']}}</td>
-										<td class="text-right">{{$loanRow['amount_paid']}}</td>
+										<td class="text-right">{{number_format($loanRow['amount_paid'],2,'.',',')}}</td>
 										<td class="text-right">{{$loanRow['inst_rate']}}%</td>
 										<td class="text-right">{{$loanRow['no_of_installment']}}</td>
-										<td class="text-right">{{$loanRow['total_repayments']}}</td>
-										<td class="text-right">{{$loanRow['tot_prin_outstanding']}}</td>
+										<td class="text-right">{{number_format($loanRow['total_repayments'],2,'.',',')}}</td>
+										<td class="text-right">{{number_format($loanRow['tot_prin_outstanding'],2,'.',',')}}</td>
 										<td>{{$loanRow['repayment_status']}}</td>
 									</tr>				
 								@endforeach						

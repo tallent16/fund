@@ -30,6 +30,8 @@ class LoanDetailsModel extends TranWrapper {
 	public	$apply_amount				=	"";
 	public	$repayment_type				=	"";
 	public	$loan_status				=	"";
+	public	$target_interest			=	0;
+	public	$bid_type					=	0;
 	public 	$directorInfo				= 	array();
 	public 	$bidInfo 					= 	array();
 	public 	$bidDetail 					= 	array();
@@ -100,6 +102,7 @@ class LoanDetailsModel extends TranWrapper {
 											loans.loan_tenure,
 											round(ifnull(total_bid * 100 / apply_amount,0),2) perc_funded,
 											loans.target_interest,
+											loans.bid_type,
 											if(loans.bid_close_date < now(),'Bid Closed',
 													datediff(loans.bid_close_date, now())) days_to_go,
 											if (ifnull(featured.loan_id,-1) = -1, 0, 1) isfeatured,
@@ -391,18 +394,29 @@ class LoanDetailsModel extends TranWrapper {
 	
 	public function processBid($postArray) {
 		
-		$transType 	= $postArray['bid_trantype'];
-		if($transType	==	"new") {
-			$this->insertBidInfo($postArray);
+		$transType			=	$postArray['bid_trantype'];
+		$bid_amount			=	$postArray['bid_amount'];
+		$bid_interest_rate	=	$postArray['bid_interest_rate'];
+		
+		if(	($bid_interest_rate	>	0)	&&	($bid_interest_rate	>	0)	) {
+			
+			if($transType	==	"new") {
+				return $this->insertBidInfo($postArray);
+			}else{
+				return $this->updateBidInfo($postArray);
+			}
 		}else{
-			$this->updateBidInfo($postArray);
+			return	-1;
 		}
 	}
 	
 	public function insertBidInfo($postArray) {
 		
-		$bid_amount				=	($postArray['bid_amount']!="")?$postArray['bid_amount']:null;
-		$bid_interest_rate		=	($postArray['bid_interest_rate']!="")?$postArray['bid_interest_rate']:null;
+		$bid_amount				=	$postArray['bid_amount'];
+		$bid_amount				=	$this->makeFloat($bid_amount);
+		$bid_interest_rate		=	$postArray['bid_interest_rate'];
+		$bid_interest_rate		=	$this->makeFloat($bid_interest_rate);
+		$available_balance		=	$this->getInvestorAvailableBalanceById($this->inv_or_borr_id);
 		
 		$dataArray 				= 	array(	'loan_id'			=> $postArray['loan_id'],
 											'investor_id'		=> $this->inv_or_borr_id,
@@ -411,27 +425,62 @@ class LoanDetailsModel extends TranWrapper {
 											'bid_interest_rate' => $bid_interest_rate,
 											'bid_status' 		=> LOAN_BIDS_STATUS_OPEN);
 							
-		$loanBidId =  $this->dbInsert('loan_bids', $dataArray, true);
+		$loanBidId				= 	$this->dbInsert('loan_bids', $dataArray, true);
+		
+		
+		//Update the Available Balance For the Investor
+		$resetAvailableBalance	=	$available_balance	-	$bid_amount;
+		
+		$investorWhereArray		=	array("investor_id"	=>	$this->inv_or_borr_id);
+		$investorDataArray		=	array("available_balance"	=>	$resetAvailableBalance);
+		
+		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
+		
+		//Update the Available Balance For the Investor
+		
 		return $loanBidId;
 	}
 	
 	public function updateBidInfo($postArray) {
 		
-		$bid_amount				=	($postArray['bid_amount']!="")?$postArray['bid_amount']:null;
-		$bid_interest_rate		=	($postArray['bid_interest_rate']!="")?$postArray['bid_interest_rate']:null;
+		$bid_amount				=	$postArray['bid_amount'];
+		$bid_amount				=	$this->makeFloat($bid_amount);
+		$bid_interest_rate		=	$postArray['bid_interest_rate'];
+		$bid_interest_rate		=	$this->makeFloat($bid_interest_rate);
+		$prev_bid_amount		=	$this->makeFloat($postArray['prev_bid_amount']);
+		$available_balance		=	$this->getInvestorAvailableBalanceById($this->inv_or_borr_id);
+		
 		$bid_id					=	$postArray['bid_id'];
 		if($postArray['isCancelButton']	==	"yes") {
 			
 			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
 												'bid_status' 		=> LOAN_BIDS_STATUS_CANCELLED);
+			$resetAvailableBalance	=	$available_balance	+	$prev_bid_amount;
 		}else{
 			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
 												'bid_amount' 		=> $bid_amount,
 												'bid_interest_rate' => $bid_interest_rate,
-												'bid_status' 		=> LOAN_BIDS_STATUS_ACCEPTED);
+												'bid_status' 		=> LOAN_BIDS_STATUS_OPEN);
+			$resetAvailableBalance	=	($available_balance	+	$prev_bid_amount)	-	$bid_amount;
 		}
 							
 		$whereArry					=	array("bid_id" =>"{$bid_id}");
 		$this->dbUpdate('loan_bids', $dataArray, $whereArry);
+		
+		//Update the Available Balance For the Investor
+		
+		$investorWhereArray		=	array("investor_id"	=>	$this->inv_or_borr_id);
+		$investorDataArray		=	array("available_balance"	=>	$resetAvailableBalance);
+		
+		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
+		
+		//Update the Available Balance For the Investor
+		
+		return $bid_id;
+	}
+	
+	public	function getInvestorAvailablBalance() {
+		$available_balance		=	$this->getInvestorAvailableBalanceById($this->inv_or_borr_id);
+		return	$available_balance;
 	}
 }

@@ -1,7 +1,7 @@
 	<ul class="nav" id="side-menu">
 		<li class="sidebar-balance">
 			<div class="head-balance">{{ Lang::get('borrower-leftmenu.balance') }} : 
-				{{ InvBal::available_balance() }}
+				{{number_format(InvBal::available_balance(),2,'.',',')}}
 			</div>                             
 		</li>
 		 <li>
