@@ -150,10 +150,10 @@
 							<table class="table text-left">								
 								<tbody>
 									<tr>
-										<td  class="tab-left-head">
+										<td  class="tab-left-head col-sm-6">
 										{{Lang::get('Rate%')}}
 										</td> 
-										<td  id="cur_loan_rate" >
+										<td  id="cur_loan_rate" class="col-sm-6">
 											 @if(isset($invFeatureLoans[0]))
 												{{$invFeatureLoans[0]->rate}}%
 											@endif

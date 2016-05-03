@@ -11,7 +11,7 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$mobile	  						=  	"";
 	public 	$date_of_birth  				=  	"";
 	public 	$nric_number			  		=  	"";
-	public 	$statusText			  			=  	"";
+	public 	$statusText			  			=  	"New profile";
 	public 	$viewStatus			  			=  	"";
 	public 	$investor_bankid  				=  	"";
 	public 	$bank_name  					=  	"";
@@ -20,6 +20,8 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$bank_code						=  	"";
 	public 	$commentsInfo 					= 	array();
 	public 	$comments_count					= 	0;
+	public 	$status							= 	"";
+	
 		
 	public function getInvestorDetails($inv_id=null) {
 		
@@ -35,7 +37,7 @@ class InvestorProfileModel extends TranWrapper {
 		}else{
 			$current_user_id	=	$this->getUseridByInvestorID($inv_id);
 		}
-		
+		$this->status			= INVESTOR_STATUS_NEW_PROFILE;
 		$investorprofile_sql	= 	"	SELECT 	investors.investor_id ,
 											ifnull(DATE_FORMAT(investors.date_of_birth,'%d/%m/%Y'),'') date_of_birth,
 											investors.nric_number,

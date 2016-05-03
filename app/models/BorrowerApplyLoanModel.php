@@ -364,7 +364,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 										expression
 								FROM	codelist_details
 								WHERE	codelist_id in ($loanTenureCode)
-								AND		expression !='all'";
+								AND		expression !='all' order by codelist_code desc";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);
 

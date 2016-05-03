@@ -35,12 +35,11 @@ class AdminManageBorrowersModel extends TranWrapper {
 											(	SELECT 	COUNT(loans.loan_id)
 												FROM 	loans 
 												WHERE 	loans.status IN (:approved, :closed,:disbursed,:repaid)
-												AND 	loans.borrower_id = lns.borrower_id
+												AND 	loans.borrower_id = borrowers.borrower_id
 											) active_loan, 
 											(	SELECT 	ROUND(sum(principal_component),2)
 												FROM 	borrower_repayment_schedule 
-												WHERE 	borrower_repayment_schedule.loan_id = lns.loan_id 
-												AND		repayment_status != :repaidStatus 
+												WHERE 	repayment_status != :repaidStatus 
 												AND 	borrowers.borrower_id = borrower_repayment_schedule.borrower_id 
 											) tot_bal_outstanding, 
 											case borrowers.status 
@@ -51,10 +50,8 @@ class AdminManageBorrowersModel extends TranWrapper {
 											end as statusText,
 											borrowers.status 
 									FROM 	borrowers, 
-											loans lns, 
 											users 
-									WHERE 	borrowers.borrower_id = lns.borrower_id 
-									AND 	borrowers.user_id = users.user_id 
+									WHERE 	borrowers.user_id = users.user_id 
 									AND 	{$borrowerStatusWhere} 
 									GROUP BY	borrowers.borrower_id";
 									

@@ -115,19 +115,15 @@
 						<tbody>
 							@if (count($adminInvDepListMod->depositListInfo) > 0)			
 								@foreach($adminInvDepListMod->depositListInfo as $depositListRow)
+								
 									@var	$invUrl	=	url('admin/investordepositview/')
 									@var	$invaddUrl	=	$invUrl."/add/0/".base64_encode($depositListRow->investor_id)
-									@if($depositListRow->trans_status_name	==	"Unapproved")
-										@var	$inveditUrl	=	$invUrl."/edit/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
-										@var	$invviewUrl	=	$invUrl."/view/".base64_encode($depositListRow->payment_id)."/".base64_encode($depositListRow->investor_id)
-									@else
-										@var	$inveditUrl	= "javascript:void(0);"
-										@var    $invaddUrl  = "javascript:void(0);"
-										@var	$invviewUrl	= $invUrl."/view/".base64_encode($depositListRow->investor_id)
-									@endif
+									@var	$inveditUrl	=	$invUrl."/edit/".base64_encode($depositListRow->payment_id)."/"
+									@var	$inveditUrl	=	$inveditUrl.base64_encode($depositListRow->investor_id)
+									@var	$invviewUrl	=	$invUrl."/view/".base64_encode($depositListRow->payment_id)."/"
+									@var	$invviewUrl	=	$invviewUrl.base64_encode($depositListRow->investor_id)
 									<tr>
 										<td class="text-center">									
-											<label>
 												<input 	type="checkbox" 
 														name="transaction_id[]"
 														class="select_investor_deposit"											

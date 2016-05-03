@@ -93,7 +93,7 @@
 				
 				<div class="col-md-6  col-xs-12 col-lg-offset-3">			
 					<div class="table-responsive"><!---table start-->
-						<table class="table applyloan">		
+						<table class="table applyloan text-left">		
 							<tbody>
 								<tr>
 									<th class="tab-head" colspan="2">{{ Lang::get('borrower-myloans.financials')}}</th>																	

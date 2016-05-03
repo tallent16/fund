@@ -9,9 +9,9 @@
 <div id="loans_info" class="tab-pane fade in active">
 	<div class="panel panel-default applyloan">   
 		<div class="panel-body">	
-					
+			<fieldset {{$BorModLoan->viewStatus}}>		
 			<!--	<div class="row">
-					<fieldset {{$BorModLoan->viewStatus}}>
+					
 					<!--
 					   <div class="col-md-6 col-xs-12 input-space">
 							

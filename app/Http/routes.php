@@ -174,7 +174,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::get('admin/manageinvestors', 'AdminManageInvestorsController@indexAction');
     Route::get('admin/borrower/updateprofile/{status}/{bor_id}', 'AdminManageBorrowersController@updateProfileStatusAction');   
     Route::post('admin/borrower/updateprofile', 'AdminManageBorrowersController@updateBulkProfileStatusAction');
-    Route::get('admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
+    Route::match(['get', 'post'],'admin/borrower/profile/{bor_id}', 'AdminManageBorrowersController@viewProfileAction');
 
     
     Route::get('admin/loanlisting', 'AdminLoanListingController@indexAction');
@@ -218,8 +218,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::match(['get', 'post'],'admin/investor/profile/{inv_id}', 'AdminManageInvestorsController@viewProfileAction');
     Route::get('admin/investor/updateprofile/{status}/{inv_id}', 'AdminManageInvestorsController@updateProfileStatusAction');
     Route::post('admin/investor/updateprofile', 'AdminManageInvestorsController@updateBulkProfileStatusAction');
-	
-
+	Route::post('admin/investor/ajax/availableBalance', 'AdminManageInvestorsController@ajaxAvailableBalanceByIDAction');	
     
 });
 

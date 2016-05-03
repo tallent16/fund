@@ -1,8 +1,9 @@
 	@var	$profileStatus		=	BorProfile::checkProfileStatus()
 	@var	$LoanAllowingStatus	=	BorProfile::getBorrowerLoanAllowingStatus()
-	
+	{{$profileStatus}}
 	@if($profileStatus	==	0	||	$profileStatus	==BORROWER_STATUS_NEW_PROFILE
-								||	$profileStatus	==BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+								||	$profileStatus	==BORROWER_STATUS_SUBMITTED_FOR_APPROVAL
+								||	$profileStatus	==BORROWER_STATUS_COMMENTS_ON_ADMIN)
 		
 		@var	$dashboardUrl		=	'javascript:void(0);'
 		@var	$applyLoanUrl		=	'javascript:void(0);'

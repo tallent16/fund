@@ -24,7 +24,8 @@
 											<input type="checkbox" id="select_all_comments" ><br>
 										</div>
 									@endif
-									@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									@if( (Auth::user()->usertype	==	USER_TYPE_BORROWER) 
+										|| (isset($user_type) && $user_type	==	"borrower") )
 										<div class="col-xs-9 col-lg-4">
 											<span class="pull-left">{{ Lang::get('Input Tab') }}</span> 
 										</div>
@@ -60,7 +61,8 @@
 														value="{{ $commentRow['profile_comments_id']}}"><br>
 											</div>
 										@endif
-										@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+										@if( (Auth::user()->usertype	==	USER_TYPE_BORROWER) 
+											|| (isset($user_type) && $user_type	==	"borrower") )
 											<div class="col-xs-4">
 												{{ Form::select('comment_row[input_tab][]',$inputTabInfo, $commentRow['input_tab'] , 
 																		['class' => 'inputTabDropDown selectpicker text-right required',

@@ -132,7 +132,8 @@
 							{{ Lang::get('Deposit Date') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3 controls">
+					<div class="col-xs-12 col-sm-7 col-lg-3">
+						<div class="controls">
 						<div class="input-group">
 							<input 	id="deposit_date" 
 									type="text" 
@@ -144,6 +145,7 @@
 							<label for="deposit_date" class="input-group-addon btn">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</label>
+							</div>
 						</div>
 					</div>
 				</div> <!-- Row 2 -->

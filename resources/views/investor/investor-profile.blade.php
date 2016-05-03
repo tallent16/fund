@@ -147,7 +147,6 @@
 					@if(($InvPrfMod->status	==	INVESTOR_STATUS_COMMENTS_ON_ADMIN)
 						||	($InvPrfMod->status	==	INVESTOR_STATUS_NEW_PROFILE) )
 					<button type="submit" 
-							style="display:none"
 							id="submit_button"
 							class="btn verification-button"
 							>

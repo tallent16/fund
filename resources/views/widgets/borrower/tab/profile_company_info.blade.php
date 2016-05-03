@@ -297,26 +297,18 @@
 			</div><!---row---> 
 			@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 				@if($gradeStatus	==	"")
-					<div class="row">
-						<div class="col-md-6 col-xs-12 input-space">
-						</div>
-						<div class="col-md-6 col-xs-12 input-space">
-							<div class="row">		
-								<div class="col-xs-12 col-sm-5">											
-									<button type="button" 
-											id="update_grade"
-											class="btn verification-button" >
-											<i class="fa pull-right"></i>
-											{{ Lang::get('Update Grade') }}
-									</button>											
-								</div>
-													
-								<div 	class="col-xs-12 col-sm-7">													
-									
-								</div>
-							</div>	
-						</div>
-					</div>
+					<div class="row">					
+						<div class="col-xs-12">		
+							<div class="pull-right">										
+								<button type="submit" 
+										id="update_grade"
+										class="btn verification-button" >
+										<i class="fa pull-right"></i>
+										{{ Lang::get('Update Grade') }}
+								</button>
+							</div>											
+						</div>									
+					</div>							
 				@endif
 			@endif
 		</div><!---panel body---> 

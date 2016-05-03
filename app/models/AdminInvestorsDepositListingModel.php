@@ -89,10 +89,10 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 									 WHERE  investors.user_id   	= users.user_id 
 									 AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
 									 AND 	investor_bank_transactions.status = if(:filter_codeparam = :unapprove_codeparam3, :unapproved_codeparam1, :approved_codeparam2)
-									 AND	investor_bank_transactions.trans_date 
+									 AND	investor_bank_transactions.trans_date
 											BETWEEN :fromDate AND :toDate 
 									AND		investor_bank_transactions.trans_type	=	:trans_type_codeparam5
-									 ORDER BY investor_bank_transactions.trans_date ";
+									 ORDER BY investor_bank_transactions.trans_date";
 						 
 		$dataArrayLoanList		=	[															
 										"filter_codeparam" 		=>	$this->filter_status,
@@ -107,7 +107,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 									];
 
 		$this->depositListInfo	=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-				
+	
 		return ;		
 		
 	}
@@ -171,7 +171,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			$this->deposit_date	=	date("d-m-Y");
 			$viewRecordSql		= "SELECT 
 										ROUND(payments.trans_amount,2) trans_amount,
-										date_format(payments.trans_date,'%d-%m-%Y') trans_date,
+										date_format(payments.trans_datetime,'%d-%m-%Y') trans_date,
 										payments.trans_reference_number,
 										payments.remarks,
 										investor_bank_transactions.trans_id,
@@ -186,6 +186,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			
 			$paramArray			=	["trans_type_codeparam"	=>	INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT];
 			$viewRecordRs		= 	$this->dbFetchWithParam($viewRecordSql,$paramArray);
+			
 			if (count($viewRecordRs) > 0) {
 			
 					$this->deposit_date		=	$viewRecordRs[0]->trans_date;
@@ -220,7 +221,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		}
 		
 		$depositpaymentInsert_data	=	array(
-										'trans_date' =>$this->deposit_date,
+										'trans_datetime' =>$this->deposit_date,
 										'trans_type' => PAYMENT_TRANSCATION_INVESTOR_DEPOSIT,							
 										'trans_amount' => $this->deposit_amount,
 										'currency' => $currency,
@@ -329,15 +330,6 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
 		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
-		
-		// Update the Investor Avaliable balance 
-		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
-		$resetAvailableBalance	=	$available_balance	-	$depositAmt;
-		
-		$whereInvestorArray		=	array("investor_id"	=>	$investorId);
-		$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
-		
-		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
 		
 		// Delete the Investor bank Transancation Record By the transaction ID
 		$whereDepositArry		=	array("trans_id" =>"{$trans_id}");

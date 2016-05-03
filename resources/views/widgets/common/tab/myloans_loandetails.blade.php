@@ -48,7 +48,7 @@
 		
 		<div class="col-md-8  col-xs-12 col-lg-offset-2">
 			<div class="table-responsive"><!---table start-->
-				<table class="table applyloan">		
+				<table class="table applyloan text-left">		
 					<tbody>
 						<tr>
 							<th class="tab-head-red">{{ Lang::get('borrower-myloans.financial_ratio')}}</th>

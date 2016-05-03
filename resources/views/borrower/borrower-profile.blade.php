@@ -179,7 +179,7 @@
 						
 					</div>	<!---col ends-->	
 				
-					<div class="row"> 
+					
 						<div class="col-sm-12"> 
 							<div class="pull-right">
 								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
@@ -242,7 +242,7 @@
 							@endif
 							</div>
 						</div> 
-					</div> 
+				
 				
 			</div><!--row end-->
 		</form>

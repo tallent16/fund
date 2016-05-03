@@ -89,7 +89,7 @@ function callAdminCommonFunc(){
 	 */ 
 	$("#update_grade").click(function(){
        $("#admin_process").val("update_grade");
-       $("#form-profile").submit();
+    //   $("#form-profile").submit();
     });
     /*=========================================================================================================
 	 * Admin Manage Borrowers jquery event function ends

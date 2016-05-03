@@ -112,4 +112,12 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,$postArray['processType']);
 		return redirect()->to('admin/manageinvestors');
 	}
+	
+	
+	public function ajaxAvailableBalanceByIDAction() {
+		
+		$investorId				=	Request::get("investor_id");
+		$availableBalance		=	$this->investorProfileModel->getInvestorAvailableBalanceById($investorId);
+		return $availableBalance;
+	}
 }

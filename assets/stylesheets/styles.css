@@ -2664,6 +2664,7 @@ input[type="search"] {
   font-weight: normal;
   vertical-align: middle;
   cursor: pointer;
+  margin:5px 0 0 0;
 }
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
@@ -9203,9 +9204,12 @@ nav .block-title{
 .applyloan{
 	background-color:#F9F9F9;	
 }
+.applyloan label{
+	margin:5px 0 0 0;
+}
 .applyloan .btn-group.bootstrap-select {
     width: 100%;
-    margin:5px 0 0 0;
+    margin:5px 0 10px 0;
 }
 .jfilestyle label {
     background-color: #8D8D8D;
@@ -9447,9 +9451,9 @@ tr.shown td.details-control {
 	background:transparent;
 	color:#ccc;
 }
-.bank-list .table-border-custom{
-	padding:5px;
+.bank-list .table-border-custom{	
 	border-radius:5px;
+	background-color: #eee;
 }
 /******************************Settings*********************************/
 .font-bold{

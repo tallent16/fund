@@ -63,7 +63,7 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		$result	 	= 	$this->borrowerApplyLoanModel->processLoan($postArray);
 		
 		$withArry	=	array(	"BorModLoan"=>$this->borrowerApplyLoanModel,
-									"classname"=>"fa fa-usd fa-fw user-icon"
+									"classname"=>"fa fa-file-image-o fa-fw"
 								);
 		if ($result) {
 			switch ($tranType) {

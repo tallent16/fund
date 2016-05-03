@@ -177,9 +177,10 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 			
 			$this->settlement_date		=	date("d-m-Y");
 			$this->request_date			=	date("d-m-Y");
+			$this->avail_bal			=	$this->getInvestorAvailableBalanceById($investorId);
 			$viewRecordSql		= "SELECT 
 										ROUND(payments.trans_amount,2) withdrawal_amount,
-										date_format(payments.trans_date,'%d-%m-%Y') settlement_date,
+										date_format(payments.trans_datetime,'%d-%m-%Y') settlement_date,
 										payments.trans_reference_number,
 										payments.remarks,
 										investor_bank_transactions.trans_id,
@@ -248,7 +249,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		
 		$withdrawpaymentInsert_data	=	array(
 										
-											'trans_date' 				=>	$this->settlement_date,
+											'trans_datetime' 			=>	$this->settlement_date,
 											'trans_type' 				=>	PAYMENT_TRANSCATION_INVESTOR_WITHDRAWAL,
 											'trans_amount' 				=> 	$this->withdrawal_amount,
 											'currency' 					=> 	$currency,
@@ -370,15 +371,6 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
 		$withdrawAmt			=	$investorBankTranInfo[0]->trans_amount;
-		
-		// Update the Investor Avaliable balance 
-		$available_balance		=	$this->getInvestorAvailableBalanceById($investorId);
-		$resetAvailableBalance	=	$available_balance	+	$withdrawAmt;
-		
-		$investorWhereArray		=	array("investor_id"	=>	$investorId);
-		$investorDataArray		=	array("available_balance"	=>	$resetAvailableBalance);
-		
-		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
 		
 		// Delete the Investor bank Transancation Record By the transaction ID
 		$deleteWhereArry		=	array("trans_id" =>"{$trans_id}");

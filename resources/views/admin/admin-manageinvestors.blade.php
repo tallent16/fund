@@ -62,11 +62,11 @@
 											</label>											
 										</th>
 										<th class="tab-head text-left col-sm-2">{{ Lang::get('Email Id') }}</th>
-										<th class="tab-head text-left col-sm-2">{{ Lang::get('Name') }}</th>
-										<th class="tab-head text-left col-sm-2">{{ Lang::get('Mobile Number') }}</th>
+										<th class="tab-head text-left col-sm-1">{{ Lang::get('Name') }}</th>
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Mobile No') }}</th>
 										<th class="tab-head text-right col-sm-1">{{ Lang::get('Active Loans') }}</th>
 										<th class="tab-head text-right col-sm-2">{{ Lang::get('Available Balance') }}</th>
-										<th class="tab-head text-left col-sm-1">{{ Lang::get('Status') }}</th>
+										<th class="tab-head text-left col-sm-2">{{ Lang::get('Status') }}</th>
 										<th class="tab-head text-left col-sm-1">{{ Lang::get('Actions') }}</th>									
 									</tr>
 								</thead>

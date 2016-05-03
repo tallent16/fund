@@ -3,7 +3,14 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 	<script>		
+	var	baseUrl	=	"{{url('')}}";
 	$(document).ready(function(){ 
+		
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('#hidden_token').val()
+			}
+		});
 		// date picker
 		$('.request_date').datetimepicker({
 			autoclose: true, 
@@ -15,6 +22,7 @@
 			minView: 2,
 			format: 'dd-mm-yyyy' 
 			}); 
+			getAvailableBalance();
 		}); 
 					
 		$(".amount-align").on("focus", function() {
@@ -40,8 +48,9 @@
 			$("#save_form_payment").on("submit",function(e){
 				$('span.error').remove();
 				$('.has-error').removeClass("has-error");
-				var	avail_bal			=	numeral($("#avail_bal").val()).value();
 				var	withdrawal_amount	=	numeral($("#withdrawal_amount").val()).value();
+				getAvailableBalance();
+				AvailableBalance		=	$("#avail_bal").val();
 				
 				var	request_date		=	$("#request_date").val();
 				var	settlement_date		=	$("#settlement_date").val();
@@ -52,7 +61,7 @@
 				
 				if($("#isSaveButton").val()	!=	"yes") {
 					
-					if(	withdrawal_amount >	avail_bal ) {
+					if(	withdrawal_amount >	AvailableBalance ) {
 						var $parentTag 			=	$("#withdrawal_amount_parent");
 						$parentTag.addClass('has-error').append(
 												'<span class="control-label error">withdrawal Amount Exceed Available Balance</span>');
@@ -77,6 +86,19 @@
 				}
 				$('[disabled]').removeAttr('disabled');
 			});
+			function getAvailableBalance() {
+	
+				$.ajax({
+				  type: "POST",
+				  async : false,
+				  cache:false,
+				  data:{investor_id:$("#investor_id").val()},
+				  url: baseUrl+"/admin/investor/ajax/availableBalance"
+				  
+				}).done(function(data) {
+					$("#avail_bal").val(data);
+				});
+			}
 	</script>
 @endsection
 @section('page_heading',Lang::get('Investor Withdrawals') )
@@ -139,9 +161,11 @@
 					</div>								
 					<div class="col-xs-12 col-sm-7 col-lg-3">
 						@if($editclass || $viewclass)
-							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
+							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker disabled",
+														"id"=>"investor_id"] )  }} 
 						@else
-							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
+							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker",
+																			"id"=>"investor_id"]) }} 
 						@endif
 					</div>							
 				</div> <!-- Row 1 -->

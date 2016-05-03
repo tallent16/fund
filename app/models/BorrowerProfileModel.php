@@ -14,7 +14,7 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$contact_person  				=  	"";
 	public 	$contact_person_email  			=  	"";
 	public 	$contact_person_mobile  		=  	"";
-	public 	$paid_up_capital  				=  	"";
+	public 	$paid_up_capital  				=  	0;
 	public 	$number_of_employees  			=  	"";
 	public 	$operation_since  				=  	"";
 	public 	$registered_address  			=  	"";
@@ -243,7 +243,11 @@ class BorrowerProfileModel extends TranWrapper {
 			$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
 		} else {
 			$borrowerId = 0;
-			$status		=	BORROWER_STATUS_NEW_PROFILE;	
+			$status		=	BORROWER_STATUS_NEW_PROFILE;
+			if($postArray['isSaveButton']	!=	"yes") {
+				$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
+			}
+				
 		}
 		$business_name 					=	$postArray['business_name'];
 		$business_organisation			= 	$postArray['business_organisation'];
@@ -400,8 +404,8 @@ class BorrowerProfileModel extends TranWrapper {
 			
 			$borrower_id 				= $borrowerId;
 			$ratio_name					= $RatioRows['ratio_name'][$rowIndex];
-			$ratio_value_current_year	= $RatioRows['current_ratio'][$rowIndex];
-			$ratio_value_previous_year	= $RatioRows['previous_ratio'][$rowIndex];
+			$ratio_value_current_year	= $this->makeFloat($RatioRows['current_ratio'][$rowIndex]);
+			$ratio_value_previous_year	= $this->makeFloat($RatioRows['previous_ratio'][$rowIndex]);
 			
 			// Construct the data array
 			$dataArray = array(	
@@ -429,7 +433,7 @@ class BorrowerProfileModel extends TranWrapper {
 			
 			$borrower_id 				= 	$borrowerId;
 			$indicator_name				= 	$finacialRows['indicator_name'][$rowIndex];
-			$indicator_value			= 	$finacialRows['indicator_value'][$rowIndex];
+			$indicator_value			= 	$this->makeFloat($finacialRows['indicator_value'][$rowIndex]);
 				
 			// Construct the data array
 			$dataArray = array(	
