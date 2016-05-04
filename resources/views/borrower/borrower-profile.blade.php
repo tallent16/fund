@@ -1,7 +1,6 @@
 @extends('layouts.dashboard')	
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 	
-	
 @endsection
 @section('bottomscripts')
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  

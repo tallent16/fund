@@ -37,15 +37,12 @@
 				<table class="table">		
 					<tbody>
 						<tr>
-							<th>{{ Lang::get('borrower-loanlisting.funded') }}</td>
 							<th>{{ Lang::get('borrower-loanlisting.loan_amount') }}</td>	
 							<th>{{ Lang::get('borrower-loanlisting.interest') }}</td>		
 							<th>{{ Lang::get('borrower-loanlisting.days') }}</td>	
 							<th>{{ Lang::get('borrower-loanlisting.grade') }}</td>			
 						</tr>
 						<tr>
-							<td class="panel-subhead">
-								{{$loanRow->perc_funded}}</td>
 							<td class="panel-subhead">	
 								S${{number_format($loanRow->apply_amount,2,'.',',')}}
 							</td>	

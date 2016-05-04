@@ -9194,9 +9194,9 @@ nav .block-title{
 #investor-withdrawal .btn.selectpicker{
     opacity: 1;
     margin-bottom: -10px;    
-    color: #555;
-    background-color: #eee;
+    color: #555;    
 }
+#company_info 
 #financial_info .form-control{
 	text-align:right;
 }
@@ -9204,12 +9204,16 @@ nav .block-title{
 .applyloan{
 	background-color:#F9F9F9;	
 }
-.applyloan label{
+.applyloan label,
+#company_info .btn-group.bootstrap-select
+{
+	margin:5px 0 10px 0;
+}
+#loans_info .btn-group.bootstrap-select  {
 	margin:5px 0 0 0;
 }
 .applyloan .btn-group.bootstrap-select {
-    width: 100%;
-    margin:5px 0 10px 0;
+    width: 100%;	
 }
 .jfilestyle label {
     background-color: #8D8D8D;

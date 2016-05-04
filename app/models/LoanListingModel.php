@@ -134,6 +134,7 @@ class LoanListingModel extends TranWrapper {
 											(	SELECT	loan_id, 
 														sum(bid_amount) total_bid
 												FROM	loan_bids
+												WHERE	bid_status != :bids_cancelled
 												GROUP BY  loan_id) loan_bids on 
 											loan_bids.loan_id = loans.loan_id
 											LEFT OUTER JOIN 
@@ -151,7 +152,9 @@ class LoanListingModel extends TranWrapper {
 									order by isfeatured desc, loan_display_order asc
 ";
 
-		$this->loanList			= 	$this->dbFetchAll($loanlist_sql);
+		$this->loanList	=	$this->dbFetchWithParam($loanlist_sql, 
+										["bids_cancelled" => LOAN_BIDS_STATUS_CANCELLED]);
+
 	}
 	
 }

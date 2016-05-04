@@ -1,17 +1,24 @@
+@var	$profileStatus		=	InvBal::checkProfileStatus()
+@var	$class	=	""
+@if($profileStatus	==	0	||	$profileStatus	==INVESTOR_STATUS_NEW_PROFILE
+									||	$profileStatus	==INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL
+									||	$profileStatus	==INVESTOR_STATUS_COMMENTS_ON_ADMIN)
+	@var	$class	=	"disabled"
+@endif
 	<ul class="nav" id="side-menu">
 		<li class="sidebar-balance">
 			<div class="head-balance">{{ Lang::get('borrower-leftmenu.balance') }} : 
 				{{number_format(InvBal::available_balance(),2,'.',',')}}
 			</div>                             
 		</li>
-		 <li>
+		 <li class="{{$class}}">
 			<a href="{{ url ('investor/dashboard') }}"><i class="fa fa-tachometer fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
 		</li>
 		<li> 
 			<a href="{{ url ('investor/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
 		</li>                 
 													 
-		<li>
+		<li class="{{$class}}">
 			<a href="#"><i class="fa fa-file-image-o fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
 			<ul class="nav nav-second-level">                              
 				 <li> 
@@ -23,7 +30,7 @@
 			</ul>
 			<!-- /.nav-second-level -->
 		</li>
-		<li>
+		<li class="{{$class}}">
 			<a href="#"><i class="fa fa-list-ul fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
 			<ul class="nav nav-second-level">
 				<li>
@@ -32,16 +39,16 @@
 			</ul>
 			<!-- /.nav-second-level -->
 		</li>                      
-		<li>
+		<li class="{{$class}}">
 			<a href="{{ url ('banking') }}"><i class="fa fa-university fa-fw"></i>{{ Lang::get('borrower-leftmenu.banking') }}<span class="fa arrow"></span> </a>
 			  <ul class="nav nav-second-level">
-				<li>
+				<li class="{{$class}}">
 					<a href="{{ url ('investor/bankdetails') }}">{{ Lang::get('borrower-leftmenu.bankdetails') }}</a>
 				</li>                                 
-				 <li>
+				 <li class="{{$class}}">
 					<a href="{{ url ('investor/deposit') }}">{{ Lang::get('Deposit') }}</a>
 				</li>               
-				 <li>
+				 <li class="{{$class}}">
 					<a href="{{ url ('investor/withdraw') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
 				</li>                                                                              
 			</ul>

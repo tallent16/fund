@@ -30,7 +30,13 @@ $(document).ready(function (){
 		
 		$("#form-profile").submit();
     });
-
+	
+	$(".borrower_doc_download").on("click",function(){
+		var	loan_doc_url	=	$(this).attr("data-download-url");
+			loan_doc_url	=	loan_doc_url+"_"+ new Date().getTime();
+			window.location	=	loan_doc_url;
+	});
+	
 });
 
 function addNewLoanApplyCommentRow(screenType){

@@ -1,3 +1,6 @@
+var	formElementsChanged	=	false;
+var	formValid			=	false;
+
 $(document).ready(function (){  
 	
 	$.ajaxSetup({
@@ -9,9 +12,46 @@ $(document).ready(function (){
 		var replyID	=	$(this).attr("data-reply-id");
 		$("#commentBoxInput-"+replyID).focus();
 	});
+    $("#side-menu li a").on('click',function(event){
+		if(formElementsChanged) {
+			cancelNavigationClicked();
+		}else{
+			formValid	=	true;
+		}
+		if (!formValid) 
+			event.preventDefault();
+	});
+	function cancelNavigation(retval) {
+		// This is called from the showDialogWithOkCancel as a callback when the user clicks one of the 
+		// OK or Cancel buttons.
+		if (retval == 1) {
+			formValid = true;
+			 $("#side-menu li a").click();
+		} else {
+			formValid = false;
+		}
+		
+	}
+	
+	function cancelNavigationClicked() {
+		// The dialog box utility of jQuery is asynchronous. The execution of the Javascript code will not wait
+		// for the user input. Therefore we have a callback function to re-trigger the submission if the 
+		// user confirms cancellation
+		
+		if (formValid) {
+			return;
+		} 
+		formElementsChanged	=	false;
+		retval = showDialogWithOkCancel("", "Do you want to proceed  navigate it may lose change", "cancelNavigation")
+		
+	}
 	callSubmitReplyActionFunc();
 	callAdminCommonFunc();
    
+   $('form').on('change', 'input, select, textarea', function(){
+		console.log('Form changed!');
+		formElementsChanged	=	true;
+	});
 });
 function callAdminCommonFunc(){
 	/*=========================================================================================================

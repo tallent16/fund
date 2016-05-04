@@ -9,42 +9,43 @@
 		<table class="table table-bordered .tab-fontsize text-left">		
 			<tbody>
 				<tr>
-					<td class="tab-left-head col-sm-3">
-						{{ Lang::get('Purpose of Loan')}}
-					</td>					
-					<td class="col-sm-3">
-						{{$adminLoanApprMod->purpose_singleline}}
-					</td>
-					<td class="tab-left-head col-sm-3">{{ Lang::get('Bid Close Date')}}</td>								
-					<td class="col-sm-3">{{$adminLoanApprMod->bid_close_date}}</td>																				
+					<td class="tab-left-head col-sm-3">{{ Lang::get('Borrower\'s Name')}}</td>
+					<td class="col-sm-3">{{$adminLoanApprMod->firstname}}</td>
+					<td class="tab-left-head col-sm-3">{{ Lang::get('Loan Amount')}}</td>
+					<td class="col-sm-3">{{number_format($adminLoanApprMod->apply_amount,2,'.',',')}}</td>
 				</tr>
 				<tr>
-					<td class="tab-left-head">{{ Lang::get('Loan Amount')}}</td>
-					<td>{{number_format($adminLoanApprMod->apply_amount,2,'.',',')}}</td>
-					<td class="tab-left-head">{{ Lang::get('Accept Partial Subscription')}}</td>								
-					<td>{{$par_sub_allowed}}</td>						
+					<td class="tab-left-head">{{ Lang::get('Purpose of Loan')}}</td>					
+					<td>{{$adminLoanApprMod->purpose_singleline}}</td>
+					<td class="tab-left-head">{{ Lang::get('Bid Close Date')}}</td>								
+					<td>{{$adminLoanApprMod->bid_close_date}}</td>																				
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Tenure of Loan')}}</td></td>	
 					<td>{{$adminLoanApprMod->loan_tenure}}</td>
-					<td class="tab-left-head">{{ Lang::get('Minimum Limit For Partial Subscription')}}</td>								
-					<td>{{number_format($adminLoanApprMod->min_for_partial_sub,2,'.',',')}}</td>					
+					<td class="tab-left-head">{{ Lang::get('Accept Partial Subscription')}}</td>								
+					<td>{{$par_sub_allowed}}</td>						
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Target Interest')}}%</td>	
 					<td>{{$adminLoanApprMod->target_interest}}</td>
-					<td class="tab-left-head">{{ Lang::get('Payment Type')}}</td>								
-					<td>{{$adminLoanApprMod->repaymentText}}</td>	
+					<td class="tab-left-head">{{ Lang::get('Minimum Limit For Partial Subscription')}}</td>								
+					<td>{{number_format($adminLoanApprMod->min_for_partial_sub,2,'.',',')}}</td>					
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Loan Reference Number')}}</td>	
 					<td>{{$adminLoanApprMod->loan_reference_number}}</td>	
+					<td class="tab-left-head">{{ Lang::get('Payment Type')}}</td>								
+					<td>{{$adminLoanApprMod->repaymentText}}</td>	
+				</tr>
+				<tr>
+					<td class="tab-left-head">{{ Lang::get('Bid Type')}}</td>								
+					<td class="col-sm-3">{{ $adminLoanApprMod->bidTypeText}}</td>	
 					<td class="tab-left-head">{{ Lang::get('Status')}}</td>								
 					<td>{{ $adminLoanApprMod->statusText}}</td>					
 				</tr>	
 				<tr>
-					<td class="tab-left-head">{{ Lang::get('Bid Type')}}</td>								
-					<td class="col-sm-3">{{ $adminLoanApprMod->bidTypeText}}</td>												
+																
 				</tr>				
 			</tbody>
 		</table>

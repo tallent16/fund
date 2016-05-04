@@ -229,6 +229,7 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	
 	Route::match(['get', 'post'],'borrower/applyloan','BorrowerApplyLoanController@indexAction');
 	Route::match(['get', 'post'],'borrower/applyloan/{loan_id}','BorrowerApplyLoanController@indexAction');
+	Route::post('borrower/ajaxApplyLoan/checkvalaidation','BorrowerApplyLoanController@checkApplyLoanValidationction');
 	Route::get('borrower/docdownload/{doc_id}','BorrowerApplyLoanController@downloadAction');
 	
 	Route::get('borrower/myloans/{loan_id}', 'LoanDetailsController@indexAction');	

@@ -91,7 +91,7 @@
 							</div>													
 						</div>							
 					</div>	<!--end panel head-->
-
+					
 					<div class="panel-body"><!--panel body--> 
 						@include('widgets.common.myloans_comments',array("commnetInfo"=>$commnetInfo)) 
 					</div>	<!--end panel body-->					

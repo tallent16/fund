@@ -2,7 +2,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use InvBal;
 class InvestorMiddleWare {
 
 	/**
@@ -22,6 +22,14 @@ class InvestorMiddleWare {
         {
             abort(403);
         }
+		$profileStatus	=	InvBal::checkProfileStatus();
+		if($profileStatus	==	0	||	$profileStatus	==INVESTOR_STATUS_NEW_PROFILE
+									||	$profileStatus	==INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL
+									||	$profileStatus	==INVESTOR_STATUS_COMMENTS_ON_ADMIN) {
+			if($request->url()	!=	url('investor/profile')) {
+				return redirect()->to('investor/profile');
+			}
+		}
 		
         return $next($request);
     }

@@ -20,7 +20,7 @@ class InvestorTransHistoryModel extends TranWrapper {
 									display_order
 							FROM (
 									SELECT	payments.trans_reference_number,
-											payments.trans_date,
+											date_format(payments.trans_datetime, '%d-%m-%Y') trans_date,
 											if (investor_bank_transactions.trans_type = 1, 'Deposits', 'Withdrawals') trans_type,
 											payments.trans_amount,
 											payments.remarks,
@@ -74,7 +74,7 @@ class InvestorTransHistoryModel extends TranWrapper {
 									AND	investor_repayment_schedule.investor_id = {$current_inverstor_id}
 									AND	investor_repayment_schedule.status = 3) investor_transaction
 							order by trans_date, display_order";
-							
+					
 		$tranListRs		=	$this->dbFetchAll($transListSql);
 		$this->tranList = $tranListRs;
 		return;

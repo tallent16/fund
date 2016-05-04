@@ -17,7 +17,7 @@
 									@var	$i	=1
 									@foreach($finacialRatioInfo as $finRatioRow)
 										<tr>
-											<td class="tab-left-head">
+											<td class="tab-left-head col-sm-4">
 												<label class="input-required">
 													{{$finRatioRow['ratio_name']}}
 												</label>
@@ -36,7 +36,7 @@
 														{{ $modelBorPrf->viewStatus }}
 														/>
 											</td>
-											<td id="previous_ratio_{{$i}}_parent">
+											<td id="previous_ratio_{{$i}}_parent" class="col-sm-4">
 												<input 	type="text" 
 														id="previous_ratio_{{$i}}" 
 														name="finacialRatio_row[previous_ratio][]"
@@ -45,7 +45,7 @@
 														decimal="2"
 														{{ $modelBorPrf->viewStatus }} />
 											</td>	
-											<td id="current_ratio_{{$i}}_parent">
+											<td id="current_ratio_{{$i}}_parent" class="col-sm-4">
 												<input 	type="text" 
 														id="current_ratio_{{$i}}" 
 														name="finacialRatio_row[current_ratio][]"
@@ -74,7 +74,7 @@
 									@var	$i	=1
 									@foreach($finacialInfo as $finacialRow)
 										<tr>
-											<td class="tab-left-head">
+											<td class="tab-left-head col-sm-6">
 												<label class="input-required">
 													{{$finacialRow['indicator_name']}}
 												</label>
@@ -94,7 +94,7 @@
 														/>
 														
 											</td>
-											<td id="indicator_value_{{$i}}_parent">
+											<td id="indicator_value_{{$i}}_parent" class="col-sm-6">
 												<input 	type="text" 
 														id="indicator_value_{{$i}}" 
 														name="finacial_row[indicator_value][]"

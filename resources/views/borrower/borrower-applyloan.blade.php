@@ -9,169 +9,9 @@
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>		 
 	<script src="{{ url('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>  
 	<script src="{{ url('vendor/unisharp/laravel-ckeditor/adapters/jquery.js') }}"></script>  
-	<script src="{{ url('js/common.js') }}"></script>  
-	<script src="{{ url('js/numeral.min.js') }}"></script>  
+	<script>var	baseUrl	=	"{{url('')}}"</script>
+	<script src="{{ url('js/apply-loan.js') }}"></script>  
 	
-	<script>
-		$(document).ready(function(){		
-			 
-			$(".borrower_doc_download").on("click",function(){
-				var	loan_doc_url	=	$(this).attr("data-download-url");
-					loan_doc_url	=	loan_doc_url+"_"+ new Date().getTime();
-					window.location	=	loan_doc_url;
-			});
-			$("#save_button").on("click",function(){
-				$("#isSaveButton").val("yes");
-			});
-			$("#form-applyloan").submit(function( event ) {
-		
-				var	isSaveButtonClicked		=	$("#isSaveButton").val();
-				if(isSaveButtonClicked	!=	"yes") {
-					
-					if(callTabValidateFunc())
-						event.preventDefault();
-					if(validateTab("documents_submitted"))
-						event.preventDefault();
-					if($("#hidden_loan_status").val()	==	"corrections_required") {
-						if(checkAdminAllCommentsClosed()){
-							showDialog("","Please close the corrections and submit again for approval");
-							event.preventDefault();
-						}
-					}	
-					$("#next_button").hide();
-					$("#submit_button").show();
-				}
-			
-			});
-			
-			$("#next_button").click(function(){
-				
-				callTabValidateFunc();
-			});
-			$(".amount-align").on("focus", function() {
-				onFocusNumberField(this);
-			})
-
-			$(".amount-align").on("blur", function() {
-				onBlurNumberField(this)
-			});
-			
-			$("input[name=partial_sub_allowed]:radio").change(function () {
-				if ($(this).val() == '1') {
-					
-					$("#min_for_partial_sub").attr("disabled",false);
-				}
-				else if ($(this).val() == '2') {
-					$("#min_for_partial_sub").attr("disabled",true);
-					$("#min_for_partial_sub").val("");
-					var $parentTag = $("#min_for_partial_sub_parent");
-					$parentTag.removeClass("has-error");
-					$parentTag.find("span.error").remove();
-				}
-			});
-			 $(".nav-tabs > li").click(function(){
-				$("#next_button").show();
-				$("#submit_button").hide();
-				if($(this).hasClass("disabled"))
-					return false;
-				if($(this).find("a").attr("href")	==	"#documents_submitted") {
-					if($("#hidden_loan_status").val()	==	""){
-						$("#next_button").hide();
-						$("#submit_button").show();
-					}
-				}
-				if($(this).find("a").attr("href")	==	"#comments") {
-					$("#next_button").hide();
-					$("#submit_button").show();
-				}
-			});
-			
-			$("input[name=partial_sub_allowed]:radio").trigger("change");
-			callcheckAllTabFilledFunc();
-		});		
-		function callTabValidateFunc() {
-			
-			$('span.error').remove();
-			$('.has-error').removeClass("has-error");
-			var active = $("ul.nav-tabs li.active a");
-			var	cur_tab		=	active.attr("href");
-			cur_tab			=	cur_tab.replace("#","");
-			$("#next_button").show();
-			$("#submit_button").hide();
-			if(validateTab('loans_info')) {
-				$('.nav-tabs a[href="#loans_info"]').tab('show');
-				return true;
-			}
-			if(cur_tab	==	"loans_info") {
-				$('.nav-tabs a[href="#documents_submitted"]').tab('show');
-				$('a[href="#documents_submitted"]').parent().removeClass("disabled");	
-				if($("#hidden_loan_status").val()	==	""){
-					$("#next_button").hide();
-					$("#submit_button").show();
-				}	
-			}
-			
-			if(cur_tab	==	"documents_submitted") {
-				$('.nav-tabs a[href="#comments"]').tab('show');
-				$("#next_button").hide();
-				$("#submit_button").show();
-			}
-			return false;
-		}
-		function validateTab(cur_tab) {
-			
-			$("#"+cur_tab+" :input.required").each(function(){
-				
-				var	input_id	=	$(this).attr("id");
-				var inputVal 	= 	$(this).val();
-				
-				var $parentTag = $("#"+input_id+"_parent");
-				if(inputVal == ''){
-					if($(this).hasClass("jfilestyle")) {
-						if($("#"+input_id+"_hidden").val() == ''){
-							$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
-						}
-					}else{
-						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
-					}
-				}
-			});
-			$partial_sub		=	$("input[name=partial_sub_allowed]:checked").val();
-			$partial_sub_amt	=	$("#min_for_partial_sub").val();
-			if($partial_sub	==	1) {
-				if($partial_sub_amt	==	"") {
-					var $parentTag = $("#min_for_partial_sub_parent");
-					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
-					$('.nav-tabs a[href="#loans_info"]').tab('show');
-					
-				}	
-			}
-			if ($("#"+cur_tab).has('.has-error').length > 0)
-				return true;
-			else
-				return false;
-		}
-		function callcheckAllTabFilledFunc() {
-			if(checkTabFilled("loans_info")){//check Company Info Filled
-				$('.nav-tabs a[href="#documents_submitted"]').parent().removeClass("disabled");
-				//Enable the Director Info Tab
-			}
-		}
-		function checkTabFilled(cur_tab) {
-			var	cnt	=	0;
-			$("#"+cur_tab+" :input.required").each(function(){
-				var inputVal 	= 	$(this).val();
-				var	input_id	=	$(this).attr("id");
-				if(inputVal == ''){
-							cnt++;
-				}
-			});
-			if (cnt == 0)
-				return true;
-			else
-				return false;
-		}
-	</script>		
 @endsection
 @if($BorModLoan->loan_id	==	"")
 	@var	$trantype		=	"add"
@@ -221,7 +61,7 @@
 	<!--<div class="row">	
 		<div class="col-lg-12 col-sm-12">	-->
 			<form class="form-inline" id="form-applyloan" method="post" enctype="multipart/form-data">	
-				<input type="hidden" name="_token" value="{{ csrf_token() }}">	
+				<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
 				<input type="hidden" name="isSaveButton" id="isSaveButton" value="">	
 				<input type="hidden" name="loan_id" value="{{$BorModLoan->loan_id}}">	
 				<input type="hidden" name="trantype" value="{{ $trantype }}">
@@ -280,31 +120,32 @@
 								class="btn verification-button"
 								/>
 					@endif
-						
-					<button type="submit" 
-							id="save_button"
-							class="btn verification-button"
-							{{$BorModLoan->viewStatus}}>
-						<i class="fa pull-right"></i>
-						Save
-					</button>
-					<button type="button" 
-							id="next_button"
-							data-tab-id="company_info"
-							class="btn verification-button" >
+					@if( ($BorModLoan->status	==	LOAN_STATUS_NEW)
+						||  ($BorModLoan->status	==	LOAN_STATUS_PENDING_COMMENTS))
+						<button type="submit" 
+								id="save_button"
+								class="btn verification-button"
+								{{$BorModLoan->viewStatus}}>
 							<i class="fa pull-right"></i>
-							{{ Lang::get('Next') }}
-					</button>
-								
-					<button type="submit" 
-							class="btn verification-button"
-							style="display:none"
-							id="submit_button"
-							{{$BorModLoan->viewStatus}}>
-						<i class="fa pull-right"></i>
-						{{ Lang::get('borrower-profile.submit_verification') }}
-					</button>
-					
+							Save
+						</button>
+						<button type="button" 
+								id="next_button"
+								data-tab-id="company_info"
+								class="btn verification-button" >
+								<i class="fa pull-right"></i>
+								{{ Lang::get('Next') }}
+						</button>
+									
+						<button type="submit" 
+								class="btn verification-button"
+								style="display:none"
+								id="submit_button"
+								{{$BorModLoan->viewStatus}}>
+							<i class="fa pull-right"></i>
+							{{ Lang::get('borrower-profile.submit_verification') }}
+						</button>
+					@endif
 				</div>	
 				</div>			 
 			</div> 			

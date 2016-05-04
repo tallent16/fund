@@ -36,14 +36,22 @@
 										<input 	type="hidden" 
 												id="documents_{{$i}}_hidden"
 												value="{{$doc_file}}">	
+										@if(isset($BorModLoan->submitted_document_details[$documentRowIndex]))
+										<div style="margin:5px;"> 
+											{{	basename($BorModLoan->submitted_document_details
+																['loan_doc_url'][$documentRowIndex])
+											}}
+										</div>
+										@endif
 								</div>
 								<div class="col-sm-1">
 									@if(isset($BorModLoan->submitted_document_details[$documentRowIndex]))
 										@var	$loan_url	=	$BorModLoan->submitted_document_details[$documentRowIndex]
 										@var	$loan_url	=	"borrower/docdownload/".$loan_url
+										
 										<a 	href="javascript:void(0)"
 											data-download-url="{{url($loan_url)}}"
-											class="borrower_doc_download">{{ Lang::get('borrower-applyloan.view') }}
+											class="borrower_doc_download">{{ Lang::get('View')}}
 										</a>
 									@endif
 								</div>

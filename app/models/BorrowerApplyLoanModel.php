@@ -116,9 +116,12 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.total_interest_paid,
 											loans.total_penalties_paid,
 											loans.loan_product_image,
-											loans.loan_video_url
-									FROM 	loans
-									WHERE	loans.loan_id		=	{$loan_id}";
+											loans.loan_video_url,
+											users.firstname
+									FROM 	loans,borrowers,users
+									WHERE	loans.loan_id		=	{$loan_id} 
+									AND 	loans.borrower_id 	= 	borrowers.borrower_id
+                                    AND		borrowers.user_id 	= 	users.user_id ";
 		
 		$loanlist_rs		= 	$this->dbFetchAll($loanlist_sql);
 		

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use Request;
 use	\App\models\BorrowerApplyLoanModel;
 use Response;
+use Lang;
 class BorrowerApplyLoanController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -84,8 +85,8 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 			$withArry["status"]	=	"failure";
 			$withArry["msg"]	=	"Failed to create new loan";
 		}
-		return view('borrower.borrower-applyloan')
-				->with($withArry);
+		return redirect()->to('borrower/myloaninfo');
+	
 	}
 	
 	protected function getBorrowerLoanDetails($trantype, $sourceId) {
@@ -107,5 +108,48 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		return view('borrower.borrower-applyloan')
 				->with($withArry);
 				
+	}
+	
+	protected function checkApplyLoanValidationction() {
+		$postArray	=	Request::all();
+		$rowArray	=	array(	"loan_amountErr"=>"",
+								"bidcloseDateErr"=>"",
+								"target_interestErr"=>"",
+								"partialSubAmountErr"=>""
+							);
+		$status		=	"success";
+		if($postArray['loan_amount'] <=	0) {
+			$rowArray['loan_amountErr']	=	Lang::get("Loan should be greater than zero");
+			$status						=	"error";
+		}
+		if($postArray['bidcloseDate'] 	=="") {
+			$rowArray['bidcloseDateErr']	=	Lang::get("Bid Close Date should not be empty");
+			$status							=	"error";
+		}else{
+			list($bidDate, $bidMonth, $bidYear) = explode("/", $postArray['bidcloseDate']);
+			$formattedbidcloseDate	=	$bidYear."-".$bidMonth."-".$bidDate;
+			if(!checkdate($bidMonth,$bidDate,$bidYear) ) {
+				$rowArray['bidcloseDateErr']	=	Lang::get("Invalid Bid Close Date");
+				$status							=	"error";
+			}else if(strtotime($formattedbidcloseDate) <	strtotime('today') ){
+				$rowArray['bidcloseDateErr']	=	Lang::get("Bid Close Date should not be earlier than today");
+				$status							=	"error";
+			}
+		}
+		if($postArray['targetInterest'] <=	0) {
+			$rowArray['target_interestErr']	=	Lang::get("Target Insterest should be greater than zero");
+			$status		=	"error";
+		}else if($postArray['targetInterest'] >	99.9) {
+			$rowArray['target_interestErr']	=	Lang::get("Target Insterest Cannot be greater than 99.99");
+			$status		=	"error";
+		}
+		if($postArray['partialSubAllowed'] ==	1) {
+			
+			if($postArray['partialSubAmount'] <=	0) {
+				$rowArray['partialSubAmountErr']	=	Lang::get("Minimal Partial Subscription should be greater than zero");
+				$status								=	"error";
+			}
+		}
+		return	json_encode(array("status"=>$status,"row"=>$rowArray));
 	}
 }
