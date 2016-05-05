@@ -31,7 +31,7 @@
 						<div class="annoucement-msg-container">
 							<div class="alert alert-success">
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-									{{ Lang::get('Loan Apply submitted suceesfully') }}
+									{{ Lang::get('Loan Apply submitted successfully') }}
 							</div>
 						</div>
 					</div> 

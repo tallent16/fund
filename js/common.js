@@ -1,4 +1,4 @@
-var	formElementsChanged	=	false;
+var	formElementsChanged	=	0;
 var	formValid			=	false;
 
 $(document).ready(function (){  
@@ -12,47 +12,50 @@ $(document).ready(function (){
 		var replyID	=	$(this).attr("data-reply-id");
 		$("#commentBoxInput-"+replyID).focus();
 	});
-    $("#side-menu li a").on('click',function(event){
-		if(formElementsChanged) {
-			cancelNavigationClicked();
-		}else{
-			formValid	=	true;
-		}
-		if (!formValid) 
-			event.preventDefault();
+   
+	callSubmitReplyActionFunc();
+	callAdminCommonFunc();
+   
+   $('form').on('submit', function() {
+	   formElementsChanged = 0;
+   });
+   
+   $('form').on('change', 'input:not(:button,:submit,:checkbox), select, textarea', function(){
+		formElementsChanged	=	1;
 	});
-	function cancelNavigation(retval) {
+	window.onbeforeunload = confirmExit;
+    function confirmExit() {
+      if (formElementsChanged == 1) {
+          return "New information not saved. Do you wish to leave the page?";
+      }
+	}
+});
+
+function cancelNavigation(retval) {
 		// This is called from the showDialogWithOkCancel as a callback when the user clicks one of the 
 		// OK or Cancel buttons.
 		if (retval == 1) {
 			formValid = true;
 			 $("#side-menu li a").click();
+		
 		} else {
 			formValid = false;
 		}
 		
 	}
 	
-	function cancelNavigationClicked() {
-		// The dialog box utility of jQuery is asynchronous. The execution of the Javascript code will not wait
-		// for the user input. Therefore we have a callback function to re-trigger the submission if the 
-		// user confirms cancellation
-		
-		if (formValid) {
-			return;
-		} 
-		formElementsChanged	=	false;
-		retval = showDialogWithOkCancel("", "Do you want to proceed  navigate it may lose change", "cancelNavigation")
-		
+function cancelNavigationClicked() {
+	// The dialog box utility of jQuery is asynchronous. The execution of the Javascript code will not wait
+	// for the user input. Therefore we have a callback function to re-trigger the submission if the 
+	// user confirms cancellation
+	
+	if (formValid) {
+		return;
 	}
-	callSubmitReplyActionFunc();
-	callAdminCommonFunc();
-   
-   $('form').on('change', 'input, select, textarea', function(){
-		console.log('Form changed!');
-		formElementsChanged	=	true;
-	});
-});
+	if(formElementsChanged) {
+		retval = showDialogWithOkCancel("", "Do you want to proceed  navigate it may lose change", "cancelNavigation")
+	}
+}
 function callAdminCommonFunc(){
 	/*=========================================================================================================
 	 * Admin Manage Borrowers jquery event function starts

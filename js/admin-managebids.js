@@ -23,7 +23,7 @@
 			var loan_accept_amt 	= 0;
 			
 			if (this_accept_amt > this_bid_amt) {
-				showDialog("", "{{Lang::get('Acccepted amount cannot be more than the Bid Amount')}}");
+				showDialog("", "Acccepted amount cannot be more than the Bid Amount");
 				$(this).val("0.00");
 				return;
 			}
@@ -34,7 +34,7 @@
 			})		
 
 			if (loan_accept_amt > apply_amount) {
-				showDialog("", "{{Lang::get('Total acccepted amount cannot be more than the Loan Applied Amount')}}");
+				showDialog("", "Total acccepted amount cannot be more than the Loan Applied Amount");
 				$(this).val("0.00");
 				return;
 			}
@@ -62,13 +62,13 @@
 		if (Number($("#loan_apply_amount").val()) > bid_amount) {
 			if (numeral($("#partial_sub_allowed").val()).value() == 1) {
 				if (numeral($("#min_for_partial_sub").val()).value() > bid_amount) {
-					showDialog("", "{{Lang::get('Loan has not been sufficiently subscribed. Cannot close bids')}}");
+					showDialog("", "Loan has not been sufficiently subscribed. Cannot close bids");
 					formValid = false;
 				} else {
 					formValid = true;
 				}
 			} else {
-				showDialog("", "{{Lang::get('Loan has not been sufficiently subscribed. Cannot close bids')}}");
+				showDialog("", "Loan has not been sufficiently subscribed. Cannot close bids");
 				formValid = false;
 			}
 		} else {
@@ -85,13 +85,13 @@
 		if (numeral($("#loan_apply_amount").val()).value() > accepted_amount) {
 			if (numeral($("#partial_sub_allowed").val()).value() == 1) {
 				if (numeral($("#min_for_partial_sub").val()).value() > accepted_amount) {
-					showDialog("", "{{Lang::get('Loan has not been sufficiently subscribed .Cannot close bids')}}");
+					showDialog("", "Loan has not been sufficiently subscribed .Cannot close bids");
 					formValid = false;
 				} else {
 					formValid = true;
 				}
 			} else {
-				showDialog("", "{{Lang::get('Loan has not been sufficiently subscribed. Cannot close bids')}}");
+				showDialog("", "Loan has not been sufficiently subscribed. Cannot close bids");
 				formValid = false;
 			}
 		} else {
@@ -109,7 +109,7 @@
 			return;
 		} 
 		
-		retval = showDialogWithOkCancel("", "{{Lang::get('Warning!! Once cancelled you cannot undo this action. Do you want to proceed with the cancellation')}}", "cancelLoanFeedback");
+		retval = showDialogWithOkCancel("", "Warning!! Once cancelled you cannot undo this action. Do you want to proceed with the cancellation", "cancelLoanFeedback");
 		
 	}
 	

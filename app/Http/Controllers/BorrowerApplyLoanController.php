@@ -94,6 +94,8 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		switch ($trantype) {
 			
 			case "add":
+				$this->borrowerApplyLoanModel->status			=	LOAN_STATUS_NEW;
+				$this->borrowerApplyLoanModel->bid_close_date	=	date('d-m-Y', strtotime("+20 days"));
 				$this->borrowerApplyLoanModel->processDropDowns();
 				$this->borrowerApplyLoanModel->getBorrowerDocumentListInfo();
 				break;

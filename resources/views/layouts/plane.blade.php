@@ -6,7 +6,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8"/>
-	<title>{{Lang::get('MoneyMatch')}}</title>
+	<title>{{Lang::get('Fund Yourself')}}</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="width=device-width, initial-scale=1" name="viewport"/>
 	<meta content="" name="description"/>
@@ -22,6 +22,7 @@
 	@yield('body') 
 	@yield('bottomscripts')
 	<script src="{{ url('js/common.js') }}" type="text/javascript"></script>	
+	<script src="{{ url('js/jquery.confirm.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/jquery-ui.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/numeral.min.js') }}" type="text/javascript"></script>	
 	

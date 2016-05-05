@@ -29,6 +29,16 @@ class RegistrationController extends MoneyMatchController {
 		else
 			echo "true";
 	}
+	//checks the username exists or not
+	public function CheckUserNameavailability(Request $request) {
+		
+		$username	=	Request::input('username');
+	
+		if($this->user->CheckUserName($username))
+			echo "false" ;
+		else
+			echo "true";
+	}
 	
 	//call submit action triggered
 	public function submitAction(Request $request) {

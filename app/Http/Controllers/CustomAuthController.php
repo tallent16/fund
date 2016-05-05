@@ -46,7 +46,8 @@ class CustomAuthController extends MoneyMatchController {
 			$password="";
 		}
               
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => 2,'email_verified' => 1 ])) {  
+        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => 2,'email_verified' => 1 ])
+			|| Auth::attempt(['username' => $email, 'password' => $password, 'status' => 2,'email_verified' => 1 ]) ) {  
             //echo "success";  
             $userType			=	Auth::user()->usertype;
            

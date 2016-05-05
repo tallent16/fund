@@ -56,7 +56,14 @@ class AdminManageBidsModel extends TranWrapper {
 			return -1;
 		}
 
+
+		$bidstotal_sql	=	"	SELECT	sum(bid_amount) bid_amount_total
+								FROM	loan_bids
+								WHERE	loan_id = :loan_id
+								AND		loan_bids.bid_status != :bid_cancelled ";
+								
 		$bidsInfo_sql	=	"	SELECT	users.username,
+										bid_id,
 										investors.investor_id,
 										date_format(bid_datetime, '%d-%m-%Y %h:%i') bid_datetime,
 										bid_amount,
@@ -68,13 +75,35 @@ class AdminManageBidsModel extends TranWrapper {
 								WHERE	loan_bids.loan_id = :loan_id
 								AND		loan_bids.investor_id = investors.investor_id
 								AND		investors.user_id = users.user_id
-								AND		loan_bids.bid_status != :bid_cancelled ";
+								AND		loan_bids.bid_status != :bid_cancelled 
+								ORDER BY bid_interest_rate, bid_datetime";
 								
 		$bidsInfo_args	=	[	"loan_id" => $loanId, 
 								"bid_cancelled" => LOAN_BIDS_STATUS_CANCELLED
 							];
 		
 		$this->loanBids	=	$this->dbFetchWithParam($bidsInfo_sql, $bidsInfo_args);
+		if ($this->loan_status == LOAN_STATUS_CLOSED_FOR_BIDS) {
+			// Auto fill the Accepted amount based on the formula
+			// If the total_bids <= loan_apply_amount then accepted_amount = bid_amount
+			$bidstotal_rs	=	$this->dbFetchWithParam($bidstotal_sql, $bidsInfo_args);
+			$totalBid_amt	=	$bidstotal_rs[0]->bid_amount_total;
+			$runningTotal	=	0;
+			for ($index = 0; $index < count($this->loanBids); $index++) {
+				
+				if ($this->apply_amount > $runningTotal) {
+					$diff = $this->apply_amount - ($runningTotal + $this->loanBids[$index]->bid_amount);
+					if ($diff < 0 ) 
+						$this->loanBids[$index]->accepted_amount = $this->loanBids[$index]->bid_amount + $diff;
+					else 
+						$this->loanBids[$index]->accepted_amount = $this->loanBids[$index]->bid_amount;
+				} else {
+					$this->loanBids[$index]->accepted_amount = 0;
+				}
+				
+				$runningTotal += $this->loanBids[$index]->accepted_amount;
+			}
+		}
 										
 	}
 	
@@ -98,10 +127,14 @@ class AdminManageBidsModel extends TranWrapper {
 		 * Extreme cases
 		 */
 		$acceptAmtArray	=	$_REQUEST["accepted_amount"];
+		$interestArray	=	$_REQUEST["bid_interest"];
 		$loanApplyAmt	=	0;
 		$totAcceptedAmt	=	0;
+		$finalInterest	=	0;
+
 		
-		$loanApplyAmt_sql	=	"	SELECT	loans.apply_amount
+		$loanApplyAmt_sql	=	"	SELECT	loans.apply_amount,
+											if(partial_sub_allowed = 1, min_for_partial_sub, apply_amount) min_loan_amount
 									FROM	loans
 									WHERE	loan_id = :loan_id ";
 		$loanApplyAmt_rs	=	$this->dbFetchWithParam($loanApplyAmt_sql, ["loan_id" => $loanId]);
@@ -111,31 +144,16 @@ class AdminManageBidsModel extends TranWrapper {
 			return -1;
 		}
 		
-		$loanApplyAmt		=  $loanApplyAmt_rs[0]->apply_amount;
+		$loanApplyAmt		=	$loanApplyAmt_rs[0]->apply_amount;
+		$loanMinAmt			=	$loanApplyAmt_rs[0]->min_loan_amount;
 		
-		$loanBidAmt_sql		=	"	SELECT	investor_id,
-											bid_amount
-									FROM	loan_bids
-									WHERE	loan_id = :loan_id ";
-									
-		$loanBidAmt_rs	=	$this->dbFetchWithParam($loanBidAmt_sql, ["loan_id" => $loanId]);
-		if (count($loanBidAmt_rs) == 0) {
-			// The unspeakable has happened. Return error
-			return -1;
-		}
-
-		foreach ($loanBidAmt_rs as $loanBidAmt_row) {
-			$investorId		=	$loanBidAmt_row->investor_id;
-			$bidAmount		=	$loanBidAmt_row->bid_amount;
-			$acceptAmt		=	$acceptAmtArray[$investorId];
-			
-			if ($acceptAmt > $bidAmount) {
-				return -1;
-			}
-			$totAcceptedAmt =	$totAcceptedAmt + $acceptAmt;
+		foreach ($acceptAmtArray as $investor_id => $acceptAmount) {
+			$totAcceptedAmt =	$totAcceptedAmt + $this->makeFloat($acceptAmount);
 		}
 		
-		if ($totAcceptedAmt > $loanApplyAmt) {
+		if ($totAcceptedAmt < $loanMinAmt) {
+			// This validation should be done at the Frontend itself. But this is being done 
+			// here to make sure that the validations have not been bypassed
 			return -1;
 		}
 
@@ -151,46 +169,37 @@ class AdminManageBidsModel extends TranWrapper {
 		*/
 		
 		
-		
-				
 
-		
-		$tableName		=	"loans";
-		$dataArray		=	[
-								"status" 	=>	LOAN_STATUS_BIDS_ACCEPTED,
-								"final_interest_rate"	=> $_REQUEST["final_interest_rate"]
-							];
-							
-		$where			=	["loan_id"	=>	$loanId];
-		
-		$this->dbUpdate($tableName, $dataArray, $where);
-
-		$this->dbEnableQueryLog();
-		foreach ($acceptAmtArray as $investorId => $acceptedAmount) {
+		foreach ($acceptAmtArray as $bidId => $acceptedAmount) {
 			$tableName		=	"loan_bids";
 			if ($acceptedAmount > 0) {
-				$bidStatus	=	LOAN_BIDS_STATUS_ACCEPTED;
+				$bidStatus		=	LOAN_BIDS_STATUS_ACCEPTED;
+				$bidInterest 	=	$interestArray[$bidId];
+				$acceptAmount	=	$this->makeFloat($acceptedAmount);
+				$finalInterest	+= 	$acceptAmount / $totAcceptedAmt * $bidInterest;
 			} else {
-				$bidStatus	=	LOAN_BIDS_STATUS_REJECTED;
+				$bidStatus		=	LOAN_BIDS_STATUS_REJECTED;
+				$acceptAmount	=	0;
 			}
 			
-			
-			$dataArray		=	[
-									"bid_status" 		=>	$bidStatus, 
-									"accepted_amount" 	=>	$this->makeFloat($acceptedAmount)
-								];
+			$dataArray		=	["bid_status" 			=>	$bidStatus, 
+								 "accepted_amount" 		=>	$acceptAmount];
 
-			$where			=	[
-									"loan_id"		=>	$loanId, 
-									"investor_id" 	=>	$investorId
-								];
+			$where			=	["bid_id" 	=>	$bidId];
 			
 			$tableName		=	"loan_bids";
 			$this->dbUpdate($tableName, $dataArray, $where);
 			
 		}
+	
+		$tableName		=	"loans";
+		$dataArray		=	["status" 					=>	LOAN_STATUS_BIDS_ACCEPTED,
+							 "final_interest_rate" 		=>	$finalInterest,
+							 "loan_sanctioned_amount" 	=> 	$totAcceptedAmt];
+		$where			=	["loan_id"	=>	$loanId];
 		
-		$this->dbEnableQueryLog();
+		$this->dbUpdate($tableName, $dataArray, $where);
+
 		return;
 	}
 	

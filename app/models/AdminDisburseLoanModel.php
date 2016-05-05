@@ -216,7 +216,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 			
 	
 		// Insert into Payments Table
-		$payData	=	[	"trans_date"		=>	$disburseDate,
+		$payData	=	[	"trans_datetime"	=>	$disburseDate,
 							"trans_type"		=>	PAYMENT_TRANSCATION_LOAN_DISBURSEMENT,
 							"trans_amount"		=>	$total_disbursed,
 							"currency"			=>	"SGD",

@@ -29,8 +29,8 @@
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<fieldset>
 						<div class="form-group">
-							<input class="form-control" placeholder="{{ Lang::get('login.email') }}" 
-							name="email" type="email" autofocus>
+							<input class="form-control" placeholder="{{ Lang::get('Email or Username')  }}" 
+							name="email" type="text" autofocus>
 						</div>
 						<div class="form-group">
 							<input class="form-control" placeholder="{{ Lang::get('login.password') }}" 

@@ -16,7 +16,7 @@ class AdminDisburseLoanController extends MoneyMatchController {
 	}	
 	
 	public function showDisburseLoanAction($loan_id) {
-		
+		$loan_id = base64_decode($loan_id);
 		$this->bidsModel->getDisburseDetails($loan_id);
 		
 		return view('admin.admin-disburseloan')->with(array("bidsModel" => $this->bidsModel,

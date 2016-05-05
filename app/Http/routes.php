@@ -277,6 +277,7 @@ Route::get('ajax/user_master', 'UserController@view_user');
 Route::post('ajax/user_master', 'UserController@view_user');
 
 Route::post('ajax/CheckEmailavailability', 'RegistrationController@checkEmailavailability');
+Route::post('ajax/CheckUserNameavailability', 'RegistrationController@CheckUserNameavailability');
 Route::post('submit_registration', 'RegistrationController@submitAction');
 Route::get('register', 'RegistrationController@indexAction');
 Route::get('activation/{activation}', 'RegistrationController@activationAction'); 

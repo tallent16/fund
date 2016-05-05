@@ -28,6 +28,18 @@ $(document).ready(function (){
                 jQuery(e).closest('.help-block').remove();
             },
             rules: {
+                'username': {
+                    required: true,
+                    remote: {
+                        type: 'post',
+                        url: 'ajax/CheckUserNameavailability',
+                        data: {
+                            'username': function () { return $('#username').val(); }
+                        },
+                        dataType: 'json'
+                    }
+                    //minlength: 3
+                },
                 'EmailAddress': {
                     required: true,
                     email: true,
@@ -58,6 +70,10 @@ $(document).ready(function (){
                 },
             },
             messages: {
+                'username': {
+                    required: 'Please enter an Username',
+                    remote: 'Username already registered. Please enter a different Username'
+                },
                 'EmailAddress': {
                     required: 'Please enter an email',
                     email: 'Email is not valid',

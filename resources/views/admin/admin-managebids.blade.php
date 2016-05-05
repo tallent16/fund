@@ -186,10 +186,11 @@
 												<input type="hidden" id="bid_interest_{{$rownum}}"
 														class="bid_interest"
 														rownum="{{$rownum}}"
+														name="bid_interest[{{$loanbidRow->bid_id}}]" 
 														value="{{$loanbidRow->bid_interest_rate}}" />
 											</td>										
 											<td>
-												<input 	name="accepted_amount[{{$loanbidRow->investor_id}}]" 
+												<input 	name="accepted_amount[{{$loanbidRow->bid_id}}]" 
 														id="accepted_amount_{{$rownum}}"
 														rownum="{{$rownum}}"
 														decimal="2"
