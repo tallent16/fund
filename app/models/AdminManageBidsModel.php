@@ -7,7 +7,7 @@ class AdminManageBidsModel extends TranWrapper {
 	public $loan_reference_number = "";
 	public $purpose = "";
 	public $business_name = "";
-	public $apply_amount = "";
+	public $apply_amount = 0;
 	public $apply_date = "";
 	public $loan_tenure = 12;
 	public $bid_close_date = "";

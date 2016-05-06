@@ -119,6 +119,11 @@ class LoanDetailsModel extends TranWrapper {
 												   when 7 then 'Unsuccessful Loan'
 												   when 9 then 'Repayments Complete'
 											end as statusText,
+											( 	SELECT	codelist_value 
+												FROM	codelist_details
+												WHERE	codelist_id = 7
+												AND		codelist_code = loans.status
+											) statusText,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 
 												   when 2 then 'Monthly Interest'

@@ -42,12 +42,19 @@ function showRepaymentScheduleFunc(data) {
 							"			<th>Total Amount</th>" +
 							"		</tr>"+
 							"	</thead>"+
-							"	<tbody>";											
+							"	<tbody>";	
+	var datalength	= data.length;
+											
 	if(data.length > 0){									
 		for (arrIndex = 0; arrIndex < data.length; arrIndex++) {
+			origDate	=	data[arrIndex]["payment_scheduled_date"];
+			newDate		=	origDate.substring(8,10) + "-" + 
+							origDate.substring(5,7) + "-" + 
+							origDate.substring(0,4);
+
 			repaySchdTable +=	"		<tr>"+
 								"			<td>"+(arrIndex + 1)+"</td> " +
-								"			<td>"+data[arrIndex]["payment_scheduled_date"]+"</td> " +
+								"			<td>"+newDate+"</td> " +
 								"			<td>"+data[arrIndex]["principal_amount"]+"</td> " +
 								"			<td>"+data[arrIndex]["interest_amount"]+"</td> " +
 								"			<td>"+data[arrIndex]["payment_schedule_amount"]+"</td> " +

@@ -74,8 +74,11 @@ class InvestorTransHistoryModel extends TranWrapper {
 									AND	investor_repayment_schedule.investor_id = {$current_inverstor_id}
 									AND	investor_repayment_schedule.status = 3) investor_transaction
 							order by trans_date, display_order";
-					
+		
+		$this->dbEnableQueryLog();
 		$tranListRs		=	$this->dbFetchAll($transListSql);
+		echo "<pre>", print_r($this->dbGetLog()), "</pre>";
+		die;
 		$this->tranList = $tranListRs;
 		return;
 	

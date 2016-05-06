@@ -87,7 +87,9 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 									'password'=>\Hash::make($postArray['ConfirmPassword']),
 									'created_at'=>$current_date,
 									'activation'=>$activation,
-									'username'=>'user',
+									'username'=>$postArray['username'],
+									'firstname'=>$postArray['firstname'],
+									'lastname'=>$postArray['lastname'],
 									'usertype'=>$userType,
 							);
 		$id 			= 	$this->dbInsert('users', $dataArray, true);
@@ -101,14 +103,43 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				$this->dbInsert('user_challenges', $dataArray1, true);
 				
 				$whereArry	=	array("user_id" =>$id);
-				$dataArry	=	array('status' => USER_STATUS_UNVERIFIED,'username' => "User".$id);
+				$dataArry	=	array('status' => USER_STATUS_UNVERIFIED,'email_verified'=>USER_EMAIL_UNVERIFIED);
 				$this->dbUpdate('users',$dataArry, $whereArry);
 				
-				$mailArry	=	array(	"email"=>$postArray['EmailAddress'],
-										"subject"=>"Email verification",
-										"template"=>"emails.confirmation",
-										"confirmation_url"=>url()."/activation/".$activation,
-								);
+				$moneymatchSettings = $this->getMailSettingsDetail();
+				
+				
+				$mailContents		= $moneymatchSettings[0]->borrower_signup_content;
+				$mailSubject		= $moneymatchSettings[0]->borrower_signup_subject;
+
+				$fields 			= array('[borrower_firstname]', '[borrower_lastname]', '[signup_email]',
+											'[investor_firstname]', '[investor_lastname]', ' [confirmation_url]',
+											'[application_name]');
+				$replace_array 		= array();
+				
+				$replace_array 		= array( $postArray['firstname'], $postArray['lastname'], $postArray['EmailAddress'], 
+											$postArray['firstname'], $postArray['lastname'],
+											url()."/activation/".$activation, $moneymatchSettings[0]->application_name);
+									
+				$new_content 		= str_replace($fields, $replace_array, $mailContents);
+				$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
+				
+				$msgarray = array("content" => $new_content);			
+				$msgData = array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
+									"from" => $moneymatchSettings[0]->mail_default_from,
+									"from_name" => $moneymatchSettings[0]->application_name,
+									"to" => $postArray['EmailAddress'],
+									"cc" => $moneymatchSettings[0]->admin_email,
+									"live_mail" => $moneymatchSettings[0]->send_live_mails,
+									"template"=>"emails.confirmation");
+									
+				//~ $mailArry	=	array(	"email"=>$postArray['EmailAddress'],
+										//~ "subject"=>"Email verification",
+										//~ "template"=>"emails.confirmation",
+										//~ "confirmation_url"=>url()."/activation/".$activation,
+								//~ );
+				$mailArry	=	array(	"msgarray"=>$msgarray,
+										"msgData"=>$msgData);
 				$this->sendMail($mailArry);
 		}
 		return	$id;

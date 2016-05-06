@@ -323,27 +323,66 @@ class InvestorProfileModel extends TranWrapper {
 	
 	public function updateInvestorStatus($dataArray,$investorId,$status=null) {
 		
-		$whereArry	=	array("investor_id" =>"{$investorId}");
+		$whereArry			=	array("investor_id" =>"{$investorId}");
 		$this->dbUpdate('investors', $dataArray, $whereArry);
-		$invUserInfo	=	$this->getInvestorIdByUserInfo($investorId);
+		
+		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$invInfo			=	$this->getInvestorInfoById($investorId);
+		$moneymatchSettings = $this->getMailSettingsDetail();
+		$fields 			= array('[investor_firstname]', '[investor_lastname]','[application_name]');
+		$replace_array 		= array();
 		
 		if($status	==	"approve") {
-			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									"subject"=>"Money Match - Investor Approval",
-									"template"=>"emails.ApporvalTemplate",
-									"username"=>$invUserInfo->username,
-									"useremail"=>$invUserInfo->email
-								);
-			$this->sendMail($mailArray);
+			
+			$mailContents		= 	$moneymatchSettings[0]->investor_approval_content;
+			$mailSubject		= 	$moneymatchSettings[0]->investor_approval_subject;
+
+			$replace_array 		= 	array( 	$invUserInfo->firstname,
+											$invUserInfo->lastname, 
+											$moneymatchSettings[0]->application_name);
+								
+			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
+			$new_subject 		= 	str_replace($fields, $replace_array, $mailSubject);
+			$template			=	"emails.ApporvalTemplate";					
+			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									//~ "subject"=>"Money Match - Investor Approval",
+									//~ "template"=>"emails.ApporvalTemplate",
+									//~ "username"=>$invUserInfo->username,
+									//~ "useremail"=>$invUserInfo->email
+								//~ );
 		}
-		if($status	==	"return_invetor") {
-			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									"subject"=>"Money Match - Investor Correction Required",
-									"template"=>"emails.CorrectionRequiredTemplate",
-									"username"=>$invUserInfo->username,
-									"useremail"=>$invUserInfo->email
-								);
-			$this->sendMail($mailArray);
+		if($status	==	"return_investor") {
+			
+			$mailContents		= 	$moneymatchSettings[0]->investor_profile_comments_content;
+			$mailSubject		= 	$moneymatchSettings[0]->investor_profile_comments_subject;
+
+			$replace_array 		= 	array( 	$invUserInfo->firstname,
+											$invUserInfo->lastname, 
+											$moneymatchSettings[0]->application_name);
+								
+			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
+			$new_subject 		=	 str_replace($fields, $replace_array, $mailSubject);
+			$template			=	"emails.CorrectionRequiredTemplate";				
+			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									//~ "subject"=>"Money Match - Investor Correction Required",
+									//~ "template"=>"emails.CorrectionRequiredTemplate",
+									//~ "username"=>$invUserInfo->username,
+									//~ "useremail"=>$invUserInfo->email
+								//~ );
+		}
+		if($status	==	"approve" || $status	==	"return_investor") {			
+			$msgarray 	=	array(	"content" => $new_content);			
+			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
+									"from" => $moneymatchSettings[0]->mail_default_from,
+									"from_name" => $moneymatchSettings[0]->application_name,
+									"to" => $invUserInfo->email,
+									"cc" => $moneymatchSettings[0]->admin_email,
+									"live_mail" => $moneymatchSettings[0]->send_live_mails,
+									"template"=>$template);
+									
+			$mailArry	=	array(	"msgarray"=>$msgarray,
+									"msgData"=>$msgData);
+			$this->sendMail($mailArry);
 		}
 		return $investorId;
 	}

@@ -127,9 +127,11 @@ class BorrowerTransHistoryModel extends TranWrapper {
 				break;
 		}
 
-								
+		$this->dbEnableQueryLog();
 		$transListSql	=	$mainSql;
 		$tranListRs		=	$this->dbFetchAll($transListSql);
+		echo "<pre>", print_r($this->dbGetLog(),"</pre>";
+		die;
 		$this->tranList = $tranListRs;
 		return;
 	

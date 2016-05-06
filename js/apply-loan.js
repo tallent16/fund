@@ -86,7 +86,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("input[name=partial_sub_allowed]:radio").trigger("change");
+	//$("input[name=partial_sub_allowed]:radio").trigger("change");
 	callcheckAllTabFilledFunc();
 });		
 function callTabValidateFunc() {

@@ -77,7 +77,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 												   when 3 then 'Fixed Interest'
 											end as bidTypeText,
 											loans.partial_sub_allowed,
-											loans.min_for_partial_sub,
+											ROUND(loans.min_for_partial_sub,2) min_for_partial_sub,
 											loans.repayment_type,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 
@@ -491,30 +491,89 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	
 	public function updateLoanApplyStatus($dataArray,$loanId,$borrowerId,$status=null) {
 		
-		$whereArry	=	array("loan_id" =>"{$loanId}");
+		$whereArry			=	array("loan_id" =>"{$loanId}");
 		$this->dbUpdate('loans', $dataArray, $whereArry);
-		$borrUserInfo	=	$this->getBorrowerIdByUserInfo($borrowerId);
-		
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
+		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		$fields 			= array('[borrower_contact_person]','[application_name]',
+									'[purpose-for-loan]');
+		$replace_array 		= array();
+			
 		if($status	==	"approve") {
-			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									"subject"=>"Money Match - Borrower Loan Approval",
-									"template"=>"emails.borrLoanApporvalTemplate",
-									"body_content"=>"Congratulations your loan sucessfully verified",
-									"username"=>$borrUserInfo->username,
-									"useremail"=>$borrUserInfo->email
-								);
-			$this->sendMail($mailArray);
+			
+			$mailContents		= $moneymatchSettings[0]->borrower_approval_content;
+			$mailSubject		= $moneymatchSettings[0]->borrower_approval_subject;
+
+			$replace_array 		= array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
+								
+			$new_content 		= str_replace($fields, $replace_array, $mailContents);
+			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
+			$template 			= "emails.borrApporvalTemplate";
+								
+			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									//~ "subject"=>"Money Match - Borrower Loan Approval",
+									//~ "template"=>"emails.borrLoanApporvalTemplate",
+									//~ "body_content"=>"Congratulations your loan sucessfully verified",
+									//~ "username"=>$borrUserInfo->username,
+									//~ "useremail"=>$borrUserInfo->email
+								//~ );
 		}
+		
 		if($status	==	"return_borrower") {
-			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									"subject"=>"Money Match - Borrower Correction Required",
-									"template"=>"emails.borrLoanApporvalTemplate",
-									"body_content"=>"Correction required for your apllied loan ",
-									"username"=>$borrUserInfo->username,
-									"useremail"=>$borrUserInfo->email
-								);
-			$this->sendMail($mailArray);
+			
+			$mailContents		= $moneymatchSettings[0]->borrower_loan_comments_content;
+			$mailSubject		= $moneymatchSettings[0]->borrower_loan_comments_subject;
+
+			$replace_array 		= array( 	$borrInfo->contact_person, 
+											$moneymatchSettings[0]->application_name,
+											$this->purpose_singleline);
+								
+			$new_content 		= str_replace($fields, $replace_array, $mailContents);
+			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
+			$template 			= "emails.borrLoanApporvalTemplate";
+			
+			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									//~ "subject"=>"Money Match - Borrower Correction Required",
+									//~ "template"=>"emails.borrLoanApporvalTemplate",
+									//~ "body_content"=>"Correction required for your apllied loan ",
+									//~ "username"=>$borrUserInfo->username,
+									//~ "useremail"=>$borrUserInfo->email
+								//~ );
 		}
+		
+		if($status	==	"cancel") {
+			
+			$this->getBorrowerLoanInfo($loanId);
+			
+			$mailContents		= $moneymatchSettings[0]->borrower_loan_cancel_content;
+			$mailSubject		= $moneymatchSettings[0]->borrower_loan_cancel_subject;
+			
+			$replace_array 		= array( 	$borrInfo->contact_person, 
+											$moneymatchSettings[0]->application_name,
+											$this->purpose_singleline);
+								
+			$new_content 		= str_replace($fields, $replace_array, $mailContents);
+			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
+			$template 			= "emails.borrLoanCancelTemplate";
+			
+		
+		}
+		if($status	==	"approve" || $status	==	"return_borrower" || $status	==	"cancel") {
+			$msgarray 	=	array(	"content" => $new_content);			
+			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
+									"from" => $moneymatchSettings[0]->mail_default_from,
+									"from_name" => $moneymatchSettings[0]->application_name,
+									"to" => $borrUserInfo->email,
+									"cc" => $moneymatchSettings[0]->admin_email,
+									"live_mail" => $moneymatchSettings[0]->send_live_mails,
+									"template"=>$template);
+									
+			$mailArry	=	array(	"msgarray"=>$msgarray,
+									"msgData"=>$msgData);
+			$this->sendMail($mailArry);
+		}
+								
 		return $loanId;
 	}
 	

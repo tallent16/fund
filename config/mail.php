@@ -1,5 +1,29 @@
 <?php
 
+//~ $settings_sql= "	SELECT 	*
+					//~ FROM 	system_settings";
+			
+//~ $settings_rs 		=	DB::select("SELECT 	*
+										//~ FROM 	system_settings");
+//~ $settings_rs 		=	\DB::table('system_settings')->first();
+//~ print_r($settings_rs);
+//~ die;
+//~ $driver 			=	$settings_rs[0]->mail_driver;
+//~ $host 				=	$settings_rs[0]->mail_host;
+//~ $port				=	$settings_rs[0]->mail_port;
+//~ $email_from			=	$settings_rs[0]->mail_default_from;
+//~ $email_from_name	=	$settings_rs[0]->application_name;
+//~ $password			=	$settings_rs[0]->mail_password;
+//~ $smtp_userid		=	$settings_rs[0]->mail_username;
+$driver 			=	"smtp";
+$host 				=	"smtp.gmail.com";
+$port				=	"465";
+$email_from			=	"cs@fundyourselvesnow.com";
+$email_from_name	=	"FundYourselvesNow";
+$password			=	"ganapathi20122012";
+$smtp_userid		=	"sathya@syllogic.in";
+$encrption			=	"ssl";
+
 return [
 
 	/*
@@ -15,7 +39,7 @@ return [
 	|
 	*/
 
-	'driver' => 'smtp',
+	'driver' => $driver,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +52,7 @@ return [
 	|
 	*/
 
-	'host' => 'smtp.gmail.com',
+	'host' => $host,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +65,7 @@ return [
 	|
 	*/
 
-	'port' => 465,
+	'port' => $port,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +78,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => "sathya@openitworks.in", 'name' => "MoneyMatch"],
+	'from' => ['address' => $email_from, 'name' => $email_from_name],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +91,7 @@ return [
 	|
 	*/
 
-	'encryption' => 'ssl',
+	'encryption' => $encrption,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +104,7 @@ return [
 	|
 	*/
 
-	'username' => "sathya@syllogic.in",
+	'username' =>$smtp_userid,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +117,7 @@ return [
 	|
 	*/
 
-	'password' => "ganapathi20122012",
+	'password' => $password,
 
 	/*
 	|--------------------------------------------------------------------------

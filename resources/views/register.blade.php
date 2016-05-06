@@ -91,24 +91,28 @@
 						</div>
 					<!---row2--->	
 					<div class="row">
-						<div class="col-xs-6 form-group">					
-							<label 	for="register-firstname"> {{ Lang::get('First Name') }}</label>
-								<input 	class="form-control" 
-									id="firstname"
-									name="firstname" 
-									placeholder="First Name" 
-									type="text" 
-									value="" />
+						<div class="col-xs-6 form-group">
+							<div class="form-material form-material-success">					
+								<label 	for="register-firstname"> {{ Lang::get('First Name') }}</label>
+									<input 	class="form-control" 
+										id="firstname"
+										name="firstname" 
+										placeholder="First Name" 
+										type="text" 
+										value="" />
+							</div>
 						</div>
 							
 						<div class="col-xs-6 form-group">
-							<label 	for="register-lastname"> {{ Lang::get('Last Name') }}</label>
-							<input 	class="form-control" 
-									id="lastname"
-									name="lastname" 
-									placeholder="Last Name" 
-									type="text" 
-									value="" />
+							<div class="form-material form-material-success">	
+								<label 	for="register-lastname"> {{ Lang::get('Last Name') }}</label>
+								<input 	class="form-control" 
+										id="lastname"
+										name="lastname" 
+										placeholder="Last Name" 
+										type="text" 
+										value="" />
+							</div>
 						</div>
 					</div>
 					<!---row3---->	

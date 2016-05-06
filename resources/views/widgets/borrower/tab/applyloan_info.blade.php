@@ -1,8 +1,9 @@
-@var	$par_sub_allowed_yes	=	""
-@var	$par_sub_allowed_no		=	""
-
+@var	$par_sub_allowed_yes		=	""
+@var	$par_sub_allowed_no			=	""
+@var	$par_sub_allowed_disabled	=	"disabled"
 @if($BorModLoan->partial_sub_allowed	==	1)
 	@var	$par_sub_allowed_yes		=	"checked"
+	@var	$par_sub_allowed_disabled	=	""
 @else
 	@var	$par_sub_allowed_no			=	"checked"
 @endif  
@@ -180,6 +181,7 @@
 										 name="min_for_partial_sub"
 										 id="min_for_partial_sub"
 										 decimal="2"
+										 {{$par_sub_allowed_disabled}}
 										 value="{{$BorModLoan->min_for_partial_sub}}">	
 																						
 							</div>
@@ -188,5 +190,6 @@
 						<!--------------------------------row6----------------------------------->
 			</fieldset>	
 		</div><!--panel-body--->
+		
 	</div><!--panel---->
 </div><!--first-tab--->

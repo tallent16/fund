@@ -49,14 +49,31 @@ class TranWrapper extends MoneyMatchModel {
 	
 	public function sendMail($postArray) {
 		
-			$email		=	$postArray['email'];
-			$subject	=	$postArray['subject'];
-			$template	=	$postArray['template'];
+			//~ $email		=	$postArray['email'];
+			//~ $subject	=	$postArray['subject'];
+			//~ $template	=	$postArray['template'];
 			
-			\Mail::send($template, $postArray, function($message) use ($email,$subject) {
+				$msgarray	=	$postArray['msgarray'];
+				$msgData	=	$postArray['msgData'];
 				
-				$message->to($email)->subject($subject);
+			\Mail::send($msgData['template'], $msgarray, 
+				function($message) use ($msgData) {
+					if ($msgData['live_mail'] == 1){ 
+						$message->to($msgData['to']);
+					} else {
+						$message->to($msgData['from']);
+					}
+		
+					$message->from($msgData['from'], $msgData['from_name']);
+					$email_cc_arr = explode(",", $msgData['cc']);
+					$message->cc($email_cc_arr);
+					$message->subject($msgData['subject']);
 			});
+			
+			//~ \Mail::send($template, $postArray, function($message) use ($email,$subject) {
+				
+				//~ $message->to($email)->subject($subject);
+			//~ });
 	}
 	
 	public function checkActivationCode($code) {
@@ -387,7 +404,9 @@ class TranWrapper extends MoneyMatchModel {
 		
 		$borruser_sql		= "	SELECT 	user_id,
 										username,
-										email
+										email,
+										firstname,
+										lastname
 								FROM 	users 
 								WHERE 	user_id =(
 													SELECT 	user_id
@@ -475,7 +494,9 @@ class TranWrapper extends MoneyMatchModel {
 		
 		$invuser_sql		= "	SELECT 	user_id,
 										username,
-										email
+										email,
+										firstname,
+										lastname
 								FROM 	users 
 								WHERE 	user_id =(
 													SELECT 	user_id
@@ -536,4 +557,36 @@ class TranWrapper extends MoneyMatchModel {
 		return $invBankTran_rs;
 	}
 	
+	public function getBorrowerInfoById($borrowerId) {
+		
+		
+		$borr_sql		= "	SELECT 	*
+							FROM	borrowers
+							WHERE	borrower_id={$borrowerId}";
+		
+		$borr_rs 		= 	$this->dbFetchAll($borr_sql);
+		
+		return $borr_rs[0];
+	}
+	
+	public function getInvestorInfoById($investorId) {
+		
+		
+		$inv_sql		= "	SELECT 	*
+							FROM	investors
+							WHERE	investor_id={$investorId}";
+		
+		$inv_rs 		= 	$this->dbFetchAll($inv_sql);
+		
+		return $inv_rs[0];
+	}
+	
+	public function getMailSettingsDetail(){
+		
+		$moneymatch_sql	= "	SELECT 	*
+							FROM 	system_settings";
+				
+		$moneymatch_rs = $this->dbFetchAll($moneymatch_sql);
+		return $moneymatch_rs;
+	}
 }

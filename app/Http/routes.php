@@ -190,6 +190,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/savedisbursement', 'AdminDisburseLoanController@saveDisburseLoanAction');
 
 	Route::post('ajax/getloanrepayschd', 'AdminDisburseLoanController@ajaxGetLoanRepaySchedAction');	
+	Route::get('ajax/getloanrepayschd', 'AdminDisburseLoanController@ajaxGetLoanRepaySchedAction');	
   
     Route::get('admin/borrowersrepaylist', 'AdminBorrowersRepaymentListingController@indexAction');
     Route::match(['get', 'post'],'admin/borrowersrepayview/{type}/{installment_id}/{loan_id}', 
@@ -232,7 +233,13 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::post('borrower/ajaxApplyLoan/checkvalaidation','BorrowerApplyLoanController@checkApplyLoanValidationction');
 	Route::get('borrower/docdownload/{doc_id}','BorrowerApplyLoanController@downloadAction');
 	
-	Route::get('borrower/myloans/{loan_id}', 'LoanDetailsController@indexAction');	
+	Route::get('borrower/myloans/{loan_id}', 'LoanDetailsController@indexAction');
+	Route::get('borrower/managebids/{loan_id}', 'AdminManageBidsController@getLoanDetailsAction');
+	
+	Route::post('borrower/bidclose', 'AdminManageBidsController@bidCloseAction');
+    Route::post('borrower/bidaccept', 'AdminManageBidsController@acceptBidsAction');
+    Route::post('borrower/loancancel', 'AdminManageBidsController@loanCancelAction');
+    	
 	Route::post('ajax/borrower/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	
 	
 	Route::get('borrower/loanslist', 'LoanListingController@indexAction');	 

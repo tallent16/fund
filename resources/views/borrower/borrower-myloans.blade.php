@@ -4,8 +4,13 @@
 	<script>
 		var 	baseUrl	=	"{{url()}}"
 		var 	replyUrl=	baseUrl+'/ajax/borrower/send_reply'
+		$(document).ready(function() {
+			$("#manage_bids_button").on('click',function() {
+				window.location	=	$(this).attr("data-action");
+			});
+		});
 	</script>
-	<script src="{{ asset("js/common.js") }}" type="text/javascript"></script>
+	
 @endsection
 @section('page_heading',Lang::get('borrower-loaninfo.page_heading'))
 @section('section')     

@@ -105,18 +105,26 @@ class AdminDisburseLoanModel extends TranWrapper {
 		$this->plusOneMonth	=	new DateInterval('P1M');
 		$currentDate		=	new DateTime();
 	
-		
-		if ($loanProcessDay < $this->monthly_pay_by_date) {
-			$this->firstInstdate	=	new DateTime("{$currentDate->format('Y-m')}-{$this->monthly_pay_by_date}");
+		if ($this->repayment_type == REPAYMENT_TYPE_ONE_TIME) {
+			$this->firstInstdate = new DateTime ($loanProcessDate);
+			$this->firstInstdate->add(New DateInterval("P{$this->loan_tenure}M"));
 		} else {
-			$tempDate	=	new DateTime("{$currentDate->format('Y-m')}-{$this->monthly_pay_by_date}");
-			$this->firstInstdate	=	$tempDate->add($this->plusOneMonth);
+			if ($this->monthly_pay_by_date == 0) {
+				$tempDate = new DateTime ($loanProcessDate);
+				$this->firstInstdate = $tempDate->add($this->plusOneMonth);
+			} else {
+				if ($loanProcessDay < $this->monthly_pay_by_date) {
+					$this->firstInstdate	=	new DateTime("{$currentDate->format('Y-m')}-{$this->monthly_pay_by_date}");
+				} else {
+					$tempDate	=	new DateTime("{$currentDate->format('Y-m')}-{$this->monthly_pay_by_date}");
+					$this->firstInstdate	=	$tempDate->add($this->plusOneMonth);
+				}
+			}
 		}
 
 		$diff	=	date_diff($currentDate, $this->firstInstdate, true);
 
 		$this->preEmiDays 	=	$diff->format('%d');
-
 		
 		// Now comes the bids	
 		$loanBids_sql		=	"	SELECT	loan_id,
@@ -146,6 +154,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 			$this->fillInvestorRepaymentSchedule($investorId, $invInterest, $acceptAmount);
 		}
 		
+
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
 			$investors[] = $investorId;
 		}
@@ -248,7 +257,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 		foreach ($this->repayment_schedule as $instNum => $repaySchd) {
 			$borrSchdData	=	[	"loan_id"						=>	$loan_id,
 								"borrower_id"					=>	$this->borrower_id,
-								"installment_number"			=>	$instNum,
+								"installment_number"			=>	$instNum+1,
 								"repayment_schedule_date"		=>	$repaySchd["payment_scheduled_date"],
 								"repayment_scheduled_amount"	=>	$repaySchd["payment_schedule_amount"],
 								"principal_component"			=>	$repaySchd["principal_amount"],
@@ -263,7 +272,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 			foreach ($invRepaySch as $instlNum => $instlDtls ) {
 				$invSchdData	=	[	"loan_id"					=>	$loan_id,
 									"investor_id"				=>	$investorId,
-									"installment_number"		=>	$instlNum,
+									"installment_number"		=>	$instlNum+1,
 									"payment_scheduled_date"	=>	$instlDtls["payment_scheduled_date"],
 									"principal_amount"			=>	$instlDtls["principal_amount"],
 									"interest_amount"			=>	$instlDtls["interest_amount"],
@@ -279,39 +288,39 @@ class AdminDisburseLoanModel extends TranWrapper {
 	}
 
 	public function fillInvestorRepaymentSchedule($investorId, $interestRate, $acceptAmount) {
-		$installmentId	=	1;
+		$installmentNo	=	0;
 		$firstEmiDate	=	"";
 		$firstMonthInt	=	0;
 		$principalAmt	=	0;
 		$interestAmt	=	0;
 		$monthlyEmi		=	0;
-		
+		$instDate		=	clone $this->firstInstdate;
+		$preEmiAmount	=	round($acceptAmount * ($interestRate / 36500) * $this->preEmiDays, 2);
 
-		$preEmiAmount		=	round($acceptAmount * ($interestRate / 36500) * $this->preEmiDays, 2);
-		
+		// If the disbursement date is other than the pay by date, then there will be a pre-emi component
+		// for the difference between the disbursement date and the next pay-by date
 		
 		switch ($this->repayment_type) {
 			
 			case 	REPAYMENT_TYPE_EMI:
+
+					if ($this->preEmiDays > 0) {
+						$this->investor_repayment[$investorId][0]['payment_scheduled_date'] = $instDate->format('Y-m-d');
+						$this->investor_repayment[$investorId][0]['principal_amount'] = 0;
+						$this->investor_repayment[$investorId][0]['interest_amount'] = round($preEmiAmount,2);
+						$this->investor_repayment[$investorId][0]['payment_schedule_amount'] = round($preEmiAmount,2);
+						$instDate	= $instDate->add(new DateInterval('P1M'));
+						$installmentNo ++;
+					}
+
 					$adjInterest =	 $interestRate / 1200;
 					$monthlyEmi	=	($acceptAmount * $adjInterest) * 
 										(1 + $adjInterest)**$this->loan_tenure / 
 										((1 + $adjInterest)**$this->loan_tenure - 1);
 					$monthlyEmi = round($monthlyEmi);
 					$balOs		=	$acceptAmount;
-					$instDate	=	clone $this->firstInstdate;
 
-					
-					if ($this->preEmiDays > 0) {
-						$this->investor_repayment[$investorId][0]['payment_scheduled_date'] = $instDate->format('Y-m-d');
-						$this->investor_repayment[$investorId][0]['principal_amount'] = 0;
-						$this->investor_repayment[$investorId][0]['interest_amount'] = $preEmiAmount;
-						$this->investor_repayment[$investorId][0]['payment_schedule_amount'] = $preEmiAmount;
-						$instDate	= $instDate->add(new DateInterval('P1M'));
-					}
-
-
-					for ($instNumber = 1; $instNumber <= $this->loan_tenure; $instNumber++ ) {
+					for ($instNumber = $installmentNo; $instNumber <= $this->loan_tenure; $instNumber++ ) {
 						
 						$this->investor_repayment[$investorId][$instNumber]['payment_scheduled_date'] = $instDate->format('Y-m-d');
 						$interestAmt	=	round($balOs * $adjInterest, 2);
@@ -322,21 +331,65 @@ class AdminDisburseLoanModel extends TranWrapper {
 							$monthlyEmi = $monthlyEmi + $balOs;
 						}
 						
-						$this->investor_repayment[$investorId][$instNumber]['interest_amount'] = $interestAmt;
-						$this->investor_repayment[$investorId][$instNumber]['principal_amount'] = $principalAmt;
-						$this->investor_repayment[$investorId][$instNumber]['payment_schedule_amount'] = $monthlyEmi;
+						$this->investor_repayment[$investorId][$instNumber]['interest_amount'] = round($interestAmt,2);
+						$this->investor_repayment[$investorId][$instNumber]['principal_amount'] = round($principalAmt,2);
+						$this->investor_repayment[$investorId][$instNumber]['payment_schedule_amount'] = round($monthlyEmi,2);
 						$instDate	= $instDate->add(new DateInterval('P1M'));
 					
 					}
 					break;
 			
 			case	REPAYMENT_TYPE_INTEREST_ONLY:
-					$monthlyEmi	=	$acceptAmount * $interestRate;
+					$monthlyEmi	=	$acceptAmount * $interestRate / 1200;
+				
+					if ($this->preEmiDays > 0) {
+						$this->investor_repayment[$investorId][0]['payment_scheduled_date'] = $instDate->format('Y-m-d');
+						$this->investor_repayment[$investorId][0]['principal_amount'] = 0;
+						$this->investor_repayment[$investorId][0]['interest_amount'] = round($preEmiAmount,2);
+						$this->investor_repayment[$investorId][0]['payment_schedule_amount'] = round($preEmiAmount,2);
+						$instDate	= $instDate->add(new DateInterval('P1M'));
+						$installmentNo ++;
+					}
+
+					for ($instNumber = $installmentNo; $instNumber <= $this->loan_tenure; $instNumber++ ) {
 					
+						$this->investor_repayment[$investorId][$instNumber]['payment_scheduled_date'] = $instDate->format('Y-m-d');
+						$interestAmt	=	round($monthlyEmi, 2);
+						$principalAmt	=	0;
+						$balOs			=	$acceptAmount;
+						if ($instNumber == $this->loan_tenure + ($this->preEmiDays > 0?0:1)) {
+							$principalAmt = $acceptAmount;
+							$monthlyEmi = $monthlyEmi + $acceptAmount;
+						}
+						
+						$this->investor_repayment[$investorId][$instNumber]['interest_amount'] = round($interestAmt,2);
+						$this->investor_repayment[$investorId][$instNumber]['principal_amount'] = round($principalAmt,2);
+						$this->investor_repayment[$investorId][$instNumber]['payment_schedule_amount'] = round($monthlyEmi,2);
+						$instDate	= $instDate->add(new DateInterval('P1M'));
+					
+					}
 					break;
 			
 			case	REPAYMENT_TYPE_ONE_TIME:
+					// total repayable is calculated by the formula
+					// P (1 + r/n) ^ nt where
+					// P --> Accepted Amount
+					// r --> Interest Rate / 100
+					// n --> Tenure
+					// t --> n / 12 (no. of years)
 			
+					$tenure			=	$this->loan_tenure;
+					$adjIntRate		=	$interestRate / 100;
+					$noofyears		=	$this->loan_tenure / 12;
+					$balOs			=	$acceptAmount * ((1 + $adjIntRate/ $tenure)**($tenure*$noofyears));
+					$balOs			=	$balOs;
+					$interestAmt	=	$balOs - $acceptAmount;
+					
+					$this->investor_repayment[$investorId][0]['interest_amount'] = round($interestAmt, 2);
+					$this->investor_repayment[$investorId][0]['principal_amount'] = round($acceptAmount,2);
+					$this->investor_repayment[$investorId][0]['payment_schedule_amount'] = round($balOs,2);
+					$this->investor_repayment[$investorId][0]['payment_scheduled_date'] = $instDate->format('Y-m-d');
+					
 					break;
 		
 		}

@@ -53,6 +53,14 @@ $(document).ready(function (){
                     }
                     //minlength: 3
                 },
+                'firstname': {
+                    required: true,
+                    //minlength: 5
+                },
+                'lastname': {
+                    required: true,
+                    //minlength: 5
+                },
                 'password': {
                     required: true,
                     //minlength: 5
@@ -78,6 +86,12 @@ $(document).ready(function (){
                     required: 'Please enter an email',
                     email: 'Email is not valid',
                     remote: 'Email already registered. Please enter a different email'
+                },
+                'firstname': {
+                    required: 'Please enter firstname',
+                },
+                'lastname': {
+                    required: 'Please enter lastname',
                 },
                 'password': {
                     required: 'Please provide a password',

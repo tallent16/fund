@@ -702,28 +702,67 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerStatus($dataArray,$borrowerId,$status=null) {
 		
-		$whereArry	=	array("borrower_id" =>"{$borrowerId}");
+		$whereArry			=	array("borrower_id" =>"{$borrowerId}");
 		$this->dbUpdate('borrowers', $dataArray, $whereArry);
-		$borrUserInfo	=	$this->getBorrowerIdByUserInfo($borrowerId);
+		
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
+		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
+		$moneymatchSettings = $this->getMailSettingsDetail();
+		$fields 			= array('[borrower_contact_person]','[application_name]');
+		$replace_array 		= array();
 		
 		if($status	==	"approve") {
-			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									"subject"=>"Money Match - Borrower Approval",
-									"template"=>"emails.borrApporvalTemplate",
-									"username"=>$borrUserInfo->username,
-									"useremail"=>$borrUserInfo->email
-								);
-			$this->sendMail($mailArray);
+			
+			$mailContents		= 	$moneymatchSettings[0]->borrower_approval_content;
+			$mailSubject		= 	$moneymatchSettings[0]->borrower_approval_subject;
+
+			$replace_array 		= 	array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
+								
+			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
+			$new_subject 		= 	str_replace($fields, $replace_array, $mailSubject);
+			$template			=	"emails.borrApporvalTemplate";
+			
+		//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
+								//~ "subject"=>"Money Match - Borrower Approval",
+								//~ "template"=>"emails.borrApporvalTemplate",
+								//~ "username"=>$borrUserInfo->username,
+								//~ "useremail"=>$borrUserInfo->email
+							//~ );
 		}
 		if($status	==	"return_borrower") {
-			$mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									"subject"=>"Money Match - Borrower Correction Required",
-									"template"=>"emails.borrCorrectionRequiredTemplate",
-									"username"=>$borrUserInfo->username,
-									"useremail"=>$borrUserInfo->email
-								);
-			$this->sendMail($mailArray);
+			
+				
+			$mailContents		= 	$moneymatchSettings[0]->borrower_profile_comments_content;
+			$mailSubject		= 	$moneymatchSettings[0]->borrower_profile_comments_subject;
+
+			$replace_array 		= 	array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
+								
+			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
+			$new_subject 		= 	str_replace($fields, $replace_array, $mailSubject);
+			$template			=	"emails.borrCorrectionRequiredTemplate";			
+			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
+									//~ "subject"=>"Money Match - Borrower Correction Required",
+									//~ "template"=>"emails.borrCorrectionRequiredTemplate",
+									//~ "username"=>$borrUserInfo->username,
+									//~ "useremail"=>$borrUserInfo->email
+								//~ );
+	
 		}
+		if($status	==	"approve" || $status	==	"return_borrower") {
+			$msgarray 	=	array(	"content" => $new_content);			
+			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
+									"from" => $moneymatchSettings[0]->mail_default_from,
+									"from_name" => $moneymatchSettings[0]->application_name,
+									"to" => $borrUserInfo->email,
+									"cc" => $moneymatchSettings[0]->admin_email,
+									"live_mail" => $moneymatchSettings[0]->send_live_mails,
+									"template"=>$template);
+			
+			$mailArry	=	array(	"msgarray"=>$msgarray,
+									"msgData"=>$msgData);
+			$this->sendMail($mailArry);
+		}
+								
 		return $borrowerId;
 	}
 	

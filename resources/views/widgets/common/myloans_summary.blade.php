@@ -12,7 +12,7 @@
 			{{$LoanDetMod->no_of_bidders}}
 		</div>
 		<div class="col-md-5 col-sm-4 col-xs-4">
-			{{$LoanDetMod->total_bid}}
+			{{number_format($LoanDetMod->total_bid,2,'.',',')}}
 		</div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			{{$LoanDetMod->days_to_go}}
@@ -27,7 +27,7 @@
 			{{ Lang::get('borrower-myloans.bidders') }}
 		</div>
 		<div class="col-md-5 col-sm-4 col-xs-4">
-			{{ Lang::get('borrower-myloans.of') }} {{$LoanDetMod->apply_amount}} {{ Lang::get('borrower-myloans.goal') }}
+			{{ Lang::get('borrower-myloans.of') }} {{number_format($LoanDetMod->apply_amount,2,'.',',')}} {{ Lang::get('borrower-myloans.goal') }}
 		</div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			{{ Lang::get('borrower-myloans.days_left') }}
@@ -83,7 +83,7 @@
 			<div class="col-md-7 col-xs-7"> 
 				<i class="fa fa-dollar fa-lg"></i><span class="bid-now-section"> {{ Lang::get('borrower-myloans.amt_bidded') }}:</span>
 			</div>
-			<div class="col-md-5 col-xs-5">{{$LoanDetMod->total_bid}}</div>
+			<div class="col-md-5 col-xs-5">{{number_format($LoanDetMod->total_bid,2,'.',',')}}</div>
 		</div>
 		
 		<div class="row">						

@@ -200,19 +200,18 @@
 												'as'=>'popup-box',
 												'class'=>'',
 											))
-<!--<div id="payschd_popup" title="Repayment Schedule" style="display:none" >-->	
+<div id="payschd_popup" title="Repayment Schedule" style="display:none" >
 </div>
 @endsection  
 @section('bottomscripts')
 <script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>	 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 <script src="{{ url('js/moment.js') }}" type="text/javascript"></script>	
-<script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>
 <script>		
 var baseUrl	=	"{{url('')}}"
 
 $("form").submit(function(event) {
-	system_date = {{$bidsModel->system_date}}
+	system_date = {{$bidsModel->system_date}};
 	disburse_date = $("#disbursement_date").val();
 	
 	// Disbursement date cannot be a future date
@@ -222,10 +221,10 @@ $("form").submit(function(event) {
 	}
 	
 	$("form input[type=text]").each (function() {
-		$(this).removeAttr("disabled")
-	})
-	
+		$(this).removeAttr("disabled");
+	})	
 })
 </script>
+<script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>
 @endsection
 @stop

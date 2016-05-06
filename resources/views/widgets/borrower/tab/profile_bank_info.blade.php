@@ -5,7 +5,9 @@
 					
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label>{{ Lang::get('borrower-profile.bank_code') }}</label>												
+							<label class="input-required">
+								{{ Lang::get('borrower-profile.bank_code') }}
+							</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="bank_code_parent">													
@@ -20,7 +22,9 @@
 					<!---row1----->
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label>	{{ Lang::get('borrower-profile.bank_name') }}</label>												
+							<label class="input-required">
+								{{ Lang::get('borrower-profile.bank_name') }}
+							</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="bank_name_parent">													
@@ -35,7 +39,9 @@
 					<!---row2----->
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label>	{{ Lang::get('borrower-profile.branch_code') }}</label>												
+							<label class="input-required">	
+								{{ Lang::get('borrower-profile.branch_code') }}
+							</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="branch_code_parent">													
@@ -50,7 +56,9 @@
 					<!---row3----->
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label>	{{ Lang::get('borrower-profile.acc_num') }}</label>												
+							<label class="input-required">
+								{{ Lang::get('borrower-profile.acc_num') }}
+							</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="bank_account_number_parent">													

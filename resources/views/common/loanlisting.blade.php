@@ -50,22 +50,23 @@
 		<!--</div>-->
 	</div>
 </div>
-<!--
+
 <div class="row">
 	
-	<div class="col-sm-3" id="apply_filter_div" style="display:none">
+	<div class="col-sm-3" id="apply_filter_div" >
 		<button type="submit" class="btn verification-button">
 			{{ Lang::get('borrower-loanlisting.apply_filter') }}			
 		</button>
 	</div>
-	<div class="col-sm-3">
+	</form>
+	<!--<div class="col-sm-3">
 		<button type="button"  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
 			{{ Lang::get('borrower-loanlisting.show_filter') }}			
 		</button>
-	</div>
+	</div>-->
 	
-</div>-->
-</form>
+</div>
+
 <div class="row">
 	<div class="col-sm-12 space-around"> 
 

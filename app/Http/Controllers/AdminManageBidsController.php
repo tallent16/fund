@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 use	\App\models\AdminManageBidsModel;
+use Auth;
 class AdminManageBidsController extends MoneyMatchController {
 	
 	
@@ -43,8 +44,13 @@ class AdminManageBidsController extends MoneyMatchController {
 	}
 	
 	public function loanCancelAction() {
-
-		return redirect('admin/loanlisting');
+		
+		$userType			=	Auth::user()->usertype;
+		if($userType	==	USER_TYPE_ADMIN) {
+			return redirect('admin/loanlisting');
+		}else{
+			return redirect('borrower/myloaninfo');
+		}
 	}
 	
 /*	public function indexAction(){

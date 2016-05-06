@@ -152,6 +152,7 @@ class LoanListingModel extends TranWrapper {
 									order by isfeatured desc, loan_display_order asc
 ";
 
+		$this->dbEnableQueryLog();
 		$this->loanList	=	$this->dbFetchWithParam($loanlist_sql, 
 										["bids_cancelled" => LOAN_BIDS_STATUS_CANCELLED]);
 

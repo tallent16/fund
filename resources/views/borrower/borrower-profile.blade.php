@@ -43,6 +43,7 @@
 			@var	$trantype	=	"edit"
 		@endif
 		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+		
 			{{ '';$modelBorPrf->viewStatus	=	"disabled";''}}
 			@var	$screenMode	=	"admin"
 			@if( ($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) 
@@ -57,6 +58,7 @@
 					@var	$commentButtonsVisibe	=	"disabled"
 			@endif
 		@else
+		
 			@var	$screenMode	=	"borrower"
 			@var	$gradeStatus	=	"disabled"
 		@endif

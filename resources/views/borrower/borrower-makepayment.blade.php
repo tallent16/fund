@@ -43,7 +43,7 @@
 			</div><!-------------end of---panel heading---------------------->	
 		
 			<div class="panel-body apply-loan">
-				<div class="row">
+			<!--	<div class="row">
 					
 					<div class="col-sm-12 col-lg-6 input-space">
 												
@@ -186,6 +186,137 @@
 					</div>
 					
 				</div><!----row----->
+				
+				<div class="row">					
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label>{{ Lang::get('Loan Number') }}</label>	
+					</div>
+					
+					<div class="col-xs-12 col-sm-7 col-lg-3">
+						<input 	type="text" 
+								name="loan_num" 
+								value="{{$modelrepayloanpayment->loanRefNumber}}" 
+								class="form-control" disabled>	
+					</div>
+					
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label>{{ Lang::get('Principal Amount') }}</label>	
+					</div>
+					
+					<div class="col-xs-12 col-sm-7 col-lg-3">
+						<input type="text" 
+								name="principal_amount" 
+								value="{{number_format($modelrepayloanpayment->principalAmount, 2, '.', ',')}}" 
+								class="form-control text-right" disabled>		
+					</div>
+				</div>
+				
+				<div class="row">		
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label>{{ Lang::get('Interest Amount') }}</label>												
+					</div>			
+												
+					<div class="col-xs-12 col-sm-7 col-lg-3">													
+						<input 	type="text" 
+								name="interest_amount" 
+								value="{{number_format($modelrepayloanpayment->interestAmount, 2, '.', ',')}}"
+								class="form-control text-right" disabled>	
+					</div>
+					
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label>{{ Lang::get('Penalty Amount') }}</label>												
+					</div>			
+												
+					<div class="col-xs-12 col-sm-7 col-lg-3">													
+						<input  type="text" 
+								name="penalty_amount" 
+								value="{{number_format($modelrepayloanpayment->penaltyAmt, 2, '.', ',')}}" 
+								class="form-control text-right" disabled>
+					</div>
+				</div>
+				
+				<div class="row">		
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label>{{ Lang::get('Total Due') }}</label>												
+					</div>				
+											
+					<div class="col-xs-12 col-sm-7 col-lg-3">													
+						<input  type="text" 
+								name="amount_Paid" 
+								id="amount_Paid"
+								value="{{number_format($modelrepayloanpayment->amountPaid, 2, '.', ',')}}" 
+								class="form-control text-right" disabled>
+					</div>
+					
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label>{{ Lang::get('Sched Payment Date') }}</label>												
+					</div>				
+											
+					<div class="col-xs-12 col-sm-7 col-lg-3">	
+						<div class="controls">
+							<div class="input-group">												
+								<input 	type="text" 
+										id="schduledate" 
+										name="duedate"
+										value="{{date('d-m-Y', strtotime($modelrepayloanpayment->schedDate))}}"
+										class="form-control"
+										readonly disabled/>	
+							</div>
+						</div>
+					</div>
+				</div>	
+				
+				<div class="row">		
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label>{{ Lang::get('Actual Payment Date') }}</label>												
+					</div>
+															
+					<div class="col-xs-12 col-sm-7 col-lg-3">	
+						<div class="controls">
+							<div class="input-group">												
+									<input 	type="text" 
+											id="actualdate" 
+											name="actualdate"
+											value="{{date('d-m-Y', strtotime($modelrepayloanpayment->repaymentDate))}}"
+											class="form-control"
+											readonly disabled/>											
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label>{{ Lang::get('Transcation Ref') }}</label>												
+					</div>
+										
+					<div class="col-xs-12 col-sm-5 col-lg-3">													
+						<input type="text" 
+								name="trans_ref" 
+								value="" 
+								class="form-control text-right">
+					</div>
+				</div>
+				
+				<div class="row">	
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+					</div>					
+										
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+					</div>	
+					
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label>{{ Lang::get('Remarks') }}</label>												
+					</div>
+										
+					<div class="col-xs-12 col-sm-5 col-lg-3">													
+						<textarea rows="4" 
+									name="repay_remarks" 
+									id="remarks" 
+									class="form-control">
+									</textarea>
+					</div>
+				</div>
+				
+				
 			</div><!---panel body-->			
 		</div><!-----panel--->      
 		

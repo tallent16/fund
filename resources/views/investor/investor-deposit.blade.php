@@ -1,6 +1,17 @@
 @extends('layouts.dashboard')
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
+	<script>
+		$(document).ready(function(){ 
+			$(".amount-align").on("focus", function() {
+					onFocusNumberField(this);
+			})
+
+			$(".amount-align").on("blur", function() {
+				onBlurNumberField(this)
+			})
+		});
+	</script>
 @endsection
 @section('page_heading','Banking') 
 @section('section')    
@@ -65,8 +76,10 @@
 				</div>
 				<div class="col-xs-12 col-sm-7 col-lg-3">
 					<input type="text" 
-							name="deposit_amount" 									
-							class="form-control text-right" required>
+							name="deposit_amount" 
+							value="{{number_format($modeldeposit->transamount,2,'.',',')}}" 
+							decimal=2									
+							class="form-control text-right  amount-align" required>
 				</div>												
 			</div>
 			<!---row3-->

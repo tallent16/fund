@@ -47,6 +47,21 @@
 						
 					</div>
 				</div>
+				@if( ($LoanDetMod->bid_type	==	LOAN_BID_TYPE_OPEN_AUCTION)
+					||	($LoanDetMod->bid_type	==	LOAN_BID_TYPE_CLOSED_AUCTION))
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<button type="button"
+									data-action="{{url('borrower/managebids')."/".$LoanDetMod->loan_id}}"	 
+									class="btn verification-button"	
+									id="manage_bids_button" >
+									<i class="fa pull-right"></i>
+									{{ Lang::get('Manage Bids')}}
+								</button>
+							</div>
+						</div>
+					
+				@endif
 			
 		</div><!---panel body--->
 	</div><!----panel container-->
