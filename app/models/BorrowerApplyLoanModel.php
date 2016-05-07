@@ -367,7 +367,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 										expression
 								FROM	codelist_details
 								WHERE	codelist_id in ($loanTenureCode)
-								AND		expression !='all' order by codelist_code desc";
+								AND		expression !='all' ";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);
 
@@ -502,8 +502,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			
 		if($status	==	"approve") {
 			
-			$mailContents		= $moneymatchSettings[0]->borrower_approval_content;
-			$mailSubject		= $moneymatchSettings[0]->borrower_approval_subject;
+			$mailContents		= $moneymatchSettings[0]->borrower_loan_approval_content;
+			$mailSubject		= $moneymatchSettings[0]->borrower_loan_approval_subject;
 
 			$replace_array 		= array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
 								
@@ -511,13 +511,6 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
 			$template 			= "emails.borrApporvalTemplate";
 								
-			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									//~ "subject"=>"Money Match - Borrower Loan Approval",
-									//~ "template"=>"emails.borrLoanApporvalTemplate",
-									//~ "body_content"=>"Congratulations your loan sucessfully verified",
-									//~ "username"=>$borrUserInfo->username,
-									//~ "useremail"=>$borrUserInfo->email
-								//~ );
 		}
 		
 		if($status	==	"return_borrower") {
@@ -533,13 +526,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
 			$template 			= "emails.borrLoanApporvalTemplate";
 			
-			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									//~ "subject"=>"Money Match - Borrower Correction Required",
-									//~ "template"=>"emails.borrLoanApporvalTemplate",
-									//~ "body_content"=>"Correction required for your apllied loan ",
-									//~ "username"=>$borrUserInfo->username,
-									//~ "useremail"=>$borrUserInfo->email
-								//~ );
+			
 		}
 		
 		if($status	==	"cancel") {
@@ -574,6 +561,15 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$this->sendMail($mailArry);
 		}
 								
+		return $loanId;
+	}
+	
+	public function updateBiCloseDate($bidCloseDate,$loanId) {
+		
+		$dataArray			=	array("bid_close_date"=>$this->getDbDateFormat($bidCloseDate));
+		$whereArry			=	array("loan_id" =>"{$loanId}");
+		$this->dbUpdate('loans', $dataArray, $whereArry);
+				
 		return $loanId;
 	}
 	

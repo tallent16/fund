@@ -9117,6 +9117,7 @@ nav .block-title{
 	width: 228px;
     text-align: right;
     color:#fff;
+    text-transform: capitalize;
 }
 /************************SIDEBAR NAVIGATION*****************************/
 .active, 
@@ -9207,7 +9208,7 @@ nav .block-title{
 .applyloan label,
 #company_info .btn-group.bootstrap-select
 {
-	margin:5px 0 10px 0;
+	margin:5px 0 5px 0;
 }
 #loans_info .btn-group.bootstrap-select  {
 	margin:5px 0 0 0;
@@ -9573,6 +9574,14 @@ table#account-summary, .table-border-custom{
 	.loan-list-image .imageoverlap{
 		width:30%;
     }
+    .applyloan label, #company_info .btn-group.bootstrap-select {
+		margin: 5px 0 10px 0;
+	}
+}
+@media(min-width:801px) and (max-width:980px) {
+	.nav-tabs > li{
+		width:9em;
+	}
 }
 @media(max-width:800px) {
 	.verification-button{
@@ -9583,8 +9592,7 @@ table#account-summary, .table-border-custom{
 	}   
 	.loan-list-image .imageoverlap{
 		width:40%;
-    }
-   
+    }   
 }
 @media(min-width:768px) and (max-width:980px) {
 /*	.input-space .row div:nth-last-child(2),

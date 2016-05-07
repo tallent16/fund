@@ -16,13 +16,13 @@
 			</div><!-------------end of---panel heading---------------------->	
 					
 			<div class="table-responsive">
-				<table class="table tab-fontsize table-striped">
+				<table class="table tab-fontsize table-striped text-left">
 					<thead>
 						<tr>
-							<th class="tab-head">{{ Lang::get('INSTALLMENT NUMBER')}}</th>
-							<th class="tab-head">{{ Lang::get('LOAN REFERENCE NUMBER')}}</th>
-							<th class="tab-head">{{ Lang::get('SCHDELUED DATE')}}</th>
-							<th class="tab-head">{{ Lang::get('LOAN PERIOD')}}</th>
+							<th class="tab-head text-right">{{ Lang::get('INSTALLMENT NUMBER')}}</th>
+							<th class="tab-head text-left">{{ Lang::get('LOAN REFERENCE NUMBER')}}</th>
+							<th class="tab-head text-left">{{ Lang::get('SCHDELUED DATE')}}</th>
+							<th class="tab-head text-left">{{ Lang::get('LOAN PERIOD')}}</th>
 							<th class="tab-head text-right">{{ Lang::get('SCHDELUED AMOUNT')}}</th>
 							<th class="tab-head text-right">{{ Lang::get('PENALTY')}}</th>							
 							<th class="tab-head"></th>								
@@ -35,27 +35,18 @@
 						@if (count($modelrepayloan->unpaidLoanList) > 0)
 							
 							@var $i=1
+							@var $prloan = ""
 						
 							@foreach ($repayloanlist as $loanRow)
 																		
-								@if($loanRow->repayment_status == 1)
-								
-									@if($i == 1)
-										@if($loanRow->repayment_status == $i)
-										@var $button_enable = ""
-										@endif
-									@else
-										@var $button_enable = "style=display:none;"
-									@endif	
-									
-									
+								@if($loanRow->loan_id != $prloan)
+									@var $button_enable = ""
+									@prloan = $loanRow->loan_id
 								@else
 									@var $button_enable = "style=display:none;"
-								@endif
-								
-								@var $i++
+								@endif	
 								<tr>
-									<td>{{$loanRow->installment_number}}</td>
+									<td class="text-right">{{$loanRow->installment_number}}</td>
 									<td>{{$loanRow->ref}}</td>
 									<td>{{$loanRow->schd_date}}</td>
 									<td>{{$loanRow->inst_period}}</td>

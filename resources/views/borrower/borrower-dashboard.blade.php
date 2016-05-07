@@ -135,24 +135,24 @@
 				 <div class="panel panel-primary panel-container">
 					<div class="panel-heading panel-headsection">
 						<div class="row">
-						   <div class="col-xs-3">
+						   <div class="col-xs-12">
 								<span class="pull-left">{{ Lang::get('borrower-dashboard.loan_overview') }}</span> 
 							</div>									
 						</div>                           
 					</div>				
 					<div class="table-responsive">
-						<table class="table tab-fontsize">
+						<table class="table tab-fontsize text-left">
 							<thead>
 								<tr>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.loan_refer') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.last_payment') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.next_payment') }}</th>
+									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.loan_refer') }}</th>
+									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.last_payment') }}</th>
+									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.next_payment') }}</th>
 									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.amount_paid') }}</th>
 									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.interest_rate') }}</th>
 									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.installments') }}</th>
 									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.repayment_amount') }}</th>
 									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.principal_amount') }}</th>
-									<th class="tab-head">{{ Lang::get('borrower-dashboard.lastest_status') }}</th>
+									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.lastest_status') }}</th>
 								</tr>
 							</thead>
 							<tbody>

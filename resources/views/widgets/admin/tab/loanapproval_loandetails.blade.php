@@ -2,7 +2,13 @@
 	@var	$par_sub_allowed		=	"yes"
 @else
 	@var	$par_sub_allowed		=	"No"
-@endif  
+@endif
+@var	$showBidCloseDatePicker	="no"  
+@if($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+	@if($adminLoanApprMod->comments_count	==	0)
+		@var	$showBidCloseDatePicker	="yes"
+	@endif
+@endif
 @var $loanDocuments = $adminLoanApprMod->document_details;
 <div id="loan_details" class="tab-pane fade in active">
 	<div class="table-responsive">
@@ -18,7 +24,26 @@
 					<td class="tab-left-head">{{ Lang::get('Purpose of Loan')}}</td>					
 					<td>{{$adminLoanApprMod->purpose_singleline}}</td>
 					<td class="tab-left-head">{{ Lang::get('Bid Close Date')}}</td>								
-					<td>{{$adminLoanApprMod->bid_close_date}}</td>																				
+					<td id="bid_close_date_parent">
+						@if($showBidCloseDatePicker		==	"yes"	)
+							<div class="controls">
+								<div class="input-group">
+									<input 	id="bid_close_date" 
+											type="text" 
+											class="date-picker form-control required" 
+											name="bid_close_date"
+											value="{{$adminLoanApprMod->bid_close_date}}"
+											readonly />
+									<label for="bid_close_date" class="input-group-addon btn">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</label>
+								</div>													
+							</div>	
+						@else
+							{{$adminLoanApprMod->bid_close_date}}
+						@endif
+								
+					</td>
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Tenure of Loan')}}</td></td>	

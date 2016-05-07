@@ -1,24 +1,8 @@
 <div id="bank_info" class="tab-pane fade">  	
 	<div class="panel panel-default directorinfo applyloan"> 						
 		<div class="panel-body">			
+			
 			<fieldset {{ $modelBorPrf->viewStatus }}>
-					
-					<div class="row">		
-						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">
-								{{ Lang::get('borrower-profile.bank_code') }}
-							</label>												
-						</div>
-											
-						<div class="col-xs-12 col-sm-7 col-lg-3" id="bank_code_parent">													
-								<input 	type="text" 
-										id="bank_code" 
-										name="bank_code"
-										value="{{ $modelBorPrf->bank_code }}"
-										class="form-control required"
-										/>	
-						</div>
-					</div>
 					<!---row1----->
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
@@ -36,7 +20,26 @@
 										/>
 						</div>
 					</div>
+					<!---row1----->
+					<!---row2----->					
+					<div class="row">		
+						<div class="col-xs-12 col-sm-5 col-lg-3">											
+							<label class="input-required">
+								{{ Lang::get('borrower-profile.bank_code') }}
+							</label>												
+						</div>
+											
+						<div class="col-xs-12 col-sm-7 col-lg-3" id="bank_code_parent">													
+								<input 	type="text" 
+										id="bank_code" 
+										name="bank_code"
+										value="{{ $modelBorPrf->bank_code }}"
+										class="form-control required"
+										/>	
+						</div>
+					</div>
 					<!---row2----->
+					<!---row3----->
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="input-required">	
@@ -54,6 +57,7 @@
 						</div>
 					</div>
 					<!---row3----->
+					<!---row4----->	
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="input-required">
@@ -70,9 +74,9 @@
 										/>
 						</div>
 					</div>			
-					<!---row4----->	
-									
-			</fieldset>				
+					<!---row4----->										
+			</fieldset>		
+					
 		</div>
 	</div>
 </div><!--profile tab-->

@@ -24,7 +24,7 @@ return [
 	'year'					=> 'Year',
 	'bar_chart'				=> 'RECENT REPAYMENTS',
 	'loan_taken'			=> 'Loan Taken',
-	'total_amount'			=> 'Total amount taken',
+	'total_amount'			=> 'Total Amount Taken',
 	'loan_overview'			=> 'LOAN OVERVIEW',	
 	'loan_refer'			=> 'LOAN REFERENCE',
 	'last_payment'			=> 'DATE OF LAST PAYMENT',

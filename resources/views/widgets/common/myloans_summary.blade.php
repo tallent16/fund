@@ -15,10 +15,7 @@
 			{{number_format($LoanDetMod->total_bid,2,'.',',')}}
 		</div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
-			{{$LoanDetMod->days_to_go}}
-			<span class="pull-right">
-				<i class="fa fa-exclamation-circle"></i>
-			</span>
+			{{$LoanDetMod->days_to_go}}			
 		</div>
 	</div>
 

@@ -154,10 +154,17 @@
 														</td>													
 													</tr>
 													<tr>
-														<td><a href="{{ url ($bid_url) }}"
-																class="btn button-grey">
-																{{ Lang::get('borrower-loaninfo.view_all_bids') }}
-															</a>														
+														<td>
+															@if(($loanRow->status	==	LOAN_STATUS_APPROVED)
+																||	($loanRow->status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
+																||	($loanRow->status	==	LOAN_STATUS_BIDS_ACCEPTED) )
+																<a href="{{ url ($bid_url) }}"
+																	class="btn button-grey">
+																	{{ Lang::get('borrower-loaninfo.view_all_bids') }}
+																</a>														
+															@else
+																--
+															@endif
 														</td>												
 													</tr>
 													<tr>

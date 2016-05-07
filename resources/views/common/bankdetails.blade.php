@@ -66,22 +66,6 @@
 													<input type="hidden" name="bankid" value="{{ $bankdetailRow->bankid }}">
 											@endif	
 										
-										
-													<div class="row">		
-														<div class="col-xs-12 col-sm-5 col-lg-3">											
-															<label>{{ Lang::get('Bank Code') }}</label>												
-														</div>
-																			
-														<div class="col-xs-12 col-sm-7 col-lg-3">													
-																	<input type="text" 
-																	id="bankcode_{{$i}}" 
-																	name="bankcode" 
-																	value="{{$bankdetailRow->bank_code}}" 
-																	class="form-control" 
-																	 {{$disablestatus}}/>	
-														</div>
-													</div>
-													
 													<div class="row">		
 														<div class="col-xs-12 col-sm-5 col-lg-3">											
 															<label>{{ Lang::get('Bank Name') }}</label>												
@@ -94,6 +78,22 @@
 																	value="{{$bankdetailRow->bank_name}}" 
 																	class="form-control"
 																	 {{$disablestatus}}/>
+														</div>
+													</div>
+													
+													
+													<div class="row">		
+														<div class="col-xs-12 col-sm-5 col-lg-3">											
+															<label>{{ Lang::get('Bank Code') }}</label>												
+														</div>
+																			
+														<div class="col-xs-12 col-sm-7 col-lg-3">													
+																	<input type="text" 
+																	id="bankcode_{{$i}}" 
+																	name="bankcode" 
+																	value="{{$bankdetailRow->bank_code}}" 
+																	class="form-control" 
+																	 {{$disablestatus}}/>	
 														</div>
 													</div>
 													
@@ -209,7 +209,18 @@
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="transtype" value="add">
 				
-			
+						<div class="row">		
+							<div class="col-xs-12 col-sm-5 col-lg-3">											
+								<label>{{ Lang::get('Bank Name') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-7 col-lg-3">													
+										<input type="text" 
+										id="bankname_x" 
+										name="bankname" 													
+										class="form-control">
+							</div>
+						</div>
 						
 						<div class="row">		
 							<div class="col-xs-12 col-sm-5 col-lg-3">											
@@ -222,20 +233,6 @@
 										name="bankcode" 													
 										class="form-control"
 										/>
-							</div>
-						</div>
-						
-						
-						<div class="row">		
-							<div class="col-xs-12 col-sm-5 col-lg-3">											
-								<label>{{ Lang::get('Bank Name') }}</label>												
-							</div>
-												
-							<div class="col-xs-12 col-sm-7 col-lg-3">													
-										<input type="text" 
-										id="bankname_x" 
-										name="bankname" 													
-										class="form-control">
 							</div>
 						</div>
 						

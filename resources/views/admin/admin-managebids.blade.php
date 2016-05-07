@@ -239,7 +239,9 @@
 											'':'disabled'}}>
 									Close Bid</button>
 								<button type="submit" formaction="/{{$userType}}/bidaccept" 
-										class="btn verification-button"z
+										class="btn verification-button"
+										onclick="acceptBidClicked()"
+										
 										{{($bidsModel->loan_status==LOAN_STATUS_CLOSED_FOR_BIDS)?
 											'':'disabled'}}>
 									Accept Bid</button>

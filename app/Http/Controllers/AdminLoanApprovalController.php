@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use Request;
 use	\App\models\AdminLoanApprovalModel;
 use	\App\models\BorrowerApplyLoanModel;
+use Lang;
 class AdminLoanApprovalController extends MoneyMatchController {
 	
 	public function __construct() {	
@@ -43,7 +44,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 																					$bor_id,"return_borrower");
 						break;
 				case	"approve":
-						$dataArray = array(	'status' 	=>	LOAN_STATUS_APPROVED );
+						$dataArray 				=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
+						
+						$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$sourceId);
 						$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
 																					$bor_id,"approve");
 						break;
@@ -88,5 +91,19 @@ class AdminLoanApprovalController extends MoneyMatchController {
 	
 	public function get_basename($filename) {
 		return preg_replace('/^.+[\\\\\\/]/', '', $filename);
+	}
+	
+	protected function checkBiCloseDateValidationction() {
+		$postArray				=	Request::all();
+		$rowArray				=	array("bidcloseDateErr"=>"");
+		$status					=	"success";
+		list($bidDate, $bidMonth, $bidYear) = explode("/", $postArray['bidcloseDate']);
+		$formattedbidcloseDate	=	$bidYear."-".$bidMonth."-".$bidDate;
+		
+		 if(strtotime($formattedbidcloseDate) <	strtotime('today') ){
+				$rowArray['bidcloseDateErr']	=	Lang::get("Bid Close Date should not be earlier than today");
+				$status							=	"error";
+		}
+		return	json_encode(array("status"=>$status,"row"=>$rowArray));
 	}
 }

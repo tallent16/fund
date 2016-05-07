@@ -34,7 +34,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	
 	public function getUnpaidLoans() {
 	
-		$unpaidloan_sql			=	"SELECT 	loans.loan_id,
+		$unpaidloan_sql			=	"SELECT loans.loan_id,
 										installment_number,
 										repayment_schedule_id,										
 										repayment_status,
@@ -65,7 +65,8 @@ class BorrowerRepayLoansModel extends TranWrapper {
 												and		borrower_id = {$this->borrowerId}
 												limit 0,2) loan_repayment, 
 												loans
-										WHERE	loans.loan_id = loan_repayment.loan_id ";
+										WHERE	loans.loan_id = loan_repayment.loan_id 
+										ORDER BY loan_id, installment_number";
 								
 		$this->unpaidLoanList	=	$this->dbFetchAll($unpaidloan_sql);	
 			

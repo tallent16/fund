@@ -54,18 +54,18 @@
 							<table class="table tab-fontsize text-left">
 								<thead>
 									<tr>
-										<th class="tab-head text-center col-sm-1">																			
+										<th class="tab-head text-center">																			
 											<label>
 												<input type="checkbox" id="select_all_list" value="Select All">
 											</label>											
 										</th>
-										<th class="tab-head text-left col-sm-2">{{ Lang::get('Email Id') }}</th>
-										<th class="tab-head text-left col-sm-2">{{ Lang::get('Business Name') }}</th>
-										<th class="tab-head text-left col-sm-2">{{ Lang::get('Industry') }}</th>
-										<th class="tab-head text-right col-sm-1">{{ Lang::get('Active Loans') }}</th>
-										<th class="tab-head text-right col-sm-2">{{ Lang::get('Total Balance Outstanding') }}</th>
-										<th class="tab-head text-left col-sm-1">{{ Lang::get('Status') }}</th>
-										<th class="tab-head text-left col-sm-1 ">{{ Lang::get('Actions') }}</th>									
+										<th class="tab-head text-left">{{ Lang::get('Email Id') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('Business Name') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('Industry') }}</th>
+										<th class="tab-head text-right">{{ Lang::get('Active Loans') }}</th>
+										<th class="tab-head text-right">{{ Lang::get('Total Balance Outstanding') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('Actions') }}</th>									
 									</tr>
 								</thead>
 								<tbody>	

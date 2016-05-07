@@ -120,25 +120,8 @@
 							</label>
 						</div>													
 					</div>								
-				</div>				
-				
-				<div class="col-xs-12 col-sm-5 col-lg-3">											
-					<label class="input-required">
-						{{ Lang::get('borrower-profile.contact_person') }}
-					</label>												
-				</div>									
-				<div class="col-xs-12 col-sm-7 col-lg-3"  id="contact_person_parent">													
-					<input 	type="text" 
-								id="contact_person" 
-								name="contact_person"
-								value="{{ $modelBorPrf->contact_person }}"
-								class="form-control required"
-								/>		
-				</div>
-			</div>
-			<!------row--4----------->
-			<!------row--5----------->				
-			<div class="row">
+				</div>		
+						
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
 						{{ Lang::get('borrower-profile.operation_since') }}
@@ -158,24 +141,10 @@
 							</label>
 						</div>													
 					</div>								
-				</div>				
-				
-				<div class="col-xs-12 col-sm-5 col-lg-3">											
-					<label class="input-required">
-						{{ Lang::get('borrower-profile.contact_mobile') }}
-					</label>												
-				</div>									
-				<div class="col-xs-12 col-sm-7 col-lg-3"  id="contact_person_mobile_parent">													
-					<input 	type="text" 
-								id="contact_person_mobile" 
-								name="contact_person_mobile"
-								value="{{ $modelBorPrf->contact_person_mobile }}"
-								class="form-control text-right  required"
-								/>	
-				</div>
+				</div>					
 			</div>
-			<!------row--5----------->
-			<!------row--6----------->
+			<!------row--4----------->
+			<!------row--5----------->				
 			<div class="row">
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
@@ -205,7 +174,37 @@
 								/>
 				</div>				
 			</div>
-		</fieldset>			
+			<!------row--5----------->
+			<!------row--6----------->
+			<div class="row">
+				<div class="col-xs-12 col-sm-5 col-lg-3">											
+					<label class="input-required">
+						{{ Lang::get('borrower-profile.contact_person') }}
+					</label>												
+				</div>									
+				<div class="col-xs-12 col-sm-7 col-lg-3"  id="contact_person_parent">													
+					<input 	type="text" 
+								id="contact_person" 
+								name="contact_person"
+								value="{{ $modelBorPrf->contact_person }}"
+								class="form-control required"
+								/>		
+				</div>							
+				
+				<div class="col-xs-12 col-sm-5 col-lg-3">											
+					<label class="input-required">
+						{{ Lang::get('borrower-profile.contact_mobile') }}
+					</label>												
+				</div>									
+				<div class="col-xs-12 col-sm-7 col-lg-3"  id="contact_person_mobile_parent">													
+					<input 	type="text" 
+								id="contact_person_mobile" 
+								name="contact_person_mobile"
+								value="{{ $modelBorPrf->contact_person_mobile }}"
+								class="form-control text-right  required"
+								/>	
+				</div>
+			</div>
 			<!------row--6----------->
 			<!------row--7----------->	
 			<div class="row">
@@ -220,49 +219,49 @@
 								data-buttonBefore="true" 
 								name="company_image"
 								id="company_image"
-								{{$modelBorPrf->viewStatus}}  />									
+								/>									
 					<input 	type="hidden" 
 								id="company_image_hidden"
 								value="{{ $modelBorPrf->company_image }}"
 								/>									
 				</div>
-				
+				<div class="col-xs-12 col-sm-5 col-lg-3">											
+					<label>
+						{{ Lang::get('borrower-profile.company_thumb_image') }}
+					</label>												
+				</div>
+									
+				<div class="col-xs-12 col-sm-7 col-lg-3"  id="industry_parent">									
+					<input 	type="file" 
+							class="jfilestyle" 
+							data-buttonBefore="true" 
+							name="company_thumbnail"
+							/>									
+				</div>							
+			</div>	
+		</fieldset>	
+			<!------row--7----------->	
+			<!------row--8----------->			
+			<div class="row">		
+				<div class="col-xs-12 col-sm-5 col-lg-3">
+				</div>
+				<div class="col-xs-12 col-sm-7 col-lg-3">
+				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label>
 						{{ Lang::get('Grade') }}
 					</label>												
 				</div>
-									
+								
 				<div class="col-xs-12 col-sm-7 col-lg-3">		
 					@var	$gradeInfo	=	[''=>'none']+$modelBorPrf->gradeInfo
 					{{ Form::select('grade',$gradeInfo, 
 													$modelBorPrf->grade, 
 													['class' => 'selectpicker text-right',$gradeStatus])
 					}}										
-				</div>				
-			</div>	
-			
-			<!------row--7----------->	
-			<!------row--8----------->
-			<fieldset {{ $modelBorPrf->viewStatus }}>
-				<div class="row">		
-					<div class="col-xs-12 col-sm-5 col-lg-3">											
-						<label>
-							{{ Lang::get('borrower-profile.company_thumb_image') }}
-						</label>												
-					</div>
-										
-					<div class="col-xs-12 col-sm-7 col-lg-3"  id="industry_parent">									
-						<input 	type="file" 
-								class="jfilestyle" 
-								data-buttonBefore="true" 
-								name="company_thumbnail"
-								/>									
-					</div>
-				</div>
-			</fieldset>
-			<!------row--8----------->
-		
+				</div>	
+			</div>			
+			<!------row--8----------->		
 			@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 				@if($gradeStatus	==	"")
 					<div class="row">					

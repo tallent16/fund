@@ -124,20 +124,7 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 			$rowArray['loan_amountErr']	=	Lang::get("Loan should be greater than zero");
 			$status						=	"error";
 		}
-		if($postArray['bidcloseDate'] 	=="") {
-			$rowArray['bidcloseDateErr']	=	Lang::get("Bid Close Date should not be empty");
-			$status							=	"error";
-		}else{
-			list($bidDate, $bidMonth, $bidYear) = explode("/", $postArray['bidcloseDate']);
-			$formattedbidcloseDate	=	$bidYear."-".$bidMonth."-".$bidDate;
-			if(!checkdate($bidMonth,$bidDate,$bidYear) ) {
-				$rowArray['bidcloseDateErr']	=	Lang::get("Invalid Bid Close Date");
-				$status							=	"error";
-			}else if(strtotime($formattedbidcloseDate) <	strtotime('today') ){
-				$rowArray['bidcloseDateErr']	=	Lang::get("Bid Close Date should not be earlier than today");
-				$status							=	"error";
-			}
-		}
+		
 		if($postArray['targetInterest'] <=	0) {
 			$rowArray['target_interestErr']	=	Lang::get("Target Insterest should be greater than zero");
 			$status		=	"error";

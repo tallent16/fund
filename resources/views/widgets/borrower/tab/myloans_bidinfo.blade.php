@@ -2,16 +2,7 @@
 	@var	$bidInfoCnt		=	count($bidInfo);
 	<div class="panel panel-primary panel-container">
 		<div class="panel-body">
-					
-				<div class="row">
-					<div class="col-md-12">
-						<div class="pull-right">
-							<i class="fa fa-exclamation-circle"></i>
-						</div>
-					</div>
-				</div>
-			
-			
+							
 				<div class="row">
 					<div class="col-md-12">
 						
@@ -47,8 +38,10 @@
 						
 					</div>
 				</div>
-				@if( ($LoanDetMod->bid_type	==	LOAN_BID_TYPE_OPEN_AUCTION)
-					||	($LoanDetMod->bid_type	==	LOAN_BID_TYPE_CLOSED_AUCTION))
+				
+				@if(($LoanDetMod->status	==	LOAN_STATUS_APPROVED)
+					||	($LoanDetMod->status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
+					||	($LoanDetMod->status	==	LOAN_STATUS_BIDS_ACCEPTED) )
 						<div class="row">
 							<div class="col-md-12 text-right">
 								<button type="button"

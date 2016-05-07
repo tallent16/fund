@@ -175,14 +175,14 @@ function checkTabFilled(cur_tab) {
 function checkAjaxValidation() {
 	
 			var loan_amount			=	$("#loan_amount").val();
-			var bidcloseDate		=	$("#date-picker-2").val();
+			//~ var bidcloseDate		=	$("#date-picker-2").val();
 			var targetInterest		=	$("#target_interest").val();
 			var partialSubAllowed	=	$("input[name=partial_sub_allowed]:radio:checked").val();
 			var partialSubAmount	=	$("#min_for_partial_sub").val();
 			
 			var data = {	
 						loan_amount:loan_amount,
-						bidcloseDate:bidcloseDate,
+						//~ bidcloseDate:bidcloseDate,
 						targetInterest:targetInterest,
 						partialSubAllowed:partialSubAllowed,
 						partialSubAmount:partialSubAmount
@@ -202,9 +202,9 @@ function checkAjaxValidation() {
 						if(data.row.loan_amountErr	!="")
 							$("#loan_amount_parent").addClass('has-error').
 													append('<span class="control-label error">'+data.row.loan_amountErr+'</span>');
-						if(data.row.bidcloseDateErr	!="")
-							$("#date-picker-2_parent").addClass('has-error').
-													append('<span class="control-label error">'+data.row.bidcloseDateErr+'</span>');
+						//~ if(data.row.bidcloseDateErr	!="")
+							//~ $("#date-picker-2_parent").addClass('has-error').
+													//~ append('<span class="control-label error">'+data.row.bidcloseDateErr+'</span>');
 						if(data.row.target_interestErr	!="")
 							$("#target_interest_parent").addClass('has-error').
 													append('<span class="control-label error">'+data.row.target_interestErr+'</span>');

@@ -19,15 +19,7 @@
 		</div>	
 	
 	<div class="panel-body">
-			
-		<div class="row">
-			<div class="col-md-12">
-				<div class="pull-right">
-					<i class="fa fa-exclamation-circle"></i>
-				</div>
-			</div>
-		</div>
-
+		
 		<div class="col-md-12">	
 			<div class="panel-subhead">
 				{{ Lang::get('borrower-myloans.purpose_loan')}}
