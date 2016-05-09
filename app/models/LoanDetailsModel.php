@@ -328,31 +328,44 @@ class LoanDetailsModel extends TranWrapper {
 	
 	public function getPaymentSchedule($loan_id) {
 		
-			$paymentschedule_sql		= 	"	SELECT 		IFNULL(DATE_FORMAT(borrower_repayments.trans_date,'%d/%m/%Y'),'--') 
-																										payment_date, 
-															IFNULL(ROUND(interest_paid * investor_ratio,2),'--') int_paid, 
-															IFNULL(ROUND(amount_paid * investor_ratio,2),'--') amt_paid,
-															IFNULL(ROUND(principal_paid * investor_ratio,2),'--') princ_paid, 
-															IFNULL(ROUND(penalty_paid * investor_ratio, 2),'--') penal_paid, 
-															DATE_FORMAT(repayment_schedule_date,'%d/%m/%Y') schd_date, 
-															ROUND(repayment_scheduled_amount * investor_ratio,2) schd_amt,
-															if (isnull(borrower_repayments.amount_paid), 'Unpaid', 'Paid') status
-												FROM 		loan_repayment_schedule 
-															LEFT OUTER JOIN borrower_repayments 
-																ON 	(loan_repayment_schedule.loan_id = borrower_repayments.loan_id
-																AND  borrower_repayments.repayment_schedule_id = 
-																			loan_repayment_schedule.repayment_schedule_id), 
-															( SELECT 	loans.loan_id, 
-																		(sum(loan_bids.bid_amount)
-																				/ loans.loan_sanctioned_amount) investor_ratio 
-																FROM 	loans, 
-																		loan_bids	
-																WHERE loans.loan_id = {$loan_id} 
-																AND loan_bids.loan_id = {$loan_id} 
-																AND loan_bids.investor_id = {$this->inv_or_borr_id}
-															) xxx
-											WHERE loan_repayment_schedule.loan_id = {$loan_id}";
+		if ($this->userType == USER_TYPE_BORROWER) {
+			$paymentschedle_sql		=	"SELECT	repayment_actual_date payment_date,
+												interest_component int_paid,
+												repayment_scheduled_amount + 
+													ifnull(repayment_penalty_interest,0) + 
+													ifnull(repayment_penalty_charges,0) amt_paid,
+												ifnull(repayment_penalty_interest,0) + 
+													ifnull(repayment_penalty_charges,0) penal_paid,
+
+												principal_component princ_paid,
+												repayment_schedule_date schd_date,
+												repayment_scheduled_amount schd_amt,
+												CASE repayment_status 
+													WHEN 1 THEN 'Unpaid'
+													WHEN 2 THEN 'Unpaid'
+													WHEN 3 THEN 'Payment Approved'
+												END status
+										FROM 	borrower_repayment_schedule
+										WHERE 	loan_id = {$loan_id}";
 			
+			
+		} else {
+			$paymentschedule_sql	= 	"SELECT	payment_date,
+												interest_amount int_paid,
+												payment_schedule_amount + ifnull(penalty_amount,0) amt_paid,
+												penalty_amount penal_paid,
+												principal_amount princ_paid,
+												payment_scheduled_date schd_date,
+												payment_schedule_amount schd_amt,
+												CASE status 
+													WHEN 1 THEN 'Unpaid'
+													WHEN 2 THEN 'Not approved'
+													WHEN 3 THEN 'Payment Approved'
+												END status
+										FROM 	investor_repayment_schedule
+										WHERE 	loan_id = {$loan_id}
+										AND		investor_id = {$this->inv_or_borr_id} ";
+		}
 		$paymentschedule_rs	= 	$this->dbFetchAll($paymentschedule_sql);
 			
 		if ($paymentschedule_rs) {
@@ -364,6 +377,7 @@ class LoanDetailsModel extends TranWrapper {
 				}
 			}
 		}
+		
 		return $paymentschedule_rs;
 	}
 	

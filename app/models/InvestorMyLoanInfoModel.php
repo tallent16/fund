@@ -13,7 +13,7 @@ class InvestorMyLoanInfoModel extends TranWrapper {
 	public function getInvestorLoanList($filterLoanStatus) {
 		
 		$this->filterloanStatusValue	= 	$filterLoanStatus;
-		$loanStatusWhere				=	" loans.status " . ($filterLoanStatus == "all"? " IN(3,6,9) ":
+		$loanStatusWhere				=	" loans.status " . ($filterLoanStatus == "all"? " IN(3,5,6,7) ":
 												"=	{$filterLoanStatus}"." ");
 		
 		$current_inverstor_id			=	 $this->getCurrentInvestorID();

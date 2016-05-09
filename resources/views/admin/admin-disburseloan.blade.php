@@ -211,7 +211,7 @@
 var baseUrl	=	"{{url('')}}"
 
 $("form").submit(function(event) {
-	system_date = {{$bidsModel->system_date}};
+	system_date = "{{$bidsModel->system_date}}";
 	disburse_date = $("#disbursement_date").val();
 	
 	// Disbursement date cannot be a future date

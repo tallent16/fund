@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 use	\App\models\BorrowerRepayLoansModel;
+
 use Request;
 class BorrowerRepayLoansController extends MoneyMatchController {
 
@@ -46,23 +47,32 @@ class BorrowerRepayLoansController extends MoneyMatchController {
 	
 	public function paymentAction($repayment_id,$loan_id)
 	{
-		$installmentId = base64_decode($repayment_id);	
+		$repaymentId = base64_decode($repayment_id);	
 		$loanid	= 	base64_decode($loan_id);
-					
-		$this->repayloanmodel->newRepayment($installmentId,$loanid);
-		
-		$submitted	=	false;
+	
+		$submitted		=	false;
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
 			$result		=	$this->repayloanmodel->saveRepayment($postArray);
-			$submitted	=	true;
-		}		
-		
-		$withaArry	=	array("modelrepayloanpayment"=>$this->repayloanmodel,
-								"classname" => "fa fa-cc fa-fw user-icon",
-								"submitted"=>$submitted);
-		return view('borrower.borrower-makepayment')
-				->with($withaArry);
+			$submitted		=	true;
+		}
+		$this->repayloanmodel->getRepaymentDetails($repaymentId,$loanid);
+	
+		$withArry	=	array(	"adminBorRepayViewMod" => $this->repayloanmodel, 								
+								"classname"=>"fa fa-cc fa-fw",
+								"submitted"=>$submitted,
+								"type"=>"edit"); 
+								
+		return view('admin.admin-borrowersrepaymentview')
+				->with($withArry); 
+							
+	}
+	
+	public function recalculatePenalityAction(){		
+
+		$postArray	=	Request::all();
+		$result	=	$this->repayloanmodel->recalculatePenality($postArray);
+		return	json_encode($result);
 	}
 
 }

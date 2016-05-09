@@ -35,16 +35,17 @@
 						@if (count($modelrepayloan->unpaidLoanList) > 0)
 							
 							@var $i=1
-							@var $prloan = ""
+							<?php $prloan = "" ?>
 						
 							@foreach ($repayloanlist as $loanRow)
 																		
 								@if($loanRow->loan_id != $prloan)
 									@var $button_enable = ""
-									@prloan = $loanRow->loan_id
+									<?php $prloan = $loanRow->loan_id ?>
 								@else
 									@var $button_enable = "style=display:none;"
 								@endif	
+								
 								<tr>
 									<td class="text-right">{{$loanRow->installment_number}}</td>
 									<td>{{$loanRow->ref}}</td>

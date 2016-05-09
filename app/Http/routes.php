@@ -207,9 +207,12 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/ajax/recalculatePenality','AdminBorrowersRepaymentViewController@recalculatePenalityAction');
     
     // Manage Banking Transactions for Investors
-    Route::get('admin/investordepositlist', 'AdminInvestorsDepositListingController@indexAction');
+	Route::get('admin/investordepositlist', 'AdminInvestorsDepositListingController@indexAction');	
     Route::post('admin/investordepositlist/bulkaction', 'AdminInvestorsDepositListingController@InvestorDepositListBulkAction');
+    
+    Route::get('admin/investorwithdrawallist', 'AdminInvestorsWithdrawalsListingController@indexAction');
     Route::match(['get', 'post'],'admin/investordepositview/{type}/{payment_id}/{investor_id}', 'AdminInvestorsDepositListingController@viewDepositAction');
+    
     Route::get('admin/investorwithdrawallist', 'AdminInvestorsWithdrawalsListingController@indexAction');
     Route::post('admin/investorwithdrawallist/bulkaction', 'AdminInvestorsWithdrawalsListingController@InvestorWithDrawListBulkAction');
     Route::match(['get', 'post'],'admin/investorwithdrawalview/{type}/{payment_id}/{investor_id}','AdminInvestorsWithdrawalsListingController@viewWithDrawAction');
@@ -254,6 +257,7 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');
 	Route::get('borrower/settings', 'BorrowerSettingsController@indexAction');	
 	Route::match(['get', 'post'],'borrower/makepayment/{repayment_id}/{loan_id}', 'BorrowerRepayLoansController@paymentAction');
+	Route::post('borrower/ajax/recalculatePenality','BorrowerRepayLoansController@recalculatePenalityAction');
 });
 
 // The routes (or pages that are applicable for investor users only
@@ -275,9 +279,13 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
     
     // Banking
+    Route::get('investor/depositlist', 'InvestorsDepositListingController@indexAction');
+    Route::match(['get', 'post'],'investor/deposit/{type}/{payment_id}', 'InvestorsDepositListingController@viewDepositAction');
+    
+    Route::get('investor/withdrawallist', 'InvestorsWithdrawalsListingController@indexAction');
+    Route::match(['get', 'post'],'investor/withdrawal/{type}/{payment_id}', 
+															'InvestorsWithdrawalsListingController@viewWithDrawAction');
     Route::match(['get', 'post'],'investor/bankdetails', 'BankProcessController@indexAction');   
-    Route::match(['get', 'post'],'investor/deposit', 'InvestorBankController@indexAction'); 
-    Route::match(['get', 'post'],'investor/withdraw', 'InvestorBankController@withdrawAction');  
     
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	   	

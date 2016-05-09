@@ -37,7 +37,7 @@ class BorrowerLoanSummaryModel extends TranWrapper {
 									(	SELECT 	loan_id, sum(bid_amount) total_bid_amount
 										FROM	loan_bids
 										GROUP BY loan_id) bids on bids.loan_id = loans.loan_id
-						WHERE	status in (3,5,6,9)
+						WHERE	status in (3,5,6,7,10)
 						AND		borrower_id = {$borrowId}";
 						
 						
@@ -90,7 +90,8 @@ class BorrowerLoanSummaryModel extends TranWrapper {
 		$penlSql	=	"SELECT loan_id,
 								'Repayment' tran_type,
 								borrower_repayment_schedule.repayment_actual_date tran_date,
-								repayment_penalty_amount tran_amt, 
+								ifnull(repayment_penalty_interest,0) + 
+								ifnull(repayment_penalty_charges, 0) tran_amt, 
 								'Penalty for late payment' transdetail,
 								0 loan_balance,
 								3 display_order
@@ -134,7 +135,6 @@ class BorrowerLoanSummaryModel extends TranWrapper {
 				break;
 		}
 
-	
 		$this->loanList			=	$this->dbFetchAll($lnListSql);
 		foreach ($this->loanList as $lnListRow) {
 			$loan_id 		=	$lnListRow->loan_id;

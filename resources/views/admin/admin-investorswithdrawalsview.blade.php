@@ -9,6 +9,14 @@
 @endsection
 @section('page_heading',Lang::get('Investor Withdrawals') )
 @section('section') 
+@if($submitted)
+	<div class="col-sm-12 space-around">
+		<div class="annoucement-msg-container">
+			<div class="alert alert-success">
+				{{Lang::get('Investor WithDrawal Successfully Updated')}}
+		</div>				
+	</div>
+@endif
 @var $editclass = ""
 @var $addclass  = ""
 @var $viewclass = ""
@@ -58,40 +66,47 @@
 						name="submitType" 
 						id="submitType" 
 						value=""/>
+				@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
+					<input  type="hidden" 
+							name="investor_id" 
+							id="investor_id" 
+							value="{{$adminInvWithDrawListMod->investorId}}"/>
+				@endif
 			<fieldset {{$viewclass}}>
-				<div class="row"><!-- Row 1 -->					
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Investor Name')}}
-						</label>
-					</div>								
-					<div class="col-xs-12 col-sm-7 col-lg-3">
-						@if($editclass || $viewclass)
-							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker disabled",
-														"id"=>"investor_id"] )  }} 
-						@else
-							{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker",
-																			"id"=>"investor_id"]) }} 
-						@endif
-					</div>							
-				</div> <!-- Row 1 -->
-				
-				<div class="row"><!-- Row 2 -->					
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Available Balance')}}
-						</label>
-					</div>								
-					<div class="col-xs-12 col-sm-7 col-lg-3">
-						<input 	id="avail_bal" 
-									type="text" 
-									class="avail_bal form-control text-right" 
-									name="avail_bal"									
-									value="{{number_format($adminInvWithDrawListMod->avail_bal,2,'.',',')}}" 
-									disabled />		
-					</div>
-				</div> <!-- Row 2 -->
-				
+				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+					<div class="row"><!-- Row 1 -->					
+						<div class="col-xs-12 col-sm-5 col-lg-3">
+							<label>
+								{{ Lang::get('Investor Name')}}
+							</label>
+						</div>								
+						<div class="col-xs-12 col-sm-7 col-lg-3">
+							@if($editclass || $viewclass)
+								{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker disabled",
+															"id"=>"investor_id"] )  }} 
+							@else
+								{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker",
+																				"id"=>"investor_id"]) }} 
+							@endif
+						</div>							
+					</div> <!-- Row 1 -->
+					
+					<div class="row"><!-- Row 2 -->					
+						<div class="col-xs-12 col-sm-5 col-lg-3">
+							<label>
+								{{ Lang::get('Available Balance')}}
+							</label>
+						</div>								
+						<div class="col-xs-12 col-sm-7 col-lg-3">
+							<input 	id="avail_bal" 
+										type="text" 
+										class="avail_bal form-control text-right" 
+										name="avail_bal"									
+										value="{{number_format($adminInvWithDrawListMod->avail_bal,2,'.',',')}}" 
+										disabled />		
+						</div>
+					</div> <!-- Row 2 -->
+				@endif
 				<div class="row"><!-- Row 3 -->				
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
@@ -192,18 +207,22 @@
 											{{$viewclass}} >
 										{{ Lang::get('Save')}}
 									</button>
-									<button class="btn verification-button" 
-											id="approve_button"
-											{{$viewclass}} >
-										{{ Lang::get('Approve')}}
-									</button>
+									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+										<button class="btn verification-button" 
+												id="approve_button"
+												{{$viewclass}} >
+											{{ Lang::get('Approve')}}
+										</button>
+									@endif
 								@endif
-								@if($adminInvWithDrawListMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
-									<button class="btn verification-button" 
-											id="unapprove_button"
-											>
-										{{ Lang::get('UnApprove')}}
-									</button>
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if($adminInvWithDrawListMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
+										<button class="btn verification-button" 
+												id="unapprove_button"
+												>
+											{{ Lang::get('UnApprove')}}
+										</button>
+									@endif
 								@endif
 							</div>
 						</div>

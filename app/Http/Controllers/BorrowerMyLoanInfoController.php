@@ -14,10 +14,16 @@ class BorrowerMyLoanInfoController extends MoneyMatchController {
 	}
 	
 	public function indexAction() {
+		
+		$filterLoanStatus_filter 	= '11';
+		
+		if (isset($_REQUEST["loanstatus_filter"])) 
+			$filterLoanStatus_filter 	= $_REQUEST["loanstatus_filter"];
+			
 		$withArry	=	array(	"BorModMyLoanInfo"=>$this->borrowerMyLoanInfoModel,
 								"classname"=>"fa fa-file-text fa-fw"
 							);	
-		$this->borrowerMyLoanInfoModel->getBorrowerAllLoanDetails();	
+		$this->borrowerMyLoanInfoModel->getBorrowerAllLoanDetails($filterLoanStatus_filter);	
 		return view('borrower.borrower-myloaninfo')
 			->with($withArry);
 	}

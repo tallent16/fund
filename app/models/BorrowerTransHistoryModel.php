@@ -81,7 +81,8 @@ class BorrowerTransHistoryModel extends TranWrapper {
 								loans.loan_reference_number,
 								'Repayment' tran_type,
 								borrower_repayment_schedule.repayment_actual_date tran_date,
-								repayment_penalty_amount tran_amt, 
+								ifnull(repayment_penalty_interest,0) + 
+								ifnull(repayment_penalty_charges,0) tran_amt, 
 								'Penalty for late payment' transdetail,
 								0 loan_balance,
 								3 display_order
@@ -103,6 +104,8 @@ class BorrowerTransHistoryModel extends TranWrapper {
 									transdetail,
 									round(loan_balance,2) loan_balance,
 									display_order FROM ( ";
+		
+		echo $tranType;
 		switch ($tranType) {
 			case 'Disbursals':
 				$mainSql	=	$selectCol . $disbSql. $orderby;
@@ -127,11 +130,8 @@ class BorrowerTransHistoryModel extends TranWrapper {
 				break;
 		}
 
-		$this->dbEnableQueryLog();
 		$transListSql	=	$mainSql;
 		$tranListRs		=	$this->dbFetchAll($transListSql);
-		echo "<pre>", print_r($this->dbGetLog(),"</pre>";
-		die;
 		$this->tranList = $tranListRs;
 		return;
 	

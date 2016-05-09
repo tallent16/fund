@@ -44,6 +44,20 @@
 											</button>
 										</div>	
 									</div>	
+									<div class="col-sm-12 col-lg-6 text-right"> 
+										<ul class="pagination">
+											<li>
+												<a href="javascript:void(0)" id="prev">
+													<i class="fa fa-chevron-circle-left"></i>
+												</a>
+											</li>
+											<li>
+												<a href="javascript:void(0)" id="next">
+													<i class="fa fa-chevron-circle-right"></i>
+												</a>
+											</li>	
+										</ul>
+									</div>
 								</div>
 							</form>
 						</div>

@@ -85,7 +85,7 @@
 			Chart.types.Bar.extend({
 				name: "BarWidth",
 				draw: function(){
-					this.options.barValueSpacing = this.chart.width / barCount;
+					this.options.barValueSpacing = (this.chart.width) / (barCount + 2);
 					Chart.types.Bar.prototype.draw.apply(this, arguments);
 				}
 			});

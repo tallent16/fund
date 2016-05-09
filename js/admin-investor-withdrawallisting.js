@@ -38,7 +38,8 @@ $(document).ready(function (){
 				var withdrawAmt		=	$(this).attr("data-withdrawAmt");
 				var	availAmt		=	$(this).attr("data-availAmt");
 				var status			=	$(this).attr("data-status");
-				if(	withdrawAmt >	availAmt ) {
+				
+				if(	numeral(withdrawAmt).value() >	numeral(availAmt).value() ) {
 					errMessage	=	errMessage+" Investor Name:"+inv_name+",Settlement Date:";
 					errMessage	=	errMessage+settlementDate+",Withdrawal Amount:"+withdrawAmt+
 															" Withdraw Amount exceed available balance<br>";

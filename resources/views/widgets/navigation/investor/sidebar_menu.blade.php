@@ -46,10 +46,10 @@
 					<a href="{{ url ('investor/bankdetails') }}">{{ Lang::get('borrower-leftmenu.bankdetails') }}</a>
 				</li>                                 
 				 <li class="{{$class}}">
-					<a href="{{ url ('investor/deposit') }}">{{ Lang::get('Deposit') }}</a>
+					<a href="{{ url ('investor/depositlist') }}">{{ Lang::get('Deposit') }}</a>
 				</li>               
 				 <li class="{{$class}}">
-					<a href="{{ url ('investor/withdraw') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
+					<a href="{{ url ('investor/withdrawallist') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
 				</li>                                                                              
 			</ul>
 		</li>                         

@@ -129,7 +129,7 @@
 				<div class="col-lg-6 col-md-6">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							@section ('cchart4_panel_title',Lang::get('borrower-dashboard.bar_chart'))
+							@section ('cchart4_panel_title',Lang::get('Return on Investment(%)'))
 							@section ('cchart4_panel_body')
 							@include('widgets.charts.cbarchart')
 							@endsection

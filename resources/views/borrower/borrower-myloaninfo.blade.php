@@ -4,7 +4,7 @@
 	<script>
 		var baseUrl	=	"{{url('')}}"
 	</script>
-	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
+	
 	<script>
 		$(document).ready(function(){   	
 		
@@ -25,6 +25,7 @@
 				
 		});
 	</script>
+	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading',Lang::get('borrower-loaninfo.page_heading') )
 @section('section')    
@@ -41,6 +42,51 @@
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
+						
+						<div id="filter_area">
+							<form >
+								<div class="row">	
+									<div class="col-sm-12 col-lg-3"> 														
+										<div class="form-group"><br>	
+											<strong>{{ Lang::get('Loan Status') }}</strong>							
+											{{ 
+												Form::select('loanstatus_filter', 
+																$BorModMyLoanInfo->filterloanStatusList, 
+																$BorModMyLoanInfo->filterloanStatusValue,
+																["class" => "selectpicker"]) 
+											}} 
+										</div>
+									</div>
+									<div class="col-sm-12 col-lg-3"> 														
+										<div class="form-group"><br><br>			
+											<button type="submit" class="btn verification-button">
+												{{ Lang::get('Apply Filter') }}			
+											</button>
+										</div>	
+									</div>
+									
+									<!---<div class="col-sm-6 text-right">			
+										<ul class="pagination pages">
+											<li>
+												<a href="javascript:void(0)" id="prev">
+													<i class="fa fa-chevron-circle-left"></i>
+												</a>
+											</li>
+											<li>
+												<a href="javascript:void(0)" id="next">
+													<i class="fa fa-chevron-circle-right"></i>
+												</a>
+											</li>	
+										</ul>			
+									</div>--->
+									
+											
+								</div>
+							</form>
+						</div>
+						
+						
+						
 						@if(count($borrowerAllList) > 0)
 						<div class="row"> 
 							<!----col--2--->
@@ -88,10 +134,15 @@
 								</div>							
 							</div> <!----col--2--->
 							<!---col--10-->
-							<div class="col-sm-6 col-lg-10 loan-details">
+							<div class="divs">
+								
+									<a class="prev">Previous</a> | <a class="next">Next</a>
+									
+							<div class="col-sm-6 col-lg-10 loan-details pagination">
+								
 									@foreach($borrowerAllList as $loanRow)
 									
-									<div class="col-sm-12 col-lg-3 text-center">		
+									<div class="col-sm-12 col-lg-3 text-center ">		
 											@if(($loanRow->status	==	BORROWER_STATUS_NEW) || 
 															($loanRow->status	==	LOAN_STATUS_PENDING_COMMENTS))
 												@var	$loan_url	=	'borrower/applyloan/'.base64_encode($loanRow->loan_id)
@@ -234,7 +285,7 @@
 									
 								@endforeach
 						</div><!---col--10-->
-							
+							</div>	
 						</div><!---row--->
 						@else
 							<p>
@@ -242,12 +293,14 @@
 							</p>
 						@endif
 					</div>	<!---col 12--->
-										
+					
+							
 				</div><!--panel container--->			
 			</div><!---col 12--->
 					
 	<div><!---row--->
 </div><!---col 12--->
+
 <input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
  @section ('popup-box_panel_title',Lang::get('borrower-loaninfo.all_repayment_schedule'))
 	@section ('popup-box_panel_body')
@@ -258,5 +311,6 @@
 												'as'=>'popup-box',
 												'class'=>'',
 											))
+
 @endsection  
 @stop

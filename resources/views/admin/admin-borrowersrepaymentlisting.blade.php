@@ -61,13 +61,13 @@
 						@if (count($repayloanlist) > 0)
 							@foreach ($repayloanlist as $loanRow)
 								@var	$SchUrl		=	url('admin/borrowersrepayview/')
-								@var	$repSchUrl	=	$SchUrl."/edit/".base64_encode($loanRow->installment_number)
+								@var	$repSchUrl	=	$SchUrl."/edit/".base64_encode($loanRow->repayment_schedule_id)
 								@var	$repSchUrl	=	$repSchUrl."/".base64_encode($loanRow->loan_id)
-								
-								@var	$repEditSchUrl	=	$SchUrl."/edit/".base64_encode($loanRow->installment_number)
+							
+								@var	$repEditSchUrl	=	$SchUrl."/edit/".base64_encode($loanRow->repayment_schedule_id)
 								@var	$repEditSchUrl	=	$repEditSchUrl."/".base64_encode($loanRow->loan_id)
 								
-								@var	$repViewSchUrl	=	$SchUrl."/view/".base64_encode($loanRow->installment_number)
+								@var	$repViewSchUrl	=	$SchUrl."/view/".base64_encode($loanRow->repayment_schedule_id)
 								@var	$repViewSchUrl	=	$repViewSchUrl."/".base64_encode($loanRow->loan_id)
 								
 								@if($loanRow->repayment_status	==	"Not Approved")

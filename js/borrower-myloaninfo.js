@@ -1,5 +1,44 @@
 $(document).ready(function (){  
 	
+	/*Pagination Starts Prev & Next*/
+	function check_navigation_display(el) {
+		//accepts a jQuery object of the containing div as a parameter
+		if ($(el).find('.pagination').children('div').first().is(':visible')) {
+			$(el).children('.prev').hide();
+		} else {
+			$(el).children('.prev').show();
+		}
+		
+		if ($(el).find('.pagination').children('div').last().is(':visible')) {
+			$(el).children('.next').hide();
+		} else {
+			$(el).children('.next').show();
+		}    
+	}
+
+	$('.divs').each(function () {		
+		$(this).find('.pagination > div:gt(3)').hide();
+
+		check_navigation_display($(this));
+		
+		$(this).find('.next').click(function () {
+			var last = $(this).siblings('.pagination').children('div:visible:last');
+			last.nextAll(':lt(4)').show();
+			last.next().prevAll().hide();
+			check_navigation_display($(this).closest('div'));
+		});
+
+		$(this).find('.prev').click(function () {
+			var first = $(this).siblings('.pagination').children('div:visible:first');
+			first.prevAll(':lt(4)').show();
+			first.prev().nextAll().hide()
+			check_navigation_display($(this).closest('div'));
+		});
+
+	});
+	
+	/*pagination ends*/
+	
    $.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('#hidden_token').val()

@@ -3,7 +3,11 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 	<script>	
-		var baseUrl	=	"{{url('')}}"		
+		@if(Auth::user()->usertyp	==	USER_TYPE_ADMIN)
+			var baseUrl	=	"{{url('')}}/admin"
+		@else	
+			var baseUrl	=	"{{url('')}}/borrower"	
+		@endif
 	</script>
 	<script src="{{ url('js/admin-borrower-repaymentview.js') }}" type="text/javascript"></script>
 @endsection
@@ -23,6 +27,8 @@
 		</div>				
 	</div>
 @endif
+
+
 <div class="col-sm-12 space-around">
 	<div class="panel-primary panel-container disburse-loan">
 		
@@ -34,7 +40,7 @@
 			</div>					
 		</div><!--panel head end-->
 		
-		<fieldset {{$fieldSetAttr}}>
+		
 		<div class="panel-body applyloan table-border-custom input-space">	
 			<form method="post" id="save_form_payment">
 				<input  type="hidden" 
@@ -60,7 +66,26 @@
 						name="isSaveButton" 
 						id="isSaveButton" 
 						value=""/>
-							
+				<input type="hidden" value="" id="submitType" name="submitType">
+				<fieldset {{$fieldSetAttr}}>
+				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+					<div class="row"><!-- Row 0 Only For Admin Screen-->					
+						<div class="col-xs-12 col-sm-5 col-lg-3">
+							<label>
+								{{ Lang::get('Borrower Name')}}
+							</label>
+						</div>								
+						<div class="col-xs-12 col-sm-7 col-lg-3">
+							<input 	type="text" 
+									class="form-control"
+									name="borrower_name"
+									id="borrower_name" 											
+									value="{{$adminBorRepayViewMod->borrower_name}}"							 
+									disabled>	
+						</div>	
+								
+					</div> <!-- Row 0 -->
+				@endif
 				<div class="row"><!-- Row 1 -->					
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
@@ -128,7 +153,7 @@
 								class="form-control text-right"
 								name="amount_Paid"
 								id="amount_Paid" 											
-								value="{{$adminBorRepayViewMod->amountPaid}}"							 
+								value="{{number_format($adminBorRepayViewMod->amountPaid, 2, '.', ',')}}"	
 								disabled>	
 					</div>				
 				</div> <!-- Row 2 -->
@@ -144,7 +169,7 @@
 									type="text" 
 									class="principal_amount form-control text-right" 
 									name="principal_amount"									
-									value="{{$adminBorRepayViewMod->principalAmount}}"
+									value="{{number_format($adminBorRepayViewMod->principalAmount, 2, '.', ',')}}"
 									disabled />						
 					</div>
 								
@@ -159,7 +184,7 @@
 								class="form-control text-right"
 								name="interest_amount"
 								id="interest_amount" 											
-								value="{{$adminBorRepayViewMod->interestAmount}}"
+								value="{{number_format($adminBorRepayViewMod->interestAmount, 2, '.', ',')}}"
 								disabled >	
 					</div>					
 				</div> <!-- Row 3 -->
@@ -167,7 +192,7 @@
 				<div class="row"><!-- Row 4 -->				
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
-							{{ Lang::get('Penalty Amount') }}
+							{{ Lang::get('Overdue Penalty Charges') }}
 						</label>
 					</div>	
 					<div class="col-xs-12 col-sm-7 col-lg-3">					
@@ -175,13 +200,13 @@
 									type="text" 
 									class="penalty_amount form-control text-right" 
 									name="penalty_amount"									
-									value="{{$adminBorRepayViewMod->penaltyAmt}}" 
+									value="{{number_format($adminBorRepayViewMod->penaltyAmt,2,'.',',')}}" 
 									disabled />						
 					</div>
 								
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
-							{{ Lang::get('Penalty Company\'s Share')}}
+							{{ Lang::get('Penalty Handling Charges')}}
 						</label>
 					</div>								
 					<div class="col-xs-12 col-sm-7 col-lg-3">
@@ -189,7 +214,7 @@
 								class="form-control text-right"
 								name="penalty_companyshare"
 								id="penalty_companyshare" 											
-								value="{{$adminBorRepayViewMod->penaltyCompShare}}"							
+								value="{{number_format($adminBorRepayViewMod->penaltyCompShare, 2, '.',',')}}"	
 								disabled >	
 					</div>					
 				</div> <!-- Row 4 -->
@@ -232,20 +257,37 @@
 											id="save_button">
 										{{ Lang::get('Save')}}
 									</button>
-									@if( $adminBorRepayViewMod->repaymentStatus	==	BORROWER_REPAYMENT_STATUS_UNVERIFIED )
-										<button class="btn verification-button"
-												id="submit_button">
-											{{ Lang::get('Approve')}}
-										</button>
+									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+										@if( $adminBorRepayViewMod->repaymentStatus	==	BORROWER_REPAYMENT_STATUS_UNVERIFIED )
+											<button class="btn verification-button"
+													id="submit_button">
+												{{ Lang::get('Approve')}}
+											</button>
+										@endif
 									@endif
 								</div>
 							</div>
 						</div>			
 					@endif
+					</fieldset>
+					@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)	
+						@if( $adminBorRepayViewMod->repaymentStatus	==	BORROWER_REPAYMENT_STATUS_PAID )
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">	
+										<button class="btn verification-button"
+												id="unapprove_button">
+												{{ Lang::get('UnApprove')}}
+										</button>
+									</div>
+								</div>
+							</div>			
+						@endif
+					@endif
 				@endif
 			</form>
 		</div>
-		</fieldset>
+		
 	</div>				
 </div>
 

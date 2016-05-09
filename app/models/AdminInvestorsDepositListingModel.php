@@ -198,7 +198,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 					$this->payment_id		=	$paymentId;
 			}
 	}	
-	
+
 	public function saveInvestorDeposits($postArray) {
 		
 		$tranType				=	$postArray['tranType'];
@@ -360,4 +360,107 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			$this->deleteDeposit($transaction_id);
 		}
 	}
+	
+		
+	public function getInvestorAllDeposits($fromDate, $toDate, $filter_status) {
+		
+		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
+		$this->toDate				= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));		
+		$this->filter_status 		= 	$filter_status;
+		$current_investor_id		=	$this->getCurrentInvestorID();
+		$filterStatus				=	"";
+		
+		if (isset($_REQUEST['filter_status'])) {
+		 	$this->filter_status 	= $_REQUEST['filter_status'];
+			$this->fromDate			= $_REQUEST['fromdate'];
+			$this->toDate			= $_REQUEST['todate'];
+		} 
+		
+		
+		if($filter_status	!=	"all"){
+			$filterStatus	="	AND 	investor_bank_transactions.status = 
+										if(:filter_codeparam = :unapprove_codeparam3, 
+												:unapproved_codeparam1, :approved_codeparam2)";
+		}
+		//~ echo $filter_status.$filterStatus;
+		//~ die;
+		$lnListSql				=	"	SELECT	investors.investor_id,
+												investor_bank_transactions.payment_id,
+												date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
+																							trans_date,
+												ROUND(investor_bank_transactions.trans_amount,2) trans_amount,
+												( SELECT	expression
+														FROM	codelist_details
+														WHERE	codelist_id = :bankstatus_codeparam4
+														AND		codelist_code = investor_bank_transactions.status
+												) trans_status_name,
+												 investor_bank_transactions.status,
+												 investor_bank_transactions.trans_id
+										FROM 	investors,
+												investor_bank_transactions 
+										WHERE  investors.investor_id 	= {$current_investor_id}
+										AND		investors.investor_id 	= investor_bank_transactions.investor_id 
+											{$filterStatus}
+									 AND	investor_bank_transactions.trans_date
+											BETWEEN :fromDate AND :toDate 
+									AND		investor_bank_transactions.trans_type	=	:trans_type_codeparam5
+									ORDER BY investor_bank_transactions.trans_date";
+		$dataArrayLoanList		=	array();			 
+		$dataArrayLoanList		=	[	"bankstatus_codeparam4" =>	INVESTOR_BANK_TRANS_STATUS,						
+										"fromDate" 				=>	$this->getDbDateFormat($this->fromDate),
+										"toDate" 				=>	$this->getDbDateFormat($this->toDate),
+										"trans_type_codeparam5"	=>	INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT
+									];
+		
+		if($filter_status	!=	"all"){
+			$dataArrayLoanListAdditional	=	[	"filter_codeparam" 			=>	$this->filter_status,
+													"unapproved_codeparam1" 	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,
+													"approved_codeparam2" 		=>	INVESTOR_BANK_TRANS_STATUS_VERIFIED,
+													"unapprove_codeparam3"	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED
+												];	
+			$dataArrayLoanList				=	array_merge($dataArrayLoanList,$dataArrayLoanListAdditional);
+		}
+		
+		$this->depositListInfo	=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
+	
+		return ;		
+		
+	}
+	
+	public function getCurrentInvestorDepositInfo($processtype,$paymentId){
+			
+			$this->deposit_date			=	date("d-m-Y");
+			$current_investor_id		=	$this->getCurrentInvestorID();
+			$this->processbuttontype 	= 	$processtype;
+			$this->investorId			=	$current_investor_id;
+			$viewRecordSql				= "SELECT 
+													ROUND(payments.trans_amount,2) trans_amount,
+													date_format(payments.trans_datetime,'%d-%m-%Y') trans_date,
+													payments.trans_reference_number,
+													payments.remarks,
+													investor_bank_transactions.trans_id,
+													investor_bank_transactions.status
+											FROM 
+													payments,investor_bank_transactions
+											WHERE 
+													investor_bank_transactions.payment_id = payments.payment_id 
+											AND 	investor_bank_transactions.investor_id = {$current_investor_id}
+											AND 	investor_bank_transactions.trans_type = :trans_type_codeparam
+											AND		payments.payment_id = {$paymentId} ";
+			
+			$paramArray			=	["trans_type_codeparam"	=>	INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT];
+			$viewRecordRs		= 	$this->dbFetchWithParam($viewRecordSql,$paramArray);
+			
+			if (count($viewRecordRs) > 0) {
+			
+					$this->deposit_date		=	$viewRecordRs[0]->trans_date;
+					$this->deposit_amount	=	$viewRecordRs[0]->trans_amount;
+					$this->trans_ref_no		=	$viewRecordRs[0]->trans_reference_number;
+					$this->remarks			=	$viewRecordRs[0]->remarks;
+					$this->trans_id			=	$viewRecordRs[0]->trans_id;
+					$this->status			=	$viewRecordRs[0]->status;
+					$this->payment_id		=	$paymentId;
+			}
+	}	
+		
 }

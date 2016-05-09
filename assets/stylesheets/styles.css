@@ -9074,6 +9074,9 @@ label.input-group-addon.btn {
     border: none;
     padding: 3px 25px;
 }
+.input-group .form-control[readonly]{
+	background-color: #fff;
+}
 /******************************Login Page*******************************/
 .login-logo{
 	display: inline-block;
@@ -9260,6 +9263,13 @@ nav .block-title{
 .myloans .panel-body{
 	overflow-y: scroll;
     max-height: 300px;
+}
+.loan-info-wrapper .pagination > li > a{
+	background-color: #EAEBED;
+	border:none;
+	font-size:24px;	
+	color:#222;
+	
 }
 /*---------------------LoanDetails TAB--------------------------------*/
 .social-share img{

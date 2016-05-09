@@ -62,23 +62,30 @@
 						name="submitType" 
 						id="submitType" 
 						value=""/>
+				@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
+					<input  type="hidden" 
+							name="investor_id" 
+							id="investor_id" 
+							value="{{$adminInvDepViewMod->investorId}}"/>
+				@endif
 				<fieldset {{$viewclass}}>
-				<div class="row"><!-- Row 1 -->					
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Investor Name')}}
-						</label>
-					</div>								
-					<div class="col-xs-12 col-sm-7 col-lg-3">
-						@if($editclass || $viewclass)
-								{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
-						@else
-								{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
-				
-						@endif				
-					</div>
-				</div> <!-- Row 1 -->
-				
+				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+					<div class="row"><!-- Row 1 -->					
+						<div class="col-xs-12 col-sm-5 col-lg-3">
+							<label>
+								{{ Lang::get('Investor Name')}}
+							</label>
+						</div>								
+						<div class="col-xs-12 col-sm-7 col-lg-3">
+							@if($editclass || $viewclass)
+									{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
+							@else
+									{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
+					
+							@endif				
+						</div>
+					</div> <!-- Row 1 -->
+				@endif
 				<div class="row"><!-- Row 2 -->				
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
@@ -162,18 +169,22 @@
 											{{$viewclass}} >
 										{{ Lang::get('Save')}}
 									</button>
-									<button class="btn verification-button" 
-											id="approve_button"
-											{{$viewclass}} >
-										{{ Lang::get('Approve')}}
-									</button>
+									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+										<button class="btn verification-button" 
+												id="approve_button"
+												{{$viewclass}} >
+											{{ Lang::get('Approve')}}
+										</button>
+									@endif
 								@endif
-								@if($adminInvDepViewMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
-									<button class="btn verification-button" 
-											id="unapprove_button"
-											>
-										{{ Lang::get('UnApprove')}}
-									</button>
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if($adminInvDepViewMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
+										<button class="btn verification-button" 
+												id="unapprove_button"
+												>
+											{{ Lang::get('UnApprove')}}
+										</button>
+									@endif
 								@endif
 							</div>
 						</div>

@@ -44,10 +44,10 @@ class BorrowerDashboardModel extends TranWrapper {
 												FROM	borrower_repayment_schedule
 												WHERE	loan_id = loans.loan_id 
 												AND		repayment_status != 3) tot_prin_outstanding,
-											(	SELECT	if(avg(repayment_status) = 3, 'Paid', 'Overdue')
+											(	SELECT	if (min(repayment_schedule_date) > date(now()), 'Not Overdue', 'Overdue')
 												FROM	borrower_repayment_schedule
 												WHERE	loan_id = loans.loan_id 
-												AND	repayment_schedule_date < now()) repayment_status
+												AND		repayment_status != 3) repayment_status
 									FROM	loans
 									WHERE	borrower_id = {$current_borrower_id}
 									AND		loans.status = 7";
@@ -99,7 +99,8 @@ class BorrowerDashboardModel extends TranWrapper {
 		$barchartdetails_sql	=	"	SELECT  loans.loan_id,
 												loans.loan_reference_number loan_ref,
 												group_concat(date_format(repayment_actual_date, '%y %m')) barChartLabel,
-												group_concat(repayment_scheduled_amount + ifnull(repayment_penalty_amount, 0)) barChartValue
+												group_concat(repayment_scheduled_amount + ifnull(repayment_penalty_interest, 0) +
+												ifnull(repayment_penalty_charges, 0)) barChartValue
 										FROM 	borrower_repayment_schedule,
 												loans,
 												( 	SELECT	distinct date_format(repayment_actual_date, '%Y%m') payment_period

@@ -2,12 +2,46 @@
 class BorrowerMyLoanInfoModel extends TranWrapper {
 
 	public $allloan_details					= 	array();
+	public $filterloanStatusList			= 	array();
+	public $filterloanStatusValue			= 	'all';
 	
-	public function getBorrowerAllLoanDetails() {
-		$this->getBorrowerLoanList();
+	public function getBorrowerAllLoanDetails($filterLoanStatus	=	"all") {
+		$this->getBorrowerLoanList($filterLoanStatus);
+		$this->processDropDowns();
 	}
+	
+	public function processDropDowns() {
 		
-	public function getBorrowerLoanList() {
+		$filterSql		=	"	SELECT	codelist_id,
+										codelist_code,
+										codelist_value,
+										expression
+								FROM	codelist_details
+								WHERE	codelist_id =	7
+								AND		codelist_code not in (8,9)
+								ORDER BY expression DESC";
+								
+		$filter_rs		= 	$this->dbFetchAll($filterSql);
+
+		if (!$filter_rs) {
+			throw exception ("Code List Master / Detail information not correct");
+			return;
+		}
+	
+		foreach($filter_rs as $filter_row) {
+
+			$codeCode 								= 	$filter_row->codelist_code;
+			$codeValue 								= 	$filter_row->codelist_value;
+			$this->filterloanStatusList[$codeCode] 	=	$codeValue;
+		}
+		
+	} // End process_dropdown
+	
+	public function getBorrowerLoanList($filterLoanStatus) {
+		
+		$this->filterloanStatusValue	= 	$filterLoanStatus;
+		$loanStatusWhere				=	" loans.status " . ($filterLoanStatus == "11"? "= loans.status  ":
+												"=	{$filterLoanStatus}"."");
 		
 		$current_borrower_id	=	 $this->getCurrentBorrowerID();
 		
@@ -60,9 +94,8 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 									FROM 	loans,
 											borrowers 
 									WHERE	borrowers.borrower_id		=	{$current_borrower_id}
-									AND		borrowers.borrower_id		=	loans.borrower_id
-									AND		loans.status		!=	8
-									LIMIT 4";
+									AND		borrowers.borrower_id		=	loans.borrower_id									
+									AND 	{$loanStatusWhere}";
 		
 		$loanlist_rs		= 	$this->dbFetchAll($loanlist_sql);
 		$rowIndex			=	0;
@@ -80,17 +113,15 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 		
 		$current_borrower_id	=	 $this->getCurrentBorrowerID();
 		
-		$loanlist_sql			= "	SELECT 	ifnull(DATE_FORMAT(loanrepsch.repayment_schedule_date,'%d/%m/%Y'),'') 
-																							repayment_schedule_date,
+		$loanlist_sql			= "	SELECT 	ifnull(DATE_FORMAT(loanrepsch.repayment_schedule_date,'%d/%m/%Y'),'') repayment_schedule_date,
 											ROUND(loanrepsch.repayment_scheduled_amount,2) repayment_scheduled_amount,
 											case loanrepsch.repayment_status 
 												   when 1 then 'Unpaid' 
 												   when 2 then 'Paid'
 											end as repayment_status,
-											ifnull(DATE_FORMAT(loanrepsch.repayment_actual_date,'%d/%m/%Y'),'') 
-																						repayment_actual_date ,
-											ifnull(ROUND(loanrepsch.repayment_actual_amount,2),'') repayment_actual_amount
-									FROM 	loan_repayment_schedule loanrepsch
+											ifnull(DATE_FORMAT(loanrepsch.repayment_actual_date,'%d/%m/%Y'),'') repayment_actual_date ,
+											if (repayment_status != 1, repayment_scheduled_amount + ifnull(repayment_penalty_interest, 0) + ifnull(repayment_penalty_charges, 0), 0) repayment_actual_amount
+									FROM 	borrower_repayment_schedule loanrepsch
 									WHERE	loanrepsch.borrower_id		=	{$current_borrower_id}
 									AND		loanrepsch.loan_id			=	{$loan_id}";
 		
