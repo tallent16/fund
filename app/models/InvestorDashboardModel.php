@@ -1,19 +1,22 @@
 <?php namespace App\models;
 class InvestorDashboardModel extends TranWrapper {
 
-	public	$featuredLoanInfo	= 	array();
-	public	$featuredLoanJson	= 	"";
-	public	$barChartJson			= 	"";
-	public	$fundsDepolyedInfo		= 	array();
-	public	$invUnderBidInfo		= 	array();
-	public	$overDueInfo			= 	array();
-	public	$invested_amount 		=	0;
-	public	$pending_investment 	=	0;
-	public	$deposits 				=	0;
-	public	$pending_deposits 		=	0;
-	public	$withdrawals			=	0;
-	public	$pending_withdrawals 	=	0;
-	public	$isFeaturedLoanInfo 	=	"";
+	public	$featuredLoanInfo		= 	array();
+	public	$featuredLoanJson		= 	"";
+	public	$barChartJson				= 	"";
+	public	$fundsDepolyedInfo			= 	array();
+	public	$invUnderBidInfo			= 	array();
+	public	$overDueInfo				= 	array();
+	public	$invested_amount 			=	0;
+	public	$pending_investment 		=	0;
+	public	$deposits 					=	0;
+	public	$pending_deposits 			=	0;
+	public	$withdrawals				=	0;
+	public	$pending_withdrawals 		=	0;
+	public	$earnings_verified			=	0;
+	public	$earnings_pending 			=	0;
+	public	$ava_for_invest 			=	0;
+	public	$isFeaturedLoanInfo 		=	"";
 	
 	public function getInvestorDashboardDetails() {
 		
@@ -237,19 +240,29 @@ class InvestorDashboardModel extends TranWrapper {
 		
 		$current_inverstor_id			=	 $this->getCurrentInvestorID();
 		
-		$invested_amount_sql			= 	"	SELECT 	ROUND(SUM(principal_amount),2) 
-												FROM 	investor_repayment_schedule
-												WHERE	status != 3 
-												AND 	investor_id = {$current_inverstor_id}";
-	
-		$this->invested_amount			=	$this->dbFetchOne($invested_amount_sql);
+		$invested_amount_sql			= 	"	SELECT	ROUND(SUM(bid_amount),2) bid_amount
+												FROM	loan_bids,
+														loans
+												WHERE	loan_bids.loan_id	=	loans.loan_id
+												AND		loans.status= 7
+												AND		bid_status = 2 
+												AND		investor_id = {$current_inverstor_id}";
 		
-		$pending_investment_sql			=	"	SELECT	ROUND(SUM(bid_amount),2)  
-												FROM	loan_bids 
-												WHERE	bid_status = 1 
+		$this->invested_amount			=	$this->dbFetchOne($invested_amount_sql);
+		if($this->invested_amount	==	"")
+			$this->invested_amount			=	0;
+		
+		$pending_investment_sql			=	"	SELECT	ROUND(SUM(bid_amount),2)  bid_amount
+												FROM	loan_bids,
+														loans
+												WHERE	loan_bids.loan_id	=	loans.loan_id
+												AND		loans.status IN (3,5,6)	
+												AND		bid_status  IN (1,2)
 												AND		investor_id = {$current_inverstor_id}";
 												
 		$this->pending_investment		=	$this->dbFetchOne($pending_investment_sql);
+		if($this->pending_investment	==	"")
+			$this->pending_investment			=	0;
 	
 		$deposits_sql					=	"	SELECT 	ROUND(SUM(trans_amount),2) 
 												FROM	investor_bank_transactions
@@ -258,6 +271,9 @@ class InvestorDashboardModel extends TranWrapper {
 												AND		trans_type = 1"; 
 		$this->deposits					=	$this->dbFetchOne($deposits_sql);
 
+		if($this->deposits	==	"")
+			$this->deposits			=	0;
+
 		$pending_deposits_sql			=	"	SELECT 	ROUND(SUM(trans_amount),2) 
 												FROM	investor_bank_transactions
 												WHERE	investor_id = {$current_inverstor_id}
@@ -265,20 +281,49 @@ class InvestorDashboardModel extends TranWrapper {
 												AND		trans_type = 1"; 
 												
 		$this->pending_deposits			=	$this->dbFetchOne($pending_deposits_sql);
+		if($this->pending_deposits	==	"")
+			$this->pending_deposits			=	0;
 		
-		$withdrawals_sql				=	"	SELECT 	SUM(trans_amount)
+		$withdrawals_sql				=	"	SELECT 	ROUND(SUM(trans_amount),2)
 												FROM	investor_bank_transactions
 												WHERE	investor_id = {$current_inverstor_id}
 												AND		status = 2
 												AND		trans_type = 2"; 
-		$this->withdrawals				=	$this->dbFetchOne($pending_deposits_sql);
+		$this->withdrawals				=	$this->dbFetchOne($withdrawals_sql);
+		if($this->withdrawals	==	"")
+			$this->withdrawals			=	0;
 		
-		$pending_withdrawals_sql		=	"	SELECT 	SUM(trans_amount)
+		$pending_withdrawals_sql		=	"	SELECT 	ROUND(SUM(trans_amount),2)
 												FROM	investor_bank_transactions
 												WHERE	investor_id = {$current_inverstor_id}
 												AND		status = 1
 												AND		trans_type = 2"; 
-		$this->pending_withdrawals		=	$this->dbFetchOne($pending_deposits_sql);
-
+		$this->pending_withdrawals		=	$this->dbFetchOne($pending_withdrawals_sql);
+		if($this->pending_withdrawals	==	"")
+			$this->pending_withdrawals			=	0;
+		
+		$earning_sql				=	"	SELECT 	ROUND(SUM(payment_schedule_amount+IFNULL(penalty_amount,0)),2)
+											FROM	investor_repayment_schedule
+											WHERE	investor_id = {$current_inverstor_id}
+											AND		status = 3"; 
+		$this->earnings_verified	=	$this->dbFetchOne($earning_sql);
+		if($this->earnings_verified	==	"")
+			$this->earnings_verified			=	0;
+		
+		$pending_earning_sql			=	"	SELECT 	ROUND(SUM(payment_schedule_amount+IFNULL(penalty_amount,0)),2)
+												FROM	investor_repayment_schedule
+												WHERE	investor_id = {$current_inverstor_id}
+												AND		(payment_scheduled_date < NOW() AND	status	=	1)
+												AND		status	=	2"; 
+		$this->earnings_pending			=	$this->dbFetchOne($pending_earning_sql);
+		if($this->earnings_pending	==	"")
+			$this->earnings_pending			=	0;
+			
+		$addAmount						=	($this->deposits	+	$this->earnings_verified);
+		$minusAmount					=	($this->withdrawals	+	$this->pending_withdrawals);
+		$minusAmount					=	$minusAmount	+	($this->invested_amount	+	$this->pending_investment);
+		
+		$this->ava_for_invest			=	$addAmount	-	$minusAmount;	
+											
 	}
 }

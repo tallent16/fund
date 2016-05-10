@@ -2,11 +2,12 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script>
-		$(document).ready(function(){   
-			var newHeight = $(".loan-list-table tr:nth-child(2) td").innerHeight();
-			$(".myloan-table-left-label tr:nth-child(2) td").css("height", newHeight+"px");  //Borrower's Name label height updated based on right side data
-		});
+		//~ $(document).ready(function(){   
+			//~ var newHeight = $(".loan-list-table tr:nth-child(2) td").innerHeight();
+			//~ $(".myloan-table-left-label tr:nth-child(2) td").css("height", newHeight+"px");  //Borrower's Name label height updated based on right side data
+		//~ });
 	</script>
+	<script src="{{ asset("js/investor-myloaninfo.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading',Lang::get('My Loans') )
 @section('section')    
@@ -44,6 +45,7 @@
 											</button>
 										</div>	
 									</div>	
+<!--
 									<div class="col-sm-12 col-lg-6 text-right"> 
 										<ul class="pagination">
 											<li>
@@ -58,6 +60,7 @@
 											</li>	
 										</ul>
 									</div>
+-->
 								</div>
 							</form>
 						</div>
@@ -105,8 +108,13 @@
 										</table>	
 									</div>							
 								</div> <!----col--2--->
-							
-								<div class="col-sm-7 col-lg-10 loan-details">
+							<div class="divs text-right">
+<!--
+								
+								<a class="prev"><i class="fa fa-chevron-circle-left"></i></a> <a class="next"><i class="fa fa-chevron-circle-right"></i></a>
+-->
+
+								<div class="col-sm-7 col-lg-10 loan-details pagination">
 									
 									@foreach($investortAllLoan as $loanRow)
 										@var	$loan_url	=	'investor/myloans/'.base64_encode($loanRow->loan_id)
@@ -182,14 +190,17 @@
 										</div><!--col-3---->
 									@endforeach
 								</div><!---col--10-->
+									<a class="prev"><i class="fa fa-chevron-circle-left"></i></a> <a class="next"><i class="fa fa-chevron-circle-right"></i></a>
+							</div>	
+							</div><!---row--->
 						@else
 							<p style="padding:10px">
 								{{ Lang::get('No Loan Founded') }}
 							</p>
 						@endif
-						</div><!---row--->
+						
 					</div>	<!---col 12--->
-										
+									
 				</div><!--panel container--->			
 			</div><!---col 12--->
 					

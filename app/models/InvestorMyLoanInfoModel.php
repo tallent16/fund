@@ -41,8 +41,7 @@ class InvestorMyLoanInfoModel extends TranWrapper {
 											AND 	loans.borrower_id = borrowers.borrower_id
 											AND		loan_bids.bid_status != 4
 											AND 	loan_bids.investor_id =  {$current_inverstor_id}
-											AND 	{$loanStatusWhere}
-											LIMIT 	4";
+											AND 	{$loanStatusWhere} ";
 		$loanlist_rs				= 	$this->dbFetchAll($loanlist_sql);
 		$rowIndex					=	0;
 		

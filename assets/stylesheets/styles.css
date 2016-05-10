@@ -9456,7 +9456,10 @@ tr.shown td.details-control {
 	background-color:#fff;
 }
 .loan-list-table tr:last-child td:last-child {
-    padding: 0 0 72% 0;
+    padding: 0 0 50% 0;
+}
+.loan-info-wrapper .divs{
+	margin-bottom:40px;
 }
 /****************************Bank Details*******************************/
 .bank-details .pagination > li > a{

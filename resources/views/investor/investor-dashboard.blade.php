@@ -18,6 +18,9 @@
 		@var 	$deposits_pending 		= 	$InvDashMod->pending_deposits;
 		@var 	$withdrawals_verified 	= 	$InvDashMod->withdrawals;
 		@var 	$withdrawals_pending	= 	$InvDashMod->pending_withdrawals;
+		@var 	$earnings_verified		= 	$InvDashMod->earnings_verified;
+		@var 	$earnings_pending		= 	$InvDashMod->earnings_pending;
+		@var 	$ava_for_invest			= 	$InvDashMod->ava_for_invest;
 		@var	$invFeatureLoans		=	$InvDashMod->featuredLoanInfo;
 		<div class="col-sm-12 space-around"> 
 			<!--First row--->
@@ -136,15 +139,7 @@
 							@include('widgets.panel', array('header'=>true, 'as'=>'cchart4'))
 						</div>								
 					</div>	
-							@var	$deposits_verified			=	!empty($deposits_verified)?$deposits_verified:0.00
-							@var	$deposits_pending			=	!empty($deposits_pending)?$deposits_pending:0.00
-							@var	$Investments_verified		=	!empty($Investments_verified)?$Investments_verified:0.00
-							@var	$Investments_pending		=	!empty($Investments_pending)?$Investments_pending:0.00
-							@var	$withdrawals_verified		=	!empty($withdrawals_verified)?$withdrawals_verified:0.00
-							@var	$withdrawals_pending		=	!empty($withdrawals_pending)?$withdrawals_pending:0.00
-							@var	$ava_for_invest_verified	=	$deposits_verified -(($Investments_verified+$withdrawals_verified))
-							@var	$ava_for_invest_pending		=	$deposits_pending -(($Investments_pending+$withdrawals_pending))
-							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
+
 							<div class="table-responsive">                         
 									<table class="table" id="account-summary">
 										<thead>
@@ -183,19 +178,23 @@
 													{{number_format($withdrawals_pending,2,'.',',')}}
 												</td>	
 																				
-											</tr>@var	$ava_for_invest_verified	=	$deposits_verified -(($Investments_verified+$withdrawals_verified))
-							@var	$ava_for_invest_pending		=	$deposits_pending -(($Investments_pending+$withdrawals_pending))
-							@var	$grand_total				=	$ava_for_invest_verified+$ava_for_invest_pending
+											</tr>
+											<tr> 
+												<td class="text-left tab-left-head">{{Lang::get('Earnings')}}</td>
+												<td class="text-right">
+													{{number_format($earnings_verified,2,'.',',')}}
+												</td>	
+												<td class="text-right">
+													{{number_format($earnings_pending,2,'.',',')}}
+												</td>	
+																				
+											</tr>
 											<tr>
 												<td class="text-left tab-left-head">{{Lang::get('Available for investment')}}</td>
-												<td class="text-right">{{number_format($ava_for_invest_verified,2,'.',',')}}</td>
-												<td class="text-right">{{number_format($ava_for_invest_pending,2,'.',',')}}</td>										
-											</tr>										
-											<tr>
-												<td class="text-left tab-left-head">{{Lang::get('Grand Total')}}</td>
-												<td class="text-right">{{number_format($grand_total,2,'.',',')}}</td>										
+												<td class="text-right">{{number_format($ava_for_invest,2,'.',',')}}</td>
 												<td class="text-right"></td>										
 											</tr>										
+																				
 										</tbody>
 									</table>                     
 								</div>

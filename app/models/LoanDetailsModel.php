@@ -66,6 +66,7 @@ class LoanDetailsModel extends TranWrapper {
 				$this->getBidDetails($loan_id);
 				break;
 			case	USER_TYPE_BORROWER:
+				$this->getPaymentSchedule($loan_id);
 				$this->getLoanBids($loan_id);
 				break;
 		}
@@ -329,26 +330,20 @@ class LoanDetailsModel extends TranWrapper {
 	public function getPaymentSchedule($loan_id) {
 		
 		if ($this->userType == USER_TYPE_BORROWER) {
-			$paymentschedle_sql		=	"SELECT	repayment_actual_date payment_date,
-												interest_component int_paid,
-												repayment_scheduled_amount + 
-													ifnull(repayment_penalty_interest,0) + 
-													ifnull(repayment_penalty_charges,0) amt_paid,
-												ifnull(repayment_penalty_interest,0) + 
-													ifnull(repayment_penalty_charges,0) penal_paid,
-
-												principal_component princ_paid,
-												repayment_schedule_date schd_date,
-												repayment_scheduled_amount schd_amt,
-												CASE repayment_status 
-													WHEN 1 THEN 'Unpaid'
-													WHEN 2 THEN 'Unpaid'
-													WHEN 3 THEN 'Payment Approved'
-												END status
-										FROM 	borrower_repayment_schedule
-										WHERE 	loan_id = {$loan_id}";
 			
-			
+			$paymentschedule_sql			= "	SELECT 	ifnull(DATE_FORMAT(loanrepsch.repayment_schedule_date,'%d/%m/%Y'),'') 
+																	schd_date,
+														ROUND(loanrepsch.repayment_scheduled_amount,2) schd_amt,
+														case loanrepsch.repayment_status 
+															   when 1 then 'Unpaid' 
+															   when 2 then 'Paid'
+														end as status,
+														ifnull(DATE_FORMAT(loanrepsch.repayment_actual_date,'%d/%m/%Y'),'') 							payment_date ,
+														ROUND(if (repayment_status != 1, repayment_scheduled_amount + ifnull(repayment_penalty_interest, 0) + ifnull(repayment_penalty_charges, 0), 0),2) amt_paid,
+														ROUND(ifnull(repayment_penalty_interest, 0) + ifnull(repayment_penalty_charges, 0),2) penal_paid
+												FROM 	borrower_repayment_schedule loanrepsch
+												WHERE	loanrepsch.borrower_id		=	{$this->inv_or_borr_id}
+												AND		loanrepsch.loan_id			=	{$loan_id}";
 		} else {
 			$paymentschedule_sql	= 	"SELECT	payment_date,
 												interest_amount int_paid,

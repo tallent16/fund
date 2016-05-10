@@ -14,6 +14,7 @@
 @endsection
 @section('page_heading',Lang::get('borrower-loaninfo.page_heading'))
 @section('section')     
+
 @var	$pos 			= 	strpos(base64_decode($loan_id), "bids");
 @var	$commnetInfo	=	$LoanDetMod->commentInfo	
 <input id="hidden_token" name="_token" type="hidden" value="{{csrf_token()}}">
@@ -27,9 +28,20 @@
 				</li>
 				<li><a data-toggle="tab" href="#menu1">{{ Lang::get('borrower-myloans.company_details') }}</a></li>
 				<li><a data-toggle="tab" href="#menu2">{{ Lang::get('borrower-myloans.loan_updates') }}</a></li>
-				<li  {{ ($pos !== false)?"class='active'":""}}>
-					<a data-toggle="tab" href="#menu3">{{ Lang::get('borrower-myloans.bid_info') }}</a>
-				</li>
+				@if( ($LoanDetMod->loan_status	==	LOAN_STATUS_DISBURSED)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_LOAN_REPAID) )
+					<li>
+						<a data-toggle="tab" href="#payment_schedule">{{Lang::get('PAYMENT SCHEDULE')}}</a>
+					</li>
+				@endif
+				@if( ($LoanDetMod->loan_status	==	LOAN_STATUS_APPROVED)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED) )
+					<li  {{ ($pos !== false)?"class='active'":""}}>
+						<a data-toggle="tab" href="#menu3">{{ Lang::get('borrower-myloans.bid_info') }}</a>
+					</li>
+				@endif		
+				
 			</ul>
 
 			<div class="tab-content myloan-wrapper">
@@ -42,9 +54,20 @@
 				<div id="menu2" class="tab-pane fade">
 					@include('widgets.borrower.tab.myloans_loanupdates')
 				</div>
-				<div id="menu3" class="tab-pane fade  {{ ($pos !== false)?'in active':'' }}">
-					@include('widgets.borrower.tab.myloans_bidinfo')
-				</div>
+				@if( ($LoanDetMod->loan_status	==	LOAN_STATUS_DISBURSED)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_LOAN_REPAID) )
+					
+					<div id="payment_schedule" class="tab-pane fade">
+						@include('widgets.investor.tab.myloans_payment_schedule')
+					</div>	
+				@endif
+				@if( ($LoanDetMod->loan_status	==	LOAN_STATUS_APPROVED)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED) )
+					<div id="menu3" class="tab-pane fade  {{ ($pos !== false)?'in active':'' }}">
+						@include('widgets.borrower.tab.myloans_bidinfo')
+					</div>
+				@endif
 			</div>
 		</div>
 					

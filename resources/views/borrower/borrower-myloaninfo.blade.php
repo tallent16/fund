@@ -6,24 +6,24 @@
 	</script>
 	
 	<script>
-		$(document).ready(function(){   	
-		
-			var newHeight1 = $(".loan-list-table tr:nth-child(7)").innerHeight();
-			$(".loaninfo-table-label tr:nth-child(7)").css("height", newHeight1+"px"); 	 //Effective interest label row height based on right side data
-			
-			var newHeight2 = $(".loaninfo-table-label tr:nth-child(7)").innerHeight(); 
-			$(".loan-list-table tr:nth-child(7)").css("height", newHeight2+"px"); 	     //Effective interest data row height based on left side label when screen size 1280px
-			
-			var newHeight3 = $(".loan-list-table tr:nth-child(10)").innerHeight();
-			$(".loaninfo-table-label tr:nth-child(10)").css("height", newHeight3+"px");	 //Repayments till date	row height based on right side data
-				
-			var newHeight4 = $(".loaninfo-table-label tr:nth-child(10)").innerHeight();
-			$(".loan-list-table tr:nth-child(10)").css("height", newHeight4+"px");       //Repayments till date	data row height based on left side label when screen size 1280px
-			
-			var newHeight5 = $(".loaninfo-table-label tr:nth-child(11)").innerHeight();
-			$(".loan-list-table tr:nth-child(11)").css("height", newHeight5+"px");       //Principal outstanding data based on left side label when screen size 1280px
-				
-		});
+		//~ $(document).ready(function(){   	
+		//~ 
+			//~ var newHeight1 = $(".loan-list-table tr:nth-child(7)").innerHeight();
+			//~ $(".loaninfo-table-label tr:nth-child(7)").css("height", newHeight1+"px"); 	 //Effective interest label row height based on right side data
+			//~ 
+			//~ var newHeight2 = $(".loaninfo-table-label tr:nth-child(7)").innerHeight(); 
+			//~ $(".loan-list-table tr:nth-child(7)").css("height", newHeight2+"px"); 	     //Effective interest data row height based on left side label when screen size 1280px
+			//~ 
+			//~ var newHeight3 = $(".loan-list-table tr:nth-child(10)").innerHeight();
+			//~ $(".loaninfo-table-label tr:nth-child(10)").css("height", newHeight3+"px");	 //Repayments till date	row height based on right side data
+				//~ 
+			//~ var newHeight4 = $(".loaninfo-table-label tr:nth-child(10)").innerHeight();
+			//~ $(".loan-list-table tr:nth-child(10)").css("height", newHeight4+"px");       //Repayments till date	data row height based on left side label when screen size 1280px
+			//~ 
+			//~ var newHeight5 = $(".loaninfo-table-label tr:nth-child(11)").innerHeight();
+			//~ $(".loan-list-table tr:nth-child(11)").css("height", newHeight5+"px");       //Principal outstanding data based on left side label when screen size 1280px
+				//~ 
+		//~ });
 	</script>
 	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
 @endsection
@@ -65,20 +65,8 @@
 										</div>	
 									</div>
 									
-									<!---<div class="col-sm-6 text-right">			
-										<ul class="pagination pages">
-											<li>
-												<a href="javascript:void(0)" id="prev">
-													<i class="fa fa-chevron-circle-left"></i>
-												</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)" id="next">
-													<i class="fa fa-chevron-circle-right"></i>
-												</a>
-											</li>	
-										</ul>			
-									</div>--->
+									
+									
 									
 											
 								</div>
@@ -134,10 +122,12 @@
 								</div>							
 							</div> <!----col--2--->
 							<!---col--10-->
-							<div class="divs">
-								
-									<a class="prev">Previous</a> | <a class="next">Next</a>
-									
+							<div class="divs text-right">
+<!--
+
+								<a class="prev"><i class="fa fa-chevron-circle-left"></i></a> <a class="next"><i class="fa fa-chevron-circle-right"></i></a>
+-->
+
 							<div class="col-sm-6 col-lg-10 loan-details pagination">
 								
 									@foreach($borrowerAllList as $loanRow)
@@ -285,7 +275,10 @@
 									
 								@endforeach
 						</div><!---col--10-->
-							</div>	
+						
+								<a class="prev"><i class="fa fa-chevron-circle-left"></i></a> <a class="next"><i class="fa fa-chevron-circle-right"></i></a>
+
+						</div><!---pagination-divs--->
 						</div><!---row--->
 						@else
 							<p>
