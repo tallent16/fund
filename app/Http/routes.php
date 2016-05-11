@@ -217,6 +217,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/investorwithdrawallist/bulkaction', 'AdminInvestorsWithdrawalsListingController@InvestorWithDrawListBulkAction');
     Route::match(['get', 'post'],'admin/investorwithdrawalview/{type}/{payment_id}/{investor_id}','AdminInvestorsWithdrawalsListingController@viewWithDrawAction');
     
+    // Manage Audits
+     Route::get('admin/auditstrail', 'AdminAuditTrailController@indexAction');
+     Route::get('admin/auditsdetails', 'AdminAuditDetailsController@indexAction');
+     
 });
 
 // The routes (or pages that are applicable for Borrower Users only

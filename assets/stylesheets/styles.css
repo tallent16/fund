@@ -9549,6 +9549,14 @@ table#account-summary, .table-border-custom{
 	border: 1px solid rgb(165, 165, 165);
 	border-radius: 3px;
 }
+/**************************Admin Audits*********************************/
+#audit-trail table{
+	background-color: #F9F9F9;
+	border:none;
+}
+#audit-trail tr:nth-child(2n){
+	border:none;
+}
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   

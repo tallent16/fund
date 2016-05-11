@@ -6,6 +6,9 @@ use Log;
 
 class MoneyMatchModel extends Model {
 
+	public $auditKey = 0;
+	private $auditDb;
+	
 	public function constructSelectOption($options, $displayColumn, $valueColumn, $currentValue, $defaultOption) {
 		// To construct the options required for HTML Select 
 
@@ -66,6 +69,14 @@ class MoneyMatchModel extends Model {
 		return $result;
 	}
 	
+	public function setAuditHeader($moduleName, $actionSummary, $actionDetail, 
+								$keyDisplayFieldName, $keyDisplayFieldvalue,
+								$keyHiddenFieldName, $keyHiddenFieldValue) {
+	// This will initiate the Audit Insert and store the auditKey field's value in $this->auditKey
+			
+			
+									
+	}
 	
 	public function dbUpdate($tableName, $dataArray, $where) {
 		try {
@@ -147,5 +158,13 @@ class MoneyMatchModel extends Model {
 	
 	public function dbDisableQueryLog() {
 		DB::disableQueryLog();
+	}
+	
+	public function getAuditDb() {
+		$auditSchema = \Config::get('moneymatch_settings.auditSchema');
+	
+		print_r($auditSchema);
+		die;
+		
 	}
 }

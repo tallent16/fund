@@ -13,16 +13,7 @@
 			<ul class="nav nav-second-level">
 				<li>
 					<a href="{{ url ('admin/loanlisting') }}">{{ Lang::get('Loan Listing') }}</a>
-				</li> 
-			<!--	<li>
-					<a href="{{ url ('admin/loanapproval') }}">{{ Lang::get('Loan Approval') }}</a>
-				</li> 
-				<li>
-					<a href="{{ url ('admin/managebids') }}">{{ Lang::get('Manage Bids') }}</a>
-				</li>
-				<li>
-					<a href="{{ url ('admin/disburseloan') }}">{{ Lang::get('Loan Disbursal') }}</a>
-				</li>-->
+				</li> 			
 			</ul>
 	</li>
 	<li>
@@ -40,6 +31,11 @@
 			</ul>	
 	</li>
 	<li>
-		<a href="{{ url ('admin/reports') }}"><i class="fa fa-line-chart fa-fw"></i>{{ Lang::get('Reports') }} </a> 
+		<a href="{{ url ('admin/reports') }}"><i class="fa fa-line-chart fa-fw"></i>{{ Lang::get('Reports') }} <span class="fa arrow"></span></a> 
+		<ul class="nav nav-second-level">
+				<li>
+					<a href="{{ url ('admin/auditstrail') }}">{{ Lang::get('Audit Trail') }}</a>
+				</li> 
+			</ul>	
 	</li>	  
 </ul>

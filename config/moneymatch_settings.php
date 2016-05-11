@@ -24,4 +24,18 @@ return [
 	|
 	*/
 	's3_bucket_enabled' => false,
+	
+	'auditSchema' => [
+			'driver'    => 'mysql',
+			'host'      => env('DB_HOST', 'localhost'),
+			'database'  => env('DB_DATABASE', 'mm_audit'),
+			'username'  => env('DB_USERNAME', 'moneyadmin'),
+			'password'  => env('DB_PASSWORD', 'letmein1'),
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+			'strict'    => false,
+			'enableAudit' => true,
+		],
+
 ];
