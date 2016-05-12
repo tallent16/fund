@@ -68,7 +68,7 @@
 							id="investor_id" 
 							value="{{$adminInvDepViewMod->investorId}}"/>
 				@endif
-				<fieldset {{$viewclass}}>
+				<fieldset {{$viewclass}} {{$editclass}}>
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					<div class="row"><!-- Row 1 -->					
 						<div class="col-xs-12 col-sm-5 col-lg-3">
@@ -84,8 +84,10 @@
 					
 							@endif				
 						</div>
-					</div> <!-- Row 1 -->
+					</div> <!-- Row 1 -->					
 				@endif
+				</fieldset>
+				<fieldset {{$viewclass}}>
 				<div class="row"><!-- Row 2 -->				
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>

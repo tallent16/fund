@@ -9557,6 +9557,9 @@ table#account-summary, .table-border-custom{
 #audit-trail tr:nth-child(2n){
 	border:none;
 }
+#audit-trail a{
+	color:#222;
+}
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   

@@ -10,9 +10,9 @@
 	<div class="row">	
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group controls">							
-				<strong>
-					{{ Lang::get('From Date')}}
-				</strong><br>
+				<label>
+					<strong>{{ Lang::get('From Date')}}</strong>
+				</label><br>
 				<div class="input-group">						
 					<input id="fromdate" name="fromdate" value="" 
 							type="text" class="date-picker form-control" />
@@ -25,9 +25,9 @@
 
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group controls">							
-				<strong>
-					{{ Lang::get('To Date')}}
-				</strong><br>
+				<label>
+					<strong>{{ Lang::get('To Date')}}</strong>
+				</label><br>
 				<div class="input-group">						
 					<input id="todate" name="todate" value="" 
 							type="text" class="date-picker form-control" />
@@ -39,23 +39,23 @@
 		</div>
 		
 		<div class="col-sm-6 col-lg-3"> 
-			<label><strong>
-				Actions
-			</label></strong>
+			<label>
+				<strong>{{ Lang::get('Actions')}}</strong>
+			</label>
 			<div class="form-group">
 				<select name="actions" class="selectpicker">
 					<option value="Insert">Insert</option>
 					<option value="Update">Update</option>
-					<option value="delete">delete</option>
+					<option value="delete">Delete</option>
 					<option value="All">All</option>
 				</select>
 			</div>
 		</div>
 		
 		<div class="col-sm-6 col-lg-3"> 
-			<label><strong>
-				Modules
-			</label></strong>
+			<label>
+				<strong>{{ Lang::get('Modules')}}</strong>
+			</label>
 			<div class="form-group">
 				<select name="actions" class="selectpicker">
 					<option value="Borrower">Borrower</option>
@@ -106,7 +106,7 @@
 										<td class="">XXXXX</td>
 										<td class="">Borrower Name</td>
 										<td class="">borrower@example.com</td>
-										<td class=""><i class="fa fa-exclamation-circle"></i></td>		
+										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>		
 									</tr>
 									<tr>		
 										<td class=""></td>																	
@@ -115,7 +115,7 @@
 										<td class="">XXXXX</td>
 										<td class="">Borrower Name</td>
 										<td class="">borrower@example.com</td>
-										<td class=""><i class="fa fa-exclamation-circle"></i></td>	
+										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>	
 									</tr>
 								</table>
 							</div>
@@ -145,7 +145,7 @@
 										<td class="">XXXXX</td>
 										<td class="">Borrower Name</td>
 										<td class="">borrower@example.com</td>
-										<td class=""><i class="fa fa-exclamation-circle"></i></td>	
+										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>	
 									</tr>
 									<tr>		
 										<td class=""></td>																	
@@ -154,7 +154,7 @@
 										<td class="">XXXXX</td>
 										<td class="">Borrower Name</td>
 										<td class="">borrower@example.com</td>
-										<td class=""><i class="fa fa-exclamation-circle"></i></td>		
+										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>			
 									</tr>
 								</table>
 							</div>
@@ -184,7 +184,7 @@ $(document).ready(function(){
 	format: 'dd/mm/yyyy' 
 	});         
 	
-		// Add event listener for opening and closing transcation details
+	// Add event listener for opening and closing transcation details
 	$(".details-control").click(function() {
 		var loan_id = $(this).parent().attr("id");		
 		if($(this).parent().hasClass("shown")){

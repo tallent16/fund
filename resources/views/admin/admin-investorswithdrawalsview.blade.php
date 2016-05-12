@@ -72,7 +72,7 @@
 							id="investor_id" 
 							value="{{$adminInvWithDrawListMod->investorId}}"/>
 				@endif
-			<fieldset {{$viewclass}}>
+			<fieldset {{$viewclass}} {{$editclass}}>
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					<div class="row"><!-- Row 1 -->					
 						<div class="col-xs-12 col-sm-5 col-lg-3">
@@ -82,7 +82,7 @@
 						</div>								
 						<div class="col-xs-12 col-sm-7 col-lg-3">
 							@if($editclass || $viewclass)
-								{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker disabled",
+								{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue,  ["class" => "selectpicker disabled",
 															"id"=>"investor_id"] )  }} 
 							@else
 								{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker",
@@ -90,7 +90,8 @@
 							@endif
 						</div>							
 					</div> <!-- Row 1 -->
-					
+					</fieldset>
+					<fieldset {{$viewclass}}>
 					<div class="row"><!-- Row 2 -->					
 						<div class="col-xs-12 col-sm-5 col-lg-3">
 							<label>

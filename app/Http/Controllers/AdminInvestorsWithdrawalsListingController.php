@@ -59,6 +59,7 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		
 		$paymentId 		= base64_decode($payment_id);
 		$paymentId 		= ($paymentId=="")?0:$paymentId;
+		$submitted		=	false;
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
 			if($postArray['submitType']	==	"approve" || $postArray['submitType']	==	"save"){
@@ -72,7 +73,7 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 			}
 		}
 		$this->adminInvestorWithdrawalList->getInvestorsWithDrawInfo($processtype,$investorId,$paymentId);
-		$submitted		=	true;
+		
 		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 								
 								"classname"=>"fa fa-cc fa-fw",
 								"processtype"=>$processtype,

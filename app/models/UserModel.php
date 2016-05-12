@@ -72,8 +72,6 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 	
 	public function processRegstration($postArray) {
 
-		$this->getAuditDb();
-		die;
 		$id				=	0;
 		$current_date 	= 	date("Y-m-d H:i:s");
 		$activation		=	md5($postArray['EmailAddress'].time()); // encrypted email+timestamp

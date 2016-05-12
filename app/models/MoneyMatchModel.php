@@ -8,6 +8,7 @@ class MoneyMatchModel extends Model {
 
 	public $auditKey = 0;
 	private $auditDb;
+	public $auditFlag = false;
 	
 	public function constructSelectOption($options, $displayColumn, $valueColumn, $currentValue, $defaultOption) {
 		// To construct the options required for HTML Select 
@@ -53,12 +54,24 @@ class MoneyMatchModel extends Model {
 	}
 	
 	public function dbInsert($tableName, $dataArray, $returnLastValue) {
-		
+		$currDatabase	= \Config::get('database.connections.mysql.database');
 		$result			=	"";
 		try {
 			$id 			= 	DB::table($tableName)->insertGetId($dataArray);
+			
 			if ($returnLastValue) {
 				$result = $id;
+				if ($this->auditFlag) {
+					// The data array will not have
+					$tmpRs	=	DB::select("SELECT column_name from information_schema.columns 
+									where table_schema = $currDatabase and table_name = $tableName 
+									and extra = 'auto_increment'");
+					$aiColname	=	$tmpRs[0]->column_name;
+					$dataArray[$aiColname] = $result;
+				}
+			}
+			if ($this->auditFlag) {
+				$this->recordAuditInsert($tableName, $dataArray);
 			}
 		}catch (\Exception $e) {
 			
@@ -69,17 +82,12 @@ class MoneyMatchModel extends Model {
 		return $result;
 	}
 	
-	public function setAuditHeader($moduleName, $actionSummary, $actionDetail, 
-								$keyDisplayFieldName, $keyDisplayFieldvalue,
-								$keyHiddenFieldName, $keyHiddenFieldValue) {
-	// This will initiate the Audit Insert and store the auditKey field's value in $this->auditKey
-			
-			
-									
-	}
-	
 	public function dbUpdate($tableName, $dataArray, $where) {
 		try {
+				$this->recordAuditUpdate($tableName, $dataArray, $where);
+
+			if ($this->auditFlag) {
+			}
 			DB::table($tableName)->where($where)->update($dataArray);
 		}catch (\Exception $e) {
 			$this->dbErrorHandler($e);
@@ -159,12 +167,61 @@ class MoneyMatchModel extends Model {
 	public function dbDisableQueryLog() {
 		DB::disableQueryLog();
 	}
+
+	public function setAuditOn($moduleName, $actionSummary, $actionDetail, 
+								$keyDisplayFieldName, $keyDisplayFieldvalue) {
+	// This will initiate the Audit Insert and store the auditKey field's value in $this->auditKey
+		$dataArray	=	[	'user_id' =>	$this->getCurrentuserID,
+							'module_name' => $moduleName,
+							'action_summary' => $actionSummary,
+							'action_detail' => $actionDetail,
+							'key_displayfieldname' => $keyDisplayFieldName,
+							'key_displayfieldvalue' =>	$keyDisplayFieldValue];
+		
+		$auditDb	=	DB::connection('auditDb');
+		$this->auditKey = $auditDb->table('audit_master')->insertGetId($dataArray);	
+		$this->auditFlag = true;
+	}
+	
+	public function setAuditOff() {
+		$this->auditFlag = false;
+	}
+	
+	public function recordAuditInsert($tableName, $dataArray) {
+		$tableName	=	'audit_'.$tableName;
+		$dataArray['audit_key'] = $this->auditKey;
+		$auditDb	=	DB::connection('auditDb');
+		$auditDb->table($tableName)->insert($dataArray);
+	}
+	
+	public function recordAuditUpdate($tableName, $dataArray, $where) {
+		// We need to check whether the updated value is same as the original value 
+		// so that we are inserting only the changed values in the audit tables
+		$changedData	=	array();
+		$tmpRs	=	DB::table($tableName)->where($where)->first();
+		echo "<pre>", print_r($tmpRs),"</pre>";
+		
+		die;
+		
+		foreach ($dataArray as $fieldName => $fieldValue) {
+			
+			foreach ($dataArray as $fieldName => $fieldValue) {
+			
+			
+			}
+			
+			
+			
+		}
+		
+		
+		
+	}
+	
 	
 	public function getAuditDb() {
-		$auditSchema = \Config::get('moneymatch_settings.auditSchema');
-	
-		print_r($auditSchema);
-		die;
+		$this->auditDb = DB::connection('auditDb');
+		$this->auditDb->table('audit_master')->insertGetId($dataArray);
 		
 	}
 }

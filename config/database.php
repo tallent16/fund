@@ -64,7 +64,19 @@ return [
 			'strict'    => false,
 		],
 
-		
+		'auditDb' => [
+			'driver'    => 'mysql',
+			'host'      => env('DB_HOST', 'localhost'),
+			'database'  => env('DB_DATABASE', 'mm_audit'),
+			'username'  => env('DB_USERNAME', 'moneyadmin'),
+			'password'  => env('DB_PASSWORD', 'letmein1'),
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+			'strict'    => false,
+			'enableAudit' => true,
+		],
+				
 		'pgsql' => [
 			'driver'   => 'pgsql',
 			'host'     => env('DB_HOST', 'localhost'),

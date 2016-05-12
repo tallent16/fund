@@ -247,7 +247,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-7 col-lg-3">
 				</div>
-				<div class="col-xs-12 col-sm-5 col-lg-3">											
+				<div class="col-xs-12 col-sm-5 col-lg-3 space-around">											
 					<label>
 						{{ Lang::get('Grade') }}
 					</label>												

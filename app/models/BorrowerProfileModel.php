@@ -199,9 +199,7 @@ class BorrowerProfileModel extends TranWrapper {
 	}
 	
 	public function processProfile($postArray) {
-		
-		//~ echo "<pre>",print_r($postArray),"</pre>";
-		//~ die;	
+
 		$transType = $postArray['trantype'];
 		if($transType	==	"edit") {
 			$borrowerId  	= 	$postArray['borrower_id'];
@@ -209,7 +207,25 @@ class BorrowerProfileModel extends TranWrapper {
 			$this->dbDelete("borrower_directors",$whereArry);
 			$this->dbDelete("borrower_financial_ratios",$whereArry);
 			$this->dbDelete("borrower_financial_info",$whereArry);
+			if ($this->auditFlag) {
+				$moduleName	=	"Borrower Profile";
+				$actionSumm =	"Update";
+				$actionDet  =	"Update Borrower Profile";
+			}
+		} else {
+			if ($this->auditFlag) {
+				$moduleName = 	"Borrower Profile";
+				$actionSumm =	"Add";
+				$actionDet	=	"Add New Borrower Profile";
+			}
 		}
+		
+		if ($this->auditFlag) {
+			$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"business_name", $postArray['business_name']);
+		}
+								
+
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
 		
 		if (isset($postArray['director_row'])) {
@@ -340,7 +356,9 @@ class BorrowerProfileModel extends TranWrapper {
 			foreach($updateDataArry as $key=>$value) {
 				$dataArray[$key]	=	$value;
 			}	
-		}					
+		}
+		
+							
 	//~ echo "<pre>",print_r($dataArray),"</pre>";
 		//~ die;	
 		if ($transType != "edit") {
