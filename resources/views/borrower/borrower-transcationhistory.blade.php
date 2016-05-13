@@ -65,8 +65,8 @@
 
 <div class="row">
 	<div class="col-sm-12"> 
-		<div class="table-responsive applyloan" id="transhistory-container"> 
-			<table class="table tab-fontsize text-left" id="open-close">
+		<div class="table-responsive applyloan" > 
+			<table class="table tab-fontsize text-left table-striped table-border-custom">
 				<thead>
 					<tr>
 						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>
@@ -190,7 +190,7 @@ $(document).ready(function(){
 	}); 
 	
 	 // Add event listener for opening and closing details
-
+/*
 	$( ".details-control" ).click(function() {
 		var loan_id = $(this).parent().attr("id");		
 		if($(this).parent().hasClass("shown")){
@@ -201,7 +201,7 @@ $(document).ready(function(){
 			$("#"+loan_id).addClass("shown");
 			$("#tran_row_"+loan_id).show();				
 		}
-	});
+	});*/
     
     
 }); 

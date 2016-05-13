@@ -136,7 +136,7 @@ class BorrowerProfileModel extends TranWrapper {
 		if($bor_id	==	null){
 			$current_borrower_id	=	 $this->getCurrentBorrowerID();
 		}else{
-					$current_borrower_id	=	$bor_id;
+			$current_borrower_id	=	$bor_id;
 		}
 		
 		$sql= "	SELECT 	id,
@@ -201,38 +201,33 @@ class BorrowerProfileModel extends TranWrapper {
 	public function processProfile($postArray) {
 
 		$transType = $postArray['trantype'];
+		$moduleName	=	"Borrower Profile";
+		
 		if($transType	==	"edit") {
 			$borrowerId  	= 	$postArray['borrower_id'];
 			$whereArry		=	array("borrower_id" => $borrowerId);
-			$this->dbDelete("borrower_directors",$whereArry);
-			$this->dbDelete("borrower_financial_ratios",$whereArry);
-			$this->dbDelete("borrower_financial_info",$whereArry);
-			if ($this->auditFlag) {
-				$moduleName	=	"Borrower Profile";
-				$actionSumm =	"Update";
-				$actionDet  =	"Update Borrower Profile";
-			}
+//			$this->dbDelete("borrower_directors",$whereArry);
+//			$this->dbDelete("borrower_financial_ratios",$whereArry);
+//			$this->dbDelete("borrower_financial_info",$whereArry);
+
+			// Audit Trail related Settings
+			$actionSumm =	"Update";
+			$actionDet  =	"Update Borrower Profile";
 		} else {
-			if ($this->auditFlag) {
-				$moduleName = 	"Borrower Profile";
-				$actionSumm =	"Add";
-				$actionDet	=	"Add New Borrower Profile";
-			}
+			$actionSumm =	"Add";
+			$actionDet	=	"Add New Borrower Profile";
 		}
 		
-		if ($this->auditFlag) {
-			$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"business_name", $postArray['business_name']);
-		}
-								
 
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
+
+		$this->updateBorrowerDirectorInfo($postArray);
 		
-		if (isset($postArray['director_row'])) {
-			$directorRows = $postArray['director_row'];
-			
-			$this->updateBorrowerDirectorInfo($directorRows,$borrowerId);
-		}
+//		if (isset($postArray['director_row'])) {
+//			$directorRows = $postArray['director_row'];
+//		}
 		
 		if (isset($postArray['finacialRatio_row'])) {
 			$finacialRatioRows = $postArray['finacialRatio_row'];
@@ -243,6 +238,7 @@ class BorrowerProfileModel extends TranWrapper {
 			$finacialRows = $postArray['finacial_row'];
 			$this->updateBorrowerFinacialInfo($finacialRows,$borrowerId);
 		}
+
 		if (isset($postArray['hidden_borrower_status']) && $postArray['hidden_borrower_status']	==	"corrections_required" ) {
 			if (isset($postArray['comment_row'])) {
 				$this->saveComments($postArray['comment_row'],$borrowerId);
@@ -358,9 +354,7 @@ class BorrowerProfileModel extends TranWrapper {
 			}	
 		}
 		
-							
-	//~ echo "<pre>",print_r($dataArray),"</pre>";
-		//~ die;	
+
 		if ($transType != "edit") {
 			$borrowerId =  $this->dbInsert('borrowers', $dataArray, true);
 			if ($borrowerId < 0) {
@@ -374,14 +368,27 @@ class BorrowerProfileModel extends TranWrapper {
 		}
 	}
 	
-	public function updateBorrowerDirectorInfo($directorRows,$borrowerId) {
+	public function updateBorrowerDirectorInfo($postArray) {
+	 // $directorRows,$borrowerId) {
+		
+		$directorRows = $postArray["director_row"];
+		$borrowerId	  = $postArray["borrower_id"];
 		
 		$numRows = count($directorRows['name']);
 		$rowIndex = 0;
-		
+		$directorIds  = array();
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 			
 			$borrower_id 				= $borrowerId;
+			$id							= $this->makeFloat($directorRows['id'][$rowIndex]);
+			if ($id > 0) {
+				$directorIds[] = $id;
+				$update = true;
+			} else {
+				$update = false;
+			}
+			
+				
 			$slno						= $rowIndex+1;
 			$name						= $directorRows['name'][$rowIndex];
 			$age						= $directorRows['age'][$rowIndex];
@@ -401,6 +408,20 @@ class BorrowerProfileModel extends TranWrapper {
 							'accomplishments' 			=> $accomplishments,
 							'directors_profile' 		=> $directors_profile);		
 							
+			if ($update) {
+				$whereArray	=	["borrower_id" 	=> $borrower_id,
+								 "id"			=> $id];
+				$this->dbUpdate("borrower_directors", $dataArray, $whereArray);
+				
+				$whereIds	=	"(".implode(",", $directorIds).")";
+				
+				$delSql		=	"DELETE FROM borrower_directors 
+								 WHERE	borrower_id = $borrower_id
+								 AND	id not in $whereIds ";
+				
+				$this->dbExecuteSql($delSql);
+			}
+				
 			
 			// Insert the rows (for all types of transaction)
 			$result =  $this->dbInsert('borrower_directors', $dataArray, true);
@@ -413,8 +434,6 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerFinacialRatioInfo($RatioRows,$borrowerId) {
 		
-		//~ echo "<pre>",print_r($finacialRatioRows),"</pre>";
-		//~ die;
 		$numRows = count($RatioRows['ratio_id']);
 		$rowIndex = 0;
 		

@@ -51,6 +51,9 @@
 														</label>
 													</td>
 													<td class="col-md-3" id="name_{{$i}}_parent">
+														<input  type="hidden"
+																name="director_row[id][]"
+																value="{{$directorRow['id'] }}" />
 														<input 	type="text"  
 																id="name_{{$i}}" 
 																name="director_row[name][]"

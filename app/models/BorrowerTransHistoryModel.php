@@ -105,7 +105,7 @@ class BorrowerTransHistoryModel extends TranWrapper {
 									round(loan_balance,2) loan_balance,
 									display_order FROM ( ";
 		
-		echo $tranType;
+		//echo $tranType;
 		switch ($tranType) {
 			case 'Disbursals':
 				$mainSql	=	$selectCol . $disbSql. $orderby;

@@ -9077,6 +9077,9 @@ label.input-group-addon.btn {
 .input-group .form-control[readonly]{
 	background-color: #fff;
 }
+.form-group .btn-group.bootstrap-select{
+	width:100%;
+}
 /******************************Login Page*******************************/
 .login-logo{
 	display: inline-block;
