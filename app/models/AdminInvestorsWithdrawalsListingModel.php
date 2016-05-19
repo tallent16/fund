@@ -227,6 +227,27 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$this->remarks				=	$postArray['remarks'];
 		$currency					=	'SGD'; // Hardcoded value
 		
+		$this->username			=	$this->getUserName('Investor', $this->investorId);
+		$moduleName		=	"Investor Withdrawal";
+
+		// Audit Trail related Settings
+		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes") {
+			$actionSumm =	"Approval";
+			$actionDet  =	"Approval of Investor Withdrawal";
+		} else {
+			if ($tranType != "add") {
+				$actionSumm =	"Update";
+				$actionDet  =	"Update Investor Withdrawal";
+			} else {
+				$actionSumm =	"Add";
+				$actionDet	=	"Add New Investor Withdrawal";
+			}
+		}
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
+
+		
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			$available_balance		=	$this->getInvestorAvailableBalanceById($this->investorId);
 			if($this->withdrawal_amount	>	$available_balance){
@@ -318,6 +339,14 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 			return	false;	
 		}
 		
+		$this->username			=	$this->getUserName('Investor', $investorId);
+		$moduleName		=	"Investor Withdrawals";
+		$actionSumm =	"Approval";
+		$actionDet  =	"Approval of Investor Withdrawal";
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
+
 		// Update the Investor bank Transancation Status Approved
 		$withdrawWhereArry		=	array("trans_id" =>"{$trans_id}");
 		$withdrawDataArry		=	array("status"	=>	INVESTOR_BANK_TRANS_STATUS_VERIFIED);
@@ -344,6 +373,14 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
 		$withdrawAmt			=	$investorBankTranInfo[0]->trans_amount;
+
+		$this->username			=	$this->getUserName('Investor', $investorId);
+		$moduleName		=	"Investor Withdrawals";
+		$actionSumm =	"Unapproval";
+		$actionDet  =	"Unapproval of Investor Withdrawal";
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
 		
 		// Update the Investor bank Transancation Status Approved
 		$withdrawWhereArry		=	array("trans_id" =>"{$trans_id}");
@@ -371,6 +408,15 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
 		$withdrawAmt			=	$investorBankTranInfo[0]->trans_amount;
+
+		$this->username			=	$this->getUserName('Investor', $investorId);
+		$moduleName		=	"Investor Withdrawals";
+		$actionSumm =	"Delete";
+		$actionDet  =	"Delete of Investor Withdrawal";
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
+
 		
 		// Delete the Investor bank Transancation Record By the transaction ID
 		$deleteWhereArry		=	array("trans_id" =>"{$trans_id}");

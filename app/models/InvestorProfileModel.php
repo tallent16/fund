@@ -1,4 +1,5 @@
 <?php namespace App\models;
+use Log;
 
 class InvestorProfileModel extends TranWrapper {
 	
@@ -99,10 +100,31 @@ class InvestorProfileModel extends TranWrapper {
 	
 	public function processProfile($postArray) {
 		
-		
+
 		$transType 		=	$postArray['trantype'];
 		$investorId		=	$this->updateInvestorInfo($postArray,$transType);
+		$moduleName		=	"Investor Profile";
 
+		if($transType	==	"edit") {
+			$investorId  	= 	$postArray['investor_id'];
+			$whereArry		=	array("investor_id" => $investorId);
+
+			if($postArray['isSaveButton']	!=	"yes") {
+				$actionSumm =	"Investor Profile for approval";
+				$actionDet  =	"Investor Profile Submit for Approval";
+			} else {
+				// Audit Trail related Settings
+				$actionSumm =	"Update";
+				$actionDet  =	"Update Investor Profile";
+			}
+		} else {
+			$actionSumm =	"Add";
+			$actionDet	=	"Add New Investor Profile";
+		}
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $postArray['displayname']);
+		
 		$this->updateInvestorBankInfo($postArray,$investorId,$transType);
 		
 		if (isset($postArray['hidden_investor_status']) 
@@ -155,9 +177,6 @@ class InvestorProfileModel extends TranWrapper {
 			$dataArray['status'] = $status;
 		}
 		
-		
-	//~ echo "<pre>",print_r($dataArray),"</pre>";
-		//~ die;	
 		if ($transType != "edit") {
 			
 			//Insert the investor table
@@ -324,13 +343,45 @@ class InvestorProfileModel extends TranWrapper {
 	public function updateInvestorStatus($dataArray,$investorId,$status=null) {
 		
 		$whereArry			=	array("investor_id" =>"{$investorId}");
-		$this->dbUpdate('investors', $dataArray, $whereArry);
 		
 		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
 		$invInfo			=	$this->getInvestorInfoById($investorId);
 		$moneymatchSettings = $this->getMailSettingsDetail();
 		$fields 			= array('[investor_firstname]', '[investor_lastname]','[application_name]');
 		$replace_array 		= array();
+		
+		$moduleName			=	"Investor Profile";
+		switch ($status) {
+			case "approve":
+				$actionSumm =	"Approval";
+				$actionDet  =	"Investor Profile Approval";
+				break;
+				
+			case "return_investor":
+				$actionSumm =	"Comments by Admin";
+				$actionDet  =	"Profile return back to Investor with comments";
+				break;
+
+			case "reject":
+				$actionSumm =	"Profile Rejected";
+				$actionDet  =	"Investor Profile Rejected";
+				break;
+
+			case "delete":
+				$actionSumm =	"Profile Deleted";
+				$actionDet  =	"Investor Profile Deleted";
+				break;
+			
+			default:
+				$actionSumm =	"Submitted for Approval";
+				$actionDet  =	"Profile submitted for approval";
+				break;
+		}
+		
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->displayname);		
+
+		$this->dbUpdate('investors', $dataArray, $whereArry);
 		
 		if($status	==	"approve") {
 			
@@ -344,12 +395,6 @@ class InvestorProfileModel extends TranWrapper {
 			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
 			$new_subject 		= 	str_replace($fields, $replace_array, $mailSubject);
 			$template			=	"emails.ApporvalTemplate";					
-			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									//~ "subject"=>"Money Match - Investor Approval",
-									//~ "template"=>"emails.ApporvalTemplate",
-									//~ "username"=>$invUserInfo->username,
-									//~ "useremail"=>$invUserInfo->email
-								//~ );
 		}
 		if($status	==	"return_investor") {
 			
@@ -363,12 +408,6 @@ class InvestorProfileModel extends TranWrapper {
 			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
 			$new_subject 		=	 str_replace($fields, $replace_array, $mailSubject);
 			$template			=	"emails.CorrectionRequiredTemplate";				
-			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									//~ "subject"=>"Money Match - Investor Correction Required",
-									//~ "template"=>"emails.CorrectionRequiredTemplate",
-									//~ "username"=>$invUserInfo->username,
-									//~ "useremail"=>$invUserInfo->email
-								//~ );
 		}
 		if($status	==	"approve" || $status	==	"return_investor") {			
 			$msgarray 	=	array(	"content" => $new_content);			
@@ -396,11 +435,11 @@ class InvestorProfileModel extends TranWrapper {
 					break;
 			case	"delete":
 					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_DELETED );
-					$status	=	null;
+					$status	=	"delete";
 					break;
 			case	"reject":
 					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_REJECTED);
-					$status	=	null;
+					$status	=	"reject";
 					break;
 		}
 		foreach($postArray['investor_ids'] as $invRow) {

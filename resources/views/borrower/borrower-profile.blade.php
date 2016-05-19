@@ -264,6 +264,10 @@
 						</label>
 					</td>
 					<td class="col-md-3"  id="name_XXX_parent">
+						<input  type="hidden"
+								name="director_row[id][]"
+								value="0" />
+
 						<input 	type="text" 
 								id="name_XXX" 
 								name="director_row[name][]"

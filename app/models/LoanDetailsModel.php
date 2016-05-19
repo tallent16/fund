@@ -463,6 +463,9 @@ class LoanDetailsModel extends TranWrapper {
 		$bid_interest_rate		=	$this->makeFloat($bid_interest_rate);
 		$prev_bid_amount		=	$this->makeFloat($postArray['prev_bid_amount']);
 		$available_balance		=	$this->getInvestorAvailableBalanceById($this->inv_or_borr_id);
+
+		$moduleName	=	"Loan Process";
+		$investName	=	$this->getUserName("Investor", $this->inv_or_borr_id);
 		
 		$bid_id					=	$postArray['bid_id'];
 		if($postArray['isCancelButton']	==	"yes") {
@@ -470,13 +473,21 @@ class LoanDetailsModel extends TranWrapper {
 			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
 												'bid_status' 		=> LOAN_BIDS_STATUS_CANCELLED);
 			$resetAvailableBalance	=	$available_balance	+	$prev_bid_amount;
+			$actionSumm =	"Bid Cancelled";
+			$actionDet  =	"Loan Bid Cancelled by Invesotr";
+			
 		}else{
 			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
 												'bid_amount' 		=> $bid_amount,
 												'bid_interest_rate' => $bid_interest_rate,
 												'bid_status' 		=> LOAN_BIDS_STATUS_OPEN);
 			$resetAvailableBalance	=	($available_balance	+	$prev_bid_amount)	-	$bid_amount;
+			$actionSumm =	"Loan Bid By Investor";
+			$actionDet  =	"Loan Bid by Investor";
+			
 		}
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Investor Name",$investName);
 							
 		$whereArry					=	array("bid_id" =>"{$bid_id}");
 		$this->dbUpdate('loan_bids', $dataArray, $whereArry);

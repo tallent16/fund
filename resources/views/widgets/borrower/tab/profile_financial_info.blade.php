@@ -1,5 +1,6 @@
 @var	$finacialRatioInfo	=	$modelBorPrf->finacialRatioInfo;
 @var	$finacialInfo		=	$modelBorPrf->finacialInfo;
+
 <div id="financial_info" class="tab-pane fade">  	
 	<div class="panel panel-default directorinfo"> 						
 		<div class="panel-body">
@@ -23,10 +24,9 @@
 												</label>
 												<input 	type="hidden" 
 														id="ratio_id_{{$i}}" 
-														name="finacialRatio_row[ratio_id][]"
-														value="{{$i}}"
+														name="finacialRatio_row[borrower_financial_ratios_id][]"
+														value="{{$finRatioRow['borrower_financial_ratios_id']}}"
 														class="form-control text-right"
-														{{ $modelBorPrf->viewStatus }}
 														/>
 												<input 	type="hidden" 
 														id="ratio_name_{{$i}}" 
@@ -80,8 +80,8 @@
 												</label>
 												<input 	type="hidden" 
 														id="indicator_id_{{$i}}" 
-														name="finacial_row[indicator_id][]"
-														value="{{$i}}"
+														name="finacial_row[borrower_financial_info_id][]"
+														value="{{$finacialRow['borrower_financial_info_id']}}"
 														class="form-control"
 														{{ $modelBorPrf->viewStatus }}
 														/>

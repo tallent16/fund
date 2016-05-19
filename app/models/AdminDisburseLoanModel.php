@@ -210,6 +210,13 @@ class AdminDisburseLoanModel extends TranWrapper {
 		$remarks			=	$_REQUEST["remarks"];
 		$this->getDisburseDetails($loan_id);
 		$this->computeRepaySchedule($loan_id, $loan_process_date);
+
+		$moduleName	=	"Loan Process";
+		$actionSumm =	"Loan Disbursal";
+		$actionDet  =	"Loan Disbursal";
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);
 		
 
 		$dataArray	=	[	"status"			=> 	LOAN_STATUS_DISBURSED,

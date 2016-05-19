@@ -53,7 +53,17 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$this->getLoanApplyOpenCommentsCount($loan_id);
 		$this->processDropDowns();
 	}
+	
+	public function getBorrowOrgName ($borrowerId) {
+		$sql	=	" SELECT business_name from borrowers 
+						where borrower_id = $borrowerId ";
 		
+		$borrowerName = $this->dbFetchOne($sql);
+		
+		return $borrowerName;
+		
+	}
+	
 	public function getBorrowerLoanInfo($loan_id) {
 		
 		
@@ -183,6 +193,27 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public function processLoan($postArray) {
 		
 		$transType 	= $postArray['trantype'];
+		$borrowerId = $this->getCurrentBorrowerID();
+		$borrName	= $this->getBorrowOrgName($borrowerId);
+		
+		$moduleName		=	"Loans";
+
+		// Audit Trail related Settings
+		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes") {
+			$actionSumm =	"Approval";
+			$actionDet  =	"Approval of Loans";
+		} else {
+			if ($tranType != "add") {
+				$actionSumm =	"Update";
+				$actionDet  =	"Update Loan Details";
+			} else {
+				$actionSumm =	"Add";
+				$actionDet	=	"Add new Loan";
+			}
+		}
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
+										
 		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType);
 		$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
 		if (isset($postArray['hidden_loan_status']) && $postArray['hidden_loan_status']	==	"corrections_required" ) {
@@ -447,44 +478,38 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		
 		$numRows = count($commentRows['comment_status_hidden']);
 		$rowIndex = 0;
+		$idArray  = array();
 		
 		if($numRows	>	0){
-			if($this->getUserType()	==	USER_TYPE_ADMIN){
-				$whereArry		=	array("loan_id" => $loan_id);
-				$this->dbDelete("loan_approval_comments",$whereArry);
-			}
 			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 				
-				$comment_status				= $commentRows['comment_status_hidden'][$rowIndex];
-				$comment_id					= $commentRows['comment_id_hidden'][$rowIndex];
-				
-				if($this->getUserType()	==	USER_TYPE_ADMIN) {	
-					
-					$comments					= $commentRows['comments'][$rowIndex];
-					// Construct the data array
-					$dataArray = array(	
-									
-									'loan_id'					=> $loan_id,
-									'comemnt_text'				=> $comments,
-									'comments_status'			=> $comment_status,
-									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
-										
-					// Insert the rows (for all types of transaction)
-					$result =  $this->dbInsert('loan_approval_comments', $dataArray, true);
-					if ($result < 0) {
-						return -1;
-					}
-				}else{
-					
-					$dataArray = array(
+				$comment_status		= $commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id			= $commentRows['comment_id_hidden'][$rowIndex];
+				$idArray[]			= $comment_id;
+				$comment_datetime	= $this->getDbDateFormat(date("d/m/Y")));
+				$comment_text		= $commentRows['comments'][$rowIndex];		
+				$dataArray			= [	'loan_id'					=> $loan_id,
+										'comemnt_text'				=> $comments,
 										'comments_status'			=> $comment_status,
-										'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y"))
-									);	
-					$whereArry	=	array("loan_approval_comments_id" =>"{$comment_id}");
-					$this->dbUpdate('loan_approval_comments', $dataArray, $whereArry);
+										'comment_datetime' 			=> $comment_datetime];
+				$whereArray			= ["loan_approval_comments_id", $comment_id];
+				
+				if ($this->makeFloat($comment_id) > 0) {
+					$this->dbUpdate('loan_approval_comments', $dataArray, $whereArray);
+				}else{
+					$this->dbInsert('loan_approval_comments', $dataArray, false);
 				}
 			}
+		} else {
+			// Just so that we are not sending an empty array to the where condition
+			$idArray[] = -1;
 		}
+		unset($whereArray);
+		
+		$where	=	["loan_id" => 	$loan_id,
+					 "whereNotIn" =>	["column" => 'loan_approval_comments_id',
+										 "valArr" => $idArray]];
+		$this-dbDelete("loan_approval_comments", $where);
 		return 1;
 	}
 	
@@ -499,6 +524,32 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$fields 			= array('[borrower_contact_person]','[application_name]',
 									'[purpose-for-loan]');
 		$replace_array 		= array();
+		$borrName	= $this->getBorrowOrgName($borrowerId);
+		
+		$moduleName		=	"Loans";
+
+		// Audit Trail related Settings
+		switch ($status) {
+			case "approve":
+				$actionSumm =	"Approval";
+				$actionDet  =	"Approval of Loans";
+				break;
+				
+			case "return_borrower":
+				$actionSumm =	"Comments by Admin";
+				$actionDet  =	"Loan returned to Borrower with Comments";
+				break;
+				
+			case "cancel":
+				$actionSumm =	"Cancelled";
+				$actionDet  =	"Loan Cancelled";
+				break;
+			
+		}
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
+
+
 			
 		if($status	==	"approve") {
 			

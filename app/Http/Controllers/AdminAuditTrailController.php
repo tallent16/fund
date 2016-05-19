@@ -1,6 +1,6 @@
 <?php 
 namespace App\Http\Controllers;
-use	\App\models\AdminAuditTrailModel;
+use	\App\models\AuditTrailModel;
 
 class AdminAuditTrailController extends MoneyMatchController {
 	
@@ -12,7 +12,7 @@ class AdminAuditTrailController extends MoneyMatchController {
 	}	
 	
 	public function littleMoreInit() {
-		$this->audittrailModel	=	new AdminAuditTrailModel;
+		$this->audittrailModel	=	new AuditTrailModel;
 
 	}
 	

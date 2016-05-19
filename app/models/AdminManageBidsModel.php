@@ -108,9 +108,13 @@ class AdminManageBidsModel extends TranWrapper {
 	}
 	
 	public function closeBids($loanId) {
-		$bidsClose_sql	=	"	UPDATE	loans
-								SET		loans.status = :bids_close_status
-								WHERE	loans.loan_id = :loan_id ";
+		
+		$moduleName	=	"Loan Process";
+		$actionSumm =	"Bids Closed";
+		$actionDet  =	"Bids Closed";
+		$this->getLoanBids($loanId);
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);
 		
 		$tableName		=	"loans";
 		$dataArray		=	["status" 	=>	LOAN_STATUS_CLOSED_FOR_BIDS];
@@ -131,6 +135,14 @@ class AdminManageBidsModel extends TranWrapper {
 		$loanApplyAmt	=	0;
 		$totAcceptedAmt	=	0;
 		$finalInterest	=	0;
+
+		$moduleName	=	"Loan Process";
+		$actionSumm =	"Accept Loan Bids";
+		$actionDet  =	"Accept Loan Bids";
+
+		$this->getLoanBids($loanId);
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);
 
 		
 		$loanApplyAmt_sql	=	"	SELECT	loans.apply_amount,
@@ -204,8 +216,20 @@ class AdminManageBidsModel extends TranWrapper {
 	}
 	
 	public function cancelLoan($loanId) {
+		$moduleName	=	"Loan Process";
+		$actionSumm =	"Loan Cancelled";
+		$actionDet  =	"Loan Cancelled";
+
+		$this->getLoanBids($loanId);
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);
 		
+		$tableName		=	"loans";
+		$dataArray		=	["status" 	=>	LOAN_STATUS_CANCELLED];
+		$where			=	["loan_id"	=>	$loanId];
 		
+		$this->dbUpdate($tableName, $dataArray, $where);
+		return;
 	}
 	
 }

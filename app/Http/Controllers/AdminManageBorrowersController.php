@@ -93,14 +93,16 @@ class AdminManageBorrowersController extends MoneyMatchController {
 			case	"delete":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_DELETED );
 					if($this->borrowerProfileModel->getBorrowerActiveLoanStatus($bor_id)	==	0) {
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id);
+						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,
+						"delete");
 					}
 					break;
 			case	"reject":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_REJECTED );
 					if( ($bor_profile_status	==	BORROWER_STATUS_NEW_PROFILE) 
 							|| ($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)) {
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id);
+						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,
+						"reject");
 					}
 					break;
 		}

@@ -30,7 +30,8 @@
         "App\\Providers\\RouteServiceProvider",
         "App\\Providers\\MoneyMatchServiceProvider",
         "App\\Providers\\GoogleCloudStorageServiceProvider",
-        "Unisharp\\Ckeditor\\ServiceProvider"
+        "Unisharp\\Ckeditor\\ServiceProvider",
+        "Bican\\Roles\\RolesServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -51,7 +52,8 @@
         "App\\Providers\\RouteServiceProvider",
         "App\\Providers\\MoneyMatchServiceProvider",
         "App\\Providers\\GoogleCloudStorageServiceProvider",
-        "Unisharp\\Ckeditor\\ServiceProvider"
+        "Unisharp\\Ckeditor\\ServiceProvider",
+        "Bican\\Roles\\RolesServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

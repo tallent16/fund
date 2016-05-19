@@ -95,31 +95,22 @@
 				</tr>
 				<tr id="tran_row_12" style="display:none;">	
 					<td colspan="7">	
-						<div class="col-sm-1"></div>	
-						<div class="col-sm-10 pull-right">	
 							<div class="table-responsive" id="audit-trail">
 								<table class="table text-left">
-									<tr>		
-										<td class=""></td>																	
-										<td class="">Borrower-Sign Up</td>
-										<td class="">Add</td>
-										<td class="">XXXXX</td>
-										<td class="">Borrower Name</td>
-										<td class="">borrower@example.com</td>
-										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>		
+									<tr>	
+										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>		
 									</tr>
-									<tr>		
-										<td class=""></td>																	
-										<td class="">Borrower-Sign Up</td>
-										<td class="">Add</td>
-										<td class="">XXXXX</td>
-										<td class="">Borrower Name</td>
-										<td class="">borrower@example.com</td>
-										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>	
+									<tr>
+										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>	
+									</tr>
+									<tr>	
+										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>		
+									</tr>
+									<tr>
+										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>	
 									</tr>
 								</table>
-							</div>
-						</div>
+							</div>						
 					</td>				
 				</tr>
 				<tr id="13" role="row">
@@ -134,26 +125,12 @@
 				
 				<tr id="tran_row_13" style="display:none;">	
 					<td colspan="7">	
-						<div class="col-sm-1"></div>	
-						<div class="col-sm-10 pull-right">	
 							<div class="table-responsive" id="audit-trail">
 								<table class="table text-left">
-									<tr>		
-										<td class=""></td>																	
-										<td class="">Borrower-Sign Up</td>
-										<td class="">Add</td>
-										<td class="">XXXXX</td>
-										<td class="">Borrower Name</td>
-										<td class="">borrower@example.com</td>
+									<tr>	
 										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>	
 									</tr>
-									<tr>		
-										<td class=""></td>																	
-										<td class="">Borrower-Sign Up</td>
-										<td class="">Add</td>
-										<td class="">XXXXX</td>
-										<td class="">Borrower Name</td>
-										<td class="">borrower@example.com</td>
+									<tr>
 										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>			
 									</tr>
 								</table>
@@ -168,6 +145,18 @@
 	
 	
 </div>
+
+<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
+ @section ('popup-box_panel_title',Lang::get('Audit Trail'))
+	@section ('popup-box_panel_body')
+		
+	@endsection
+	@include('widgets.modal_box.panel', array(	'id'=>'audit_info',
+												'aria_labelledby'=>'audit_info',
+												'as'=>'popup-box',
+												'class'=>'',
+											))
+											
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
 <script>
 $(document).ready(function(){ 
@@ -196,7 +185,39 @@ $(document).ready(function(){
 			$("#tran_row_"+loan_id).show();				
 		}
 	});
+	/******************************Popup Function**********************/
+	var baseUrl	=	"{{url('')}}"
+	 $.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('#hidden_token').val()
+		}
+	});
+	
+    $("#audit-popup").on('click',function(){
+		
+		 $.ajax({ 
+            type        : 'GET', 						// define the type of HTTP verb we want to use (POST for our form)
+            url         : baseUrl+'', 	// the url where we want to POST
+            data        : 'name',
+            dataType    : 'json'
+        }) // using the done promise callback
+		.done(function() {  
+			showAuditPopupFunc(data);
+		}); 
+	});
+	
 }); 
+function showAuditPopupFunc(data){
+	var	str;
+	str		=	"<div class='table-responsive'><table class='table text-left'>";
+	str		=	str+"<thead><tr><th class='text-left'>Col1</th>";	
+	str		=	str+"<th class='text-right'>Col2</th></thead>";
+	str		=	str+"<tbody><tr><td>test data</td></tr>";
+	str		=	str+"</tbody></table></div>";
+	$("#audit_info .modal-body").html(str);
+	$("#audit_info").modal("show");
+}
+/**********************************************************************/
 </script> 
 	@endsection  
 @stop

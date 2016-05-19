@@ -47,6 +47,27 @@ class TranWrapper extends MoneyMatchModel {
 		return ($cnt == 0)?false:true;
 	}
 	
+	public function getUserName($userType, $userId) {
+		switch ($userType) {
+			case 'Investor':
+				$where = " ( select user_id from investors where investor_id = $userId )";
+				break;
+				
+			case 'Borrower':
+				$where = " ( select user_id from borrowers where borrower_id = $userId )";
+				break;
+				
+			case 'User':
+				$where = $userId;
+				break;
+				
+		}
+			
+		$sql	=	" select username from users where user_id = $where ";
+		$username = $this->dbFetchOne($sql);	
+		return $username;
+	}
+	
 	public function sendMail($postArray) {
 		
 			//~ $email		=	$postArray['email'];
@@ -187,20 +208,22 @@ class TranWrapper extends MoneyMatchModel {
 	
 	public function getFinacialRatioList($borrwerID) {
 		
-		$finacialRation_sql		= 	"	SELECT 	ratio_name,
+		$finacialRatio_sql		= 	"	SELECT 	borrower_financial_ratios_id,
+												ratio_name,
 												ratio_value_current_year current_ratio,
 												ratio_value_previous_year previous_ratio
 										FROM 	borrower_financial_ratios
 										WHERE	borrower_id	=	{$this->borrower_id}";
 		
 		
-		$finacialRation_rs		= 	$this->dbFetchAll($finacialRation_sql);
-		return $finacialRation_rs;
+		$finacialRatio_rs		= 	$this->dbFetchAll($finacialRatio_sql);
+		return $finacialRatio_rs;
 	}
 	
 	public function getFinacialList($borrwerID) {
 		
-		$finacial_sql	= 	"	SELECT 	indicator_name,
+		$finacial_sql	= 	"	SELECT 	borrower_financial_info_id,
+										indicator_name,
 										IFNULL(ROUND(indicator_value,2),'') indicator_value,
 										currency
 								FROM 	borrower_financial_info
@@ -214,26 +237,28 @@ class TranWrapper extends MoneyMatchModel {
 	
 	public function getCodeListFinacialRatio() {
 		
-		$finacialRation_sql		= 	"	SELECT	codelist_id,
-													codelist_code,
-													codelist_value,
-													expression
-											FROM	codelist_details
-											WHERE	codelist_id = 13";
+		$finacialRatio_sql		= 	"	SELECT	0 borrower_financial_ratios_id,
+												codelist_id,
+												codelist_code,
+												codelist_value,
+												expression
+										FROM	codelist_details
+										WHERE	codelist_id = 13";
 		
 		
-		$finacialRation_rs		= 	$this->dbFetchAll($finacialRation_sql);
-		return $finacialRation_rs;
+		$finacialRatio_rs		= 	$this->dbFetchAll($finacialRatio_sql);
+		return $finacialRatio_rs;
 	}
 	
 	public function getCodeListFinacial() {
 		
-		$finacial_sql	= 	"	SELECT	codelist_id,
-													codelist_code,
-													codelist_value,
-													expression
-											FROM	codelist_details
-											WHERE	codelist_id = 14";
+		$finacial_sql	= 	"	SELECT	0 borrower_financial_info_id,
+										codelist_id,
+										codelist_code,
+										codelist_value,
+										expression
+								FROM	codelist_details
+								WHERE	codelist_id = 14";
 		
 		
 		$finacial_rs	= 	$this->dbFetchAll($finacial_sql);

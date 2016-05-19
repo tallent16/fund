@@ -62,17 +62,24 @@ class MoneyMatchModel extends Model {
 			if ($returnLastValue) {
 				$result = $id;
 				if ($this->auditFlag) {
-					// The data array will not have
+					// The data array will not have the auto increment column in it. 
+					// So we need to fetch the column from the information_schema before we 
+					// update this to the audit records
 					$tmpRs	=	DB::select("SELECT column_name from information_schema.columns 
 									where table_schema = '{$currDatabase}' and table_name = '{$tableName}' 
 									and extra = 'auto_increment'");
+					
 					$aiColname	=	$tmpRs[0]->column_name;
 					$dataArray[$aiColname] = $result;
 				}
 			}
 			if ($this->auditFlag) {
-				$this->recordAuditInsert($tableName, $dataArray);
+				// Insert a record in audit 
+				$auditData	=	$dataArray;
+				$auditData["audit_key"] = $this->auditKey;
+				$this->recordAudit("Add", "After", $tableName, $auditData, "");
 			}
+			
 		}catch (\Exception $e) {
 			
 			$this->dbErrorHandler($e);
@@ -85,10 +92,15 @@ class MoneyMatchModel extends Model {
 	public function dbUpdate($tableName, $dataArray, $where) {
 		try {
 
+			$dbObject	=	$this->getFilteredObject($tableName, $where);
 			if ($this->auditFlag) {
-				$this->recordAuditUpdate($tableName, $dataArray, $where);
+				$this->recordAudit("Update", "Before", $tableName, $dataArray, $where);
 			}
 			DB::table($tableName)->where($where)->update($dataArray);
+			if ($this->auditFlag) {
+				$this->recordAudit("Update", "After", $tableName, $dataArray, $where);
+			}
+				
 
 		}catch (\Exception $e) {
 			$this->dbErrorHandler($e);
@@ -99,14 +111,53 @@ class MoneyMatchModel extends Model {
 	
 	
 	public function dbDelete($tableName,$where) {
-		
-		DB::table($tableName)->where($where)->delete();
 		if ($this->auditFlag) {
-			// do nothing. When there is a deletion of the main rows, the audit_master 
-			// will have the details of the deletion
-			// The individual tables will not have any entries
+			$auditData = array();
+			$this->recordAudit("Delete", "Before", $tableName, $auditData, $where);
+		}
+
+		$dbObject	=	$this->getFilteredObject($tableName, $where);
+		$dbObject->delete();
+		
+	}
+	
+	public function getFilteredObject($tableName, $where, $schema="default") {
+		
+		if ($schema != "default") {
+			$tmpObj = 	DB::connection($schema);
+			$tmpObj =	$tmpObj->table($tableName);
+		} else {
+			$tmpObj 	=	DB::table($tableName);
 		}
 		
+		foreach ($where as $key => $val) {
+			switch ($key) {
+				case "orWhere":
+					$whereCol = $val["column"];
+					$whereVal = $val["colVal"];
+					$tmpObj = $tmpObj->orWhere($whereCol, $whereVal);
+					break;
+					
+				case "whereIn":
+					$whereCol = $val["column"];
+					$whereVal = $val["valArr"];
+
+					$tmpObj = $tmpObj->whereIn($whereCol, $whereVal);
+					break;
+					
+				case "whereNotIn":
+					$whereCol = $val["column"];
+					$whereVal = $val["valArr"];
+
+					$tmpObj = $tmpObj->whereNotIn($whereCol, $whereVal);
+					break;
+					
+				default:
+					$tmpObj = $tmpObj->where($key, "=", $val);
+					break;
+			}
+		}
+		return $tmpObj;
 	}
 	
 	public function dbFetchAll($sqlStatement) {
@@ -178,6 +229,7 @@ class MoneyMatchModel extends Model {
 
 	public function setAuditOn($moduleName, $actionSummary, $actionDetail, 
 								$keyDisplayFieldName, $keyDisplayFieldValue) {
+	
 	// This will initiate the Audit Insert and store the auditKey field's value in $this->auditKey
 		$dataArray	=	[	'user_id' =>	$this->getCurrentuserID(),
 							'module_name' => $moduleName,
@@ -195,65 +247,49 @@ class MoneyMatchModel extends Model {
 		$this->auditFlag = false;
 	}
 
-	public function recordAuditInsert($tableName, $dataArray) {
-		$tableName	=	'audit_'.$tableName;
-		$dataArray['audit_key'] = $this->auditKey;
-		$auditDb	=	DB::connection('auditDb');
-		$auditDb->table($tableName)->insert($dataArray);
+	public function recordAudit($action, $when, $tableName, $dataArray, $where="" ) {
+		// if the where condition is there then use the where condition to get the records
+		// and insert it into the audit
+		// If the where condition is not there (only happens in the case of Add then 
+		// insert the data available in the dataArray
+		
+		if ($where != "") {
+			$tmpObject	=	$this->getFilteredObject($tableName, $where);
+			$tmpRs		=	$tmpObject->get();
+			$auditData  =	array();
+			
+			foreach ($tmpRs as $tmpRow) {
+				// There may be multiple rows fetched by the where condition. If 
+				// there are multip rows then each of the rows need to be added into the audit
+				foreach ($tmpRow as $key => $val) {
+					// The auditData is an array while the fetched information is an object
+					// We convert the object into an array
+					$auditData[$key] = $val;
+				}
+				
+				// Append the audit header information
+				// The action in the individual rows is because in an transaction upddate there can be 
+				// subsidiary tables where rows are deleted or added
+				$auditData['audit_key'] = $this->auditKey;
+				$auditData['audit_action'] = $action; 
+				$auditData['audit_when'] = $when;
+				
+				$auditDb	=	DB::connection('auditDb');
+				$tableName	=	'audit_'.$tableName;
+				$auditDb->table($tableName)->insert($auditData);
+			}
+			
+		} else {
+			// This happens only in the case of insert (where will not be present)
+			$auditData = $dataArray;
+			
+			$auditData['audit_key'] = $this->auditKey;
+			$auditData['audit_action'] = $action;
+			$auditData['audit_when'] = $when;
+			$auditDb	=	DB::connection('auditDb');
+			$tableName	=	'audit_'.$tableName;
+			$auditDb->table($tableName)->insert($auditData);
+		}
 	}
 	
-	public function recordAuditUpdate($tableName, $dataArray, $where) {
-		// We need to check whether the updated value is same as the original value 
-		// so that we are inserting only the changed values in the audit tables
-		
-		// This function will be called before the update takes place
-
-		/*
-		 * 
-		 **/
-		 if ($tableName = "borrower_financial_ratios") {
-			$tmpObj		=	DB::table($tableName)->where($where);
-			$tmpObj 	=	$tmpObj->where("ratio_name", "like", "%Margin%");
-			$tmpRs		=	$tmpObj->get();
-		 
-			echo "<pre>",print_r($tmpRs),"</pre>";
-			die;
-		}
-		 
-		 /*
-		 * 
-		 * 
-		 * */
-
-
-		
-		$changedData	=	array();
-		$tmpRs	=	DB::table($tableName)->where($where)->get();
-		
-		// Audit DB configuration available in config/database.php
-		// Audit tables will have the prefix of audit_ 
-		$tableName	=	'audit_'.$tableName;
-		$auditDb	=	DB::connection('auditDb');
-		
-		foreach ($tmpRs	as $tmpRow) {
-			// if there are multiple rows in the table then we would have to 
-			// insert a row in the audit trail table for each row that will be updated
-			
-
-			// initialize the array in case there are multiple rows in the table
-			while (count($changedData) > 0) 
-				unset($changedData[0]);
-
-			foreach ($dataArray as $fieldName => $fieldValue) {
-				if ($tmpRow->$fieldName != $fieldValue) {
-					$changedData[$fieldName] = $fieldValue;
-				}
-			}
-			if (count($changedData) > 0) {
-				// Insert the data only if there is at least one column that has been changed
-				$changedData['audit_key'] = $this->auditKey;
-				$auditDb->table($tableName)->insert($changedData);
-			}
-		}
-	}
 }

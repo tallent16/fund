@@ -210,6 +210,26 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$this->trans_ref_no		=	$postArray['trans_ref_no'];
 		$this->remarks			=	$postArray['remarks'];
 		$currency				=	'SGD'; // Hardcoded value
+
+		$this->username			=	$this->getUserName('Investor', $this->investorId);
+		$moduleName		=	"Investor Deposits";
+
+		// Audit Trail related Settings
+		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes") {
+			$actionSumm =	"Approval";
+			$actionDet  =	"Approval of Investor Deposits";
+		} else {
+			if ($tranType != "add") {
+				$actionSumm =	"Update";
+				$actionDet  =	"Update Investor Deposits";
+			} else {
+				$actionSumm =	"Add";
+				$actionDet	=	"Add New Investor Deposits";
+			}
+		}
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
 		
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
 			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_VERIFIED; 
@@ -275,8 +295,19 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
-		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
+		$this->username			=	$this->getUserName('Investor', $investorId);
 		
+		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
+
+		$moduleName		=	"Investor Deposits";
+
+		// Audit Trail related Settings
+		$actionSumm =	"Approval";
+		$actionDet  =	"Approval of Investor Deposits";
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
+								
 		// Update the Investor bank Transancation Status Approved
 		$whereDepositArry		=	array("trans_id" =>"{$trans_id}");
 		$depositdataArry		=	array("status"	=>	INVESTOR_BANK_TRANS_STATUS_VERIFIED);
@@ -302,7 +333,19 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
+		
 		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
+
+		$this->username			=	$this->getUserName('Investor', $investorId);
+		$moduleName		=	"Investor Deposits";
+
+		// Audit Trail related Settings
+		$actionSumm =	"Unapproval";
+		$actionDet  =	"Unapproval of Investor Deposits";
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
+
 		
 		// Update the Investor bank Transancation Status Approved
 		$whereDepositArry		=	array("trans_id" =>"{$trans_id}");
@@ -330,6 +373,16 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
 		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
+
+		$this->username			=	$this->getUserName('Investor', $investorId);
+		$moduleName		=	"Investor Deposits";
+
+		// Audit Trail related Settings
+		$actionSumm =	"Delete";
+		$actionDet  =	"Delete Investor Deposits";
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $this->username);
 		
 		// Delete the Investor bank Transancation Record By the transaction ID
 		$whereDepositArry		=	array("trans_id" =>"{$trans_id}");

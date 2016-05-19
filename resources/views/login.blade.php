@@ -35,12 +35,15 @@
 						<div class="form-group">
 							<input class="form-control" placeholder="{{ Lang::get('login.password') }}" 
 							name="password" type="password" value="">
+							<div class="text-right">
+								{{ Lang::get('Forgot or Change')}} <a href="{{ url ('reset') }}">{{ Lang::get('Password')}}</a>?
+							</div>
 						</div>
-						<div class="checkbox">
-							<label>
-								<input name="remember" type="checkbox" 
-								value="Remember Me">{{ Lang::get('login.remember') }}
-							</label>
+						<div class="checkbox">							
+								<label>
+									<input name="remember" type="checkbox" 
+									value="Remember Me">{{ Lang::get('login.remember') }}
+								</label>
 						</div>
 						<!-- Change this to a button or input when using this as a form -->
 					  <!--  <a href="{{ url ('') }}" class="btn btn-lg btn-success btn-block">Login</a> -->

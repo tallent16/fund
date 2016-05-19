@@ -2,7 +2,6 @@
 
 namespace League\Flysystem\AwsS3v3;
 
-use ArrayIterator;
 use Aws\Result;
 use Aws\S3\Exception\DeleteMultipleObjectsException;
 use Aws\S3\Exception\S3Exception;
@@ -11,8 +10,6 @@ use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\Util;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
 
 class AwsS3Adapter extends AbstractAdapter
 {
@@ -40,6 +37,8 @@ class AwsS3Adapter extends AbstractAdapter
         'ACL',
         'ContentType',
         'ContentEncoding',
+        'ContentDisposition',
+        'ContentLength',
     ];
 
     /**
@@ -98,7 +97,7 @@ class AwsS3Adapter extends AbstractAdapter
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config   Config object
+     * @param Config $config Config object
      *
      * @return false|array false on failure file meta data on success
      */
@@ -112,7 +111,7 @@ class AwsS3Adapter extends AbstractAdapter
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config   Config object
+     * @param Config $config Config object
      *
      * @return false|array false on failure file meta data on success
      */
@@ -131,7 +130,7 @@ class AwsS3Adapter extends AbstractAdapter
      */
     public function rename($path, $newpath)
     {
-        if (!$this->copy($path, $newpath)) {
+        if ( ! $this->copy($path, $newpath)) {
             return false;
         }
 
@@ -159,7 +158,7 @@ class AwsS3Adapter extends AbstractAdapter
 
         $this->s3Client->execute($command);
 
-        return !$this->has($path);
+        return ! $this->has($path);
     }
 
     /**
@@ -172,7 +171,7 @@ class AwsS3Adapter extends AbstractAdapter
     public function deleteDir($dirname)
     {
         try {
-            $prefix = $this->applyPathPrefix($dirname).'/';
+            $prefix = $this->applyPathPrefix($dirname) . '/';
             $this->s3Client->deleteMatchingObjects($this->bucket, $prefix);
         } catch (DeleteMultipleObjectsException $exception) {
             return false;
@@ -191,7 +190,7 @@ class AwsS3Adapter extends AbstractAdapter
      */
     public function createDir($dirname, Config $config)
     {
-        return $this->upload($dirname.'/', '', $config);
+        return $this->upload($dirname . '/', '', $config);
     }
 
     /**
@@ -205,7 +204,11 @@ class AwsS3Adapter extends AbstractAdapter
     {
         $location = $this->applyPathPrefix($path);
 
-        return $this->s3Client->doesObjectExist($this->bucket, $location);
+        if ($this->s3Client->doesObjectExist($this->bucket, $location)) {
+            return true;
+        }
+
+        return $this->doesDirectoryExist($location);
     }
 
     /**
@@ -236,7 +239,7 @@ class AwsS3Adapter extends AbstractAdapter
      */
     public function listContents($directory = '', $recursive = false)
     {
-        $prefix = $this->applyPathPrefix(rtrim($directory, '/').'/');
+        $prefix = $this->applyPathPrefix(rtrim($directory, '/') . '/');
         $options = ['Bucket' => $this->bucket, 'Prefix' => ltrim($prefix, '/')];
 
         if ($recursive === false) {
@@ -341,7 +344,7 @@ class AwsS3Adapter extends AbstractAdapter
      *
      * @param string   $path
      * @param resource $resource
-     * @param Config   $config   Config object
+     * @param Config   $config Config object
      *
      * @return array|false false on failure file meta data on success
      */
@@ -355,7 +358,7 @@ class AwsS3Adapter extends AbstractAdapter
      *
      * @param string   $path
      * @param resource $resource
-     * @param Config   $config   Config object
+     * @param Config   $config Config object
      *
      * @return array|false false on failure file meta data on success
      */
@@ -381,7 +384,7 @@ class AwsS3Adapter extends AbstractAdapter
             [
                 'Bucket' => $this->bucket,
                 'Key' => $this->applyPathPrefix($newpath),
-                'CopySource' => urlencode($this->bucket.'/'.$this->applyPathPrefix($path)),
+                'CopySource' => urlencode($this->bucket . '/' . $this->applyPathPrefix($path)),
                 'ACL' => $visibility === AdapterInterface::VISIBILITY_PUBLIC ? 'public-read' : 'private',
             ]
         );
@@ -549,11 +552,11 @@ class AwsS3Adapter extends AbstractAdapter
         $options = $this->getOptionsFromConfig($config);
         $acl = isset($options['ACL']) ? $options['ACL'] : 'private';
 
-        if (!isset($options['ContentType']) && is_string($body)) {
+        if ( ! isset($options['ContentType']) && is_string($body)) {
             $options['ContentType'] = Util::guessMimeType($path, $body);
         }
 
-        if (!isset($options['ContentLength'])) {
+        if ( ! isset($options['ContentLength'])) {
             $options['ContentLength'] = is_string($body) ? Util::contentSize($body) : Util::getStreamSize($body);
         }
 
@@ -588,7 +591,7 @@ class AwsS3Adapter extends AbstractAdapter
         }
 
         foreach (static::$metaOptions as $option) {
-            if (!$config->has($option)) {
+            if ( ! $config->has($option)) {
                 continue;
             }
             $options[$option] = $config->get($option);
@@ -607,7 +610,11 @@ class AwsS3Adapter extends AbstractAdapter
      */
     protected function normalizeResponse(array $response, $path = null)
     {
-        $result = ['path' => $path ?: $this->removePathPrefix(isset($response['Key']) ? $response['Key'] : $response['Prefix'])];
+        $result = [
+            'path' => $path ?: $this->removePathPrefix(
+                isset($response['Key']) ? $response['Key'] : $response['Prefix']
+            ),
+        ];
         $result = array_merge($result, Util::pathinfo($result['path']));
 
         if (isset($response['LastModified'])) {
@@ -622,5 +629,36 @@ class AwsS3Adapter extends AbstractAdapter
         }
 
         return array_merge($result, Util::map($response, static::$resultMap), ['type' => 'file']);
+    }
+
+    /**
+     * @param $location
+     *
+     * @return bool
+     */
+    protected function doesDirectoryExist($location)
+    {
+        // Maybe this isn't an actual key, but a prefix.
+        // Do a prefix listing of objects to determine.
+        $command = $this->s3Client->getCommand(
+            'listObjects',
+            [
+                'Bucket' => $this->bucket,
+                'Prefix' => rtrim($location, '/') . '/',
+                'MaxKeys' => 1,
+            ]
+        );
+
+        try {
+            $result = $this->s3Client->execute($command);
+
+            return $result['Contents'] || $result['CommonPrefixes'];
+        } catch (S3Exception $e) {
+            if ($e->getStatusCode() === 403) {
+                return false;
+            }
+
+            throw $e;
+        }
     }
 }

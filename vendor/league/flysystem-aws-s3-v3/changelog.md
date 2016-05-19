@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.11 - 2016-05-03
+
+### Fixed
+
+* [::has] A regression introduced in 1.0.10 is addressed.
+
+## 1.0.10 - 2016-04-19
+
+### Fixed
+
+* [::has] The `has` method now also respects implicit directories.
+
 ## 1.0.9 - 2015-11-19
 
 ### Fixed

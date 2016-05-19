@@ -32,6 +32,14 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		}		
 		$this->borrowerId		=	$this->getCurrentBorrowerID();		
 	}
+	public function getLoanRefNo($repaySchdId) {
+		$sql	=	"	SELECT	loan_reference_number 
+						FROM	loans, borrower_repayment_schedule
+						WHERE	loans.loan_id = borrower_repayment_schedule.loan_id
+						AND		repayment_schedule_id = $repaySchdId";
+		$this->loanRefNumber = $this->dbFetchOne($sql);
+	}
+
 	
 	public function getUnpaidLoans() {
 	
@@ -320,11 +328,13 @@ class BorrowerRepayLoansModel extends TranWrapper {
 
 	public function unapprovePayments($loanId, $instNum) {
 
+
 		// Approve the payment in the Payment Table
-		$payId_sql		=	"	SELECT 	payment_id
-								FROM	borrower_repayment_schedule
+		$payId_sql		=	"	SELECT 	payment_id, loan_reference_number,
+								FROM	borrower_repayment_schedule, loans
 								WHERE	loan_id = :loan_id
-								AND		installment_number = :inst_num ";
+								AND		installment_number = :inst_num 
+								AND		borrower_repayment_schedule.loan_id = loans.loan_id";
 		
 		$whereArray		=	Array( 	"inst_num"	=> $instNum,
 									"loan_id"	=> $loanId);
@@ -333,9 +343,17 @@ class BorrowerRepayLoansModel extends TranWrapper {
 
 		
 		$paymentId		=	$payId_rs[0]->payment_id;
+		$loanRefNumber	=	$payId_rs[0]->loan_reference_number;
 		
 		$dataArray		=	Array (	"status"	=>	PAYMENT_STATUS_UNVERIFIED);
 		$whereArray		=	Array ( "payment_id"	=> $paymentId);
+
+		$moduleName	=	"Loan Repayment";
+		$actionSumm =	"Unapproval";
+		$actionDet  =	"Unapproval of Loan Repayment";
+		
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);	
 		
 		$this->dbUpdate("payments", $dataArray, $whereArray);
 		// Approve the payments in the borrower repayment table
@@ -400,6 +418,24 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		$currency					=	'SGD'; // Hardcoded value
 
 		$repaymentStatus	=	BORROWER_REPAYMENT_STATUS_UNVERIFIED; 
+
+		$moduleName	=	"Loan Repayment";
+		if ($postArray["isSaveButton"] != "yes") {
+			$actionSumm =	"Approval";
+			$actionDet  =	"Approval of Loan Repayment";
+		} else {
+			if ($this->paymentId == 0) {
+				$actionSumm =	"Add";
+				$actionDet  =	"Add Loan Repayment";
+			} else {
+				$actionSumm =	"Update";
+				$actionDet  =	"Update Loan Repayment";
+			}
+		}
+
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);
+
 
 		// For the Payments Table
 		$paymentInsert_data		=	array(	'trans_datetime' 	=> $this->repaymentDate,
@@ -583,7 +619,15 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	}
 	
 	public function approveBorrowerRepayment($repaySchdId) {
-	
+
+
+		$moduleName	=	"Loan Repayment";
+		$actionSumm =	"Approval";
+		$actionDet  =	"Approval of Loan Repayment";
+		
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);	
+								
 		$fetchSql		=	"	SELECT	installment_number,
 										loan_id
 								FROM	borrower_repayment_schedule

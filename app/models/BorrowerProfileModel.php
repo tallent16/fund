@@ -2,6 +2,8 @@
 use fileupload\FileUpload;
 use File;
 use Config;
+use Log;
+
 class BorrowerProfileModel extends TranWrapper {
 	
 	public 	$borrower_id  					=  	"";
@@ -206,13 +208,15 @@ class BorrowerProfileModel extends TranWrapper {
 		if($transType	==	"edit") {
 			$borrowerId  	= 	$postArray['borrower_id'];
 			$whereArry		=	array("borrower_id" => $borrowerId);
-//			$this->dbDelete("borrower_directors",$whereArry);
-//			$this->dbDelete("borrower_financial_ratios",$whereArry);
-//			$this->dbDelete("borrower_financial_info",$whereArry);
 
-			// Audit Trail related Settings
-			$actionSumm =	"Update";
-			$actionDet  =	"Update Borrower Profile";
+			if($postArray['isSaveButton']	!=	"yes") {
+				$actionSumm =	"Borrower Profile for approval";
+				$actionDet  =	"Borrower Profile Submit for Approval";
+			} else {
+				// Audit Trail related Settings
+				$actionSumm =	"Update";
+				$actionDet  =	"Update Borrower Profile";
+			}
 		} else {
 			$actionSumm =	"Add";
 			$actionDet	=	"Add New Borrower Profile";
@@ -224,10 +228,6 @@ class BorrowerProfileModel extends TranWrapper {
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
 
 		$this->updateBorrowerDirectorInfo($postArray);
-		
-//		if (isset($postArray['director_row'])) {
-//			$directorRows = $postArray['director_row'];
-//		}
 		
 		if (isset($postArray['finacialRatio_row'])) {
 			$finacialRatioRows = $postArray['finacialRatio_row'];
@@ -377,9 +377,10 @@ class BorrowerProfileModel extends TranWrapper {
 		$numRows = count($directorRows['name']);
 		$rowIndex = 0;
 		$directorIds  = array();
+
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
-			
 			$borrower_id 				= $borrowerId;
+			
 			$id							= $this->makeFloat($directorRows['id'][$rowIndex]);
 			if ($id > 0) {
 				$directorIds[] = $id;
@@ -387,7 +388,6 @@ class BorrowerProfileModel extends TranWrapper {
 			} else {
 				$update = false;
 			}
-			
 				
 			$slno						= $rowIndex+1;
 			$name						= $directorRows['name'][$rowIndex];
@@ -407,39 +407,37 @@ class BorrowerProfileModel extends TranWrapper {
 							'overall_experience' 		=> $overall_experience,
 							'accomplishments' 			=> $accomplishments,
 							'directors_profile' 		=> $directors_profile);		
-							
+
 			if ($update) {
 				$whereArray	=	["borrower_id" 	=> $borrower_id,
 								 "id"			=> $id];
 				$this->dbUpdate("borrower_directors", $dataArray, $whereArray);
-				
-				$whereIds	=	"(".implode(",", $directorIds).")";
-				
-				$delSql		=	"DELETE FROM borrower_directors 
-								 WHERE	borrower_id = $borrower_id
-								 AND	id not in $whereIds ";
-				
-				$this->dbExecuteSql($delSql);
+			} else {
+				$result =  $this->dbInsert('borrower_directors', $dataArray, true);
 			}
-				
 			
-			// Insert the rows (for all types of transaction)
-			$result =  $this->dbInsert('borrower_directors', $dataArray, true);
-			if ($result < 0) {
-				return -1;
-			}
 		}
+		
+		if ($update && count($directorIds) > 0) {
+			$where	=	["borrower_id" => 	$borrowerId,
+						 "whereNotIn" =>	["column" => 'id',
+											 "valArr" => $directorIds]];
+			
+			$this->dbDelete("borrower_directors", $where);
+		}
+
 		return 1;
 	}
 	
 	public function updateBorrowerFinacialRatioInfo($RatioRows,$borrowerId) {
 		
-		$numRows = count($RatioRows['ratio_id']);
+		$numRows = count($RatioRows['borrower_financial_ratios_id']);
 		$rowIndex = 0;
 		
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 			
 			$borrower_id 				= $borrowerId;
+			$financial_ratios_id		= $RatioRows['borrower_financial_ratios_id'][$rowIndex];
 			$ratio_name					= $RatioRows['ratio_name'][$rowIndex];
 			$ratio_value_current_year	= $this->makeFloat($RatioRows['current_ratio'][$rowIndex]);
 			$ratio_value_previous_year	= $this->makeFloat($RatioRows['previous_ratio'][$rowIndex]);
@@ -451,11 +449,15 @@ class BorrowerProfileModel extends TranWrapper {
 							'ratio_value_current_year'	=> $ratio_value_current_year,
 							'ratio_value_previous_year'	=> $ratio_value_previous_year);		
 							
-			
-			// Insert the rows (for all types of transaction)
-			$result =  $this->dbInsert('borrower_financial_ratios', $dataArray, true);
-			if ($result < 0) {
-				return -1;
+			if ($this->makeFloat($financial_ratios_id) > 0) {
+				$where		=	["borrower_financial_ratios_id" => $financial_ratios_id];
+				$this->dbUpdate('borrower_financial_ratios', $dataArray, $where);
+			} else {
+				// Insert the rows (for all types of transaction)
+				$result =  $this->dbInsert('borrower_financial_ratios', $dataArray, true);
+				if ($result < 0) {
+					return -1;
+				}
 			}
 		}
 		return 1;
@@ -466,23 +468,30 @@ class BorrowerProfileModel extends TranWrapper {
 		$numRows = count($finacialRows['indicator_name']);
 		$rowIndex = 0;
 		
+		
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 			
 			$borrower_id 				= 	$borrowerId;
+			
+			$borrower_financial_info_id =	$finacialRows['borrower_financial_info_id'][$rowIndex];
 			$indicator_name				= 	$finacialRows['indicator_name'][$rowIndex];
 			$indicator_value			= 	$this->makeFloat($finacialRows['indicator_value'][$rowIndex]);
-				
+			
 			// Construct the data array
 			$dataArray = array(	
 							'borrower_id' 				=> $borrower_id,
 							'indicator_name'			=> $indicator_name,
 							'indicator_value'			=> $indicator_value);		
-							
 			
-			// Insert the rows (for all types of transaction)
-			$result =  $this->dbInsert('borrower_financial_info', $dataArray, true);
-			if ($result < 0) {
-				return -1;
+			if ($this->makeFloat($borrower_financial_info_id) > 0) {
+				$where		=	["borrower_financial_info_id" => $borrower_financial_info_id];
+				$this->dbUpdate('borrower_financial_info', $dataArray, $where);
+			} else {
+				// Insert the rows (for all types of transaction)
+				$result =  $this->dbInsert('borrower_financial_info', $dataArray, true);
+				if ($result < 0) {
+					return -1;
+				}
 			}
 		}
 		return 1;
@@ -560,10 +569,10 @@ class BorrowerProfileModel extends TranWrapper {
 		}else{
 			$current_borrower_id	=	$bor_id;
 		}
-		$finacialRation_rs		= 	 $this->getFinacialRatioList($current_borrower_id);
+		$finacialRatio_rs		= 	 $this->getFinacialRatioList($current_borrower_id);
 			
-		if ($finacialRation_rs) {
-			foreach ($finacialRation_rs as $finRatioRow) {
+		if ($finacialRatio_rs) {
+			foreach ($finacialRatio_rs as $finRatioRow) {
 				$newrow = count($this->finacialRatioInfo);
 				$newrow ++;
 				foreach ($finRatioRow as $colname => $colvalue) {
@@ -571,9 +580,11 @@ class BorrowerProfileModel extends TranWrapper {
 				}
 			}
 		}else{
-			$finacialRation_rs	=	 $this->getBorrowerCodeListFinacialRatio();	
+			$finacialRatio_rs	=	 $this->getBorrowerCodeListFinacialRatio();	
 		}
-		return $finacialRation_rs;
+
+		return $finacialRatio_rs;
+		
 	}
 			
 	public function getBorrowerFinacial($bor_id) {
@@ -730,6 +741,10 @@ class BorrowerProfileModel extends TranWrapper {
 	}
 	
 	public function updateBorrowerGrade($postArray,$borrowerId) {
+		$this->getBorrowerCompanyInfo($borrowerId);
+
+		$this->setAuditOn("Borrower Profile", "Update Risk Grade", "Update Borrower Risk Grade",
+								"business_name", $this->business_name);
 		
 		$dataArray = array(	'borrower_risk_grade' 	=>	$postArray['grade'] );
 		$whereArry	=	array("borrower_id" =>"{$borrowerId}");
@@ -739,7 +754,40 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerStatus($dataArray,$borrowerId,$status=null) {
 		
+		$this->getBorrowerCompanyInfo($borrowerId);
+		
 		$whereArry			=	array("borrower_id" =>"{$borrowerId}");
+		$moduleName			=	"Borrower Profile";
+		switch ($status) {
+			case "approve":
+				$actionSumm =	"Approval";
+				$actionDet  =	"Borrower Profile Approval";
+				break;
+				
+			case "return_borrower":
+				$actionSumm =	"Comments by Admin";
+				$actionDet  =	"Profile return back to Borrower with comments";
+				break;
+
+			case "reject":
+				$actionSumm =	"Profile Rejected";
+				$actionDet  =	"Borrower Profile Rejected";
+				break;
+
+			case "delete":
+				$actionSumm =	"Profile Deleted";
+				$actionDet  =	"Borrower Profile Deleted";
+				break;
+			
+			default:
+				$actionSumm =	"Submitted for Approval";
+				$actionDet  =	"Profile submitted for approval";
+				break;
+		}
+		
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"business_name", $this->business_name);
+		
 		$this->dbUpdate('borrowers', $dataArray, $whereArry);
 		
 		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);

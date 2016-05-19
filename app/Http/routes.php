@@ -159,6 +159,11 @@ Route::group(['prefix' => ''], function() {
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
+// Login/Forgot/Change Password
+	Route::get('reset',  'ManagePasswordController@resetPasswordAction');
+	Route::get('forgot',  'ManagePasswordController@forgotPasswordAction');
+	Route::get('new',  'ManagePasswordController@NewPasswordAction');
+
 // The routes (or pages that are applicable for all types of users
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 	Route::get('login',  'CustomAuthController@getLogin');

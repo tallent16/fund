@@ -148,7 +148,7 @@ return [
 		'App\Providers\MoneyMatchServiceProvider',
 		'App\Providers\GoogleCloudStorageServiceProvider',
 		'Unisharp\Ckeditor\ServiceProvider',
-
+		'Bican\Roles\RolesServiceProvider',
 	],
 
 	/*
