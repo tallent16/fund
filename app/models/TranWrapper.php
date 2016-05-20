@@ -614,4 +614,29 @@ class TranWrapper extends MoneyMatchModel {
 		$moneymatch_rs = $this->dbFetchAll($moneymatch_sql);
 		return $moneymatch_rs;
 	}
+	
+	public function getRoleNameById($role_id)	{
+		
+		$sql= "	SELECT 	name
+				FROM 	roles 
+				WHERE 	id= '".$role_id."'";
+		
+		$result 	= $this->dbFetchAll($sql);
+		
+		if(isset($result[0])) {
+			$name = $result[0]->name;
+		}else{
+			$name = "";
+		}
+		return $name;
+	}
+	
+	public function CheckRoleName($roleName)	{
+		
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	roles 
+					WHERE 	name = '".$roleName."'";
+		$cnt 	=	$this->dbFetchOne($sql);
+		return ($cnt == 0)?false:true;
+	}
 }

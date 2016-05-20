@@ -111,13 +111,19 @@ class MoneyMatchModel extends Model {
 	
 	
 	public function dbDelete($tableName,$where) {
-		if ($this->auditFlag) {
-			$auditData = array();
-			$this->recordAudit("Delete", "Before", $tableName, $auditData, $where);
-		}
+		try {
+			if ($this->auditFlag) {
+				$auditData = array();
+				$this->recordAudit("Delete", "Before", $tableName, $auditData, $where);
+			}
 
-		$dbObject	=	$this->getFilteredObject($tableName, $where);
-		$dbObject->delete();
+			$dbObject	=	$this->getFilteredObject($tableName, $where);
+			$dbObject->delete();
+		} catch (\Exception $e) {
+			
+			$this->dbErrorHandler($e);
+			return false;
+		}
 		
 	}
 	
@@ -175,21 +181,31 @@ class MoneyMatchModel extends Model {
 	}
 	
 	public function dbFetchOne($sqlStatement) {
-		
-		$pdoDB = DB::connection()->getPdo();
-		$query = $pdoDB->prepare($sqlStatement);
-		$query->execute();
-		$colname = $query->fetchColumn();
-		return	$colname;
+		try {
+			$pdoDB = DB::connection()->getPdo();
+			$query = $pdoDB->prepare($sqlStatement);
+			$query->execute();
+			$colname = $query->fetchColumn();
+			return	$colname;
+		} catch (\Exception $e) {
+			
+			$this->dbErrorHandler($e);
+			return false;
+		}
 	}
 	
 	public function dbFetchRow($sqlStatement) {
-		
-		$pdoDB = DB::connection()->getPdo();
-		$query = $pdoDB->prepare($sqlStatement);
-		$query->execute();
-		$sqlStat_rs 	= 	$query->fetch(\PDO::FETCH_ASSOC);
-		return	$sqlStat_rs;
+		try {
+			$pdoDB = DB::connection()->getPdo();
+			$query = $pdoDB->prepare($sqlStatement);
+			$query->execute();
+			$sqlStat_rs 	= 	$query->fetch(\PDO::FETCH_ASSOC);
+			return	$sqlStat_rs;
+		} catch (\Exception $e) {
+			
+			$this->dbErrorHandler($e);
+			return false;
+		}
 	}
 	
 	public function dbFetchWithParam($sqlStatment, $paramArray) {
@@ -204,11 +220,16 @@ class MoneyMatchModel extends Model {
 	}
 	
 	public function dbExecuteSql($sqlStatement) {
-		
-		$pdoDB 		= 	DB::connection()->getPdo();
-		$query 		= 	$pdoDB->prepare($sqlStatement);
-		$sqlStat_rs	=	$query->execute();
-		return $sqlStat_rs;		
+		try {
+			$pdoDB 		= 	DB::connection()->getPdo();
+			$query 		= 	$pdoDB->prepare($sqlStatement);
+			$sqlStat_rs	=	$query->execute();
+			return $sqlStat_rs;		
+		} catch (\Exception $e) {
+			
+			$this->dbErrorHandler($e);
+			return false;
+		}
 	}
 	
 	public function dbErrorHandler($e) {		

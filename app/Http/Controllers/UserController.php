@@ -167,17 +167,12 @@ class UserController extends MoneyMatchController {
 			}
 
 		}else{
-		
-		Editor::inst($moneydb , "users" ,"user_id")
-				->fields(
-							Field::inst( 'user_id' ),
-							Field::inst( 'username' ),
-							Field::inst( 'email' ),
-							Field::inst( 'usertype' ),
-							Field::inst( 'status' )
-						)
-				->process( $_POST )
-				->json();
+			
+			$rows		=	array();
+			$options	=	array();
+			$rows		=	$this->user->geFetchAllRow();
+			
+			return json_encode(array("data"=>$rows,"options"=>$options));
 		}
 	}
 }

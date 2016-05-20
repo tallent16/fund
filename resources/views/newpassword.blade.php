@@ -11,7 +11,16 @@
 				<div class="row col-md-offset-3">
 					<a class="navbar-brand" href="{{ url ('') }}">{{ Html::image('img/LOGO.jpg') }}</a> 
 				</div>
-				
+				@if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>{{ Lang::get('login.Whoops') }}!</strong> {{ Lang::get('login.Whoopsmsg') }}<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li> 
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 				<form class="form-vertical" role="form" method="POST" action="<?=URL::to(''); ?>"> 
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<fieldset>

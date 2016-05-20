@@ -38,8 +38,8 @@
 				<th><input type="checkbox" id="select_all_list"></th>
 				<th>User Name</th>
 				<th>Email</th>
-				<th>User Type</th>
 				<th>Status</th>
+				<th>Action</th>
 			</thead>
 		</table>
 	</div>

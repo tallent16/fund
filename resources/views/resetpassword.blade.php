@@ -1,4 +1,9 @@
 @extends ('layouts.plane')
+@section('bottomscripts') 
+<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	 
+<script src="{{ url('js/register.js') }}" type="text/javascript"></script>	  
+@endsection
 @section ('body')
 	<div class="container">       
 		<div class="row">
@@ -11,21 +16,30 @@
 				<div class="row col-md-offset-3">
 					<a class="navbar-brand" href="{{ url ('') }}">{{ Html::image('img/LOGO.jpg') }}</a> 
 				</div>
-				
-				<form class="form-vertical" role="form" method="POST" action="<?=URL::to('forgot'); ?>"> 
+				@if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>{{ Lang::get('login.Whoops') }}!</strong> {{ Lang::get('login.Whoopsmsg') }}<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li> 
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+				<form class="form-vertical" role="form" method="POST" action="<?=URL::to('forgot'); ?>" name="validate-email"> 
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<fieldset>
 						
 							<div class="form-group col-xs-6">								
 								<label for="example-inline-radio2" class="radio-inline">
-									<input checked="checked" name="Userrole" type="radio" value="Forgot Password" />                                    
+									<input checked="checked" name="passwordtype" type="radio" value="Forgot Password" />                                    
 									{{ Lang::get('Forgot Password') }}
 								</label>
 							</div>
 							
 							<div class="form-group col-xs-6">	
 								<label for="example-inline-radio1" class="radio-inline">
-									<input id="Userrole" name="Userrole" type="radio" value="Change Password" />                                    
+									<input id="Userrole" name="passwordtype" type="radio" value="Change Password" />                                    
 								   {{ Lang::get('Change Password') }}
 								</label>								
 							</div>
@@ -34,10 +48,17 @@
 							<div class="col-sm-12 form-group">
 									<label 	for="register-email" class="col-sm-2"> {{ Lang::get('Email-ID') }}</label>
 								<div class="col-sm-10">
-									<input 	class="form-control" 											
+									<input 	class="form-control" 
+											data-val="true" data-val-regex="* Please enter a valid e-mail adress" 
+											data-val-regex-pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" 
+											data-val-remote="* Email already registered. Please enter a different email." 
+											data-val-remote-additionalfields="*.EmailAddress" 
+											data-val-remote-type="POST" 
+											data-val-remote-url="/Authentication/User/CheckEmailavailability"
+											data-val-required="* E-mail Id is required" 
 											id="EmailAddress" 
 											name="EmailAddress" 
-											placeholder="Email Address" 
+											placeholder="Email" 
 											type="text" value="" />
 								</div>							
 							</div>

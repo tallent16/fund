@@ -486,7 +486,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 				$comment_status		= $commentRows['comment_status_hidden'][$rowIndex];
 				$comment_id			= $commentRows['comment_id_hidden'][$rowIndex];
 				$idArray[]			= $comment_id;
-				$comment_datetime	= $this->getDbDateFormat(date("d/m/Y")));
+				$comment_datetime	= $this->getDbDateFormat(date("d/m/Y"));
 				$comment_text		= $commentRows['comments'][$rowIndex];		
 				$dataArray			= [	'loan_id'					=> $loan_id,
 										'comemnt_text'				=> $comments,

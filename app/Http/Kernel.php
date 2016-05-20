@@ -30,6 +30,8 @@ class Kernel extends HttpKernel {
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
 		'auth.admin' => 'App\Http\Middleware\AdminMiddleware',
+		'role' => 'Bican\Roles\Middleware\VerifyRole',
+		'permission' => 'Bican\Roles\Middleware\VerifyPermission',
 	];
 
 }

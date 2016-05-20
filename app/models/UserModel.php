@@ -5,10 +5,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Bican\Roles\Traits\HasRoleAndPermission;
+use Bican\Roles\Contracts\HasRoleAndPermissionContract;
 
-class UserModel extends TranWrapper implements AuthenticatableContract, CanResetPasswordContract {
+class UserModel extends TranWrapper implements AuthenticatableContract, CanResetPasswordContract,HasRoleAndPermissionContract {
 
-	use Authenticatable, CanResetPassword;
+	use Authenticatable, CanResetPassword, HasRoleAndPermission;
 
 	/**
 	 * The database table used by the model.
@@ -52,6 +54,31 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 		return $row;
 	}
 	
+	public function geFetchAllRow()
+	{
+		$adminUsers_rs		=	array();
+		$row				=	array();
+		
+		$adminUsers_sql		= "	SELECT 	* 
+								FROM 	users
+								WHERE	usertype	=	:system_role_param 
+								ORDER BY user_id";
+				
+		$adminUsers_rs		= $this->dbFetchWithParam($adminUsers_sql,["system_role_param"=>USER_TYPE_ADMIN]);
+		foreach($adminUsers_rs as $adminUserRow) {
+				$row[] 	= array(	"DT_RowId"=>"row_".$adminUserRow->user_id,
+									"user_id"=>$adminUserRow->user_id,
+									"username"=>$adminUserRow->username,
+									"email"=>$adminUserRow->email,
+									"password"=>$adminUserRow->password,
+									"usertype"=>$adminUserRow->usertype,
+									"status"=>$adminUserRow->status,
+								);
+		}
+		return $row;
+		
+	}
+
 	public function getUpdatedRow($id) {
 		
 		$sql	= "	SELECT 	* 
@@ -71,7 +98,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 	}
 	
 	public function processRegstration($postArray) {
-
+		
 		$id				=	0;
 		$current_date 	= 	date("Y-m-d H:i:s");
 		$activation		=	md5($postArray['EmailAddress'].time()); // encrypted email+timestamp
@@ -144,4 +171,5 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 		}
 		return	$id;
 	}
+	
 }

@@ -13,6 +13,12 @@
 
 Route::get('/', function()
 {
+	
+	//~ $user_id	=	Auth::user()->user_id;
+	//~ $user		=	App\models\User::find($user_id);
+	//~ $role		=	Bican\Roles\Models\Role::find(6);
+	//~ $user->attachRole($role);
+	
 	return View::make('homepage');  
 });
 
@@ -160,8 +166,9 @@ Route::group(['prefix' => ''], function() {
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
 // Login/Forgot/Change Password
-	Route::get('reset',  'ManagePasswordController@resetPasswordAction');
-	Route::get('forgot',  'ManagePasswordController@forgotPasswordAction');
+	//Route::get('reset',  'ManagePasswordController@resetPasswordAction');
+	Route::match(['get', 'post'],'reset',  'ManagePasswordController@resetPasswordAction');
+	Route::post('forgot',  'ManagePasswordController@forgotPasswordAction');
 	Route::get('new',  'ManagePasswordController@NewPasswordAction');
 
 // The routes (or pages that are applicable for all types of users
@@ -212,20 +219,37 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/ajax/recalculatePenality','AdminBorrowersRepaymentViewController@recalculatePenalityAction');
     
     // Manage Banking Transactions for Investors
-	Route::get('admin/investordepositlist', 'AdminInvestorsDepositListingController@indexAction');	
+    Route::get('admin/investordepositlist', 'AdminInvestorsDepositListingController@indexAction');
     Route::post('admin/investordepositlist/bulkaction', 'AdminInvestorsDepositListingController@InvestorDepositListBulkAction');
-    
-    Route::get('admin/investorwithdrawallist', 'AdminInvestorsWithdrawalsListingController@indexAction');
     Route::match(['get', 'post'],'admin/investordepositview/{type}/{payment_id}/{investor_id}', 'AdminInvestorsDepositListingController@viewDepositAction');
-    
-    Route::get('admin/investorwithdrawallist', 'AdminInvestorsWithdrawalsListingController@indexAction');
+    Route::get('admin/investorwithdrawallist',
+				[ 	'middleware' => 'permission',
+					'permission'=>'view.admin.investorswithdrawals',
+					'uses'=>'AdminInvestorsWithdrawalsListingController@indexAction'
+				]
+			);
     Route::post('admin/investorwithdrawallist/bulkaction', 'AdminInvestorsWithdrawalsListingController@InvestorWithDrawListBulkAction');
     Route::match(['get', 'post'],'admin/investorwithdrawalview/{type}/{payment_id}/{investor_id}','AdminInvestorsWithdrawalsListingController@viewWithDrawAction');
     
-    // Manage Audits
-     Route::get('admin/auditstrail', 'AdminAuditTrailController@indexAction');
-     Route::get('admin/auditsdetails', 'AdminAuditDetailsController@indexAction');
-     
+    // Admin Users Creating, Editing,Roles assigning
+    
+		Route::get('admin/user','UserController@index');
+		Route::get('admin/ajax/user_master', 'UserController@view_user');
+		Route::post('admin/ajax/user_master', 'UserController@view_user');
+		Route::get('admin/roles', 'AdminRolesController@indexAction');
+		Route::get('admin/role-users/{role_id}', 'AdminRolesController@roleUsersAction');
+		Route::match(['get', 'post'],
+								'admin/role-permission/{trantype}/{role_id}', 
+								['as' => 'admin.role-permission', 'uses' =>'AdminRolesController@rolePermissionsAction']);
+		Route::post('admin/ajax/CheckRoleNameavailability', 'AdminRolesController@CheckRoleNameavailability');
+	 // Admin Users Creating, Editing,Roles assigning
+	 
+	 Route::get('admin/assign-roles/{user_id}',
+						[	'as'	=>	'admin.assign-roles',
+							'uses'	=>	'AdminAssignRolesController@indexAction'
+						]
+				);
+	 Route::post('admin/assign-roles','AdminAssignRolesController@saveUserRolesAction');
 });
 
 // The routes (or pages that are applicable for Borrower Users only
@@ -304,10 +328,6 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 // Common Modules
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');
 
-// Profile Signup
-Route::get('user', 'UserController@index');
-Route::get('ajax/user_master', 'UserController@view_user');
-Route::post('ajax/user_master', 'UserController@view_user');
 
 Route::post('ajax/CheckEmailavailability', 'RegistrationController@checkEmailavailability');
 Route::post('ajax/CheckUserNameavailability', 'RegistrationController@CheckUserNameavailability');
