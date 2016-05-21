@@ -178,11 +178,15 @@
 				</div>  <!-- Row 5 -->		
 
 				<div class="row">	
-					<div class="col-xs-12 col-sm-7 col-lg-12 space-around">				
-						<button type="button" class="btn verification-button" id="get_repay_schd">
-							{{ Lang::get('Show Repayment Schedule')}}</button>					
-						<button type="submit" class="btn verification-button">
-							{{ Lang::get('Disburse Loan')}}</button>
+					<div class="col-xs-12 col-sm-7 col-lg-12 space-around">	
+						@permission('showrepayment.admin.disburseloan')			
+							<button type="button" class="btn verification-button" id="get_repay_schd">
+								{{ Lang::get('Show Repayment Schedule')}}</button>	
+						@endpermission
+						@permission('disburse.admin.disburseloan')				
+							<button type="submit" class="btn verification-button">
+								{{ Lang::get('Disburse Loan')}}</button>
+						@endpermission
 					</div>					
 				</div>
 				

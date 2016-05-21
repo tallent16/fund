@@ -22,17 +22,17 @@ class AdminBorrowersRepaymentViewController extends MoneyMatchController {
 		$loanid			= 	base64_decode($loan_id);
 		
 		$submitted		=	false;
-		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			if($postArray['submitType']	==	"approve" || $postArray['submitType']	==	"save"){
-				$this->adminBorrowerRepaymentView->saveRepayment($postArray);
-			}else{
-				$loanId		=	$postArray['loan_id'];
-				$instNum	=	$postArray['installment_number'];
-				$this->adminBorrowerRepaymentView->unapprovePayments($loanId, $instNum);
-			}
-			$submitted		=	true;
-		}
+		//~ if (Request::isMethod('post')) {
+			//~ $postArray	=	Request::all();
+			//~ if($postArray['submitType']	==	"approve" || $postArray['submitType']	==	"save"){
+				//~ $this->adminBorrowerRepaymentView->saveRepayment($postArray);
+			//~ }else{
+				//~ $loanId		=	$postArray['loan_id'];
+				//~ $instNum	=	$postArray['installment_number'];
+				//~ $this->adminBorrowerRepaymentView->unapprovePayments($loanId, $instNum);
+			//~ }
+			//~ $submitted		=	true;
+		//~ }
 		$this->adminBorrowerRepaymentView->getRepaymentDetails($installmentId,$loanid);
 	
 		$withArry	=	array(	"adminBorRepayViewMod" => $this->adminBorrowerRepaymentView, 								
@@ -44,6 +44,50 @@ class AdminBorrowersRepaymentViewController extends MoneyMatchController {
 				->with($withArry); 
 	
 	}
+	
+	public function saveAction(){		
+
+		$postArray		=	Request::all();
+		$installmentId 	= 	$postArray['repaymentSchdId'];
+		$loanid			= 	$postArray['loan_id'];
+		
+		$this->adminBorrowerRepaymentView->saveRepayment($postArray);
+		return redirect()->route('admin.borrowersrepayview', array(	'type' => 'edit',
+																	'installment_id'=>base64_encode($installmentId),
+																	'loan_id'=>base64_encode($loanid)
+																)
+							)->with('success','Saved successfully');
+	}
+	
+	public function approveAction(){		
+
+		$postArray		=	Request::all();
+		$installmentId 	= 	$postArray['repaymentSchdId'];
+		$loanid			= 	$postArray['loan_id'];
+		
+		$this->adminBorrowerRepaymentView->saveRepayment($postArray);
+		return redirect()->route('admin.borrowersrepayview', array(	'type' => 'edit',
+																	'installment_id'=>base64_encode($installmentId),
+																	'loan_id'=>base64_encode($loanid)
+																)
+							)->with('success','Approved successfully');
+	}
+	
+	public function unapproveAction(){		
+
+		$postArray		=	Request::all();
+		$loanId			=	$postArray['loan_id'];
+		$instNum		=	$postArray['installment_number'];
+		$installmentId 	= 	$postArray['repaymentSchdId'];;	
+		$this->adminBorrowerRepaymentView->unapprovePayments($loanId, $instNum);
+		
+		return redirect()->route('admin.borrowersrepayview', array(	'type' => 'edit',
+																	'installment_id'=>base64_encode($installmentId),
+																	'loan_id'=>base64_encode($loanId)
+																)
+							)->with('success','Unapproved successfully');
+	}
+	
 	
 	public function recalculatePenalityAction(){		
 

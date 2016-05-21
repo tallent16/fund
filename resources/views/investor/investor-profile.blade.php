@@ -159,14 +159,16 @@
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					@if( $InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
 						@if($InvPrfMod->comments_count	>	0)
-							<button type="button"
-									id="returnback_button"
-									style="display:none"
-									class="btn verification-button"
-									data-screen-type="investor"
-								<i class="fa pull-right"></i>
-								{{ Lang::get('Return to Borrower') }}
-							</button>
+							@permission('returninvestor.admin.investorprofile')
+								<button type="button"
+										id="returnback_button"
+										style="display:none"
+										class="btn verification-button"
+										data-screen-type="investor"
+									<i class="fa pull-right"></i>
+									{{ Lang::get('Return to Investor') }}
+								</button>
+							@endpermission
 						@endif
 					@endif
 				@endif
@@ -174,14 +176,16 @@
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					@if( $InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
 						@if($InvPrfMod->comments_count	==	0)
-							<button type="button"
-									id="approve_profile_button"
-									style="display:none"
-									class="btn verification-button"
-									data-screen-type="investor"
-								<i class="fa pull-right"></i>
-								{{ Lang::get('Approve Profile') }}
-							</button>
+							@permission('approve.admin.investorprofile')
+								<button type="button"
+										id="approve_profile_button"
+										style="display:none"
+										class="btn verification-button"
+										data-screen-type="investor"
+									<i class="fa pull-right"></i>
+									{{ Lang::get('Approve Profile') }}
+								</button>
+							@endpermission
 						@endif
 					@endif
 				@endif

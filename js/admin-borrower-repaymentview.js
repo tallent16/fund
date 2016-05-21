@@ -10,17 +10,25 @@
 				minView: 2,
 				format: 'dd-mm-yyyy' 
 			});
-			$("#save_button").on("click",function(){
+			$("#save_button_admin").on("click",function(){
 				$("#isSaveButton").val("yes");
 				$("#submitType").val("save");
+				$("#save_form_payment").attr("action", baseUrl+"/borrowersrepay/saveadmin");
+			});
+			$("#save_button_borrower").on("click",function(){
+				$("#isSaveButton").val("yes");
+				$("#submitType").val("save");
+				$("#save_form_payment").attr("action", baseUrl+"/borrowersrepay/save");
 			});
 			$("#submit_button").on("click",function(){
 				$("#isSaveButton").val("");
 				$("#submitType").val("approve");
+				$("#save_form_payment").attr("action", baseUrl+"/borrowersrepay/approve");
 			});
 			$("#unapprove_button").on("click",function(){
 				$("#isSaveButton").val("");
 				$("#submitType").val("unapprove");
+				$("#save_form_payment").attr("action", baseUrl+"/borrowersrepay/unapprove");
 			});
 			$("#save_form_payment").on("submit",function(e){
 				$('span.error').remove();

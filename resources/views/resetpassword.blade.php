@@ -1,8 +1,9 @@
 @extends ('layouts.plane')
 @section('bottomscripts') 
 <script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	 
-<script src="{{ url('js/register.js') }}" type="text/javascript"></script>	  
+<script src="{{ url('js/passwordstrength.js') }}" type="text/javascript"></script>	  
+<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	  
+<script src="{{ url('js/resetpassword.js') }}" type="text/javascript"></script>	  
 @endsection
 @section ('body')
 	<div class="container">       
@@ -26,8 +27,8 @@
                         </ul>
                     </div>
                 @endif
-				<form class="form-vertical" role="form" method="POST" action="<?=URL::to('forgot'); ?>" name="validate-email"> 
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<form class="form-vertical" role="form" method="POST" action="<?=URL::to('forgot'); ?>" name="resetpassword"> 
+					<input type="hidden" name="_token" value="{{ csrf_token() }}" id="hidden_token">
 					<fieldset>
 						
 							<div class="form-group col-xs-6">								
@@ -59,13 +60,13 @@
 											id="EmailAddress" 
 											name="EmailAddress" 
 											placeholder="Email" 
-											type="text" value="" />
+											type="text" value="" required>
 								</div>							
 							</div>
 							
 							<div class="col-sm-2 form-group col-sm-offset-5">
-								 <button type="submit" class="login-button btn btn-primary   btn-success btn-block"
-									style="margin-right: 15px;">
+								 <button type="submit" class="login-button btn btn-primary   btn-success btn-block" 
+									>
 								{{ Lang::get('Next') }}
 								</button>
 							</div>

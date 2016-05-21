@@ -40,10 +40,22 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		 if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
 			return redirect()->to('admin/manageborrowers');
 		}
-		if (Request::isMethod('post')) {
+		$this->borrowerProfileModel->getBorrowerDetails($bor_id);
+		$withArry	=	array(		"modelBorPrf"=>$this->borrowerProfileModel,
+									"classname"=>"fa fa-reply fa-fw user-icon",
+									"submitted"=>$submitted ,
+									"InvBorPrf"=>$this->borrowerProfileModel,
+									"user_type"=>"borrower"
+								);	
+		return view('borrower.borrower-profile')
+				->with($withArry);
+		
+	}
+	
+	public function saveProfileAction($bor_id){
+		
+			$bor_id		=	base64_decode($bor_id);
 			$postArray	=	Request::all();
-			//~ print_r($postArray);
-			//~ die;
 			switch($postArray['admin_process']){
 				case	"save_comments":
 						$result		=	$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
@@ -60,19 +72,13 @@ class AdminManageBorrowersController extends MoneyMatchController {
 						$result		=	$this->borrowerProfileModel->updateBorrowerGrade($postArray,$bor_id);
 						break;
 			}
-			
-			$submitted	=	true;
-		}
-		$this->borrowerProfileModel->getBorrowerDetails($bor_id);
-		$withArry	=	array(		"modelBorPrf"=>$this->borrowerProfileModel,
-									"classname"=>"fa fa-reply fa-fw user-icon",
-									"submitted"=>$submitted ,
-									"InvBorPrf"=>$this->borrowerProfileModel,
-									"user_type"=>"borrower"
-								);	
-		return view('borrower.borrower-profile')
-				->with($withArry);
-		
+			if($result) {
+				return redirect()->route('admin.borrower.updateprofileview', array('bor_id' => $bor_id	))
+							->with('success','Update profile Status successfully');
+			}else{
+				return redirect()->route('admin.borrower.updateprofileview', array('bor_id' => $bor_id	))
+							->with('failure','Update profile Status Failed');	
+			}	
 	}
 	
 	public function updateProfileStatusAction($status,$bor_id){

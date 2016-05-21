@@ -328,11 +328,11 @@ class BorrowerRepayLoansModel extends TranWrapper {
 
 	public function unapprovePayments($loanId, $instNum) {
 
-
+		
 		// Approve the payment in the Payment Table
-		$payId_sql		=	"	SELECT 	payment_id, loan_reference_number,
+		$payId_sql		=	"	SELECT 	payment_id, loan_reference_number
 								FROM	borrower_repayment_schedule, loans
-								WHERE	loan_id = :loan_id
+								WHERE	borrower_repayment_schedule.loan_id = :loan_id
 								AND		installment_number = :inst_num 
 								AND		borrower_repayment_schedule.loan_id = loans.loan_id";
 		

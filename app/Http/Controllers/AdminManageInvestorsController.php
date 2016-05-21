@@ -72,6 +72,33 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		
 	}
 	
+	public function saveProfileAction($inv_id){
+		
+		
+		$inv_id		=	base64_decode($inv_id);
+		$postArray	=	Request::all();
+		switch($postArray['admin_process']){
+			case	"save_comments":
+					$result		=	$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
+					break;
+			case	"return_investor":
+					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_COMMENTS_ON_ADMIN );
+					$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"return_investor");
+					break;
+			case	"approve":
+					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
+					$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
+					break;
+		}
+		if($result) {
+				return redirect()->route('admin.investor.updateprofileview', array('inv_id' => $inv_id	))
+							->with('success','Update profile Status successfully');
+		}else{
+			return redirect()->route('admin.investor.updateprofileview', array('inv_id' => $inv_id	))
+						->with('failure','Update profile Status Failed');	
+		}	
+	}
+	
 	public function updateProfileStatusAction($status,$inv_id){
 		
 		$inv_id		=	base64_decode($inv_id);

@@ -115,10 +115,12 @@
 								<i class="fa pull-right"></i>
 								{{ Lang::get('Remove Comment')}}
 								</button>
-								<button type="button" id="save_comment_button" class="btn verification-button">
-								<i class="fa pull-right"></i>
-								{{ Lang::get('Save Comment')}}
-								</button>
+								@permission('admin.savecomment')
+									<button type="button" id="save_comment_button" class="btn verification-button">
+										<i class="fa pull-right"></i>
+										{{ Lang::get('Save Comment')}}
+									</button>
+								@endpermission
 							</div>
 						</div>
 					</div>

@@ -231,13 +231,16 @@
 					@else
 						@var	$userType	=	"borrower"
 					@endif
-					<div class="row"><!---row--3-->							
+					<div class="row"><!---row--3-->	
+							@permission('closebid.admin.manageloanbids')					
 								<button type="submit" formaction="/{{$userType}}/bidclose" 
 										class="btn verification-button"
 										onclick="bidCloseClicked()"
 										{{($bidsModel->loan_status==LOAN_STATUS_APPROVED)?
 											'':'disabled'}}>
 									Close Bid</button>
+							@endpermission
+							@permission('acceptbid.admin.manageloanbids')
 								<button type="submit" formaction="/{{$userType}}/bidaccept" 
 										class="btn verification-button"
 										onclick="acceptBidClicked()"
@@ -245,18 +248,23 @@
 										{{($bidsModel->loan_status==LOAN_STATUS_CLOSED_FOR_BIDS)?
 											'':'disabled'}}>
 									Accept Bid</button>
+							@endpermission
+							@permission('cancelbid.admin.manageloanbids')
 								<button type="submit" formaction="/{{$userType}}/loancancel" 
 										class="btn verification-button"
 										id = "cancelbutton"
 										onclick="cancelLoanClicked()">
 									Cancel Loan</button>
+							@endpermission
 							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-								<button type="submit" formaction="/admin/loandisburse" 
-										class="btn verification-button"										
-										onclick="disburseLoanClicked()"
-										{{($bidsModel->loan_status==LOAN_STATUS_BIDS_ACCEPTED)?
-											'':'disabled'}}>
-									Disburse Loan</button>
+								@permission('loandisburse.admin.manageloanbids')
+									<button type="submit" formaction="/admin/loandisburse" 
+											class="btn verification-button"										
+											onclick="disburseLoanClicked()"
+											{{($bidsModel->loan_status==LOAN_STATUS_BIDS_ACCEPTED)?
+												'':'disabled'}}>
+										Disburse Loan</button>
+								@endpermission
 							@endif						
 					</div><!-----row-3 end--->	
 					

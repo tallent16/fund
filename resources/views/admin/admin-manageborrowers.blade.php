@@ -116,30 +116,36 @@
 												</td>
 												<td class="text-center">
 													@var	$encode_bor_id	=	base64_encode($BorRow['borrower_id']);
+													@var	$appClass	=	"disable-indication disabled"
+													@var	$appUrl		=	"javascript:void(0);"
+													
+													@var	$rejClass	=	"disable-indication disabled"
+													@var	$rejUrl		=	"javascript:void(0);"
+													
+													@var	$delClass	=	"disable-indication disabled"
+													@var	$delUrl		=	"javascript:void(0);"
+													
 													@if($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
-														@var	$approveClass	=	""
-														@var	$approveUrl		=	url('admin/borrower/updateprofile/approve/')
-														@var	$approveUrl		=	$approveUrl."/".$encode_bor_id
-													@else
-														@var	$approveClass	=	"disable-indication disabled"
-														@var	$approveUrl		=	"javascript:void(0);"
+														@permission('approve.admin.manageborrowers')
+															@var	$appClass	=	""
+															@var	$appUrl		=	url('admin/borrower/updateprofile/approve/')
+															@var	$appUrl		=	$appUrl."/".$encode_bor_id
+														@endpermission
 													@endif
 													@if(($BorRow['status']	==	BORROWER_STATUS_NEW_PROFILE)
 														|| ($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL))
-														@var	$rejectClass	=	""
-														@var	$rejectUrl		=	url('admin/borrower/updateprofile/reject/')
-														@var	$rejectUrl		=	$rejectUrl."/".$encode_bor_id
-													@else
-														@var	$rejectClass	=	"disable-indication disabled"
-														@var	$rejectUrl		=	"javascript:void(0);"
+														@permission('reject.admin.manageborrowers')
+															@var	$rejClass	=	""
+															@var	$rejUrl		=	url('admin/borrower/updateprofile/reject/')
+															@var	$rejUrl		=	$rejUrl."/".$encode_bor_id
+														@endpermission
 													@endif
 													@if($BorRow['active_loan'] == 0)
-														@var	$deleteClass	=	""
-														@var	$deleteUrl		=	url('admin/borrower/updateprofile/delete/')
-														@var	$deleteUrl		=	$deleteUrl."/".$encode_bor_id
-													@else
-														@var	$deleteClass	=	"disable-indication disabled"
-														@var	$deleteUrl		=	"javascript:void(0);"
+														@permission('reject.admin.manageborrowers')
+															@var	$delClass	=	""
+															@var	$delUrl		=	url('admin/borrower/updateprofile/delete/')
+															@var	$delUrl		=	$delUrl."/".$encode_bor_id
+														@endpermission
 													@endif
 													<ul class="list-unstyled">
 														<li class="dropdown">
@@ -150,19 +156,19 @@
 															<ul class="dropdown-menu dropdown-user">
 																<li>
 																	
-																	<a href="{{$approveUrl}}" class="{{$approveClass}}">
+																	<a href="{{$appUrl}}" class="{{$appClass}}">
 																		<i class="fa fa-user fa-fw"></i>
 																		{{ Lang::get('Approve') }}
 																	</a>
 																</li>  
 																<li>	
-																	<a href="{{$rejectUrl}}"   class="{{$rejectClass}}">
+																	<a href="{{$rejUrl}}"   class="{{$rejClass}}">
 																		<i class="fa fa-user fa-fw"></i>
 																		{{ Lang::get('Reject') }}
 																	</a>
 																</li>
 																<li>
-																	<a href="{{$deleteUrl}}"  class="{{$deleteClass}}">
+																	<a href="{{$delUrl}}"  class="{{$delClass}}">
 																		<i class="fa fa-user fa-fw"></i>
 																		{{ Lang::get('Delete') }}
 																	</a>
@@ -180,25 +186,31 @@
 				</div> <!-----panel container--->
 				
 				<div class="row">
-					<div class="col-sm-12">							
-						<button type="button"
-								id="bulk_approve_button"
+					<div class="col-sm-12">		
+						@permission('approve.admin.manageborrowers')					
+							<button type="button"
+									id="bulk_approve_button"
+									class="btn verification-button"	>
+									<i class="fa pull-right"></i>
+									{{ Lang::get('Approve')}}
+							</button>
+						@endpermission
+						@permission('reject.admin.manageborrowers')
+							<button type="button" 
+								id="bulk_reject_button"
 								class="btn verification-button"	>
 								<i class="fa pull-right"></i>
-								{{ Lang::get('Approve')}}
-						</button>
-						<button type="button" 
-							id="bulk_reject_button"
-							class="btn verification-button"	>
-							<i class="fa pull-right"></i>
-							{{ Lang::get('Reject')}}
-						</button>
-						<button type="button"
-								id="bulk_delete_button"
-								class="btn verification-button"	>
-								<i class="fa pull-right"></i>
-								{{ Lang::get('Delete')}}
-						</button>
+								{{ Lang::get('Reject')}}
+							</button>
+						@endpermission
+						@permission('delete.admin.manageborrowers')
+							<button type="button"
+									id="bulk_delete_button"
+									class="btn verification-button"	>
+									<i class="fa pull-right"></i>
+									{{ Lang::get('Delete')}}
+							</button>
+						@endpermission
 					</div>										
 				</div> <!--------Button row--------------->			
 					

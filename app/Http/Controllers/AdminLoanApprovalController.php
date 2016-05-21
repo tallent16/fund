@@ -28,38 +28,6 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		 if(!$this->borrowerApplyLoanModel->CheckLoanExists($sourceId)){
 			return redirect()->to('admin/loanlisting');
 		}
-		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			$bor_id		=	$postArray['borrower_id'];
-			//~ print_r($postArray);
-			//~ die;
-			switch($postArray['admin_process']){
-				case	"save_comments":
-						$result		=	$this->borrowerApplyLoanModel->saveLoanApplyComments($postArray['comment_row'],
-																									$sourceId);
-						break;
-				case	"return_borrower":
-						$dataArray = array(	'status' 	=>	LOAN_STATUS_PENDING_COMMENTS );
-						$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
-																					$bor_id,"return_borrower");
-						break;
-				case	"approve":
-						$dataArray 				=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
-						
-						$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$sourceId);
-						$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
-																					$bor_id,"approve");
-						break;
-				case	"cancel":
-						$dataArray = array(	'status' 	=>	LOAN_STATUS_CANCELLED );
-						$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
-																					$bor_id,"cancel");
-						break;
-			}
-			
-			$submitted	=	true;
-		}
-		
 		$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId);
 		return view('admin.admin-loanapprovalmode')
 					->with(array("adminLoanApprMod"=>$this->borrowerApplyLoanModel,
@@ -67,8 +35,43 @@ class AdminLoanApprovalController extends MoneyMatchController {
 									"classname"=>"fa fa-check-circle fa-fw"
 								)
 						);
-				
+	}
+	
+	public function saveLoanApprovalAction($loan_id){
 		
+		$sourceId =	base64_decode($loan_id);
+		$postArray	=	Request::all();
+		$bor_id		=	$postArray['borrower_id'];
+		switch($postArray['admin_process']){
+			case	"save_comments":
+					$result		=	$this->borrowerApplyLoanModel->saveLoanApplyComments($postArray['comment_row'],
+																								$sourceId);
+					break;
+			case	"return_borrower":
+					$dataArray = array(	'status' 	=>	LOAN_STATUS_PENDING_COMMENTS );
+					$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
+																				$bor_id,"return_borrower");
+					break;
+			case	"approve":
+					$dataArray 				=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
+					
+					$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$sourceId);
+					$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
+																				$bor_id,"approve");
+					break;
+			case	"cancel":
+					$dataArray = array(	'status' 	=>	LOAN_STATUS_CANCELLED );
+					$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
+																				$bor_id,"cancel");
+					break;
+		}
+		if($result) {
+			return redirect()->route('admin.loanapprovalview', array('loan_id' => $loan_id	))
+							->with('success','Loan Approval status updated successfully');
+		}else{
+			return redirect()->route('admin.loanapprovalview', array('loan_id' => $loan_id	))
+						->with('failure','Loan Approval status updated Failed');	
+		}	
 	}
 	
 	public function downloadLoanDocumentAction($doc_id=null) {

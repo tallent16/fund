@@ -59,29 +59,37 @@
 						<div class="col-sm-12 text-right"> 	
 							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 								@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-									@if($adminLoanApprMod->comments_count	==	0)				
-										<button type="button" 
-												class="btn verification-button"
-												id="approve_loanapply_button">
-											{{ Lang::get('Approve')}}
-										</button>
+									@if($adminLoanApprMod->comments_count	==	0)	
+										@permission('approve.admin.loanapproval')			
+											<button type="button" 
+													class="btn verification-button"
+													id="approve_loanapply_button">
+												{{ Lang::get('Approve')}}
+											</button>
+										@endpermission
 									@endif
 								@endif
 							@endif
-							<button type="button" 
-									class="btn verification-button"
-									id="cancel_loanapply_button">						
-								{{ Lang::get('Cancel')}}</button>
-							<button type="button" class="btn verification-button" id="save_comment_button">						
-								{{ Lang::get('Save Comments')}}</button>
+							@permission('cancel.admin.loanapproval')
+								<button type="button" 
+										class="btn verification-button"
+										id="cancel_loanapply_button">						
+									{{ Lang::get('Cancel')}}</button>
+							@endpermission
+							@permission('admin.savecomment')
+								<button type="button" class="btn verification-button" id="save_comment_button">						
+									{{ Lang::get('Save Comments')}}</button>
+							@endpermission
 							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 									@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 										@if($adminLoanApprMod->comments_count	>	0)
-											<button type="button" 
-													class="btn verification-button"
-													id="returnback_loanapply_button">						
-													{{ Lang::get('Return to Borrower')}}
-											</button>					
+											@permission('returnborrower.admin.loanapproval')
+												<button type="button" 
+														class="btn verification-button"
+														id="returnback_loanapply_button">						
+														{{ Lang::get('Return to Borrower')}}
+												</button>	
+											@endpermission				
 									@endif
 								@endif
 							@endif

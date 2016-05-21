@@ -3,7 +3,7 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 	<script>	
-		@if(Auth::user()->usertyp	==	USER_TYPE_ADMIN)
+		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 			var baseUrl	=	"{{url('')}}/admin"
 		@else	
 			var baseUrl	=	"{{url('')}}/borrower"	
@@ -253,16 +253,28 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="form-group">	
-									<button class="btn verification-button"
-											id="save_button">
-										{{ Lang::get('Save')}}
-									</button>
+									@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+										<button class="btn verification-button"
+												id="save_button_borrower">
+											{{ Lang::get('Save')}}
+										</button>
+									@endif
+									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+										@permission('save.admin.repaymentlist')		
+											<button class="btn verification-button"
+													id="save_button_admin">
+												{{ Lang::get('Save')}}
+											</button>
+										@endpermission
+									@endif
 									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 										@if( $adminBorRepayViewMod->repaymentStatus	==	BORROWER_REPAYMENT_STATUS_UNVERIFIED )
-											<button class="btn verification-button"
-													id="submit_button">
-												{{ Lang::get('Approve')}}
-											</button>
+											@permission('approve.admin.repaymentlist')	
+												<button class="btn verification-button"
+														id="submit_button">
+													{{ Lang::get('Approve')}}
+												</button>
+											@endpermission
 										@endif
 									@endif
 								</div>
@@ -275,10 +287,12 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="form-group">	
-										<button class="btn verification-button"
-												id="unapprove_button">
-												{{ Lang::get('UnApprove')}}
-										</button>
+										@permission('approve.admin.repaymentlist')
+											<button class="btn verification-button"
+													id="unapprove_button">
+													{{ Lang::get('UnApprove')}}
+											</button>
+										@endpermission
 									</div>
 								</div>
 							</div>			
