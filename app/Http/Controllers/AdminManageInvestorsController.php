@@ -41,26 +41,6 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		 if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
 			return redirect()->to('admin/manageinvestors');
 		}
-		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			//~ print_r($postArray);
-			//~ die;
-			switch($postArray['admin_process']){
-				case	"save_comments":
-						$result		=	$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
-						break;
-				case	"return_investor":
-						$dataArray = array(	'status' 	=>	INVESTOR_STATUS_COMMENTS_ON_ADMIN );
-						$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"return_investor");
-						break;
-				case	"approve":
-						$dataArray = array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
-						$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
-						break;
-			}
-			
-			$submitted	=	true;
-		}
 		$this->investorProfileModel->getInvestorDetails($inv_id);
 		$withArry	=	array(		"InvPrfMod"=>$this->investorProfileModel,
 									"InvBorPrf"=>$this->investorProfileModel,
@@ -72,74 +52,157 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		
 	}
 	
-	public function saveProfileAction($inv_id){
+	
+	public function saveCommentProfileAction(){
 		
-		
-		$inv_id		=	base64_decode($inv_id);
 		$postArray	=	Request::all();
-		switch($postArray['admin_process']){
-			case	"save_comments":
-					$result		=	$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
-					break;
-			case	"return_investor":
-					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_COMMENTS_ON_ADMIN );
-					$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"return_investor");
-					break;
-			case	"approve":
-					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
-					$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
-					break;
-		}
+		$inv_id		=	base64_decode($postArray['investor_id']);
+		$result		=	$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
 		if($result) {
-				return redirect()->route('admin.investor.updateprofileview', array('inv_id' => $inv_id	))
-							->with('success','Update profile Status successfully');
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
+						->with('success','Comments saved successfully');
 		}else{
-			return redirect()->route('admin.investor.updateprofileview', array('inv_id' => $inv_id	))
-						->with('failure','Update profile Status Failed');	
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id) ))
+						->with('failure','Comments saved Failed');	
 		}	
 	}
 	
-	public function updateProfileStatusAction($status,$inv_id){
+	public function returnInvestorProfileAction(){
+		
+		$postArray	=	Request::all();
+		$inv_id		=	base64_decode($postArray['investor_id']);
+		$dataArray 	= 	array(	'status' 	=>	INVESTOR_STATUS_COMMENTS_ON_ADMIN );
+		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"return_investor");
+		if($result) {
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
+						->with('success','return investor updated successfully');
+		}else{
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id) ))
+						->with('failure','return investor updated Failed');	
+		}	
+	}
+	
+	public function approveInvestorProfileAction(){
+			
+		$postArray	=	Request::all();
+		$inv_id		=	base64_decode($postArray['investor_id']);
+		$dataArray 	= 	array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
+		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
+		if($result) {
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
+						->with('success','approve investor updated successfully');
+		}else{
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id) ))
+						->with('failure','approved investor updated Failed');	
+		}	
+	}
+	
+	public function approveInvestorAction($bor_id){
 		
 		$inv_id		=	base64_decode($inv_id);
-		 if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
+		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
 			return redirect()->to('admin/manageinvestors');
 		}
 		$inv_profile_status	=	$this->investorProfileModel->getInvestorProfileStatus($inv_id);
 		
-		switch($status){
-			case	"approve":
-					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
-					if($bor_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) {
-						$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
-					}
-					break;
-			case	"delete":
-					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_DELETED );
-					if($this->investorProfileModel->getInvestorActiveLoanStatus($inv_id)	==	0) {
-						$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id);
-					}
-					break;
-			case	"reject":
-					$dataArray = array(	'status' 	=>	INVESTOR_STATUS_REJECTED );
-					if( ($inv_profile_status	==	INVESTOR_STATUS_NEW_PROFILE) 
-							|| ($inv_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)) {
-						$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id);
-					}
-					break;
+		$dataArray = array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
+		if($bor_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) {
+			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
+			if($result) {
+				return redirect()->route('admin.manageinvestors')
+							->with('success','approve investor updated successfully');
+			}else{
+				return redirect()->route('admin.manageinvestors')
+							->with('failure','approve investor updated Failed');	
+			}
 		}
 		return redirect()->to('admin/manageinvestors');
 	}
 	
-	public function updateBulkProfileStatusAction(){
+	public function rejectInvestorAction($bor_id){
 		
-		$postArray	=	Request::all();
-		//~ print_r($postArray);
-			//~ die;
-		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,$postArray['processType']);
+		$inv_id		=	base64_decode($inv_id);
+		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
+			return redirect()->to('admin/manageinvestors');
+		}
+		$inv_profile_status	=	$this->investorProfileModel->getInvestorProfileStatus($inv_id);
+		
+		
+		$dataArray = array(	'status' 	=>	INVESTOR_STATUS_REJECTED );
+		if( ($inv_profile_status	==	INVESTOR_STATUS_NEW_PROFILE) 
+				|| ($inv_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)) {
+			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id);
+			if($result) {
+				return redirect()->route('admin.manageinvestors')
+							->with('success','reject investor updated successfully');
+			}else{
+				return redirect()->route('admin.manageinvestors')
+							->with('failure','reject investor updated Failed');	
+			}
+		}
 		return redirect()->to('admin/manageinvestors');
 	}
 	
+	public function deleteInvestorAction($bor_id){
+		
+		$inv_id		=	base64_decode($inv_id);
+		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
+			return redirect()->to('admin/manageinvestors');
+		}
+		$inv_profile_status	=	$this->investorProfileModel->getInvestorProfileStatus($inv_id);
+		
+		$dataArray = array(	'status' 	=>	INVESTOR_STATUS_DELETED );
+		if($this->investorProfileModel->getInvestorActiveLoanStatus($inv_id)	==	0) {
+			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id);
+			if($result) {
+				return redirect()->route('admin.manageinvestors')
+							->with('success','delete investor updated successfully');
+			}else{
+				return redirect()->route('admin.manageinvestors')
+							->with('failure','delete investor updated Failed');	
+			}
+		}
+		return redirect()->to('admin/manageinvestors');
+	}
+	
+	public function approveInvestorBulkAction(){
+		
+		$postArray	=	Request::all();
+		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,"approve");
+		if($result) {
+			return redirect()->route('admin.manageinvestors')
+						->with('success','approve investor updated successfully');
+		}else{
+			return redirect()->route('admin.manageinvestors')
+						->with('failure','approve investor updated Failed');	
+		}
+	}
+	
+	public function rejectInvestorBulkAction(){
+		
+		$postArray	=	Request::all();
+		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,"reject");
+		if($result) {
+			return redirect()->route('admin.manageinvestors')
+						->with('success','reject investor updated successfully');
+		}else{
+			return redirect()->route('admin.manageinvestors')
+						->with('failure','reject investor updated Failed');	
+		}
+	}
+	
+	public function deleteInvestorBulkAction(){
+		
+		$postArray	=	Request::all();
+		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,"delete");
+		if($result) {
+			return redirect()->route('admin.manageinvestors')
+						->with('success','delete investor updated successfully');
+		}else{
+			return redirect()->route('admin.manageinvestors')
+						->with('failure','delete investor updated Failed');	
+		}
+	}
 	
 	public function ajaxAvailableBalanceByIDAction() {
 		

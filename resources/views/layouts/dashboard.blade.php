@@ -55,8 +55,18 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-
+	
 		<div id="page-wrapper">
+			
+			
+			<div class="dashboard-alert">
+				@if(session()->has('success'))
+					@include('partials/error', ['type' => 'success', 'message' => session('success')])
+				@endif
+				@if(session()->has('failure'))
+					@include('partials/error', ['type' => 'danger', 'message' => session('failure')])
+				@endif    
+			</div> 
 			
 			<div class="row">  
 				@yield('section')

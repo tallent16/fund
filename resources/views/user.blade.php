@@ -16,6 +16,9 @@
 		table.dataTable thead th, table.dataTable tr td a.user_edit_master:hover  {
 			text-decoration:none;
 	}
+	#ToolTables_user_0,#ToolTables_user_1 {
+		visibility:hidden;
+	}
 	</style>
 @stop
 @section('scripts')
@@ -31,18 +34,43 @@
 	{{ Html::script('js/user/moneymatch-user.js') }}
 	
 @stop
+
 @section('section')
-	<div class="table-responsive">
-		<table class="table table-bordered" id="user">
-			<thead>
-				<th><input type="checkbox" id="select_all_list"></th>
-				<th>User Name</th>
-				<th>Email</th>
-				<th>Status</th>
-				<th>Action</th>
-			</thead>
-		</table>
+@section('page_heading',Lang::get('Manage Users') )
+@var	$userCanAdd		=	"no"
+@var	$userCanEdit	=	"no"
+@var	$userCanDelete	=	"no"
+
+@permission("add.admin.manageusers")
+	@var	$userCanAdd		=	"yes"
+@endpermission
+@permission("edit.admin.manageusers")
+	@var	$userCanEdit	=	"yes"
+@endpermission
+@permission("delete.admin.manageusers")
+	@var	$userCanDelete	=	"yes"
+@endpermission
+<div class="col-sm-12 space-around">
+	<div class="row">		
+		<div class="col-lg-12 col-md-12 borrower-admin">
+			<div class="table-responsive">
+				<table class="table table-bordered" id="user">
+					<thead>
+						<th><input type="checkbox" id="select_all_list"></th>
+						<th>User Name</th>
+						<th>Email</th>
+						<th>Status</th>
+						<th>Action</th>
+					</thead>
+				</table>
+			</div>
+			<input id="hidden_token" name="_token" type="hidden" value="{{csrf_token()}}">
+			<input id="hidden_user_id" type="hidden" value="{{Auth::user()->user_id}}">
+			<input id="userCanAdd" type="hidden" value="{{$userCanAdd}}">
+			<input id="userCanEdit" type="hidden" value="{{$userCanEdit}}">
+			<input id="userCanDelete" type="hidden" value="{{$userCanDelete}}">
+		</div>
 	</div>
-	<input id="hidden_token" name="_token" type="hidden" value="{{csrf_token()}}">
+</div>
  @endsection  
 @stop

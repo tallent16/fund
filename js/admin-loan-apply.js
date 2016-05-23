@@ -12,13 +12,13 @@ $(document).ready(function (){
 	$("#returnback_loanapply_button").click(function(){
 		
 		$("#admin_process").val("return_borrower");
-		
+		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/return_borrower");
 		$("#form-profile").submit();
     });
 	$("#approve_loanapply_button").click(function(){
 	
 		$("#admin_process").val("approve");
-		
+		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/approve");
 		$("#form-profile").submit();
     });
 	$("#close_comment_button").click(function(){
@@ -32,7 +32,13 @@ $(document).ready(function (){
 	$("#cancel_loanapply_button").click(function(){
 		
 		$("#admin_process").val("cancel");
+		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/cancel");
+		$("#form-profile").submit();
+    });
+	
+	$("#save_comment_button").click(function(){
 		
+		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/save_comments");
 		$("#form-profile").submit();
     });
 	

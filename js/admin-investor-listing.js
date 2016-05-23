@@ -30,6 +30,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("approve");
+			$("#form-investor-listing").attr("action",baseUrl+"/admin/investordepositlist/bulkapprove");
 			$("#form-investor-listing").submit();
 		}
     });
@@ -52,6 +53,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("unapprove");
+			$("#form-investor-listing").attr("action",baseUrl+"/admin/investordepositlist/bulkunapprove");
 			$("#form-investor-listing").submit();
 		}
     });
@@ -74,6 +76,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("delete");
+			$("#form-investor-listing").attr("action",baseUrl+"/admin/investordepositlist/bulkdelete");
 			$("#form-investor-listing").submit();
 		}
     });

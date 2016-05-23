@@ -1,18 +1,22 @@
-$(document).ready(function (){  
+$(document).ready(function (){
+ 
 	$("#password").passStrengthify(); 
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('#hidden_token').val()
 		}
 	});
-	$('#confirm-button').click(function (e) {
+	
+		
+	
+	$('#confirm-button').click(function (e) {		
 		e.preventDefault();
 
 		if ($('#resetpassword').valid()) {
 			$('#resetpassword').submit();
 		}
 	 }); 
-	 
+
 	 $('#resetpassword').validate({
             errorClass: 'help-block animated fadeInDown',
             errorElement: 'div',
@@ -27,40 +31,13 @@ $(document).ready(function (){
                 jQuery(e).closest('.form-group').removeClass('has-error');
                 jQuery(e).closest('.help-block').remove();
             },
-            rules: {
-                'username': {
+            rules: {			
+               
+               'EmailAddress': {					
                     required: true,
-                    remote: {
-                        type: 'post',
-                        url: 'ajax/CheckUserNameavailability',
-                        data: {
-                            'username': function () { return $('#username').val(); }
-                        },
-                        dataType: 'json'
-                    }
+                    email: true,                    
                     //minlength: 3
-                },
-                'EmailAddress': {
-                    required: true,
-                    email: true,
-                    remote: {
-                        type: 'post',
-                        url: 'ajax/CheckEmailavailability',
-                        data: {
-                            'EmailAddress': function () { return $('#EmailAddress').val(); }
-                        },
-                        dataType: 'json'
-                    }
-                    //minlength: 3
-                },
-                'firstname': {
-                    required: true,
-                    //minlength: 5
-                },
-                'lastname': {
-                    required: true,
-                    //minlength: 5
-                },
+                },            
                 'password': {
                     required: true,
                     minlength: 4
@@ -69,39 +46,21 @@ $(document).ready(function (){
                     required: true,
                     equalTo: '#password',
                     //minlength: 5
-                },
-                'SecurityQuestion1': {
-                    required: true,
-                },
-                'SecurityQuestionAnswer1': {
-                    required: true,
-                },
+                },               
             },
-            messages: {
-                'username': {
-                    required: 'Please enter an Username',
-                    remote: 'Username already registered. Please enter a different Username'
-                },
+            messages: {              
                 'EmailAddress': {
                     required: 'Please enter an email',
-                    email: 'Email is not valid',
-                    remote: 'Email already registered. Please enter a different email'
-                },
-                'firstname': {
-                    required: 'Please enter firstname',
-                },
-                'lastname': {
-                    required: 'Please enter lastname',
-                },
+                    email: 'Email is not valid',  
+                    regx: 'Not a valid format',                  
+                },                
                 'password': {
                     required: 'Please provide a password',
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',
                     equalTo: 'Confirm password does not match password',
-                },
-                'SecurityQuestion1': "Please select a security question",
-                'SecurityQuestionAnswer1': "Please provide a security answer",
+                }
             }
         });
 });

@@ -64,5 +64,14 @@
 			
 		</nav>
 	</div><!-- /.row -->
-</div>              
+</div>    
+@if(session('success'))
+	@include('partials/error', ['type' => 'success', 'message' => session('success')])
+@endif
+@if(session('failure'))
+
+	@include('partials/error', ['type' => 'failure', 'message' => session('failure')])
+@endif
+	   
+  
 @stop

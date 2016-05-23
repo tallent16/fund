@@ -54,6 +54,7 @@
 				<input type="hidden" name="admin_process" id="admin_process" value="">
 				<input type="hidden" name="hidden_borrower_status" id="borrower_status" value="{{$borrower_status}}">
 				<input type="hidden" name="borrower_id" value="{{ $adminLoanApprMod->borrower_id }}">
+				<input type="hidden" name="loan_id" value="{{ $adminLoanApprMod->loan_id }}">
 				<div class="panel-body applyloan table-border-custom">	
 					@if($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 						<div class="col-sm-12 text-right"> 	

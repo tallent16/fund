@@ -58,7 +58,8 @@ class AdminRolesModel extends TranWrapper {
 													5=>"Banking",
 													6=>"Reports",
 													7=>"Manage Users",
-													8=>"Manage Roles"
+													8=>"Manage Roles",
+													9=>"Admin comment"
 												);
 		
 		$this->filterRoleValue			=	$role_id;
@@ -159,4 +160,13 @@ class AdminRolesModel extends TranWrapper {
       
 		return	$roleID;
 	}
+	
+	public function deleteRole($role_id){
+		
+		$where	=	["id" => 	$role_id];
+			
+		$this->dbDelete("roles", $where);
+		return	$role_id;
+	}
+	
 }

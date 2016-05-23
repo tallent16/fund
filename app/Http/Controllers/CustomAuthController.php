@@ -4,6 +4,7 @@ use Auth;
 use Request;
 use BorProfile;
 use InvBal;
+use AdminAccess;
 class CustomAuthController extends MoneyMatchController {
 	/**
 	 * The Guard implementation.
@@ -54,6 +55,15 @@ class CustomAuthController extends MoneyMatchController {
             /*If the user is borrower then check the status,
              *Status is deleted or reject not allow logout and thrown error
              */ 
+             if($userType	==	USER_TYPE_ADMIN) {
+				$rolesCnt	=	AdminAccess::checkUserRoles();
+				if( $rolesCnt	==	0 ) {
+					Auth::logout();
+					return redirect($this->loginPath())
+							->withErrors(['email' => "You have no roles to access"]);
+				}
+			}
+			
              if($userType	==	USER_TYPE_BORROWER) {
 				$profileStatus	=	BorProfile::checkProfileStatus();
 				if( ($profileStatus	==	BORROWER_STATUS_DELETED)

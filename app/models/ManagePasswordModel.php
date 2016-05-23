@@ -1,4 +1,6 @@
-<?php namespace App\models;
+<?php 
+namespace App\models;
+use Hash;
 class ManagePasswordModel extends TranWrapper {
 	
 	public $userId			= "";	
@@ -38,16 +40,11 @@ class ManagePasswordModel extends TranWrapper {
 	}
 	
 	public function saveChangedPassword($passwordtype, $userId, $newpass, $confirmpass, $oldPassword,$secretanswer){
-		print_r( $secretanswer);
-		print_r( $userId);
-		print_r( $newpass);
-		print_r( $confirmpass);
-		print_r( $oldPassword);
-		
+			
 		if ($passwordtype == "Change Password") {
-				$this->changePassword($userId, $oldPassword,$confirmpass);
+				return $this->changePassword($userId, $oldPassword,$confirmpass);
 		}else{ 
-				$this->forgotPassword($userId,$secretanswer,$confirmpass);
+				return $this->forgotPassword($userId,$secretanswer,$confirmpass);
 			
 		}
 	}
@@ -55,17 +52,18 @@ class ManagePasswordModel extends TranWrapper {
 	public function changePassword($userId, $oldPassword,$confirmpass){
 		$retval = $this->checkOldPassword($userId, $oldPassword);
 			if ($retval < 0){
-				return -1;
+				echo "Password not match";
 			}
 			else{
-				$dataArray 	   = array('password'	=> $confirmpass);
+				$dataArray 	   = array('password'	=> Hash::make($confirmpass));
 				$whereArry	   = array("user_id"	=> "{$userId}");
 				$result 	   = $this->dbUpdate('users', $dataArray, $whereArry );
 										
 				if($result < 0){
 					return -1;
 				}else{
-					echo "change password updated successfully";
+					//echo "change password updated successfully";
+					return 1;
 				}
 				
 				
@@ -73,40 +71,40 @@ class ManagePasswordModel extends TranWrapper {
 	}
 	
 	public function checkOldPassword($userId, $oldPassword){
-		echo $oldpassword_sql 			=  	"SELECT password
+		$oldpassword_sql 			=  	"SELECT password
 										FROM users 
 										WHERE user_id = '".$userId."' ";
 									
 		$this->oldpassword			=	$this->dbFetchOne($oldpassword_sql);
 		
-		if($this->oldpassword != $oldPassword){
+		if(Hash::check($oldPassword, $this->oldpassword))
+		{
+			return 1;
+		}else{
 			return -1;
-		}
-		
-		
+		}			
 	}
 	
 	public function forgotPassword($userId,$secretanswer,$confirmpass){
 		
 		$returnquestion		=  $this->checkSecretAnswer($userId,$secretanswer);
 		
-		
 			if ($returnquestion > 0){
-						
-				echo $confirmpass.'herepassword';
-				$dataArray 	   = array('password'	=> $confirmpass);
+				$dataArray 	   = array('password'	=> Hash::make($confirmpass));
 				$whereArry	   = array("user_id"	=> "{$userId}");
 				$result 	   = $this->dbUpdate('users', $dataArray, $whereArry );
-				echo 'update sql' ;echo '<pre>',print_r($result),'<pre>';						
+
 				if($result < 0){
 					return -1;
 				}else{
-					echo "forgot password updated successfully";
+					return 1;
+					//echo "forgot password updated successfully";
 				}
 				
 			}else{
 				
 				echo "wrong answer";
+			
 			}
 	}
 		
@@ -117,14 +115,13 @@ class ManagePasswordModel extends TranWrapper {
 										
 		$this->challengeid			=	$this->dbFetchOne($challengeid_sql);
 										
-		$answer						=	"SELECT challenge_answer 
+		$answer_sql					=	"SELECT challenge_answer 
 										FROM user_challenges 
 										WHERE challenge_id = '".$this->challengeid."'
 										AND user_id = '".$userId."' ";
-										
-		$this->answer				=	$this->dbFetchOne($challengeid_sql);
-		echo $this->answer.	$secretanswer;
-		
+									
+		$this->answer				=	$this->dbFetchOne($answer_sql);
+		echo $this->answer.'dfgdfg'.	$secretanswer.'anser';	
 		if($this->answer != $secretanswer)
 		{
 			return -1;

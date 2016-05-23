@@ -8970,6 +8970,14 @@ canvas.round {
 /*# sourceMappingURL=styles.css.map */
 /*---------------------------CUSTOM CSS STARTS HERE-------------------**/
 /****************************Common css*********************************/
+.homepage-alert{
+	position: relative;
+	top: 10em;
+}
+.dashboard-alert{
+	position: relative;
+	top: 1em;
+}
 .borrower-admin .list-unstyled li a{
 	color:#222;
 }

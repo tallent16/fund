@@ -11,6 +11,8 @@ $(document).ready(function() {
 	$( document ).ajaxComplete(function() {
 		call_list_select_all_event();
 		callEditClickEventFunc();
+		callDeleteClickEventFunc();
+		
 	});
 	
 	
@@ -26,24 +28,40 @@ $(document).ready(function() {
 		$( 'input', this.node( 'alert_frequency_repeat' ) ).attr( 'maxLength', 3 );
 	} ); */
     
-	editor.on( 'onSubmitSuccess', function ( e, json,data ) {
-			if(data.DT_RowId	==	undefined ){
-				$(".list_region_id").each(function (key) {
+	 editor.on( 'onSubmitSuccess', function ( e, json,data ) {
+		if(data.DT_RowId	==	undefined ){
+			$(".user_id").each(function (key) {
 					if($(this).is(":checked")){
 						var tr = $(this).parents('tr');
 						tr.remove();
+						if($("#hidden_user_id").val()	==	tr.attr("id").replace("row_","") ) {
+							window.location	=	public_path+"/auth/logout";
+						}
 					}
 				});
-			}
+			
+		}
 	 });
+	checkUserPermission();
+	 $('#user').removeClass("DTTT_selectable");
 });
+function checkUserPermission() {
+	if($("#userCanAdd").val()	==	"no") {
+		$("#ToolTables_user_0").remove();
+	}
+	if($("#userCanDelete").val()	==	"no") {
+		$("#ToolTables_user_1").remove();
+	}
+	$("#ToolTables_user_0").css("visibility", "visible");
+	$("#ToolTables_user_1").css("visibility", "visible");
+}
 function callDataTableFunc(){
 	var options =[];
 	$userTypeOptions 	= 	buildUserTypeList();
 	$statusOptions 		= 	buildStatusDropDownList();
 	
 	editor = new $.fn.dataTable.Editor( {
-		ajax: "admin/ajax/user_master",
+		ajax: public_path+"/admin/ajax/user_master",
 		table: "#user",
 		fields: [ {
 				label: "User Name:",
@@ -53,13 +71,9 @@ function callDataTableFunc(){
 				name: "email"
 			}, {
 				label: "Password:",
-				name: "password",
+				name: 	"password",
+				type:	"password"
 			},{
-				label: "User Type:",
-				name: "usertype",
-				type: 'select',
-				"ipOpts": $userTypeOptions
-			}, {
 				label: "Status:",
 				name: "status",
 				type: 'select',
@@ -77,7 +91,7 @@ function callDataTableFunc(){
 	
 	$user =$('#user').DataTable( {
 		dom: "Tfrtip",
-		ajax: "admin/ajax/user_master",
+		ajax: public_path+"/admin/ajax/user_master",
 		columns: [	
 		
 					{ 
@@ -85,10 +99,11 @@ function callDataTableFunc(){
 							className: "center",
 							render: function(data, type, full, meta){
                 				
-								var str ="";             					    
+								var str ="";  
 								str=str+'<input type="checkbox"';
 								str=str+' name="user_id" class="user_id"';
 								str=str+' value="'+data.user_id+'" />';
+								
 								return str;
         					},
         					orderable: false
@@ -98,10 +113,14 @@ function callDataTableFunc(){
 						className: "center",
 						render: function(data, type, full, meta){
 							
-							var str ="";             					    
-							str=str+'<a href="javascript:void(0);"';
-							str=str+' class="editor_edit user_edit_master" >';
-							str=str+data.username+'</a>';
+							var str ="";  
+							if($("#userCanEdit").val()	==	"yes") {           					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit user_edit_master" >';
+								str=str+data.username+'</a>';
+							}else{
+								str=data.username
+							}
 							return str;
 						}
 					},
@@ -110,10 +129,14 @@ function callDataTableFunc(){
 						className: "center",
 						render: function(data, type, full, meta){
 							
-							var str ="";             					    
-							str=str+'<a href="javascript:void(0);"';
-							str=str+' class="editor_edit user_edit_master" >';
-							str=str+data.email+'</a>';
+							var str ="";   
+							if($("#userCanEdit").val()	==	"yes") {           					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit user_edit_master" >';
+								str=str+data.email+'</a>';
+							}else{
+								str=data.email
+							}
 							return str;
 						}
 					},
@@ -121,40 +144,35 @@ function callDataTableFunc(){
 						data: null,
 						className: "center",
 						render: function(data, type, full, meta){
-							var $userType	=	"Admin";
-							var str ="";             					    
-							str=str+'<a href="javascript:void(0);"';
-							str=str+' class="editor_edit  user_edit_master" >';
-							str=str+$userType+'</a>';
+							
+							var str ="";  
+							if($("#userCanEdit").val()	==	"yes") {            					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit  user_edit_master" >';
+								str=str+data.statusText+'</a>';
+							}else{
+								str=data.statusText
+							}
 							return str;
 						}
 					},{ 
 						data: null,
 						className: "center",
 						render: function(data, type, full, meta){
-								var $Status	=	"";
-								switch(data.status){
-								case "0":
-								case 0:
-									$Status	=	"Deactive";
-									break;
-								case "1":
-								case 1:
-									$Status	=	"Active";
-									break;
-							}
+								
 							var str ="";             					    
-							str=str+'<a href="javascript:void(0);"';
-							str=str+' class="editor_edit  user_edit_master" >';
-							str=str+$Status+'</a>';
+							str=str+'<a href="'+public_path+'/reset" ';
+							str=str+' >Change Password </a>';
+							str=str+'/';
+							str=str+'<a href="'+public_path+'/admin/assign-roles/'+data.user_id+'"';
+							str=str+' >Assign Roles</a>';
 							return str;				    
 						}
 					}
 				],
 		order: [ 1, 'asc' ],
 		tableTools: {
-			sRowSelect: "os",
-			sRowSelector: 'td:first-child',
+			
 			aButtons: [
 				{ sExtends: "editor_create", editor: editor },
 				{ sExtends: "editor_remove", editor: editor }
@@ -214,28 +232,29 @@ function callEditClickEventFunc(){
             title: 'Edit User Master',
             buttons: 'Update'
         });
-
+		$(".DTE_Field_Name_password").remove();
      });
 }
 
 
 function callDeleteClickEventFunc(){
 	
-	$('#delete_region').on('click', function (e) {
+	$('#ToolTables_user_1').on('click', function (e) {
 			e.preventDefault();
 			var rows = [];
-			$(".list_region_id").each(function (key) {
+			$(".user_id").each(function (key) {
 				if($(this).is(":checked")){
 					var tr = $(this).closest('tr');
-					var row = region.row( tr );
+					var row = $user.row( tr );
 					rows.push(row);
 				}
 			});
 			if(rows.length	==	0)
 					return false;
+			console.log(rows);
 			 editor.remove( rows, {
-				title: "Delete Region",
-				message:"<h3>Are you sure to delete the selected Regions</h3>",
+				title: "Delete User",
+				message:"<h3>Are you sure to delete the selected Users</h3>",
 				buttons: [
 					{
 						label: 'Cancel', fn: function() {
@@ -265,8 +284,8 @@ function buildStatusDropDownList(){
 	
 	var opt = new Array();
 	var opt = new Array();
-	opt.push({value : 1,label : "Active"});
-	opt.push({value : 0,label : "Deactive"});
+	opt.push({value : 2,label : "Active"});
+	opt.push({value : 1,label : "Deactive"});
 	return opt;
 	
 }

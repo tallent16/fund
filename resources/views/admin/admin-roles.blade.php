@@ -12,9 +12,11 @@
 	<div class="row">	
 		<div class="col-sm-4 col-lg-3"> 
 			<div class="space-around">
-				<a href="{{url('admin/role-permission/add/0')}}" class="btn verification-button">
-							{{ Lang::get('Add Roles')}}
-				</a>
+				@permission('addrole.admin.manageroles')
+					<a href="{{url('admin/role-permission/add/0')}}" class="btn verification-button">
+								{{ Lang::get('Add Roles')}}
+					</a>
+				@endpermission
 			</div>
 		</div>
 		
@@ -58,7 +60,12 @@
 										</a>
 									</td>
 									<td class="text-left">
-										{{Lang::get('Delete')}}
+										@if($roleRow->system	==	0)
+											<a href="{{url('admin/roles/delete').'/'.$roleRow->id}}"
+												onclick="return confirm('Are you sure to delete role?')">
+												{{Lang::get('Delete')}}
+											</a>
+										@endif
 									</td>
 								</tr>
 							@endforeach

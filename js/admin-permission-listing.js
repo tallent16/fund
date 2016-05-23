@@ -15,6 +15,8 @@ $(document).ready(function (){
 		}
 		if ($(".select_permission_id:checked").length > 0){
 			if (!$("#parent_role_name").hasClass('has-error')) {
+				
+				$("#form-role-permission").attr("action",baseUrl+"/admin/role-permission/save");
 				$("#form-role-permission").submit();
 			}
 		}

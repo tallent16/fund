@@ -25,6 +25,13 @@ class AdminRolesController extends MoneyMatchController {
 	
 	}
 		
+	public function deleteAction($role_id){
+		
+		$this->adminRolesModel->deleteRole($role_id);
+		return redirect()->route('admin.roles')
+						->with('success','Role deleted successfully');
+	}
+		
 	public function roleUsersAction($role_id){
 		
 		$this->adminRolesModel->getRoleUsers($role_id);
@@ -34,23 +41,38 @@ class AdminRolesController extends MoneyMatchController {
 				->with($withArry); 
 	
 	}
-		
-	public function rolePermissionsAction($trantype,$role_id){
-		
-		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			$this->adminRolesModel->processPermission($postArray);
-			if($trantype	==	"add")
-				return redirect()->to('admin/roles');
-		}
+	
+	public function addRolePermissionsAction($role_id){
 		
 		$this->adminRolesModel->getRolePermissionDetails($role_id);
 		$withArry	=	array(	"adminRolesModel" 	=>	$this->adminRolesModel, 
-								"trantype"			=>	$trantype,
+								"trantype"			=>	'add',
 								"classname"=>"fa fa-list-alt fa-fw");
 		return view('admin.admin-role-permissions')
 				->with($withArry); 
+	}
+		
+	public function editRolePermissionsAction($role_id){
+		
+		$this->adminRolesModel->getRolePermissionDetails($role_id);
+		$withArry	=	array(	"adminRolesModel" 	=>	$this->adminRolesModel, 
+								"trantype"			=>	'edit',
+								"classname"=>"fa fa-list-alt fa-fw");
+		return view('admin.admin-role-permissions')
+				->with($withArry); 
+	}
 	
+	public function saveRolePermissionsAction(){
+		
+		$postArray				=	Request::all();
+		$role_id				=	$postArray['role_filter'];
+		$this->adminRolesModel->processPermission($postArray);
+		if($postArray['trantype']	==	"add") {
+			return redirect()->to('admin/roles')
+						->with('success','New role created successfully');
+		}
+		return redirect()->route('admin.rolepermission.edit', array('role_id' => $role_id))
+						->with('success','Role updated successfully');
 	}
 	
 	//checks the Role Name exists or not

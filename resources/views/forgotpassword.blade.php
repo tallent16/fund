@@ -47,6 +47,7 @@
 					<input type="hidden" name="_token" value="{{ csrf_token() }}" id="hidden_token">
 					<input type="hidden" name="userid" value="{{$modelresetpass->userId}}">
 					<input type="hidden" name="passwordtype" value="{{$modelresetpass->typepassword}}">
+					<input name="submit_count" type="hidden" value="submitted" />  
 					<fieldset>
 							<div class="col-sm-12 form-group" {{$forgotpassdisabled}}>
 								<label class="control-label col-sm-4" for="pwd">Security Question</label>
@@ -104,10 +105,10 @@
 								<div class="col-sm-8"> 
 									<input type="password" 
 											class="form-control" 
-											id="pwd" 
+											id="ConfirmPassword" 
 											placeholder="Confirm New password" 
-											name="confirmpassword" required>								
-								</div>
+											name="ConfirmPassword" required>								
+								</div><div id="errMsg"></div>
 							</div>
 							<div class="progress progress-striped active">
 								<div 	id="jak_pstrength" 
@@ -123,7 +124,7 @@
 								 <button type="submit" class="login-button btn btn-primary   btn-success" id="confirm-button">
 								{{ Lang::get('Confirm') }}
 								</button>
-								 <button type="submit" class="login-button btn btn-primary   btn-success">
+								 <button type="button" class="login-button btn btn-primary   btn-success" onClick="document.location.href='/reset'">
 								{{ Lang::get('Cancel') }}
 								</button>
 							</div>

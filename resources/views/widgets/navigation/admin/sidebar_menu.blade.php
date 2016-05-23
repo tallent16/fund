@@ -4,12 +4,12 @@
 			<a href="{{ url ('admin/dashboard') }}"><i class="fa fa-dashboard fa-fw"></i>{{ Lang::get('Dashboard') }} </a> 
 		</li>
 	@endpermission				
-	@permission('view.admin.manageborrowers') 
+	@permission('listview.admin.manageborrowers') 
 		<li>
 			<a href="{{ url ('admin/manageborrowers') }}"><i class="fa  fa-reply fa-fw"></i>{{ Lang::get('Manage Borrowers') }} </a> 
 		</li>
 	@endpermission
-	@permission('view.admin.manageinvestors')
+	@permission('listview.admin.manageinvestors')
 		<li>
 			<a href="{{ url ('admin/manageinvestors') }}"><i class="fa fa-share fa-fw"></i>{{ Lang::get('Manage Investors') }} </a> 
 		</li>
@@ -37,17 +37,17 @@
 		<li>
 			<a href="{{ url ('admin/borrowersrepayment') }}"><i class="fa  fa-bank fa-fw"></i>{{ Lang::get('Banking') }} <span class="fa arrow"></span></a> 
 				<ul class="nav nav-second-level">
-					@permission('view.admin.repaymentlist')
+					@permission('listview.admin.borrowerrepayment')
 						<li>
 							<a href="{{ url ('admin/borrowersrepaylist') }}">{{ Lang::get('Repayment List') }}</a>
 						</li>
 					@endpermission
-					@permission('view.admin.investorsdeposit')			
+					@permission('listview.admin.investorsdeposit')			
 						<li>
 							<a href="{{ url ('admin/investordepositlist') }}">{{ Lang::get('Investor Deposit List') }}</a>
 						</li>
 					@endpermission
-					@permission('view.admin.investorswithdrawals')	
+					@permission('listview.admin.investorswithdrawal')	
 						<li>
 							<a href="{{ url ('admin/investorwithdrawallist') }}">{{ Lang::get('Investor Withdrawal List') }}</a>
 						</li>
@@ -55,16 +55,19 @@
 				</ul>	
 		</li>
 	@endpermission
+	@permission('view.admin.reports')
 	<li>
 		<a href="{{ url ('admin/reports') }}"><i class="fa fa-line-chart fa-fw"></i>{{ Lang::get('Reports') }} </a> 
 	</li>
-	@permission('view.admin.dashboard') 
+	@endpermission
+	@permission('view.admin.manageusers') 
 		<li>
-			<a href="{{ url ('admin/user') }}"><i class="fa fa-dashboard fa-fw"></i>{{ Lang::get('Manage Users') }} </a> 
+			<a href="{{ url ('admin/user') }}"><i class="fa fa-users fa-fw"></i>{{ Lang::get('Manage Users') }} </a> 
 		</li>
-	@endpermission	@permission('view.admin.dashboard') 
+	@endpermission
+	@permission('view.admin.manageroles') 
 		<li>
-			<a href="{{ url ('admin/roles') }}"><i class="fa fa-dashboard fa-fw"></i>{{ Lang::get('Manage Roles') }} </a> 
+			<a href="{{ url ('admin/roles') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('Manage Roles') }} </a> 
 		</li>
 	@endpermission		  
 </ul>

@@ -43,15 +43,27 @@ class ManagePasswordController extends MoneyMatchController {
 				$userId				= 	$postArray['userid'];
 				$passwordtype	 	= 	$postArray['passwordtype'];
 				$newpass			= 	$postArray['password'];
-				$confirmpass		= 	$postArray['confirmpassword'];		
+				$confirmpass		= 	$postArray['ConfirmPassword'];		
 				$secretanswer		=	$postArray['secretanswer'];		
 				$oldPassword		=	$postArray['oldpassword'];		
 				$result				=	$this->managePasswordModel->saveChangedPassword($passwordtype, $userId, $newpass, $confirmpass, $oldPassword,$secretanswer);
 				$submitted			=	true;
 			}		
-		if($submitted ==	true)	{
-			//echo "submitted";
-			return redirect('auth/login');
+		if($result ==1)	{				
+				$submitted = true;	
+				$withArry		=	array("modelresetpass"=>$this->managePasswordModel,
+									"submitted" => $submitted);
+									
+				return redirect('forgotpassword')
+							->with($withArry);			
 		}
+		else{
+				$submitted = false;	
+				$withArry		=	array("modelresetpass"=>$this->managePasswordModel,
+									"submitted" => $submitted);
+				return redirect('/auth/login')
+							->with($withArry);	
+		}
+		
 	}
 }

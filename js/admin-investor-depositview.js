@@ -14,14 +14,17 @@ $(document).ready(function(){
 			$("#save_button").on("click",function(){
 				$("#isSaveButton").val("yes");
 				$("#submitType").val("save");
+				$("#save_form_payment").attr("action",baseUrl+"/admin/investordepositview/save");
 			});
 			$("#approve_button").on("click",function(){
 				$("#isSaveButton").val("");
 				$("#submitType").val("approve");
+				$("#save_form_payment").attr("action",baseUrl+"/admin/investordepositview/approve");
 			});
 			$("#unapprove_button").on("click",function(){
 				$("#isSaveButton").val("");
 				$("#submitType").val("unapprove");
+				$("#save_form_payment").attr("action",baseUrl+"/admin/investordepositview/unapprove");
 			});
 			$("#save_form_payment").on("submit",function(e){
 				$('span.error').remove();

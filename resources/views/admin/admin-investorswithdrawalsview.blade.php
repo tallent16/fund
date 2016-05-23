@@ -209,20 +209,24 @@
 										{{ Lang::get('Save')}}
 									</button>
 									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-										<button class="btn verification-button" 
-												id="approve_button"
-												{{$viewclass}} >
-											{{ Lang::get('Approve')}}
-										</button>
+										@permission('approve.admin.investorswithdrawal')	
+											<button class="btn verification-button" 
+													id="approve_button"
+													{{$viewclass}} >
+												{{ Lang::get('Approve')}}
+											</button>
+										@endpermission
 									@endif
 								@endif
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 									@if($adminInvWithDrawListMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
-										<button class="btn verification-button" 
-												id="unapprove_button"
-												>
-											{{ Lang::get('UnApprove')}}
-										</button>
+										@permission('unapprove.admin.investorswithdrawal')	
+											<button class="btn verification-button" 
+													id="unapprove_button"
+													>
+												{{ Lang::get('UnApprove')}}
+											</button>
+										@endpermission
 									@endif
 								@endif
 							</div>

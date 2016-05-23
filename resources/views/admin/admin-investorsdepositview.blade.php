@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>var baseUrl	=	"{{url('')}}"</script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 	<script src="{{ url('js/admin-investor-depositview.js') }}" type="text/javascript"></script>	
 @endsection
@@ -167,25 +168,28 @@
 								@if( ($adminInvDepViewMod->status	==	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED) 
 									|| ($adminInvDepViewMod->processbuttontype	==	"add"))
 									<button class="btn verification-button"
-											id="save_button"
-											{{$viewclass}} >
-										{{ Lang::get('Save')}}
+											id="save_button">
+											{{ Lang::get('Save')}}
 									</button>
 									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-										<button class="btn verification-button" 
-												id="approve_button"
-												{{$viewclass}} >
-											{{ Lang::get('Approve')}}
-										</button>
+										@permission('approve.admin.investorsdeposit')	
+											<button class="btn verification-button" 
+													id="approve_button"
+													{{$viewclass}} >
+												{{ Lang::get('Approve')}}
+											</button>
+										@endpermission
 									@endif
 								@endif
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 									@if($adminInvDepViewMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
-										<button class="btn verification-button" 
-												id="unapprove_button"
-												>
-											{{ Lang::get('UnApprove')}}
-										</button>
+										@permission('unapprove.admin.investorsdeposit')
+											<button class="btn verification-button" 
+													id="unapprove_button"
+													>
+												{{ Lang::get('UnApprove')}}
+											</button>
+										@endpermission
 									@endif
 								@endif
 							</div>

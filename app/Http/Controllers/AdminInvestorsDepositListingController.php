@@ -49,31 +49,18 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 	
 	}
 	
-	public function viewDepositAction($type,$payment_id,$investor_id){
+	public function viewDepositAction($payment_id,$investor_id){
 		
 		$investorId 	= base64_decode($investor_id);
 		$investorId 	= ($investorId=="")?0:$investorId;
 		
-		$processtype 	= $type;		
+		$processtype 	= "view";		
 		
 		$paymentId 		= base64_decode($payment_id);
 		$paymentId 		= ($paymentId=="")?0:$paymentId;
 		
+		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,$paymentId);
 		$submitted		=	false;
-		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			if($postArray['submitType']	==	"approve" || $postArray['submitType']	==	"save"){
-				$this->adminInvestorsDeposit->saveInvestorDeposits($postArray);
-			}else{
-				$this->adminInvestorsDeposit->unApproveDeposit($postArray['trans_id']);
-			}
-			$submitted		=	true;
-			if($processtype	==	"add") {
-				return redirect()->to('admin/investordepositlist');
-			}
-		}
-		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,($paymentId=="")?0:$paymentId);
-	
 		$withArry	=	array(	"adminInvDepViewMod" => $this->adminInvestorsDeposit, 								
 								"classname"=>"fa fa-cc fa-fw",
 								"processtype"=>$processtype,
@@ -86,27 +73,105 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		
 	}
 	
-	public function InvestorDepositListBulkAction(){
+	public function addDepositAction($payment_id,$investor_id){
 		
-		$processtype 	=	Request::get('processType');
-		switch($processtype) {
-			case	'approve':
-				$this->bulkApproveDepositAction();
-				break;
-			case	'unapprove':
-				$this->bulkUnApproveDepositAction();
-				break;
-			case	'delete':
-				$this->bulkDeleteDepositAction();
-				break;
-		}		
-		return redirect()->to('admin/investordepositlist');
+		$investorId 	= base64_decode($investor_id);
+		$investorId 	= ($investorId=="")?0:$investorId;
+		
+		$processtype 	= "add";		
+		
+		$paymentId 		= base64_decode($payment_id);
+		$paymentId 		= ($paymentId=="")?0:$paymentId;
+		
+		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,$paymentId);
+		$submitted		=	false;
+		$withArry	=	array(	"adminInvDepViewMod" => $this->adminInvestorsDeposit, 								
+								"classname"=>"fa fa-cc fa-fw",
+								"processtype"=>$processtype,
+								"submitted"=>$submitted
+								
+								); 
+								
+		return view('admin.admin-investorsdepositview')
+				->with($withArry); 
+		
+	}
+	public function editDepositAction($payment_id,$investor_id){
+		
+		$investorId 	= base64_decode($investor_id);
+		$investorId 	= ($investorId=="")?0:$investorId;
+		
+		$processtype 	= "edit";		
+		
+		$paymentId 		= base64_decode($payment_id);
+		$paymentId 		= ($paymentId=="")?0:$paymentId;
+		
+		$this->adminInvestorsDeposit->getInvestorsDepositInfo($processtype,$investorId,$paymentId);
+		$submitted		=	false;
+		$withArry	=	array(	"adminInvDepViewMod" => $this->adminInvestorsDeposit, 								
+								"classname"=>"fa fa-cc fa-fw",
+								"processtype"=>$processtype,
+								"submitted"=>$submitted
+								
+								); 
+								
+		return view('admin.admin-investorsdepositview')
+				->with($withArry); 
+		
+	}
+	
+	public function saveDepositAction(){
+		
+		$postArray		=	Request::all();
+		$this->adminInvestorsDeposit->saveInvestorDeposits($postArray);
+		$processType	=	$postArray['tranType'];
+		$payment_id		=	$postArray['payment_id'];
+		$investor_id	=	$postArray['investor_id'];
+		if($processType	==	"add") {
+			return redirect()->to('admin/investordepositlist');
+		}
+		return redirect()->route('admin.investordepositedit', array(	'payment_id'=>base64_encode($payment_id),
+																		'investor_id'=>base64_encode($investor_id)
+																	)
+							)->with('success','Deposit Saved successfully');
+	}
+	
+	public function approveDepositAction() {
+		
+		$postArray		=	Request::all();
+		$this->adminInvestorsDeposit->saveInvestorDeposits($postArray);
+		$processType	=	$postArray['tranType'];
+		$payment_id		=	$postArray['payment_id'];
+		$investor_id	=	$postArray['investor_id'];
+		if($processType	==	"add") {
+			return redirect()->to('admin/investordepositlist');
+		}
+		return redirect()->route('admin.investordepositedit', array(	'payment_id'=>base64_encode($payment_id),
+																		'investor_id'=>base64_encode($investor_id)
+																	)
+							)->with('success','Deposit Approved successfully');
+	}
+	
+	public function unapproveDepositAction() {
+		
+		$postArray		=	Request::all();
+		$payment_id		=	$postArray['payment_id'];
+		$investor_id	=	$postArray['investor_id'];
+		
+		$this->adminInvestorsDeposit->unApproveDeposit($postArray['trans_id']);
+		return redirect()->route('admin.investordepositedit', array(	
+																		'payment_id'=>base64_encode($payment_id),
+																		'investor_id'=>base64_encode($investor_id)
+																	)
+							)->with('success','Deposit UnApproved successfully');
 	}
 	
 	public function bulkApproveDepositAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorsDeposit->bulkApproveDeposit($postArray);
+		return redirect()->to('admin/investordepositlist')
+					->with('success','Bulk Deposit Approved successfully');
 	}
 		
 	
@@ -114,11 +179,15 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorsDeposit->bulkUnApproveDeposit($postArray);
+		return redirect()->to('admin/investordepositlist')
+					->with('success','Bulk Deposit UnApproved successfully');
 	}
 		
 	public function bulkDeleteDepositAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorsDeposit->bulkDeleteDeposit($postArray);
+		return redirect()->to('admin/investordepositlist')
+					->with('success','Bulk Deposit Deleted successfully');
 	}
 }

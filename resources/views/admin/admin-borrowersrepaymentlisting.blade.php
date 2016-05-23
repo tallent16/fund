@@ -20,7 +20,7 @@
 	
 	<div class="panel panel-primary panel-container borrower-admin">						
 		<form 	method="post" 
-				action="{{url('admin/bulkapprove/borrowers/repayment')}}"
+				action="{{url('admin/borrowersrepaylist/bulkapprove')}}"
 				id="form-borrower-repayment">
 			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 			
@@ -72,7 +72,7 @@
 								
 								@if($loanRow->repayment_status	==	"Not Approved")
 									
-									@var	$apprUrl	=	url('admin/approve/borrower/repayment/')
+									@var	$apprUrl	=	url('admin/borrowersrepaylist/approve')
 									@var	$apprUrl	=	$apprUrl."/".$loanRow->repayment_schedule_id
 									@var	$class		=	""
 								@else

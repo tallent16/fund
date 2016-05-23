@@ -17,6 +17,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("approve");
+			$("#form-manage-borrower").attr("action",baseUrl+"/admin/manageborrowers/bulkapprove");
 			$("#form-manage-borrower").submit();
 		}
     });
@@ -28,6 +29,7 @@ $(document).ready(function (){
 		var	reject_applicableArr	=	reject_applicable.split(",");
 	  	var	errMessage		=	"";
 		if ($(".select_borrower_id:checked").length > 0){
+			
 			$(".select_borrower_id:checked").each(function(key) {
 				var status		=	$(this).attr("data-status");
 				var email		=	$(this).attr("data-email");
@@ -41,6 +43,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("reject");
+			$("#form-manage-borrower").attr("action",baseUrl+"/admin/manageborrowers/bulkreject");
 			$("#form-manage-borrower").submit();
 		}
     });
@@ -60,6 +63,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("delete");
+			$("#form-manage-borrower").attr("action",baseUrl+"/admin/manageborrowers/bulkdelete");
 			$("#form-manage-borrower").submit();
 		}
     });

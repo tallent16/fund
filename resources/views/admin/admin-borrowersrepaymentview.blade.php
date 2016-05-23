@@ -253,23 +253,15 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="form-group">	
-									@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 										<button class="btn verification-button"
-												id="save_button_borrower">
-											{{ Lang::get('Save')}}
+												id="save_button">
+												{{ Lang::get('Save')}}
 										</button>
 									@endif
 									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-										@permission('save.admin.repaymentlist')		
-											<button class="btn verification-button"
-													id="save_button_admin">
-												{{ Lang::get('Save')}}
-											</button>
-										@endpermission
-									@endif
-									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 										@if( $adminBorRepayViewMod->repaymentStatus	==	BORROWER_REPAYMENT_STATUS_UNVERIFIED )
-											@permission('approve.admin.repaymentlist')	
+											@permission('approve.admin.borrowerrepayment')	
 												<button class="btn verification-button"
 														id="submit_button">
 													{{ Lang::get('Approve')}}
@@ -286,8 +278,8 @@
 						@if( $adminBorRepayViewMod->repaymentStatus	==	BORROWER_REPAYMENT_STATUS_PAID )
 							<div class="row">
 								<div class="col-lg-12">
-									<div class="form-group">	
-										@permission('approve.admin.repaymentlist')
+									<div class="form-group">
+										@permission('unapprove.admin.borrowerrepayment')
 											<button class="btn verification-button"
 													id="unapprove_button">
 													{{ Lang::get('UnApprove')}}

@@ -2,6 +2,7 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+	<script>var baseUrl	=	"{{url('')}}"</script>
 	<script src="{{ url("js/admin-investor-withdrawallisting.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading',Lang::get('Investor Withdrawals') )
@@ -49,23 +50,33 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="form-group">	
-				<button class="btn verification-button"	
-						id="bulk_approve_button">
-					{{ Lang::get('Approve Selected')}}
-				</button>
-				<button class="btn verification-button"
-						id="bulk_unapprove_button">
-					{{ Lang::get('UnApprove Selected')}}
-				</button>
-				<button class="btn verification-button"
-						id="new_button"
-						data-url="{{url('admin/investorwithdrawalview/add/0/0')}}">
-					{{ Lang::get('New Withdrawal')}}
-				</button>
-				<button class="btn verification-button"
-						id="bulk_delete_button">
-					{{ Lang::get('Delete Selected')}}
-				</button>
+				@permission('approve.admin.investorswithdrawal')
+					<button class="btn verification-button"
+							id="bulk_approve_button">
+						{{ Lang::get('Approve Selected')}}
+					</button>
+				@endpermission
+				@permission('unapprove.admin.investorswithdrawal')
+					<button class="btn verification-button"
+							id="bulk_unapprove_button">
+						{{ Lang::get('UnApprove Selected')}}
+					</button>
+				@endpermission
+				@var	$Url	=	url('admin/investorswithdrawalview/')
+				@var	$addUrl	=	$Url."/add/0/0/"
+				@permission('add.admin.investorswithdrawal')
+					<button class="btn verification-button"
+							data-url="{{$addUrl}}"
+							id="new_button">
+						{{ Lang::get('New Withdrawal')}}
+					</button>
+				@endpermission
+				@permission('delete.admin.investorswithdrawal')
+					<button class="btn verification-button"
+							id="bulk_delete_button">
+							{{ Lang::get('Delete Selected')}}
+					</button>
+				@endpermission
 			</div>
 		</div>
 	</div>		

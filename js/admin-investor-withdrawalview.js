@@ -30,14 +30,17 @@ $(document).ready(function(){
 		$("#save_button").on("click",function(){
 				$("#isSaveButton").val("yes");
 				$("#submitType").val("save");
+				$("#save_form_payment").attr("action","/admin/investorwithdrawalview/save");
 			});
 			$("#approve_button").on("click",function(){
 				$("#isSaveButton").val("");
 				$("#submitType").val("approve");
+				$("#save_form_payment").attr("action","/admin/investorwithdrawalview/approve");
 			});
 			$("#unapprove_button").on("click",function(){
 				$("#isSaveButton").val("");
 				$("#submitType").val("unapprove");
+				$("#save_form_payment").attr("action","/admin/investorwithdrawalview/unapprove");
 			});
 			$("#save_form_payment").on("submit",function(e){
 				$('span.error').remove();

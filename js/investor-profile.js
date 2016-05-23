@@ -59,6 +59,18 @@ $(document).ready(function (){
 	$("#save_button").click(function(){
       $("#isSaveButton").val("yes");
     });
+    
+    $("#approve_profile_button").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/approve");
+    });
+    
+	$("#returnback_button").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/return_investor");
+    });
+	
+	$("#save_comment_button").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/save_comments");
+    });
 });
 function checkDisplayName(value) {
 	if((value!='')) {

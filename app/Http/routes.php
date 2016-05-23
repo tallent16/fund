@@ -11,16 +11,12 @@
 |
 */
 
-Route::get('/', function()
-{
-	
-	//~ $user_id	=	Auth::user()->user_id;
-	//~ $user		=	App\models\User::find($user_id);
-	//~ $role		=	Bican\Roles\Models\Role::find(6);
-	//~ $user->attachRole($role);
-	
-	return View::make('homepage');  
-});
+Route::get('/','HomeController@indexAction');
+
+//~ Route::get('/', function()
+//~ {
+	//~ return View::make('homepage');  
+//~ });
 
 // global contants for all requests
 Route::group(['prefix' => ''], function() {
@@ -187,47 +183,113 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
  
 	Route::get('admin/manageborrowers', [	'as' 			=> 	'admin.manageborrowers', 
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'view.admin.manageborrowers',
+											'permission'	=>	'listview.admin.manageborrowers',
 											'uses' 			=>	'AdminManageBorrowersController@indexAction'
 										]
 				);
 	
-    Route::get('admin/borrower/updateprofile/{status}/{bor_id}',
-										[	'as' 			=> 	'admin.borrower.updateprofile', 
+    Route::get('admin/manageborrowers/approve/{bor_id}',
+										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'edit.admin.manageborrowers',
-											'redirect_back'	=>	'admin/manageborrowers',
-											'action_type'	=>	'update borrower profile status',
-											'uses' 			=>	'AdminManageBorrowersController@updateProfileStatusAction'
+											'permission'	=>	'approve.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
+											'action_type'	=>	'approve borrower',
+											'uses' 			=>	'AdminManageBorrowersController@approveBorrowerAction'
 										]
 				);   
-    Route::post('admin/borrower/updateprofile',
-										[	'as' 			=> 	'admin.borrower.bulkupdateprofile', 
+				
+    Route::get('admin/manageborrowers/reject/{bor_id}',
+										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'edit.admin.manageborrowers',
-											'redirect_back'	=>	'admin/manageborrowers',
-											'action_type'	=>	'update borrower profile status in bulk',
-											'uses' 			=>	'AdminManageBorrowersController@updateBulkProfileStatusAction'
+											'permission'	=>	'reject.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
+											'action_type'	=>	'reject borrower',
+											'uses' 			=>	'AdminManageBorrowersController@rejectBorrowerAction'
+										]
+				);   
+				
+    Route::get('admin/manageborrowers/delete/{bor_id}',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'delete.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
+											'action_type'	=>	'delete borrower',
+											'uses' 			=>	'AdminManageBorrowersController@deleteBorrowerAction'
+										]
+				);   
+    Route::post('admin/manageborrowers/bulkapprove',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'approve.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
+											'action_type'	=>	'approve borrowers in bulk',
+											'uses' 			=>	'AdminManageBorrowersController@approveBorrowerBulkAction'
+										]
+				);
+    Route::post('admin/manageborrowers/bulkreject',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'reject.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
+											'action_type'	=>	'reject borrowers in bulk',
+											'uses' 			=>	'AdminManageBorrowersController@rejectBorrowerBulkAction'
+										]
+				);
+    Route::post('admin/manageborrowers/bulkdelete',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'delete.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
+											'action_type'	=>	'delete borrowers in bulk',
+											'uses' 			=>	'AdminManageBorrowersController@deleteBorrowerBulkAction'
 										]
 				);
 										
     Route::get('admin/borrower/profile/{bor_id}',
-										[	'as' 			=> 	'admin.borrower.updateprofileview', 
+										[	
+											'as' 			=> 	'admin.borrowerprofile',
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'view.admin.borrowerprofile',
-											'redirect_back'	=>	'admin/manageborrowers',
-											'action_type'	=>	'view borrower profile status',
+											'permission'	=>	'detailview.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
+											'action_type'	=>	'view borrower profile',
 											'uses' 			=>	'AdminManageBorrowersController@viewProfileAction'
 										]
 			);
 		
-    Route::post('admin/borrower/profile/{bor_id}',
-										[	'as' 			=> 	'admin.borrower.updateprofileedit', 
+    Route::post('admin/borrower/profile/save_comments',
+										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'view.admin.borrowerprofile',
-											'redirect_back'	=>	'admin/manageborrowers',
-											'action_type'	=>	'update borrower profile status',
-											'uses' 			=>	'AdminManageBorrowersController@saveProfileAction'
+											'permission'	=>	'admin.savecomment',
+											'redirect_back'	=>	'admin.borrowerprofile',
+											'action_type'	=>	'save comments borrower profile',
+											'uses' 			=>	'AdminManageBorrowersController@saveCommentProfileAction'
+										]
+			);
+    Route::post('admin/borrower/profile/return_borrower',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'returnborrower.admin.manageborrowers',
+											'redirect_back'	=>	'admin.borrowerprofile',
+											'action_type'	=>	'return to borrower borrower profile',
+											'uses' 			=>	'AdminManageBorrowersController@returnBorrowerProfileAction'
+										]
+			);
+    Route::post('admin/borrower/profile/approve',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'approve.admin.manageborrowers',
+											'redirect_back'	=>	'admin.borrowerprofile',
+											'action_type'	=>	'approve borrower',
+											'uses' 			=>	'AdminManageBorrowersController@approveBorrowerProfileAction'
+										]
+			);
+    Route::post('admin/borrower/profile/update_grade',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'updategrade.admin.borrowerprofile',
+											'redirect_back'	=>	'admin.borrowerprofile',
+											'action_type'	=>	'update grade borrower profile',
+											'uses' 			=>	'AdminManageBorrowersController@updateGradeProfileAction'
 										]
 			);
 		
@@ -237,49 +299,106 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 	
     Route::get('admin/manageinvestors', [	'as' 			=> 	'admin.manageinvestors', 
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'view.admin.manageinvestors',
+											'permission'	=>	'listview.admin.manageinvestors',
 											'uses' 			=>	'AdminManageInvestorsController@indexAction'
 										]
 			);
-	Route::get('admin/investor/updateprofile/{status}/{inv_id}', 
-										[	'as' 			=> 	'admin.investor.updateprofile', 
+	Route::get('admin/manageinvestors/approve/{inv_id}',
+										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'edit.admin.manageinvestors',
+											'permission'	=>	'approve.admin.manageinvestors',
 											'redirect_back'	=>	'admin.manageinvestors',
-											'action_type'	=>	'update Investor profile status',
-											'uses' 			=>	'AdminManageInvestorsController@updateProfileStatusAction'
+											'action_type'	=>	'approve investor',
+											'uses' 			=>	'AdminManageInvestorsController@approveInvestorAction'
 										]
-			);   
-
-    Route::post('admin/investor/updateprofile', 
-										[	'as' 			=> 	'admin.investor.updateprofile', 
+				);   
+				
+    Route::get('admin/manageinvestors/reject/{inv_id}',
+										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'edit.admin.manageinvestors',
+											'permission'	=>	'reject.admin.manageinvestors',
 											'redirect_back'	=>	'admin.manageinvestors',
-											'action_type'	=>	'update Investor profile status in bulk',
-											'uses' 			=>	'AdminManageInvestorsController@updateBulkProfileStatusAction'
+											'action_type'	=>	'reject investor',
+											'uses' 			=>	'AdminManageInvestorsController@rejectInvestorAction'
 										]
-			); 
-	 Route::get('admin/investor/profile/{inv_id}',
-										[	'as' 			=> 	'admin.investor.updateprofileview', 
+				);   
+				
+    Route::get('admin/manageinvestors/delete/{inv_id}',
+										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'view.admin.investorprofile',
+											'permission'	=>	'delete.admin.manageinvestors',
 											'redirect_back'	=>	'admin.manageinvestors',
-											'action_type'	=>	'view investor profile status',
+											'action_type'	=>	'delete investor',
+											'uses' 			=>	'AdminManageInvestorsController@deleteInvestorAction'
+										]
+				);   
+    Route::post('admin/manageinvestors/bulkapprove',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'approve.admin.manageinvestors',
+											'redirect_back'	=>	'admin.manageinvestors',
+											'action_type'	=>	'approve investors in bulk',
+											'uses' 			=>	'AdminManageInvestorsController@approveInvestorBulkAction'
+										]
+				);
+    Route::post('admin/manageinvestors/bulkreject',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'reject.admin.manageinvestors',
+											'redirect_back'	=>	'admin.manageinvestors',
+											'action_type'	=>	'reject investors in bulk',
+											'uses' 			=>	'AdminManageInvestorsController@rejectInvestorBulkAction'
+										]
+				);
+    Route::post('admin/manageinvestors/bulkdelete',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'delete.admin.manageinvestors',
+											'redirect_back'	=>	'admin.manageinvestors',
+											'action_type'	=>	'delete investors in bulk',
+											'uses' 			=>	'AdminManageInvestorsController@deleteInvestorBulkAction'
+										]
+				);
+										
+    Route::get('admin/investor/profile/{bor_id}',
+										[	
+											'as' 			=> 	'admin.investorprofile',
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'detailview.admin.manageinvestors',
+											'redirect_back'	=>	'admin.manageinvestors',
+											'action_type'	=>	'view investor profile',
 											'uses' 			=>	'AdminManageInvestorsController@viewProfileAction'
 										]
 			);
 		
-    Route::post('admin/investor/profile/{inv_id}',
-										[	'as' 			=> 	'admin.investor.updateprofileedit', 
+    Route::post('admin/investor/profile/save_comments',
+										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'view.admin.investorprofile',
-											'redirect_back'	=>	'admin.manageinvestors',
-											'action_type'	=>	'update investor profile status',
-											'uses' 			=>	'AdminManageInvestorsController@saveProfileAction'
+											'permission'	=>	'admin.savecomment',
+											'redirect_back'	=>	'admin.investorprofile',
+											'action_type'	=>	'save comments investor profile',
+											'uses' 			=>	'AdminManageInvestorsController@saveCommentProfileAction'
 										]
 			);
-		
+    Route::post('admin/investor/profile/return_investor',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'returninvestor.admin.manageinvestors',
+											'redirect_back'	=>	'admin.investorprofile',
+											'action_type'	=>	'return to investor investor profile',
+											'uses' 			=>	'AdminManageInvestorsController@returnInvestorProfileAction'
+										]
+			);
+    Route::post('admin/investor/profile/approve',
+										[	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'approve.admin.manageinvestors',
+											'redirect_back'	=>	'admin.investorprofile',
+											'action_type'	=>	'approve investor',
+											'uses' 			=>	'AdminManageInvestorsController@approveInvestorProfileAction'
+										]
+			);
+	
     //ajax call
     Route::post('admin/investor/ajax/availableBalance', 'AdminManageInvestorsController@ajaxAvailableBalanceByIDAction');	
     
@@ -329,7 +448,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     
 	 Route::get('admin/loanapproval/{loan_id}',
 									[	
-										'as' 			=> 	'admin.loanapprovalview', 
+										'as' 			=> 	'admin.loanapproval', 
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'view.admin.loanapproval',
 										'redirect_back'	=>	'admin.loanlisting',
@@ -338,13 +457,40 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 									]
 			);
 		
-    Route::post('admin/loanapproval/{loan_id}',
+    Route::post('admin/loanapproval/save_comments',
 									[	
 										'middleware' 	=> 	'permission',
-										'permission'	=>	'edit.admin.loanapproval',
+										'permission'	=>	'admin.savecomment',
 										'redirect_back'	=>	'admin.loanlisting',
-										'action_type'	=>	'update loan approval status',
-										'uses' 			=>	'AdminLoanApprovalController@saveLoanApprovalAction'
+										'action_type'	=>	'save comments loan approval',
+										'uses' 			=>	'AdminLoanApprovalController@saveCommentLoanApprovalAction'
+									]
+			);
+    Route::post('admin/loanapproval/return_borrower',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'returnborrower.admin.loanapproval',
+										'redirect_back'	=>	'admin.loanlisting',
+										'action_type'	=>	'return borrower loan approval',
+										'uses' 			=>	'AdminLoanApprovalController@returnBorrowerLoanApprovalAction'
+									]
+			);
+    Route::post('admin/loanapproval/approve',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'approve.admin.loanapproval',
+										'redirect_back'	=>	'admin.loanlisting',
+										'action_type'	=>	'approve loan approval',
+										'uses' 			=>	'AdminLoanApprovalController@approveLoanApprovalAction'
+									]
+			);
+    Route::post('admin/loanapproval/cancel',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'cancel.admin.loanapproval',
+										'redirect_back'	=>	'admin.loanlisting',
+										'action_type'	=>	'cancel loan approval',
+										'uses' 			=>	'AdminLoanApprovalController@canelLoanApprovalAction'
 									]
 			);
 	
@@ -384,75 +530,62 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 									[	
 										'as' 			=> 	'admin.borrowersrepaylist', 
 										'middleware' 	=> 	'permission',
-										'permission'	=>	'view.admin.repaymentlist',
+										'permission'	=>	'listview.admin.borrowerrepayment',
 										'uses' 			=>	'AdminBorrowersRepaymentListingController@indexAction'
 									]
 			);
 
-    Route::match(['get', 'post'],'admin/borrowersrepayview/{type}/{installment_id}/{loan_id}', 'AdminBorrowersRepaymentViewController@indexAction');
-    
-     Route::get('admin/borrowersrepayview/{type}/{installment_id}/{loan_id}', 
+    		
+	Route::get('admin/borrowersrepaylist/approve/{repay_schde_id}', 
 									[	
-										'as'			=>	'admin.borrowersrepayview',
 										'middleware' 	=> 	'permission',
-										'permission'	=>	'view.admin.repaymentlist',
+										'permission'	=>	'approve.admin.borrowerrepayment',
 										'redirect_back'	=>	'admin.borrowersrepaylist',
-										'action_type'	=>	'View Repayment',
-										'uses' 			=>	'AdminBorrowersRepaymentViewController@indexAction'
-									]
-			);
-		
-    Route::post('admin/borrowersrepay/saveadmin',
-									[	
-										'middleware' 	=> 	'permission',
-										'permission'	=>	'save.admin.repaymentlist',
-										'redirect_back'	=>	'admin.borrowersrepayview',
-										'action_type'	=>	'save Repayment',
-										'uses' 			=>	'AdminBorrowersRepaymentViewController@saveAction'
-									]
-			);
-    Route::post('admin/borrowersrepay/save',
-									[	'uses' 			=>	'AdminBorrowersRepaymentViewController@saveAction'
-									]
-			);
-    Route::post('admin/borrowersrepay/approve',
-									[	
-										'middleware' 	=> 	'permission',
-										'permission'	=>	'approve.admin.repaymentlist',
-										'redirect_back'	=>	'admin.borrowersrepayview',
-										'action_type'	=>	'Approve Repayment',
-										'uses' 			=>	'AdminBorrowersRepaymentViewController@approveAction'
-									]
-			);
-    Route::post('admin/borrowersrepay/unapprove',
-									[	
-										'middleware' 	=> 	'permission',
-										'permission'	=>	'approve.admin.repaymentlist',
-										'redirect_back'	=>	'admin.borrowersrepayview',
-										'action_type'	=>	'UnApprove Repayment',
-										'uses' 			=>	'AdminBorrowersRepaymentViewController@unapproveAction'
-									]
-			);
-			
-	Route::get('admin/approve/borrower/repayment/{repay_schde_id}', 
-									[	
-										'middleware' 	=> 	'permission',
-										'permission'	=>	'approve.admin.repaymentlist',
-										'redirect_back'	=>	'admin.borrowersrepayview',
 										'action_type'	=>	'Approve Repayment',
 										'uses' 			=>	'AdminBorrowersRepaymentListingController@approveRepaymentAction'
 									]
 			);
 	
-	Route::post('admin/bulkapprove/borrowers/repayment', 
+	Route::post('admin/borrowersrepaylist/bulkapprove', 
 								[	
 									'middleware' 	=> 	'permission',
-									'permission'	=>	'approve.admin.repaymentlist',
-									'redirect_back'	=>	'admin.borrowersrepayview',
+									'permission'	=>	'approve.admin.borrowerrepayment',
+									'redirect_back'	=>	'admin.borrowersrepaylist',
 									'action_type'	=>	'Approve Repayment for bulk action',
 									'uses' 			=>	'AdminBorrowersRepaymentListingController@bulkApproveRepaymentAction'
 								]
 	
+			);
+			
+     Route::get('admin/borrowersrepayview/{type}/{installment_id}/{loan_id}', 
+									[	
+										'as'			=>	'admin.borrowersrepayview',
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'detailview.admin.borrowerrepayment',
+										'redirect_back'	=>	'admin.borrowersrepaylist',
+										'action_type'	=>	'View Repayment',
+										'uses' 			=>	'AdminBorrowersRepaymentViewController@indexAction'
+									]
+			);
+	Route::post('admin/borrowersrepayview/save','AdminBorrowersRepaymentViewController@saveAction');
+	
+    Route::post('admin/borrowersrepayview/approve',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'approve.admin.borrowerrepayment',
+										'redirect_back'	=>	'admin.borrowersrepayview',
+										'action_type'	=>	'Approve Repayment',
+										'uses' 			=>	'AdminBorrowersRepaymentViewController@approveAction'
+									]
+			);
+    Route::post('admin/borrowersrepayview/unapprove',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'unapprove.admin.borrowerrepayment',
+										'redirect_back'	=>	'admin.borrowersrepayview',
+										'action_type'	=>	'UnApprove Repayment',
+										'uses' 			=>	'AdminBorrowersRepaymentViewController@unapproveAction'
+									]
 			);
 	
 	//ajax call action
@@ -460,76 +593,278 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     
     //**************************** Manage Banking Transactions for Borrowers Ends********************************************
     
-    // Manage Banking Transactions for Investors
+    //**************************** Manage Banking Transactions for Investors  Starts*****************************************
+  
+	//-----------------------Investor Deposit Listing page actions Starts------------------------------------
     Route::get('admin/investordepositlist',
 								[	
 										'as' 			=> 	'admin.investordepositlist', 
 										'middleware' 	=> 	'permission',
-										'permission'	=>	'view.admin.investorsdeposit',
+										'permission'	=>	'listview.admin.investorsdeposit',
 										'uses' 			=>	'AdminInvestorsDepositListingController@indexAction'
 								]
 			);
     
-    Route::post('admin/investordepositlist/bulkaction/approve', 
+    Route::post('admin/investordepositlist/bulkapprove', 
 								[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'approve.admin.investorsdeposit',
 										'redirect_back'	=>	'admin.investordepositlist',
-										'action_type'	=>	'approve investor deposit',
+										'action_type'	=>	'approve investor deposit bulk in action',
 										'uses' 			=>	'AdminInvestorsDepositListingController@bulkApproveDepositAction'
 								]
 				);
-    Route::post('admin/investordepositlist/bulkaction/unapprove', 
+    Route::post('admin/investordepositlist/bulkunapprove', 
 								[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'unapprove.admin.investorsdeposit',
 										'redirect_back'	=>	'admin.investordepositlist',
-										'action_type'	=>	'unpprove investor deposit',
+										'action_type'	=>	'unpprove investor deposit bulk in action',
 										'uses' 			=>	'AdminInvestorsDepositListingController@bulkUnApproveDepositAction'
 								]
 				);
-    Route::post('admin/investordepositlist/bulkaction/delete', 
+    Route::post('admin/investordepositlist/bulkdelete', 
 								[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'delete.admin.investorsdeposit',
 										'redirect_back'	=>	'admin.investordepositlist',
-										'action_type'	=>	'delete investor deposit',
+										'action_type'	=>	'delete investor deposit bulk in action',
 										'uses' 			=>	'AdminInvestorsDepositListingController@bulkDeleteDeposit'
 								]
 				);
+  //------------------------Investor Deposit Listing page actions Ends------------------------------------
   
-   Route::match(['get', 'post'],'admin/investordepositview/{type}/{payment_id}/{investor_id}', 'AdminInvestorsDepositListingController@viewDepositAction');
+  //------------------------Investor Deposit View page actions Starts-------------------------------------
+  
    
-   
-    Route::get('admin/investorwithdrawallist',
-				[ 	'middleware' => 'permission',
-					'permission'=>'view.admin.investorswithdrawals',
-					'uses'=>'AdminInvestorsWithdrawalsListingController@indexAction'
-				]
+   Route::get('admin/investordepositview/add/{payment_id}/{investor_id}', 
+									[	
+										
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'add.admin.investorsdeposit',
+										'redirect_back'	=>	'admin.borrowersrepaylist',
+										'action_type'	=>	'Add Investor Deposit',
+										'uses' 			=>	'AdminInvestorsDepositListingController@addDepositAction'
+									]
 			);
-    Route::post('admin/investorwithdrawallist/bulkaction', 'AdminInvestorsWithdrawalsListingController@InvestorWithDrawListBulkAction');
+   Route::get('admin/investordepositview/edit/{payment_id}/{investor_id}', 
+									[	
+										'as'			=>	'admin.investordepositedit',
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'edit.admin.investorsdeposit',
+										'redirect_back'	=>	'admin.borrowersrepaylist',
+										'action_type'	=>	'Edit Investor Deposit',
+										'uses' 			=>	'AdminInvestorsDepositListingController@editDepositAction'
+									]
+			);
+   Route::get('admin/investordepositview/view/{payment_id}/{investor_id}', 
+									[	
+										
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'detailview.admin.investorsdeposit',
+										'redirect_back'	=>	'admin.borrowersrepaylist',
+										'action_type'	=>	'View Investor Deposit',
+										'uses' 			=>	'AdminInvestorsDepositListingController@viewDepositAction'
+									]
+			);
+		
+    Route::post('admin/investordepositview/save',	'AdminInvestorsDepositListingController@saveDepositAction');
     
-    Route::match(['get', 'post'],'admin/investorwithdrawalview/{type}/{payment_id}/{investor_id}','AdminInvestorsWithdrawalsListingController@viewWithDrawAction');
+    Route::post('admin/investordepositview/approve',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'approve.admin.investorsdeposit',
+										'redirect_back'	=>	'admin.investordepositview',
+										'action_type'	=>	'approve deposit',
+										'uses' 			=>	'AdminInvestorsDepositListingController@approveDepositAction'
+									]
+			);
+    Route::post('admin/investordepositview/unapprove',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'unapprove.admin.investorsdeposit',
+										'redirect_back'	=>	'admin.investordepositview',
+										'action_type'	=>	'unapprove deposit',
+										'uses' 			=>	'AdminInvestorsDepositListingController@unapproveDepositAction'
+									]
+			);
+    //------------------------Investor Deposit View page actions Ends-------------------------------------
+   
+    //-----------------------Investor Withdrawals Listing page actions Starts------------------------------------
+    Route::get('admin/investorwithdrawallist',
+								[	
+										'as' 			=> 	'admin.investorwithdrawallist', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'listview.admin.investorswithdrawal',
+										'uses' 			=>	'AdminInvestorsWithdrawalsListingController@indexAction'
+								]
+			);
     
-    // Admin Users Creating, Editing,Roles assigning
-    
-		Route::get('admin/user','UserController@index');
-		Route::get('admin/ajax/user_master', 'UserController@view_user');
-		Route::post('admin/ajax/user_master', 'UserController@view_user');
-		Route::get('admin/roles', 'AdminRolesController@indexAction');
-		Route::get('admin/role-users/{role_id}', 'AdminRolesController@roleUsersAction');
-		Route::match(['get', 'post'],
-								'admin/role-permission/{trantype}/{role_id}', 
-								['as' => 'admin.role-permission', 'uses' =>'AdminRolesController@rolePermissionsAction']);
-		Route::post('admin/ajax/CheckRoleNameavailability', 'AdminRolesController@CheckRoleNameavailability');
-	 // Admin Users Creating, Editing,Roles assigning
-	 
-	 Route::get('admin/assign-roles/{user_id}',
-						[	'as'	=>	'admin.assign-roles',
-							'uses'	=>	'AdminAssignRolesController@indexAction'
+    Route::post('admin/investorwithdrawallist/bulkapprove', 
+							[	
+									'middleware' 	=> 	'permission',
+									'permission'	=>	'approve.admin.investorswithdrawal',
+									'redirect_back'	=>	'admin.investorwithdrawallist',
+									'action_type'	=>	'approve investor withdrawal in bulk action',
+									'uses' 			=>	'AdminInvestorsWithdrawalsListingController@bulkApproveWithdrawalAction'
+							]
+				);
+    Route::post('admin/investorwithdrawallist/bulkunapprove', 
+						[	
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'unapprove.admin.investorswithdrawal',
+								'redirect_back'	=>	'admin.investorwithdrawallist',
+								'action_type'	=>	'unpprove investor withdrawal in bulk action',
+								'uses' 			=>	'AdminInvestorsWithdrawalsListingController@bulkUnApproveWithdrawalAction'
 						]
 				);
+    Route::post('admin/investorwithdrawallist/bulkdelete', 
+							[	
+									'middleware' 	=> 	'permission',
+									'permission'	=>	'delete.admin.investorswithdrawal',
+									'redirect_back'	=>	'admin.investorwithdrawallist',
+									'action_type'	=>	'delete investor withdrawal in bulk action',
+									'uses' 			=>	'AdminInvestorsWithdrawalsListingController@bulkDeleteWithdrawalAction'
+							]
+				);
+  //------------------------Investor Withdrawals Listing page actions Ends------------------------------------
+  
+  //------------------------Investor Withdrawals View page actions Starts-------------------------------------
+  
+   Route::get('admin/investorwithdrawalview/add/{payment_id}/{investor_id}', 
+									[	
+										
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'add.admin.investorswithdrawal',
+										'redirect_back'	=>	'admin.investorwithdrawallist',
+										'action_type'	=>	'Add withdrawal',
+										'uses' 			=>	'AdminInvestorsWithdrawalsListingController@addWithdrawalAction'
+									]
+			);
+			
+   Route::get('admin/investorwithdrawalview/edit/{payment_id}/{investor_id}', 
+									[	
+										'as'			=>	'admin.investorwithdrawaledit',
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'edit.admin.investorswithdrawal',
+										'redirect_back'	=>	'admin.investorwithdrawallist',
+										'action_type'	=>	'Edit withdrawal',
+										'uses' 			=>	'AdminInvestorsWithdrawalsListingController@editWithdrawalAction'
+									]
+			);
+   Route::get('admin/investorwithdrawalview/view/{payment_id}/{investor_id}', 
+									[	
+										
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'detailview.admin.investorswithdrawal',
+										'redirect_back'	=>	'admin.investorwithdrawallist',
+										'action_type'	=>	'View withdrawal',
+										'uses' 			=>	'AdminInvestorsWithdrawalsListingController@viewWithdrawalAction'
+									]
+			);
+		
+    
+    Route::post('admin/investorwithdrawalview/save','AdminInvestorsWithdrawalsListingController@saveWithdrawalAction');
+    Route::post('admin/investorwithdrawalview/approve',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'approve.admin.investorswithdrawal',
+										'redirect_back'	=>	'admin.investorwithdrawalview',
+										'action_type'	=>	'approve withdrawal',
+										'uses' 			=>	'AdminInvestorsWithdrawalsListingController@approveWithdrawalAction'
+									]
+			);
+    Route::post('admin/investorwithdrawalview/unapprove',
+								[	
+									'middleware' 	=> 	'permission',
+									'permission'	=>	'approve.admin.investorswithdrawal',
+									'redirect_back'	=>	'admin.investorwithdrawalview',
+									'action_type'	=>	'unapprove withdrawal',
+									'uses' 			=>	'AdminInvestorsWithdrawalsListingController@unapproveWithdrawalAction'
+								]
+			);
+    //------------------------Investor Withdrawals View page actions Ends-------------------------------------
+    
+     //**************************** Manage Banking Transactions for Investors Ends*****************************************
+     
+    // **************************** Admin Users Creating, Editing,Roles assigning******************************************
+    
+	Route::get('admin/user',[	
+								'as'			=>	'admin.user',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'view.admin.manageusers',
+								'action_type'	=>	'View Manage Users',
+								'uses' 			=>	'UserController@index'
+							]
+			);
+	
+	Route::get('admin/roles',[	
+								'as'			=>	'admin.roles',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'view.admin.manageroles',
+								'action_type'	=>	'View Manage Roles',
+								'uses' 			=>	'AdminRolesController@indexAction'
+							]
+				);
+				
+	Route::get('admin/roles/delete/{role_id}',[	
+								
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'deleterole.admin.manageroles',
+								'action_type'	=>	'Delete Roles',
+								'uses' 			=>	'AdminRolesController@deleteAction'
+							]
+				);
+	
+	Route::get('admin/role-users/{role_id}', 
+							[	
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewroleuser.admin.manageroles',
+								'redirect_back'	=>	'admin.roles',
+								'action_type'	=>	'View Role Users',
+								'uses' 			=>	'AdminRolesController@roleUsersAction'
+							]
+				);
+	Route::get('admin/role-permission/add/{role_id}', 
+							[	
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'addrolepermission.admin.manageroles',
+								'redirect_back'	=>	'admin.roles',
+								'action_type'	=>	'Add New Role Permissions',
+								'uses' 			=>	'AdminRolesController@addRolePermissionsAction'
+							]
+				);
+	Route::get('admin/role-permission/edit/{role_id}', 
+							[	
+								'as'			=>	'admin.rolepermission.edit',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'editrolepermission.admin.manageroles',
+								'redirect_back'	=>	'admin.roles',
+								'action_type'	=>	'Edit Role Permissions',
+								'uses' 			=>	'AdminRolesController@editRolePermissionsAction'
+							]
+				);
+	Route::post('admin/role-permission/save', 'AdminRolesController@saveRolePermissionsAction');
+		
+	 Route::get('admin/assign-roles/{user_id}',
+							[	
+								'as'			=>	'admin.assignroles',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'assignrole.admin.manageroles',
+								'redirect_back'	=>	'admin.roles',
+								'action_type'	=>	'Assign Roles',
+								'uses' 			=>	'AdminAssignRolesController@indexAction'
+							]
+				);
 	 Route::post('admin/assign-roles','AdminAssignRolesController@saveUserRolesAction');
+	 
+	 //-------------------------------------------------ajax call actions-----------------------------------
+		Route::get('admin/ajax/user_master', 'UserController@view_user');
+		Route::post('admin/ajax/user_master', 'UserController@view_user');
+		Route::post('admin/ajax/CheckRoleNameavailability', 'AdminRolesController@CheckRoleNameavailability');
+		
+	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
+	 
 });
 
 // The routes (or pages that are applicable for Borrower Users only

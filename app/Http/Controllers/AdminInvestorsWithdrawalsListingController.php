@@ -50,7 +50,7 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 	
 	}
 	
-	public function viewWithDrawAction($type,$payment_id,$investor_id){
+	public function viewWithdrawalAction($type,$payment_id,$investor_id){
 		
 		$investorId 	= base64_decode($investor_id);
 		$investorId 	= ($investorId=="")?0:$investorId;
@@ -60,18 +60,7 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		$paymentId 		= base64_decode($payment_id);
 		$paymentId 		= ($paymentId=="")?0:$paymentId;
 		$submitted		=	false;
-		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			if($postArray['submitType']	==	"approve" || $postArray['submitType']	==	"save"){
-				$this->adminInvestorWithdrawalList->saveInvestorWithDraws($postArray);
-			}else{
-				$this->adminInvestorWithdrawalList->unApproveWithDraw($postArray['trans_id']);
-			}
-			$submitted		=	true;
-			if($processtype	==	"add") {
-				return redirect()->to('admin/investorwithdrawallist');
-			}
-		}
+		
 		$this->adminInvestorWithdrawalList->getInvestorsWithDrawInfo($processtype,$investorId,$paymentId);
 		
 		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 								
@@ -84,41 +73,117 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 				->with($withArry); 
 		
 	}
-	
-	public function InvestorWithDrawListBulkAction(){
+	public function addWithdrawalAction($payment_id,$investor_id){
 		
-		$processtype 	=	Request::get('processType');
-		switch($processtype) {
-			case	'approve':
-				$this->bulkApproveWithDrawAction();
-				break;
-			case	'unapprove':
-				$this->bulkUnApproveWithDrawAction();
-				break;
-			case	'delete':
-				$this->bulkDeleteWithDrawAction();
-				break;
-		}		
-		return redirect()->to('admin/investorwithdrawallist');
+		$investorId 	= base64_decode($investor_id);
+		$investorId 	= ($investorId=="")?0:$investorId;
+		
+		$processtype 	= "add";		
+		
+		$paymentId 		= base64_decode($payment_id);
+		$paymentId 		= ($paymentId=="")?0:$paymentId;
+		
+		$this->adminInvestorWithdrawalList->getInvestorsWithDrawInfo($processtype,$investorId,$paymentId);
+		$submitted		=	false;
+		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 								
+								"classname"=>"fa fa-cc fa-fw",
+								"processtype"=>$processtype,
+								"submitted"=>$submitted
+								); 
+								
+		return view('admin.admin-investorswithdrawalsview')
+				->with($withArry); 
+		
+	}
+	public function editWithdrawalAction($payment_id,$investor_id){
+		
+		$investorId 	= base64_decode($investor_id);
+		$investorId 	= ($investorId=="")?0:$investorId;
+		
+		$processtype 	= "edit";		
+		
+		$paymentId 		= base64_decode($payment_id);
+		$paymentId 		= ($paymentId=="")?0:$paymentId;
+		
+		$this->adminInvestorWithdrawalList->getInvestorsWithDrawInfo($processtype,$investorId,$paymentId);
+		$submitted		=	false;
+		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 								
+								"classname"=>"fa fa-cc fa-fw",
+								"processtype"=>$processtype,
+								"submitted"=>$submitted
+								); 
+								
+		return view('admin.admin-investorswithdrawalsview')
+				->with($withArry); 
+		
 	}
 	
-
-
-	public function bulkApproveWithDrawAction(){		
+	public function saveWithdrawalAction(){
+		
+		$postArray		=	Request::all();
+		$this->adminInvestorWithdrawalList->saveInvestorWithDraws($postArray);
+		$processType	=	$postArray['tranType'];
+		$payment_id		=	$postArray['payment_id'];
+		$investor_id	=	$postArray['investor_id'];
+		if($processType	==	"add") {
+			return redirect()->to('admin/investorwithdrawallist');
+		}
+		return redirect()->route('admin.investorwithdrawaledit', array(	'payment_id'=>base64_encode($payment_id),
+																		'investor_id'=>base64_encode($investor_id)
+																	)
+							)->with('success','Deposit Saved successfully');
+	}
+	
+	public function approveWithdrawalAction() {
+		
+		$postArray		=	Request::all();
+		$this->adminInvestorWithdrawalList->saveInvestorWithDraws($postArray);
+		$processType	=	$postArray['tranType'];
+		$payment_id		=	$postArray['payment_id'];
+		$investor_id	=	$postArray['investor_id'];
+		if($processType	==	"add") {
+			return redirect()->to('admin/investorwithdrawallist');
+		}
+		return redirect()->route('admin.investorwithdrawaledit', array(	'payment_id'=>base64_encode($payment_id),
+																		'investor_id'=>base64_encode($investor_id)
+																	)
+							)->with('success','Withdrawal Approved successfully');
+	}
+	
+	public function unapproveWithdrawalAction() {
+		
+		$postArray		=	Request::all();
+		$payment_id		=	$postArray['payment_id'];
+		$investor_id	=	$postArray['investor_id'];
+		
+		$this->adminInvestorWithdrawalList->unApproveWithDraw($postArray['trans_id']);
+		return redirect()->route('admin.investorwithdrawaledit', array(	
+																		'payment_id'=>base64_encode($payment_id),
+																		'investor_id'=>base64_encode($investor_id)
+																	)
+							)->with('success','Withdrawal UnApproved successfully');
+	}
+	public function bulkApproveWithdrawalAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorWithdrawalList->bulkApproveWithDraw($postArray);
+		return redirect()->to('admin/investorwithdrawallist')
+					->with('success','Bulk Withdrawal Approved successfully');
 	}
-		
-	public function bulkUnApproveWithDrawAction(){		
+	
+	public function bulkUnApproveWithdrawalAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorWithdrawalList->bulkUnApproveWithDraw($postArray);
+		return redirect()->to('admin/investorwithdrawallist')
+					->with('success','Bulk Withdrawal UnApproved successfully');
 	}
 		
-	public function bulkDeleteWithDrawAction(){		
+	public function bulkDeleteWithdrawalAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorWithdrawalList->bulkDeleteWithDraw($postArray);
+		return redirect()->to('admin/investorwithdrawallist')
+					->with('success','Bulk Withdrawal Deleted successfully');
 	}
 }

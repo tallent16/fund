@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>var baseUrl	=	"{{url('')}}"</script>
 	<script src="{{ url("js/admin-manage-borrower.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading',Lang::get('Manage Borrowers') )
@@ -128,7 +129,7 @@
 													@if($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
 														@permission('approve.admin.manageborrowers')
 															@var	$appClass	=	""
-															@var	$appUrl		=	url('admin/borrower/updateprofile/approve/')
+															@var	$appUrl		=	url('admin/manageborrowers/approve/')
 															@var	$appUrl		=	$appUrl."/".$encode_bor_id
 														@endpermission
 													@endif
@@ -136,14 +137,14 @@
 														|| ($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL))
 														@permission('reject.admin.manageborrowers')
 															@var	$rejClass	=	""
-															@var	$rejUrl		=	url('admin/borrower/updateprofile/reject/')
+															@var	$rejUrl		=	url('admin/manageborrowers/reject/')
 															@var	$rejUrl		=	$rejUrl."/".$encode_bor_id
 														@endpermission
 													@endif
 													@if($BorRow['active_loan'] == 0)
-														@permission('reject.admin.manageborrowers')
+														@permission('delete.admin.manageborrowers')
 															@var	$delClass	=	""
-															@var	$delUrl		=	url('admin/borrower/updateprofile/delete/')
+															@var	$delUrl		=	url('admin/manageborrowers/delete/')
 															@var	$delUrl		=	$delUrl."/".$encode_bor_id
 														@endpermission
 													@endif

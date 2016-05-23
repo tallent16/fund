@@ -47,6 +47,22 @@ $(document).ready(function (){
 	$("#save_button").click(function(){
       $("#isSaveButton").val("yes");
     });
+    
+	$("#approve_profile_button").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/approve");
+    });
+    
+	$("#update_grade").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/update_grade");
+    });
+    
+	$("#returnback_button").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/return_borrower");
+    });
+	
+	$("#save_comment_button").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/save_comments");
+    });
 	
     $(".fa-trash").click(function(){
 		if($(this).hasClass("disabled"))

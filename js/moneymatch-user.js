@@ -43,7 +43,7 @@ function callDataTableFunc(){
 	$statusOptions 		= 	buildStatusDropDownList();
 	
 	editor = new $.fn.dataTable.Editor( {
-		ajax: "admin/ajax/user_master",
+		ajax: public_path+"/admin/ajax/user_master",
 		table: "#user",
 		fields: [ {
 				label: "User Name:",
@@ -77,7 +77,7 @@ function callDataTableFunc(){
 	
 	$user =$('#user').DataTable( {
 		dom: "Tfrtip",
-		ajax: "admin/ajax/user_master",
+		ajax: public_path+"/admin/ajax/user_master",
 		columns: [	
 		
 					{ 

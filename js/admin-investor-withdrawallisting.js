@@ -74,6 +74,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("approve");
+			$("#form-investor-listing").attr("action",baseUrl+"/admin/investorwithdrawallist/bulkapprove");
 			$("#form-investor-listing").submit();
 		}
     });
@@ -96,6 +97,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("unapprove");
+			$("#form-investor-listing").attr("action",baseUrl+"/admin/investorwithdrawallist/bulkunapprove");
 			$("#form-investor-listing").submit();
 		}
     });
@@ -118,6 +120,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("delete");
+			$("#form-investor-listing").attr("action",baseUrl+"/admin/investorwithdrawallist/bulkdelete");
 			$("#form-investor-listing").submit();
 		}
     });

@@ -5,9 +5,10 @@
 @section('bottomscripts')
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
 	<script>
-	$(document).ready(function(){ 	
-		$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
-	}); 
+		var baseUrl	=	"{{url('')}}"
+		$(document).ready(function(){ 	
+			$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
+		}); 
 	</script>	 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	

@@ -43,6 +43,12 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 					ORDER BY user_id DESC LIMIT 1";
 				
 		$users 	= $this->dbFetchAll($sql);
+		if(	($users[0]->status	==	USER_STATUS_VERIFIED)
+					&& ($users[0]->email_verified	==	USER_EMAIL_VERIFIED)) {
+					$status	=	"Active";
+		}else{
+			$status	=	"Deactive";
+		}
 		$row	= array(	"DT_RowId"=>"row_".$users[0]->user_id,
 							"user_id"=>$users[0]->user_id,
 							"username"=>$users[0]->username,
@@ -50,6 +56,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 							"password"=>"",
 							"usertype"=>$users[0]->usertype,
 							"status"=>$users[0]->status,
+							"statusText"=>$status,
 					);
 		return $row;
 	}
@@ -66,6 +73,12 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				
 		$adminUsers_rs		= $this->dbFetchWithParam($adminUsers_sql,["system_role_param"=>USER_TYPE_ADMIN]);
 		foreach($adminUsers_rs as $adminUserRow) {
+				if(	($adminUserRow->status	==	USER_STATUS_VERIFIED)
+					&& ($adminUserRow->email_verified	==	USER_EMAIL_VERIFIED)) {
+					$status	=	"Active";
+				}else{
+					$status	=	"Deactive";
+				}
 				$row[] 	= array(	"DT_RowId"=>"row_".$adminUserRow->user_id,
 									"user_id"=>$adminUserRow->user_id,
 									"username"=>$adminUserRow->username,
@@ -73,6 +86,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 									"password"=>$adminUserRow->password,
 									"usertype"=>$adminUserRow->usertype,
 									"status"=>$adminUserRow->status,
+									"statusText"=>$status,
 								);
 		}
 		return $row;
@@ -86,6 +100,12 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 					WHERE 	user_id=".$id;
 		
 		$users 	= $this->dbFetchAll($sql);
+		if(	($users[0]->status	==	USER_STATUS_VERIFIED)
+					&& ($users[0]->email_verified	==	USER_EMAIL_VERIFIED)) {
+					$status	=	"Active";
+		}else{
+			$status	=	"Deactive";
+		}
 		$row 	= array(	"DT_RowId"=>"row_".$users[0]->user_id,
 							"user_id"=>$users[0]->user_id,
 							"username"=>$users[0]->username,
@@ -93,6 +113,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 							"password"=>"",
 							"usertype"=>$users[0]->usertype,
 							"status"=>$users[0]->status,
+							"statusText"=>$status,
 						);
 		return $row;
 	}

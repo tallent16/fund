@@ -27,7 +27,7 @@
                         </ul>
                     </div>
                 @endif
-				<form class="form-vertical" role="form" method="POST" action="<?=URL::to('forgot'); ?>" name="resetpassword"> 
+				<form class="form-vertical" id="resetpassword" role="form" method="POST" action="<?=URL::to('forgot'); ?>" name="resetpassword"> 
 					<input type="hidden" name="_token" value="{{ csrf_token() }}" id="hidden_token">
 					<fieldset>
 						

@@ -52,75 +52,166 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		
 	}
 	
-	public function saveProfileAction($bor_id){
+	public function saveCommentProfileAction(){
 		
-			$bor_id		=	base64_decode($bor_id);
-			$postArray	=	Request::all();
-			switch($postArray['admin_process']){
-				case	"save_comments":
-						$result		=	$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
-						break;
-				case	"return_borrower":
-						$dataArray = array(	'status' 	=>	BORROWER_STATUS_COMMENTS_ON_ADMIN );
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"return_borrower");
-						break;
-				case	"approve":
-						$dataArray = array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
-						break;
-				case	"update_grade":
-						$result		=	$this->borrowerProfileModel->updateBorrowerGrade($postArray,$bor_id);
-						break;
-			}
-			if($result) {
-				return redirect()->route('admin.borrower.updateprofileview', array('bor_id' => $bor_id	))
-							->with('success','Update profile Status successfully');
-			}else{
-				return redirect()->route('admin.borrower.updateprofileview', array('bor_id' => $bor_id	))
-							->with('failure','Update profile Status Failed');	
-			}	
+		$postArray	=	Request::all();
+		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$result		=	$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
+		if($result) {
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
+						->with('success','Comments saved successfully');
+		}else{
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
+						->with('failure','Comments saved Failed');	
+		}	
 	}
 	
-	public function updateProfileStatusAction($status,$bor_id){
+	public function returnBorrowerProfileAction(){
+		
+		$postArray	=	Request::all();
+		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$dataArray 	= 	array(	'status' 	=>	BORROWER_STATUS_COMMENTS_ON_ADMIN );
+		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"return_borrower");
+		if($result) {
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
+						->with('success','return borrower updated successfully');
+		}else{
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
+						->with('failure','return borrower updated Failed');	
+		}	
+	}
+	
+	public function approveBorrowerProfileAction(){
+			
+		$postArray	=	Request::all();
+		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$dataArray	= 	array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
+		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
+		if($result) {
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
+						->with('success','approve borrower updated successfully');
+		}else{
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
+						->with('failure','approved borrower updated Failed');	
+		}	
+	}
+	
+	public function updateGradeProfileAction(){
+		
+		$postArray	=	Request::all();
+		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$result		=	$this->borrowerProfileModel->updateBorrowerGrade($postArray,$bor_id);
+		if($result) {
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
+						->with('success','update borrower grade updated successfully');
+		}else{
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
+						->with('failure','update borrower grade updated Failed');	
+		}		
+	}
+	
+	public function approveBorrowerAction($bor_id){
 		
 		$bor_id		=	base64_decode($bor_id);
-		 if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
+		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
+			return redirect()->to('admin/manageborrowers');
+		}
+		$bor_profile_status	=	$this->borrowerProfileModel->getBorrowerProfileStatus($bor_id);
+		$dataArray = array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
+		if($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) {
+			$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
+			if($result) {
+				return redirect()->route('admin.manageborrowers')
+							->with('success','approve borrower updated successfully');
+			}else{
+				return redirect()->route('admin.manageborrowers')
+							->with('failure','approve borrower updated Failed');	
+			}
+		}
+		return redirect()->to('admin/manageborrowers');
+	}
+	
+	public function rejectBorrowerAction($bor_id){
+		
+		$bor_id		=	base64_decode($bor_id);
+		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
 			return redirect()->to('admin/manageborrowers');
 		}
 		$bor_profile_status	=	$this->borrowerProfileModel->getBorrowerProfileStatus($bor_id);
 		
-		switch($status){
-			case	"approve":
-					$dataArray = array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
-					if($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) {
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
-					}
-					break;
-			case	"delete":
-					$dataArray = array(	'status' 	=>	BORROWER_STATUS_DELETED );
-					if($this->borrowerProfileModel->getBorrowerActiveLoanStatus($bor_id)	==	0) {
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,
-						"delete");
-					}
-					break;
-			case	"reject":
-					$dataArray = array(	'status' 	=>	BORROWER_STATUS_REJECTED );
-					if( ($bor_profile_status	==	BORROWER_STATUS_NEW_PROFILE) 
-							|| ($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)) {
-						$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,
-						"reject");
-					}
-					break;
+		$dataArray = array(	'status' 	=>	BORROWER_STATUS_REJECTED );
+		if( ($bor_profile_status	==	BORROWER_STATUS_NEW_PROFILE) 
+				|| ($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)) {
+			$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"reject");
+			if($result) {
+				return redirect()->route('admin.manageborrowers')
+							->with('success','reject borrower updated successfully');
+			}else{
+				return redirect()->route('admin.manageborrowers')
+							->with('failure','reject borrower updated Failed');	
+			}
 		}
 		return redirect()->to('admin/manageborrowers');
 	}
 	
-	public function updateBulkProfileStatusAction(){
+	public function deleteBorrowerAction($bor_id){
+		
+		$bor_id		=	base64_decode($bor_id);
+		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
+			return redirect()->to('admin/manageborrowers');
+		}
+		$bor_profile_status	=	$this->borrowerProfileModel->getBorrowerProfileStatus($bor_id);
+		
+		$dataArray = array(	'status' 	=>	BORROWER_STATUS_DELETED );
+		if($this->borrowerProfileModel->getBorrowerActiveLoanStatus($bor_id)	==	0) {
+			$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"delete");
+			if($result) {
+				return redirect()->route('admin.manageborrowers')
+							->with('success','reject borrower updated successfully');
+			}else{
+				return redirect()->route('admin.manageborrowers')
+							->with('failure','reject borrower updated Failed');	
+			}
+		}
+		return redirect()->to('admin/manageborrowers');
+	}
+	
+	public function approveBorrowerBulkAction(){
 		
 		$postArray	=	Request::all();
-		//~ print_r($postArray);
-			//~ die;
-		$result		=	$this->borrowerProfileModel->updateBulkBorrowerStatus($postArray,$postArray['processType']);
-		return redirect()->to('admin/manageborrowers');
+		$result		=	$this->borrowerProfileModel->updateBulkBorrowerStatus($postArray,"approve");
+		if($result) {
+			return redirect()->route('admin.manageborrowers')
+						->with('success','approve borrower updated successfully');
+		}else{
+			return redirect()->route('admin.manageborrowers')
+						->with('failure','approve borrower updated Failed');	
+		}
+	}
+	
+	public function rejectBorrowerBulkAction(){
+		
+		$postArray	=	Request::all();
+		$result		=	$this->borrowerProfileModel->updateBulkBorrowerStatus($postArray,"reject");
+		if($result) {
+			return redirect()->route('admin.manageborrowers')
+						->with('success','reject borrower updated successfully');
+		}else{
+			return redirect()->route('admin.manageborrowers')
+						->with('failure','reject borrower updated Failed');	
+		}
+	}
+	
+	public function deleteBorrowerBulkAction(){
+		
+		$postArray	=	Request::all();
+		$result		=	$this->borrowerProfileModel->updateBulkBorrowerStatus($postArray,"delete");
+		if($result) {
+			return redirect()->route('admin.manageborrowers')
+						->with('success','delete borrower updated successfully');
+		}else{
+			return redirect()->route('admin.manageborrowers')
+						->with('failure','delete borrower updated Failed');	
+		}
 	}
 }

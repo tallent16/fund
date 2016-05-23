@@ -47,5 +47,9 @@ class HomeController extends MoneyMatchController {
 			return redirect('/');
 		}
 	}
-
+	
+	public function indexAction() {
+		
+		return view('homepage');  
+	}
 }

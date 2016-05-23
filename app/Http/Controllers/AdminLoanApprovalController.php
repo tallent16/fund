@@ -37,43 +37,76 @@ class AdminLoanApprovalController extends MoneyMatchController {
 						);
 	}
 	
-	public function saveLoanApprovalAction($loan_id){
+	public function saveCommentLoanApprovalAction(){
 		
-		$sourceId =	base64_decode($loan_id);
 		$postArray	=	Request::all();
+		$loan_id	=	$postArray['loan_id'];
 		$bor_id		=	$postArray['borrower_id'];
-		switch($postArray['admin_process']){
-			case	"save_comments":
-					$result		=	$this->borrowerApplyLoanModel->saveLoanApplyComments($postArray['comment_row'],
-																								$sourceId);
-					break;
-			case	"return_borrower":
-					$dataArray = array(	'status' 	=>	LOAN_STATUS_PENDING_COMMENTS );
-					$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
-																				$bor_id,"return_borrower");
-					break;
-			case	"approve":
-					$dataArray 				=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
-					
-					$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$sourceId);
-					$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
-																				$bor_id,"approve");
-					break;
-			case	"cancel":
-					$dataArray = array(	'status' 	=>	LOAN_STATUS_CANCELLED );
-					$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$sourceId,
-																				$bor_id,"cancel");
-					break;
-		}
+		
+		$result		=	$this->borrowerApplyLoanModel->saveLoanApplyComments($postArray['comment_row'],$loan_id);
 		if($result) {
-			return redirect()->route('admin.loanapprovalview', array('loan_id' => $loan_id	))
-							->with('success','Loan Approval status updated successfully');
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
+						->with('success','Comments saved successfully');
 		}else{
-			return redirect()->route('admin.loanapprovalview', array('loan_id' => $loan_id	))
-						->with('failure','Loan Approval status updated Failed');	
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
+						->with('failure','Comments saved Failed');	
 		}	
 	}
 	
+	public function returnBorrowerLoanApprovalAction(){
+		
+		$postArray	=	Request::all();
+		$loan_id	=	$postArray['loan_id'];
+		$bor_id		=	$postArray['borrower_id'];
+		
+		$dataArray 	= 	array(	'status' 	=>	LOAN_STATUS_PENDING_COMMENTS );
+		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
+																				$bor_id,"return_borrower");
+		if($result) {
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
+						->with('success','return borrower loan approval updated successfully');
+		}else{
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
+						->with('failure','return borrower  loan approval updated Failed');	
+		}	
+	}
+	
+	public function approveLoanApprovalAction(){
+			
+		$postArray	=	Request::all();
+		$loan_id	=	$postArray['loan_id'];
+		$bor_id		=	$postArray['borrower_id'];
+		
+		$dataArray 	=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
+		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
+		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
+																				$bor_id,"approve");
+		if($result) {
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
+						->with('success','approve loanaprroval updated successfully');
+		}else{
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
+						->with('failure','approved loanaprroval updated Failed');	
+		}	
+	}
+	
+	public function canelLoanApprovalAction(){
+		
+		$postArray	=	Request::all();
+		$loan_id	=	$postArray['loan_id'];
+		$bor_id		=	$postArray['borrower_id'];
+		
+		$dataArray 	= 	array(	'status' 	=>	LOAN_STATUS_CANCELLED );
+		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
+																				$bor_id,"cancel");
+		if($result) {
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)) )
+						->with('success','cancel loanapproval updated successfully');
+		}else{
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
+						->with('failure','cancel loanapproval updated Failed');	
+		}		
+	}
 	public function downloadLoanDocumentAction($doc_id=null) {
 		
 		// Edit borrower loan passing loan id parameter

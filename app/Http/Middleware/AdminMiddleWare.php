@@ -1,6 +1,8 @@
 <?php namespace App\Http\Middleware;
 
 use Closure;
+use AdminAccess;
+use Auth;
 class AdminMiddleware {
 
 	/**
@@ -18,6 +20,12 @@ class AdminMiddleware {
         if ($request->user()->usertype != 3) {
             abort(403);
         }
+		$rolesCnt	=	AdminAccess::checkUserRoles();
+		if( $rolesCnt	==	0 ) {
+			Auth::logout();
+			return redirect("auth/login")
+					->withErrors(['email' => "You have no roles to access"]);
+		}
 		
         return $next($request);
     }

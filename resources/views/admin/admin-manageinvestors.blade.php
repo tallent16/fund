@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>var baseUrl	=	"{{url('')}}"</script>
 	<script src="{{ url("js/admin-manage-investor.js") }}" type="text/javascript"></script>
 @endsection
 @section('page_heading',Lang::get('Manage Investor') )
@@ -127,7 +128,7 @@
 													@if($InvRow['status']	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
 														@permission('approve.admin.manageinvestors')
 															@var	$appClass	=	""
-															@var	$appUrl		=	url('admin/investor/updateprofile/approve/')
+															@var	$appUrl		=	url('admin/manageinvestors/approve/')
 															@var	$appUrl		=	$appUrl."/".$encode_inv_id
 														@endpermission
 													@endif
@@ -135,14 +136,14 @@
 														|| ($InvRow['status']	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL))
 														@permission('reject.admin.manageinvestors')
 															@var	$rejClass	=	""
-															@var	$rejUrl		=	url('admin/investor/updateprofile/reject/')
+															@var	$rejUrl		=	url('admin/manageinvestors/reject/')
 															@var	$rejUrl		=	$rejUrl."/".$encode_inv_id
 														@endpermission
 													@endif
 													@if($InvRow['active_loan'] == 0)
 														@permission('delete.admin.manageinvestors')
 															@var	$delClass	=	""
-															@var	$delUrl		=	url('admin/investor/updateprofile/delete/')
+															@var	$delUrl		=	url('admin/manageinvestors/delete/')
 															@var	$delUrl		=	$delUrl."/".$encode_inv_id
 														@endpermission
 													@endif

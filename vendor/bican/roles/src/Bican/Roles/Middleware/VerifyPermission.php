@@ -41,10 +41,16 @@ class VerifyPermission
 		if (array_key_exists('permission', $actions)) {
 			$permission = $actions['permission'];
 			
-           if ($this->auth->check() && $this->auth->user()->can($permission)) {
+			if ($this->auth->check() && $this->auth->user()->can($permission)) {
 				return $next($request);
 			}
-			return new RedirectResponse(url('/'));
+			if (array_key_exists('redirect_back', $actions)) {
+				return redirect()->route($actions['redirect_back'])
+						->with('failure','You do not have permission to '.$actions['action_type']);
+			}else{
+				return \Redirect::to('/')
+								->with('failure','You do not have permission to access');	
+			}
 		}
 		return $next($request);
     }
