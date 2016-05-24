@@ -2,12 +2,25 @@
 @section('bottomscripts') 
 <script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 <script src="{{ url('js/passwordstrength.js') }}" type="text/javascript"></script>	  
-<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	  
+<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	 
+<script>var baseUrl	="{{url('')}}"</script>  
 <script src="{{ url('js/resetpassword.js') }}" type="text/javascript"></script>	  
 @endsection
 @section ('body')
 	<div class="container">       
 		<div class="row">
+			@if(session()->has('wrong'))
+				{{session()->get('wrong')}} 
+			@endif
+			
+			{{Session::forget('wrong')}}
+			<div>&nbsp;</div>
+			@if(session()->has('failure'))
+				<div class="alert alert-danger col-md-6 col-md-offset-3">
+					{{session()->get('failure')}}
+				</div>
+			@endif			
+			
 			 @var $secretQuestion = $modelresetpass;
 				@var $disabled_fun 			= ""
 				@var $changepassdisabled 	= ""		
@@ -46,7 +59,8 @@
 				<form class="form-vertical" role="form" method="POST" id="resetpassword" action="<?=URL::to('submitpassword'); ?>"> 
 					<input type="hidden" name="_token" value="{{ csrf_token() }}" id="hidden_token">
 					<input type="hidden" name="userid" value="{{$modelresetpass->userId}}">
-					<input type="hidden" name="passwordtype" value="{{$modelresetpass->typepassword}}">
+					<input type="hidden" name="EmailAddress" id="EmailAddress" value="{{$modelresetpass->email}}">
+					<input type="hidden" name="passwordtype" id="passwordtype" value="{{$modelresetpass->typepassword}}">
 					<input name="submit_count" type="hidden" value="submitted" />  
 					<fieldset>
 							<div class="col-sm-12 form-group" {{$forgotpassdisabled}}>
@@ -76,7 +90,7 @@
 								<div class="col-sm-8"> 
 									<input type="password" 
 											class="form-control" 
-											id="pwd" 
+											id="oldpassword" 
 											placeholder="Old password" 
 											name="oldpassword" required>
 								</div>
@@ -84,13 +98,7 @@
 							<div class="col-sm-12 form-group">
 								<label class="control-label col-sm-4" for="pwd">New Password</label>
 								<div class="col-sm-8"> 
-									<input 	class="form-control" 
-										data-val="true"
-										data-val-remote="* Email and Password must not be same" 
-										data-val-remote-additionalfields="*.Password,*.EmailAddress" 
-										data-val-remote-type="POST" 
-										data-val-remote-url="/Authentication/User/CheckEmailPasswordMatchcase" 
-										data-val-required="* Password is required" 
+									<input 	class="form-control" 										
 										id="password"
 										name="password" 
 										placeholder="******" 

@@ -2,7 +2,8 @@
 @section('bottomscripts') 
 <script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 <script src="{{ url('js/passwordstrength.js') }}" type="text/javascript"></script>	  
-<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	  
+<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	
+<script>var baseUrl	="{{url('')}}"</script>  
 <script src="{{ url('js/resetpassword.js') }}" type="text/javascript"></script>	  
 @endsection
 @section ('body')
@@ -55,7 +56,7 @@
 											data-val-remote="* Email already registered. Please enter a different email." 
 											data-val-remote-additionalfields="*.EmailAddress" 
 											data-val-remote-type="POST" 
-											data-val-remote-url="/Authentication/User/CheckEmailavailability"
+											data-val-remote-url="/Authentication/User/CheckEmailavailable"
 											data-val-required="* E-mail Id is required" 
 											id="EmailAddress" 
 											name="EmailAddress" 
@@ -65,7 +66,9 @@
 							</div>
 							
 							<div class="col-sm-2 form-group col-sm-offset-5">
-								 <button type="submit" class="login-button btn btn-primary   btn-success btn-block" 
+								 <button 	type="submit"
+											class="login-button btn btn-primary   btn-success btn-block" 
+											id="next_button"
 									>
 								{{ Lang::get('Next') }}
 								</button>

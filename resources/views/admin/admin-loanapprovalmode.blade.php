@@ -94,6 +94,15 @@
 									@endif
 								@endif
 							@endif
+							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+								@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+									<button type="button" 
+											class="btn verification-button"
+											id="download_all_document">						
+											{{ Lang::get('Download All')}}
+									</button>	
+								@endif
+							@endif
 						</div>
 					@endif
 					

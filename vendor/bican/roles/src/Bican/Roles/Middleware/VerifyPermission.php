@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use BorProfile;
 use Illuminate\Http\RedirectResponse;
-
+use Session;
 class VerifyPermission
 {
     /**
@@ -48,8 +48,9 @@ class VerifyPermission
 				return redirect()->route($actions['redirect_back'])
 						->with('failure','You do not have permission to '.$actions['action_type']);
 			}else{
-				return \Redirect::to('/')
-								->with('failure','You do not have permission to access');	
+				
+				return redirect()->route('mypage')
+						->with('failure','You do not have permission to access the page');
 			}
 		}
 		return $next($request);

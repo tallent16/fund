@@ -11,7 +11,11 @@
 |
 */
 
-Route::get('/','HomeController@indexAction');
+Route::get('/', [
+		'uses' => 'HomeController@indexAction', 
+		'as' => 'home'
+	]);
+
 
 //~ Route::get('/', function()
 //~ {
@@ -161,11 +165,29 @@ Route::group(['prefix' => ''], function() {
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
-// Login/Forgot/Change Password
-	//Route::get('reset',  'ManagePasswordController@resetPasswordAction');
-	Route::match(['get', 'post'],'reset',  'ManagePasswordController@resetPasswordAction');
-	Route::post('forgot',  'ManagePasswordController@forgotPasswordAction');
-	Route::post('submitpassword',  'ManagePasswordController@submitPasswordAction');
+// Login/Forgot/Change Password	
+Route::get('reset',  [	'as' 			=> 	'reset', 
+						'uses' 			=>	'ManagePasswordController@resetPasswordAction'
+					]
+		);
+//submit action from  reset page
+Route::get('forgotpassword',  	[	'as' 			=> 	'get.forgot', 
+									'uses' 			=>	'ManagePasswordController@forgotPasswordAction'
+								]
+			);
+Route::get('changepassword',  	[	'as' 			=> 	'get.change', 
+									'uses' 			=>	'ManagePasswordController@forgotPasswordAction'
+								]
+			);
+Route::post('forgotpassword',  'ManagePasswordController@forgotPasswordAction');
+Route::post('changepassword',  'ManagePasswordController@forgotPasswordAction');
+
+//confirmation action from forgot /change password page
+Route::post('submit/forgotpassword',  'ManagePasswordController@submitForgotPasswordAction');
+Route::post('submit/changepassword',  'ManagePasswordController@submitChangePasswordAction');
+
+//Only registered Email can reset password
+Route::post('ajax/checkEmailavailable', 'ManagePasswordController@checkEmailavailable');
 
 // The routes (or pages that are applicable for all types of users
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
@@ -865,6 +887,11 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 		
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
 	 
+	 Route::get('admin/mypage', [
+							'uses' => 'HomeController@mypageAction', 
+							'as' => 'mypage'
+							]
+				);
 });
 
 // The routes (or pages that are applicable for Borrower Users only
@@ -942,7 +969,6 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 
 // Common Modules
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');
-
 
 Route::post('ajax/CheckEmailavailability', 'RegistrationController@checkEmailavailability');
 Route::post('ajax/CheckUserNameavailability', 'RegistrationController@CheckUserNameavailability');

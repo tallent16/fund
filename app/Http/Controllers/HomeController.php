@@ -52,4 +52,9 @@ class HomeController extends MoneyMatchController {
 		
 		return view('homepage');  
 	}
+	
+	public function mypageAction() {
+		
+		return view('mypage');  
+	}
 }

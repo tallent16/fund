@@ -9571,6 +9571,14 @@ table#account-summary, .table-border-custom{
 #audit-trail a{
 	color:#222;
 }
+
+.admin-mypage ul li a{
+	color:#F6942C;	
+	text-decoration:none;	
+}
+.admin-mypage ul li{
+	list-style-type:none;
+}
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   

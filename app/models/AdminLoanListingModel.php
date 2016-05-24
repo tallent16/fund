@@ -54,11 +54,13 @@ class AdminLoanListingModel extends TranWrapper {
 		$this->fromDate			= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
 		$this->toDate			= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));
 		$this->filter_code 		= 	11;	
+		$applyFilter			=	0;
 		
 		if (isset($_REQUEST['filter_transcations'])) {
 		 	$this->filter_code 	= $_REQUEST['filter_transcations'];
 			$this->fromDate		= $_REQUEST['fromdate'];
 			$this->toDate		= $_REQUEST['todate'];
+			$applyFilter		= 1;
 		} 
 			
 										
@@ -77,14 +79,16 @@ class AdminLoanListingModel extends TranWrapper {
 									FROM	codelist_details
 									WHERE	codelist_id = :loanstatus_codeparam
 									AND		codelist_code = loans.status) loan_status_name,
-								loans.status ,
-                                borrowers.business_name                                                                                                                 
+								loans.status,
+								borrowers.business_name
 						FROM	loans 
 								LEFT OUTER JOIN
 								borrowers
 								ON  loans.borrower_id = borrowers.borrower_id
-						WHERE  loans.status = if(:filter_codeparam = 11, loans.status, :filter_codeparam2)
-						AND		loans.bid_close_date BETWEEN :fromDate AND :toDate 
+						WHERE  	loans.status = if(:filter_codeparam = 11, loans.status, :filter_codeparam2)
+						AND		loans.bid_close_date BETWEEN 
+								if (:applyFilter1 = 0, loans.bid_close_date, :fromDate) AND 
+								if (:applyFilter2 = 0, loans.bid_close_date, :toDate)
 						order by loans.bid_close_date";
 						
 		$dataArrayLoanList		=	[
@@ -93,11 +97,12 @@ class AdminLoanListingModel extends TranWrapper {
 										"filter_codeparam" => $this->filter_code,
 										"filter_codeparam2" => $this->filter_code,
 										"fromDate" => $this->getDbDateFormat($this->fromDate),
-										"toDate" => $this->getDbDateFormat($this->toDate)
+										"toDate" => $this->getDbDateFormat($this->toDate),
+										"applyFilter1" => $applyFilter,
+										"applyFilter2" => $applyFilter
 									];
 
 		$this->loanListInfo			=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-		
 		return ;		
 	}		
 }

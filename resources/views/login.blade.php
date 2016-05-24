@@ -2,6 +2,14 @@
 @section ('body')
 	<div class="container">       
 		<div class="row">
+			
+			<div>&nbsp;</div>
+			@if(session()->has('submit'))
+			<div class="alert alert-success col-md-4 col-md-offset-4">
+				{{session()->get('submit')}}
+			</div>
+			@endif			
+			
             <div class="col-md-4 col-md-offset-4 register-style">	
 				
 				<div class="row header-register">
@@ -22,7 +30,9 @@
                         </ul>
                     </div>
                 @endif
-          
+                
+				{{session()->forget('submit')}}
+				
                @section ('login_panel_title',Lang::get('login.pleasesignin'))
                @section ('login_panel_body')
 				<form class="form" role="form" method="POST" action="<?=URL::to('/auth/login'); ?>"> 

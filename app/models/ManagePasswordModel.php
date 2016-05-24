@@ -8,6 +8,7 @@ class ManagePasswordModel extends TranWrapper {
 	
 	public function getSecretQuestion($email,$passwordtype){
 		
+		$this->email				=	$email;	
 		$this->typepassword			=	$passwordtype;	
 			
 		$userid_sql 				=  	"SELECT user_id
@@ -51,8 +52,8 @@ class ManagePasswordModel extends TranWrapper {
 	
 	public function changePassword($userId, $oldPassword,$confirmpass){
 		$retval = $this->checkOldPassword($userId, $oldPassword);
-			if ($retval < 0){
-				echo "Password not match";
+			if ($retval < 0){				
+				return -1;
 			}
 			else{
 				$dataArray 	   = array('password'	=> Hash::make($confirmpass));
@@ -61,8 +62,7 @@ class ManagePasswordModel extends TranWrapper {
 										
 				if($result < 0){
 					return -1;
-				}else{
-					//echo "change password updated successfully";
+				}else{				
 					return 1;
 				}
 				
@@ -87,7 +87,7 @@ class ManagePasswordModel extends TranWrapper {
 	
 	public function forgotPassword($userId,$secretanswer,$confirmpass){
 		
-		$returnquestion		=  $this->checkSecretAnswer($userId,$secretanswer);
+		$returnquestion		   =  $this->checkSecretAnswer($userId,$secretanswer);
 		
 			if ($returnquestion > 0){
 				$dataArray 	   = array('password'	=> Hash::make($confirmpass));
@@ -98,13 +98,25 @@ class ManagePasswordModel extends TranWrapper {
 					return -1;
 				}else{
 					return 1;
-					//echo "forgot password updated successfully";
 				}
 				
 			}else{
+					$count =1;
+					if($count > 3){						
+						session()->put('wrong','hai') ;
+						echo "done maximum 3 attempts sent email";
+						die;
+						$count=$count+1;
+					}
 				
-				echo "wrong answer";
-			
+				/*$count = 1;			
+				echo "here".$count;	
+				if($count > 3){
+					echo Session::get($secretanswer);					
+				}
+				$count++;
+				return -1;
+				die;*/
 			}
 	}
 		
@@ -121,7 +133,7 @@ class ManagePasswordModel extends TranWrapper {
 										AND user_id = '".$userId."' ";
 									
 		$this->answer				=	$this->dbFetchOne($answer_sql);
-		echo $this->answer.'dfgdfg'.	$secretanswer.'anser';	
+			
 		if($this->answer != $secretanswer)
 		{
 			return -1;
