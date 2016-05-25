@@ -6,7 +6,7 @@
 @section('page_heading',Lang::get('Loan Listing') )
 @section('section')  
 <div class="col-sm-12 space-around">
-<div id="filter_area" style="display:none">
+<div id="filter_area" >
 <form method="get">
 	<div class="row">		
 		<div class="col-sm-12 col-lg-3"> 														
@@ -36,7 +36,7 @@
 </div>
 
 <div class="row">	
-	<div class="col-sm-3 col-lg-2" id="apply_filter_div" style="display:none">
+	<div class="col-sm-3 col-lg-2" id="apply_filter_div" >
 		<div class="form-group">	
 			<button type="submit" class="btn verification-button">
 				{{ Lang::get('Apply Filter')}}
@@ -44,13 +44,13 @@
 		</div>
 	</div>
 </form>	
-	<div class="col-sm-4 col-lg-2">
+	<!---<div class="col-sm-4 col-lg-2">
 		<div class="form-group">	
 			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
 				{{ Lang::get('Show Filter')}}
 			</button>
 		</div>
-	</div>	
+	</div>	--->
 	
 </div><!-----First row----->
 
@@ -144,7 +144,7 @@
 </div><!------second row------>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
-<script>	
+<script>	/*
 function hideShowFilter() {
 
 	hideShow = $("#hide_show_filter").html();
@@ -159,7 +159,7 @@ function hideShowFilter() {
 		$("#hide_show_filter").html("{{ Lang::get('Hide Filter') }}")
 	}
 
-}	
+}	*/
 $(document).ready(function(){ 
 	// date picker
 	$('#fromdate').datetimepicker({

@@ -48,6 +48,11 @@ $(document).ready(function (){
 			window.location	=	loan_doc_url;
 	});
 	
+	$("#download_all_document").on("click",function(){
+		$("#form-profile").attr("action",baseUrl+"/admin/downloadAllFiles");
+		$("#form-profile").submit();
+	});
+	
 	$('#bid_close_date').datetimepicker({
 		autoclose: true,
 		minView: 2,
@@ -59,10 +64,11 @@ $(document).ready(function (){
 		
 		$('span.error').remove();
 		$('.has-error').removeClass("has-error");
-		
-		checkAjaxValidation();
-		if ($("#loan_details").has('.has-error').length > 0) {
-			event.preventDefault();
+		if($(this).attr("action") !=	baseUrl+"/admin/downloadAllFiles") {
+			checkAjaxValidation();
+			if ($("#loan_details").has('.has-error').length > 0) {
+				event.preventDefault();
+			}
 		}
 	});
 });

@@ -9,11 +9,7 @@
 @section ('body')
 	<div class="container">       
 		<div class="row">
-			@if(session()->has('wrong'))
-				{{session()->get('wrong')}} 
-			@endif
-			
-			{{Session::forget('wrong')}}
+						
 			<div>&nbsp;</div>
 			@if(session()->has('failure'))
 				<div class="alert alert-danger col-md-6 col-md-offset-3">
@@ -101,11 +97,11 @@
 									<input 	class="form-control" 										
 										id="password"
 										name="password" 
-										placeholder="******" 
+										placeholder="password" 
 										type="Password" 
-										value="" />
-									<div id="messages"></div>
+										value="" required>									
 								</div>
+								<div id="messages"></div>
 							</div>
 							<div class="col-sm-12 form-group">
 								<label class="control-label col-sm-4" for="pwd">Confirm 

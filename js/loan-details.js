@@ -26,6 +26,7 @@ $(document).ready(function (){
 		var	bid_amount			=	numeral($("#bid_amount").val()).value();
 		var	bid_interest_rate	=	numeral($("#bid_interest_rate").val()).value();
 		var	isCancelButton		=	$("#isCancelButton").val();
+		var	minimum_bid_amount	=	$("#minimum_bid_amount").val();
 		var	errorMesage			=	"";
 		getAvailableBalance();
 		AvailableBalance		=	$("#available_balance").val()
@@ -50,6 +51,11 @@ $(document).ready(function (){
 			
 			if(bid_amount	>	AvailableBalance) {
 				showDialog("","Bid Amount should not be greater than Available Balance");
+				event.preventDefault();
+			}
+			
+			if(bid_amount	<	minimum_bid_amount) {
+				showDialog("","The Minimum Bid amount is SGD "+minimum_bid_amount);
 				event.preventDefault();
 			}
 		}

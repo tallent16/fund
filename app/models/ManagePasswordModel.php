@@ -1,6 +1,7 @@
 <?php 
 namespace App\models;
 use Hash;
+use Session;
 class ManagePasswordModel extends TranWrapper {
 	
 	public $userId			= "";	
@@ -53,7 +54,9 @@ class ManagePasswordModel extends TranWrapper {
 	public function changePassword($userId, $oldPassword,$confirmpass){
 		$retval = $this->checkOldPassword($userId, $oldPassword);
 			if ($retval < 0){				
-				return -1;
+				/****Mail Functionality************/
+				$this->sendMailToAdmin($userId);
+				/****Mail Functionality************/
 			}
 			else{
 				$dataArray 	   = array('password'	=> Hash::make($confirmpass));
@@ -65,7 +68,6 @@ class ManagePasswordModel extends TranWrapper {
 				}else{				
 					return 1;
 				}
-				
 				
 			}
 	}
@@ -101,23 +103,11 @@ class ManagePasswordModel extends TranWrapper {
 				}
 				
 			}else{
-					$count =1;
-					if($count > 3){						
-						session()->put('wrong','hai') ;
-						echo "done maximum 3 attempts sent email";
-						die;
-						$count=$count+1;
-					}
-				
-				/*$count = 1;			
-				echo "here".$count;	
-				if($count > 3){
-					echo Session::get($secretanswer);					
-				}
-				$count++;
-				return -1;
-				die;*/
+				/****Mail Functionality************/
+				$this->sendMailToAdmin($userId);
+				/****Mail Functionality************/						
 			}
+			
 	}
 		
 	public function checkSecretAnswer($userId,$secretanswer){
@@ -135,13 +125,55 @@ class ManagePasswordModel extends TranWrapper {
 		$this->answer				=	$this->dbFetchOne($answer_sql);
 			
 		if($this->answer != $secretanswer)
-		{
+		{	
 			return -1;
+			
 		}else{
 			return 1;
 		}
 	}
 	
+	public function sendMailToAdmin($userId){
+
+		$username_sql				= "SELECT username 
+									   FROM users 
+									   WHERE user_id = '".$userId."' ";
+									   
+		$this->username				=	$this->dbFetchOne($username_sql);
+		
+		$fields 			= array('[username]','[application_name]');
+		$replace_array 		= array();
+		
+		$moneymatchSettings = $this->getMailSettingsDetail();
+		
+		$mailContents		= 	$moneymatchSettings[0]->change_password_mail_alert;
+		
+		$mailSubject		= 	"Warning - Unsuccessful attempts to access account";
+
+		$replace_array 		= 	array( $this->username, $moneymatchSettings[0]->application_name);
+							
+		$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
+		
+		$template			=	"emails.wrongPasswordAttemptTemplate";
+
+		$count = 0;
+		$count = session::set('crud_count', session::get('crud_count', 0) + 1);
+		if(session::get('crud_count') >= 3){
+			
+			$msgarray 	=	array(	"content" => $new_content);			
+			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$mailSubject, 
+							"from" => $moneymatchSettings[0]->mail_default_from,
+							"from_name" => $moneymatchSettings[0]->application_name,
+							"to" => $moneymatchSettings[0]->admin_email,
+							"cc" => $moneymatchSettings[0]->admin_email,
+							"live_mail" => $moneymatchSettings[0]->send_live_mails,
+							"template"=>$template);
 	
+			$mailArry	=	array(	"msgarray"=>$msgarray,
+									"msgData"=>$msgData);
+			$this->sendMail($mailArry);
+			
+		}	
+	}	
 }
 

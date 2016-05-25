@@ -32,6 +32,7 @@ class LoanDetailsModel extends TranWrapper {
 	public	$loan_status				=	"";
 	public	$target_interest			=	0;
 	public	$bid_type					=	0;
+	public	$minimum_bid_amount			=	0;
 	public 	$directorInfo				= 	array();
 	public 	$bidInfo 					= 	array();
 	public 	$bidDetail 					= 	array();
@@ -59,7 +60,7 @@ class LoanDetailsModel extends TranWrapper {
 		$this->getLoanDirector();
 		$this->getBidAverageInterest($loan_id);
 		$this->getLoanComments($loan_id);	
-		
+		$min_bid_amount			=	$this->getMinimumLoanBidAmount();
 		switch($this->userType) {
 			case	USER_TYPE_INVESTOR:
 				$this->getPaymentSchedule($loan_id);

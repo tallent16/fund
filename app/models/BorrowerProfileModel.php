@@ -618,9 +618,10 @@ class BorrowerProfileModel extends TranWrapper {
 			foreach ($finacialRation_rs as $finRatioRow) {
 				$newrow = count($this->finacialRatioInfo);
 				$newrow ++;
-				$this->finacialRatioInfo[$newrow]['ratio_name'] 	= 	$finRatioRow->codelist_value;
-				$this->finacialRatioInfo[$newrow]['current_ratio'] 	= 	"0.00";
-				$this->finacialRatioInfo[$newrow]['previous_ratio'] = 	"0.00";
+				$this->finacialRatioInfo[$newrow]['borrower_financial_ratios_id'] 	= 	0;
+				$this->finacialRatioInfo[$newrow]['ratio_name'] 					= 	$finRatioRow->codelist_value;
+				$this->finacialRatioInfo[$newrow]['current_ratio'] 					= 	"0.00";
+				$this->finacialRatioInfo[$newrow]['previous_ratio'] 				= 	"0.00";
 			}
 		}
 		return $finacialRation_rs;
@@ -634,9 +635,10 @@ class BorrowerProfileModel extends TranWrapper {
 			foreach ($finacial_rs as $finacialRow) {
 				$newrow = count($this->finacialInfo);
 				$newrow ++;
-				$this->finacialInfo[$newrow]['indicator_name'] 		= 	$finacialRow->codelist_value;
-				$this->finacialInfo[$newrow]['indicator_value'] 	= 	"0.00";
-				$this->finacialInfo[$newrow]['currency'] 			= 	"";
+				$this->finacialInfo[$newrow]['borrower_financial_info_id'] 		= 	$finacialRow->borrower_financial_info_id;
+				$this->finacialInfo[$newrow]['indicator_name'] 					= 	$finacialRow->codelist_value;
+				$this->finacialInfo[$newrow]['indicator_value'] 				= 	"0.00";
+				$this->finacialInfo[$newrow]['currency'] 						= 	"";
 			}
 		}
 		return $finacial_rs;

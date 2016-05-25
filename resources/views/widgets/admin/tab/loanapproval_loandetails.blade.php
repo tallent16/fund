@@ -92,11 +92,13 @@
 						@var	$isDocumentAvailable	=	"no"					
 						@if(isset($adminLoanApprMod->submitted_document_details[$documentRowIndex]))
 							@var	$loan_url	=	$adminLoanApprMod->submitted_document_details[$documentRowIndex]
+							@var	$loan_id	=	$adminLoanApprMod->submitted_document_details[$documentRowIndex]
 							@var	$loan_url	=	"admin/loandocdownload/".$loan_url
 							<a 	href="javascript:void(0)"
 								data-download-url="{{url($loan_url)}}"
 								class="btn button-grey borrower_doc_download">{{ Lang::get('Show Docs') }}
 							</a>
+							<input type="hidden" name="documents[]" value="{{$loan_id}}" />
 							@var	$isDocumentAvailable	=	"yes"
 						@endif	
 					</div>

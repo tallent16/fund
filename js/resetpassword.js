@@ -9,8 +9,9 @@ $(document).ready(function (){
 	
 	$('#confirm-button').click(function (e) {		
 		e.preventDefault();
-
+		
 		if ($('#resetpassword').valid()) {
+			
 			if($("#passwordtype").val()	==	"Change Password") {
 				$('#resetpassword').attr("action",baseUrl+"/submit/changepassword");
 			}else{
@@ -19,6 +20,24 @@ $(document).ready(function (){
 			$('#resetpassword').submit();
 		}
 	 }); 
+	
+	$.validator.addMethod( 'passwordMatch', function(value, element) {
+		alert('');
+		// The two password inputs
+		var oldpassword = $("#oldpassword").val();
+		var newPassword = $("#password").val();
+
+		// Check for notequal with the password inputs
+		if (oldpassword == newPassword ) {
+			
+			return false;
+		} else {
+			return true;
+		}
+
+	}, "Passwords should not match with old password");
+
+
 
 	 $('#resetpassword').validate({
             errorClass: 'help-block animated fadeInDown',
@@ -51,11 +70,12 @@ $(document).ready(function (){
                 },            
                 'password': {
                     required: true,
-                    minlength: 4,                 
+                    minlength: 4,  
+                    passwordMatch: true             
                 },
                 'ConfirmPassword': {
                     required: true,
-                    equalTo: '#password',
+                    equalTo: '#password'
                     //minlength: 5
                 },     
                              
@@ -67,11 +87,12 @@ $(document).ready(function (){
                     remote: 'Enter Registered email'                            
                 },                
                 'password': {
-                    required: 'Please provide a password with atleast 8 characters,alphanumeric',                  
+                    required: 'Please provide a password with atleast 8 characters,alphanumeric', 
+                    passwordMatch: "Passwords should not match with old password"                 
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',
-                    equalTo: 'Confirm password does not match password',
+                    equalTo: 'Confirm password does not match password'
                 }
                 
             }

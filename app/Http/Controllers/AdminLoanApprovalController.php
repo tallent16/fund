@@ -4,6 +4,7 @@ use Request;
 use	\App\models\AdminLoanApprovalModel;
 use	\App\models\BorrowerApplyLoanModel;
 use Lang;
+use ZipArchive;
 class AdminLoanApprovalController extends MoneyMatchController {
 	
 	public function __construct() {	
@@ -113,8 +114,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		if (null !== $doc_id) {
 			$sourceId 		=	explode("_",$doc_id);
 			$loan_doc_url	=	$this->borrowerApplyLoanModel->getBorrowerLoanDocUrl($sourceId[0]);
+			
 			$imageName = $this->get_basename($loan_doc_url);
-			//~ return  Response::download($loan_doc_url);
+			return  Response::download($loan_doc_url);
 			header('Content-Disposition: attachment; filename=' .$this->get_basename($loan_doc_url));
 			header('Content-Type: application/force-download');
 			header('Content-Type: application/octet-stream');
@@ -123,7 +125,33 @@ class AdminLoanApprovalController extends MoneyMatchController {
 			echo file_get_contents($loan_doc_url);
 		}
 	}
+	public function downloadAllFilesAction(){
 	
+		$archive_file_name	=	"uploads/documentList.zip";
+		$file_name			=	"documentList.zip";
+		$doc_ids 			=	Request::get("documents");
+		$file_names			=	$this->borrowerApplyLoanModel->getBorrowerAllLoanDocUrl($doc_ids);
+		
+		$zip = new ZipArchive();
+	
+		if ($zip->open($archive_file_name, ZIPARCHIVE::OVERWRITE )!==TRUE) {
+			exit("cannot open <$archive_file_name>\n");
+		}
+		
+		foreach($file_names as $files){
+			$download_file = file_get_contents($files);
+			$zip->addFromString(basename($files),$download_file);
+		}
+		
+		$zip->close();
+		header("Content-type: application/zip"); 
+		header("Content-Disposition: attachment; filename=$file_name"); 
+		header("Pragma: no-cache"); 
+		header("Expires: 0"); 
+		readfile("$archive_file_name"); 
+		exit;
+		
+	}
 	
 	public function get_basename($filename) {
 		return preg_replace('/^.+[\\\\\\/]/', '', $filename);

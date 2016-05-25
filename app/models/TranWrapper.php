@@ -639,4 +639,10 @@ class TranWrapper extends MoneyMatchModel {
 		$cnt 	=	$this->dbFetchOne($sql);
 		return ($cnt == 0)?false:true;
 	}
+	
+	public function getMinimumLoanBidAmount()	{
+		
+		$system_settings	=	$this->getMailSettingsDetail();
+		return $system_settings[0]->minmum_bid_amount;
+	}
 }

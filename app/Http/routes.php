@@ -538,6 +538,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 	
 	//loan documents download action
 	Route::get('admin/loandocdownload/{doc_id}', 'AdminLoanApprovalController@downloadLoanDocumentAction'); 
+	Route::post('admin/downloadAllFiles', 'AdminLoanApprovalController@downloadAllFilesAction'); 
     
 	//ajax call actions
 	Route::post('ajax/getloanrepayschd', 'AdminDisburseLoanController@ajaxGetLoanRepaySchedAction');	
@@ -917,7 +918,6 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
     
 	Route::post('ajax/borrower/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	
 	Route::get('borrower/myloaninfo', 'BorrowerMyLoanInfoController@indexAction');	
-	Route::get('borrower/cancelloan/{loan_id}', 'BorrowerMyLoanInfoController@cancelAction');	
 	Route::post('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 	Route::get('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 

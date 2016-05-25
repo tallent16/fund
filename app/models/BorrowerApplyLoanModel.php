@@ -624,4 +624,22 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		return $loanId;
 	}
 	
+	
+	public function getBorrowerAllLoanDocUrl($doc_ids) {
+		
+		$docUrls					=	array();
+		$loandocumenturl_sql		= 	"	SELECT 	loan_doc_url
+											FROM 	loan_docs_submitted	
+											WHERE	loan_doc_submitted_id	IN (".implode($doc_ids,',').")";
+		
+		$loandocumenturl_rs			= 	$this->dbFetchAll($loandocumenturl_sql);
+		$fileUploadObj				=	new FileUpload();
+		
+		foreach($loandocumenturl_rs as $loanDocRow) {
+			$docUrls[]				=	$fileUploadObj->getFile($loanDocRow->loan_doc_url);
+		}
+		return $docUrls;
+	}
+	
+	
 }

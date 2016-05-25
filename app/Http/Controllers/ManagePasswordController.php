@@ -14,8 +14,10 @@ class ManagePasswordController extends MoneyMatchController {
 		$this->managePasswordModel	=	new ManagePasswordModel;
 	}
 	
-	public function resetPasswordAction() { 
-		return view('resetpassword');			
+	public function resetPasswordAction() {
+		Session::forget('crud_count');	 
+		return view('resetpassword');	
+			
 	}  
 	
 	//checks the email address exists or not
@@ -43,6 +45,7 @@ class ManagePasswordController extends MoneyMatchController {
 			}
 				Session::forget('sess_email');
 				Session::forget('sess_type');
+				
 		}
 		
 		
@@ -85,7 +88,7 @@ class ManagePasswordController extends MoneyMatchController {
 		$result				=	$this->managePasswordModel->saveChangedPassword($passwordtype, $userId, $newpass, $confirmpass, '',$secretanswer);
 		if($result != 1 )	{			
 			session()->put('sess_email',$postArray['EmailAddress']);
-			session()->put('sess_type',$postArray['passwordtype']);
+			session()->put('sess_type',$postArray['passwordtype']);			
 			return redirect()->route("get.forgot")->with("failure","You have entered, Wrong! Security Answer");
 		}
 		else{				

@@ -245,28 +245,6 @@
 															@endif	
 														</td>												
 													</tr>
-													<tr>
-														<td>
-															@switch($loanRow->status)
-																@case(LOAN_STATUS_NEW)
-																@case(LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-																@case(LOAN_STATUS_APPROVED)
-																@case(LOAN_STATUS_PENDING_COMMENTS)
-																@case(LOAN_STATUS_CLOSED_FOR_BIDS)
-																@var	$url	='borrower/cancelloan/'.base64_encode($loanRow->loan_id)
-																	<a 	class="btn btn-lg loan-detail-button" 
-																		href="{{url($url)}}">
-																		{{Lang::get('Cancel Loan')}}
-																	</a>
-																@break
-																@default
-																	<a 	class="btn btn-lg loan-detail-button" style="visibility:hidden;">Hidden Field																	
-																	</a>
-																	@break
-															@endswitch 
-															
-														</td>												
-													</tr>
 												</tbody>
 											</table>	
 										</div>

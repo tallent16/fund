@@ -139,9 +139,11 @@
 				@var	$bid_id	=	''
 			@endif
 			
+			
 			<form method="post" id="form-bid" {{($bidCnt	==	0)?"style='display:none'":""}} >
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 				<input type="hidden" name="bid_id" value="{{ $bid_id }}">	
+				<input type="hidden" id="minimum_bid_amount" value="{{ $LoanDetMod->minimum_bid_amount }}">	
 				<input 	type="hidden" 
 						name="bid_trantype"
 						value="{{($bidCnt	==	0)?'new':'edit'}}"
@@ -218,28 +220,4 @@
 	@endif
 	<!-- Investor Bid section ends here -->
 	
-	<!-- Borrwer Cancel button	Starts here -->
-	@if($LoanDetMod->userType	==	USER_TYPE_BORROWER)
-		@if(	$LoanDetMod->inv_or_borr_id		==	$LoanDetMod->borrower_id)
-			<div class="row space-around">
-				<div class="text-center">	
-					@switch($LoanDetMod->loan_status)
-						@case(LOAN_STATUS_NEW)
-						@case(LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-						@case(LOAN_STATUS_APPROVED)
-						@case(LOAN_STATUS_PENDING_COMMENTS)
-						@case(LOAN_STATUS_CLOSED_FOR_BIDS)
-						@var	$url	='borrower/cancelloan/'.base64_encode($LoanDetMod->loan_id)
-							<a 	class="btn btn-lg loan-detail-button" 
-								href="{{url($url)}}">
-								{{Lang::get('Cancel Loan')}}
-							</a>
-						@break
-						
-					@endswitch 
-				</div>
-			</div>
-		@endif
-	@endif
-	<!-- Borrwer Cancel button	Ends here -->
 </div>

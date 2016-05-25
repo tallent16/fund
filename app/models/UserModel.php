@@ -125,10 +125,10 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 		$activation		=	md5($postArray['EmailAddress'].time()); // encrypted email+timestamp
 		switch($postArray['Userrole']){
 			case 'Borrower':
-				$userType	=	1;
+				$userType	=	USER_TYPE_BORROWER;
 				break;
 			case 'Investor':
-				$userType	=	2;
+				$userType	=	USER_TYPE_INVESTOR;
 				break;
 		}
 		$dataArray		=	array(	'email'=>$postArray['EmailAddress'],
@@ -155,11 +155,13 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				$this->dbUpdate('users',$dataArry, $whereArry);
 				
 				$moneymatchSettings = $this->getMailSettingsDetail();
-				
-				
-				$mailContents		= $moneymatchSettings[0]->borrower_signup_content;
-				$mailSubject		= $moneymatchSettings[0]->borrower_signup_subject;
-
+				if($userType	==	USER_TYPE_BORROWER) {
+					$mailContents		= $moneymatchSettings[0]->borrower_signup_content;
+					$mailSubject		= $moneymatchSettings[0]->borrower_signup_subject;
+				}else{
+					$mailContents		= $moneymatchSettings[0]->investor_signup_content;
+					$mailSubject		= $moneymatchSettings[0]->investor_signup_subject;
+				}
 				$fields 			= array('[borrower_firstname]', '[borrower_lastname]', '[signup_email]',
 											'[investor_firstname]', '[investor_lastname]', ' [confirmation_url]',
 											'[application_name]');
@@ -181,11 +183,6 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 									"live_mail" => $moneymatchSettings[0]->send_live_mails,
 									"template"=>"emails.confirmation");
 									
-				//~ $mailArry	=	array(	"email"=>$postArray['EmailAddress'],
-										//~ "subject"=>"Email verification",
-										//~ "template"=>"emails.confirmation",
-										//~ "confirmation_url"=>url()."/activation/".$activation,
-								//~ );
 				$mailArry	=	array(	"msgarray"=>$msgarray,
 										"msgData"=>$msgData);
 				$this->sendMail($mailArry);
