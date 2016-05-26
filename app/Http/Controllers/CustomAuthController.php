@@ -5,6 +5,7 @@ use Request;
 use BorProfile;
 use InvBal;
 use AdminAccess;
+use Session;
 class CustomAuthController extends MoneyMatchController {
 	/**
 	 * The Guard implementation.
@@ -108,6 +109,7 @@ class CustomAuthController extends MoneyMatchController {
 	public function getLogout()	{
 		
 		Auth::logout();
+		$this->sessionDestroy();
 		return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
 	}
 

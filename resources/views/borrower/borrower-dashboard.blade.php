@@ -14,14 +14,6 @@
          @var $borrowerLoans 	= $BorDashMod->loan_details;
          @var $borCurLoans 		= $BorDashMod->curloans;
 		<div class="col-sm-12 space-around"> 
-			<!--First row--->
-			<div class="row annoucement-msg-container" style="display:none">
-				<div class="alert alert-danger annoucement-msg">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					{{ Lang::get('borrower-dashboard.annocement_section') }} 
-				</div>
-			</div>
-			<!--first row end-->
 			
 			<!--second row--->
 			<div class="row">
@@ -136,7 +128,7 @@
 					<div class="panel-heading panel-headsection">
 						<div class="row">
 						   <div class="col-xs-12">
-								<span class="pull-left">{{ Lang::get('borrower-dashboard.loan_overview') }}</span> 
+								<span class="pull-left">{{ Lang::get('UPCOMING PAYMENTS') }}</span> 
 							</div>									
 						</div>                           
 					</div>				

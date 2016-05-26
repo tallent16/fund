@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.10",
+            "version": "3.18.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "483e21b602fc5c9993437e6e04e44d936392c344"
+                "reference": "8bd25f62869051476034464d853a9c0c72e2d91e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/483e21b602fc5c9993437e6e04e44d936392c344",
-                "reference": "483e21b602fc5c9993437e6e04e44d936392c344",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8bd25f62869051476034464d853a9c0c72e2d91e",
+                "reference": "8bd25f62869051476034464d853a9c0c72e2d91e",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-05-18 20:23:24"
+            "time": "2016-05-24 18:21:32"
         },
         {
             "name": "bican/roles",

@@ -9014,7 +9014,9 @@ canvas.round {
 .bankdet-pagi .pagination{
 	margin:0;
 }
-.annoucement-msg,.tab-head-red{
+.alert-notification,
+.annoucement-msg,
+.tab-head-red{
 	background-color: #8B170A;
 	color: #fff;
 }

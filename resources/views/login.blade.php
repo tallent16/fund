@@ -8,8 +8,19 @@
 			<div class="alert alert-success col-md-4 col-md-offset-4">
 				{{session()->get('submit')}}
 			</div>
-			@endif			
+			@endif	
 			
+			@if(session()->has('verified'))
+			<div class="alert alert-success col-md-4 col-md-offset-4 text-center">
+				{{session()->get('verified')}}
+			</div>
+			@endif	
+					
+			@if(session()->has('activation'))
+			<div class="alert alert-info col-md-4 col-md-offset-4 text-center">
+				{{session()->get('activation')}}
+			</div>
+			@endif
             <div class="col-md-4 col-md-offset-4 register-style">	
 				
 				<div class="row header-register">

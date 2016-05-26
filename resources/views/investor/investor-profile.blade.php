@@ -159,7 +159,7 @@
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					@if( $InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
 						@if($InvPrfMod->comments_count	>	0)
-							@permission('returninvestor.admin.investorprofile')
+							@permission('returninvestor.admin.manageinvestors')
 								<button type="button"
 										id="returnback_button"
 										style="display:none"
@@ -176,7 +176,7 @@
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					@if( $InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
 						@if($InvPrfMod->comments_count	==	0)
-							@permission('approve.admin.investorprofile')
+							@permission('approve.admin.manageinvestors')
 								<button type="button"
 										id="approve_profile_button"
 										style="display:none"

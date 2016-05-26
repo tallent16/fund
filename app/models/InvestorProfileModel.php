@@ -346,9 +346,9 @@ class InvestorProfileModel extends TranWrapper {
 		
 		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
 		$invInfo			=	$this->getInvestorInfoById($investorId);
-		$moneymatchSettings = $this->getMailSettingsDetail();
-		$fields 			= array('[investor_firstname]', '[investor_lastname]','[application_name]');
-		$replace_array 		= array();
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		$fields 			= 	array('[investor_firstname]', '[investor_lastname]','[application_name]');
+		$replace_array 		= 	array();
 		
 		$moduleName			=	"Investor Profile";
 		switch ($status) {
@@ -445,5 +445,7 @@ class InvestorProfileModel extends TranWrapper {
 		foreach($postArray['investor_ids'] as $invRow) {
 			$this->updateInvestorStatus($dataArray,$invRow,$status);
 		}
+		return 1;
 	}
+	
 }

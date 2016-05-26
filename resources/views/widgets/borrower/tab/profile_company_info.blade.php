@@ -242,40 +242,43 @@
 		</fieldset>	
 			<!------row--7----------->	
 			<!------row--8----------->			
-			<div class="row">		
-				<div class="col-xs-12 col-sm-5 col-lg-3">
-				</div>
-				<div class="col-xs-12 col-sm-7 col-lg-3">
-				</div>
-				<div class="col-xs-12 col-sm-5 col-lg-3 space-around">											
-					<label>
-						{{ Lang::get('Grade') }}
-					</label>												
-				</div>
-								
-				<div class="col-xs-12 col-sm-7 col-lg-3">		
-					@var	$gradeInfo	=	[''=>'none']+$modelBorPrf->gradeInfo
-					{{ Form::select('grade',$gradeInfo, 
-													$modelBorPrf->grade, 
-													['class' => 'selectpicker text-right',$gradeStatus])
-					}}										
-				</div>	
-			</div>			
-			<!------row--8----------->		
+				<div class="row">		
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+					</div>
+					<div class="col-xs-12 col-sm-7 col-lg-3">
+					</div>
+					<div class="col-xs-12 col-sm-5 col-lg-3 ">											
+						<label>
+							{{ Lang::get('Grade') }}
+						</label>												
+					</div>
+									
+					<div class="col-xs-12 col-sm-7 col-lg-3">		
+						@var	$gradeInfo	=	[''=>'none']+$modelBorPrf->gradeInfo
+						{{ Form::select('grade',$gradeInfo, 
+														$modelBorPrf->grade, 
+														['class' => 'selectpicker text-right',$gradeStatus])
+						}}										
+					</div>	
+				</div>			
+				<!------row--8----------->		
+			
 			@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 				@if($gradeStatus	==	"")
-					<div class="row">					
-						<div class="col-xs-12">		
-							<div class="pull-right">										
-								<button type="submit" 
-										id="update_grade"
-										class="btn verification-button" >
-										<i class="fa pull-right"></i>
-										{{ Lang::get('Update Grade') }}
-								</button>
-							</div>											
-						</div>									
-					</div>							
+					@permission('updategrade.admin.manageborrowers') 
+						<div class="row">					
+							<div class="col-xs-12 space-around">		
+								<div class="pull-right">										
+									<button type="submit" 
+											id="update_grade"
+											class="btn verification-button" >
+											<i class="fa pull-right"></i>
+											{{ Lang::get('Update Grade') }}
+									</button>
+								</div>											
+							</div>									
+						</div>
+					@endpermission								
 				@endif
 			@endif
 			

@@ -116,7 +116,6 @@ class AdminLoanApprovalController extends MoneyMatchController {
 			$loan_doc_url	=	$this->borrowerApplyLoanModel->getBorrowerLoanDocUrl($sourceId[0]);
 			
 			$imageName = $this->get_basename($loan_doc_url);
-			return  Response::download($loan_doc_url);
 			header('Content-Disposition: attachment; filename=' .$this->get_basename($loan_doc_url));
 			header('Content-Type: application/force-download');
 			header('Content-Type: application/octet-stream');

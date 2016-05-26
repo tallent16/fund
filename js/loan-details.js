@@ -26,7 +26,7 @@ $(document).ready(function (){
 		var	bid_amount			=	numeral($("#bid_amount").val()).value();
 		var	bid_interest_rate	=	numeral($("#bid_interest_rate").val()).value();
 		var	isCancelButton		=	$("#isCancelButton").val();
-		var	minimum_bid_amount	=	$("#minimum_bid_amount").val();
+		var	minimum_bid_amount	=	numeral($("#minimum_bid_amount").val()).value();
 		var	errorMesage			=	"";
 		getAvailableBalance();
 		AvailableBalance		=	$("#available_balance").val()

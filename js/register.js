@@ -13,6 +13,12 @@ $(document).ready(function (){
 		}
 	 }); 
 	 
+	 $.validator.addMethod("alphanumeric", function(value, element) {
+		return this.optional(element) || /^(?=.*\d)[a-zA-Z0-9]{10,}$/.test(value);
+	}
+	, "Letters, numbers or underscores only please"); 
+	 
+	 
 	 $('#form-register').validate({
             errorClass: 'help-block animated fadeInDown',
             errorElement: 'div',
@@ -63,7 +69,8 @@ $(document).ready(function (){
                 },
                 'password': {
                     required: true,
-                    //minlength: 5
+					minlength: 10,
+					alphanumeric: true
                 },
                 'ConfirmPassword': {
                     required: true,
@@ -88,13 +95,15 @@ $(document).ready(function (){
                     remote: 'Email already registered. Please enter a different email'
                 },
                 'firstname': {
-                    required: 'Please enter firstname',
+                    required: 'Please enter firstname',                    
                 },
                 'lastname': {
                     required: 'Please enter lastname',
                 },
                 'password': {
                     required: 'Please provide a password',
+                    minlength: 'Password strength should be atleast Moderate',
+                    alphanumeric: 'Please enter 10 characters with atleast 1 letter & atleast 1 number or underscore'
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',

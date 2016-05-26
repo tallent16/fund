@@ -15,6 +15,10 @@ Route::get('/', [
 		'uses' => 'HomeController@indexAction', 
 		'as' => 'home'
 	]);
+Route::get('/home', function()
+{
+	return redirect("/");  
+});
 
 
 //~ Route::get('/', function()
@@ -282,7 +286,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'admin.savecomment',
-											'redirect_back'	=>	'admin.borrowerprofile',
+											'redirect_back'	=>	'admin.manageborrowers',
 											'action_type'	=>	'save comments borrower profile',
 											'uses' 			=>	'AdminManageBorrowersController@saveCommentProfileAction'
 										]
@@ -291,7 +295,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'returnborrower.admin.manageborrowers',
-											'redirect_back'	=>	'admin.borrowerprofile',
+											'redirect_back'	=>	'admin.manageborrowers',
 											'action_type'	=>	'return to borrower borrower profile',
 											'uses' 			=>	'AdminManageBorrowersController@returnBorrowerProfileAction'
 										]
@@ -300,7 +304,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'approve.admin.manageborrowers',
-											'redirect_back'	=>	'admin.borrowerprofile',
+											'redirect_back'	=>	'admin.manageborrowers',
 											'action_type'	=>	'approve borrower',
 											'uses' 			=>	'AdminManageBorrowersController@approveBorrowerProfileAction'
 										]
@@ -308,8 +312,8 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/borrower/profile/update_grade',
 										[	
 											'middleware' 	=> 	'permission',
-											'permission'	=>	'updategrade.admin.borrowerprofile',
-											'redirect_back'	=>	'admin.borrowerprofile',
+											'permission'	=>	'updategrade.admin.manageborrowers',
+											'redirect_back'	=>	'admin.manageborrowers',
 											'action_type'	=>	'update grade borrower profile',
 											'uses' 			=>	'AdminManageBorrowersController@updateGradeProfileAction'
 										]
@@ -975,7 +979,8 @@ Route::post('ajax/CheckUserNameavailability', 'RegistrationController@CheckUserN
 Route::post('submit_registration', 'RegistrationController@submitAction');
 Route::get('register', 'RegistrationController@indexAction');
 Route::get('activation/{activation}', 'RegistrationController@activationAction'); 
-
+Route::get('verification', 'RegistrationController@verificationAction'); 
+/*
 Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";
-});
+});*/

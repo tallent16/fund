@@ -23,6 +23,11 @@ class InvestorMiddleWare {
             abort(403);
         }
 		$profileStatus	=	InvBal::checkProfileStatus();
+		if($profileStatus	==	INVESTOR_STATUS_COMMENTS_ON_ADMIN){
+			if (!$request->session()->has('notification_seen')) {
+				$request->session()->put('notification','Investor Profile Correction Reqiured');
+			}
+		}
 		if($profileStatus	==	0	||	$profileStatus	==INVESTOR_STATUS_NEW_PROFILE
 									||	$profileStatus	==INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL
 									||	$profileStatus	==INVESTOR_STATUS_COMMENTS_ON_ADMIN) {

@@ -35,8 +35,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		
 		$submitted	=	false;
 		$bor_id		=	base64_decode($bor_id);
-		//~ echo $bor_id;
-		//~ die;
+		
 		 if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
 			return redirect()->to('admin/manageborrowers');
 		}
@@ -55,7 +54,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	public function saveCommentProfileAction(){
 		
 		$postArray	=	Request::all();
-		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$bor_id		=	$postArray['borrower_id'];
 		$result		=	$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
 		if($result) {
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
@@ -69,7 +68,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	public function returnBorrowerProfileAction(){
 		
 		$postArray	=	Request::all();
-		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$bor_id		=	$postArray['borrower_id'];
 		$dataArray 	= 	array(	'status' 	=>	BORROWER_STATUS_COMMENTS_ON_ADMIN );
 		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"return_borrower");
 		if($result) {
@@ -84,7 +83,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	public function approveBorrowerProfileAction(){
 			
 		$postArray	=	Request::all();
-		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$bor_id		=	$postArray['borrower_id'];
 		$dataArray	= 	array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
 		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
 		if($result) {
@@ -99,14 +98,17 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	public function updateGradeProfileAction(){
 		
 		$postArray	=	Request::all();
-		$bor_id		=	base64_decode($postArray['borrower_id']);
+		$bor_id		=	$postArray['borrower_id'];
 		$result		=	$this->borrowerProfileModel->updateBorrowerGrade($postArray,$bor_id);
 		if($result) {
+			
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
 						->with('success','update borrower grade updated successfully');
 		}else{
+			
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
 						->with('failure','update borrower grade updated Failed');	
+			
 		}		
 	}
 	

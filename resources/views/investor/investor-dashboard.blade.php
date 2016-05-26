@@ -23,15 +23,6 @@
 		@var 	$ava_for_invest			= 	$InvDashMod->ava_for_invest;
 		@var	$invFeatureLoans		=	$InvDashMod->featuredLoanInfo;
 		<div class="col-sm-12 space-around"> 
-			<!--First row--->
-			<div class="row annoucement-msg-container">
-				<div class="alert alert-danger annoucement-msg">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>	
-					{{ Lang::get('Announcement section')}}		
-				</div>
-			</div>
-			<!--first row end-->
-			
 			<!--second row--->
 			<div class="row">
 				<!-----first col----->

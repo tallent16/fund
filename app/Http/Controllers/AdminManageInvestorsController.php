@@ -36,8 +36,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		
 		$submitted	=	false;
 		$inv_id		=	base64_decode($inv_id);
-		//~ echo $inv_id;
-		//~ die;
+		
 		 if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
 			return redirect()->to('admin/manageinvestors');
 		}
@@ -56,8 +55,12 @@ class AdminManageInvestorsController extends MoneyMatchController {
 	public function saveCommentProfileAction(){
 		
 		$postArray	=	Request::all();
-		$inv_id		=	base64_decode($postArray['investor_id']);
+		echo "<pre>",print_r($postArray),"</pre>";
+		
+		$inv_id		=	$postArray['investor_id'];
+		
 		$result		=	$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
+		
 		if($result) {
 			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
 						->with('success','Comments saved successfully');
@@ -70,7 +73,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 	public function returnInvestorProfileAction(){
 		
 		$postArray	=	Request::all();
-		$inv_id		=	base64_decode($postArray['investor_id']);
+		$inv_id		=	$postArray['investor_id'];
 		$dataArray 	= 	array(	'status' 	=>	INVESTOR_STATUS_COMMENTS_ON_ADMIN );
 		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"return_investor");
 		if($result) {
@@ -85,7 +88,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 	public function approveInvestorProfileAction(){
 			
 		$postArray	=	Request::all();
-		$inv_id		=	base64_decode($postArray['investor_id']);
+		$inv_id		=	$postArray['investor_id'];
 		$dataArray 	= 	array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
 		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
 		if($result) {
@@ -97,7 +100,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		}	
 	}
 	
-	public function approveInvestorAction($bor_id){
+	public function approveInvestorAction($inv_id){
 		
 		$inv_id		=	base64_decode($inv_id);
 		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
@@ -106,7 +109,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$inv_profile_status	=	$this->investorProfileModel->getInvestorProfileStatus($inv_id);
 		
 		$dataArray = array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
-		if($bor_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) {
+		if($inv_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) {
 			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
 			if($result) {
 				return redirect()->route('admin.manageinvestors')
@@ -119,7 +122,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		return redirect()->to('admin/manageinvestors');
 	}
 	
-	public function rejectInvestorAction($bor_id){
+	public function rejectInvestorAction($inv_id){
 		
 		$inv_id		=	base64_decode($inv_id);
 		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
@@ -143,7 +146,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		return redirect()->to('admin/manageinvestors');
 	}
 	
-	public function deleteInvestorAction($bor_id){
+	public function deleteInvestorAction($inv_id){
 		
 		$inv_id		=	base64_decode($inv_id);
 		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){

@@ -203,7 +203,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			$actionSumm =	"Approval";
 			$actionDet  =	"Approval of Loans";
 		} else {
-			if ($tranType != "add") {
+			if ($transType != "add") {
 				$actionSumm =	"Update";
 				$actionDet  =	"Update Loan Details";
 			} else {
@@ -485,7 +485,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 				
 				$comment_status		= $commentRows['comment_status_hidden'][$rowIndex];
 				$comment_id			= $commentRows['comment_id_hidden'][$rowIndex];
-				$idArray[]			= $comment_id;
+				$comments			= $commentRows['comments'][$rowIndex];
+				
 				$comment_datetime	= $this->getDbDateFormat(date("d/m/Y"));
 				$comment_text		= $commentRows['comments'][$rowIndex];		
 				$dataArray			= [	'loan_id'					=> $loan_id,
@@ -494,11 +495,15 @@ class BorrowerApplyLoanModel extends TranWrapper {
 										'comment_datetime' 			=> $comment_datetime];
 				$whereArray			= ["loan_approval_comments_id", $comment_id];
 				
+				
+
 				if ($this->makeFloat($comment_id) > 0) {
 					$this->dbUpdate('loan_approval_comments', $dataArray, $whereArray);
 				}else{
-					$this->dbInsert('loan_approval_comments', $dataArray, false);
+					$comment_id = $this->dbInsert('loan_approval_comments', $dataArray, true);
 				}
+				$idArray[]			= $comment_id;
+				
 			}
 		} else {
 			// Just so that we are not sending an empty array to the where condition
@@ -509,7 +514,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$where	=	["loan_id" => 	$loan_id,
 					 "whereNotIn" =>	["column" => 'loan_approval_comments_id',
 										 "valArr" => $idArray]];
-		$this-dbDelete("loan_approval_comments", $where);
+		$this->dbDelete("loan_approval_comments", $where);
 		return 1;
 	}
 	

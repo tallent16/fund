@@ -21,15 +21,13 @@ $(document).ready(function (){
 		}
 	 }); 
 	
-	$.validator.addMethod( 'passwordMatch', function(value, element) {
-		alert('');
+	$.validator.addMethod( 'passwordMatch', function(value, element) {		
 		// The two password inputs
 		var oldpassword = $("#oldpassword").val();
 		var newPassword = $("#password").val();
 
 		// Check for notequal with the password inputs
-		if (oldpassword == newPassword ) {
-			
+		if (oldpassword == newPassword ) {			
 			return false;
 		} else {
 			return true;
@@ -37,7 +35,10 @@ $(document).ready(function (){
 
 	}, "Passwords should not match with old password");
 
-
+	$.validator.addMethod("alphanumeric", function(value, element) {
+		return this.optional(element) || /^(?=.*\d)[a-zA-Z0-9]{10,}$/.test(value);
+	}
+	, "Letters, numbers or underscores only please"); 
 
 	 $('#resetpassword').validate({
             errorClass: 'help-block animated fadeInDown',
@@ -69,9 +70,10 @@ $(document).ready(function (){
                     //minlength: 3
                 },            
                 'password': {
-                    required: true,
-                    minlength: 4,  
-                    passwordMatch: true             
+                    required: true, 
+					minlength: 10 ,
+                    passwordMatch: true,
+					alphanumeric: true  
                 },
                 'ConfirmPassword': {
                     required: true,
@@ -84,11 +86,13 @@ $(document).ready(function (){
                 'EmailAddress': {
                     required: 'Please enter an email',
                     email: 'Email is not valid',         
-                    remote: 'Enter Registered email'                            
+                    remote: 'Only Registered email are allowed'                            
                 },                
                 'password': {
-                    required: 'Please provide a password with atleast 8 characters,alphanumeric', 
-                    passwordMatch: "Passwords should not match with old password"                 
+                    required: 'Please provide a password in alphanumeric with atleast 10 characters', 
+                    passwordMatch: "Passwords should not match with old password" ,
+                    alphanumeric: "Please enter 10 characters with atleast 1 letter & atleast 1 number or underscore" ,
+                    minlength: "Password strength should be atleast Moderate"                
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',

@@ -21,4 +21,10 @@ class MoneyMatchController extends Controller {
 		// This is a stub method will be implemented in the descendent objects
 		
 	}
+	
+ 	public function sessionDestroy() {
+		
+		Session::forget('notification_seen');
+		Session::flush();
+	}
 }

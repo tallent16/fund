@@ -82,21 +82,7 @@
 					</div> 
 				</div> 	
 			@endif
-			<!--comments----->
-			@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
-				@if(!$submitted && $modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="annoucement-msg-container">
-								<div class="alert alert-danger annoucement-msg">
-									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-									{{$modelBorPrf->comments}}
-								</div>
-							</div>
-						</div> 
-					</div> 	
-				@endif
-			@endif
+			
 			<form method="post" id="form-profile" name="form-profile" enctype="multipart/form-data">
 				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="trantype" value="{{ $trantype }}">
@@ -216,7 +202,7 @@
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 									@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
 										@if($modelBorPrf->comments_count	>	0)
-											@permission('returnborrower.admin.borrowerprofile')
+											@permission('returnborrower.admin.manageborrowers')
 												<button type="button"
 														id="returnback_button"
 														style="display:none"
@@ -233,7 +219,7 @@
 							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 								@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
 									@if($modelBorPrf->comments_count	==	0)
-										@permission('approve.admin.borrowerprofile')
+										@permission('approve.admin.manageborrowers')
 											<button type="button"
 													id="approve_profile_button"
 													style="display:none"

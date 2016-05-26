@@ -370,11 +370,16 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerDirectorInfo($postArray) {
 	 // $directorRows,$borrowerId) {
-		
-		$directorRows = $postArray["director_row"];
+
+		if (isset($postArray["director_row"])) {
+			$directorRows = $postArray["director_row"];
+			$numRows = count($directorRows['name']);
+		} else {
+			$directorRows = array();
+			$numRows = 0;
+		}
 		$borrowerId	  = $postArray["borrower_id"];
 		
-		$numRows = count($directorRows['name']);
 		$rowIndex = 0;
 		$directorIds  = array();
 
@@ -418,13 +423,11 @@ class BorrowerProfileModel extends TranWrapper {
 			
 		}
 		
-		if ($update && count($directorIds) > 0) {
-			$where	=	["borrower_id" => 	$borrowerId,
-						 "whereNotIn" =>	["column" => 'id',
-											 "valArr" => $directorIds]];
-			
-			$this->dbDelete("borrower_directors", $where);
-		}
+		$where	=	["borrower_id" => 	$borrowerId,
+					 "whereNotIn" =>	["column" => 'id',
+										 "valArr" => $directorIds]];
+		
+		$this->dbDelete("borrower_directors", $where);
 
 		return 1;
 	}
@@ -872,6 +875,7 @@ class BorrowerProfileModel extends TranWrapper {
 		foreach($postArray['borrower_ids'] as $borRow) {
 			$this->updateBorrowerStatus($dataArray,$borRow,$status);
 		}
+		return 1;
 	}
 	
 }

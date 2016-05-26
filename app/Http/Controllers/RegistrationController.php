@@ -18,6 +18,11 @@ class RegistrationController extends MoneyMatchController {
 		return view('register');
 	}
 	
+	//render the Verification page
+	public function verificationAction() {
+		return redirect('auth/login')->with("verified","Registration Successful,<br>Please proceed to your email to verify");
+	}
+	
 	//checks the email address exists or not
 	public function checkEmailavailability(Request $request) {
 		
@@ -67,18 +72,15 @@ class RegistrationController extends MoneyMatchController {
 				
 				if($resultActivated) {
 					$this->user->updateCodeStatus($code);
-					$msg="Your account is activated please login : <a href='".url()."/auth/login' >Click</a>"; 
+					return redirect('auth/login')->with("activation","Account Verified.<br>Please proceed to login now");					
 				}
-				else
-				{
-					$msg ="Your account is already active, no need to activate again";
-					$msg =$msg." please login : <a href='".url()."/auth/login' >Click</a>";
+				else{
+					$this->user->updateCodeStatus($code);
+					return redirect('auth/login')->with("activation","Your account is already active.<br>Please proceed to login now");					
 				}
 
-			}else{
-				$msg ="Wrong activation code.";
 			}
-		}
-		echo "<center><h3>".$msg."</h3></center>";
+		}		
+		return redirect('auth/login'); 
 	}
 }

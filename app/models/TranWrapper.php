@@ -192,7 +192,8 @@ class TranWrapper extends MoneyMatchModel {
 		$busorg_sql 	= "SELECT	bo_id,
 									bo_name,
 									bo_borrowing_allowed
-							FROM	business_organisations  ";
+							FROM	business_organisations  
+							WHERE	bo_borrowing_allowed	=	1";
 		
 		
 		$busorg_rs		=	$this->dbFetchAll($busorg_sql);
@@ -495,7 +496,7 @@ class TranWrapper extends MoneyMatchModel {
 							"bid_accepted" => LOAN_BIDS_STATUS_ACCEPTED,
 							"repayment_complete" => LOAN_STATUS_LOAN_REPAID
 							];
-		$activeloan_sql	= "	SELECT 	COUNT(*)
+		$activeloan_sql	= "	SELECT 	COUNT(*) active_loan
 							FROM 	loan_bids,
 									loans
 							WHERE 	(loan_bids.bid_status = (:bid_open) 
@@ -640,9 +641,9 @@ class TranWrapper extends MoneyMatchModel {
 		return ($cnt == 0)?false:true;
 	}
 	
-	public function getMinimumLoanBidAmount()	{
+	public function getSystemSettingFieldByKey($fieldKey)	{
 		
 		$system_settings	=	$this->getMailSettingsDetail();
-		return $system_settings[0]->minmum_bid_amount;
+		return $system_settings[0]->$fieldKey;
 	}
 }

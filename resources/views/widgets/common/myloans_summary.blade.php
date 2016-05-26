@@ -143,7 +143,7 @@
 			<form method="post" id="form-bid" {{($bidCnt	==	0)?"style='display:none'":""}} >
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 				<input type="hidden" name="bid_id" value="{{ $bid_id }}">	
-				<input type="hidden" id="minimum_bid_amount" value="{{ $LoanDetMod->minimum_bid_amount }}">	
+				<input type="hidden" id="minimum_bid_amount" value="{{number_format($LoanDetMod->min_bid_amount,2,'.',',')}}">	
 				<input 	type="hidden" 
 						name="bid_trantype"
 						value="{{($bidCnt	==	0)?'new':'edit'}}"

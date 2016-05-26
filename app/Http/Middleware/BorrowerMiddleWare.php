@@ -2,6 +2,7 @@
 
 use Closure;
 use BorProfile;
+use Session;
 class BorrowerMiddleWare {
 
 	/**
@@ -21,6 +22,11 @@ class BorrowerMiddleWare {
         }
 		$profileStatus	=	BorProfile::checkProfileStatus();
 		$LoanAllowingStatus	=	BorProfile::getBorrowerLoanAllowingStatus();
+		if($profileStatus	==	BORROWER_STATUS_COMMENTS_ON_ADMIN){
+			if (!$request->session()->has('notification_seen')) {
+				$request->session()->put('notification','Borrower Profile Correction Reqiured');
+			}
+		}
 		if($profileStatus	==	0	||	$profileStatus	==BORROWER_STATUS_NEW_PROFILE
 									||	$profileStatus	==BORROWER_STATUS_SUBMITTED_FOR_APPROVAL
 									||	$profileStatus	==BORROWER_STATUS_COMMENTS_ON_ADMIN) {

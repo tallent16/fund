@@ -32,7 +32,7 @@ class LoanDetailsModel extends TranWrapper {
 	public	$loan_status				=	"";
 	public	$target_interest			=	0;
 	public	$bid_type					=	0;
-	public	$minimum_bid_amount			=	0;
+	public	$min_bid_amount				=	0;
 	public 	$directorInfo				= 	array();
 	public 	$bidInfo 					= 	array();
 	public 	$bidDetail 					= 	array();
@@ -50,6 +50,7 @@ class LoanDetailsModel extends TranWrapper {
 															$this->getCurrentInvestorID();
 		$this->typePrefix		=	($this->userType == 1)? "borrower":
 															"investor";
+		$this->min_bid_amount	=	$this->getSystemSettingFieldByKey("minmum_bid_amount");
 	}
 	
 	public function getLoanDetails($loan_id) {
@@ -60,7 +61,6 @@ class LoanDetailsModel extends TranWrapper {
 		$this->getLoanDirector();
 		$this->getBidAverageInterest($loan_id);
 		$this->getLoanComments($loan_id);	
-		$min_bid_amount			=	$this->getMinimumLoanBidAmount();
 		switch($this->userType) {
 			case	USER_TYPE_INVESTOR:
 				$this->getPaymentSchedule($loan_id);
@@ -409,16 +409,18 @@ class LoanDetailsModel extends TranWrapper {
 	
 	public function processBid($postArray) {
 		
-		$transType			=	$postArray['bid_trantype'];
-		$bid_amount			=	$postArray['bid_amount'];
-		$bid_interest_rate	=	$postArray['bid_interest_rate'];
-		
+		$transType				=	$postArray['bid_trantype'];
+		$bid_amount				=	$postArray['bid_amount'];
+		$bid_interest_rate		=	$postArray['bid_interest_rate'];
+		$this->min_bid_amount	=	$this->getSystemSettingFieldByKey("minmum_bid_amount");
 		if(	($bid_interest_rate	>	0)	&&	($bid_interest_rate	>	0)	) {
+			if(	$bid_amount	>=	$this->min_bid_amount ) {
 			
-			if($transType	==	"new") {
-				return $this->insertBidInfo($postArray);
-			}else{
-				return $this->updateBidInfo($postArray);
+				if($transType	==	"new") {
+					return $this->insertBidInfo($postArray);
+				}else{
+					return $this->updateBidInfo($postArray);
+				}
 			}
 		}else{
 			return	-1;

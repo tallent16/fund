@@ -66,6 +66,12 @@
 				@if(session()->has('failure'))
 					@include('partials/error', ['type' => 'danger', 'message' => session('failure')])
 				@endif    
+				
+				@if(session()->has('notification'))
+					@include('partials/error', ['type' => 'notification', 'message' => session('notification')])
+					{{'';session()->put("notification_seen","yes");'';}}
+					{{'';session()->forget("notification");'';}}
+				@endif    
 			</div> 
 			
 			<div class="row">  
