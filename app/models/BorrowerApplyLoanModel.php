@@ -493,11 +493,10 @@ class BorrowerApplyLoanModel extends TranWrapper {
 										'comemnt_text'				=> $comments,
 										'comments_status'			=> $comment_status,
 										'comment_datetime' 			=> $comment_datetime];
-				$whereArray			= ["loan_approval_comments_id", $comment_id];
+				$whereArray			= ["loan_approval_comments_id"=> $comment_id];
 				
-				
-
-				if ($this->makeFloat($comment_id) > 0) {
+			
+				if ($comment_id > 0) {
 					$this->dbUpdate('loan_approval_comments', $dataArray, $whereArray);
 				}else{
 					$comment_id = $this->dbInsert('loan_approval_comments', $dataArray, true);

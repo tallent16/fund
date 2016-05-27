@@ -75,6 +75,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$inv_id		=	$postArray['investor_id'];
 		$dataArray 	= 	array(	'status' 	=>	INVESTOR_STATUS_COMMENTS_ON_ADMIN );
+		$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
 		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"return_investor");
 		if($result) {
 			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
@@ -90,6 +91,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$inv_id		=	$postArray['investor_id'];
 		$dataArray 	= 	array(	'status' 	=>	INVESTOR_STATUS_VERIFIED );
+		$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
 		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
 		if($result) {
 			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))

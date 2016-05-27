@@ -1,6 +1,8 @@
 <?php namespace App\models;
+use fileupload\FileUpload;
+use File;
+use Config;
 use Log;
-
 class InvestorProfileModel extends TranWrapper {
 	
 	public 	$investor_id	  				=  	"";
@@ -10,6 +12,14 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$displayname  					=  	"";
 	public 	$email  						=  	"";
 	public 	$mobile	  						=  	"";
+	public  $nationality					=	"Singaporean";
+	public	$acc_creation_date				;
+	public	$gender							=	"";
+	public	$identity_card_image_front		=	"";
+	public	$identity_card_image_back		=	"";
+	public	$address_proof_image			=	"";
+	
+	public	$estimated_yearly_income		=	"";	
 	public 	$date_of_birth  				=  	"";
 	public 	$nric_number			  		=  	"";
 	public 	$statusText			  			=  	"New profile";
@@ -42,6 +52,13 @@ class InvestorProfileModel extends TranWrapper {
 		$investorprofile_sql	= 	"	SELECT 	investors.investor_id ,
 											ifnull(DATE_FORMAT(investors.date_of_birth,'%d/%m/%Y'),'') date_of_birth,
 											investors.nric_number,
+											investors.nationality,
+											investors.gender,
+											investors.estimated_yearly_income,																						
+											ifnull(DATE_FORMAT(investors.acc_creation_date,'%d/%m/%Y'),'') acc_creation_date,
+											investors.identity_card_image_front,											
+											investors.identity_card_image_back,											
+											investors.address_proof_image,											
 											investors.status,
 											case investors.status 
 													when 1 then 'New profile' 
@@ -99,8 +116,6 @@ class InvestorProfileModel extends TranWrapper {
 	}
 	
 	public function processProfile($postArray) {
-		
-
 		$transType 		=	$postArray['trantype'];
 		$investorId		=	$this->updateInvestorInfo($postArray,$transType);
 		$moduleName		=	"Investor Profile";
@@ -137,8 +152,7 @@ class InvestorProfileModel extends TranWrapper {
 		return $investorId;
 	}
 	
-	public function updateInvestorInfo($postArray,$transType) {
-		
+	public function updateInvestorInfo($postArray,$transType) {		
 		if ($transType == "edit") {
 			$investorId	= $postArray['investor_id'];
 			$status		=	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL;
@@ -152,6 +166,14 @@ class InvestorProfileModel extends TranWrapper {
 		$displayname					= 	$postArray['displayname'];
 		$email							= 	$postArray['email'];
 		$mobile							= 	$postArray['mobile'];
+		$nationality					= 	$postArray['nationality'];
+		$gender							= 	$postArray['gender'];		
+		if(isset($postArray['gender']))
+			$gender 			= 	$this->makeFloat($postArray['gender']);
+		else
+			$gender 			= 	"";
+		$estimated_yearly_income		= 	$postArray['estimated_yearly_income'];
+		$acc_creation_date				=	$this->getDbDateFormat(date("d/m/Y"));
 		$current_user_id				=	$this->getCurrentuserID();
 		$date_of_birth					=	$postArray['date_of_birth'];
 		if($date_of_birth	==	"") 
@@ -160,15 +182,69 @@ class InvestorProfileModel extends TranWrapper {
 			$date_of_birth				= 	$this->getDbDateFormat($date_of_birth);
 		$nric_number 					= 	$postArray['nric_number'];
 		
+		
+		/*identity_card_image_front*/
+		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
+		$updateDataArry					=	array();
+		$fileUploadObj					=	new FileUpload();
+		
+		if(isset($postArray['identity_card_image_front'])){
+			$file		=	$postArray['identity_card_image_front'];
+			$imagePath	=	$destinationPath."/".$investorId."/profile/image";
+			$fileUploadObj->createIfNotExists($imagePath);
+			$fileUploadObj->storeFile($imagePath ,$file);
+			$filename 						= 	$file->getClientOriginalName();
+			$identity_card_image_front		=	$imagePath."/".$filename;
+			$dataArray						=	array(	"identity_card_image_front"=>$identity_card_image_front,											
+											);
+		}
+		
+		/*identity_card_image_back*/
+		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
+		$updateDataArry					=	array();
+		$fileUploadObj					=	new FileUpload();
+		if(isset($postArray['identity_card_image_back'])){
+			$file		=	$postArray['identity_card_image_back'];
+			$imagePath	=	$destinationPath."/".$investorId."/profile/image";
+			$fileUploadObj->createIfNotExists($imagePath);
+			$fileUploadObj->storeFile($imagePath ,$file);
+			$filename 						= 	$file->getClientOriginalName();
+			$identity_card_image_back		=	$imagePath."/".$filename;
+			$dataArray						=	array(	"identity_card_image_back"=>$identity_card_image_back,											
+											);
+		}
+		
+		/*address_proof_image*/
+		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
+		$updateDataArry					=	array();
+		$fileUploadObj					=	new FileUpload();
+		
+		if(isset($postArray['address_proof_image'])){
+			$file		=	$postArray['address_proof_image'];
+			$imagePath	=	$destinationPath."/".$investorId."/profile/image";
+			$fileUploadObj->createIfNotExists($imagePath);
+			$fileUploadObj->storeFile($imagePath ,$file);
+			$filename 						= 	$file->getClientOriginalName();
+			$address_proof_image		=	$imagePath."/".$filename;
+			$dataArray						=	array(	"address_proof_image"=>$address_proof_image,											
+											);
+		}
+	
 		$dataUserArray 	= 	array(	'firstname' 					=> ($firstname!="")?$firstname:null,
 									'lastname'						=> ($lastname!="")?$lastname:null,
 									'username'						=> ($displayname!="")?$displayname:null,
 									'email'							=> $email,
 									'mobile' 						=> ($mobile!="")?$mobile:null);
 									
+									
 		$dataArray 		= 	array(	'date_of_birth' 				=> $date_of_birth,
 									'nric_number'					=> ($nric_number!="")?$nric_number:null,
-									'user_id' 						=> $current_user_id);
+									'user_id' 						=> $current_user_id,
+									'nationality' 					=> ($nationality!="")?$nationality:null,
+									'gender' 						=> ($gender!="")?$gender:null,
+									'estimated_yearly_income' 		=> ($estimated_yearly_income!="")?$estimated_yearly_income:null,
+									'acc_creation_date	' 			=> ($acc_creation_date	!="")?$acc_creation_date	:null);
+									
 		if ($transType == "edit") {
 			if($postArray['isSaveButton']	!=	"yes") {
 				$dataArray['status'] = $status;

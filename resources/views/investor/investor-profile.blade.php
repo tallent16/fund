@@ -2,11 +2,17 @@
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
 @endsection
-@section('bottomscripts')	
-	
+@section('bottomscripts')
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
+	<script>
+		var baseUrl	=	"{{url('')}}"
+		$(document).ready(function(){ 	
+			$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
+		}); 
+	</script>
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
-	
+	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 	<script>
 		var baseUrl	=	"{{url()}}";
 	</script>
@@ -69,7 +75,7 @@
 			
 		@endif
 	</div>
-	<form method="post" id="form-profile" name="form-profile">
+	<form method="post" id="form-profile" name="form-profile"enctype="multipart/form-data" >
 			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 			<input type="hidden" name="trantype" value="{{ $trantype }}">
 			<input type="hidden" id="isSaveButton" name="isSaveButton" value="">
@@ -115,8 +121,9 @@
 							<!-----Second Tab content ends----->	
 						@endif					
 					</div>	<!---col ends-->	
-				</div>
+				</div>				
 			</div>
+			<div><p class="bg-warning">If you need to change your profile information, please drop an email to admin@fundyourselfnow.com</p></div> 
 			<div class="col-sm-12 col-lg-12  space-around">
 				<div class="pull-right">
 				@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
@@ -133,8 +140,7 @@
 						
 					@endif
 				@endif
-				@if((Auth::user()->usertype	==	USER_TYPE_INVESTOR && $investor_status	==	"corrections_required")
-					|| (Auth::user()->usertype	==	USER_TYPE_ADMIN))
+				@if((Auth::user()->usertype	==	USER_TYPE_INVESTOR && $investor_status	==	"corrections_required"))
 					<button type="button" 
 							id="next_button"
 							data-tab-id="company_info"
@@ -158,8 +164,7 @@
 				
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					@if( $InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
-						@if($InvPrfMod->comments_count	>	0)
-							@permission('returninvestor.admin.manageinvestors')
+						@permission('returninvestor.admin.manageinvestors')
 								<button type="button"
 										id="returnback_button"
 										style="display:none"
@@ -168,31 +173,28 @@
 									<i class="fa pull-right"></i>
 									{{ Lang::get('Return to Investor') }}
 								</button>
-							@endpermission
-						@endif
+						@endpermission
 					@endif
 				@endif
 				
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					@if( $InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)
-						@if($InvPrfMod->comments_count	==	0)
-							@permission('approve.admin.manageinvestors')
+						@permission('approve.admin.manageinvestors')
 								<button type="button"
 										id="approve_profile_button"
-										style="display:none"
 										class="btn verification-button"
 										data-screen-type="investor"
 									<i class="fa pull-right"></i>
 									{{ Lang::get('Approve Profile') }}
 								</button>
-							@endpermission
-						@endif
+						@endpermission
 					@endif
 				@endif
 			</div>
 		</div>		
-	</form>             
+	</form>          	  
 </div><!-----col--12--->
+
   <div style="display:none">
 
 	<input type="hidden" id="max_comment" value= "{{ count($InvPrfMod->commentsInfo) }}" />

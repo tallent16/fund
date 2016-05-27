@@ -103,17 +103,13 @@ class LoanListingModel extends TranWrapper {
 		$this->filterTenureValue  = $filterTenure;
 		$this->filterGradeValue   = $filterGrade;
 		
-		$intWhere			=	" target_interest " . ($filterIntRate == "all"? 
-								" = target_interest ":$filterIntRate. " ");
+		$intWhere			=	($filterIntRate == "all"?"":" AND target_interest ". $filterIntRate. " ");
 								
-		$loanAmtWhere		=	" apply_amount " . ($filterLoanAmt == "all"? " = apply_amount ":
-								$filterLoanAmt. " ");
+		$loanAmtWhere		=	 ($filterLoanAmt == "all"?"":" AND apply_amount	".$filterLoanAmt. " ");
 												
-		$tenureWhere		=	" loan_tenure " . ($filterTenure == "all"? " = loan_tenure ":
-								$filterTenure. " ");
+		$tenureWhere		=	 ($filterTenure == "all"?"":" AND loan_tenure ".$filterTenure. " ");
 
-		$gradeWhere			=	" borrower_risk_grade " . ($filterGrade == "all"? " = borrower_risk_grade ":
-								$filterGrade. " ");
+		$gradeWhere			=	($filterGrade == "all"? "":" AND borrowers.borrower_risk_grade ".$filterGrade. " ");
 		
 		$loanlist_sql		=	"	SELECT	loans.loan_id,
 											business_name,
@@ -145,17 +141,16 @@ class LoanListingModel extends TranWrapper {
 											borrowers
 									WHERE	borrowers.borrower_id = loans.borrower_id
 									AND		loans.status = 3
-									AND		{$intWhere}
-									AND		{$loanAmtWhere}
-									AND		{$tenureWhere}
-									and		{$gradeWhere}
+											{$intWhere}
+											{$loanAmtWhere}
+											{$tenureWhere}
+											{$gradeWhere}
 									order by isfeatured desc, loan_display_order asc
 ";
-
-		$this->dbEnableQueryLog();
 		$this->loanList	=	$this->dbFetchWithParam($loanlist_sql, 
 										["bids_cancelled" => LOAN_BIDS_STATUS_CANCELLED]);
-
+	
+	
 	}
 	
 }

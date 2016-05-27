@@ -1,3 +1,4 @@
+var formValid	=	false;
 $(document).ready(function (){  
 	
 	$(".divs div.dir-list").each(function(e) {
@@ -49,7 +50,15 @@ $(document).ready(function (){
     });
     
 	$("#approve_profile_button").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/approve");
+		$("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/approve");
+		if($('.commentClass:not(#comment_status_XXX)').not(':checked').length){
+			errMessage	=	"Please close all comments before approve";
+			showDialog("",errMessage);
+			$('.nav-tabs a[href="#comments_info"]').tab('show');
+			formValid	=	false;
+		}else{
+			formValid	=	true;
+		}
     });
     
 	$("#update_grade").click(function(){
@@ -58,6 +67,14 @@ $(document).ready(function (){
     
 	$("#returnback_button").click(function(){
       $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/return_borrower");
+      
+		if($('.commentClass:checked').length){
+			errMessage	=	"There is no open comments to return back to borrower";
+			showDialog("",errMessage);
+			formValid	=	false;
+		}else{
+			formValid	=	true;
+		}
     });
 	
 	$("#save_comment_button").click(function(){
@@ -87,7 +104,6 @@ $(document).ready(function (){
 			$("#next_button").show();
 			$("#submit_button").hide();
 			$("#returnback_button").hide();
-			$("#approve_profile_button").hide();
 			if($(this).hasClass("disabled"))
 				return false;
 			if($(this).find("a").attr("href")	==	"#bank_info") {
@@ -137,6 +153,10 @@ $(document).ready(function (){
 				$("#next_button").hide();
 				$("#submit_button").show();
 			}
+		}
+		if($("#screen_mode").val()	==	"admin"){
+			if(!formValid)
+				event.preventDefault();
 		}
 	});
 	 

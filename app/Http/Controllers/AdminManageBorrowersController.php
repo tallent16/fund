@@ -70,6 +70,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$bor_id		=	$postArray['borrower_id'];
 		$dataArray 	= 	array(	'status' 	=>	BORROWER_STATUS_COMMENTS_ON_ADMIN );
+		$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
 		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"return_borrower");
 		if($result) {
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
@@ -85,6 +86,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$bor_id		=	$postArray['borrower_id'];
 		$dataArray	= 	array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
+		$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
 		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
 		if($result) {
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))

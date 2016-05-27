@@ -1,3 +1,4 @@
+var formValid	=	false;
 $(document).ready(function (){ 
 	
 	$.ajaxSetup({
@@ -33,6 +34,10 @@ $(document).ready(function (){
 			if ($("#form-profile").has('div.has-error').length > 0)
 				e.preventDefault();
 		}
+		if($("#screen_mode").val()	==	"admin"){
+			if(!formValid)
+				event.preventDefault();
+		}
 	});
 	$("#next_button").click(function(){
 		
@@ -40,19 +45,14 @@ $(document).ready(function (){
 		$("#next_button").hide();
 		$("#submit_button").show();
 		$("#returnback_button").show();
-		$("#approve_profile_button").show();
 	});
 	$(".nav-tabs > li").click(function(){
 		$("#next_button").show();
 		$("#submit_button").hide();
-		$("#returnback_button").hide();
-		$("#approve_profile_button").hide();
-
 		if($(this).find("a").attr("href")	==	"#comments_info") {
 			$("#next_button").hide();
 			$("#submit_button").show();
 			$("#returnback_button").show();
-			$("#approve_profile_button").show();
 		}
 	});
 	
@@ -62,10 +62,25 @@ $(document).ready(function (){
     
     $("#approve_profile_button").click(function(){
       $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/approve");
+      	if($('.commentClass:not(#comment_status_XXX)').not(':checked').length){
+			errMessage	=	"Please close all comments before approve";
+			showDialog("",errMessage);
+			$('.nav-tabs a[href="#comments_info"]').tab('show');
+			formValid	=	false;
+		}else{
+			formValid	=	true;
+		}
     });
     
 	$("#returnback_button").click(function(){
       $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/return_investor");
+		if($('.commentClass:checked').length){
+			errMessage	=	"There is no open comments to return back to investor";
+			showDialog("",errMessage);
+			formValid	=	false;
+		}else{
+			formValid	=	true;
+		}
     });
 	
 	$("#save_comment_button").click(function(){

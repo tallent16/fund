@@ -227,7 +227,7 @@ class BorrowerProfileModel extends TranWrapper {
 
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
 
-		$this->updateBorrowerDirectorInfo($postArray);
+		$this->updateBorrowerDirectorInfo($postArray,$borrowerId);
 		
 		if (isset($postArray['finacialRatio_row'])) {
 			$finacialRatioRows = $postArray['finacialRatio_row'];
@@ -368,9 +368,9 @@ class BorrowerProfileModel extends TranWrapper {
 		}
 	}
 	
-	public function updateBorrowerDirectorInfo($postArray) {
+	public function updateBorrowerDirectorInfo($postArray,$borrowerId) {
 	 // $directorRows,$borrowerId) {
-
+ 
 		if (isset($postArray["director_row"])) {
 			$directorRows = $postArray["director_row"];
 			$numRows = count($directorRows['name']);
@@ -378,7 +378,6 @@ class BorrowerProfileModel extends TranWrapper {
 			$directorRows = array();
 			$numRows = 0;
 		}
-		$borrowerId	  = $postArray["borrower_id"];
 		
 		$rowIndex = 0;
 		$directorIds  = array();
@@ -386,7 +385,7 @@ class BorrowerProfileModel extends TranWrapper {
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 			$borrower_id 				= $borrowerId;
 			
-			$id							= $this->makeFloat($directorRows['id'][$rowIndex]);
+			$id							= $directorRows['id'][$rowIndex];
 			if ($id > 0) {
 				$directorIds[] = $id;
 				$update = true;
@@ -418,7 +417,8 @@ class BorrowerProfileModel extends TranWrapper {
 								 "id"			=> $id];
 				$this->dbUpdate("borrower_directors", $dataArray, $whereArray);
 			} else {
-				$result =  $this->dbInsert('borrower_directors', $dataArray, true);
+				$id	 =  $this->dbInsert('borrower_directors', $dataArray, true);
+				$directorIds[]	=	$id;
 			}
 			
 		}

@@ -181,28 +181,32 @@
 										</button>
 									@endif
 								@endif
-								<button type="button" 
+								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									<button type="button" 
 											id="next_button"
 											data-tab-id="company_info"
 										class="btn verification-button" >
 										<i class="fa pull-right"></i>
 										{{ Lang::get('Next') }}
 									</button>
+								@endif
 								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
-									<button type="submit" 
-											style="display:none"
-											id="submit_button"
-											class="btn verification-button {{$modelBorPrf->viewStatus}}"
-											 {{$modelBorPrf->viewStatus}}>
-										<i class="fa pull-right"></i>
-										{{ Lang::get('borrower-profile.submit_verification') }}
-									</button>
+									@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+										||	($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) )
+										<button type="submit" 
+												style="display:none"
+												id="submit_button"
+												class="btn verification-button {{$modelBorPrf->viewStatus}}"
+												 {{$modelBorPrf->viewStatus}}>
+											<i class="fa pull-right"></i>
+											{{ Lang::get('borrower-profile.submit_verification') }}
+										</button>
+									@endif
 								@endif
 								
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 									@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
-										@if($modelBorPrf->comments_count	>	0)
-											@permission('returnborrower.admin.manageborrowers')
+										@permission('returnborrower.admin.manageborrowers')
 												<button type="button"
 														id="returnback_button"
 														style="display:none"
@@ -211,25 +215,21 @@
 													<i class="fa pull-right"></i>
 													{{ Lang::get('Return to Borrower') }}
 												</button>
-											@endpermission
-										@endif
+										@endpermission
 									@endif
 								@endif
 								
 							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 								@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
-									@if($modelBorPrf->comments_count	==	0)
-										@permission('approve.admin.manageborrowers')
+									@permission('approve.admin.manageborrowers')
 											<button type="button"
 													id="approve_profile_button"
-													style="display:none"
 													class="btn verification-button"
 													data-screen-type="borrower"
 												<i class="fa pull-right"></i>
 												{{ Lang::get('Approve Profile') }}
 											</button>
-										@endpermission
-									@endif
+									@endpermission
 								@endif
 							@endif
 							</div>

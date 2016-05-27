@@ -156,7 +156,8 @@
 								id="paid_up_capital" 
 								name="paid_up_capital"
 								value="{{number_format($modelBorPrf->paid_up_capital,2,'.',',') 	 }}"
-								class="form-control text-right required"
+								class="form-control text-right required amount-align"
+								decimal=2
 								/>						
 				</div>
 								
@@ -219,11 +220,19 @@
 								data-buttonBefore="true" 
 								name="company_image"
 								id="company_image"
+								accept="image/*" 
 								/>									
 					<input 	type="hidden" 
 								id="company_image_hidden"
 								value="{{ $modelBorPrf->company_image }}"
-								/>									
+								/>		
+					@if($modelBorPrf->company_image!="")
+						<a 	href="{{url($modelBorPrf->company_image)}}"  
+							target="_blank" 
+							class="hyperlink">
+							{{basename($modelBorPrf->company_image)}}
+						</a>
+					@endif
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label>
@@ -236,7 +245,15 @@
 							class="jfilestyle" 
 							data-buttonBefore="true" 
 							name="company_thumbnail"
-							/>									
+							accept="image/*" 
+							/>		
+					@if($modelBorPrf->company_thumbnail!="")
+						<a href="{{url($modelBorPrf->company_thumbnail)}}" 
+							target="_blank" 
+							class="hyperlink">
+							{{basename($modelBorPrf->company_thumbnail)}}
+						</a>
+					@endif							
 				</div>							
 			</div>	
 		</fieldset>	

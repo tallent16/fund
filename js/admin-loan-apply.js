@@ -64,7 +64,7 @@ $(document).ready(function (){
 		
 		$('span.error').remove();
 		$('.has-error').removeClass("has-error");
-		if($(this).attr("action") !=	baseUrl+"/admin/downloadAllFiles") {
+		if($("#bid_close_date").length) {
 			checkAjaxValidation();
 			if ($("#loan_details").has('.has-error').length > 0) {
 				event.preventDefault();

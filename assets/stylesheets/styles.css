@@ -8970,6 +8970,10 @@ canvas.round {
 /*# sourceMappingURL=styles.css.map */
 /*---------------------------CUSTOM CSS STARTS HERE-------------------**/
 /****************************Common css*********************************/
+.hyperlink,.hyperlink:hover{
+	color:#4B4949;
+	text-decoration:none;
+}
 .homepage-alert{
 	position: relative;
 	top: 10em;

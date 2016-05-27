@@ -36,7 +36,7 @@ $(document).ready(function (){
 	}, "Passwords should not match with old password");
 
 	$.validator.addMethod("alphanumeric", function(value, element) {
-		return this.optional(element) || /^(?=.*\d)[a-zA-Z0-9]{10,}$/.test(value);
+		return this.optional(element) || /^(?=.*\d+)(?=.*[!@#$%^&*()_+])[a-zA-Z\d\!@#\$%&\*]{10,}$/.test(value);
 	}
 	, "Letters, numbers or underscores only please"); 
 
@@ -89,10 +89,10 @@ $(document).ready(function (){
                     remote: 'Only Registered email are allowed'                            
                 },                
                 'password': {
-                    required: 'Please provide a password in alphanumeric with atleast 10 characters', 
+                    required: 'Please provide a password', 
                     passwordMatch: "Passwords should not match with old password" ,
-                    alphanumeric: "Please enter 10 characters with atleast 1 letter & atleast 1 number or underscore" ,
-                    minlength: "Password strength should be atleast Moderate"                
+                    alphanumeric: 'Please enter 10 characters with atleast 1 letter & 1 number & 1 specialcharacter',
+                    minlength: 'Password strength should not be weak & (Min:10 characters)'               
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',
