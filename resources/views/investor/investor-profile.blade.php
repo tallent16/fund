@@ -13,9 +13,6 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
-	<script>
-		var baseUrl	=	"{{url()}}";
-	</script>
 	<script src="{{ url('js/investor-profile.js') }}" type="text/javascript"></script>
 	
 @endsection
@@ -126,6 +123,22 @@
 			<div><p class="bg-warning">If you need to change your profile information, please drop an email to admin@fundyourselfnow.com</p></div> 
 			<div class="col-sm-12 col-lg-12  space-around">
 				<div class="pull-right">
+				<!---mobile number update--->
+				@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
+					@if(($InvPrfMod->status	==	INVESTOR_STATUS_VERIFIED)
+						||	($InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) )
+					
+						<button type="button" 
+								class="btn verification-button"
+								id="update_mobile_button"
+								>
+								<i class="fa pull-right"></i>
+								{{ Lang::get('Save') }}
+						</button>
+					
+					@endif
+				@endif	
+				<!----->	
 				@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
 					@if(($InvPrfMod->status	==	INVESTOR_STATUS_COMMENTS_ON_ADMIN)
 						||	($InvPrfMod->status	==	INVESTOR_STATUS_NEW_PROFILE) )

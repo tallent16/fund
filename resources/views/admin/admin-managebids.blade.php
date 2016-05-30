@@ -231,7 +231,32 @@
 					@else
 						@var	$userType	=	"borrower"
 					@endif
+					
 					<div class="row"><!---row--3-->	
+						@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+							<button type="submit" formaction="/{{$userType}}/bidclose" 
+										class="btn verification-button"
+										onclick="bidCloseClicked()"
+										{{($bidsModel->loan_status==LOAN_STATUS_APPROVED)?
+											'':'disabled'}}>
+									Close Bid
+							</button>
+							<button type="submit" formaction="/{{$userType}}/bidaccept" 
+										class="btn verification-button"
+										onclick="acceptBidClicked()"
+										
+										{{($bidsModel->loan_status==LOAN_STATUS_CLOSED_FOR_BIDS)?
+											'':'disabled'}}>
+									Accept Bid
+							</button>
+							<button type="submit" formaction="/{{$userType}}/loancancel" 
+										class="btn verification-button"
+										id = "cancelbutton"
+										onclick="cancelLoanClicked()">
+									Cancel Loan
+							</button>
+						@endif
+						@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 							@permission('closebid.admin.manageloanbids')					
 								<button type="submit" formaction="/{{$userType}}/bidclose" 
 										class="btn verification-button"
@@ -256,16 +281,16 @@
 										onclick="cancelLoanClicked()">
 									Cancel Loan</button>
 							@endpermission
-							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+							
 								@permission('loandisburse.admin.manageloanbids')
-									<button type="submit" formaction="/admin/loandisburse" 
+									<button type="submit" formaction="/admin/disburseloan/{{base64_encode($bidsModel->loan_id)}}" 
 											class="btn verification-button"										
 											onclick="disburseLoanClicked()"
 											{{($bidsModel->loan_status==LOAN_STATUS_BIDS_ACCEPTED)?
 												'':'disabled'}}>
 										Disburse Loan</button>
 								@endpermission
-							@endif						
+						@endif				
 					</div><!-----row-3 end--->	
 					
 				</div><!--end col-sm-12-->

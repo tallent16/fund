@@ -2,7 +2,21 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	
+	<script>
+		$(document).ready(function(){ 
+			// date picker
+			$('#fromdate').datetimepicker({
+				autoclose: true, 
+				minView: 2,
+				format: 'dd-mm-yyyy' 
+				}); 	
+			$('#todate').datetimepicker({
+				autoclose: true, 
+				minView: 2,
+				format: 'dd-mm-yyyy' 
+				}); 
+		}); 
+	</script>
 @endsection
 @section('page_heading',Lang::get('Investor Deposit') )
 @section('section')  

@@ -35,7 +35,7 @@
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="loan_ref_num_parent">													
 						<input type="text" class="form-control select-width amount-align" 
 								name="loan_ref_num"												
-								id="loan_ref_num"																									
+								id="loan_ref_num"
 								value="{{$BorModLoan->loan_reference_number}}" disabled >										
 					</div>
 				</div>
@@ -83,14 +83,16 @@
 					</div>						
 							
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
-						<label class="input-required">{{ Lang::get('borrower-applyloan.bid_close_date') }}</label>												
+						<label class="input-required">
+							{{ Lang::get('borrower-applyloan.loan_tenure') }}
+						</label>												
 					</div>																
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="date-picker-2_parent">	
-						<input 	type="text" 
-								class="form-control" 
-								name="bid_close_date"
-								value="{{$BorModLoan->bid_close_date}}"
-								readonly />
+						{{ Form::select('loan_tenure', $BorModLoan->loan_tenure_list, $BorModLoan->loan_tenure,
+																["class" => "selectpicker text-right required",
+																"id"=>"loan_tenure"]
+																) 
+						}}			
 					</div>
 				</div>	
 				<!--------------------------------row3----------------------------------->	
@@ -98,51 +100,38 @@
 				<div class="row">		
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('borrower-applyloan.loan_tenure') }}
-						</label>												
-					</div>
-					<div class="col-xs-6 col-sm-4 col-lg-2" id="loan_tenure_parent">	
-						
-							{{ Form::select('loan_tenure', $BorModLoan->loan_tenure_list, $BorModLoan->loan_tenure,
-																["class" => "selectpicker text-right required",
-																"id"=>"loan_tenure"]
-																) }}									
-								
-					</div> 	
-					<div class="col-lg-1 col-sm-3 col-xs-6"></div>
-					<div class="col-xs-12 col-sm-5 col-lg-3">											
-						<label class="input-required">
 							{{ Lang::get('borrower-applyloan.target_int') }}
 						</label>												
 					</div>
-					<div class="col-xs-5 col-sm-4 col-lg-2" id="target_interest_parent">													
+					<div class="col-xs-6 col-sm-4 col-lg-2" id="loan_tenure_parent">	
 						<input type="text" class="form-control select-width text-right required amount-align" 
 								name="target_interest"												
 								id="target_interest"
 								decimal="2"															
-								value="{{$BorModLoan->target_interest}}" >
+								value="{{$BorModLoan->target_interest}}" >		
+					</div> 	
+					<div class="col-lg-1 col-sm-3 col-xs-6"></div>
+					<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<label class="input-required">
+							{{ Lang::get('borrower-applyloan.payment_type') }}
+						</label>												
+					</div>
+					<div class="col-xs-5 col-sm-4 col-lg-2" id="target_interest_parent">
+						<select id="payment_type" 
+								name="payment_type" 
+								class="selectpicker required">
+								{{$BorModLoan->paymentTypeSelectOptions}}
+						</select>	
 					</div>							
 				</div>
 				<!--------------------------------row4----------------------------------->	
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('borrower-applyloan.payment_type') }}
+							{{ Lang::get('borrower-applyloan.accept_partial_sub') }}
 						</label>												
 					</div>																	
-					<div class="col-xs-12 col-sm-7 col-lg-3" id="payment_type_parent">						 							
-						<select id="payment_type" 
-								name="payment_type" 
-								class="selectpicker required">
-								{{$BorModLoan->paymentTypeSelectOptions}}
-						</select>												
-					</div>	
-					
-					<div class="col-xs-12 col-sm-5 col-lg-3">											
-						<label class="input-required">{{ Lang::get('borrower-applyloan.accept_partial_sub') }}</label>												
-					</div>																
-					<div class="col-xs-12 col-sm-7 col-lg-3">														 
-						<label class="radio-inline">
+					<div class="col-xs-12 col-sm-7 col-lg-3" id="payment_type_parent">	<label class="radio-inline">
 							<input 	type="radio" 
 									name="partial_sub_allowed"
 									value="1"
@@ -155,34 +144,24 @@
 									value="2"
 									{{$par_sub_allowed_no}}>
 							{{ Lang::get('borrower-applyloan.no') }}
-						</label>																						
-					</div>
-				</div>
-				<!--------------------------------row5----------------------------------->	
-				<div class="row">
-					<div class="col-xs-12 col-sm-5 col-lg-3">	
-					</div>
-					<div class="col-xs-12 col-sm-7 col-lg-3">	
-					</div>			
-									
+						</label>														
+					</div>	
+					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
-						<label>
+						<label class="input-required">
 							{{ Lang::get('borrower-applyloan.minimum_limit') }}
 						</label>												
-					</div>
-					<div class="col-xs-6 col-sm-4 col-lg-2" id="min_for_partial_sub_parent">														 
+					</div>																
+					<div class="col-xs-12 col-sm-7 col-lg-3">														 
 						<input 	type="text" 
 								class="form-control select-width text-right amount-align"
 								 name="min_for_partial_sub"
 								 id="min_for_partial_sub"
 								 decimal="2"
 								 {{$par_sub_allowed_disabled}}
-								 value="{{$BorModLoan->min_for_partial_sub}}">	
-																				
+								 value="{{$BorModLoan->min_for_partial_sub}}">																				
 					</div>
-					<div class="col-lg-1 col-sm-3 col-xs-6"></div>
-				</div>			
-				<!--------------------------------row6----------------------------------->
+				</div>
 			</fieldset>	
 		</div><!--panel-body--->
 		

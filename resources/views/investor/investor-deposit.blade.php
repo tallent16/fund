@@ -10,6 +10,19 @@
 			$(".amount-align").on("blur", function() {
 				onBlurNumberField(this)
 			})
+			// date picker
+			$('#fromdate').datetimepicker({
+				autoclose: true, 
+				minView: 2,
+				format: 'dd-mm-yyyy' 
+				}); 	
+			$('#todate').datetimepicker({
+				autoclose: true, 
+				minView: 2,
+				format: 'dd-mm-yyyy' 
+				}); 
+				getAvailableBalance();
+			}); 
 		});
 	</script>
 @endsection

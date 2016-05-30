@@ -12,7 +12,7 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$displayname  					=  	"";
 	public 	$email  						=  	"";
 	public 	$mobile	  						=  	"";
-	public  $nationality					=	"Singaporean";
+	//public  $nationality					=	"Singaporean";
 	public	$acc_creation_date				;
 	public	$gender							=	"";
 	public	$identity_card_image_front		=	"";
@@ -32,8 +32,35 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$commentsInfo 					= 	array();
 	public 	$comments_count					= 	0;
 	public 	$status							= 	"";
+	public  $allTransList					= array();
+	public  $nationality_code				= "SG";
 	
+	public function processDropDowns() {				
+				
+		$filterSql		=	"SELECT * FROM nationality";
+								
+		$filter_rs		= 	$this->dbFetchAll($filterSql);	
 		
+		if (!$filter_rs) {
+			throw exception ("not correct");
+			return;
+		}
+		
+		foreach($filter_rs as $filter_row) {
+			$countryname 	= 	$filter_row->country_name;
+			$countrycode 	= 	$filter_row->country_code;
+			$this->allTransList[$countrycode ] 	=	$countryname;
+		}
+		
+		/*$defaultfilterSql  		= "SELECT 
+									country_name 
+									FROM nationality 
+									WHERE country_code='SG' ";
+						
+		$this->filter_code		= 	$this->dbFetchOne($defaultfilterSql);*/
+	
+	}		
+	
 	public function getInvestorDetails($inv_id=null) {
 		
 		$this->getInvestorProfile($inv_id);
@@ -53,8 +80,8 @@ class InvestorProfileModel extends TranWrapper {
 											ifnull(DATE_FORMAT(investors.date_of_birth,'%d/%m/%Y'),'') date_of_birth,
 											investors.nric_number,
 											investors.nationality,
-											investors.gender,
-											investors.estimated_yearly_income,																						
+											investors.gender,											
+											ROUND(investors.estimated_yearly_income,2) estimated_yearly_income,																						
 											ifnull(DATE_FORMAT(investors.acc_creation_date,'%d/%m/%Y'),'') acc_creation_date,
 											investors.identity_card_image_front,											
 											investors.identity_card_image_back,											
@@ -116,6 +143,8 @@ class InvestorProfileModel extends TranWrapper {
 	}
 	
 	public function processProfile($postArray) {
+		//~ echo "<pre>",print_r($postArray),"</pre>";
+		//~ die;
 		$transType 		=	$postArray['trantype'];
 		$investorId		=	$this->updateInvestorInfo($postArray,$transType);
 		$moduleName		=	"Investor Profile";
@@ -159,20 +188,24 @@ class InvestorProfileModel extends TranWrapper {
 		} else {
 			$investorId = 0;
 			$status		=	INVESTOR_STATUS_NEW_PROFILE;
+			if($postArray['isSaveButton']	!=	"yes") {
+				$status		=	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL;
+			}
 		}
 	
 		$firstname 						=	$postArray['firstname'];
 		$lastname						= 	$postArray['lastname'];
 		$displayname					= 	$postArray['displayname'];
 		$email							= 	$postArray['email'];
-		$mobile							= 	$postArray['mobile'];
-		$nationality					= 	$postArray['nationality'];
+		$mobile							= 	$postArray['mobile'];		
+		$nationality					= 	$postArray['nationality'];		
+			
 		$gender							= 	$postArray['gender'];		
 		if(isset($postArray['gender']))
-			$gender 			= 	$this->makeFloat($postArray['gender']);
+			$gender 			= 	$postArray['gender'];
 		else
 			$gender 			= 	"";
-		$estimated_yearly_income		= 	$postArray['estimated_yearly_income'];
+		$estimated_yearly_income		= 	$this->makeFloat($postArray['estimated_yearly_income']);
 		$acc_creation_date				=	$this->getDbDateFormat(date("d/m/Y"));
 		$current_user_id				=	$this->getCurrentuserID();
 		$date_of_birth					=	$postArray['date_of_birth'];
@@ -184,6 +217,7 @@ class InvestorProfileModel extends TranWrapper {
 		
 		
 		/*identity_card_image_front*/
+		
 		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
 		$updateDataArry					=	array();
 		$fileUploadObj					=	new FileUpload();
@@ -195,14 +229,11 @@ class InvestorProfileModel extends TranWrapper {
 			$fileUploadObj->storeFile($imagePath ,$file);
 			$filename 						= 	$file->getClientOriginalName();
 			$identity_card_image_front		=	$imagePath."/".$filename;
-			$dataArray						=	array(	"identity_card_image_front"=>$identity_card_image_front,											
-											);
+			$updateDataArry['identity_card_image_front']	=	$identity_card_image_front;
 		}
 		
 		/*identity_card_image_back*/
-		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
-		$updateDataArry					=	array();
-		$fileUploadObj					=	new FileUpload();
+	
 		if(isset($postArray['identity_card_image_back'])){
 			$file		=	$postArray['identity_card_image_back'];
 			$imagePath	=	$destinationPath."/".$investorId."/profile/image";
@@ -210,14 +241,10 @@ class InvestorProfileModel extends TranWrapper {
 			$fileUploadObj->storeFile($imagePath ,$file);
 			$filename 						= 	$file->getClientOriginalName();
 			$identity_card_image_back		=	$imagePath."/".$filename;
-			$dataArray						=	array(	"identity_card_image_back"=>$identity_card_image_back,											
-											);
+			$updateDataArry['identity_card_image_back']	=	$identity_card_image_back;
 		}
 		
-		/*address_proof_image*/
-		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
-		$updateDataArry					=	array();
-		$fileUploadObj					=	new FileUpload();
+		/*address_proof_image*/	
 		
 		if(isset($postArray['address_proof_image'])){
 			$file		=	$postArray['address_proof_image'];
@@ -226,8 +253,7 @@ class InvestorProfileModel extends TranWrapper {
 			$fileUploadObj->storeFile($imagePath ,$file);
 			$filename 						= 	$file->getClientOriginalName();
 			$address_proof_image		=	$imagePath."/".$filename;
-			$dataArray						=	array(	"address_proof_image"=>$address_proof_image,											
-											);
+			$updateDataArry	['address_proof_image']	=	$address_proof_image;
 		}
 	
 		$dataUserArray 	= 	array(	'firstname' 					=> ($firstname!="")?$firstname:null,
@@ -242,15 +268,23 @@ class InvestorProfileModel extends TranWrapper {
 									'user_id' 						=> $current_user_id,
 									'nationality' 					=> ($nationality!="")?$nationality:null,
 									'gender' 						=> ($gender!="")?$gender:null,
-									'estimated_yearly_income' 		=> ($estimated_yearly_income!="")?$estimated_yearly_income:null,
-									'acc_creation_date	' 			=> ($acc_creation_date	!="")?$acc_creation_date	:null);
+									'estimated_yearly_income' 		=> ($estimated_yearly_income!="")?$estimated_yearly_income:null);
 									
+									
+		$dataArray 		=   array_merge($dataArray,$updateDataArry);
+						
 		if ($transType == "edit") {
 			if($postArray['isSaveButton']	!=	"yes") {
 				$dataArray['status'] = $status;
 			}
 		}else{
 			$dataArray['status'] = $status;
+		}
+		
+		if(count($updateDataArry) > 0) {
+			foreach($updateDataArry as $key=>$value) {
+				$dataArray[$key]	=	$value;
+			}	
 		}
 		
 		if ($transType != "edit") {
@@ -522,6 +556,15 @@ class InvestorProfileModel extends TranWrapper {
 			$this->updateInvestorStatus($dataArray,$invRow,$status);
 		}
 		return 1;
+	}
+	
+	public function updateMobileNumber($inv_id,$postArray){
+		
+		$mobile = $postArray['mobile'];
+		$dataArray = array('mobile' => $mobile);
+		$userInfo	=	$this->getInvestorIdByUserInfo($inv_id);
+		$whereArry = array('user_id'=>$userInfo->user_id);
+		$this->dbUpdate('users', $dataArray, $whereArry);
 	}
 	
 }

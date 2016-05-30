@@ -2,6 +2,7 @@
 use fileupload\FileUpload;
 use File;
 use Config;
+use Auth;
 class BorrowerApplyLoanModel extends TranWrapper {
 	
 	public $loan_id		  					=  	"";
@@ -214,7 +215,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
 										
-		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType);
+		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType,$this->getCurrentBorrowerID());
 		$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
 		if (isset($postArray['hidden_loan_status']) && $postArray['hidden_loan_status']	==	"corrections_required" ) {
 			if (isset($postArray['comment_row'])) {
@@ -224,34 +225,33 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		return $loanId;
 	}
 	
-	public function updateBorrowerLoanInfo($postArray,$transType) {
+	public function updateBorrowerLoanInfo($postArray,$transType,$borrower_id) {
 		
-		if($postArray['isSaveButton']	==	"yes") {
-			$status		=	BORROWER_STATUS_NEW;	
-		}else{
-			$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
-		}
+		
 		if ($transType == "edit") {
 			$loanId	= $postArray['loan_id'];
+			if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
+				$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
+			}else if(Auth::user()->usertype	==	USER_TYPE_ADMIN){
+				$status		=	$postArray['hidden_loan_status'];
+			}
 		} else {
 			$loanId = 0;
+			$status		=	BORROWER_STATUS_NEW;
+			if($postArray['isSaveButton']	!=	"yes") {
+				$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;	
+			}
 		}		
 		
 					
 		$loan_reference_number 			=	"L-";
 		$format_date 					= 	date('Ym');
-		$borrower_id					= 	$this->getCurrentBorrowerID();
 		$purpose						= 	$postArray['laon_purpose'];
 		$purpose_singleline				= 	$postArray['purpose_singleline'];
 		$apply_date						= 	$this->getDbDateFormat(date("d/m/Y"));
 		$apply_amount		 			= 	$this->makeFloat($postArray['loan_amount']);
 		$loan_tenure	 				= 	$postArray['loan_tenure'];
 		$target_interest	 			= 	$postArray['target_interest'];
-		$bid_close_date 				= 	$postArray['bid_close_date'];
-		if($bid_close_date	==	"") 
-			$bid_close_date				= 	$this->getDbDateFormat(date("d/m/Y"));
-		else
-			$bid_close_date				= 	$this->getDbDateFormat($bid_close_date);
 		$bid_type		 				= 	$postArray['bid_type'];
 		$partial_sub_allowed 			= 	$postArray['partial_sub_allowed'];
 		if(isset($postArray['min_for_partial_sub']))
@@ -271,7 +271,6 @@ class BorrowerApplyLoanModel extends TranWrapper {
 							'apply_amount' 					=> ($apply_amount!="")?$apply_amount:null,
 							'loan_tenure' 					=> ($loan_tenure!="")?$loan_tenure:null,
 							'target_interest' 				=> ($target_interest!="")?$target_interest:null,
-							'bid_close_date' 				=> ($bid_close_date!="")?$bid_close_date:null,
 							'bid_type' 						=> ($bid_type!="")?$bid_type:null,
 							'partial_sub_allowed' 			=> ($partial_sub_allowed!="")?$partial_sub_allowed:null,
 							'min_for_partial_sub' 			=> ($min_for_partial_sub!="")?$min_for_partial_sub:null,
@@ -285,6 +284,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	// echo "<pre>",print_r($dataArray),"</pre>";
 		
 		if ($transType != "edit") {
+			$dataArray['bid_close_date']	=	$this->getDbDateFormat(date('d-m-Y', strtotime("+20 days")));
+			
 			$loanId =  $this->dbInsert('loans', $dataArray, true);
 			if ($loanId < 0) {
 				return -1;

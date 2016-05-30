@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use	\App\models\AdminInvestorsWithdrawalsListingModel;
 use Request;
+use Auth;
 class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 	
 	public $adminInvestorWithdrawalList;
@@ -126,12 +127,25 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		$payment_id		=	$postArray['payment_id'];
 		$investor_id	=	$postArray['investor_id'];
 		if($processType	==	"add") {
-			return redirect()->to('admin/investorwithdrawallist');
+			
+			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+				return redirect()->to('admin/investorwithdrawallist');
+			}else{
+				return redirect()->to('investor/withdrawallist');
+			}
 		}
-		return redirect()->route('admin.investorwithdrawaledit', array(	'payment_id'=>base64_encode($payment_id),
-																		'investor_id'=>base64_encode($investor_id)
-																	)
-							)->with('success','Deposit Saved successfully');
+		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+			return redirect()->route('admin.investorwithdrawaledit', array(	'payment_id'=>base64_encode($payment_id),
+																			'investor_id'=>base64_encode($investor_id)
+																		)
+								)->with('success','Withdrawal Saved successfully');
+		}else{
+			return redirect()->route('investor.investorwithdrawaledit', array(		'type'		=>	'edit',
+																					'payment_id'=>base64_encode($payment_id)
+																		)
+								)->with('success','Withdrawal Saved successfully');
+			
+		}
 	}
 	
 	public function approveWithdrawalAction() {

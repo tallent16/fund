@@ -38,10 +38,9 @@
 						
 					</div>
 				</div>
-				
-				@if(($LoanDetMod->status	==	LOAN_STATUS_APPROVED)
-					||	($LoanDetMod->status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
-					||	($LoanDetMod->status	==	LOAN_STATUS_BIDS_ACCEPTED) )
+				@if(($LoanDetMod->loan_status	==	LOAN_STATUS_APPROVED)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
+					||	($LoanDetMod->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED) )
 						<div class="row">
 							<div class="col-md-12 text-right">
 								<button type="button"

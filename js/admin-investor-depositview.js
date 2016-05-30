@@ -14,7 +14,11 @@ $(document).ready(function(){
 			$("#save_button").on("click",function(){
 				$("#isSaveButton").val("yes");
 				$("#submitType").val("save");
-				$("#save_form_payment").attr("action",baseUrl+"/admin/investordepositview/save");
+				if($("#screen_mode").val()	==	"admin") {
+					$("#save_form_payment").attr("action",baseUrl+"/admin/investordepositview/save");
+				}else{
+					$("#save_form_payment").attr("action",baseUrl+"/investor/investordepositview/save");
+				}
 			});
 			$("#approve_button").on("click",function(){
 				$("#isSaveButton").val("");

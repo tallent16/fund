@@ -35,7 +35,11 @@ $(document).ready(function (){
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/cancel");
 		$("#form-profile").submit();
     });
-	
+	$("#save_loanapply_button").on("click",function(){
+		$("#isSaveButton").val("yes");
+		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/save");
+		$("#form-profile").submit();
+	});
 	$("#save_comment_button").click(function(){
 		
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/save_comments");
@@ -69,6 +73,41 @@ $(document).ready(function (){
 			if ($("#loan_details").has('.has-error').length > 0) {
 				event.preventDefault();
 			}
+		}
+		$partial_sub		=	$("input[name=partial_sub_allowed]:checked").val();
+		$partial_sub_amt	=	numeral($("#min_for_partial_sub").val()).value();
+		if($partial_sub	==	1) {
+			if($partial_sub_amt	==	"") {
+				var $parentTag = $("#min_for_partial_sub_parent");
+				$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+				event.preventDefault();	
+			}	
+			if($partial_sub_amt	==	0	) {
+				var $parentTag = $("#min_for_partial_sub_parent");
+				$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+				event.preventDefault();	
+			}	
+		}
+	});
+		$(".amount-align").on("focus", function() {
+		onFocusNumberField(this);
+	})
+
+	$(".amount-align").on("blur", function() {
+		onBlurNumberField(this)
+	});
+	
+	$("input[name=partial_sub_allowed]:radio").change(function () {
+		if ($(this).val() == '1') {
+			
+			$("#min_for_partial_sub").attr("disabled",false);
+		}
+		else if ($(this).val() == '2') {
+			$("#min_for_partial_sub").attr("disabled",true);
+			$("#min_for_partial_sub").val("");
+			var $parentTag = $("#min_for_partial_sub_parent");
+			$parentTag.removeClass("has-error");
+			$parentTag.find("span.error").remove();
 		}
 	});
 });

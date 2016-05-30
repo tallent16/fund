@@ -50,7 +50,6 @@
 		// actions. The global variable formValid is updated in these functions
 		if (!formValid) 
 			event.preventDefault();
-
 	})
 
 	function bidCloseClicked() {
@@ -126,6 +125,7 @@
 	
 	function disburseLoanClicked() {
 		formValid = true;
+		
 	}
 
 	function calcAvgInterest() {

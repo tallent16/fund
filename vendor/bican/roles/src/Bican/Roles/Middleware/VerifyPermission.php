@@ -36,6 +36,7 @@ class VerifyPermission
      */
     public function handle($request, Closure $next)
     {
+			
 		$route = $request->route();
 		$actions = $route->getAction();
 		if (array_key_exists('permission', $actions)) {

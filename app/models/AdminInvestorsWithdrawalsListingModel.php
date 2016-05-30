@@ -226,7 +226,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$this->trans_ref_no			=	$postArray['trans_ref_no'];
 		$this->remarks				=	$postArray['remarks'];
 		$currency					=	'SGD'; // Hardcoded value
-		
+	
 		$this->username			=	$this->getUserName('Investor', $this->investorId);
 		$moduleName		=	"Investor Withdrawal";
 
@@ -286,7 +286,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 											'trans_amount' 				=> $this->withdrawal_amount,
 											'trans_currency' 			=> $currency,
 											'status' 					=> $invBankTransStatus);	
-				
+		
 		if($tranType	==	"add") {
 			
 			$paymentId 							=	$this->dbInsert("payments", $withdrawpaymentInsert_data, 1);

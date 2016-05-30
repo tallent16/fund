@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use	\App\models\AdminInvestorsDepositListingModel;
 use	Request;
+use Auth;
 class AdminInvestorsDepositListingController extends MoneyMatchController {
 	
 	public $adminInvestorDeposit;
@@ -128,12 +129,24 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		$payment_id		=	$postArray['payment_id'];
 		$investor_id	=	$postArray['investor_id'];
 		if($processType	==	"add") {
-			return redirect()->to('admin/investordepositlist');
+			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+				return redirect()->to('admin/investordepositlist');
+			}else{
+				return redirect()->to('investor/depositlist');
+			}
 		}
-		return redirect()->route('admin.investordepositedit', array(	'payment_id'=>base64_encode($payment_id),
-																		'investor_id'=>base64_encode($investor_id)
-																	)
-							)->with('success','Deposit Saved successfully');
+		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+			return redirect()->route('admin.investordepositedit', array(	'payment_id'=>base64_encode($payment_id),
+																			'investor_id'=>base64_encode($investor_id)
+																		)
+								)->with('success','Deposit Saved successfully');
+		}else{
+			return redirect()->route('investor.investordepositedit', array(		'type'		=>	'edit',
+																				'payment_id'=>base64_encode($payment_id)
+																		)
+								)->with('success','Deposit Saved successfully');
+			
+		}
 	}
 	
 	public function approveDepositAction() {

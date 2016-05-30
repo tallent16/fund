@@ -150,8 +150,6 @@ $(document).ready(function (){
 						event.preventDefault();
 					}
 				}
-				$("#next_button").hide();
-				$("#submit_button").show();
 			}
 		}
 		if($("#screen_mode").val()	==	"admin"){
@@ -161,7 +159,7 @@ $(document).ready(function (){
 	});
 	 
 	callcheckAllTabFilledFunc();
-	
+	textAreaToolTip();
 });
 
 function callTabValidateFunc() {
@@ -289,6 +287,7 @@ function addNewDirectorRow(){
 		$("#directorDropDown").selectpicker("refresh");
 		$(".divs div.dir-list:visible").hide();
         $(".divs div.dir-list:last").show();
+        textAreaToolTip();
 }
 function delDirectorRow(){
 	if ($(".divs div.dir-list").length > 0){
@@ -352,4 +351,8 @@ function checkTabFilled(cur_tab) {
 		return true;
 	else
 		return false;
+}
+
+function textAreaToolTip() {
+	 $('[data-toggle="tooltip"]').tooltip();
 }

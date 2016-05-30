@@ -9,14 +9,12 @@
 @endsection
 @section('page_heading',Lang::get('Investor Withdrawals') )
 @section('section') 
-@if($submitted)
-	<div class="col-sm-12 space-around">
-		<div class="annoucement-msg-container">
-			<div class="alert alert-success">
-				{{Lang::get('Investor WithDrawal Successfully Updated')}}
-		</div>				
-	</div>
+@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+	@var	$screenMode	=	"admin"
+@else
+	@var	$screenMode	=	"investor"
 @endif
+
 @var $editclass = ""
 @var $addclass  = ""
 @var $viewclass = ""
@@ -66,6 +64,7 @@
 						name="submitType" 
 						id="submitType" 
 						value=""/>
+				<input type="hidden" id="screen_mode" value="{{$screenMode}}">
 				@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
 					<input  type="hidden" 
 							name="investor_id" 

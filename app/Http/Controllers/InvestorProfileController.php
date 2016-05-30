@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 use Request;
+use Auth;
 use	\App\models\InvestorProfileModel;
 class InvestorProfileController extends MoneyMatchController {
 
@@ -23,6 +24,7 @@ class InvestorProfileController extends MoneyMatchController {
 			$result		=	$this->investorProfileModel->processProfile($postArray);
 			$submitted	=	true;
 		}
+		$this->investorProfileModel->processDropDowns();
 		
 		$this->investorProfileModel->getInvestorDetails();
 
@@ -47,6 +49,14 @@ class InvestorProfileController extends MoneyMatchController {
 			echo "1";
 			return;
 		}
+	}
+	
+	public function updateAction(){
+		$postArray	=	Request::all();
+		$inv_id = $postArray['investor_id'];
+		\Session::put('success','mobile number updated successfully');
+		$this->investorProfileModel->updateMobileNumber($inv_id,$postArray);		
+		return redirect()->route('investor.profile')->with('success','mobile number updated successfully');
 	}
 
 }

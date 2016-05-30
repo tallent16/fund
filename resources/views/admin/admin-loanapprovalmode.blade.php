@@ -55,9 +55,20 @@
 				<input type="hidden" name="hidden_borrower_status" id="borrower_status" value="{{$borrower_status}}">
 				<input type="hidden" name="borrower_id" value="{{ $adminLoanApprMod->borrower_id }}">
 				<input type="hidden" name="loan_id" value="{{ $adminLoanApprMod->loan_id }}">
+				<input type="hidden" name="isSaveButton" id="isSaveButton" value="">
+				<input type="hidden" name="trantype" value="edit">
+				<input type="hidden" name="hidden_loan_status" id="hidden_loan_status" value="{{$adminLoanApprMod->status}}">
+				<input 	type="hidden" 
+						name="laon_purpose"
+						value="{{$adminLoanApprMod->purpose}}">
 				<div class="panel-body applyloan table-border-custom">	
 					@if($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 						<div class="col-sm-12 text-right"> 	
+							<button type="button" 
+										class="btn verification-button"
+										id="save_loanapply_button">						
+									{{ Lang::get('Save')}}
+							</button>
 							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 								@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 									@if($adminLoanApprMod->comments_count	==	0)	

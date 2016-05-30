@@ -38,6 +38,24 @@ class AdminLoanApprovalController extends MoneyMatchController {
 						);
 	}
 	
+	public function saveLoanApprovalAction(){
+		
+		$postArray	=	Request::all();
+		$loan_id	=	$postArray['loan_id'];
+		$bor_id		=	$postArray['borrower_id'];
+		$transtype	=	$postArray['trantype'];
+		
+		$result	=	$this->borrowerApplyLoanModel->updateBorrowerLoanInfo($postArray,$transtype,$bor_id);
+		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
+		if($result) {
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
+						->with('success','loan information Updated  successfully');
+		}else{
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
+						->with('failure','loan information Updated Failed');	
+		}	
+	}
+	
 	public function saveCommentLoanApprovalAction(){
 		
 		$postArray	=	Request::all();
@@ -77,9 +95,12 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$loan_id	=	$postArray['loan_id'];
 		$bor_id		=	$postArray['borrower_id'];
+		$transtype	=	$postArray['trantype'];
 		
 		$dataArray 	=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
+		$this->borrowerApplyLoanModel->updateBorrowerLoanInfo($postArray,$transtype,$bor_id);
 		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
+		
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
 																				$bor_id,"approve");
 		if($result) {

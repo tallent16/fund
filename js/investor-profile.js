@@ -36,7 +36,7 @@ $(document).ready(function (){
 		}
 		if($("#screen_mode").val()	==	"admin"){
 			if(!formValid)
-				event.preventDefault();
+				e.preventDefault();
 		}
 	});
 	$("#next_button").click(function(){
@@ -73,19 +73,32 @@ $(document).ready(function (){
     });
     
 	$("#returnback_button").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/return_investor");
-		if($('.commentClass:checked').length){
+		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/return_investor");
+		
+		if($('.commentClass:not(#comment_status_XXX)').length	>	0){
+			if($('.commentClass:checked').length){
+				errMessage	=	"There is no open comments to return back to investor";
+				showDialog("",errMessage);
+				formValid	=	false;
+			}else{
+				formValid	=	true;
+			}
+		}else{
 			errMessage	=	"There is no open comments to return back to investor";
 			showDialog("",errMessage);
 			formValid	=	false;
-		}else{
-			formValid	=	true;
 		}
     });
 	
 	$("#save_comment_button").click(function(){
       $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/save_comments");
     });
+    
+	$("#update_mobile_button").click(function(){
+      $("#form-profile").attr("action",baseUrl+"/investor/profile/update");
+      $("#form-profile").submit();
+    });
+    
 });
 function checkDisplayName(value) {
 	if((value!='')) {

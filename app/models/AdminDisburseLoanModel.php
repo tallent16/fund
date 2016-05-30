@@ -27,6 +27,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 	public	$nextPayDate = "";
 	public	$firstInstdate = "";
 	public	$plusOneMonth = "";
+	public	$loan_status = 0;
 	
 	public	$repayment_schedule = array();
 	public 	$investor_repayment	= array();
@@ -34,6 +35,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 	public function getDisburseDetails($loan_id) {
 		
 		$loanDtl_sql		=	"	SELECT	loan_id,
+											loans.status loan_status,
 											loan_reference_number,
 											borrower_id,
 											date_format(now(), '%d-%m-%Y') loan_process_date,

@@ -9,24 +9,7 @@
 @endsection
 @section('page_heading',Lang::get('User Roles Management'))
 @section('section')  
-@if(session()->has('success'))
-	<div class="alert alert-success alert-dismissible" role="alert">
-		<button type="button" class="close" data-dismiss="alert">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Close</span>
-		</button>
-		{{ session('success') }}
-	</div>
-@endif
-@if(session()->has('failure'))
-	<div class="alert alert-danger alert-dismissible" role="alert">
-		<button type="button" class="close" data-dismiss="alert">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Close</span>
-		</button>
-		{{ session('failure') }}
-	</div>
-@endif
+
 <div class="col-sm-12 space-around">
 	<div class="row">
 		<div class="col-sm-12 col-lg-3">	

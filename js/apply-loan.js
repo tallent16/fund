@@ -174,11 +174,11 @@ function checkTabFilled(cur_tab) {
 
 function checkAjaxValidation() {
 	
-			var loan_amount			=	$("#loan_amount").val();
+			var loan_amount			=	numeral($("#loan_amount").val()).value();
 			//~ var bidcloseDate		=	$("#date-picker-2").val();
 			var targetInterest		=	$("#target_interest").val();
 			var partialSubAllowed	=	$("input[name=partial_sub_allowed]:radio:checked").val();
-			var partialSubAmount	=	$("#min_for_partial_sub").val();
+			var partialSubAmount	=	numeral($("#min_for_partial_sub").val()).value();
 			
 			var data = {	
 						loan_amount:loan_amount,

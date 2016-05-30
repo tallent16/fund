@@ -30,7 +30,11 @@ $(document).ready(function(){
 		$("#save_button").on("click",function(){
 				$("#isSaveButton").val("yes");
 				$("#submitType").val("save");
-				$("#save_form_payment").attr("action","/admin/investorwithdrawalview/save");
+				if($("#screen_mode").val()	==	"admin") {
+					$("#save_form_payment").attr("action",baseUrl+"/admin/investorwithdrawalview/save");
+				}else{
+					$("#save_form_payment").attr("action",baseUrl+"/investor/investorwithdrawalview/save");
+				}
 			});
 			$("#approve_button").on("click",function(){
 				$("#isSaveButton").val("");

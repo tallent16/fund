@@ -92,7 +92,14 @@
 							@else
 										@var	$actionUrl		=	"javascript:void(0);"									
 							@endif
-								
+							@if  ($loanlistRow->status	==	LOAN_STATUS_NEW)
+									@var	$actionUrl		=	url('admin/loanapproval/')
+									@var	$actionUrl		=	$actionUrl."/".$loan_id		
+							@endif
+							@if  ($loanlistRow->status	==	LOAN_STATUS_DISBURSED)
+									@var	$actionUrl		=	url('admin/disburseloan/')
+									@var	$actionUrl		=	$actionUrl."/".$loan_id		
+							@endif
 									<tr class="odd" id="11" role="row">								
 										<td class="text-left">
 											<a href="{{$actionUrl}}">

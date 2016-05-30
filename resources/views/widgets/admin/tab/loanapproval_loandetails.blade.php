@@ -1,8 +1,12 @@
-@if($adminLoanApprMod->adminLoanApprMod	==	1)
-	@var	$par_sub_allowed		=	"yes"
+@var	$par_sub_allowed_yes		=	""
+@var	$par_sub_allowed_no			=	""
+@var	$par_sub_allowed_disabled	=	"disabled"
+@if($adminLoanApprMod->partial_sub_allowed	==	1)
+	@var	$par_sub_allowed_yes		=	"checked"
+	@var	$par_sub_allowed_disabled	=	""
 @else
-	@var	$par_sub_allowed		=	"No"
-@endif
+	@var	$par_sub_allowed_no			=	"checked"
+@endif  
 @var	$showBidCloseDatePicker	="no"  
 @if($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 	@if($adminLoanApprMod->comments_count	==	0)
@@ -18,11 +22,26 @@
 					<td class="tab-left-head col-sm-3">{{ Lang::get('Borrower\'s Name')}}</td>
 					<td class="col-sm-3">{{$adminLoanApprMod->firstname}}</td>
 					<td class="tab-left-head col-sm-3">{{ Lang::get('Loan Amount')}}</td>
-					<td class="col-sm-3">{{number_format($adminLoanApprMod->apply_amount,2,'.',',')}}</td>
+					<td class="col-sm-3">
+						<input 	type="text" 
+								class="form-control select-width text-right required amount-align"
+								name="loan_amount"												
+								id="loan_amount" 
+								decimal="2"
+								value="{{number_format($adminLoanApprMod->apply_amount,2,'.',',')}}"
+						>	
+					</td>
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Purpose of Loan')}}</td>					
-					<td>{{$adminLoanApprMod->purpose_singleline}}</td>
+					<td>
+						{{ Form::select('purpose_singleline', 
+									$adminLoanApprMod->purposeSingleLineInfo, 
+									$adminLoanApprMod->purpose_singleline, 
+									["class" => "selectpicker required",
+																"id"=>"purpose_singleline"]) }}  	
+				
+					</td>
 					<td class="tab-left-head">{{ Lang::get('Bid Close Date')}}</td>								
 					<td id="bid_close_date_parent">
 						@if($showBidCloseDatePicker		==	"yes"	)
@@ -47,25 +66,71 @@
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Tenure of Loan')}}</td></td>	
-					<td>{{$adminLoanApprMod->loan_tenure}}</td>
+					<td>
+						{{ Form::select('loan_tenure', $adminLoanApprMod->loan_tenure_list, $adminLoanApprMod->loan_tenure,
+																["class" => "selectpicker text-right required",
+																"id"=>"loan_tenure"]
+																) 
+						}}		
+					</td>
 					<td class="tab-left-head">{{ Lang::get('Accept Partial Subscription')}}</td>								
-					<td>{{$par_sub_allowed}}</td>						
+					<td>
+						<label class="radio-inline">
+							<input 	type="radio" 
+									name="partial_sub_allowed"
+									value="1"
+									{{$par_sub_allowed_yes}} >
+							{{ Lang::get('borrower-applyloan.yes') }}
+						</label>
+						<label class="radio-inline">
+							<input 	type="radio" 
+									name="partial_sub_allowed"
+									value="2"
+									{{$par_sub_allowed_no}}>
+							{{ Lang::get('borrower-applyloan.no') }}
+						</label>
+					</td>						
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Target Interest')}}%</td>	
-					<td>{{$adminLoanApprMod->target_interest}}</td>
+					<td>
+						<input type="text" class="form-control select-width text-right required amount-align" 
+								name="target_interest"												
+								id="target_interest"
+								decimal="2"															
+								value="{{$adminLoanApprMod->target_interest}}" >	
+					</td>
 					<td class="tab-left-head">{{ Lang::get('Minimum Limit For Partial Subscription')}}</td>								
-					<td>{{number_format($adminLoanApprMod->min_for_partial_sub,2,'.',',')}}</td>					
+					<td id="min_for_partial_sub_parent">
+						<input 	type="text" 
+								class="form-control select-width text-right amount-align"
+								 name="min_for_partial_sub"
+								 id="min_for_partial_sub"
+								 decimal="2"
+								 {{$par_sub_allowed_disabled}}
+								 value="{{number_format($adminLoanApprMod->min_for_partial_sub,2,'.',',')}}">
+				</td>					
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Loan Reference Number')}}</td>	
 					<td>{{$adminLoanApprMod->loan_reference_number}}</td>	
 					<td class="tab-left-head">{{ Lang::get('Payment Type')}}</td>								
-					<td>{{$adminLoanApprMod->repaymentText}}</td>	
+					<td><select id="payment_type" 
+								name="payment_type" 
+								class="selectpicker required">
+								{{$adminLoanApprMod->paymentTypeSelectOptions}}
+						</select>	
+					</td>	
 				</tr>
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Bid Type')}}</td>								
-					<td class="col-sm-3">{{ $adminLoanApprMod->bidTypeText}}</td>	
+					<td class="col-sm-3">
+						<select 	id="bid_type" 
+									name="bid_type" 
+									class="selectpicker required"> 
+							{{$adminLoanApprMod->bidTypeSelectOptions}}
+						</select>
+					</td>	
 					<td class="tab-left-head">{{ Lang::get('Status')}}</td>								
 					<td>{{ $adminLoanApprMod->statusText}}</td>					
 				</tr>	

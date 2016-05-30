@@ -122,7 +122,9 @@
 													<td class="col-md-3">
 														<textarea	id="accomplishments_{{$i}}" 
 																	name="director_row[accomplishments][]"
-																	class="form-control"
+																	class="form-control accomplishments"
+																	data-toggle="tooltip"
+																	title="Please put down a short description of your work experience, important milestones and awards"
 																 {{$modelBorPrf->viewStatus}} 
 																 >{{ $directorRow['accomplishments'] }}</textarea>
 													</td>

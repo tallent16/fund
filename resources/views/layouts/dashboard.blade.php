@@ -43,11 +43,11 @@
 			
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-					@if(Auth::User()->usertype == 1)
+					@if(Auth::user()->usertype == USER_TYPE_BORROWER)
 						@include('widgets.navigation.borrower.sidebar_menu')
-					@elseif(Auth::User()->usertype == 2)	
+					@elseif(Auth::user()->usertype == USER_TYPE_INVESTOR)	
 						@include('widgets.navigation.investor.sidebar_menu')
-					@else
+					@elseif(Auth::user()->usertype == USER_TYPE_ADMIN)	
 						@include('widgets.navigation.admin.sidebar_menu')
 					@endif
                 </div>

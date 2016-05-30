@@ -483,6 +483,11 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 									]
 			);
 		
+    Route::post('admin/loanapproval/save',
+									[	
+										'uses' 			=>	'AdminLoanApprovalController@saveLoanApprovalAction'
+									]
+			);
     Route::post('admin/loanapproval/save_comments',
 									[	
 										'middleware' 	=> 	'permission',
@@ -521,6 +526,17 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 			);
 	
     Route::get('admin/disburseloan/{loan_id}',
+									[	
+										'as' 			=> 	'admin.disburseloanview', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'view.admin.disburseloan',
+										'redirect_back'	=>	'admin.loanlisting',
+										'action_type'	=>	'view disburse loan',
+										'uses' 			=>	'AdminDisburseLoanController@showDisburseLoanAction'
+									]
+			);
+	
+    Route::post('admin/disburseloan/{loan_id}',
 									[	
 										'as' 			=> 	'admin.disburseloanview', 
 										'middleware' 	=> 	'permission',
@@ -669,7 +685,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'add.admin.investorsdeposit',
-										'redirect_back'	=>	'admin.borrowersrepaylist',
+										'redirect_back'	=>	'admin.investordepositlist',
 										'action_type'	=>	'Add Investor Deposit',
 										'uses' 			=>	'AdminInvestorsDepositListingController@addDepositAction'
 									]
@@ -679,7 +695,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										'as'			=>	'admin.investordepositedit',
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'edit.admin.investorsdeposit',
-										'redirect_back'	=>	'admin.borrowersrepaylist',
+										'redirect_back'	=>	'admin.investordepositlist',
 										'action_type'	=>	'Edit Investor Deposit',
 										'uses' 			=>	'AdminInvestorsDepositListingController@editDepositAction'
 									]
@@ -689,7 +705,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'detailview.admin.investorsdeposit',
-										'redirect_back'	=>	'admin.borrowersrepaylist',
+										'redirect_back'	=>	'admin.investordepositlist',
 										'action_type'	=>	'View Investor Deposit',
 										'uses' 			=>	'AdminInvestorsDepositListingController@viewDepositAction'
 									]
@@ -701,7 +717,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 									[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'approve.admin.investorsdeposit',
-										'redirect_back'	=>	'admin.investordepositview',
+										'redirect_back'	=>	'admin.investordepositlist',
 										'action_type'	=>	'approve deposit',
 										'uses' 			=>	'AdminInvestorsDepositListingController@approveDepositAction'
 									]
@@ -710,7 +726,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 									[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'unapprove.admin.investorsdeposit',
-										'redirect_back'	=>	'admin.investordepositview',
+										'redirect_back'	=>	'admin.investordepositlist',
 										'action_type'	=>	'unapprove deposit',
 										'uses' 			=>	'AdminInvestorsDepositListingController@unapproveDepositAction'
 									]
@@ -796,7 +812,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 									[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'approve.admin.investorswithdrawal',
-										'redirect_back'	=>	'admin.investorwithdrawalview',
+										'redirect_back'	=>	'admin.investorwithdrawallist',
 										'action_type'	=>	'approve withdrawal',
 										'uses' 			=>	'AdminInvestorsWithdrawalsListingController@approveWithdrawalAction'
 									]
@@ -805,7 +821,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 								[	
 									'middleware' 	=> 	'permission',
 									'permission'	=>	'approve.admin.investorswithdrawal',
-									'redirect_back'	=>	'admin.investorwithdrawalview',
+									'redirect_back'	=>	'admin.investorwithdrawallist',
 									'action_type'	=>	'unapprove withdrawal',
 									'uses' 			=>	'AdminInvestorsWithdrawalsListingController@unapproveWithdrawalAction'
 								]
@@ -946,9 +962,11 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/dashboard', 'InvestorDashboardController@indexAction');
     
     // Investor Profile
-    Route::match(['get', 'post'],'investor/profile', 'InvestorProfileController@indexAction');
+    Route:get('investor/profile', ['as'=>'investor.profile','uses'=>'InvestorProfileController@indexAction']);
+    Route::post('investor/profile', 'InvestorProfileController@indexAction');
     Route::post('investor/checkFieldExists', 'InvestorProfileController@ajaxCheckFieldExistsAction');
 	Route::get('investor/loanslist', 'LoanListingController@indexAction');
+	Route::post('investor/profile/update','InvestorProfileController@updateAction');
   
 	// Loans 
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
@@ -959,11 +977,22 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     
     // Banking
     Route::get('investor/depositlist', 'InvestorsDepositListingController@indexAction');
-    Route::match(['get', 'post'],'investor/deposit/{type}/{payment_id}', 'InvestorsDepositListingController@viewDepositAction');
+    Route::get('investor/deposit/{type}/{payment_id}', 
+								[	
+									'as'			=>	'investor.investordepositedit',
+									'uses' 			=>	'InvestorsDepositListingController@viewDepositAction'
+								]
+			);
+    Route::post('investor/investordepositview/save',	'AdminInvestorsDepositListingController@saveDepositAction');
     
     Route::get('investor/withdrawallist', 'InvestorsWithdrawalsListingController@indexAction');
-    Route::match(['get', 'post'],'investor/withdrawal/{type}/{payment_id}', 
-															'InvestorsWithdrawalsListingController@viewWithDrawAction');
+    Route::get('investor/withdrawal/{type}/{payment_id}', 
+																[	
+									'as'			=>	'investor.investorwithdrawaledit',
+									'uses' 			=>	'InvestorsWithdrawalsListingController@viewWithDrawAction'
+								]
+				);
+	Route::post('investor/investorwithdrawalview/save','AdminInvestorsWithdrawalsListingController@saveWithdrawalAction');
     Route::match(['get', 'post'],'investor/bankdetails', 'BankProcessController@indexAction');   
     
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
