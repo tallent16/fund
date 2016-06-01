@@ -44,7 +44,7 @@
 					</td>
 					<td class="tab-left-head">{{ Lang::get('Bid Close Date')}}</td>								
 					<td id="bid_close_date_parent">
-						@if($showBidCloseDatePicker		==	"yes"	)
+					
 							<div class="controls">
 								<div class="input-group">
 									<input 	id="bid_close_date" 
@@ -58,10 +58,7 @@
 									</label>
 								</div>													
 							</div>	
-						@else
-							{{$adminLoanApprMod->bid_close_date}}
-						@endif
-								
+						
 					</td>
 				</tr>
 				<tr>

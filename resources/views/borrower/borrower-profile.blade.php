@@ -27,6 +27,26 @@
 		@var	$inputTabInfo["finacial info"]	=	"finacial info"
 		@var	$inputTabInfo["bank info"]		=	"bank info"
 		
+		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+			@var	$canViewProfileInfoTab	=	"yes"
+		@else
+			@if($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED)
+				@var	$canViewProfileInfoTab	=	"yes"
+			@else
+				@var	$canViewProfileInfoTab	=	"no"
+			@endif
+		@endif
+		
+		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+			@var	$canViewFinacialInfoTab	=	"yes"
+		@else
+			@if($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED)
+				@var	$canViewFinacialInfoTab	=	"yes"
+			@else
+				@var	$canViewFinacialInfoTab	=	"no"
+			@endif
+		@endif
+		
 		@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
 			|| (Auth::user()->usertype	==	USER_TYPE_ADMIN))
 			@var	$canViewCommentsTab	=	"yes"
@@ -44,15 +64,12 @@
 			@var	$trantype	=	"edit"
 		@endif
 		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-		
 			{{ '';$modelBorPrf->viewStatus	=	"disabled";''}}
-			@var	$screenMode	=	"admin"
-			@if( ($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) 
-				|| ($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED) )
-				@var	$gradeStatus	=	""
-			@else
-				@var	$gradeStatus	=	"disabled"
+			@if($modelBorPrf->status	!=	BORROWER_STATUS_NEW_PROFILE)
+				{{ '';$modelBorPrf->viewStatus	=	"";''}}
 			@endif
+			@var	$screenMode	=	"admin"
+			@var	$gradeStatus	=	""
 			@if( ($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL))
 					@var	$commentButtonsVisibe	=	""
 			@else
@@ -63,6 +80,13 @@
 			@var	$screenMode	=	"borrower"
 			@var	$gradeStatus	=	"disabled"
 		@endif
+		@if(!isset($activeTab))
+			@var	$activeTab	=	"company_info"
+		@endif
+		@if(session()->has("activeTab"))
+			@var	$activeTab	=	session("activeTab")
+		@endif
+		
 		<!-----Body Content----->
 		<div class="col-sm-12 space-around"> 
 			
@@ -91,44 +115,54 @@
 				<input type="hidden" name="borrower_bankid" value="{{ $modelBorPrf->borrower_bankid }}">
 				<input type="hidden" id="screen_mode" value="{{$screenMode}}">
 				<input type="hidden" name="hidden_borrower_status" id="borrower_status" value="{{$borrower_status}}">
+				<input type="hidden" name="current_profile_status" value="{{$modelBorPrf->status}}">
+				<input type="hidden" id="profile_status" value="{{$modelBorPrf->statusText}}">
 				<input type="hidden" name="admin_process" id="admin_process" value="">
+				<input type="hidden" id="company_info_complete" value="{{$modelBorPrf->company_info_complete}}">
+				<input type="hidden" id="director_info_complete" value="{{$modelBorPrf->director_info_complete}}">
+				<input type="hidden" id="bank_info_complete" value="{{$modelBorPrf->bank_info_complete}}">
+				<input type="hidden" id="active_tab" name="active_tab" value="{{$activeTab}}">
 				<div class="row">	
 					
 					<div class="col-lg-12 col-md-6 col-xs-12">
 						<!-----Tab Starts----->
 						<ul class="nav nav-tabs">
-							<li class="active">
+							<li class="active" id="company_info_parent" >
 								<a 	data-toggle="tab" 
 									href="#company_info">
 									{{ Lang::get('borrower-profile.company_info') }}
 								</a>
 							</li>
-							<li class="disabled">
+							<li class="disabled" id="director_info_parent">
 								<a 	data-toggle="tab"
 									href="#director_info">
 									{{ Lang::get('borrower-profile.directors_info') }}
 								</a>
-							</li>	  
-							<li class="disabled">
-								<a 	data-toggle="tab"
-									href="#profile_info">
-									{{ Lang::get('borrower-profile.profile_info') }}
-								</a>
-							</li>	
-							<li class="disabled">
-								<a 	data-toggle="tab"
-									href="#financial_info">
-									{{ Lang::get('borrower-profile.financial_info') }}
-								</a>
-							</li>	
-							<li class="disabled">
+							</li>
+							@if($canViewProfileInfoTab	==	"yes")	  
+								<li id="profile_info_parent">
+									<a 	data-toggle="tab"
+										href="#profile_info">
+										{{ Lang::get('borrower-profile.profile_info') }}
+									</a>
+								</li>	
+							@endif
+							@if($canViewFinacialInfoTab	==	"yes")
+								<li id="financial_info_parent">
+									<a 	data-toggle="tab"
+										href="#financial_info">
+										{{ Lang::get('borrower-profile.financial_info') }}
+									</a>
+								</li>	
+							@endif
+							<li class="disabled" id="bank_info_parent" >
 								<a 	data-toggle="tab"
 									href="#bank_info">
 									{{ Lang::get('borrower-profile.bank_info') }}
 								</a>
 							</li>	
 							@if($canViewCommentsTab	==	"yes")
-								<li>
+								<li id="comments_info_parent">
 									<a 	data-toggle="tab"
 										href="#comments_info">
 										{{ Lang::get('COMMENTS') }}
@@ -147,15 +181,16 @@
 						<!-----Second Tab content starts----->
 							@include('widgets.borrower.tab.profile_directory_info')
 						<!-----Second Tab content ends----->
-						
-						<!-----Third Tab content starts----->
-							@include('widgets.borrower.tab.profile_info')
-						<!-----Third Tab content ends----->	
-						
-						<!-----Four Tab content starts----->
-							@include('widgets.borrower.tab.profile_financial_info')
-						<!-----Four Tab content ends----->	
-						
+						@if($canViewProfileInfoTab	==	"yes")
+							<!-----Third Tab content starts----->
+								@include('widgets.borrower.tab.profile_info')
+							<!-----Third Tab content ends----->	
+						@endif
+						@if($canViewFinacialInfoTab	==	"yes")
+							<!-----Four Tab content starts----->
+								@include('widgets.borrower.tab.profile_financial_info')
+							<!-----Four Tab content ends----->	
+						@endif
 						<!-----Five Tab content starts----->
 							@include('widgets.borrower.tab.profile_bank_info')
 						<!-----Five Tab content ends----->	
@@ -181,14 +216,27 @@
 										</button>
 									@endif
 								@endif
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if($modelBorPrf->status	!=	BORROWER_STATUS_NEW_PROFILE)
+										<button type="submit" 
+												id="admin_save_button"
+											class="btn verification-button" >
+											<i class="fa pull-right"></i>
+											{{ Lang::get('borrower-profile.save_button') }}
+										</button>
+									@endif
+								@endif
 								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
-									<button type="button" 
-											id="next_button"
-											data-tab-id="company_info"
-										class="btn verification-button" >
-										<i class="fa pull-right"></i>
-										{{ Lang::get('Next') }}
-									</button>
+									@if($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) 
+										<button type="button" 
+												id="next_button"
+												style="display:none;"
+												data-tab-id="company_info"
+											class="btn verification-button" >
+											<i class="fa pull-right"></i>
+											{{ Lang::get('Next') }}
+										</button>
+									@endif
 								@endif
 								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
 									@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
@@ -264,62 +312,58 @@
 								name="director_row[name][]"
 								class="form-control required"
 								/>
+					</td>
+					<td class="col-md-3">
+						{{ Lang::get('borrower-profile.age') }}
+					</td>
+					<td class="col-md-3" id="age_XXX_parent" >
+						<input 	type="text" 
+								id="age_XXX" 
+								name="director_row[age][]"
+								class="form-control text-right num required"
+								/>
 					</td>		
 				</tr>
 				<tr>
 					<td class="col-md-3">
+						{{ Lang::get('borrower-profile.period_since') }}
+					</td>
+					<td class="col-md-3" id="period_in_this_business_XXX_parent" >
+						<input 	type="text" 
+								id="period_in_this_business_XXX" 
+								name="director_row[period_in_this_business][]"
+								class="form-control text-right num required"
+								/>
+					</td>	
+					<td class="col-md-3">
+						{{ Lang::get('borrower-profile.overall_exp') }}
+					</td>
+					<td class="col-md-3" id="overall_experience_XXX_parent" >
+						<input 	type="text" 
+								id="overall_experience_XXX" 
+								name="director_row[overall_experience][]"
+								class="form-control text-right num required"
+								/>
+					</td>	
+				</tr>
+				<tr>
+					<td  class="col-md-3">
 						<label class="input-required">
 							{{ Lang::get('borrower-profile.director_info') }}
 						</label>
 					</td>
-					<td class="col-md-3" 	id="directors_profile_XXX_parent">
+					<td colspan="3" class="col-md-3" 	id="directors_profile_XXX_parent">
 						<textarea	id="directors_profile_XXX" 
 									name="director_row[directors_profile][]"
 									class="form-control required"
 								></textarea>
 					</td>		
-				</tr>												
+				</tr>
 				<tr>
-					<td class="col-md-3">
-						{{ Lang::get('borrower-profile.age') }}
-					</td>
-					<td class="col-md-3">
-						<input 	type="text" 
-								id="age_XXX" 
-								name="director_row[age][]"
-								class="form-control"
-								/>
-					</td>			
-				</tr>
-					<tr>
-					<td class="col-md-3">
-						{{ Lang::get('borrower-profile.period_since') }}
-					</td>
-					<td class="col-md-3">
-						<input 	type="text" 
-								id="period_in_this_business_XXX" 
-								name="director_row[period_in_this_business][]"
-								class="form-control"
-								/>
-					</td>	
-				</tr>
-					<tr>
-					<td class="col-md-3">
-						{{ Lang::get('borrower-profile.overall_exp') }}
-					</td>
-					<td class="col-md-3">
-						<input 	type="text" 
-								id="overall_experience_XXX" 
-								name="director_row[overall_experience][]"
-								class="form-control"
-								/>
-					</td>	
-				</tr>
-					<tr>
-					<td class="col-md-3">
+					<td  class="col-md-3">
 						{{ Lang::get('borrower-profile.accomplish') }}
 					</td>
-					<td class="col-md-3">
+					<td colspan="3" class="col-md-3">
 						<textarea	id="accomplishments_XXX" 
 									name="director_row[accomplishments][]"
 									class="form-control accomplishments"
@@ -343,7 +387,7 @@
 							value="">
 							<input 	type="hidden" 
 									name="comment_row[comment_id_hidden][]"
-									value="">
+									value=0>
 				</div>
 				
 				<div class="col-xs-4">
@@ -353,12 +397,24 @@
 					}}
 				</div>
 				<div class="col-xs-5" id="comments_XXX_parent">
-					<textarea 	rows="4" 
-								cols="50" 
-								class="form-control"
-								name="comment_row[comments][]" 
-								id="comments_XXX"
-								></textarea>
+					<div class="col-xs-10">
+						<textarea 	rows="4" 
+									cols="50" 
+									class="form-control"
+									name="comment_row[comments][]" 
+									id="comments_XXX"
+									></textarea>
+						<input 	type="hidden" 
+								name="comment_row[comments_reply_id][]" 
+								value="" />
+						<textarea 	rows="4" 
+									cols="50" 
+									disabled
+									style="display:none"
+									class="form-control"
+									name="comment_row[comments_reply][]" 
+									id="comments_reply_boxXXX"></textarea>
+					</div>
 				</div>
 				<div class="col-xs-2 text-right">
 					<input 	type="checkbox" 

@@ -17,7 +17,7 @@ $(document).ready(function(){
 			format: 'dd-mm-yyyy' 
 			}); 
 			getAvailableBalance();
-		}); 
+}); 
 					
 		$(".amount-align").on("focus", function() {
 				onFocusNumberField(this);
@@ -30,9 +30,9 @@ $(document).ready(function(){
 		$("#save_button").on("click",function(){
 				$("#isSaveButton").val("yes");
 				$("#submitType").val("save");
-				if($("#screen_mode").val()	==	"admin") {
+				if($("#screen_mode").val()	==	"admin") {					
 					$("#save_form_payment").attr("action",baseUrl+"/admin/investorwithdrawalview/save");
-				}else{
+				}else{										
 					$("#save_form_payment").attr("action",baseUrl+"/investor/investorwithdrawalview/save");
 				}
 			});
@@ -47,10 +47,12 @@ $(document).ready(function(){
 				$("#save_form_payment").attr("action","/admin/investorwithdrawalview/unapprove");
 			});
 			$("#save_form_payment").on("submit",function(e){
+				
 				$('span.error').remove();
 				$('.has-error').removeClass("has-error");
 				var	withdrawal_amount	=	numeral($("#withdrawal_amount").val()).value();
 				getAvailableBalance();
+				
 				AvailableBalance		=	$("#avail_bal").val();
 				
 				var	request_date		=	$("#request_date").val();
@@ -60,12 +62,19 @@ $(document).ready(function(){
 				settlement_date=new Date(settlement_date.split("-")[2], settlement_date.split("-")[0],
 															settlement_date.split("-")[1]);
 				
-				if($("#isSaveButton").val()	!=	"yes") {
+				//if($("#isSaveButton").val()	!=	"yes") {					
 					
-					if(	withdrawal_amount >	AvailableBalance ) {
+					if(	withdrawal_amount <= 0 ) {
 						var $parentTag 			=	$("#withdrawal_amount_parent");
 						$parentTag.addClass('has-error').append(
-												'<span class="control-label error">withdrawal Amount Exceed Available Balance</span>');
+												'<span class="control-label error">Withdrawal Amount should be greater than 0</span>');						
+					}
+						
+					if(	withdrawal_amount >	AvailableBalance ) {						
+						
+						var $parentTag 			=	$("#withdrawal_amount_parent");
+						$parentTag.addClass('has-error').append(
+												'<span class="control-label error">Withdrawal Amount Exceed Available Balance</span>');
 					}
 					
 					if(	request_date >	settlement_date ) {
@@ -79,7 +88,7 @@ $(document).ready(function(){
 						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 						e.preventDefault();
 					}
-				}
+			//	}
 				
 				if ($("#save_form_payment").has('.has-error').length > 0) {
 					e.preventDefault();
@@ -88,15 +97,16 @@ $(document).ready(function(){
 				$('[disabled]').removeAttr('disabled');
 			});
 			function getAvailableBalance() {
-	
-				$.ajax({
-				  type: "POST",
-				  async : false,
-				  cache:false,
-				  data:{investor_id:$("#investor_id").val()},
-				  url: baseUrl+"/admin/investor/ajax/availableBalance"
-				  
-				}).done(function(data) {
-					$("#avail_bal").val(data);
-				});
+				if($('#screen_mode').val() == "admin"){
+					$.ajax({
+					  type: "POST",
+					  async : false,
+					  cache:false,
+					  data:{investor_id:$("#investor_id").val()},
+					  url: baseUrl+"/admin/investor/ajax/availableBalance"
+					  
+					}).done(function(data) {
+						$("#avail_bal").val(data);
+					});
+				}
 			}

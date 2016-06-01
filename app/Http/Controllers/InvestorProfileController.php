@@ -24,8 +24,6 @@ class InvestorProfileController extends MoneyMatchController {
 			$result		=	$this->investorProfileModel->processProfile($postArray);
 			$submitted	=	true;
 		}
-		$this->investorProfileModel->processDropDowns();
-		
 		$this->investorProfileModel->getInvestorDetails();
 
 		$withArry		=	array(	"InvPrfMod"=>$this->investorProfileModel,

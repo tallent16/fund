@@ -323,7 +323,10 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$this->dbExecuteSql($updSql);
 
 		}									
-
+		$status	=	$this->checkLoanRepaymentCompleted($loanId);
+		if($status) {
+			$this->updateBorrowerApplyLoanStatus($loanId,LOAN_STATUS_LOAN_REPAID);
+		}	
 	}
 
 	public function unapprovePayments($loanId, $instNum) {
@@ -394,7 +397,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$this->dbExecuteSql($updSql);
 
 		}									
-
+		$this->updateLoanStatus($loanId,LOAN_STATUS_DISBURSED);
 	}
 
 	// This function is called when the save button is clicked

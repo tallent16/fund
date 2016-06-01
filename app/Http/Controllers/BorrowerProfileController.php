@@ -18,10 +18,12 @@ class BorrowerProfileController extends MoneyMatchController {
 	public function indexAction() {
 		
 		$submitted	=	false;
+		$activeTab	=	"#company_info";
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
 			$result		=	$this->borrowerProfileModel->processProfile($postArray);
 			$submitted	=	true;
+			$activeTab	=	$postArray['active_tab'];	
 		}
 		
 		$this->borrowerProfileModel->getBorrowerDetails(); 
@@ -29,7 +31,8 @@ class BorrowerProfileController extends MoneyMatchController {
 		$withArry		=	array(	"modelBorPrf"=>$this->borrowerProfileModel,
 									"classname"=>"fa fa-user fa-fw",
 									"submitted"=>$submitted ,
-									"InvBorPrf"=>$this->borrowerProfileModel
+									"InvBorPrf"=>$this->borrowerProfileModel,
+									"activeTab"=>$activeTab
 								);
 		return view('borrower.borrower-profile')
 					->with($withArry);

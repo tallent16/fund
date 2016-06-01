@@ -21,6 +21,7 @@ class LoanDetailsModel extends TranWrapper {
 	public 	$status						=  	"";
 	public 	$borrower_risk_grade		=  	"";
 	public 	$loan_id					=  	"";
+	public 	$loan_reference_number		=  	"";
 	public 	$loan_tenure				=  	"";
 	public	$perc_funded				=	"";
 	public	$days_to_go					=	"";
@@ -101,6 +102,7 @@ class LoanDetailsModel extends TranWrapper {
 											borrowers.status,
 											borrowers.borrower_risk_grade,
 											loans.loan_id,
+											loans.loan_reference_number,
 											loans.loan_tenure,
 											round(ifnull(total_bid * 100 / apply_amount,0),2) perc_funded,
 											loans.target_interest,
@@ -410,8 +412,8 @@ class LoanDetailsModel extends TranWrapper {
 	public function processBid($postArray) {
 		
 		$transType				=	$postArray['bid_trantype'];
-		$bid_amount				=	$postArray['bid_amount'];
-		$bid_interest_rate		=	$postArray['bid_interest_rate'];
+		$bid_amount				=	$this->makeFloat($postArray['bid_amount']);
+		$bid_interest_rate		=	$this->makeFloat($postArray['bid_interest_rate']);
 		$this->min_bid_amount	=	$this->getSystemSettingFieldByKey("minmum_bid_amount");
 		if(	($bid_interest_rate	>	0)	&&	($bid_interest_rate	>	0)	) {
 			if(	$bid_amount	>=	$this->min_bid_amount ) {

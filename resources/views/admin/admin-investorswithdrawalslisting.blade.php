@@ -62,7 +62,7 @@
 						{{ Lang::get('UnApprove Selected')}}
 					</button>
 				@endpermission
-				@var	$Url	=	url('admin/investorswithdrawalview/')
+				@var	$Url	=	url('admin/investorwithdrawalview/')
 				@var	$addUrl	=	$Url."/add/0/0/"
 				@permission('add.admin.investorswithdrawal')
 					<button class="btn verification-button"

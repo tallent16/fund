@@ -14,9 +14,9 @@ $(document).ready(function(){
 			$("#save_button").on("click",function(){
 				$("#isSaveButton").val("yes");
 				$("#submitType").val("save");
-				if($("#screen_mode").val()	==	"admin") {
+				if($("#screen_mode").val()	==	"admin") {					
 					$("#save_form_payment").attr("action",baseUrl+"/admin/investordepositview/save");
-				}else{
+				}else{					
 					$("#save_form_payment").attr("action",baseUrl+"/investor/investordepositview/save");
 				}
 			});
@@ -30,17 +30,17 @@ $(document).ready(function(){
 				$("#submitType").val("unapprove");
 				$("#save_form_payment").attr("action",baseUrl+"/admin/investordepositview/unapprove");
 			});
-			$("#save_form_payment").on("submit",function(e){
-				$('span.error').remove();
-				$('.has-error').removeClass("has-error");
-				var $parentTag = $("#trans_ref_parent");
-				$('[disabled]').removeAttr('disabled');
-				if($("#isSaveButton").val()	!=	"yes") {
-					if($("#trans_ref_no").val()	==	"") {
-						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
-						e.preventDefault();
-					}
-				}
+			$("#save_form_payment").on("submit",function(e){			
+					$('span.error').remove();
+					$('.has-error').removeClass("has-error");
+					var $parentTag = $("#trans_ref_parent");
+					$('[disabled]').removeAttr('disabled');
+					//if($("#isSaveButton").val()	!=	"yes") {
+						if($("#trans_ref_no").val()	==	"") {
+							$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+							e.preventDefault();
+						}
+					//}			
 			});
 			
 			$(".amount-align").on("focus", function() {

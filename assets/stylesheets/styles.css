@@ -9196,7 +9196,7 @@ nav .block-title{
 }
 /***********Profile (company info,director info,************************
  ********** profile info,financial info and bankinfo)*******************/
-.directorinfo td:nth-child(n+2) {
+.directorinfo td:nth-child(2n) {      /*n+2*/
     background-color: #fff;
 }
 .directorinfo .pagination > li > a, 
@@ -9520,6 +9520,9 @@ table#account-summary, .table-border-custom{
 #accordion .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child, 
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child{
 	border-radius:0;
+}
+#inv_profile_info .btn-group.bootstrap-select{
+	margin:5px 0;
 }
 /*******************************Admin Manage Borrower*******************/
 .borrower-admin a{

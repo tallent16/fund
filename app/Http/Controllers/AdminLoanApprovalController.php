@@ -45,7 +45,7 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$bor_id		=	$postArray['borrower_id'];
 		$transtype	=	$postArray['trantype'];
 		
-		$result	=	$this->borrowerApplyLoanModel->updateBorrowerLoanInfo($postArray,$transtype,$bor_id);
+		$result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
 		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
 		if($result) {
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
@@ -98,7 +98,7 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$transtype	=	$postArray['trantype'];
 		
 		$dataArray 	=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
-		$this->borrowerApplyLoanModel->updateBorrowerLoanInfo($postArray,$transtype,$bor_id);
+		$result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
 		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
 		
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,

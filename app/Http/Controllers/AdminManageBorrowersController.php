@@ -34,9 +34,10 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	public function viewProfileAction($bor_id){
 		
 		$submitted	=	false;
+		$activeTab	=	"#company_info";
 		$bor_id		=	base64_decode($bor_id);
 		
-		 if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
+		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
 			return redirect()->to('admin/manageborrowers');
 		}
 		$this->borrowerProfileModel->getBorrowerDetails($bor_id);
@@ -44,7 +45,8 @@ class AdminManageBorrowersController extends MoneyMatchController {
 									"classname"=>"fa fa-reply fa-fw user-icon",
 									"submitted"=>$submitted ,
 									"InvBorPrf"=>$this->borrowerProfileModel,
-									"user_type"=>"borrower"
+									"user_type"=>"borrower",
+									"activeTab"=>$activeTab
 								);	
 		return view('borrower.borrower-profile')
 				->with($withArry);
@@ -86,9 +88,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$bor_id		=	$postArray['borrower_id'];
 		$dataArray	= 	array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
-		if(isset($postArray['comment_row'])){
-			$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
-		}
+		$this->borrowerProfileModel->processProfile($postArray,$bor_id);
 		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
 		if($result) {
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
@@ -219,5 +219,23 @@ class AdminManageBorrowersController extends MoneyMatchController {
 			return redirect()->route('admin.manageborrowers')
 						->with('failure','delete borrower updated Failed');	
 		}
+	}
+
+	public function saveBorrowerProfileAction(){
+		
+		$postArray	=	Request::all();
+		$bor_id		=	$postArray['borrower_id'];
+		$result		=	$this->borrowerProfileModel->processProfile($postArray,$bor_id);
+		if($result) {
+			
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
+						->with('success','borrower profile updated successfully')
+						->with('activeTab',$postArray['active_tab']);
+		}else{
+			
+			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
+						->with('failure','borrower profile updated Failed')
+						->with('activeTab',$postArray['active_tab']);
+		}	
 	}
 }

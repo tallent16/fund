@@ -10,7 +10,6 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 	<script src="{{ url("js/loan-details.js") }}" type="text/javascript"></script>		
-	<script src="{{ url("js/common.js") }}" type="text/javascript"></script>		
 	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script>
 		var baseUrl	=	"{{url()}}"
@@ -102,6 +101,14 @@
 										
 	</div>								
 </div>
-
+	 @section ('popup-box_panel_title',Lang::get('Fund Yourself Now'))
+	@section ('popup-box_panel_body')
+		@include('widgets.modal_box.bid_information')
+	@endsection
+	@include('widgets.modal_box.panel', array(	'id'=>'bid_information',
+												'aria_labelledby'=>'bid_information',
+												'as'=>'popup-box',
+												'class'=>'',
+											))
     @endsection  
 @stop

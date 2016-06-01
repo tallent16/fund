@@ -68,61 +68,71 @@
 										
 													<div class="row">		
 														<div class="col-xs-12 col-sm-5 col-lg-3">											
-															<label>{{ Lang::get('Bank Name') }}</label>												
+															<label  class="input-required"> 
+																	{{ Lang::get('Bank Name') }}
+															</label>												
 														</div>
 																			
-														<div class="col-xs-12 col-sm-7 col-lg-3">													
+														<div class="col-xs-12 col-sm-7 col-lg-3" id="bankname_{{$i}}_parent">													
 																	<input type="text" 
-																	id="bankname_{{$i}}" 
-																	name="bankname" 
-																	value="{{$bankdetailRow->bank_name}}" 
-																	class="form-control"
-																	 {{$disablestatus}}/>
+																			id="bankname_{{$i}}" 
+																			name="bankname" 
+																			value="{{$bankdetailRow->bank_name}}" 
+																			class="form-control required"
+																			 {{$disablestatus}}
+																			/>
 														</div>
 													</div>
 													
 													
 													<div class="row">		
 														<div class="col-xs-12 col-sm-5 col-lg-3">											
-															<label>{{ Lang::get('Bank Code') }}</label>												
+															<label  class="input-required">
+																{{ Lang::get('Bank Code') }}
+															</label>												
 														</div>
 																			
-														<div class="col-xs-12 col-sm-7 col-lg-3">													
+														<div class="col-xs-12 col-sm-7 col-lg-3" id="bankcode_{{$i}}_parent">													
 																	<input type="text" 
 																	id="bankcode_{{$i}}" 
 																	name="bankcode" 
 																	value="{{$bankdetailRow->bank_code}}" 
-																	class="form-control" 
+																	class="form-control required" 
 																	 {{$disablestatus}}/>	
 														</div>
 													</div>
 													
 													<div class="row">		
 														<div class="col-xs-12 col-sm-5 col-lg-3">											
-															<label>{{ Lang::get('Branch Code') }}</label>												
+															<label class="input-required">
+																{{ Lang::get('Branch Code') }}
+															</label>												
 														</div>
 																			
-														<div class="col-xs-12 col-sm-7 col-lg-3">													
+														<div class="col-xs-12 col-sm-7 col-lg-3" id="branchcode_{{$i}}_parent">													
 																	<input type="text" 
 																	id="branchcode_{{$i}}" 
 																	name="branchcode" 
 																	value="{{$bankdetailRow->branch_code}}" 
-																	class="form-control"
+																	class="form-control required"
 																	{{$disablestatus}}/>
 														</div>
 													</div>
 													
 													<div class="row">		
 														<div class="col-xs-12 col-sm-5 col-lg-3">											
-															<label>{{ Lang::get('Bank Account Number') }}</label>												
+															<label  class="input-required">
+																{{ Lang::get('Bank Account Number') }}
+															</label>												
 														</div>
 																			
-														<div class="col-xs-12 col-sm-7 col-lg-3">													
+														<div 	class="col-xs-12 col-sm-7 col-lg-3" 
+																id="bankaccnumber_{{$i}}_parent">													
 																	<input type="text" 
 																	id="bankaccnumber_{{$i}}" 
 																	name="bankaccnumber" 
 																	value="{{$bankdetailRow->bank_account_number}}" 
-																	class="form-control text-right"
+																	class="form-control text-right required"
 																	{{$disablestatus}} />
 														</div>
 													</div>
@@ -191,8 +201,8 @@
 						
 				<div class="col-sm-6">	
 					<div class="pull-right">	
-						<button type="submit" id="update_button" class="btn button-orange">{{ Lang::get('UPDATE') }}</button>					
-						<button type="submit" id="add_button" class="btn button-orange">{{ Lang::get('ADD') }}</button>	
+						<button type="button" id="update_button" class="btn button-orange">{{ Lang::get('UPDATE') }}</button>					
+						<button type="button" id="add_button" class="btn button-orange">{{ Lang::get('ADD') }}</button>	
 					</div>				
 				</div>
 			
@@ -211,60 +221,70 @@
 				
 						<div class="row">		
 							<div class="col-xs-12 col-sm-5 col-lg-3">											
-								<label>{{ Lang::get('Bank Name') }}</label>												
+								<label  class="input-required"> 
+									{{ Lang::get('Bank Name') }}
+								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankname_x_parent">													
 										<input type="text" 
 										id="bankname_x" 
 										name="bankname" 													
-										class="form-control">
+										class="form-control required">
 							</div>
 						</div>
 						
 						<div class="row">		
 							<div class="col-xs-12 col-sm-5 col-lg-3">											
-								<label>{{ Lang::get('Bank Code') }}</label>												
+								<label  class="input-required"> 
+									{{ Lang::get('Bank Code') }}
+								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankcode_x_parent">													
 										<input type="text" 
 										id="bankcode_x" 
 										name="bankcode" 													
-										class="form-control"
+										class="form-control required"
 										/>
 							</div>
 						</div>
 						
 						<div class="row">		
 							<div class="col-xs-12 col-sm-5 col-lg-3">											
-								<label>{{ Lang::get('Branch Code') }}</label>												
+								<label  class="input-required"> 
+									{{ Lang::get('Branch Code') }}
+								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="branchcode_x_parent">													
 										<input type="text" 
 										id="branchcode_x" 
 										name="branchcode" 													
-										class="form-control">
+										class="form-control required">
 							</div>
 						</div>
 						
 						<div class="row">		
 							<div class="col-xs-12 col-sm-5 col-lg-3">											
-								<label>{{ Lang::get('Bank Account Number') }}</label>												
+								<label  class="input-required"> 
+									{{ Lang::get('Bank Account Number') }}
+								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankaccnumber_x_parent">													
 										<input type="text" 
 										id="bankaccnumber_x" 
 										name="bankaccnumber" 													
-										class="form-control">
+										class="form-control required">
 							</div>
 						</div>
 						
 						<div class="row">		
 							<div class="col-xs-12 col-sm-5 col-lg-3">											
-								<label>{{ Lang::get('Active Status') }}</label>										
+								<label>
+									{{ Lang::get('Active Status') }}
+								</label>										
 							</div>
 												
 							<div class="col-xs-12 col-sm-7 col-lg-3">													
@@ -284,7 +304,7 @@
 							
 				<div class="col-sm-12">	 
 					<div class="pull-right">
-						<button type="submit" id="save_button" class="btn button-orange">{{ Lang::get('SAVE') }}</button>	
+						<button type="button" id="save_button" class="btn button-orange">{{ Lang::get('SAVE') }}</button>	
 					</div>
 				</div>
 			</form>		

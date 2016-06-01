@@ -55,7 +55,7 @@
 									id="business_registration_number" 
 									name="business_registration_number"
 									value="{{ $modelBorPrf->business_registration_number }}"
-									class="form-control text-right required"
+									class="form-control text-right required numeric"
 									/>									
 					</div>
 					
@@ -114,7 +114,7 @@
 									name="date_of_incorporation"
 									value="{{ $modelBorPrf->date_of_incorporation }}"
 									class="date-picker form-control required"
-									readonly />	
+									 />	
 							<label class="input-group-addon btn" for="date_of_incorporation">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</label>
@@ -135,7 +135,7 @@
 									name="operation_since"
 									value="{{ $modelBorPrf->operation_since }}"
 									class="date-picker form-control required"
-									readonly />
+									 />
 							<label class="input-group-addon btn" for="operation_since">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</label>
@@ -171,7 +171,7 @@
 								id="number_of_employees" 
 								name="number_of_employees"
 								value="{{ $modelBorPrf->number_of_employees }}"
-								class="form-control text-right required"
+								class="form-control text-right required numeric"
 								/>
 				</div>				
 			</div>
@@ -202,7 +202,8 @@
 								id="contact_person_mobile" 
 								name="contact_person_mobile"
 								value="{{ $modelBorPrf->contact_person_mobile }}"
-								class="form-control text-right  required"
+								class="form-control text-right  required mobile"
+								maxlength="10"
 								/>	
 				</div>
 			</div>

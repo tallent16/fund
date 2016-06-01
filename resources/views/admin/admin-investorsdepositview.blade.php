@@ -12,15 +12,8 @@
 @else
 	@var	$screenMode	=	"investor"
 @endif
-		<!-----
-@if($submitted)
-	<div class="col-sm-12 space-around">
-		<div class="annoucement-msg-container">
-			<div class="alert alert-success">
-				{{Lang::get('Investor Deposit Successfully Updated')}}
-		</div>				
-	</div>
-@endif
+
+
 <div class="col-sm-12 space-around">
 	<div class="panel-primary panel-container" id="investor-deposit">
 		@var $editclass = ""
@@ -206,7 +199,7 @@
 		</div>
 		
 	</div>				
-</div>
+
 
 @endsection  
 @stop

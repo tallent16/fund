@@ -35,6 +35,9 @@
 @endif
 @if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 	{{ '';$InvPrfMod->viewStatus	=	"disabled";''}}
+	@if($InvPrfMod->status	!=	INVESTOR_STATUS_NEW_PROFILE)
+		{{ '';$InvPrfMod->viewStatus	=	"";''}}
+	@endif
 	@var	$screenMode	=	"admin"
 
 	@if( ($InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL))
@@ -49,6 +52,12 @@
 	@var	$trantype	=	"add"
 @else
 	@var	$trantype	=	"edit"
+@endif
+@if(!isset($activeTab))
+	@var	$activeTab	=	"inv_profile_info"
+@endif
+@if(session()->has("activeTab"))
+	@var	$activeTab	=	session("activeTab")
 @endif
 <div class="col-sm-12 space-around"> 
 	<div class="row">
@@ -80,6 +89,8 @@
 			<input type="hidden" id="user_id" value="{{ $InvPrfMod->user_id }}">
 			<input type="hidden" name="investor_bankid" value="{{ $InvPrfMod->investor_bankid }}">
 			<input type="hidden" id="screen_mode" value="{{$screenMode}}">
+			<input type="hidden" id="active_tab" name="active_tab" value="{{$activeTab}}">
+			<input type="hidden" name="current_profile_status" value="{{$InvPrfMod->status}}">
 			<input 	type="hidden" 
 					name="hidden_investor_status" 
 					id="investor_status" 
@@ -153,14 +164,15 @@
 						
 					@endif
 				@endif
-				@if((Auth::user()->usertype	==	USER_TYPE_INVESTOR && $investor_status	==	"corrections_required"))
-					<button type="button" 
-							id="next_button"
-							data-tab-id="company_info"
-						class="btn verification-button" >
-						<i class="fa pull-right"></i>
-						{{ Lang::get('Next') }}
-					</button>
+				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+					@if($InvPrfMod->status	!=	INVESTOR_STATUS_NEW_PROFILE)
+						<button type="submit" 
+								id="admin_save_button"
+							class="btn verification-button" >
+							<i class="fa pull-right"></i>
+							{{ Lang::get('Save') }}
+						</button>
+					@endif
 				@endif
 				@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
 					@if(($InvPrfMod->status	==	INVESTOR_STATUS_COMMENTS_ON_ADMIN)
@@ -227,12 +239,24 @@
 									value="">
 				</div>
 				<div class="col-xs-5" id="comments_XXX_parent">
-					<textarea 	rows="4" 
-								cols="50" 
-								class="form-control"
-								name="comment_row[comments][]" 
-								id="comments_XXX"
-								></textarea>
+					<div class="col-xs-10">
+						<textarea 	rows="4" 
+									cols="50" 
+									class="form-control"
+									name="comment_row[comments][]" 
+									id="comments_XXX"
+									></textarea>
+						<input 	type="hidden" 
+								name="comment_row[comments_reply_id][]" 
+								value="" />
+						<textarea 	rows="4" 
+									cols="50" 
+									disabled
+									style="display:none"
+									class="form-control"
+									name="comment_row[comments_reply][]" 
+									id="comments_reply_boxXXX"></textarea>
+					</div>
 				</div>
 				<div class="col-xs-2 text-right">
 					<input 	type="checkbox" 

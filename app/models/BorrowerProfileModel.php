@@ -3,7 +3,7 @@ use fileupload\FileUpload;
 use File;
 use Config;
 use Log;
-
+use Auth;
 class BorrowerProfileModel extends TranWrapper {
 	
 	public 	$borrower_id  					=  	"";
@@ -45,9 +45,13 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$finacialInfo 					= 	array();
 	public 	$gradeInfo 						= 	array();
 	public 	$commentsInfo 					= 	array();
+	public 	$commentsReplyInfo 				= 	array();
 	public 	$directorSelectOptions			= 	"";
 	public 	$busin_organSelectOptions		= 	"";
 	public 	$comments_count					= 	0;
+	public 	$company_info_complete			= 	0;
+	public 	$director_info_complete			= 	0;
+	public 	$bank_info_complete				= 	0;
 	protected $table 						= 	'borrowers';
 	
 	protected $primaryKey = 'borrower_id';
@@ -58,8 +62,10 @@ class BorrowerProfileModel extends TranWrapper {
 		$this->getBorrowerFinacialRatio($bor_id);
 		$this->getBorrowerFinacial($bor_id);
 		$this->getBorrowerProfileComments($bor_id);
+		$this->getBorrowerProfileCommentsReply($bor_id);
 		$this->getOpenCommentsCount($bor_id);
 		$this->processDropDowns($bor_id);
+		$this->getBorrowerBankInfo($bor_id);
 	}
 		
 	public function getBorrowerCompanyInfo($bor_id) {
@@ -107,17 +113,8 @@ class BorrowerProfileModel extends TranWrapper {
 						borrowers.company_image,
 						borrowers.company_image_thumbnail,
 						borrowers.company_video_url,
-						borrowers.borrower_risk_grade grade,
-						borrower_banks.borrower_bankid,
-						borrower_banks.bank_name,
-						borrower_banks.branch_code,
-						borrower_banks.bank_account_number,
-						borrower_banks.verified_status,
-						borrower_banks.bank_code
-				FROM 	borrowers
-						LEFT JOIN borrower_banks
-						ON	(borrowers.borrower_id	=	borrower_banks.borrower_id
-						AND	borrower_banks.active_status = 1),
+						borrowers.borrower_risk_grade grade
+				FROM 	borrowers,
 						users
 				WHERE	borrowers.user_id	=	{$current_user_id}
 				AND		borrowers.user_id	=	users.user_id";
@@ -130,6 +127,7 @@ class BorrowerProfileModel extends TranWrapper {
 			foreach($vars as $key=>$value) {
 				$this->{$key} = $value;
 			}
+			$this->company_info_complete	=	1;
 		}
 	}
 	
@@ -164,6 +162,7 @@ class BorrowerProfileModel extends TranWrapper {
 					$this->director_details[$newrow][$colname] = $colvalue;
 				}
 			}
+			$this->director_info_complete	=	1;
 		}
 		return $result;
 	}
@@ -228,23 +227,30 @@ class BorrowerProfileModel extends TranWrapper {
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
 
 		$this->updateBorrowerDirectorInfo($postArray,$borrowerId);
-		
-		if (isset($postArray['finacialRatio_row'])) {
-			$finacialRatioRows = $postArray['finacialRatio_row'];
-			$this->updateBorrowerFinacialRatioInfo($finacialRatioRows,$borrowerId);
-		}
-		
-		if (isset($postArray['finacial_row'])) {
-			$finacialRows = $postArray['finacial_row'];
-			$this->updateBorrowerFinacialInfo($finacialRows,$borrowerId);
-		}
-
-		if (isset($postArray['hidden_borrower_status']) && $postArray['hidden_borrower_status']	==	"corrections_required" ) {
-			if (isset($postArray['comment_row'])) {
-				$this->saveComments($postArray['comment_row'],$borrowerId);
+		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+			//Admin only edit the finacial info and profile info
+			
+			$this->updateBorrowerProfileInfo($postArray,$borrowerId);
+			
+			if (isset($postArray['finacialRatio_row'])) {
+				$finacialRatioRows = $postArray['finacialRatio_row'];
+				$this->updateBorrowerFinacialRatioInfo($finacialRatioRows,$borrowerId);
+			}
+			
+			if (isset($postArray['finacial_row'])) {
+				$finacialRows = $postArray['finacial_row'];
+				$this->updateBorrowerFinacialInfo($finacialRows,$borrowerId);
 			}
 		}
+		if( (isset($postArray['hidden_borrower_status']) &&
+					$postArray['hidden_borrower_status']	==	"corrections_required" )
+				||(Auth::user()->usertype	==	USER_TYPE_ADMIN) ) {
+				if (isset($postArray['comment_row'])) {
+					$this->saveComments($postArray['comment_row'],$borrowerId);
+				}
+		}
 		$this->updateBorrowerBankInfo($postArray,$borrowerId,$transType);
+		return $borrowerId;
 	}
 	
 	public function updateBorrowerInfo($postArray,$transType) {
@@ -259,7 +265,9 @@ class BorrowerProfileModel extends TranWrapper {
 			if($postArray['isSaveButton']	!=	"yes") {
 				$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
 			}
-				
+			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+				$status		=	$postArray['current_profile_status'];
+			}
 		}
 		$business_name 					=	$postArray['business_name'];
 		$business_organisation			= 	$postArray['business_organisation'];
@@ -281,11 +289,6 @@ class BorrowerProfileModel extends TranWrapper {
 			$operation_since			= 	 $this->getDbDateFormat($operation_since);
 		$registered_address 			= 	$postArray['registered_address'];
 		$mailing_address 				= 	$postArray['mailing_address'];
-		$company_profile 				= 	$postArray['company_profile'];
-		$company_aboutus 				= 	$postArray['about_us'];
-		$risk_industry 					= 	$postArray['risk_industry'];
-		$risk_strength 					= 	$postArray['risk_strength'];
-		$risk_weakness 					= 	$postArray['risk_weakness'];
 		$status 						= 	$status;
 		$current_user_id				=	$this->getCurrentuserID();
 		$destinationPath 				= 	Config::get('moneymatch_settings.upload_bor');
@@ -297,7 +300,8 @@ class BorrowerProfileModel extends TranWrapper {
 			$fileUploadObj->createIfNotExists($imagePath);
 			$fileUploadObj->storeFile($imagePath ,$file);
 			$filename 			= 	$file->getClientOriginalName();
-			$company_image		=	$imagePath."/".$filename;
+			$newfilename 		= 	 preg_replace('/\s+/', '_', $filename);
+			$company_image		=	$imagePath."/".$newfilename;
 			$updateDataArry		=	array(	"company_image"=>$company_image,
 											"company_image_thumbnail"=>$company_image
 											);
@@ -308,7 +312,8 @@ class BorrowerProfileModel extends TranWrapper {
 			$fileUploadObj->createIfNotExists($thumbnailPath);
 			$fileUploadObj->storeFile($thumbnailPath ,$file);
 			$filename 									= 	$file->getClientOriginalName();
-			$company_thumbnail							=	$thumbnailPath."/".$filename;
+			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
+			$company_thumbnail							=	$thumbnailPath."/".$newfilename;
 			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
 			
 		}
@@ -332,15 +337,14 @@ class BorrowerProfileModel extends TranWrapper {
 							'paid_up_capital' 				=> ($paid_up_capital!="")?$paid_up_capital:null,
 							'number_of_employees' 			=> ($number_of_employees!="")?$number_of_employees:null,
 							'operation_since' 				=> ($operation_since!="")?$operation_since:null,
-							'risk_industry' 				=> ($risk_industry!="")?$risk_industry:null,
-							'risk_strength' 				=> ($risk_strength!="")?$risk_strength:null,
-							'risk_weakness' 				=> ($risk_weakness!="")?$risk_weakness:null,
 							'registered_address' 			=> ($registered_address!="")?$registered_address:null,
-							'mailing_address' 				=> ($mailing_address!="")?$mailing_address:null,
-							'company_profile' 				=> ($company_profile!="")?$company_profile:null,
-							'company_aboutus' 				=> ($company_aboutus!="")?$company_aboutus:null,
-							'user_id' 						=> $current_user_id);
-							
+							'mailing_address' 				=> ($mailing_address!="")?$mailing_address:null);
+		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
+			if ($transType != "edit") {
+				$dataArray['user_id']	=	$current_user_id;
+			}
+		}
+	
 		if ($transType == "edit") {
 			if($postArray['isSaveButton']	!=	"yes") {
 				$dataArray['status'] = $status;
@@ -366,6 +370,26 @@ class BorrowerProfileModel extends TranWrapper {
 			 $this->dbUpdate('borrowers', $dataArray, $whereArry);
 			return $borrowerId;
 		}
+	}
+	
+	public function updateBorrowerProfileInfo($postArray,$borrowerId) {
+		
+		$company_profile 				= 	$postArray['company_profile'];
+		$company_aboutus 				= 	$postArray['about_us'];
+		$risk_industry 					= 	$postArray['risk_industry'];
+		$risk_strength 					= 	$postArray['risk_strength'];
+		$risk_weakness 					= 	$postArray['risk_weakness'];
+		
+		$dataArray = array(	
+							'risk_industry' 				=> ($risk_industry!="")?$risk_industry:null,
+							'risk_strength' 				=> ($risk_strength!="")?$risk_strength:null,
+							'risk_weakness' 				=> ($risk_weakness!="")?$risk_weakness:null,
+							'company_profile' 				=> ($company_profile!="")?$company_profile:null,
+							'company_aboutus' 				=> ($company_aboutus!="")?$company_aboutus:null);
+							
+		$whereArry	=	array("borrower_id" =>"{$borrowerId}");
+		$this->dbUpdate('borrowers', $dataArray, $whereArry);
+		return $borrowerId;
 	}
 	
 	public function updateBorrowerDirectorInfo($postArray,$borrowerId) {
@@ -663,7 +687,8 @@ class BorrowerProfileModel extends TranWrapper {
 										comments,
 										comment_status
 								FROM 	profile_comments
-								WHERE	user_id	=	{$current_user_id}";
+								WHERE	user_id	=	{$current_user_id}
+								AND		inresponse_to IS NULL";
 				
 		$comments_rs	=	$this->dbFetchAll($comments_sql);	
 		if ($comments_rs) {
@@ -674,6 +699,39 @@ class BorrowerProfileModel extends TranWrapper {
 					$this->commentsInfo[$newrow][$colname] = $colvalue;
 				}
 			}
+		}else{
+			$comments_rs	=	 array();	
+		}
+		return	$comments_rs;
+	}
+	
+	public function getBorrowerProfileCommentsReply($bor_id) {
+		
+		
+		if($bor_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByBorrowerID($bor_id);
+		}
+		
+		$comments_sql	= 	"	SELECT 	profile_comments_id,
+										comments,
+										inresponse_to,
+										comment_status
+								FROM 	profile_comments
+								WHERE	user_id	=	{$current_user_id}
+								AND		inresponse_to	IS NOT NULL";
+		
+		$comments_rs	=	$this->dbFetchAll($comments_sql);	
+		
+		if ($comments_rs) {
+			foreach ($comments_rs as $commentRow) {
+				$profile_comments_id	=	$commentRow->profile_comments_id;
+				$inresponse_to			=	$commentRow->inresponse_to;
+				$this->commentsReplyInfo['text'][$inresponse_to]	=	$commentRow->comments;
+				$this->commentsReplyInfo['id'][$inresponse_to]		=	$commentRow->profile_comments_id;
+			}
+		
 		}else{
 			$comments_rs	=	 array();	
 		}
@@ -699,52 +757,108 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function saveComments($commentRows,$borrowerId) {
 		
+		if($this->getUserType()	==	USER_TYPE_ADMIN) {	
+			$this->saveCommentsByAdmin($commentRows,$borrowerId);
+		}else{
+			$this->saveCommentsByBorrower($commentRows,$borrowerId);
+		}
+		return 1;
+	}
+	public function saveCommentsByAdmin($commentRows,$borrowerId) {
+		
 		$numRows = count($commentRows['comment_status_hidden']);
 		$rowIndex = 0;
 		$userID		=	$this->getUseridByBorrowerID($borrowerId);
 		$userType	=	USER_TYPE_BORROWER;
 		if($numRows	>	0){
-			if($this->getUserType()	==	USER_TYPE_ADMIN){
-				$whereArry		=	array("user_id" => $userID);
-				$this->dbDelete("profile_comments",$whereArry);
-			}
+			
 			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 				
-				$comment_status				= $commentRows['comment_status_hidden'][$rowIndex];
-				$comment_id					= $commentRows['comment_id_hidden'][$rowIndex];
+				$comment_status				= 	$commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id					= 	$commentRows['comment_id_hidden'][$rowIndex];
+				$comment_reply_id			=	$commentRows['comments_reply_id'][$rowIndex];
 				
-				if($this->getUserType()	==	USER_TYPE_ADMIN) {	
-					
-					$comments					= $commentRows['comments'][$rowIndex];
-					$input_tab					= $commentRows['input_tab'][$rowIndex];
-					// Construct the data array
-					$dataArray = array(	
-									'user_type' 				=> $userType,
-									'user_id'					=> $userID,
-									'input_tab'	 				=> $input_tab,
-									'comments'					=> $comments,
-									'comment_status'			=> $comment_status,
-									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
-										
+				$comments					= 	$commentRows['comments'][$rowIndex];
+				$input_tab					= 	$commentRows['input_tab'][$rowIndex];
+				// Construct the data array
+				$dataArray = array(	
+								'user_type' 				=> $userType,
+								'user_id'					=> $userID,
+								'input_tab'	 				=> $input_tab,
+								'comments'					=> $comments,
+								'comment_status'			=> $comment_status,
+								'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+				if($comment_id	==	0) {
 					// Insert the rows (for all types of transaction)
 					$result =  $this->dbInsert('profile_comments', $dataArray, true);
 					if ($result < 0) {
 						return -1;
 					}
+					$commentIds[]	=	$result;
 				}else{
+					unset($dataArray);
+					unset($whereArry);
+					$whereArry	=	array("profile_comments_id" =>$comment_id);
+					$dataArray = array(	
+							'comments'					=> $comments,
+							'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+					$result =  $this->dbUpdate('profile_comments', $dataArray, $whereArry);
+					$commentIds[]	=	$comment_id;
+					if($comment_reply_id	!=0)
+						$commentIds[]	=	$comment_reply_id;
+				}
 					
-					$dataArray = array(
+			}
+			$whereArry	=	[	"user_id" 		=> 	$userID,
+								"whereNotIn" 	=>	["column" => 'profile_comments_id',
+											 "valArr" => $commentIds]];
+			$this->dbDelete("profile_comments",$whereArry);
+		}
+	}
+	
+	public function saveCommentsByBorrower($commentRows,$borrowerId) {
+		
+		$numRows = count($commentRows['comment_status_hidden']);
+		$rowIndex = 0;
+		$userID		=	$this->getUseridByBorrowerID($borrowerId);
+		$userType	=	USER_TYPE_BORROWER;
+		if($numRows	>	0){
+			
+			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+				
+				$comment_status				= 	$commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id					= 	$commentRows['comment_id_hidden'][$rowIndex];
+				$comment_reply_id			=	$commentRows['comments_reply_id'][$rowIndex];
+				$dataArray = array(
 										'comment_status'			=> $comment_status,
 										'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y"))
 									);	
 					$whereArry	=	array("profile_comments_id" =>"{$comment_id}");
 					$this->dbUpdate('profile_comments', $dataArray, $whereArry);
-				}
+					if($commentRows['comments_reply'][$rowIndex]	!=	""	) {
+						if(	$comment_reply_id	==	0) {
+							unset($dataArray);
+							$dataArray = array(	
+									'user_id'					=> $userID,
+									'comments'					=> $commentRows['comments_reply'][$rowIndex],
+									'inresponse_to'				=> $commentRows['comment_id_hidden'][$rowIndex],
+									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+							$result =  $this->dbInsert('profile_comments', $dataArray, true);
+						}else{
+							unset($dataArray);
+							unset($whereArry);
+							$whereArry	=	array("profile_comments_id" =>$comment_reply_id);
+							$dataArray = array(	
+									'user_id'					=> $userID,
+									'comments'					=> $commentRows['comments_reply'][$rowIndex],
+									'inresponse_to'				=> $commentRows['comment_id_hidden'][$rowIndex],
+									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+							$result =  $this->dbUpdate('profile_comments', $dataArray, $whereArry);
+						}
+					}
 			}
 		}
-		return 1;
 	}
-	
 	public function updateBorrowerGrade($postArray,$borrowerId) {
 		$this->getBorrowerCompanyInfo($borrowerId);
 
@@ -878,4 +992,32 @@ class BorrowerProfileModel extends TranWrapper {
 		return 1;
 	}
 	
+	public function getBorrowerBankInfo($bor_id) {
+		
+		
+		if($bor_id	==	null){
+			$bor_id	=	$this->getCurrentBorrowerID();
+		}
+		
+		$sql= "	SELECT 	borrower_banks.borrower_bankid,
+						borrower_banks.bank_name,
+						borrower_banks.branch_code,
+						borrower_banks.bank_account_number,
+						borrower_banks.verified_status,
+						borrower_banks.bank_code
+				FROM 	borrower_banks
+				WHERE	borrower_banks.borrower_id	=	{$bor_id}
+				AND		borrower_banks.active_status = 1";
+		
+		$result		= $this->dbFetchAll($sql);
+		
+		if ($result) {
+		
+			$vars = get_object_vars ( $result[0] );
+			foreach($vars as $key=>$value) {
+				$this->{$key} = $value;
+			}
+			$this->bank_info_complete	=	1;
+		}
+	}
 }

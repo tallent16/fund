@@ -282,6 +282,12 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										]
 			);
 		
+    Route::post('admin/borrower/profile/save',
+										[	
+											
+											'uses' 			=>	'AdminManageBorrowersController@saveBorrowerProfileAction'
+										]
+			);
     Route::post('admin/borrower/profile/save_comments',
 										[	
 											'middleware' 	=> 	'permission',
@@ -386,7 +392,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										]
 				);
 										
-    Route::get('admin/investor/profile/{bor_id}',
+    Route::get('admin/investor/profile/{inv_id}',
 										[	
 											'as' 			=> 	'admin.investorprofile',
 											'middleware' 	=> 	'permission',
@@ -397,6 +403,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										]
 			);
 		
+    Route::post('admin/investor/profile/save',
+										[	'uses' 			=>	'AdminManageInvestorsController@saveInvestorProfileAction'
+										]
+			);
     Route::post('admin/investor/profile/save_comments',
 										[	
 											'middleware' 	=> 	'permission',

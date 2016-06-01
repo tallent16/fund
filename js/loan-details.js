@@ -1,4 +1,5 @@
 var	formValid	=	false
+var	showPopup	=	true
 $(document).ready(function (){  
 	
 	$.ajaxSetup({
@@ -21,47 +22,13 @@ $(document).ready(function (){
     });
     
 	$("#form-bid").on('submit',function(event){
-		
-		var	available_balance	=	$("#available_balance").val();
-		var	bid_amount			=	numeral($("#bid_amount").val()).value();
-		var	bid_interest_rate	=	numeral($("#bid_interest_rate").val()).value();
-		var	isCancelButton		=	$("#isCancelButton").val();
-		var	minimum_bid_amount	=	numeral($("#minimum_bid_amount").val()).value();
-		var	errorMesage			=	"";
-		getAvailableBalance();
-		AvailableBalance		=	$("#available_balance").val()
-		if(isCancelButton	==	"no") {
 			
-			if(bid_amount	<=	0) {
-				errorMesage			=	"Bid Amount Should be greater than zero <br>";
-			}
-					
-			if(bid_interest_rate	<=	0) {
-				errorMesage			=	"Bid Interest Rate Should be greater than zero <br>";
-			}
-			if(errorMesage	!=	""	) {
-				showDialog("",errorMesage);
-				event.preventDefault();
-			}
-			
-			if(	AvailableBalance	==	0) {
-				showDialog("","You have insufficient balance to bid");
-				event.preventDefault();
-			}
-			
-			if(bid_amount	>	AvailableBalance) {
-				showDialog("","Bid Amount should not be greater than Available Balance");
-				event.preventDefault();
-			}
-			
-			if(bid_amount	<	minimum_bid_amount) {
-				showDialog("","The Minimum Bid amount is SGD "+minimum_bid_amount);
-				event.preventDefault();
-			}
-		}
 		if (!formValid) 
 			event.preventDefault();
-		
+	});
+
+	$("#submit_bid").on('click',function(event){
+		validateForm();
 	});
 
 	 $("#newCommentBoxButton").on('click',function(){
@@ -98,7 +65,19 @@ $(document).ready(function (){
 				});
 		}
 	});
-	
+	$('#bid_information').find("#confirmation_button").click(function (e) {
+		showPopup	=	false;
+		$("#bid_information").modal('hide');
+		$("#form-bid").submit();
+	});
+	$("#modal_confirm_bid").click(function(){
+		if($(this).is(":checked")) {
+			$("#confirmation_button").removeAttr("disabled");
+		}else{
+			$("#confirmation_button").attr("disabled",true);
+			$("#confirmation_button").prop("disabled",true);
+		}
+	});
 });
 
 
@@ -106,7 +85,7 @@ function cancelLoanBidClicked() {
 	// The dialog box utility of jQuery is asynchronous. The execution of the Javascript code will not wait
 	// for the user input. Therefore we have a callback function to re-trigger the submission if the 
 	// user confirms cancellation
-	
+	//~ showPopup	=	false;
 	if (formValid) {
 		return;
 	} 
@@ -143,4 +122,64 @@ function getAvailableBalance() {
 	}).done(function(data) {
 		$("#available_balance").val(data);
 	});
+}
+function callBidInformationPopup(){
+	
+	var	aval_bal			=	numeral($("#available_balance").val()).value();
+	var	bid_amount			=	numeral($("#bid_amount").val()).value();
+	var	prev_bid_amount		=	numeral($("#prev_bid_amount").val()).value();
+	var after_bid_aval_bal	=	(parseFloat(aval_bal) +	parseFloat(prev_bid_amount)) -	parseFloat(bid_amount);
+	$("#modal_aval_bal_after").html(numeral(after_bid_aval_bal).format("0,00.00"));
+	
+	$("#confirmation_button").attr("disabled",true);
+	$("#confirmation_button").prop("disabled",true);
+	
+	$("#modal_confirm_bid").attr("checked",false);
+	$("#modal_confirm_bid").prop("checked",false);
+	
+	$('#bid_information').modal('show');
+}
+function validateForm() {
+	
+	var	available_balance	=	$("#available_balance").val();
+	var	bid_amount			=	numeral($("#bid_amount").val()).value();
+	var	bid_interest_rate	=	numeral($("#bid_interest_rate").val()).value();
+	var	minimum_bid_amount	=	numeral($("#minimum_bid_amount").val()).value();
+	var	errorMesage			=	"";
+	getAvailableBalance();
+	AvailableBalance		=	$("#available_balance").val()
+	if(bid_amount	<=	0) {
+		errorMesage			=	"Bid Amount Should be greater than zero <br>";
+	}
+			
+	if(bid_interest_rate	<=	0) {
+		errorMesage			=	"Bid Interest Rate Should be greater than zero <br>";
+	}
+	if(errorMesage	!=	""	) {
+		showDialog("",errorMesage);
+		formValid	= false;
+		return;
+	}
+	
+	if(	AvailableBalance	==	0) {
+		showDialog("","You have insufficient balance to bid");
+		formValid	= false;
+		return;
+	}else{
+		
+		if(bid_amount	>	AvailableBalance) {
+			showDialog("","Bid Amount should not be greater than Available Balance");
+			formValid	= false;
+			return;
+		}
+		
+	}
+	if(bid_amount	<	minimum_bid_amount) {
+		showDialog("","The Minimum Bid amount is SGD "+minimum_bid_amount);
+		formValid	= false;
+		return;
+	}
+	callBidInformationPopup();
+	formValid	= true;
+
 }

@@ -178,6 +178,7 @@
 								
 						<input 	type="hidden" 
 								name="prev_bid_amount"
+								id="prev_bid_amount"
 								value="{{$bid_amount}}"
 								class="form-control">
 					</div>
@@ -194,7 +195,7 @@
 				</div>
 				<div class="row space-around">
 					<div class="col-md-5 col-xs-5">	
-						<button type="submit" 
+						<button type="button" 
 								id="submit_bid"
 								onclick="LoanBidClicked()"
 								class="btn verification-button"

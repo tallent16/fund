@@ -1,3 +1,4 @@
+var formValid	=	true;	
 var $zDiv = $('.divs > div.bank-list'),
 $prNx = $('#prev, #next'),
 n = $zDiv.length,
@@ -18,10 +19,17 @@ $(document).ready(function (){
 	/*End of add bank*/
 	
 	$("#update_button").click( function() {
-		var cur_id = $zDiv.eq(c).attr("id");		
+		var cur_id = $zDiv.eq(c).attr("id");	
+		validateForm('update_form-'+cur_id);	
 		$('#update_form-'+cur_id).submit();			
 	});		 
 	
+	$("form").on("submit",function(event) {
+	
+		if(!formValid){
+			event.preventDefault();
+		}
+	});
 });
 function addNewBankRow() {
 	
@@ -39,6 +47,16 @@ function addNewBankRow() {
 	$(".divs div.bank-list:last").show();
 	$(".bankdet-pagi").hide();
 	
+	$("#save_button").click( function() {
+		validateForm('form-bankdetails');	
+		$('#form-bankdetails').submit();			
+	});	
+	$("form").on("submit",function(event) {
+	
+		if(!formValid){
+			event.preventDefault();
+		}
+	});
 }
 
 /*Pagination*/
@@ -94,3 +112,22 @@ function showhidebuttons(cur_id){
 	
 }
 
+function validateForm(formID) {
+	$('span.error').remove();
+	$('.has-error').removeClass("has-error");
+	$("#"+formID+" input.required").each(function(){
+		
+		var inputVal 	= 	$(this).val();
+		var	input_id	=	$(this).attr("id");
+		var inputVal 	= 	$(this).val();
+		var $parentTag = $("#"+input_id+"_parent");
+		
+		if(inputVal == ''){
+			$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+		}
+	});
+	if ($("#"+formID).has('.has-error').length > 0)
+		formValid	= false;
+	else
+		formValid	= true;
+}

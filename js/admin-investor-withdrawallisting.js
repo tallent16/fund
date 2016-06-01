@@ -129,7 +129,7 @@ $(document).ready(function (){
 		checkall_list(this,"select_investor_withdraw");
 	});
    $("#new_button").click(function(){
-	   var	url	=	$(this).attr("data-url");
+	   var	url	=	$(this).attr("data-url");	   
 	   window.location	=	url;
 	});
 });

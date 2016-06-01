@@ -272,7 +272,7 @@
 	<div><!---row--->
 </div><!---col 12--->
 
-<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
+<input type="hidden" name="_token" id="hidden_tokenz" value="{{ csrf_token() }}">	
  @section ('popup-box_panel_title',Lang::get('borrower-loaninfo.all_repayment_schedule'))
 	@section ('popup-box_panel_body')
 		

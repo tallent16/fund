@@ -1,5 +1,6 @@
+var formLoanValid	=	true;
 $(document).ready(function (){  
-	
+
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('#_token').val()
@@ -13,12 +14,29 @@ $(document).ready(function (){
 		
 		$("#admin_process").val("return_borrower");
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/return_borrower");
+		if(($('#commentBoxContainer .commentClass:checked').length)
+			|| ($('#commentBoxContainer .commentClass').length == 0) ){
+			errMessage	=	"There is no open comments to return back to borrower";
+			showDialog("",errMessage);
+			$('.nav-tabs a[href="#comments"]').tab('show');
+			formLoanValid	=	false;
+		}else{
+			formLoanValid	=	true;
+		}
 		$("#form-profile").submit();
     });
 	$("#approve_loanapply_button").click(function(){
 	
 		$("#admin_process").val("approve");
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/approve");
+		if($('#commentBoxContainer .commentClass').not(':checked').length){
+			errMessage	=	"Please close all comments before approve";
+			showDialog("",errMessage);
+			
+			$('.nav-tabs a[href="#comments"]').tab('show');
+			formLoanValid	=	true;
+		}
+		
 		$("#form-profile").submit();
     });
 	$("#close_comment_button").click(function(){
@@ -87,6 +105,9 @@ $(document).ready(function (){
 				$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 				event.preventDefault();	
 			}	
+		}
+		if(!formLoanValid){
+			event.preventDefault();
 		}
 	});
 		$(".amount-align").on("focus", function() {

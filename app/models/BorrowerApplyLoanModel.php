@@ -194,7 +194,11 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public function processLoan($postArray) {
 		
 		$transType 	= $postArray['trantype'];
-		$borrowerId = $this->getCurrentBorrowerID();
+		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
+			$borrowerId = $this->getCurrentBorrowerID();
+		}else{
+			$borrowerId =	$postArray['borrower_id'];
+		}
 		$borrName	= $this->getBorrowOrgName($borrowerId);
 		
 		$moduleName		=	"Loans";
@@ -215,9 +219,13 @@ class BorrowerApplyLoanModel extends TranWrapper {
 
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
 										
-		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType,$this->getCurrentBorrowerID());
-		$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
-		if (isset($postArray['hidden_loan_status']) && $postArray['hidden_loan_status']	==	"corrections_required" ) {
+		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType,$borrowerId);
+		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
+			$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
+		}
+		if( (isset($postArray['hidden_loan_status']) &&
+					$postArray['hidden_loan_status']	==	"corrections_required" )
+				||(Auth::user()->usertype	==	USER_TYPE_ADMIN) ) {
 			if (isset($postArray['comment_row'])) {
 				$this->saveLoanApplyComments($postArray['comment_row'],$loanId);
 			}
@@ -327,7 +335,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 				
 				$file			=	$postArray['documents'][$rowIndex];
 				$filename 		= 	$file->getClientOriginalName();
-				$loan_doc_url	=	$destinationPath."/".$filename;
+				$newfilename 	= 	 preg_replace('/\s+/', '_', $filename);
+				$loan_doc_url	=	$destinationPath."/".$newfilename;
 				
 				$dataArray 	= 	array(	
 									'loan_doc_id' 				=> $loan_doc_id,
@@ -486,20 +495,23 @@ class BorrowerApplyLoanModel extends TranWrapper {
 				
 				$comment_status		= $commentRows['comment_status_hidden'][$rowIndex];
 				$comment_id			= $commentRows['comment_id_hidden'][$rowIndex];
-				$comments			= $commentRows['comments'][$rowIndex];
+				
 				
 				$comment_datetime	= $this->getDbDateFormat(date("d/m/Y"));
-				$comment_text		= $commentRows['comments'][$rowIndex];		
+			
 				$dataArray			= [	'loan_id'					=> $loan_id,
-										'comemnt_text'				=> $comments,
 										'comments_status'			=> $comment_status,
 										'comment_datetime' 			=> $comment_datetime];
 				$whereArray			= ["loan_approval_comments_id"=> $comment_id];
 				
-			
+				if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+					$comments			= $commentRows['comments'][$rowIndex];
+					$dataArray['comemnt_text']	= $comments;
+				}
 				if ($comment_id > 0) {
 					$this->dbUpdate('loan_approval_comments', $dataArray, $whereArray);
 				}else{
+					
 					$comment_id = $this->dbInsert('loan_approval_comments', $dataArray, true);
 				}
 				$idArray[]			= $comment_id;

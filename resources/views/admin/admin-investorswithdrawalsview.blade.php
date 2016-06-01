@@ -4,7 +4,7 @@
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 	<script src="{{ url('js/admin-investor-withdrawalview.js') }}" type="text/javascript"></script>
 	<script>		
-	var	baseUrl	=	"{{url('')}}"	
+		var	baseUrl	=	"{{url('')}}"	
 	</script>
 @endsection
 @section('page_heading',Lang::get('Investor Withdrawals') )
@@ -173,13 +173,13 @@
 							{{ Lang::get('Transcation Reference No') }}
 						</label>
 					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-5">					
+					<div class="col-xs-12 col-sm-7 col-lg-5" id="trans_ref_parent">					
 							<input 	id="trans_ref_no" 
 									type="text" 
 									class="trans_ref_no form-control" 
 									name="trans_ref_no"									
 									value="{{$adminInvWithDrawListMod->trans_ref_no}}" 
-									 />						
+									/>						
 					</div>
 				</div> <!-- Row 5-->
 				
@@ -203,14 +203,14 @@
 								@if( ($adminInvWithDrawListMod->status	==	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED) 
 									|| ($adminInvWithDrawListMod->processbuttontype	==	"add"))
 									<button class="btn verification-button"
-											id="save_button"
+											id="save_button"											
 											{{$viewclass}} >
 										{{ Lang::get('Save')}}
 									</button>
 									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 										@permission('approve.admin.investorswithdrawal')	
 											<button class="btn verification-button" 
-													id="approve_button"
+													id="approve_button"													
 													{{$viewclass}} >
 												{{ Lang::get('Approve')}}
 											</button>
@@ -221,7 +221,7 @@
 									@if($adminInvWithDrawListMod->status	==	INVESTOR_BANK_TRANS_STATUS_VERIFIED)
 										@permission('unapprove.admin.investorswithdrawal')	
 											<button class="btn verification-button" 
-													id="unapprove_button"
+													id="unapprove_button"													
 													>
 												{{ Lang::get('UnApprove')}}
 											</button>

@@ -70,7 +70,7 @@
 										id="bank_account_number" 
 										name="bank_account_number"
 										value="{{ $modelBorPrf->bank_account_number }}"
-										class="form-control text-right required"
+										class="form-control text-right required numeric"
 										/>
 						</div>
 					</div>			

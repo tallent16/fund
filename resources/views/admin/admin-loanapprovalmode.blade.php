@@ -62,61 +62,59 @@
 						name="laon_purpose"
 						value="{{$adminLoanApprMod->purpose}}">
 				<div class="panel-body applyloan table-border-custom">	
-					@if($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-						<div class="col-sm-12 text-right"> 	
-							<button type="button" 
-										class="btn verification-button"
-										id="save_loanapply_button">						
-									{{ Lang::get('Save')}}
-							</button>
-							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-								@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-									@if($adminLoanApprMod->comments_count	==	0)	
+					<div class="col-sm-12 text-right"> 
+						<button type="button" 
+									class="btn verification-button"
+									id="save_loanapply_button">						
+								{{ Lang::get('Save')}}
+						</button>	
+						@if($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+							
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 										@permission('approve.admin.loanapproval')			
-											<button type="button" 
-													class="btn verification-button"
-													id="approve_loanapply_button">
-												{{ Lang::get('Approve')}}
-											</button>
+												<button type="button" 
+														class="btn verification-button"
+														id="approve_loanapply_button">
+													{{ Lang::get('Approve')}}
+												</button>
 										@endpermission
 									@endif
 								@endif
-							@endif
-							@permission('cancel.admin.loanapproval')
-								<button type="button" 
-										class="btn verification-button"
-										id="cancel_loanapply_button">						
-									{{ Lang::get('Cancel')}}</button>
-							@endpermission
-							@permission('admin.savecomment')
-								<button type="button" class="btn verification-button" id="save_comment_button">						
-									{{ Lang::get('Save Comments')}}</button>
-							@endpermission
-							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-									@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-										@if($adminLoanApprMod->comments_count	>	0)
-											@permission('returnborrower.admin.loanapproval')
-												<button type="button" 
-														class="btn verification-button"
-														id="returnback_loanapply_button">						
-														{{ Lang::get('Return to Borrower')}}
-												</button>	
-											@endpermission				
-									@endif
-								@endif
-							@endif
-							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-								@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+								@permission('cancel.admin.loanapproval')
 									<button type="button" 
 											class="btn verification-button"
-											id="download_all_document">						
-											{{ Lang::get('Download All')}}
-									</button>	
+											id="cancel_loanapply_button">						
+										{{ Lang::get('Cancel')}}</button>
+								@endpermission
+								@permission('admin.savecomment')
+									<button type="button" class="btn verification-button" id="save_comment_button">						
+										{{ Lang::get('Save Comments')}}</button>
+								@endpermission
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+										@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+											@permission('returnborrower.admin.loanapproval')
+													<button type="button" 
+															class="btn verification-button"
+															id="returnback_loanapply_button">						
+															{{ Lang::get('Return to Borrower')}}
+													</button>	
+										@endpermission				
+										
+									@endif
 								@endif
-							@endif
-						</div>
-					@endif
-					
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+										<button type="button" 
+												class="btn verification-button"
+												id="download_all_document">						
+												{{ Lang::get('Download All')}}
+										</button>	
+									@endif
+								@endif
+							
+						@endif
+					</div>
 						<div class="row">
 							<div class="col-lg-12 col-md-6 col-xs-12 space-around">
 								<ul class="nav nav-tabs">

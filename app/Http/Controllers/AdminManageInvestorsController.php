@@ -217,4 +217,22 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$availableBalance		=	$this->investorProfileModel->getInvestorAvailableBalanceById($investorId);
 		return $availableBalance;
 	}
+	
+		public function saveInvestorProfileAction(){
+		
+		$postArray	=	Request::all();
+		$inv_id		=	$postArray['investor_id'];
+		$result		=	$this->investorProfileModel->processProfile($postArray,$inv_id);
+		if($result) {
+			
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
+						->with('success','Investor profile updated successfully')
+						->with('activeTab',$postArray['active_tab']);
+		}else{
+			
+			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id) ))
+						->with('failure','Investor profile updated Failed')
+						->with('activeTab',$postArray['active_tab']);
+		}	
+	}
 }

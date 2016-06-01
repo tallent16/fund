@@ -135,7 +135,7 @@
 									class="actual_date form-control" 
 									name="actual_date"									
 									value="{{$adminBorRepayViewMod->repaymentDate}}" 
-									readonly />
+									/>
 
 							<label for="actual_date" class="input-group-addon btn">
 								<span class="glyphicon glyphicon-calendar"></span>

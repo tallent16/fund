@@ -36,7 +36,7 @@
 				
 		<div class="col-sm-4 col-lg-3"> 														
 			<div class="form-group">							
-				<strong>{{ Lang::get('From Date11') }}</strong><br>							
+				<strong>{{ Lang::get('From Date') }}</strong><br>							
 				<input id="fromdate" name="fromdate" value="{{$InvWithDrawListMod->fromDate}}" 
 						type="text" class="fromdate form-control" />
 			</div>	

@@ -1,6 +1,60 @@
 var formValid	=	false;
 $(document).ready(function (){ 
 	
+	
+	
+	 $("#mobile").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        //display error message
+        $("#errmsg").html("Digits Only").show().fadeOut("slow");
+               return false;
+    }
+   });
+	
+	$("#save_button,#submit_button").on("click", function(e){
+		$('span.error').remove();
+		$('.has-error').removeClass("has-error");
+		validTab();
+	});
+//This for admin screen only
+	$("#admin_save_button").click(function(){
+		$("#isSaveButton").val("yes");
+		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/save");
+		formValid	=	true;
+		var	email		=	$("#email").val();
+		var	username	=	$("#displayname").val();
+		checkDisplayName(username);
+		checkEmail(email);
+    });
+	 $("#approve_profile_button").click(function(){
+			$('span.error').remove();
+		$('.has-error').removeClass("has-error");
+		formValid	=	true;
+	
+		var	email		=	$("#email").val();
+		var	username	=	$("#displayname").val();
+		checkDisplayName(username);
+		checkEmail(email);
+		
+		validTab();
+		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/approve");
+		if($('.commentClass:not(#comment_status_XXX)').not(':checked').length){
+			errMessage	=	"Please close all comments before approve";
+			showDialog("",errMessage);
+			$('.nav-tabs a[href="#comments_info"]').tab('show');
+			formValid	=	false;
+		}
+    });
+//This for admin screen only
+	$(".amount-align").on("focus", function() {
+			onFocusNumberField(this);
+	})
+
+	$(".amount-align").on("blur", function() {
+		onBlurNumberField(this)
+	})
+	
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('#_token').val()
@@ -37,7 +91,10 @@ $(document).ready(function (){
 		if($("#screen_mode").val()	==	"admin"){
 			if(!formValid)
 				e.preventDefault();
+			if ($("#form-profile").has('div.has-error').length > 0)
+				e.preventDefault();
 		}
+		$("#active_tab").val($(".nav-tabs li.active a").attr("href"));
 	});
 	$("#next_button").click(function(){
 		
@@ -60,28 +117,16 @@ $(document).ready(function (){
       $("#isSaveButton").val("yes");
     });
     
-    $("#approve_profile_button").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/approve");
-      	if($('.commentClass:not(#comment_status_XXX)').not(':checked').length){
-			errMessage	=	"Please close all comments before approve";
-			showDialog("",errMessage);
-			$('.nav-tabs a[href="#comments_info"]').tab('show');
-			formValid	=	false;
-		}else{
-			formValid	=	true;
-		}
-    });
+   
     
 	$("#returnback_button").click(function(){
 		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/return_investor");
-		
+		formValid	=	true;
 		if($('.commentClass:not(#comment_status_XXX)').length	>	0){
 			if($('.commentClass:checked').length){
 				errMessage	=	"There is no open comments to return back to investor";
 				showDialog("",errMessage);
 				formValid	=	false;
-			}else{
-				formValid	=	true;
 			}
 		}else{
 			errMessage	=	"There is no open comments to return back to investor";
@@ -98,7 +143,7 @@ $(document).ready(function (){
       $("#form-profile").attr("action",baseUrl+"/investor/profile/update");
       $("#form-profile").submit();
     });
-    
+    checkAllTabCompleteStatus();
 });
 function checkDisplayName(value) {
 	if((value!='')) {
@@ -173,4 +218,48 @@ function validateEmail($email) {
   return emailReg.test( $email );
 }
 
+function checkAllTabCompleteStatus() {
+	var	active_tab				=	$("#active_tab").val();
+	switch(active_tab){
+		case "#inv_profile_info":
+			$('.nav-tabs a[href="#inv_profile_info"]').tab('show');
+			break;
+		case "#comments_info":
+			$('.nav-tabs a[href="#comments_info"]').tab('show');
+			$("#submit_button").show();
+			$("#returnback_button").show();
+			$("#approve_profile_button").show();
+			break;
+	}
+	
+	
+}
+
+function validTab() {
+	$("input.required").each(function(){
+		
+			var	input_id	=	$(this).attr("id");
+			var inputVal 	= 	$(this).val();
+			
+			var $parentTag = $("#"+input_id+"_parent");
+			if(inputVal == ''){
+				if(input_id	==	"identity_card_image_front" || 
+					input_id	==	"identity_card_image_back"||
+					input_id	==	"address_proof_image") {
+					if($("#"+input_id+"_hidden").val() == ''){
+						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+						$('.nav-tabs a[href="#inv_profile_info"]').tab('show');
+					}
+				}
+				else{
+					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+					$('.nav-tabs a[href="#inv_profile_info"]').tab('show');
+				}
+			}
+		});
+}
+function writeReply(replyId) {
+	$("#"+replyId).show();
+	$("#"+replyId).focus();
+}
 

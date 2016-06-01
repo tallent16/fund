@@ -1,5 +1,7 @@
 
-@var	$commentsInfo	=	$InvBorPrf->commentsInfo
+@var	$commentsInfo		=	$InvBorPrf->commentsInfo
+@var	$commentsReplyInfo	=	$InvBorPrf->commentsReplyInfo
+
 @if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 	@var	$showCommentSelectAll	=	"yes"
 	@var	$editCommentInput		=	""
@@ -61,6 +63,7 @@
 														value="{{ $commentRow['profile_comments_id']}}"><br>
 											</div>
 										@endif
+										@var	$disabledReply	=	""
 										@if( (Auth::user()->usertype	==	USER_TYPE_BORROWER) 
 											|| (isset($user_type) && $user_type	==	"borrower") )
 											<div class="col-xs-4">
@@ -71,13 +74,57 @@
 												}}
 											</div>
 										@endif
+										@if( Auth::user()->usertype	==	USER_TYPE_ADMIN)
+											@var	$disabledReply	=	"disabled"
+										@endif
 										<div class="col-xs-5" id="comments_{{$i}}_parent">
-											<textarea 	rows="4" 
-														cols="50" 
-														class="form-control"
-														name="comment_row[comments][]" 
-														id="comments_{{$i}}"
-														{{$editCommentInput}}>{{$commentRow['comments']}}</textarea>
+											<div class="col-xs-10">
+												<textarea 	rows="4" 
+															cols="50" 
+															class="form-control"
+															name="comment_row[comments][]" 
+															id="comments_{{$i}}"
+															{{$editCommentInput}}>{{$commentRow['comments']}}</textarea>
+												
+													<input type="hidden" 
+															name="comment_row[comments_id][]" 
+															value="{{$commentRow['profile_comments_id']}}" />
+													@var	$commentId	=	$commentRow['profile_comments_id']
+													
+													@if(isset($commentsReplyInfo['id'][$commentId])) 
+														@var	$replyText	=	$commentsReplyInfo['text'][$commentId]
+														@var	$replyId	=	$commentsReplyInfo['id'][$commentId]
+														@var	$showReply	=	"style='display:block;'"
+													@else
+														@var	$replyText	=	""
+														@var	$replyId	=	0
+														@var	$showReply	=	"style='display:none;'"
+													@endif
+													<input 	type="hidden" 
+															name="comment_row[comments_reply_id][]" 
+															value="{{$replyId}}" />
+													<textarea 	rows="4" 
+																cols="50" 
+																{{$showReply}}
+																{{$disabledReply}}
+																class="form-control"
+																name="comment_row[comments_reply][]" 
+																id="comments_reply_box{{$i}}">{{$replyText}}</textarea>
+													
+												
+											</div>
+											@if( (Auth::user()->usertype	==	USER_TYPE_BORROWER)
+															|| (Auth::user()->usertype	==	USER_TYPE_INVESTOR)) 
+												@var	$replyboxId	=	"comments_reply_box".$i
+												<div class="col-xs-2">
+													<div style="position:relative;padding:20px;">
+														<input type="button" 
+																value="reply" 
+																onclick="writeReply('{{$replyboxId}}')" >
+													</div>
+													
+												</div>
+											@endif
 										</div>
 										<div class="col-xs-2 text-right">
 											<input 	type="checkbox" 

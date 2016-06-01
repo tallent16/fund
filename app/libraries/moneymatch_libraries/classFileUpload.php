@@ -10,13 +10,15 @@ class FileUpload {
 		$s3BucketEnabled	=	Config::get("moneymatch_settings.s3_bucket_enabled");
 		if ($s3BucketEnabled) {
 			$filename 				= 	$file->getClientOriginalName();
-			$fullDestinationPath	=	$destinationPath."/".$filename;
+			$newfilename 			= 	 preg_replace('/\s+/', '_', $filename);
+			$fullDestinationPath	=	$destinationPath."/".$newfilename;
 			$disk					=	Storage::disk('s3');
 			$disk->put($fullDestinationPath,file_get_contents($file));
 			$disk->setVisibility($fullDestinationPath, 'public');
 		} else {
-			$filename = $file->getClientOriginalName();
-			$file->move($destinationPath, $filename);
+			$filename 		= 	$file->getClientOriginalName();
+			$newfilename 	= 	 preg_replace('/\s+/', '_', $filename);
+			$file->move($destinationPath, $newfilename);
 		}
 	}
 

@@ -3,6 +3,7 @@ use fileupload\FileUpload;
 use File;
 use Config;
 use Log;
+use Auth;
 class InvestorProfileModel extends TranWrapper {
 	
 	public 	$investor_id	  				=  	"";
@@ -34,6 +35,7 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$status							= 	"";
 	public  $allTransList					= array();
 	public  $nationality_code				= "SG";
+	public 	$commentsReplyInfo 				= 	array();
 	
 	public function processDropDowns() {				
 				
@@ -63,9 +65,12 @@ class InvestorProfileModel extends TranWrapper {
 	
 	public function getInvestorDetails($inv_id=null) {
 		
+		
 		$this->getInvestorProfile($inv_id);
 		$this->getInvestorProfileComments($inv_id);
+		$this->getBorrowerProfileCommentsReply($inv_id);
 		$this->getOpenCommentsCount($inv_id);
+		$this->processDropDowns();
 	}
 		
 	public function getInvestorProfile($inv_id) {
@@ -207,7 +212,9 @@ class InvestorProfileModel extends TranWrapper {
 			$gender 			= 	"";
 		$estimated_yearly_income		= 	$this->makeFloat($postArray['estimated_yearly_income']);
 		$acc_creation_date				=	$this->getDbDateFormat(date("d/m/Y"));
-		$current_user_id				=	$this->getCurrentuserID();
+		if(Auth::user()->usertype	==	USER_TYPE_INVESTOR) {
+			$current_user_id				=	$this->getCurrentuserID();
+		}
 		$date_of_birth					=	$postArray['date_of_birth'];
 		if($date_of_birth	==	"") 
 			$date_of_birth				= 	NULL;
@@ -228,7 +235,8 @@ class InvestorProfileModel extends TranWrapper {
 			$fileUploadObj->createIfNotExists($imagePath);
 			$fileUploadObj->storeFile($imagePath ,$file);
 			$filename 						= 	$file->getClientOriginalName();
-			$identity_card_image_front		=	$imagePath."/".$filename;
+			$newfilename 					= 	 preg_replace('/\s+/', '_', $filename);
+			$identity_card_image_front		=	$imagePath."/".$newfilename;
 			$updateDataArry['identity_card_image_front']	=	$identity_card_image_front;
 		}
 		
@@ -240,7 +248,8 @@ class InvestorProfileModel extends TranWrapper {
 			$fileUploadObj->createIfNotExists($imagePath);
 			$fileUploadObj->storeFile($imagePath ,$file);
 			$filename 						= 	$file->getClientOriginalName();
-			$identity_card_image_back		=	$imagePath."/".$filename;
+			$newfilename 					= 	 preg_replace('/\s+/', '_', $filename);
+			$identity_card_image_back		=	$imagePath."/".$newfilename;
 			$updateDataArry['identity_card_image_back']	=	$identity_card_image_back;
 		}
 		
@@ -252,7 +261,8 @@ class InvestorProfileModel extends TranWrapper {
 			$fileUploadObj->createIfNotExists($imagePath);
 			$fileUploadObj->storeFile($imagePath ,$file);
 			$filename 						= 	$file->getClientOriginalName();
-			$address_proof_image		=	$imagePath."/".$filename;
+			$newfilename 					= 	 preg_replace('/\s+/', '_', $filename);
+			$address_proof_image		=	$imagePath."/".$newfilename;
 			$updateDataArry	['address_proof_image']	=	$address_proof_image;
 		}
 	
@@ -265,11 +275,14 @@ class InvestorProfileModel extends TranWrapper {
 									
 		$dataArray 		= 	array(	'date_of_birth' 				=> $date_of_birth,
 									'nric_number'					=> ($nric_number!="")?$nric_number:null,
-									'user_id' 						=> $current_user_id,
 									'nationality' 					=> ($nationality!="")?$nationality:null,
 									'gender' 						=> ($gender!="")?$gender:null,
 									'estimated_yearly_income' 		=> ($estimated_yearly_income!="")?$estimated_yearly_income:null);
-									
+		if(Auth::user()->usertype	==	USER_TYPE_INVESTOR) {
+			if ($transType != "edit") {
+				$dataArray['user_id']	=	$current_user_id;
+			}
+		}							
 									
 		$dataArray 		=   array_merge($dataArray,$updateDataArry);
 						
@@ -294,7 +307,10 @@ class InvestorProfileModel extends TranWrapper {
 			if ($investorId < 0) {
 				return -1;
 			}
-			
+			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+				$user_info			=	$this->getUseridByInvestorID($investorId);
+				$current_user_id	=	$user_info;
+			}
 			//Update the users table
 			$whereUserArry		=	array("user_id" =>"{$current_user_id}");
 			$this->dbUpdate('users', $dataUserArray, $whereUserArry);
@@ -305,6 +321,10 @@ class InvestorProfileModel extends TranWrapper {
 			$whereArry	=	array("investor_id" =>"{$investorId}");
 			$this->dbUpdate('investors', $dataArray, $whereArry);
 			
+			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+				$user_info			=	$this->getUseridByInvestorID($investorId);
+				$current_user_id	=	$user_info;
+			}
 			//Update the users table
 			$whereUserArry		=	array("user_id" =>"{$current_user_id}");
 			$this->dbUpdate('users', $dataUserArray, $whereUserArry);
@@ -370,7 +390,8 @@ class InvestorProfileModel extends TranWrapper {
 										comments,
 										comment_status
 								FROM 	profile_comments
-								WHERE	user_id	=	{$current_user_id}";
+								WHERE	user_id	=	{$current_user_id}
+								AND		inresponse_to IS NULL";
 				
 		$comments_rs	=	$this->dbFetchAll($comments_sql);	
 		if ($comments_rs) {
@@ -381,6 +402,39 @@ class InvestorProfileModel extends TranWrapper {
 					$this->commentsInfo[$newrow][$colname] = $colvalue;
 				}
 			}
+		}else{
+			$comments_rs	=	 array();	
+		}
+		return	$comments_rs;
+	}
+	
+	public function getBorrowerProfileCommentsReply($inv_id) {
+		
+		
+		if($inv_id	==	null){
+			$current_user_id	=	$this->getCurrentuserID();
+		}else{
+			$current_user_id	=	$this->getUseridByInvestorID($inv_id);
+		}
+		
+		$comments_sql	= 	"	SELECT 	profile_comments_id,
+										comments,
+										inresponse_to,
+										comment_status
+								FROM 	profile_comments
+								WHERE	user_id	=	{$current_user_id}
+								AND		inresponse_to	IS NOT NULL";
+		
+		$comments_rs	=	$this->dbFetchAll($comments_sql);	
+		
+		if ($comments_rs) {
+			foreach ($comments_rs as $commentRow) {
+				$profile_comments_id	=	$commentRow->profile_comments_id;
+				$inresponse_to			=	$commentRow->inresponse_to;
+				$this->commentsReplyInfo['text'][$inresponse_to]	=	$commentRow->comments;
+				$this->commentsReplyInfo['id'][$inresponse_to]		=	$commentRow->profile_comments_id;
+			}
+		
 		}else{
 			$comments_rs	=	 array();	
 		}
@@ -404,52 +458,110 @@ class InvestorProfileModel extends TranWrapper {
 		$this->comments_count	=	$this->dbFetchOne($comments_sql);	
 	}
 	
+	
 	public function saveComments($commentRows,$investorId) {
+		
+		if($this->getUserType()	==	USER_TYPE_ADMIN) {	
+			$this->saveCommentsByAdmin($commentRows,$investorId);
+		}else{
+			$this->saveCommentsByInvestor($commentRows,$investorId);
+		}
+		return 1;
+	}
+	public function saveCommentsByAdmin($commentRows,$investorId) {
 		
 		$numRows = count($commentRows['comment_status_hidden']);
 		$rowIndex = 0;
 		$userID		=	$this->getUseridByInvestorID($investorId);
 		$userType	=	USER_TYPE_INVESTOR;
 		if($numRows	>	0){
-			if($this->getUserType()	==	USER_TYPE_ADMIN){
-				$whereArry		=	array("user_id" => $userID);
-				$this->dbDelete("profile_comments",$whereArry);
-			}
+			
 			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 				
-				$comment_status				= $commentRows['comment_status_hidden'][$rowIndex];
-				$comment_id					= $commentRows['comment_id_hidden'][$rowIndex];
+				$comment_status				= 	$commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id					= 	$commentRows['comment_id_hidden'][$rowIndex];
+				$comment_reply_id			=	$commentRows['comments_reply_id'][$rowIndex];
 				
-				if($this->getUserType()	==	USER_TYPE_ADMIN) {	
-					
-					$comments					= $commentRows['comments'][$rowIndex];
-					// Construct the data array
-					$dataArray = array(	
-									'user_type' 				=> $userType,
-									'user_id'					=> $userID,
-									'comments'					=> $comments,
-									'comment_status'			=> $comment_status,
-									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
-										
+				$comments					= 	$commentRows['comments'][$rowIndex];
+				
+				// Construct the data array
+				$dataArray = array(	
+								'user_type' 				=> $userType,
+								'user_id'					=> $userID,
+								'comments'					=> $comments,
+								'comment_status'			=> $comment_status,
+								'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+				if($comment_id	==	0) {
 					// Insert the rows (for all types of transaction)
 					$result =  $this->dbInsert('profile_comments', $dataArray, true);
 					if ($result < 0) {
 						return -1;
 					}
+					$commentIds[]	=	$result;
 				}else{
+					unset($dataArray);
+					unset($whereArry);
+					$whereArry	=	array("profile_comments_id" =>$comment_id);
+					$dataArray = array(	
+							'comments'					=> $comments,
+							'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+					$result =  $this->dbUpdate('profile_comments', $dataArray, $whereArry);
+					$commentIds[]	=	$comment_id;
+					if($comment_reply_id	!=0)
+						$commentIds[]	=	$comment_reply_id;
+				}
 					
-					$dataArray = array(
+			}
+			$whereArry	=	[	"user_id" 		=> 	$userID,
+								"whereNotIn" 	=>	["column" => 'profile_comments_id',
+											 "valArr" => $commentIds]];
+			$this->dbDelete("profile_comments",$whereArry);
+		}
+	}
+	
+	public function saveCommentsByInvestor($commentRows,$investorId) {
+		
+		$numRows = count($commentRows['comment_status_hidden']);
+		$rowIndex = 0;
+		$userID		=	$this->getUseridByInvestorID($investorId);
+		$userType	=	USER_TYPE_INVESTOR;
+		if($numRows	>	0){
+			
+			for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+				
+				$comment_status				= 	$commentRows['comment_status_hidden'][$rowIndex];
+				$comment_id					= 	$commentRows['comment_id_hidden'][$rowIndex];
+				$comment_reply_id			=	$commentRows['comments_reply_id'][$rowIndex];
+				$dataArray = array(
 										'comment_status'			=> $comment_status,
 										'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y"))
 									);	
 					$whereArry	=	array("profile_comments_id" =>"{$comment_id}");
 					$this->dbUpdate('profile_comments', $dataArray, $whereArry);
-				}
+					if($commentRows['comments_reply'][$rowIndex]	!=	""	) {
+						if(	$comment_reply_id	==	0) {
+							unset($dataArray);
+							$dataArray = array(	
+									'user_id'					=> $userID,
+									'comments'					=> $commentRows['comments_reply'][$rowIndex],
+									'inresponse_to'				=> $commentRows['comment_id_hidden'][$rowIndex],
+									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+							$result =  $this->dbInsert('profile_comments', $dataArray, true);
+						}else{
+							unset($dataArray);
+							unset($whereArry);
+							$whereArry	=	array("profile_comments_id" =>$comment_reply_id);
+							$dataArray = array(	
+									'user_id'					=> $userID,
+									'comments'					=> $commentRows['comments_reply'][$rowIndex],
+									'inresponse_to'				=> $commentRows['comment_id_hidden'][$rowIndex],
+									'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
+							$result =  $this->dbUpdate('profile_comments', $dataArray, $whereArry);
+						}
+					}
 			}
 		}
-		return 1;
 	}
-	
 	public function updateInvestorStatus($dataArray,$investorId,$status=null) {
 		
 		$whereArry			=	array("investor_id" =>"{$investorId}");

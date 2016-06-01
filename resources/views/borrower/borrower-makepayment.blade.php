@@ -139,7 +139,7 @@
 											name="actualdate"
 											value="{{date('d-m-Y', strtotime($modelrepayloanpayment->repaymentDate))}}"
 											class="form-control"
-											readonly disabled/>											
+											/>		  									
 							</div>
 						</div>
 					</div>

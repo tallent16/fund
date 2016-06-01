@@ -214,7 +214,7 @@ class TranWrapper extends MoneyMatchModel {
 												ratio_value_current_year current_ratio,
 												ratio_value_previous_year previous_ratio
 										FROM 	borrower_financial_ratios
-										WHERE	borrower_id	=	{$this->borrower_id}";
+										WHERE	borrower_id	=	{$borrwerID}";
 		
 		
 		$finacialRatio_rs		= 	$this->dbFetchAll($finacialRatio_sql);
@@ -645,5 +645,34 @@ class TranWrapper extends MoneyMatchModel {
 		
 		$system_settings	=	$this->getMailSettingsDetail();
 		return $system_settings[0]->$fieldKey;
+	}
+	
+	public function updateBorrowerApplyLoanStatus($loanId,$status) {
+	
+		$whereArry	=	array("loan_id" =>"{$loanId}");
+		$dataArry	=	array("status"=>$status);
+		$this->dbUpdate('loans',$dataArry , $whereArry);
+	}
+	
+	public function checkLoanRepaymentCompleted($loanId)	{
+		
+		$argArray		=	[
+							"unpaid" => BORROWER_REPAYMENT_STATUS_UNPAID,
+							"unverified" => BORROWER_REPAYMENT_STATUS_UNVERIFIED
+							];
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	borrower_repayment_schedule 
+					WHERE 	loan_id = '".$loanId."'
+					AND		(repayment_status = (:unpaid) 
+										OR repayment_status = (:unverified))";
+										
+		$result 		= 	$this->dbFetchWithParam($sql,$argArray);
+		
+		if(isset($result[0])) {
+			$cnt = $result[0]->cnt;
+		}else{
+			$cnt = -1;
+		}
+		return ($cnt == 0)?true:false;
 	}
 }
