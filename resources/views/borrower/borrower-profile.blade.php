@@ -3,7 +3,7 @@
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 	
 @endsection
 @section('bottomscripts')
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script>
 		var baseUrl	=	"{{url('')}}"
 		$(document).ready(function(){ 	
@@ -311,6 +311,7 @@
 								id="name_XXX" 
 								name="director_row[name][]"
 								class="form-control required"
+								placeholder="Director Name"
 								/>
 					</td>
 					<td class="col-md-3">

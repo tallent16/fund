@@ -43,6 +43,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $purposeSingleLineInfo			= 	array();
 	public $bidTypeSelectOptions			= 	"";
 	public $paymentTypeSelectOptions		= 	"";
+	public $completeLoanDetails				= 	0;
 	
 	
 	public function getBorrowerLoanDetails($loan_id) {
@@ -95,7 +96,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 												   when 2 then 'Monthly Interest'
 												   when 3 then 'EMI'
 											end as repaymentText,
-											loans.status,
+											loans.status loan_status,
 											loans.comments,
 											loans.final_interest_rate,
 											case loans.status 
@@ -142,6 +143,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			foreach($vars as $key=>$value) {
 				$this->{$key} = $value;
 			}
+			$this->completeLoanDetails	=	1;
 		}
 	}
 	
@@ -223,8 +225,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
 			$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
 		}
-		if( (isset($postArray['hidden_loan_status']) &&
-					$postArray['hidden_loan_status']	==	"corrections_required" )
+		if( (isset($postArray['hidden_loan_statusText']) &&
+					$postArray['hidden_loan_statusText']	==	"corrections_required" )
 				||(Auth::user()->usertype	==	USER_TYPE_ADMIN) ) {
 			if (isset($postArray['comment_row'])) {
 				$this->saveLoanApplyComments($postArray['comment_row'],$loanId);
@@ -237,9 +239,12 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		
 		
 		if ($transType == "edit") {
-			$loanId	= $postArray['loan_id'];
+			$loanId		=	$postArray['loan_id'];
+			$status		=	$postArray['hidden_loan_status'];
 			if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
-				$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;
+				if($postArray['isSaveButton']	!=	"yes") {
+					$status		=	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL;	
+				}
 			}else if(Auth::user()->usertype	==	USER_TYPE_ADMIN){
 				$status		=	$postArray['hidden_loan_status'];
 			}

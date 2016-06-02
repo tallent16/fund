@@ -16,7 +16,7 @@
 	{{ '';$adminLoanApprMod->viewStatus	=	"disabled";''}}
 	@var	$screenMode	=	"admin"
 
-	@if( ($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL))
+	@if( ($adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL))
 			@var	$commentButtonsVisibe	=	""
 	@else
 			@var	$commentButtonsVisibe	=	"disabled"
@@ -57,7 +57,8 @@
 				<input type="hidden" name="loan_id" value="{{ $adminLoanApprMod->loan_id }}">
 				<input type="hidden" name="isSaveButton" id="isSaveButton" value="">
 				<input type="hidden" name="trantype" value="edit">
-				<input type="hidden" name="hidden_loan_status" id="hidden_loan_status" value="{{$adminLoanApprMod->status}}">
+				<input type="hidden" name="hidden_loan_status" id="hidden_loan_status" 
+						value="{{$adminLoanApprMod->loan_status}}">
 				<input 	type="hidden" 
 						name="laon_purpose"
 						value="{{$adminLoanApprMod->purpose}}">
@@ -68,10 +69,10 @@
 									id="save_loanapply_button">						
 								{{ Lang::get('Save')}}
 						</button>	
-						@if($adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+						@if($adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 							
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-									@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+									@if( $adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 										@permission('approve.admin.loanapproval')			
 												<button type="button" 
 														class="btn verification-button"
@@ -92,7 +93,7 @@
 										{{ Lang::get('Save Comments')}}</button>
 								@endpermission
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-										@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+										@if( $adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 											@permission('returnborrower.admin.loanapproval')
 													<button type="button" 
 															class="btn verification-button"
@@ -104,7 +105,7 @@
 									@endif
 								@endif
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-									@if( $adminLoanApprMod->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+									@if( $adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 										<button type="button" 
 												class="btn verification-button"
 												id="download_all_document">						

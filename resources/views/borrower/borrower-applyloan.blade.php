@@ -20,7 +20,7 @@
 	@var	$trantype		=	"edit"
 	@var	$page_heading	=	Lang::get('borrower-applyloan.edit_loan')
 @endif   
-@if($BorModLoan->status	==	LOAN_STATUS_PENDING_COMMENTS)
+@if($BorModLoan->loan_status	==	LOAN_STATUS_PENDING_COMMENTS)
 	@var	$loan_status			=	"corrections_required"
 	@var	$canViewCommentsTab		=	"yes"
 @else
@@ -65,7 +65,12 @@
 				<input type="hidden" name="isSaveButton" id="isSaveButton" value="">	
 				<input type="hidden" name="loan_id" value="{{$BorModLoan->loan_id}}">	
 				<input type="hidden" name="trantype" value="{{ $trantype }}">
-				<input type="hidden" name="hidden_loan_status" id="hidden_loan_status" value="{{ $loan_status }}">
+				<input type="hidden" name="hidden_loan_status" id="hidden_loan_status" value="{{ $BorModLoan->loan_status }}">
+				<input 	type="hidden" 
+						name="hidden_loan_statusText" 
+						id="hidden_loan_statusText" 
+						value="{{ $loan_status }}">
+				<input type="hidden" id="completeLoanDetails" value="{{ $BorModLoan->completeLoanDetails }}">
 				
 				
 				
@@ -120,8 +125,8 @@
 								class="btn verification-button"
 								/>
 					@endif
-					@if( ($BorModLoan->status	==	LOAN_STATUS_NEW)
-						||  ($BorModLoan->status	==	LOAN_STATUS_PENDING_COMMENTS))
+					@if( ($BorModLoan->loan_status	==	LOAN_STATUS_NEW)
+						||  ($BorModLoan->loan_status	==	LOAN_STATUS_PENDING_COMMENTS))
 						<button type="submit" 
 								id="save_button"
 								class="btn verification-button"
@@ -129,14 +134,17 @@
 							<i class="fa pull-right"></i>
 							Save
 						</button>
-						<button type="button" 
-								id="next_button"
-								data-tab-id="company_info"
-								class="btn verification-button" >
-								<i class="fa pull-right"></i>
-								{{ Lang::get('Next') }}
-						</button>
-									
+						@if($BorModLoan->loan_status	==	LOAN_STATUS_NEW)
+							@if(!$BorModLoan->completeLoanDetails)
+								<button type="button" 
+										id="next_button"
+										data-tab-id="company_info"
+										class="btn verification-button" >
+										<i class="fa pull-right"></i>
+										{{ Lang::get('Next') }}
+								</button>
+							@endif		
+						@endif		
 						<button type="submit" 
 								class="btn verification-button"
 								style="display:none"

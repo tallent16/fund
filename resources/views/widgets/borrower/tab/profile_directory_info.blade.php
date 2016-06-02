@@ -60,7 +60,8 @@
 												<input 	type="text"  
 														id="name_{{$i}}" 
 														name="director_row[name][]"
-														value="{{ $directorRow['name'] }}"
+														value="{{ $directorRow['name']  }}"
+														placeholder="Director Name"
 														class="form-control required"
 														 {{$modelBorPrf->viewStatus}}/>
 											</td>

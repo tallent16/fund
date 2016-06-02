@@ -222,7 +222,8 @@
 								name="company_image"
 								id="company_image"
 								accept="image/*" 
-								/>									
+								/>	
+															
 					<input 	type="hidden" 
 								id="company_image_hidden"
 								value="{{ $modelBorPrf->company_image }}"
@@ -248,11 +249,11 @@
 							name="company_thumbnail"
 							accept="image/*" 
 							/>		
-					@if($modelBorPrf->company_thumbnail!="")
+					@if($modelBorPrf->company_image_thumbnail!="")
 						<a href="{{url($modelBorPrf->company_thumbnail)}}" 
 							target="_blank" 
 							class="hyperlink">
-							{{basename($modelBorPrf->company_thumbnail)}}
+							{{basename($modelBorPrf->company_image_thumbnail)}}
 						</a>
 					@endif							
 				</div>							

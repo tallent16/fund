@@ -1,5 +1,41 @@
-var formValid	=	false;9
+var formValid	=	false;
 $(document).ready(function (){ 
+	//file extension check
+	/* $('#submit_button').click(function(e) {
+      var file = $('input[type="file"]').val();
+      var exts = ['png','jpg','jpeg','gif'];
+      // first check if file field has any value
+      if ( file ) {
+        // split file name at dot
+        var get_ext = file.split('.');
+        // reverse name to check extension
+        get_ext = get_ext.reverse();
+        // check file type is valid as given in 'exts' array
+        if ( $.inArray ( get_ext[0].toLowerCase(), exts ) > -1 ){
+          $('#company_image_parent').addClass('has-error').append('<span class="control-label error">Allowed Extension* Jpg,png,jpeg</span>');
+        } else {
+          $('#company_image_parent').addClass('has-error').append('<span class="control-label error">Invalid Extension</span>');
+        
+          e.preventDefault();
+        }
+      }
+    });	*/
+    
+  /* $('#submit_button').click(function(e) {
+		var file = $('input[type="file"]').val();
+		if(file != ''){		
+			if ( /\.(jpe?g|png|gif|jpg)$/i.test(file) ) {
+				
+				alert('valid');
+			}else{
+				alert('invalid');
+				$('#company_image_parent').addClass('has-error').append('<span class="control-label error">Invalid Extension</span>');
+				e.preventDefault();
+			}
+		}
+	});*/
+
+	
 	//Only Mobile Numbers
 	 $(".mobile").keypress(function (e) {
      //if the letter is not digit then display error and don't type anything
@@ -13,7 +49,7 @@ $(document).ready(function (){
     //Only accept numbers    
 	$(".numeric").keydown(function(event) { 
 		// Allow only backspace and delete
-		if ( event.keyCode == 46 || event.keyCode == 8) {
+		if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 ) {
 			// let it happen, don't do anything
 		}
 		else {
@@ -211,7 +247,7 @@ function callTabValidateFunc() {
 	$("#director_error_info").removeClass("alert-danger");
 	$("#director_error_label").html("");
 	if(validateTab('company_info')) {
-		$('.nav-tabs a[href="#company_info"]').tab('show');
+		$('.nav-tabs a[href="#company_info"]').tab('show');		
 		return true;
 	}else{
 		if(cur_tab	==	"company_info") {
@@ -300,17 +336,21 @@ function validateTab(cur_tab) {
 					}
 			}
 		}
-		if(inputVal == ''){
+		if(!$('#'+input_id).hasClass("num")){ 
 			if(inputVal == ''){
-				if(input_id	==	"company_image") {
-					if($("#"+input_id+"_hidden").val() == ''){
+				if(inputVal == ''){
+					if(input_id	==	"company_image") {
+						//fileextensioncheck();
+						if($("#"+input_id+"_hidden").val() == ''){
+							$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+						}
+					}else{
 						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 					}
-				}else{
-					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 				}
 			}
 		}
+		
 	});
 	
 	if ($("#"+cur_tab).has('.has-error').length > 0)
@@ -328,10 +368,10 @@ function addNewDirectorRow(){
 		counterstr = counterint.toString();
 
 		htmlTemplate = htmlTemplate.replace(/XXX/g, counterstr);
-		$(".divs ").append(htmlTemplate);
-		$("#name_"+counterstr).val("Director"+counterstr);
+		$(".divs ").append(htmlTemplate);		
+		$("#name_"+counterstr).val("");	
 		$("#max_director").val(counterstr);
-		$("#directorDropDown").append("<option value='"+counterstr+"'>"+"Director"+counterstr+"</option>");
+		$("#directorDropDown").append("<option value='"+counterstr+"'>"+""+"</option>");
 		$('#directorDropDown').val(counterstr);
 		$("#directorDropDown").selectpicker("refresh");
 		$(".divs div.dir-list:visible").hide();
@@ -538,3 +578,26 @@ function writeReply(replyId) {
 	$("#"+replyId).show();
 	$("#"+replyId).focus();
 }
+function fileextensioncheck(){	
+	$('#submit_button,#save_button').click(function(event) {	
+	var ext = $('input[type=file]').val().split('.').pop().toLowerCase();
+		if(ext != ''){
+			if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+				$('#company_image_parent').addClass('has-error').append('<span class="control-label error">Invalid Extension</span>');				
+				false;
+				event.preventDefault();
+			}
+		}
+	});	
+}
+
+/*	
+var val = $('input[type=file]').val().toLowerCase();
+var regex = new RegExp("(.*?)\.(jpg|jpeg|png|gif)$");
+if(val != ''){
+	if(!(regex.test(val))) {				
+			$('#company_image_parent').addClass('has-error').append('<span class="control-label error">Invalid Extension</span>');
+			return false;
+		} 
+}*/
+

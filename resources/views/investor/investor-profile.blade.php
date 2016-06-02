@@ -131,7 +131,16 @@
 					</div>	<!---col ends-->	
 				</div>				
 			</div>
-			<div><p class="bg-warning">If you need to change your profile information, please drop an email to admin@fundyourselfnow.com</p></div> 
+			@if(Auth::user()->usertype	==	USER_TYPE_INVESTOR)
+				@if(($InvPrfMod->status	==	INVESTOR_STATUS_VERIFIED)
+						||	($InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) )
+					<div>
+						<p class="bg-warning">
+							If you need to change your profile information, please drop an email to admin@fundyourselfnow.com
+						</p>
+					</div> 
+				@endif
+			@endif
 			<div class="col-sm-12 col-lg-12  space-around">
 				<div class="pull-right">
 				<!---mobile number update--->

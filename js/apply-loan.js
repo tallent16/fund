@@ -23,10 +23,11 @@ $(document).ready(function(){
 				event.preventDefault();
 			if(validateTab("documents_submitted"))
 				event.preventDefault();
-			if($("#hidden_loan_status").val()	==	"corrections_required") {
+			if($("#hidden_loan_statusText").val()	==	"corrections_required") {
 				if(checkAdminAllCommentsClosed()){
 					showDialog("","Please close the corrections and submit again for approval");
 					event.preventDefault();
+					$("#submit_button").show();
 					return;
 				}
 			}
@@ -34,10 +35,6 @@ $(document).ready(function(){
 			if ($("#loans_info").has('.has-error').length > 0) {
 				event.preventDefault();
 				
-			}else{
-			
-				$("#next_button").hide();
-				$("#submit_button").show();
 			}
 		}
 		
@@ -75,7 +72,7 @@ $(document).ready(function(){
 		if($(this).hasClass("disabled"))
 			return false;
 		if($(this).find("a").attr("href")	==	"#documents_submitted") {
-			if($("#hidden_loan_status").val()	==	""){
+			if($("#hidden_loan_statusText").val()	==	"") {
 				$("#next_button").hide();
 				$("#submit_button").show();
 			}
@@ -152,7 +149,8 @@ function validateTab(cur_tab) {
 		return false;
 }
 function callcheckAllTabFilledFunc() {
-	if(checkTabFilled("loans_info")){//check Company Info Filled
+	var	completeLoanDetails	=	$("#completeLoanDetails").val();	
+	if(completeLoanDetails){//check Company Info Filled
 		$('.nav-tabs a[href="#documents_submitted"]').parent().removeClass("disabled");
 		//Enable the Director Info Tab
 	}
@@ -199,9 +197,12 @@ function checkAjaxValidation() {
 				// using the done promise callback
 				.done(function(data) {
 					if(data.status	==	"error"){
-						if(data.row.loan_amountErr	!="")
-							$("#loan_amount_parent").addClass('has-error').
-													append('<span class="control-label error">'+data.row.loan_amountErr+'</span>');
+						if(data.row.loan_amountErr	!="") {
+							if(loan_amount!="") {
+								$("#loan_amount_parent").addClass('has-error').
+														append('<span class="control-label error">'+data.row.loan_amountErr+'</span>');
+							}	
+						}
 						//~ if(data.row.bidcloseDateErr	!="")
 							//~ $("#date-picker-2_parent").addClass('has-error').
 													//~ append('<span class="control-label error">'+data.row.bidcloseDateErr+'</span>');

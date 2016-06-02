@@ -103,7 +103,7 @@
 							{{ Lang::get('borrower-applyloan.target_int') }}
 						</label>												
 					</div>
-					<div class="col-xs-6 col-sm-4 col-lg-2" id="loan_tenure_parent">	
+					<div class="col-xs-6 col-sm-4 col-lg-2" id="target_interest_parent">	
 						<input type="text" class="form-control select-width text-right required amount-align" 
 								name="target_interest"												
 								id="target_interest"
@@ -116,10 +116,10 @@
 							{{ Lang::get('borrower-applyloan.payment_type') }}
 						</label>												
 					</div>
-					<div class="col-xs-5 col-sm-4 col-lg-2" id="target_interest_parent">
+					<div class="col-xs-5 col-sm-4 col-lg-2" >
 						<select id="payment_type" 
 								name="payment_type" 
-								class="selectpicker required">
+								class="selectpicker">
 								{{$BorModLoan->paymentTypeSelectOptions}}
 						</select>	
 					</div>							
@@ -152,7 +152,7 @@
 							{{ Lang::get('borrower-applyloan.minimum_limit') }}
 						</label>												
 					</div>																
-					<div class="col-xs-12 col-sm-7 col-lg-3">														 
+					<div class="col-xs-12 col-sm-7 col-lg-3" id="min_for_partial_sub_parent">														 
 						<input 	type="text" 
 								class="form-control select-width text-right amount-align"
 								 name="min_for_partial_sub"

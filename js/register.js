@@ -13,12 +13,18 @@ $(document).ready(function (){
 		}
 	 }); 
 	 
-	 $.validator.addMethod("alphanumeric", function(value, element) {   
-		return this.optional(element) || /^(?=.*\d+)(?=.*[!@#$%^&*()_+])[a-zA-Z\d\!@#\$%&\*]{10,}$/.test(value);
+	 //~ $.validator.addMethod("alphanumeric", function(value, element) {   
+		//~ return this.optional(element) || /^(?=.*\d+)(?=.*[!@#$%^&*()_+])[a-zA-Z\d\!@#\$%&\*]{10,}$/.test(value);
+	//~ }
+	//~ , "Letters, numbers ,special characters"); 
+	 $.validator.addMethod("custompasswordstrength", function(value, element) {   
+		return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{10,15}$/.test(value);
 	}
 	, "Letters, numbers ,special characters"); 
 	 
-	 
+	 var errPattern	=	'Please enter min 10 and max 15 characters with atleast 1 letter ';
+		 errPattern	=	errPattern+'& 1 number & 1 specialcharacter((!@#$%^&*)';
+		 
 	 $('#form-register').validate({
             errorClass: 'help-block animated fadeInDown',
             errorElement: 'div',
@@ -69,8 +75,9 @@ $(document).ready(function (){
                 },
                 'password': {
                     required: true,
-					minlength: 10,
-					alphanumeric: true
+					//~ minlength: 10,
+					//~ alphanumeric: true
+					custompasswordstrength:true,
                 },
                 'ConfirmPassword': {
                     required: true,
@@ -102,8 +109,9 @@ $(document).ready(function (){
                 },
                 'password': {
                     required: 'Please provide a password',
-                    minlength: 'Password strength should not be weak & (Min:10 characters)',
-                    alphanumeric: 'Please enter 10 characters with atleast 1 letter & 1 number & 1 specialcharacter'
+                    //~ minlength: 'Password strength should not be weak & (Min:10 characters)',
+                    //~ alphanumeric: 'Please enter 10 characters with atleast 1 letter & 1 number & 1 specialcharacter'
+                    custompasswordstrength: errPattern
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',
