@@ -226,6 +226,7 @@
 															
 					<input 	type="hidden" 
 								id="company_image_hidden"
+								name="company_image_hidden"
 								value="{{ $modelBorPrf->company_image }}"
 								/>		
 					@if($modelBorPrf->company_image!="")
@@ -258,48 +259,68 @@
 					@endif							
 				</div>							
 			</div>	
+			<!--	row columns added new on 3/June/2016 ACRA Business Profile and Memoradum and Articles of Association -->
+			<div class="row">
+				<div class="col-xs-12 col-sm-5 col-lg-3">											
+					<label class="input-required">
+						{{ Lang::get('ACRA Business Profile') }}
+					</label>												
+				</div>									
+				<div class="col-xs-12 col-sm-7 col-lg-3"  id="acra_profile_doc_url_parent">									
+					<input 	type="file" 
+								class="jfilestyle  required" 
+								data-buttonBefore="true" 
+								name="acra_profile_doc_url"
+								id="acra_profile_doc_url"
+								/>	
+															
+					<input 	type="hidden" 
+								id="acra_profile_doc_url_hidden"
+								value=""
+								/>		
+<!--
+					@if($modelBorPrf->company_image!="")
+						<a 	href="{{url($modelBorPrf->company_image)}}"  
+							target="_blank" 
+							class="hyperlink">
+							{{basename($modelBorPrf->company_image)}}
+						</a>
+					@endif
+-->
+					
+				</div>
+				<div class="col-xs-12 col-sm-5 col-lg-3">											
+					<label>
+						{{ Lang::get('Memoradum and Articles of Association') }}
+					</label>												
+				</div>
+									
+				<div class="col-xs-12 col-sm-7 col-lg-3"  id="moa_doc_url_parent">									
+					<input 	type="file" 
+							class="jfilestyle" 
+							data-buttonBefore="true" 
+							name="moa_doc_url"
+							id="moa_doc_url"
+							
+							/>	
+							<input 	type="hidden" 
+								id="moa_doc_url_hidden"
+								value=""
+								/>			
+<!--
+					@if($modelBorPrf->company_image_thumbnail!="")
+						<a href="{{url($modelBorPrf->company_thumbnail)}}" 
+							target="_blank" 
+							class="hyperlink">
+							{{basename($modelBorPrf->company_image_thumbnail)}}
+						</a>
+					@endif							
+-->
+				</div>							
+			</div>	
+		<!--	row columns added new on 3/June/2016 ACRA Business Profile and Memoradum and Articles of Association -->
 		</fieldset>	
 			<!------row--7----------->	
-			<!------row--8----------->			
-				<div class="row">		
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-					</div>
-					<div class="col-xs-12 col-sm-7 col-lg-3">
-					</div>
-					<div class="col-xs-12 col-sm-5 col-lg-3 ">											
-						<label>
-							{{ Lang::get('Grade') }}
-						</label>												
-					</div>
-									
-					<div class="col-xs-12 col-sm-7 col-lg-3">		
-						@var	$gradeInfo	=	[''=>'none']+$modelBorPrf->gradeInfo
-						{{ Form::select('grade',$gradeInfo, 
-														$modelBorPrf->grade, 
-														['class' => 'selectpicker text-right',$gradeStatus])
-						}}										
-					</div>	
-				</div>			
-				<!------row--8----------->		
-			
-			@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-				@if($gradeStatus	==	"")
-					@permission('updategrade.admin.manageborrowers') 
-						<div class="row">					
-							<div class="col-xs-12 space-around">		
-								<div class="pull-right">										
-									<button type="submit" 
-											id="update_grade"
-											class="btn verification-button" >
-											<i class="fa pull-right"></i>
-											{{ Lang::get('Update Grade') }}
-									</button>
-								</div>											
-							</div>									
-						</div>
-					@endpermission								
-				@endif
-			@endif
 			
 		</div><!---panel body---> 
 	</div><!---panel---> 

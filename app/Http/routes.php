@@ -200,6 +200,11 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 	Route::get('logout', 'CustomAuthController@getLogout');
 });
 
+//Settings Configuration
+Route::get('admin/settings',  'AdminSettingsController@indexAction');
+Route::get('admin/challengequestions',  'AdminChallengeQuestionsController@indexAction');
+
+
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
 

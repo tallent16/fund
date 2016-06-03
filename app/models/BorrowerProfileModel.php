@@ -295,24 +295,35 @@ class BorrowerProfileModel extends TranWrapper {
 		$updateDataArry					=	array();
 		$fileUploadObj					=	new FileUpload();
 		if(isset($postArray['company_image'])){
+			if(isset($postArray['company_image_hidden'])){
+				$filePath		=	$postArray['company_image_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
 			$file		=	$postArray['company_image'];
-			$imagePath	=	$destinationPath."/".$borrowerId."/profile/image";
+			//~ $imagePath	=	$destinationPath."/".$borrowerId."/profile/image";
+			$imagePath	=	$destinationPath."/".$borrowerId;
+			$prefix		=	"profile_image_";
 			$fileUploadObj->createIfNotExists($imagePath);
-			$fileUploadObj->storeFile($imagePath ,$file);
+			$fileUploadObj->storeFile($imagePath ,$file,$prefix);
 			$filename 			= 	$file->getClientOriginalName();
 			$newfilename 		= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 		= 	$prefix.$newfilename;
 			$company_image		=	$imagePath."/".$newfilename;
 			$updateDataArry		=	array(	"company_image"=>$company_image,
 											"company_image_thumbnail"=>$company_image
 											);
 		}
 		if(isset($postArray['company_thumbnail'])){
+			unset($prefix);
 			$file			=	$postArray['company_thumbnail'];
-			$thumbnailPath	=	$destinationPath."/".$borrowerId."/profile/thumbnail";
+			//~ $thumbnailPath	=	$destinationPath."/".$borrowerId."/profile/thumbnail";
+			$thumbnailPath	=	$destinationPath."/".$borrowerId;
+			$prefix			=	"thumbnail_";
 			$fileUploadObj->createIfNotExists($thumbnailPath);
-			$fileUploadObj->storeFile($thumbnailPath ,$file);
+			$fileUploadObj->storeFile($thumbnailPath ,$file,$prefix);
 			$filename 									= 	$file->getClientOriginalName();
 			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 								= 	$prefix.$newfilename;
 			$company_thumbnail							=	$thumbnailPath."/".$newfilename;
 			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
 			

@@ -5,12 +5,13 @@ use Storage;
 
 class FileUpload {
 	
-	public function storeFile ($destinationPath,$file) {
+	public function storeFile ($destinationPath,$file,$prefix='') {
 		
 		$s3BucketEnabled	=	Config::get("moneymatch_settings.s3_bucket_enabled");
 		if ($s3BucketEnabled) {
 			$filename 				= 	$file->getClientOriginalName();
 			$newfilename 			= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 			= 	$prefix.$newfilename;
 			$fullDestinationPath	=	$destinationPath."/".$newfilename;
 			$disk					=	Storage::disk('s3');
 			$disk->put($fullDestinationPath,file_get_contents($file));
@@ -18,6 +19,7 @@ class FileUpload {
 		} else {
 			$filename 		= 	$file->getClientOriginalName();
 			$newfilename 	= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 	= 	$prefix.$newfilename;
 			$file->move($destinationPath, $newfilename);
 		}
 	}
@@ -49,5 +51,15 @@ class FileUpload {
 		}
 	
 	}
-
+	
+	public function deleteFile ($filePath) {
+		
+		$s3BucketEnabled	=	Config::get("moneymatch_settings.s3_bucket_enabled");
+		if ($s3BucketEnabled) {
+			$disk					=	Storage::disk('s3');
+			$disk->delete($filePath);
+		} else {
+			File::Delete($filePath);
+		}
+	}
 }
