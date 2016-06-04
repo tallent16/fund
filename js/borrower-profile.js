@@ -330,27 +330,30 @@ function validateTab(cur_tab) {
 	
 		if($('#'+input_id).hasClass("num")){	
 			if(inputVal != ""){
-				
-					if(!$.isNumeric(inputVal)){		
-						$parentTag.addClass('has-error').append('<span class="control-label error">Only Numbers</span>');
-					}
+				if(!$.isNumeric(inputVal)){		
+					$parentTag.addClass('has-error').append('<span class="control-label error">Only Numbers</span>');
+				}
 			}
 		}
-		if(!$('#'+input_id).hasClass("num")){ 
-			if(inputVal == ''){
-				if(inputVal == ''){
-					if(input_id	==	"company_image") {
-						//fileextensioncheck();
+		if(inputVal == ''){
+			switch(input_id){
+				case 'company_image':
+				case 'acra_profile_doc_url':
+				case 'moa_doc_url':
+					if($("#"+input_id+"_hidden").val() == ''){
+						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+					}
+					break;	
+				default:
+					if($('#'+input_id).hasClass("attachment")){
 						if($("#"+input_id+"_hidden").val() == ''){
 							$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 						}
 					}else{
 						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 					}
-				}
 			}
 		}
-		
 	});
 	
 	if ($("#"+cur_tab).has('.has-error').length > 0)

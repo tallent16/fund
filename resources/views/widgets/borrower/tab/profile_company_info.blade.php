@@ -249,9 +249,14 @@
 							data-buttonBefore="true" 
 							name="company_thumbnail"
 							accept="image/*" 
-							/>		
+							/>
+					<input 	type="hidden" 
+								id="company_thumbnail_hidden"
+								name="company_thumbnail_hidden"
+								value="{{ $modelBorPrf->company_image_thumbnail }}"
+								/>				
 					@if($modelBorPrf->company_image_thumbnail!="")
-						<a href="{{url($modelBorPrf->company_thumbnail)}}" 
+						<a href="{{url($modelBorPrf->company_image_thumbnail)}}" 
 							target="_blank" 
 							class="hyperlink">
 							{{basename($modelBorPrf->company_image_thumbnail)}}
@@ -276,17 +281,16 @@
 															
 					<input 	type="hidden" 
 								id="acra_profile_doc_url_hidden"
-								value=""
+								name="acra_profile_doc_url_hidden"
+								value="{{ $modelBorPrf->acra_profile_doc_url }}"
 								/>		
-<!--
-					@if($modelBorPrf->company_image!="")
-						<a 	href="{{url($modelBorPrf->company_image)}}"  
-							target="_blank" 
+					@if($modelBorPrf->acra_profile_doc_url!="")
+						@var	$acraUrl	=	url('download/borrower/profile/attachment')."/".$modelBorPrf->borrower_id."/3";	
+						<a 	href="{{$acraUrl}}"  
 							class="hyperlink">
-							{{basename($modelBorPrf->company_image)}}
+							{{basename($modelBorPrf->acra_profile_doc_url)}}
 						</a>
 					@endif
--->
 					
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
@@ -305,17 +309,16 @@
 							/>	
 							<input 	type="hidden" 
 								id="moa_doc_url_hidden"
-								value=""
+								name="moa_doc_url_hidden"
+								value="{{ $modelBorPrf->moa_doc_url }}"
 								/>			
-<!--
-					@if($modelBorPrf->company_image_thumbnail!="")
-						<a href="{{url($modelBorPrf->company_thumbnail)}}" 
-							target="_blank" 
+					@if($modelBorPrf->moa_doc_url!="")
+						@var	$moaUrl	=	url('download/borrower/profile/attachment')."/".$modelBorPrf->borrower_id."/4";	
+						<a href="{{$moaUrl}}" 
 							class="hyperlink">
-							{{basename($modelBorPrf->company_image_thumbnail)}}
+							{{basename($modelBorPrf->moa_doc_url)}}
 						</a>
 					@endif							
--->
 				</div>							
 			</div>	
 		<!--	row columns added new on 3/June/2016 ACRA Business Profile and Memoradum and Articles of Association -->

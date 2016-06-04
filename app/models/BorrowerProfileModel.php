@@ -113,6 +113,8 @@ class BorrowerProfileModel extends TranWrapper {
 						borrowers.company_image,
 						borrowers.company_image_thumbnail,
 						borrowers.company_video_url,
+						borrowers.acra_profile_doc_url,
+						borrowers.moa_doc_url,
 						borrowers.borrower_risk_grade grade
 				FROM 	borrowers,
 						users
@@ -253,7 +255,7 @@ class BorrowerProfileModel extends TranWrapper {
 		return $borrowerId;
 	}
 	
-	public function updateBorrowerInfo($postArray,$transType) {
+		public function updateBorrowerInfo($postArray,$transType) {
 		
 	
 		if ($transType == "edit") {
@@ -314,9 +316,18 @@ class BorrowerProfileModel extends TranWrapper {
 											);
 		}
 		if(isset($postArray['company_thumbnail'])){
+			
+			if($postArray['company_image_hidden']	!=	$postArray['company_thumbnail_hidden']){
+				$filePath		=	$postArray['company_thumbnail_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			
 			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
 			$file			=	$postArray['company_thumbnail'];
-			//~ $thumbnailPath	=	$destinationPath."/".$borrowerId."/profile/thumbnail";
 			$thumbnailPath	=	$destinationPath."/".$borrowerId;
 			$prefix			=	"thumbnail_";
 			$fileUploadObj->createIfNotExists($thumbnailPath);
@@ -326,6 +337,49 @@ class BorrowerProfileModel extends TranWrapper {
 			$newfilename 								= 	$prefix.$newfilename;
 			$company_thumbnail							=	$thumbnailPath."/".$newfilename;
 			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
+			
+		}
+		if(isset($postArray['acra_profile_doc_url'])){
+			if(isset($postArray['acra_profile_doc_url_hidden'])){
+				$filePath		=	$postArray['acra_profile_doc_url_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file		=	$postArray['acra_profile_doc_url'];
+			$filePath	=	$destinationPath."/".$borrowerId;
+			$prefix		=	"ACRA_Bus_pro_";
+			$fileUploadObj->createIfNotExists($filePath);
+			$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$filename 				= 	$file->getClientOriginalName();
+			$newfilename 			= 	preg_replace('/\s+/', '_', $filename);
+			$newfilename 			= 	$prefix.$newfilename;
+			$acra_profile_doc_url	=	$filePath."/".$newfilename;
+			$updateDataArry			=	array(	"acra_profile_doc_url"=>$acra_profile_doc_url);
+		}
+		if(isset($postArray['moa_doc_url'])){
+			if(isset($postArray['moa_doc_url_hidden'])){
+				$filePath		=	$postArray['moa_doc_url_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file			=	$postArray['moa_doc_url'];
+			$filePath		=	$destinationPath."/".$borrowerId;
+			$prefix			=	"MAOA_";
+			$fileUploadObj->createIfNotExists($filePath);
+			$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$filename 									= 	$file->getClientOriginalName();
+			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 								= 	$prefix.$newfilename;
+			$moa_doc_url								=	$filePath."/".$newfilename;
+			$updateDataArry["moa_doc_url"]				=	$moa_doc_url;
 			
 		}
 		//~ if(isset($postArray['company_video'])){

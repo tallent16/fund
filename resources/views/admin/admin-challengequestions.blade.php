@@ -7,8 +7,13 @@
 @section('section')  
 		@var $security_list = $adminchallqueModel->securityque_list;
 <div class="col-sm-12 space-around">
+	
+	<form method="post" id="form-challenge-questions" action="">
+		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+		<input type="hidden" name="processType" id="processType" value="">
+		
 	<div class="row">		
-		<div class="col-lg-12 col-md-12 borrower-admin">
+		<div class="col-lg-12 col-md-12">
 			<div class="panel panel-primary panel-container">				
 
 					<div class="panel-heading panel-headsection">
@@ -20,9 +25,7 @@
 					</div>				
 
 					<div class="table-responsive">
-						<form method="post" id="form-challenge-questions" action="">
-							<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-							<input type="hidden" name="processType" id="processType" value="">
+						
 							
 						<table class="table tab-fontsize text-left" id="security_table">
 							<thead>
@@ -40,12 +43,12 @@
 							<tbody>	
 								@foreach ($security_list as $queRow)
 								<tr>
-									<td>
-										{{$queRow->codelist_code}}
+									<td class="question">
+										{{$queRow->challenge_id}}
 									</td>
 									<td>
 										<input type="text" 
-												value="{{$queRow->codelist_value}}"
+												value="{{$queRow->challenge_text}}"
 												name=""
 												id="questions[]"
 												class="form-control"
@@ -56,42 +59,16 @@
 												<input 	type="checkbox" 
 														name="question_ids[]"
 														class="select_question_id"																
-														value="	{{$queRow->codelist_code}}">
+														value="	{{$queRow->challenge_id}}">
 											</label>													
 									</td>
 								</tr>
 								
 								@endforeach	
-								<tr style="display:none">
-									<td>
-										@var $i=1;	
-										{{$queRow->codelist_code}}			
-										@if($i>1)						
-											@var $newvalue = $queRow->codelist_code+1;										
-											{{$newvalue}}
-										@endif
-										@var $i++;
-									</td>
-									<td>
-										<input type="text" 
-												value=""
-												name=""
-												id="new_questions"
-												class="form-control"
-										/>
-									</td>
-									<td class="text-center">
-										<label>
-												<input 	type="checkbox" 
-														name="new_question_id"
-														class="select_newquestion_id"																
-														value="{{$queRow->codelist_code}}+1	">
-											</label>
-									</td>
-								</tr>
+								
 							</tbody>
 						</table>
-						</form>		
+							
 					</div>
 						
 			</div>
@@ -100,28 +77,62 @@
 	
 	<div class="row">
 		<div class="col-sm-12">	
-				<button type="button"
-						id="new_question"
-						class="btn verification-button"	>
-						<i class="fa pull-right"></i>
-						{{ Lang::get('New Questions')}}
-				</button>
-				<button type="button"
-						id="delete_question"
-						class="btn verification-button"	>
-						<i class="fa pull-right"></i>
-						{{ Lang::get('Delete Selected')}}
-				</button>
-				<button type="button"
-						id="update_question"
-						class="btn verification-button"	>
-						<i class="fa pull-right"></i>
-						{{ Lang::get('Save')}}
-				</button>
-			</div>
+			<button type="button"
+					id="new_question"
+					class="btn verification-button"	>
+					<i class="fa pull-right"></i>
+					{{ Lang::get('New Questions')}}
+			</button>
+			<button type="button"
+					id="delete_question"
+					class="btn verification-button"	>
+					<i class="fa pull-right"></i>
+					{{ Lang::get('Delete Selected')}}
+			</button>
+			<button type="submit"
+					id="update_question"
+					class="btn verification-button"	>
+					<i class="fa pull-right"></i>
+					{{ Lang::get('Save')}}
+			</button>
+		</div>
+	</div>
+	</form>	
+</div>
+<div class="space-around">&nbsp;</div>
+<div style="display:none;">
+	<input type="hidden" id="question_id" value= "{{$queRow->challenge_id}}" />
+	<input type="hidden" id="count_question_id" value= "{{count($queRow->challenge_id)}}" />
+	
+	<div>
+		<table  >
+		<tr id="questionTemplate">
+			<td class="security_id">
+				XXX
+				<input  type="hidden"
+						name="question[id][]"
+						value="XXX" />
+			</td>
+			<td>
+				<input type="text" 
+						value=""
+						name="question[question_list][]"
+						id="new_questions"
+						class="form-control"
+				/>
+			</td>
+			<td class="text-center">
+				<label>
+						<input 	type="checkbox" 
+								name="question[status][]"
+								class="select_newquestion_id"																
+								value="	">
+					</label>
+			</td>
+		</tr>
+		</table>
 	</div>
 </div>
-
 	@endsection  
 @stop
 

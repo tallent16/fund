@@ -1,27 +1,25 @@
 $(document).ready(function (){  
-		$("#select_all_list").click(function(){	 
-			checkall_list(this,"select_question_id");
-		});
-		
-		
+	$("#select_all_list").click(function(){	 
+		checkall_list(this,"select_question_id");
+	});		
 });
-/*
-$("#new_question").click(function(){	
-	$("#security_table>tbody>tr:last-child").show();
-});*/
-$("#new_question").click(function () { 
+/*Add New Question*/
+$("#new_question").click(function(){
+	addNewRow();
+});
+function addNewRow(){
+		htmlTemplate = $("#questionTemplate").html();
+		counterint = parseInt($("#question_id").val());
 
-    $("#security_table").each(function () {
-       
-        var tds = '<tr">';
-        jQuery.each($('tr:last td', this), function () {
-            tds += '<td>' + $(this).html() + '</td>';
-        });
-        tds += '</tr>';
-        if ($('tbody', this).length > 0) {
-            $('tbody', this).append(tds);
-        } else {
-            $(this).append(tds);
-        }
-    });
+		counterint++;
+		counterstr = counterint.toString();
+
+		htmlTemplate = htmlTemplate.replace(/XXX/g, counterstr);
+		$("#security_table tbody").append("<tr>"+htmlTemplate+"</tr>");		
+		$("#security_id"+counterstr).val("");	
+		$("#question_id").val(counterstr);
+}
+/*Delete Question*/
+$("#delete_question").click(function(){
+	$('input:checkbox:checked').parents("tr").remove();
 });

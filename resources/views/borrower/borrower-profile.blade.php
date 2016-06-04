@@ -302,7 +302,7 @@
 							{{ Lang::get('borrower-profile.director_name') }}
 						</label>
 					</td>
-					<td class="col-md-3"  id="name_XXX_parent">
+					<td class="col-md-3"  id="name_XXX_parent" colspan="3">
 						<input  type="hidden"
 								name="director_row[id][]"
 								value="0" />
@@ -314,6 +314,9 @@
 								placeholder="Director Name"
 								/>
 					</td>
+						
+				</tr>
+				<tr>
 					<td class="col-md-3">
 						{{ Lang::get('borrower-profile.age') }}
 					</td>
@@ -323,23 +326,11 @@
 								name="director_row[age][]"
 								class="form-control text-right num required"
 								/>
-					</td>		
-				</tr>
-				<tr>
-					<td class="col-md-3">
-						{{ Lang::get('borrower-profile.period_since') }}
-					</td>
-					<td class="col-md-3" id="period_in_this_business_XXX_parent" >
-						<input 	type="text" 
-								id="period_in_this_business_XXX" 
-								name="director_row[period_in_this_business][]"
-								class="form-control text-right num required"
-								/>
 					</td>	
 					<td class="col-md-3">
 						{{ Lang::get('borrower-profile.overall_exp') }}
 					</td>
-					<td class="col-md-3" id="overall_experience_XXX_parent" >
+					<td class="col-md-3" id="overall_experience_XXX_parent"  colspan="3">
 						<input 	type="text" 
 								id="overall_experience_XXX" 
 								name="director_row[overall_experience][]"

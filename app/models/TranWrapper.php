@@ -675,4 +675,20 @@ class TranWrapper extends MoneyMatchModel {
 		}
 		return ($cnt == 0)?true:false;
 	}
+	
+	public function getBorrowerProfileAllAttachments($id){
+		
+		$bor_pro_sql	= "	SELECT 	company_image,
+									company_image_thumbnail,
+									acra_profile_doc_url,
+									moa_doc_url
+							FROM 	borrowers
+							WHERE	borrower_id	=	{$id}";
+				
+		$bor_pro_rs = $this->dbFetchAll($bor_pro_sql);
+		if(isset($bor_pro_rs[0])) {
+			return $bor_pro_rs[0];
+		}
+		return 0;
+	}
 }

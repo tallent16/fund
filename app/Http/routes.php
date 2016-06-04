@@ -202,9 +202,15 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 
 //Settings Configuration
 Route::get('admin/settings',  'AdminSettingsController@indexAction');
-Route::get('admin/challengequestions',  'AdminChallengeQuestionsController@indexAction');
 
-
+Route::get('admin/challengequestions',  	[	'as' 			=> 	'admin.challengequestions', 
+												'uses' 			=>	'AdminChallengeQuestionsController@indexAction'
+											]
+			);
+Route::post('admin/challengequestions',  	[	'uses' 			=>	'AdminChallengeQuestionsController@saveAction'
+											]
+			);
+			
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
 
@@ -1024,6 +1030,8 @@ Route::post('submit_registration', 'RegistrationController@submitAction');
 Route::get('register', 'RegistrationController@indexAction');
 Route::get('activation/{activation}', 'RegistrationController@activationAction'); 
 Route::get('verification', 'RegistrationController@verificationAction'); 
+
+Route::get('download/borrower/profile/attachment/{profile_id}/{fieldno}', 'BorrowerProfileController@downloadAction');
 /*
 Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";

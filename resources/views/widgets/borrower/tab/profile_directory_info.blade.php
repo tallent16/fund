@@ -53,7 +53,7 @@
 													{{ Lang::get('borrower-profile.director_name') }}
 												</label>
 											</td>
-											<td class="col-md-3" id="name_{{$i}}_parent">
+											<td class="col-md-3" id="name_{{$i}}_parent" colspan="3">
 												<input  type="hidden"
 														name="director_row[id][]"
 														value="{{$directorRow['id'] }}" />
@@ -65,8 +65,13 @@
 														class="form-control required"
 														 {{$modelBorPrf->viewStatus}}/>
 											</td>
+												
+										</tr>
+										<tr>
 											<td class="col-md-3">
-												{{ Lang::get('borrower-profile.age') }}
+												<label class="input-required">
+													{{ Lang::get('borrower-profile.age') }}
+												</label>
 											</td>
 											<td class="col-md-3" id="age_{{$i}}_parent">
 												<input 	type="text" 
@@ -74,19 +79,6 @@
 														name="director_row[age][]"
 														value="{{ $directorRow['age']  }}"
 														class="form-control text-right  num required"
-														 {{$modelBorPrf->viewStatus}} />
-											</td>		
-										</tr>
-										<tr>
-											<td class="col-md-3">
-												{{ Lang::get('borrower-profile.period_since') }}
-											</td>
-											<td class="col-md-3" id="period_in_this_business_{{$i}}_parent">
-												<input 	type="text" 
-														id="period_in_this_business_{{$i}}" 
-														name="director_row[period_in_this_business][]"
-														value="{{ $directorRow['period_in_this_business']  }}"
-														class="form-control text-right num required"
 														 {{$modelBorPrf->viewStatus}} />
 											</td>	
 											<td class="col-md-3">
@@ -97,9 +89,10 @@
 														id="overall_experience_{{$i}}" 
 														name="director_row[overall_experience][]"
 														value="{{ $directorRow['overall_experience']  }}"
-														class="form-control text-right num required"
+														class="form-control text-right num required col-md-6"
 														 {{$modelBorPrf->viewStatus}} />
 											</td>
+											
 										</tr>
 										<tr>
 											<td class="col-md-3">
@@ -118,17 +111,41 @@
 										</tr>
 										<tr>
 											<td class="col-md-3">
-												{{ Lang::get('borrower-profile.accomplish') }}
+												<label class="input-required">
+													{{ Lang::get('Identity Card Front') }}
+												</label>
 											</td>
-											<td colspan="3" class="col-md-3">
-												<textarea	id="accomplishments_{{$i}}" 
-															name="director_row[accomplishments][]"
-															class="form-control accomplishments"
-															data-toggle="tooltip"
-															title="Please put down a short description of your work experience, important milestones and awards"
-															rows="6"
-														 {{$modelBorPrf->viewStatus}} 
-														 >{{ $directorRow['accomplishments'] }}</textarea>
+											<td colspan="3" class="col-md-3" id="identity_card_front_{{$i}}_parent">
+												<input 	type="file" 
+														class="jfilestyle required attachment" 
+														data-buttonBefore="true" 
+														name="director_row[identity_card_front][]"
+														id="identity_card_front_{{$i}}" />
+																															
+												<input 	type="hidden" 
+														id="identity_card_front_{{$i}}"
+														name="director_row[identity_card_front_hidden][]"
+														value=""
+														/>		
+											</td>
+										</tr>													
+										<tr>
+											<td class="col-md-3">
+												<label class="input-required">
+													{{ Lang::get('Identity Card Back') }}
+												</label>
+											</td>
+											<td colspan="3" class="col-md-3" id="identity_card_back_{{$i}}_parent">
+												<input 	type="file" 
+														class="jfilestyle required attachment" 
+														data-buttonBefore="true" 
+														name="director_row[identity_card_back][]"
+														id="identity_card_back_{{$i}}" />
+												<input 	type="hidden" 
+														id="identity_card_back_{{$i}}"
+														name="director_row[identity_card_back_hidden][]"
+														value=""
+														/>		
 											</td>
 										</tr>													
 									</tbody>

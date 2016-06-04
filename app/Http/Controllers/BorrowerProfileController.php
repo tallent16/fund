@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use Request;
 use	\App\models\BorrowerProfileModel;
+use Auth;
 class BorrowerProfileController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -37,5 +38,35 @@ class BorrowerProfileController extends MoneyMatchController {
 		return view('borrower.borrower-profile')
 					->with($withArry);
 	}
+	
+	public function downloadAction($profile_id,$fieldno) {
+	
+		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
+			if(Auth::user()->user_id	==	$this->borrowerProfileModel->getBorrowerIdByUserInfo($profile_id)->user_id) { 
+				$fieldArray	=	array(
+										1=>"company_image",
+										2=>"company_image_thumbnail",
+										3=>"acra_profile_doc_url",
+										4=>"moa_doc_url"
+									);
+					$sourceId 		=	explode("_",$profile_id);
+				// download borrower profile ACRA and MAOA file
+					$fieldName		=	$fieldArray[$fieldno];
+					
+					$bor_pro_rs		=	$this->borrowerProfileModel->getBorrowerProfileAllAttachments($sourceId[0]);
+					
+					$attachUrl		=	$bor_pro_rs->$fieldName;
+					$attachName 	= 	basename($attachUrl);
+					
+					header('Content-Disposition: attachment; filename=' .$attachName);
+					header('Content-Type: application/force-download');
+					header('Content-Type: application/octet-stream');
+					header('Content-Type: application/download');
+					header('Content-Description: File Transfer');
+					echo file_get_contents($attachUrl);
+			}
+		}
+	}
+	
 
 }
