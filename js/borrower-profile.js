@@ -227,7 +227,6 @@ $(document).ready(function (){
 			}
 			
 		}
-	
 		$("#active_tab").val($(".nav-tabs li.active a").attr("href"));
 	});
 	 
@@ -345,7 +344,9 @@ function validateTab(cur_tab) {
 					}
 					break;	
 				default:
+					
 					if($('#'+input_id).hasClass("attachment")){
+						
 						if($("#"+input_id+"_hidden").val() == ''){
 							$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 						}
@@ -380,6 +381,7 @@ function addNewDirectorRow(){
 		$(".divs div.dir-list:visible").hide();
         $(".divs div.dir-list:last").show();
         textAreaToolTip();
+        
 }
 function delDirectorRow(){
 	if ($(".divs div.dir-list").length > 0){

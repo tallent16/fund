@@ -348,6 +348,7 @@
 						<textarea	id="directors_profile_XXX" 
 									name="director_row[directors_profile][]"
 									class="form-control required"
+									rows="6"
 								></textarea>
 					</td>		
 				</tr>
@@ -361,9 +362,49 @@
 									class="form-control accomplishments"
 									data-toggle="tooltip"
 									title="Please put down a short description of your work experience, important milestones and awards"
+									rows="6"
 								></textarea>
 					</td>
+				</tr>
+				<tr>
+					<td class="col-md-3">
+						<label class="input-required">
+							{{ Lang::get('Identity Card Front') }}
+						</label>
+					</td>
+					<td colspan="3" class="col-md-3" id="identity_card_front_XXX_parent">
+						<input 	type="file" 
+								class="jfilestyle required attachment" 
+								data-buttonBefore="true" 
+								name="director_row[identity_card_front][]"
+								id="identity_card_front_XXX" />
+																									
+						<input 	type="hidden" 
+								id="identity_card_front_XXX_hidden"
+								name="director_row[identity_card_front_hidden][]"
+								value=""
+								/>		
+					</td>
 				</tr>													
+				<tr>
+					<td class="col-md-3">
+						<label class="input-required">
+							{{ Lang::get('Identity Card Back') }}
+						</label>
+					</td>
+					<td colspan="3" class="col-md-3" id="identity_card_back_XXX_parent">
+						<input 	type="file" 
+								class="jfilestyle required attachment" 
+								data-buttonBefore="true" 
+								name="director_row[identity_card_back][]"
+								id="identity_card_back_XXX" />
+						<input 	type="hidden" 
+								id="identity_card_back_XXX_hidden"
+								name="director_row[identity_card_back_hidden][]"
+								value=""
+								/>		
+					</td>
+				</tr>																		
 			</table></div>
 		</div>
 	</div>

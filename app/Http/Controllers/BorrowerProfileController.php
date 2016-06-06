@@ -68,5 +68,26 @@ class BorrowerProfileController extends MoneyMatchController {
 		}
 	}
 	
+	public function downloadDirAction($profile_id,$dir_id,$type) {
+	
+		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
+			if(Auth::user()->user_id	==	$this->borrowerProfileModel->getBorrowerIdByUserInfo($profile_id)->user_id) { 
+				
+					$sourceId 		=	explode("_",$profile_id);
+					$bor_dir_rs		=	$this->borrowerProfileModel->getBorrowerDirAttachmentById($dir_id);
+					$fieldName		=	"identity_card_".$type;
+					$attachUrl		=	$bor_dir_rs->$fieldName;
+					$attachName 	= 	basename($attachUrl);
+					
+					header('Content-Disposition: attachment; filename=' .$attachName);
+					header('Content-Type: application/force-download');
+					header('Content-Type: application/octet-stream');
+					header('Content-Type: application/download');
+					header('Content-Description: File Transfer');
+					echo file_get_contents($attachUrl);
+			}
+		}
+	}
+	
 
 }

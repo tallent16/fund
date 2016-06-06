@@ -49,5 +49,9 @@ class LoanListingController extends MoneyMatchController {
 			
 					
 	}
+	
+	public function getActiveLoansAction() {
+		$this->loanlisting->getAllActiveLoans();
+	}
 
 }

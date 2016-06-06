@@ -39,10 +39,10 @@ class AdminChallengeQuestionsController extends MoneyMatchController {
 		
 		if($result) {
 			return redirect()->route('admin.challengequestions')
-						->with('success','Questions Added successfully');
+						->with('success','Questions Updated successfully');
 		}else{
 			return redirect()->route('admin.challengequestions')
-						->with('failure','Not Added');	
+						->with('failure','Something went wrong!');	
 		}
 	}
 	

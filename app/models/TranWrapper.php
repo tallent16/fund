@@ -130,21 +130,27 @@ class TranWrapper extends MoneyMatchModel {
 	}
 	
 	public function getUserType() {
-		$user_id	=	Auth::user()->user_id;
-		
-		$sql		=	"	SELECT 	usertype 
-							FROM	users
-							WHERE	user_id = {$user_id}";
-		
-		$result		=	$this->dbFetchAll($sql);
-		
-		if (count($result) > 0) {
-			$userType = $result[0]->usertype;
-			return $userType;
+		if (Auth::check()) {
+			$user_id	=	Auth::user()->user_id;
+
+			$sql		=	"	SELECT 	usertype 
+								FROM	users
+								WHERE	user_id = {$user_id}";
+			
+			$result		=	$this->dbFetchAll($sql);
+			
+			if (count($result) > 0) {
+				$userType = $result[0]->usertype;
+				return $userType;
+			}
+			return -1; //Not a possibility since the user will be there in order that 
+					// he is authorized to use it. so Duh!!!
+					
+		} else {
+			return 0;
 		}
 		
-		return -1; //Not a possibility since the user will be there in order that 
-					// he is authorized to use it. so Duh!!!
+		
 
 	}
 	
@@ -688,6 +694,20 @@ class TranWrapper extends MoneyMatchModel {
 		$bor_pro_rs = $this->dbFetchAll($bor_pro_sql);
 		if(isset($bor_pro_rs[0])) {
 			return $bor_pro_rs[0];
+		}
+		return 0;
+	}
+	
+	public function getBorrowerDirAttachmentById($dir_id){
+		
+		$bor_dir_sql	= "	SELECT 	identity_card_front,
+									identity_card_back
+							FROM 	borrower_directors
+							WHERE	id	=	{$dir_id}";
+				
+		$bor_dir_rs = $this->dbFetchAll($bor_dir_sql);
+		if(isset($bor_dir_rs[0])) {
+			return $bor_dir_rs[0];
 		}
 		return 0;
 	}

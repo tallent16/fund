@@ -1023,6 +1023,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 
 // Common Modules
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');
+Route::get('getActiveLoans', 'LoanListingAllController@getActiveLoansAction');
 
 Route::post('ajax/CheckEmailavailability', 'RegistrationController@checkEmailavailability');
 Route::post('ajax/CheckUserNameavailability', 'RegistrationController@CheckUserNameavailability');
@@ -1032,6 +1033,8 @@ Route::get('activation/{activation}', 'RegistrationController@activationAction')
 Route::get('verification', 'RegistrationController@verificationAction'); 
 
 Route::get('download/borrower/profile/attachment/{profile_id}/{fieldno}', 'BorrowerProfileController@downloadAction');
+Route::get('download/borrower/director/attachment/{profile_id}/{dir_id}/{type}',
+																		'BorrowerProfileController@downloadDirAction');
 /*
 Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";

@@ -110,6 +110,20 @@
 											</td>		
 										</tr>
 										<tr>
+											<td  class="col-md-3">
+												{{ Lang::get('borrower-profile.accomplish') }}
+											</td>
+											<td colspan="3" class="col-md-3">
+												<textarea	id="accomplishments_{{$i}}" 
+															name="director_row[accomplishments][]"
+															class="form-control accomplishments"
+															data-toggle="tooltip"
+															rows="6"
+															title="Please put down a short description of your work experience, important milestones and awards"
+														>{{ $directorRow['accomplishments'] }}</textarea>
+											</td>
+										</tr>						
+										<tr>
 											<td class="col-md-3">
 												<label class="input-required">
 													{{ Lang::get('Identity Card Front') }}
@@ -123,10 +137,19 @@
 														id="identity_card_front_{{$i}}" />
 																															
 												<input 	type="hidden" 
-														id="identity_card_front_{{$i}}"
+														id="identity_card_front_{{$i}}_hidden"
 														name="director_row[identity_card_front_hidden][]"
-														value=""
+														value="{{ $directorRow['identity_card_front'] }}"
 														/>		
+												@if($directorRow['identity_card_front']!="")
+													@var	$frontUrl	=	url('download/borrower/director/attachment');
+													@var	$frontUrl	=	$frontUrl."/".$modelBorPrf->borrower_id
+													@var	$frontUrl	=	$frontUrl."/".$directorRow['id']."/front"
+													<a href="{{$frontUrl}}" 
+														class="hyperlink">
+														{{basename( $directorRow['identity_card_front'])}}
+													</a>
+												@endif	
 											</td>
 										</tr>													
 										<tr>
@@ -142,10 +165,19 @@
 														name="director_row[identity_card_back][]"
 														id="identity_card_back_{{$i}}" />
 												<input 	type="hidden" 
-														id="identity_card_back_{{$i}}"
+														id="identity_card_back_{{$i}}_hidden"
 														name="director_row[identity_card_back_hidden][]"
-														value=""
+														value="{{ $directorRow['identity_card_back'] }}"
 														/>		
+												@if($directorRow['identity_card_back']!="")
+													@var	$backUrl	=	url('download/borrower/director/attachment');
+													@var	$backUrl	=	$backUrl."/".$modelBorPrf->borrower_id
+													@var	$backUrl	=	$backUrl."/".$directorRow['id']."/back"
+													<a href="{{$backUrl}}" 
+														class="hyperlink">
+														{{basename($directorRow['identity_card_back'])}}
+													</a>
+												@endif	
 											</td>
 										</tr>													
 									</tbody>

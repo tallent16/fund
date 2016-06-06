@@ -9,8 +9,7 @@
 <div class="col-sm-12 space-around">
 	
 	<form method="post" id="form-challenge-questions" action="">
-		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-		<input type="hidden" name="processType" id="processType" value="">
+		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">	
 		
 	<div class="row">		
 		<div class="col-lg-12 col-md-12">
@@ -25,12 +24,10 @@
 					</div>				
 
 					<div class="table-responsive">
-						
-							
 						<table class="table tab-fontsize text-left" id="security_table">
 							<thead>
 								<tr>									
-									<th class="tab-head text-left col-sm-2">{{ Lang::get('S.No') }}</th>
+									<th class="tab-head text-left col-sm-2 text-center">{{ Lang::get('S.No') }}</th>
 									<th class="tab-head text-left col-sm-8">{{ Lang::get('Question') }}</th>
 									<th class="tab-head text-left col-sm-2 text-center">
 										<label>
@@ -43,32 +40,31 @@
 							<tbody>	
 								@foreach ($security_list as $queRow)
 								<tr>
-									<td class="question">
-										{{$queRow->challenge_id}}
+									<td class="question text-center" >
+										{{$queRow->slno}}
+										<input  type="hidden"
+												name="questions[id][]"
+												value="{{$queRow->challenge_id}}" />
 									</td>
 									<td>
 										<input type="text" 
 												value="{{$queRow->challenge_text}}"
-												name=""
-												id="questions[]"
+												name="questions[question_list][]"
 												class="form-control"
 										/>
 									</td>										
 									<td class="text-center">													
 											<label>
 												<input 	type="checkbox" 
-														name="question_ids[]"
-														class="select_question_id"																
-														value="	{{$queRow->challenge_id}}">
+														class="select_question_id"	
+														name="questions[selected][]"															
+														value="{{$queRow->challenge_id}}">
 											</label>													
 									</td>
-								</tr>
-								
-								@endforeach	
-								
+								</tr>								
+								@endforeach									
 							</tbody>
 						</table>
-							
 					</div>
 						
 			</div>
@@ -101,30 +97,29 @@
 </div>
 <div class="space-around">&nbsp;</div>
 <div style="display:none;">
-	<input type="hidden" id="question_id" value= "{{$queRow->challenge_id}}" />
+	<input type="hidden" id="question_id" value= "{{$queRow->slno}}" />
 	<input type="hidden" id="count_question_id" value= "{{count($queRow->challenge_id)}}" />
 	
 	<div>
 		<table  >
 		<tr id="questionTemplate">
-			<td class="security_id">
+			<td class="security_id text-center">
 				XXX
 				<input  type="hidden"
-						name="question[id][]"
-						value="XXX" />
+						name="questions[id][]"
+						value="0" />
 			</td>
 			<td>
 				<input type="text" 
 						value=""
-						name="question[question_list][]"
-						id="new_questions"
+						name="questions[question_list][]"
 						class="form-control"
+						value=""
 				/>
 			</td>
 			<td class="text-center">
 				<label>
 						<input 	type="checkbox" 
-								name="question[status][]"
 								class="select_newquestion_id"																
 								value="	">
 					</label>

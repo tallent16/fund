@@ -23,11 +23,12 @@ class LoanListingModel extends TranWrapper {
 	public function __construct(){	
 		
 		// This will be called only from the borrower / Investors' model so this will be investor or borrower
-		$this->userType 		= 	$this->getUserType();
-		$this->inv_or_borr_id	=	($this->userType == 1)? $this->getCurrentBorrowerID(): 
-															$this->getCurrentInvestorID();
-		$this->typePrefix		=	($this->userType == 1)? "borrower":
-															"investor";
+		//$this->userType 		= 	$this->getUserType();
+		
+		//$this->inv_or_borr_id	=	($this->userType == 1)? $this->getCurrentBorrowerID(): 
+															//$this->getCurrentInvestorID();
+		//$this->typePrefix		=	($this->userType == 1)? "borrower":
+															//"investor";
 	}
 	
 	public function processDropDowns() {
@@ -147,10 +148,26 @@ class LoanListingModel extends TranWrapper {
 											{$gradeWhere}
 									order by isfeatured desc, loan_display_order asc
 ";
+	
 		$this->loanList	=	$this->dbFetchWithParam($loanlist_sql, 
 										["bids_cancelled" => LOAN_BIDS_STATUS_CANCELLED]);
 	
 	
+	}
+	
+	function getAllActiveLoans() {
+		$this->getLoanList('all', 'all', 'all', 'all');
+		$fileUploadObj	=	new FileUpload();
+
+		for ($tmpIndex = 0; $tmpIndex < count($this->loanList); $tmpIndex ++) {
+			$thumbFile	=	$this->loanList[$tmpIndex]->company_image_thumbnail;
+			$thumbUrl	=	$fileUploadObj->getFile($thumbFile);
+			$this->loanList[$tmpIndex]->company_image_thumbnail = $thumbUrl;
+		}
+		$jsonLoanList	=	json_encode($this->loanList);
+		
+		echo $jsonLoanList;
+		
 	}
 	
 }

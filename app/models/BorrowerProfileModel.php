@@ -149,7 +149,9 @@ class BorrowerProfileModel extends TranWrapper {
 						period_in_this_business,
 						overall_experience,
 						accomplishments,
-						directors_profile
+						directors_profile,
+						identity_card_front,
+						identity_card_back
 				FROM 	borrower_directors
 				WHERE	borrower_id	='".$current_borrower_id."'";
 		
@@ -459,7 +461,7 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerDirectorInfo($postArray,$borrowerId) {
 	 // $directorRows,$borrowerId) {
- 
+		
 		if (isset($postArray["director_row"])) {
 			$directorRows = $postArray["director_row"];
 			$numRows = count($directorRows['name']);
@@ -467,10 +469,12 @@ class BorrowerProfileModel extends TranWrapper {
 			$directorRows = array();
 			$numRows = 0;
 		}
-		
+		//~ echo "<pre>",print_r($directorRows),"</pre>";
+		//~ die;
+		$updateAttachment	=	false;
 		$rowIndex = 0;
 		$directorIds  = array();
-
+		$fileUploadObj	=	new FileUpload();
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
 			$borrower_id 				= $borrowerId;
 			
@@ -481,22 +485,23 @@ class BorrowerProfileModel extends TranWrapper {
 			} else {
 				$update = false;
 			}
-				
-			$slno						= $rowIndex+1;
-			$name						= $directorRows['name'][$rowIndex];
-			$age						= $directorRows['age'][$rowIndex];
-			$period_in_this_business	= $directorRows['period_in_this_business'][$rowIndex];
-			$overall_experience			= $directorRows['overall_experience'][$rowIndex];
-			$accomplishments			= $directorRows['accomplishments'][$rowIndex];
-			$directors_profile			= $directorRows['directors_profile'][$rowIndex];
-		
+			
+			$slno						= 	$rowIndex+1;
+			$name						= 	$directorRows['name'][$rowIndex];
+			$age						= 	$directorRows['age'][$rowIndex];
+			$overall_experience			= 	$directorRows['overall_experience'][$rowIndex];
+			$accomplishments			= 	$directorRows['accomplishments'][$rowIndex];
+			$directors_profile			= 	$directorRows['directors_profile'][$rowIndex];
+			$identity_card_front		= 	$directorRows['identity_card_front'][$rowIndex];
+			$identity_card_back			= 	$directorRows['identity_card_back'][$rowIndex];
+			$destinationPath 			= 	Config::get('moneymatch_settings.upload_bor');
+			
 			// Construct the data array
 			$dataArray = array(	
 							'borrower_id' 				=> $borrower_id,
 							'slno'						=> $slno,
 							'name'	 					=> $name,
 							'age'						=> $age,
-							'period_in_this_business' 	=> $period_in_this_business,
 							'overall_experience' 		=> $overall_experience,
 							'accomplishments' 			=> $accomplishments,
 							'directors_profile' 		=> $directors_profile);		
@@ -510,6 +515,54 @@ class BorrowerProfileModel extends TranWrapper {
 				$directorIds[]	=	$id;
 			}
 			
+			if(isset($identity_card_front)){
+				if(isset($postArray['identity_card_front_hidden'][$rowIndex])){
+					$filePath		=	$postArray['identity_card_front_hidden'][$rowIndex];
+					$fileUploadObj->deleteFile($filePath);
+					
+				}
+				unset($prefix);
+				unset($filename);
+				unset($newfilename);
+				unset($file);
+				
+				$file				=	$identity_card_front;
+				$filePath			=	$destinationPath."/".$borrowerId;
+				$prefix				=	"dir_iden_front_{$id}_";
+				$fileUploadObj->storeFile($filePath ,$file,$prefix);
+				$filename 				= 	$file->getClientOriginalName();
+				$newfilename 			= 	preg_replace('/\s+/', '_', $filename);
+				$newfilename 			= 	$prefix.$newfilename;
+				$identity_card_front	=	$filePath."/".$newfilename;
+				$updateDataArry			=	array(	"identity_card_front"=>$identity_card_front);
+				$updateAttachment		=	true;
+			}
+			if(isset($identity_card_back)){	
+				if(isset($postArray['identity_card_back_hidden'][$rowIndex])){
+					$filePath		=	$postArray['identity_card_back_hidden'][$rowIndex];
+					$fileUploadObj->deleteFile($filePath);
+				}
+				unset($prefix);
+				unset($filename);
+				unset($newfilename);
+				unset($file);
+				
+				$file			=	$identity_card_back;
+				$filePath		=	$destinationPath."/".$borrowerId;
+				$prefix			=	"dir_iden_back_{$id}_";
+				$fileUploadObj->storeFile($filePath ,$file,$prefix);
+				$filename 									= 	$file->getClientOriginalName();
+				$newfilename 								= 	preg_replace('/\s+/', '_', $filename);
+				$newfilename 								= 	$prefix.$newfilename;
+				$identity_card_back							=	$filePath."/".$newfilename;
+				$updateDataArry["identity_card_back"]		=	$identity_card_back;
+				$updateAttachment							=	true;
+			}
+			if($updateAttachment) {
+				$whereArray	=	["borrower_id" 	=> $borrower_id,
+								 "id"			=> $id];
+				$this->dbUpdate("borrower_directors", $updateDataArry, $whereArray);
+			}
 		}
 		
 		$where	=	["borrower_id" => 	$borrowerId,
