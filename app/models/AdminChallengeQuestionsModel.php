@@ -32,8 +32,7 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 		
 			$id			= $newRows['id'][$rowIndex];
 			
-			if ($id == 0) {	
-				$questionIds[] = $id;				
+			if ($id == 0) {							
 				$update = false;				
 			} else {
 				$update = true;				
@@ -49,6 +48,7 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 			if ($update) {				
 				$whereArray	=	[ "challenge_id"	=> $id];
 				$this->dbUpdate('challenge_questions', $dataArray, $whereArray);
+				$questionIds[]	=	$id;	
 			} else {
 				$id	 =  $this->dbInsert('challenge_questions', $dataArray, true);
 				$questionIds[]	=	$id;	
@@ -77,10 +77,8 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 			return -1;
 		}else{	
 		/** Questions will be deleted**/		
-			$where	=	[ "challenge_id"	=> $id ,
-							"whereNotIn" 	=>	["column" => 'challenge_id',
-											 "valArr" =>$questionIds]];
-			//echo "<pre>",print_r($where),"</pre>"; die;
+			$where	=	[ "whereNotIn" 	=>	["column" => 'challenge_id',
+											 "valArr" =>$questionIds]];		
 			$this->dbDelete('challenge_questions', $where);
 		}
 		return 1;		

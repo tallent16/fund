@@ -231,10 +231,11 @@ class BorrowerProfileModel extends TranWrapper {
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
 
 		$this->updateBorrowerDirectorInfo($postArray,$borrowerId);
+		
+		$this->updateBorrowerProfileInfo($postArray,$borrowerId);
+			
 		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
 			//Admin only edit the finacial info and profile info
-			
-			$this->updateBorrowerProfileInfo($postArray,$borrowerId);
 			
 			if (isset($postArray['finacialRatio_row'])) {
 				$finacialRatioRows = $postArray['finacialRatio_row'];
@@ -295,95 +296,7 @@ class BorrowerProfileModel extends TranWrapper {
 		$mailing_address 				= 	$postArray['mailing_address'];
 		$status 						= 	$status;
 		$current_user_id				=	$this->getCurrentuserID();
-		$destinationPath 				= 	Config::get('moneymatch_settings.upload_bor');
-		$updateDataArry					=	array();
-		$fileUploadObj					=	new FileUpload();
-		if(isset($postArray['company_image'])){
-			if(isset($postArray['company_image_hidden'])){
-				$filePath		=	$postArray['company_image_hidden'];
-				$fileUploadObj->deleteFile($filePath);
-			}
-			$file		=	$postArray['company_image'];
-			//~ $imagePath	=	$destinationPath."/".$borrowerId."/profile/image";
-			$imagePath	=	$destinationPath."/".$borrowerId;
-			$prefix		=	"profile_image_";
-			$fileUploadObj->createIfNotExists($imagePath);
-			$fileUploadObj->storeFile($imagePath ,$file,$prefix);
-			$filename 			= 	$file->getClientOriginalName();
-			$newfilename 		= 	 preg_replace('/\s+/', '_', $filename);
-			$newfilename 		= 	$prefix.$newfilename;
-			$company_image		=	$imagePath."/".$newfilename;
-			$updateDataArry		=	array(	"company_image"=>$company_image,
-											"company_image_thumbnail"=>$company_image
-											);
-		}
-		if(isset($postArray['company_thumbnail'])){
-			
-			if($postArray['company_image_hidden']	!=	$postArray['company_thumbnail_hidden']){
-				$filePath		=	$postArray['company_thumbnail_hidden'];
-				$fileUploadObj->deleteFile($filePath);
-			}
-			
-			unset($prefix);
-			unset($filename);
-			unset($newfilename);
-			unset($file);
-			
-			$file			=	$postArray['company_thumbnail'];
-			$thumbnailPath	=	$destinationPath."/".$borrowerId;
-			$prefix			=	"thumbnail_";
-			$fileUploadObj->createIfNotExists($thumbnailPath);
-			$fileUploadObj->storeFile($thumbnailPath ,$file,$prefix);
-			$filename 									= 	$file->getClientOriginalName();
-			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
-			$newfilename 								= 	$prefix.$newfilename;
-			$company_thumbnail							=	$thumbnailPath."/".$newfilename;
-			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
-			
-		}
-		if(isset($postArray['acra_profile_doc_url'])){
-			if(isset($postArray['acra_profile_doc_url_hidden'])){
-				$filePath		=	$postArray['acra_profile_doc_url_hidden'];
-				$fileUploadObj->deleteFile($filePath);
-			}
-			unset($prefix);
-			unset($filename);
-			unset($newfilename);
-			unset($file);
-			
-			$file		=	$postArray['acra_profile_doc_url'];
-			$filePath	=	$destinationPath."/".$borrowerId;
-			$prefix		=	"ACRA_Bus_pro_";
-			$fileUploadObj->createIfNotExists($filePath);
-			$fileUploadObj->storeFile($filePath ,$file,$prefix);
-			$filename 				= 	$file->getClientOriginalName();
-			$newfilename 			= 	preg_replace('/\s+/', '_', $filename);
-			$newfilename 			= 	$prefix.$newfilename;
-			$acra_profile_doc_url	=	$filePath."/".$newfilename;
-			$updateDataArry			=	array(	"acra_profile_doc_url"=>$acra_profile_doc_url);
-		}
-		if(isset($postArray['moa_doc_url'])){
-			if(isset($postArray['moa_doc_url_hidden'])){
-				$filePath		=	$postArray['moa_doc_url_hidden'];
-				$fileUploadObj->deleteFile($filePath);
-			}
-			unset($prefix);
-			unset($filename);
-			unset($newfilename);
-			unset($file);
-			
-			$file			=	$postArray['moa_doc_url'];
-			$filePath		=	$destinationPath."/".$borrowerId;
-			$prefix			=	"MAOA_";
-			$fileUploadObj->createIfNotExists($filePath);
-			$fileUploadObj->storeFile($filePath ,$file,$prefix);
-			$filename 									= 	$file->getClientOriginalName();
-			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
-			$newfilename 								= 	$prefix.$newfilename;
-			$moa_doc_url								=	$filePath."/".$newfilename;
-			$updateDataArry["moa_doc_url"]				=	$moa_doc_url;
-			
-		}
+		
 		//~ if(isset($postArray['company_video'])){
 			//~ $file			=	$postArray['company_video'];
 			//~ $videoPath		=	$destinationPath."/".$borrowerId."/profile/video";
@@ -419,38 +332,126 @@ class BorrowerProfileModel extends TranWrapper {
 		}else{
 			$dataArray['status'] = $status;
 		}
-		if(count($updateDataArry) > 0) {
-			foreach($updateDataArry as $key=>$value) {
-				$dataArray[$key]	=	$value;
-			}	
-		}
-		
-
 		if ($transType != "edit") {
 			$borrowerId =  $this->dbInsert('borrowers', $dataArray, true);
 			if ($borrowerId < 0) {
 				return -1;
 			}
-			return $borrowerId;
 		}else{
 			$whereArry	=	array("borrower_id" =>"{$borrowerId}");
 			 $this->dbUpdate('borrowers', $dataArray, $whereArry);
-			return $borrowerId;
 		}
+		$this->uploadCompanyProfileAttachments($postArray,$borrowerId);
+		return $borrowerId;
+		
 	}
 	
+	public function uploadCompanyProfileAttachments($postArray,$borrowerId) {
+		
+		$fileUploadObj		=	new FileUpload();
+		$updateAttachment	=	false;
+		$destinationPath 	= 	Config::get('moneymatch_settings.upload_bor');
+		$updateDataArry		=	array();
+		if(isset($postArray['company_image'])){
+			if(isset($postArray['company_image_hidden'])){
+				$filePath		=	$postArray['company_image_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			$file		=	$postArray['company_image'];
+			//~ $imagePath	=	$destinationPath."/".$borrowerId."/profile/image";
+			$imagePath	=	$destinationPath."/".$borrowerId;
+			$prefix		=	"profile_image_";
+			$fileUploadObj->createIfNotExists($imagePath);
+			$fileUploadObj->storeFile($imagePath ,$file,$prefix);
+			$filename 			= 	$file->getClientOriginalName();
+			$newfilename 		= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 		= 	$prefix.$newfilename;
+			$company_image		=	$imagePath."/".$newfilename;
+			$updateDataArry		=	array(	"company_image"=>$company_image,
+											"company_image_thumbnail"=>$company_image
+											);
+			$updateAttachment	=	true;
+		}
+		if(isset($postArray['company_thumbnail'])){
+			
+			if($postArray['company_image_hidden']	!=	$postArray['company_thumbnail_hidden']){
+				$filePath		=	$postArray['company_thumbnail_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file			=	$postArray['company_thumbnail'];
+			$thumbnailPath	=	$destinationPath."/".$borrowerId;
+			$prefix			=	"thumbnail_";
+			$fileUploadObj->createIfNotExists($thumbnailPath);
+			$fileUploadObj->storeFile($thumbnailPath ,$file,$prefix);
+			$filename 									= 	$file->getClientOriginalName();
+			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 								= 	$prefix.$newfilename;
+			$company_thumbnail							=	$thumbnailPath."/".$newfilename;
+			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
+			$updateAttachment	=	true;
+		}
+		if(isset($postArray['acra_profile_doc_url'])){
+			if(isset($postArray['acra_profile_doc_url_hidden'])){
+				$filePath		=	$postArray['acra_profile_doc_url_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file		=	$postArray['acra_profile_doc_url'];
+			$filePath	=	$destinationPath."/".$borrowerId;
+			$prefix		=	"ACRA_Bus_pro_";
+			$fileUploadObj->createIfNotExists($filePath);
+			$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$filename 								= 	$file->getClientOriginalName();
+			$newfilename 							= 	preg_replace('/\s+/', '_', $filename);
+			$newfilename 							= 	$prefix.$newfilename;
+			$acra_profile_doc_url					=	$filePath."/".$newfilename;
+			$updateDataArry["acra_profile_doc_url"]	=	$acra_profile_doc_url;
+			$updateAttachment						=	true;
+		}
+		if(isset($postArray['moa_doc_url'])){
+			if(isset($postArray['moa_doc_url_hidden'])){
+				$filePath		=	$postArray['moa_doc_url_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file			=	$postArray['moa_doc_url'];
+			$filePath		=	$destinationPath."/".$borrowerId;
+			$prefix			=	"MAOA_";
+			$fileUploadObj->createIfNotExists($filePath);
+			$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$filename 									= 	$file->getClientOriginalName();
+			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 								= 	$prefix.$newfilename;
+			$moa_doc_url								=	$filePath."/".$newfilename;
+			$updateDataArry["moa_doc_url"]				=	$moa_doc_url;
+			$updateAttachment							=	true;
+		}
+		
+		if($updateAttachment) {
+			$whereArray	=	["borrower_id" 	=> $borrowerId];
+			$this->dbUpdate("borrowers", $updateDataArry, $whereArray);
+		}
+	}
 	public function updateBorrowerProfileInfo($postArray,$borrowerId) {
 		
 		$company_profile 				= 	$postArray['company_profile'];
 		$company_aboutus 				= 	$postArray['about_us'];
-		$risk_industry 					= 	$postArray['risk_industry'];
-		$risk_strength 					= 	$postArray['risk_strength'];
-		$risk_weakness 					= 	$postArray['risk_weakness'];
 		
 		$dataArray = array(	
-							'risk_industry' 				=> ($risk_industry!="")?$risk_industry:null,
-							'risk_strength' 				=> ($risk_strength!="")?$risk_strength:null,
-							'risk_weakness' 				=> ($risk_weakness!="")?$risk_weakness:null,
 							'company_profile' 				=> ($company_profile!="")?$company_profile:null,
 							'company_aboutus' 				=> ($company_aboutus!="")?$company_aboutus:null);
 							
@@ -564,11 +565,19 @@ class BorrowerProfileModel extends TranWrapper {
 				$this->dbUpdate("borrower_directors", $updateDataArry, $whereArray);
 			}
 		}
+		$directors	=	$this->getBorrowerDirectorAttachments($borrowerId,(($numRows	>	0)?$directorIds:""));
 		
 		$where	=	["borrower_id" => 	$borrowerId,
 					 "whereNotIn" =>	["column" => 'id',
 										 "valArr" => $directorIds]];
-		
+		$dirFilePath	=	"";
+		foreach($directors as $dirRow) {
+			unset($dirFilePath);
+			$dirFilePathFront	=	$dirRow->identity_card_front;
+			$dirFilePathBack	=	$dirRow->identity_card_back;
+			$fileUploadObj->deleteFile($dirFilePathFront);
+			$fileUploadObj->deleteFile($dirFilePathBack);
+		}
 		$this->dbDelete("borrower_directors", $where);
 
 		return 1;

@@ -9588,7 +9588,7 @@ table#account-summary, .table-border-custom{
 .admin-mypage ul li{
 	list-style-type:none;
 }
-#security_table tbody > tr > td {
+#admin_table tbody > tr > td {
     border-top: none;
     vertical-align: middle;
 }

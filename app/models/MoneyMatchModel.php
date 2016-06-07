@@ -111,6 +111,7 @@ class MoneyMatchModel extends Model {
 	
 	
 	public function dbDelete($tableName,$where) {
+		
 		try {
 			if ($this->auditFlag) {
 				$auditData = array();
@@ -274,6 +275,7 @@ class MoneyMatchModel extends Model {
 		// If the where condition is not there (only happens in the case of Add then 
 		// insert the data available in the dataArray
 		
+		
 		if ($where != "") {
 			$tmpObject	=	$this->getFilteredObject($tableName, $where);
 			$tmpRs		=	$tmpObject->get();
@@ -294,22 +296,20 @@ class MoneyMatchModel extends Model {
 				$auditData['audit_key'] = $this->auditKey;
 				$auditData['audit_action'] = $action; 
 				$auditData['audit_when'] = $when;
-				
-				$auditDb	=	DB::connection('auditDb');
-				$tableName	=	'audit_'.$tableName;
-				$auditDb->table($tableName)->insert($auditData);
+				$auditDb		=	DB::connection('auditDb');
+				$auditTableName	=	'audit_'.$tableName;
+				$auditDb->table($auditTableName)->insert($auditData);
 			}
 			
 		} else {
 			// This happens only in the case of insert (where will not be present)
 			$auditData = $dataArray;
-			
 			$auditData['audit_key'] = $this->auditKey;
 			$auditData['audit_action'] = $action;
 			$auditData['audit_when'] = $when;
-			$auditDb	=	DB::connection('auditDb');
-			$tableName	=	'audit_'.$tableName;
-			$auditDb->table($tableName)->insert($auditData);
+			$auditDb		=	DB::connection('auditDb');
+			$auditTableName	=	'audit_'.$tableName;
+			$auditDb->table($auditTableName)->insert($auditData);
 		}
 	}
 	

@@ -711,4 +711,23 @@ class TranWrapper extends MoneyMatchModel {
 		}
 		return 0;
 	}
+	
+	public function getBorrowerDirectorAttachments($borrower_id,$dir_ids){
+		
+		$whereDirids	=	"";
+		if($dir_ids!="")
+			$whereDirids	=	" AND	id	NOT IN (".implode(',',$dir_ids).")";	
+		
+		$bor_dir_sql	= "	SELECT 	identity_card_front,
+									identity_card_back
+							FROM 	borrower_directors
+							WHERE	borrower_id	=	{$borrower_id}
+							{$whereDirids}";
+				
+		$bor_dir_rs = $this->dbFetchAll($bor_dir_sql);
+		if(isset($bor_dir_rs)) {
+			return $bor_dir_rs;
+		}
+		return 0;
+	}
 }

@@ -7,7 +7,7 @@
 	<script>
 		var baseUrl	=	"{{url('')}}"
 		$(document).ready(function(){ 	
-			$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
+			$(".jfilestyle").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
 		}); 
 	</script>	 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
@@ -26,16 +26,7 @@
 		@var	$inputTabInfo["profile info"]	=	"profile info"
 		@var	$inputTabInfo["finacial info"]	=	"finacial info"
 		@var	$inputTabInfo["bank info"]		=	"bank info"
-		
-		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-			@var	$canViewProfileInfoTab	=	"yes"
-		@else
-			@if($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED)
-				@var	$canViewProfileInfoTab	=	"yes"
-			@else
-				@var	$canViewProfileInfoTab	=	"no"
-			@endif
-		@endif
+		@var	$canViewProfileInfoTab			=	"yes"
 		
 		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 			@var	$canViewFinacialInfoTab	=	"yes"
@@ -147,6 +138,12 @@
 									</a>
 								</li>	
 							@endif
+							<li id="financial_ratio_parent">
+								<a 	data-toggle="tab"
+									href="#financial_ratio">
+									{{ Lang::get('FINACIAL RATIO') }}
+								</a>
+							</li>	
 							@if($canViewFinacialInfoTab	==	"yes")
 								<li id="financial_info_parent">
 									<a 	data-toggle="tab"
@@ -186,6 +183,10 @@
 								@include('widgets.borrower.tab.profile_info')
 							<!-----Third Tab content ends----->	
 						@endif
+						<!-----Four Tab content starts----->
+							@include('widgets.borrower.tab.profile_financial_ratio')
+						<!-----Four Tab content ends----->	
+						
 						@if($canViewFinacialInfoTab	==	"yes")
 							<!-----Four Tab content starts----->
 								@include('widgets.borrower.tab.profile_financial_info')
@@ -374,7 +375,7 @@
 					</td>
 					<td colspan="3" class="col-md-3" id="identity_card_front_XXX_parent">
 						<input 	type="file" 
-								class="jfilestyle required attachment" 
+								class="required attachment" 
 								data-buttonBefore="true" 
 								name="director_row[identity_card_front][]"
 								id="identity_card_front_XXX" />
@@ -394,10 +395,11 @@
 					</td>
 					<td colspan="3" class="col-md-3" id="identity_card_back_XXX_parent">
 						<input 	type="file" 
-								class="jfilestyle required attachment" 
+								class="required attachment" 
 								data-buttonBefore="true" 
 								name="director_row[identity_card_back][]"
 								id="identity_card_back_XXX" />
+				
 						<input 	type="hidden" 
 								id="identity_card_back_XXX_hidden"
 								name="director_row[identity_card_back_hidden][]"

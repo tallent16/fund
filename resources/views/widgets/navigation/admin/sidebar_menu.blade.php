@@ -69,5 +69,17 @@
 		<li>
 			<a href="{{ url ('admin/roles') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('Manage Roles') }} </a> 
 		</li>
-	@endpermission		  
+	@endpermission	
+	<li>
+		<a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('Settings') }} <span class="fa arrow"></span></a> 
+			<ul class="nav nav-second-level">				
+				<li>
+					<a href="{{ url ('admin/challengequestions') }}">{{ Lang::get('Challenge Questions') }}</a>
+				</li>
+				<li>
+					<a href="{{ url ('admin/businessorgtype') }}">{{ Lang::get('Business Organisation Type') }}</a>
+				</li>
+			</ul>
+	</li>	  
 </ul>
+	

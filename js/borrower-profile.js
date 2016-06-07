@@ -76,6 +76,7 @@ $(document).ready(function (){
     $("#next").click(function(){
 		 if ($(".divs div.dir-list:visible").next().length != 0){
             $(".divs div:visible").next().show().prev().hide();
+            $("div.jfilestyle").show();
          }
         else {
 		    $(".divs div.dir-list:visible").hide();
@@ -89,8 +90,10 @@ $(document).ready(function (){
     });
 
     $("#prev").click(function(){
-        if ($(".divs div.dir-list:visible").prev().length != 0)
+        if ($(".divs div.dir-list:visible").prev().length != 0){
             $(".divs div:visible").prev().show().next().hide();
+            $("div.jfilestyle").show();
+         }
         else {
             $(".divs div.dir-list:visible").hide();
             $(".divs div.dir-list:last").show();
@@ -261,6 +264,8 @@ function callTabValidateFunc() {
 		$("#director_error_info").addClass("has-error");
 		$("#director_error_info").addClass("alert-danger");
 		$("#director_error_label").html("Atleast One Director Information Required");
+		$('.nav-tabs a[href="#director_info"]').tab('show');
+		currentTabNextButton($("director_info"));
 		return true;
 	}
 	if(validateTab('director_info')) {
@@ -278,17 +283,24 @@ function callTabValidateFunc() {
 			return true;
 		}
 	}
-	if($("#screen_mode").val()	==	"admin") {
-		if(validateTab('profile_info')) {
-			$('.nav-tabs a[href="#profile_info"]').tab('show');
-			return true;
-		}else {
-			if(cur_tab	==	"profile_info") {
+	if(validateTab('profile_info')) {
+		$('.nav-tabs a[href="#profile_info"]').tab('show');
+		currentTabNextButton($("profile_info"));
+		return true;
+	}else {
+		if(cur_tab	==	"profile_info") {
+			if($("#screen_mode").val()	==	"admin") {
+				$('.nav-tabs a[href="#financial_ratio"]').tab('show');
+				$('a[href="#financial_ratio"]').parent().removeClass("disabled");
+			}else{
 				$('.nav-tabs a[href="#financial_info"]').tab('show');
 				$('a[href="#financial_info"]').parent().removeClass("disabled");
-				return true;
 			}
+			return true;
 		}
+	}
+	if($("#screen_mode").val()	==	"admin") {
+		
 		if(validateTab('financial_info')) {
 			$('.nav-tabs a[href="#financial_info"]').tab('show');
 			return true;
@@ -381,7 +393,11 @@ function addNewDirectorRow(){
 		$(".divs div.dir-list:visible").hide();
         $(".divs div.dir-list:last").show();
         textAreaToolTip();
-        
+        $('#identity_card_front_'+counterstr).jfilestyle('destroy'); 
+        $('#identity_card_front_'+counterstr).jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'}); 
+       
+        $('#identity_card_back_'+counterstr).jfilestyle('destroy'); 
+        $('#identity_card_back_'+counterstr).jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'}); 
 }
 function delDirectorRow(){
 	if ($(".divs div.dir-list").length > 0){
