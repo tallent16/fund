@@ -31,11 +31,10 @@ class AdminBusinessOrgTypeController extends MoneyMatchController {
 		return view('admin.admin-businessorgtype')
 						->with($withArry); 
 	}
-	public function saveAction() {
-		
-		$postArray	=	Request::all();
-		$result		=	$this->adminbusiorgtypeModel->updateBusinessOrgTypes($postArray);
-		
+	public function saveAction() {		
+		$postArray		=	Request::all();		
+		$result			=	$this->adminbusiorgtypeModel->updateBusinessOrgTypes($postArray);
+	
 		if($result) {
 			return redirect()->route('admin.businessorgtype')
 						->with('success','Business Organisation Type Updated Successfully');

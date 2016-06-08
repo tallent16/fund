@@ -211,8 +211,10 @@ $(document).ready(function (){
 				
 				if(callTabValidateFunc())
 					event.preventDefault();
-				if(validateTab("bank_info"))
+				if(validateTab("bank_info")){
+					$('.nav-tabs a[href="#bank_info"]').tab('show');
 					event.preventDefault();
+				}
 				if($("#borrower_status").val()	==	"corrections_required") {
 					if(checkAdminAllCommentsClosed()){
 						showDialog("","Please close the corrections and submit again for approval");
@@ -231,8 +233,12 @@ $(document).ready(function (){
 			
 		}
 		$("#active_tab").val($(".nav-tabs li.active a").attr("href"));
+		
 	});
-	 
+	
+	$(".finacial_row").on("blur", function() {
+		calculateFinacialsTab();
+	});
 	checkAllTabCompleteStatus();
 	textAreaToolTip();
 });
@@ -301,21 +307,31 @@ function callTabValidateFunc() {
 	}
 	if($("#screen_mode").val()	==	"admin") {
 		
-		if(validateTab('financial_info')) {
-			$('.nav-tabs a[href="#financial_info"]').tab('show');
+		if(validateTab('financial_ratio')) {
+			$('.nav-tabs a[href="#financial_ratio"]').tab('show');
 			return true;
-		}else{
-			if(cur_tab	==	"financial_info") {
-				$('.nav-tabs a[href="#bank_info"]').tab('show');
-				$('a[href="#bank_info"]').parent().removeClass("disabled");
-				if($("#screen_mode").val()	==	"borrower"){
-					if($("#borrower_status").val()	==	""){
-						$("#next_button").hide();
-						$("#submit_button").show();
-					}
-				}
+		}else {
+			if(cur_tab	==	"financial_ratio") {
+				$('.nav-tabs a[href="#financial_info"]').tab('show');
+				$('a[href="#financial_info"]').parent().removeClass("disabled");
 				return true;
 			}
+		}
+	}
+	if(validateTab('financial_info')) {
+			$('.nav-tabs a[href="#financial_info"]').tab('show');
+			return true;
+	}else{
+		if(cur_tab	==	"financial_info") {
+			$('.nav-tabs a[href="#bank_info"]').tab('show');
+			$('a[href="#bank_info"]').parent().removeClass("disabled");
+			if($("#screen_mode").val()	==	"borrower"){
+				if($("#borrower_status").val()	==	""){
+					$("#next_button").hide();
+					$("#submit_button").show();
+				}
+			}
+			return true;
 		}
 	}
 	if(cur_tab	==	"bank_info") {
@@ -611,7 +627,51 @@ function fileextensioncheck(){
 		}
 	});	
 }
+function calculateFinacialsTab() {
+	
+	$("input.finacial_row").each(function(key){
+		var	expression	=	$(this).attr("data-expression");	
+		if(expression	!=	"") {
+			var	expArry		=	splitIntoArray(expression);
+			console.log(expArry);
+			var total		=	0;
+			var cur_symbol	=	"";
+			for(i=0;i<expArry.length;i++) {
+				if($.isNumeric(parseInt(expArry[i]))) {
+					
+					var tmpValue	=	$("#indicator_value_"+expArry[i]).val();
+					if(cur_symbol	==	"") {
+						total	=	total	+	numeral(tmpValue).value();
+					}else{
+						switch(cur_symbol) {
+							case "-":
+								total	=	total	-	numeral(tmpValue).value();
+								break;
+							case "+":
+								total	=	total	+	numeral(tmpValue).value();
+								break;
+						}	
+						cur_symbol	=	"";
+					}
+				}else{
+					cur_symbol	=	expArry[i];
+				}
+			}
+			$(this).val(numeral(total).format("0,000.00"));
+		}
+	});
+}
 
+function splitIntoArray(str) {
+	var	strArry	=	[];
+	var newStr = str.replace(/\s+/g, '');
+	for (var x = 0; x < newStr.length; x++) {
+		var c = newStr.charAt(x);
+		if(c	!="")
+			strArry.push(c);
+	}
+	return strArry;
+}
 /*	
 var val = $('input[type=file]').val().toLowerCase();
 var regex = new RegExp("(.*?)\.(jpg|jpeg|png|gif)$");
@@ -622,3 +682,4 @@ if(val != ''){
 		} 
 }*/
 
+	

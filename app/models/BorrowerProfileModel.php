@@ -37,6 +37,7 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$bank_name  					=  	"";
 	public 	$branch_code  					=  	"";
 	public 	$bank_account_number  			=  	"";
+	public 	$bank_statement_url  			=  	"";
 	public 	$verified_status  				=  	"";
 	public 	$bank_code						=  	"";
 	public 	$director_details				= 	array();
@@ -233,6 +234,11 @@ class BorrowerProfileModel extends TranWrapper {
 		$this->updateBorrowerDirectorInfo($postArray,$borrowerId);
 		
 		$this->updateBorrowerProfileInfo($postArray,$borrowerId);
+		
+		if (isset($postArray['finacial_row'])) {
+			$finacialRows = $postArray['finacial_row'];
+			$this->updateBorrowerFinacialInfo($finacialRows,$borrowerId);
+		}
 			
 		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
 			//Admin only edit the finacial info and profile info
@@ -240,11 +246,6 @@ class BorrowerProfileModel extends TranWrapper {
 			if (isset($postArray['finacialRatio_row'])) {
 				$finacialRatioRows = $postArray['finacialRatio_row'];
 				$this->updateBorrowerFinacialRatioInfo($finacialRatioRows,$borrowerId);
-			}
-			
-			if (isset($postArray['finacial_row'])) {
-				$finacialRows = $postArray['finacial_row'];
-				$this->updateBorrowerFinacialInfo($finacialRows,$borrowerId);
 			}
 		}
 		if( (isset($postArray['hidden_borrower_status']) &&
@@ -630,12 +631,14 @@ class BorrowerProfileModel extends TranWrapper {
 			$borrower_financial_info_id =	$finacialRows['borrower_financial_info_id'][$rowIndex];
 			$indicator_name				= 	$finacialRows['indicator_name'][$rowIndex];
 			$indicator_value			= 	$this->makeFloat($finacialRows['indicator_value'][$rowIndex]);
+			$ref_codelist_code			= 	$finacialRows['ref_codelist_code'][$rowIndex];
 			
 			// Construct the data array
 			$dataArray = array(	
 							'borrower_id' 				=> $borrower_id,
 							'indicator_name'			=> $indicator_name,
-							'indicator_value'			=> $indicator_value);		
+							'indicator_value'			=> $indicator_value,	
+							'ref_codelist_code'			=> $ref_codelist_code);		
 			
 			if ($this->makeFloat($borrower_financial_info_id) > 0) {
 				$where		=	["borrower_financial_info_id" => $borrower_financial_info_id];
@@ -653,6 +656,10 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerBankInfo($postArray,$borrowerId,$transType) {
 		
+		$bank_statement				= 	$postArray['bank_statement'];
+		$destinationPath 			= 	Config::get('moneymatch_settings.upload_bor');
+		$fileUploadObj				=	new FileUpload();
+		
 		$dataArray = array(	'borrower_id' 			=> $borrowerId,
 							'bank_code' 			=> $postArray['bank_code'],
 							'bank_name' 			=> $postArray['bank_name'],
@@ -666,13 +673,41 @@ class BorrowerProfileModel extends TranWrapper {
 			if ($borrowerBankId < 0) {
 				return -1;
 			}
-			return $borrowerBankId;
+		
 		}else{
 			$borrowerBankId	= $postArray['borrower_bankid'];
 			$whereArry	=	array("borrower_bankid" =>"{$borrowerBankId}");
 			$this->dbUpdate('borrower_banks', $dataArray, $whereArry);
-			return $borrowerBankId;
 		}
+		$updateAttachment		=	false;
+		if(isset($bank_statement)){
+			if(isset($postArray['bank_statement_hidden'])){
+				$filePath		=	$postArray['bank_statement_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+				
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file				=	$bank_statement;
+			$filePath			=	$destinationPath."/".$borrowerId;
+			$prefix				=	"bank_stat_{$borrowerBankId}_";
+			$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$filename 				= 	$file->getClientOriginalName();
+			$newfilename 			= 	preg_replace('/\s+/', '_', $filename);
+			$newfilename 			= 	$prefix.$newfilename;
+			$bank_statement			=	$filePath."/".$newfilename;
+			$updateDataArry			=	array(	"bank_statement_url"=>$bank_statement);
+			$updateAttachment		=	true;
+		}
+		if($updateAttachment) {
+			$whereArray	=	["borrower_id" 		=> $borrowerId,
+							 "borrower_bankid"	=> $borrowerBankId];
+			$this->dbUpdate("borrower_banks", $updateDataArry, $whereArray);
+		}
+		return $borrowerBankId;
 	}
 	
 	public function processDropDowns($bor_id) {
@@ -793,6 +828,8 @@ class BorrowerProfileModel extends TranWrapper {
 				$this->finacialInfo[$newrow]['indicator_name'] 					= 	$finacialRow->codelist_value;
 				$this->finacialInfo[$newrow]['indicator_value'] 				= 	"0.00";
 				$this->finacialInfo[$newrow]['currency'] 						= 	"";
+				$this->finacialInfo[$newrow]['expression'] 						= 	$finacialRow->expression;
+				$this->finacialInfo[$newrow]['codelist_code'] 					= 	$finacialRow->codelist_code;
 			}
 		}
 		return $finacial_rs;
@@ -1131,7 +1168,8 @@ class BorrowerProfileModel extends TranWrapper {
 						borrower_banks.branch_code,
 						borrower_banks.bank_account_number,
 						borrower_banks.verified_status,
-						borrower_banks.bank_code
+						borrower_banks.bank_code,
+						borrower_banks.bank_statement_url
 				FROM 	borrower_banks
 				WHERE	borrower_banks.borrower_id	=	{$bor_id}
 				AND		borrower_banks.active_status = 1";

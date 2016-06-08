@@ -232,7 +232,13 @@ class TranWrapper extends MoneyMatchModel {
 		$finacial_sql	= 	"	SELECT 	borrower_financial_info_id,
 										indicator_name,
 										IFNULL(ROUND(indicator_value,2),'') indicator_value,
-										currency
+										currency,
+										( 	SELECT	expression 
+											FROM	codelist_details
+											WHERE	codelist_id = 14
+											AND		codelist_code = ref_codelist_code
+										) expression,
+										ref_codelist_code codelist_code
 								FROM 	borrower_financial_info
 								WHERE	borrower_id	=	{$borrwerID}";
 		
@@ -727,6 +733,18 @@ class TranWrapper extends MoneyMatchModel {
 		$bor_dir_rs = $this->dbFetchAll($bor_dir_sql);
 		if(isset($bor_dir_rs)) {
 			return $bor_dir_rs;
+		}
+		return 0;
+	}
+	
+	public function getBankAttachmentById($tableName,$fieldName,$condition){
+		
+		$bor_dir_sql	= "	SELECT 	{$fieldName}
+							FROM 	{$tableName}
+							WHERE	{$condition}";
+		$bor_dir_rs = $this->dbFetchAll($bor_dir_sql);
+		if(isset($bor_dir_rs[0])) {
+			return $bor_dir_rs[0];
 		}
 		return 0;
 	}

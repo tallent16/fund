@@ -1,8 +1,7 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	
-	<script src="{{ url("js/admin-challengequestion.js") }}" type="text/javascript"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="{{ url("js/admin-challengequestion.js") }}" type="text/javascript"></script>	
 @endsection
 @section('page_heading',Lang::get('User Security Questions') )
 @section('section')  
@@ -10,7 +9,7 @@
 <div class="col-sm-12 space-around">
 	
 	<form method="post" id="form-challenge-questions" action="">
-		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">	
+	<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">	
 	<div class="row">		
 		<div class="col-lg-12 col-md-12">
 			<div class="panel panel-primary panel-container">				
@@ -39,7 +38,7 @@
 							
 							<tbody>	
 								@foreach ($security_list as $queRow)
-								<tr id="{{$queRow->slno}}" >
+								<tr>
 									<td class="question text-center" >
 										<span>{{$queRow->slno}}</span>
 										<input  type="hidden"

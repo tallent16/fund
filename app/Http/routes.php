@@ -217,8 +217,16 @@ Route::get('admin/businessorgtype',  		[	'as' 			=> 	'admin.businessorgtype',
 			);
 Route::post('admin/businessorgtype',  		[	'uses' 			=>	'AdminBusinessOrgTypeController@saveAction'
 											]
-			);	
-			
+			);		
+
+Route::get('admin/industries',  		[	'as' 			=> 	'admin.industries', 
+											'uses' 			=>	'AdminIndustriesController@indexAction'
+										]
+		);	
+Route::post('admin/industries',  		[	'uses' 			=>	'AdminIndustriesController@saveAction'
+											]
+			);		
+	
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
 
@@ -1043,6 +1051,8 @@ Route::get('verification', 'RegistrationController@verificationAction');
 Route::get('download/borrower/profile/attachment/{profile_id}/{fieldno}', 'BorrowerProfileController@downloadAction');
 Route::get('download/borrower/director/attachment/{profile_id}/{dir_id}/{type}',
 																		'BorrowerProfileController@downloadDirAction');
+Route::get('download/borrower/bank/attachment/{profile_id}/{bank_id}',
+																		'BorrowerProfileController@downloadBankAction');
 /*
 Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";

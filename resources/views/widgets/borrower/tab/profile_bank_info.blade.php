@@ -74,7 +74,38 @@
 										/>
 						</div>
 					</div>			
-					<!---row4----->										
+					<!---row4----->		
+					<!---row5----->	
+					<div class="row">		
+						<div class="col-xs-12 col-sm-5 col-lg-3">											
+							<label class="input-required">
+								{{ Lang::get('Bank Statement') }}
+							</label>												
+						</div>
+											
+						<div class="col-xs-12 col-sm-7 col-lg-3" id="bank_statement_parent">													
+								<input 	type="file" 
+										class="jfilestyle  required" 
+										data-buttonBefore="true" 
+										name="bank_statement"
+										/>
+								<input 	type="hidden" 
+										id="bank_statement_hidden"
+										name="bank_statement_hidden"
+										value="{{ $modelBorPrf->bank_statement_url }}"
+											/>	
+								@if($modelBorPrf->bank_statement_url!="")
+									@var	$bankUrl	=	url('download/borrower/bank/attachment');	
+									@var	$bankUrl	=	$bankUrl."/".$modelBorPrf->borrower_id."_".rand(10,100);	
+									@var	$bankUrl	=	$bankUrl."/".$modelBorPrf->borrower_bankid;	
+									<a 	href="{{$bankUrl}}"  
+										class="hyperlink">
+										{{basename($modelBorPrf->bank_statement_url)}}
+									</a>
+					@endif
+						</div>
+					</div>			
+					<!---row5----->										
 			</fieldset>		
 					
 		</div>

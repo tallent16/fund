@@ -29,12 +29,12 @@
 		@var	$canViewProfileInfoTab			=	"yes"
 		
 		@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-			@var	$canViewFinacialInfoTab	=	"yes"
+			@var	$canViewFinacialRatioTab	=	"yes"
 		@else
 			@if($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED)
-				@var	$canViewFinacialInfoTab	=	"yes"
+				@var	$canViewFinacialRatioTab	=	"yes"
 			@else
-				@var	$canViewFinacialInfoTab	=	"no"
+				@var	$canViewFinacialRatioTab	=	"no"
 			@endif
 		@endif
 		
@@ -138,20 +138,21 @@
 									</a>
 								</li>	
 							@endif
-							<li id="financial_ratio_parent">
-								<a 	data-toggle="tab"
-									href="#financial_ratio">
-									{{ Lang::get('FINACIAL RATIO') }}
-								</a>
-							</li>	
-							@if($canViewFinacialInfoTab	==	"yes")
+							@if($canViewFinacialRatioTab	==	"yes")
+								<li id="financial_ratio_parent">
+									<a 	data-toggle="tab"
+										href="#financial_ratio">
+										{{ Lang::get('FINACIAL RATIO') }}
+									</a>
+								</li>	
+							@endif
 								<li id="financial_info_parent">
 									<a 	data-toggle="tab"
 										href="#financial_info">
 										{{ Lang::get('borrower-profile.financial_info') }}
 									</a>
 								</li>	
-							@endif
+							
 							<li class="disabled" id="bank_info_parent" >
 								<a 	data-toggle="tab"
 									href="#bank_info">
@@ -183,15 +184,15 @@
 								@include('widgets.borrower.tab.profile_info')
 							<!-----Third Tab content ends----->	
 						@endif
-						<!-----Four Tab content starts----->
-							@include('widgets.borrower.tab.profile_financial_ratio')
-						<!-----Four Tab content ends----->	
-						
-						@if($canViewFinacialInfoTab	==	"yes")
+						@if($canViewFinacialRatioTab	==	"yes")
 							<!-----Four Tab content starts----->
-								@include('widgets.borrower.tab.profile_financial_info')
+								@include('widgets.borrower.tab.profile_financial_ratio')
 							<!-----Four Tab content ends----->	
 						@endif
+						<!-----Four Tab content starts----->
+							@include('widgets.borrower.tab.profile_financial_info')
+						<!-----Four Tab content ends----->	
+						
 						<!-----Five Tab content starts----->
 							@include('widgets.borrower.tab.profile_bank_info')
 						<!-----Five Tab content ends----->	

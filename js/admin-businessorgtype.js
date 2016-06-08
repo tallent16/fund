@@ -4,17 +4,6 @@ $(document).ready(function (){
 	});			
 });	
 
-/*Delete Question*/
-$("#delete_businessorgtype").click(function(){
-//$('input:checkbox:checked').parents("tr").remove();	
-	$('table tr').each(function (i) {
-		if ($(this).find('input[type="checkbox"]').is(':checked')) {
-			$(this).closest('tr').remove();
-		}
-
-	});       
-});
-
 /*Add New Question*/
 $("#new_businessorgtype").click(function(){
 	addNewRow();
@@ -29,4 +18,20 @@ function addNewRow(){
 		htmlTemplate = htmlTemplate.replace(/XXX/g, counterstr);
 		$("#admin_table tbody").append("<tr>"+htmlTemplate+"</tr>");		
 		$("#business_org_type_id").val(counterstr);
+		$("#lending_allowed_"+counterstr).selectpicker("refresh");
 }	
+
+/*Delete Question*/
+$("#delete_businessorgtype").click(function(){
+	$('table#admin_table tr').each(function (i) {
+		if ($(this).find('input.select_businessorgtype_id').is(':checked')) {
+			$(this).closest('tr').remove();
+		}
+	});  
+	 AutoNumber();     
+});
+function AutoNumber(){
+	$('table#admin_table tr').each(function (i) {
+		$(this).find('span').text(i);
+	});
+}

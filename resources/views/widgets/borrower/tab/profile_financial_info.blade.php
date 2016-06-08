@@ -12,11 +12,12 @@
 						<table class="table table-loan table-border-custom  text-left">		
 							<tbody>
 								<tr>
-									<th class="tab-head" colspan="2">{{ Lang::get('Financials')}}</th>																	
+									<th class="tab-head" colspan="2">&nbsp;</th>																	
 								</tr>
 								@if(count($finacialInfo)>0)
-									@var	$i	=1
+									
 									@foreach($finacialInfo as $finacialRow)
+									@var	$i	=	$finacialRow['codelist_code'];
 										<tr>
 											<td class="tab-left-head col-sm-6">
 												<label class="input-required">
@@ -39,13 +40,24 @@
 														
 											</td>
 											<td id="indicator_value_{{$i}}_parent" class="col-sm-6">
+												@var	$readOnly	=	""
+												@if($finacialRow['expression']	!=	"")
+													@var	$readOnly	=	"readonly"
+												@endif
 												<input 	type="text" 
 														id="indicator_value_{{$i}}" 
 														name="finacial_row[indicator_value][]"
 														value="{{$finacialRow['indicator_value']}}"
-														class="form-control  amount-align  required"
+														class="form-control  amount-align  required finacial_row"
 														decimal=2
+														{{$readOnly}}
+														data-expression = "{{$finacialRow['expression']}}"
 														{{ $modelBorPrf->viewStatus }} />
+												<input 	type="hidden" 
+														name="finacial_row[ref_codelist_code][]"
+														value="{{$i}}"
+														class="form-control"
+														/>
 											</td>										
 										</tr>		
 									@endforeach

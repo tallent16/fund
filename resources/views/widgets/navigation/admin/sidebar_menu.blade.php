@@ -79,6 +79,12 @@
 				<li>
 					<a href="{{ url ('admin/businessorgtype') }}">{{ Lang::get('Business Organisation Type') }}</a>
 				</li>
+				<li>
+					<a href="{{ url ('admin/industries') }}">{{ Lang::get('Industries') }}</a>
+				</li>
+				<li>
+					<a href="{{ url ('admin/loandocrequired') }}">{{ Lang::get('Loan Documents Required') }}</a>
+				</li>
 			</ul>
 	</li>	  
 </ul>
