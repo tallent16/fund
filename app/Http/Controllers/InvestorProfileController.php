@@ -56,5 +56,34 @@ class InvestorProfileController extends MoneyMatchController {
 		$this->investorProfileModel->updateMobileNumber($inv_id,$postArray);		
 		return redirect()->route('investor.profile')->with('success','mobile number updated successfully');
 	}
+	
+	
+	public function downloadBankAction($profile_id,$bank_id) {
+	
+		
+		$sourceId 		=	explode("_",$profile_id);
+		
+		if( (Auth::user()->usertype	==	USER_TYPE_INVESTOR) 
+			|| (Auth::user()->usertype	==	USER_TYPE_ADMIN) ) {
+			
+			if((Auth::user()->user_id	==	$this->investorProfileModel->getInvestorIdByUserInfo($sourceId[0])->user_id)
+				|| (Auth::user()->usertype	==	USER_TYPE_ADMIN) ) { 
+					
+					$fieldName		=	"bank_statement_url";
+					$inv_dir_rs		=	$this->investorProfileModel->getBankAttachmentById("investor_banks",
+																				$fieldName," investor_bankid = {$bank_id}");
+					
+					$attachUrl		=	$inv_dir_rs->$fieldName;
+					$attachName 	= 	basename($attachUrl);
+					
+					header('Content-Disposition: attachment; filename=' .$attachName);
+					header('Content-Type: application/force-download');
+					header('Content-Type: application/octet-stream');
+					header('Content-Type: application/download');
+					header('Content-Description: File Transfer');
+					echo file_get_contents($attachUrl);
+			}
+		}
+	}
 
 }

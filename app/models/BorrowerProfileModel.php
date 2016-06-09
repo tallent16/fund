@@ -363,11 +363,8 @@ class BorrowerProfileModel extends TranWrapper {
 			$imagePath	=	$destinationPath."/".$borrowerId;
 			$prefix		=	"profile_image_";
 			$fileUploadObj->createIfNotExists($imagePath);
-			$fileUploadObj->storeFile($imagePath ,$file,$prefix);
-			$filename 			= 	$file->getClientOriginalName();
-			$newfilename 		= 	 preg_replace('/\s+/', '_', $filename);
-			$newfilename 		= 	$prefix.$newfilename;
-			$company_image		=	$imagePath."/".$newfilename;
+			
+			$company_image		=	$fileUploadObj->storeFile($imagePath ,$file,$prefix);
 			$updateDataArry		=	array(	"company_image"=>$company_image,
 											"company_image_thumbnail"=>$company_image
 											);
@@ -389,11 +386,9 @@ class BorrowerProfileModel extends TranWrapper {
 			$thumbnailPath	=	$destinationPath."/".$borrowerId;
 			$prefix			=	"thumbnail_";
 			$fileUploadObj->createIfNotExists($thumbnailPath);
-			$fileUploadObj->storeFile($thumbnailPath ,$file,$prefix);
-			$filename 									= 	$file->getClientOriginalName();
-			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
-			$newfilename 								= 	$prefix.$newfilename;
-			$company_thumbnail							=	$thumbnailPath."/".$newfilename;
+			
+			
+			$company_thumbnail							=	$fileUploadObj->storeFile($thumbnailPath ,$file,$prefix);
 			$updateDataArry["company_image_thumbnail"]	=	$company_thumbnail;
 			$updateAttachment	=	true;
 		}
@@ -411,11 +406,8 @@ class BorrowerProfileModel extends TranWrapper {
 			$filePath	=	$destinationPath."/".$borrowerId;
 			$prefix		=	"ACRA_Bus_pro_";
 			$fileUploadObj->createIfNotExists($filePath);
-			$fileUploadObj->storeFile($filePath ,$file,$prefix);
-			$filename 								= 	$file->getClientOriginalName();
-			$newfilename 							= 	preg_replace('/\s+/', '_', $filename);
-			$newfilename 							= 	$prefix.$newfilename;
-			$acra_profile_doc_url					=	$filePath."/".$newfilename;
+			
+			$acra_profile_doc_url					=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
 			$updateDataArry["acra_profile_doc_url"]	=	$acra_profile_doc_url;
 			$updateAttachment						=	true;
 		}
@@ -433,11 +425,8 @@ class BorrowerProfileModel extends TranWrapper {
 			$filePath		=	$destinationPath."/".$borrowerId;
 			$prefix			=	"MAOA_";
 			$fileUploadObj->createIfNotExists($filePath);
-			$fileUploadObj->storeFile($filePath ,$file,$prefix);
-			$filename 									= 	$file->getClientOriginalName();
-			$newfilename 								= 	 preg_replace('/\s+/', '_', $filename);
-			$newfilename 								= 	$prefix.$newfilename;
-			$moa_doc_url								=	$filePath."/".$newfilename;
+			
+			$moa_doc_url								=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
 			$updateDataArry["moa_doc_url"]				=	$moa_doc_url;
 			$updateAttachment							=	true;
 		}

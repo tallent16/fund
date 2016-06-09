@@ -2,6 +2,13 @@
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
 	<script src="{{ url('js/bankdetails.js') }}" type="text/javascript"></script>	
+	<script>
+		var baseUrl	=	"{{url('')}}"
+		$(document).ready(function(){ 	
+			$(".jfilestyle").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
+		}); 
+	</script>
+	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 @endsection
 @section('page_heading','Banking') 
 @section('section') 
@@ -60,7 +67,8 @@
 										<div class="bank-list" id="{{$bankdetailRow->bankid}}"
 											{{$bankListRow}}>
 											@if($bankdetailRow->verified_status	==	BANK_DETAILS_UNVERIFIED)
-												<form method="post" id="update_form-{{$bankdetailRow->bankid}}">
+												<form method="post" id="update_form-{{$bankdetailRow->bankid}}" 
+													 enctype="multipart/form-data">
 													<input type="hidden" name="_token" value="{{ csrf_token() }}">
 													<input type="hidden" name="transtype" value="edit">
 													<input type="hidden" name="bankid" value="{{ $bankdetailRow->bankid }}">
@@ -171,6 +179,36 @@
 												
 												
 													</div>								
+													<div class="row">		
+														<div class="col-xs-12 col-sm-5 col-lg-3">											
+															<label>{{ Lang::get('Bank Statement') }}</label>												
+														</div>
+																			
+														<div class="col-xs-12 col-sm-7 col-lg-3"  id ="bank_statement_{{$i}}_parent">	
+															<input 	type="file" 
+																	class="jfilestyle  required attachment" 
+																	data-buttonBefore="true" 
+																	id="bank_statement_{{$i}}"
+																	name="bank_statement"
+																	/>
+															<input 	type="hidden" 
+																	id="bank_statement_{{$i}}_hidden"
+																	name="bank_statement_hidden"
+																	value="{{ $bankdetailRow->bank_statement_url }}"
+																		/>	
+															@if($bankdetailRow->bank_statement_url!="")
+																@var	$bankUrl	=	url('download/investor/bank/attachment');	
+																@var	$bankUrl	=	$bankUrl."/".$bankdetailRow->investor_id."_".rand(10,100);	
+																@var	$bankUrl	=	$bankUrl."/".$bankdetailRow->bankid;	
+																<a 	href="{{$bankUrl}}"  
+																	class="hyperlink">
+																	{{basename($bankdetailRow->bank_statement_url)}}
+																</a>
+															@endif
+														</div>											
+												
+												
+													</div>								
 											</form>												
 										</div>
 											@var	$i++
@@ -215,7 +253,7 @@
 <input type="hidden" id="max_bank" value= "{{ count($modelbankdet->bankListRs) }}" />
 	<div  id="bankTemplate">
 		<div id="XXX" class="bank-list">
-			<form method="post" id="form-bankdetails" name="form-bankdetails" enctype="multipart/form-data">
+			<form method="post" id="form-bankdetails-XXX" name="form-bankdetails" enctype="multipart/form-data">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="transtype" value="add">
 				
@@ -226,9 +264,9 @@
 								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankname_x_parent">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankname_XXX_parent">													
 										<input type="text" 
-										id="bankname_x" 
+										id="bankname_XXX" 
 										name="bankname" 													
 										class="form-control required">
 							</div>
@@ -241,9 +279,9 @@
 								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankcode_x_parent">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankcode_XXX_parent">													
 										<input type="text" 
-										id="bankcode_x" 
+										id="bankcode_XXX" 
 										name="bankcode" 													
 										class="form-control required"
 										/>
@@ -257,9 +295,9 @@
 								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3" id="branchcode_x_parent">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="branchcode_XXX_parent">													
 										<input type="text" 
-										id="branchcode_x" 
+										id="branchcode_XXX" 
 										name="branchcode" 													
 										class="form-control required">
 							</div>
@@ -272,9 +310,9 @@
 								</label>												
 							</div>
 												
-							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankaccnumber_x_parent">													
+							<div class="col-xs-12 col-sm-7 col-lg-3" id="bankaccnumber_XXX_parent">													
 										<input type="text" 
-										id="bankaccnumber_x" 
+										id="bankaccnumber_XXX" 
 										name="bankaccnumber" 													
 										class="form-control required">
 							</div>
@@ -301,10 +339,29 @@
 							<div class="table-border-custom form-control"> <label>{{ Lang::get('Unverified') }}</label>	</div>
 							</div>
 						</div>							
-							
+						
+						<div class="row">		
+							<div class="col-xs-12 col-sm-5 col-lg-3">											
+								<label>{{ Lang::get('Bank Statement') }}</label>												
+							</div>
+												
+							<div class="col-xs-12 col-sm-7 col-lg-3"  id="bank_statement_XXX_parent">	
+								<input 	type="file" 
+										class="required attachment" 
+										data-buttonBefore="true" 
+										name="bank_statement"
+										id="bank_statement_XXX"
+										/>
+								<input 	type="hidden" 
+										id="bank_statement_XXX_hidden"
+										name="bank_statement_hidden"
+										value=""
+											/>	
+							</div>											
+						</div>				
 				<div class="col-sm-12">	 
 					<div class="pull-right">
-						<button type="button" id="save_button" class="btn button-orange">{{ Lang::get('SAVE') }}</button>	
+						<button type="button" id="save_button_XXX" class="btn button-orange">{{ Lang::get('SAVE') }}</button>	
 					</div>
 				</div>
 			</form>		

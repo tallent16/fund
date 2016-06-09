@@ -17,11 +17,13 @@ class FileUpload {
 			$disk->put($fullDestinationPath,file_get_contents($file));
 			$disk->setVisibility($fullDestinationPath, 'public');
 		} else {
-			$filename 		= 	$file->getClientOriginalName();
-			$newfilename 	= 	 preg_replace('/\s+/', '_', $filename);
-			$newfilename 	= 	$prefix.$newfilename;
+			$filename 				= 	$file->getClientOriginalName();
+			$newfilename 			= 	 preg_replace('/\s+/', '_', $filename);
+			$newfilename 			= 	$prefix.$newfilename;
+			$fullDestinationPath	=	$destinationPath."/".$newfilename;
 			$file->move($destinationPath, $newfilename);
 		}
+		return $fullDestinationPath;
 	}
 
 	public function getFile ($destinationPath) {

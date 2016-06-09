@@ -44,7 +44,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $bidTypeSelectOptions			= 	"";
 	public $paymentTypeSelectOptions		= 	"";
 	public $completeLoanDetails				= 	0;
-	
+	public 	$gradeInfo 						= 	array();
+	public 	$grade 							= 	"";
 	
 	public function getBorrowerLoanDetails($loan_id) {
 		
@@ -129,6 +130,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.total_penalties_paid,
 											loans.loan_product_image,
 											loans.loan_video_url,
+											loans.loan_risk_grade grade,
 											users.firstname
 									FROM 	loans,borrowers,users
 									WHERE	loans.loan_id		=	{$loan_id} 
@@ -439,6 +441,22 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			
 		}
 		
+		$grade_sql					=	"	SELECT	codelist_id,
+													codelist_code,
+													codelist_value,
+													expression
+											FROM	codelist_details
+											WHERE	codelist_id = 20
+											AND		codelist_code!=6";
+											
+		$grade_rs					= 	$this->dbFetchAll($grade_sql);
+		if ($grade_rs) {
+			foreach($grade_rs as $gradeRow) {
+				$gradeRowIndex	=	$gradeRow->codelist_value;
+				$gradeRowvalue	=	$gradeRow->codelist_value;
+				$this->gradeInfo[$gradeRowIndex]	=	$gradeRowvalue;
+			}
+		}
 	}
 	
 	public function getBorrowerLoanDocUrl($doc_id) {

@@ -47,15 +47,19 @@ function addNewBankRow() {
 	$(".divs div.bank-list:last").show();
 	$(".bankdet-pagi").hide();
 	
-	$("#save_button").click( function() {
-		validateForm('form-bankdetails');	
-		$('#form-bankdetails').submit();			
+	$('#bank_statement_'+counterstr).jfilestyle('destroy'); 
+    $('#bank_statement_'+counterstr).jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'}); 
+	
+	$("#save_button_"+counterstr).click( function() {
+		validateForm('form-bankdetails-'+counterstr);	
+		$('#form-bankdetails-'+counterstr).submit();			
 	});	
 	$("form").on("submit",function(event) {
 	
 		if(!formValid){
 			event.preventDefault();
 		}
+	
 	});
 }
 
@@ -123,11 +127,18 @@ function validateForm(formID) {
 		var $parentTag = $("#"+input_id+"_parent");
 		
 		if(inputVal == ''){
-			$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+			if($('#'+input_id).hasClass("attachment")){
+				if($("#"+input_id+"_hidden").val() == '') {
+					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+				}
+			}else{
+				$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');	
+			}
 		}
 	});
 	if ($("#"+formID).has('.has-error').length > 0)
 		formValid	= false;
 	else
 		formValid	= true;
+	
 }

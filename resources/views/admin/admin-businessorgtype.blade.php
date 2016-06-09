@@ -41,7 +41,7 @@
 								@foreach ($businessorgtype_list as $queRow)								
 								<tr>
 									<td class="text-center" >	
-										<span>{{$queRow->slno}}</span>								
+										<span class="slno">{{$queRow->slno}}</span>								
 										<input  type="hidden"
 												name="business[id][]"
 												value="{{$queRow->bo_id}}" />
@@ -109,7 +109,7 @@
 		<table  >
 		<tr id="businessOrgTypeTemplate">
 			<td class="text-center">
-				<span>XXX</span>
+				<span class="slno">XXX</span>
 				<input  type="hidden"
 						name="business[id][]"
 						value="0" />

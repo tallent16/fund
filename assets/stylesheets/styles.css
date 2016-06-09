@@ -8970,6 +8970,9 @@ canvas.round {
 /*# sourceMappingURL=styles.css.map */
 /*---------------------------CUSTOM CSS STARTS HERE-------------------**/
 /****************************Common css*********************************/
+.row .btn-group.bootstrap-select{
+	margin-bottom:0;
+}
 .hyperlink,.hyperlink:hover{
 	color:#4B4949;
 	text-decoration:none;
@@ -9606,10 +9609,14 @@ table#account-summary, .table-border-custom{
 	table.table.tab-label {   
 		margin: 30% 0 0 0;
 	}	
+	#page-wrapper .table-responsive{
+		overflow-x:visible;
+	}
 }
 @media (min-width:1280px) and (max-width:1920px) {
-	.borrower-admin .table-responsive{
-		overflow:visible;
+	.borrower-admin .table-responsive,
+	#page-wrapper .table-responsive{
+		overflow-x:visible;
 	}
 }
 @media(max-width:1280px) {
@@ -9624,6 +9631,9 @@ table#account-summary, .table-border-custom{
 	}
 	table.table.tab-label {   
 		margin: 53% 0 0 0;
+	}
+	#page-wrapper .table-responsive{
+		overflow-x:visible;
 	}
 }
 @media(max-width:980px) {

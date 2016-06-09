@@ -93,6 +93,7 @@ $(document).ready(function (){
 				e.preventDefault();
 		}
 		$("#active_tab").val($(".nav-tabs li.active a").attr("href"));
+		
 	});
 	$("#next_button").click(function(){
 		
@@ -241,17 +242,17 @@ function validTab() {
 			
 			var $parentTag = $("#"+input_id+"_parent");
 			if(inputVal == ''){
-				if(input_id	==	"identity_card_image_front" || 
-					input_id	==	"identity_card_image_back"||
-					input_id	==	"address_proof_image") {
-					if($("#"+input_id+"_hidden").val() == ''){
+				switch(input_id){
+					case 'identity_card_image_front':
+					case 'identity_card_image_back':
+					case 'address_proof_image':
+					case 'bank_statement':
+						if($("#"+input_id+"_hidden").val() == ''){
+							$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+						}
+						break;	
+					default:
 						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
-						$('.nav-tabs a[href="#inv_profile_info"]').tab('show');
-					}
-				}
-				else{
-					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
-					$('.nav-tabs a[href="#inv_profile_info"]').tab('show');
 				}
 			}
 		});

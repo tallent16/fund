@@ -28,6 +28,7 @@ class InvestorProfileModel extends TranWrapper {
 	public 	$investor_bankid  				=  	"";
 	public 	$bank_name  					=  	"";
 	public 	$bank_account_number  			=  	"";
+	public 	$bank_statement_url  			=  	"";
 	public 	$branch_code  					=  	"";
 	public 	$bank_code						=  	"";
 	public 	$commentsInfo 					= 	array();
@@ -109,7 +110,8 @@ class InvestorProfileModel extends TranWrapper {
 											investor_banks.branch_code,
 											investor_banks.bank_account_number,
 											investor_banks.verified_status,
-											investor_banks.bank_code
+											investor_banks.bank_code,
+											investor_banks.bank_statement_url
 									FROM 	investors
 											LEFT JOIN investor_banks
 											ON	(investors.investor_id	=	investor_banks.investor_id
@@ -222,50 +224,8 @@ class InvestorProfileModel extends TranWrapper {
 			$date_of_birth				= 	$this->getDbDateFormat($date_of_birth);
 		$nric_number 					= 	$postArray['nric_number'];
 		
+		$this->uploadInvestorProfileAttachments($postArray,$investorId);
 		
-		/*identity_card_image_front*/
-		
-		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
-		$updateDataArry					=	array();
-		$fileUploadObj					=	new FileUpload();
-		
-		if(isset($postArray['identity_card_image_front'])){
-			$file		=	$postArray['identity_card_image_front'];
-			$imagePath	=	$destinationPath."/".$investorId."/profile/image";
-			$fileUploadObj->createIfNotExists($imagePath);
-			$fileUploadObj->storeFile($imagePath ,$file);
-			$filename 						= 	$file->getClientOriginalName();
-			$newfilename 					= 	 preg_replace('/\s+/', '_', $filename);
-			$identity_card_image_front		=	$imagePath."/".$newfilename;
-			$updateDataArry['identity_card_image_front']	=	$identity_card_image_front;
-		}
-		
-		/*identity_card_image_back*/
-	
-		if(isset($postArray['identity_card_image_back'])){
-			$file		=	$postArray['identity_card_image_back'];
-			$imagePath	=	$destinationPath."/".$investorId."/profile/image";
-			$fileUploadObj->createIfNotExists($imagePath);
-			$fileUploadObj->storeFile($imagePath ,$file);
-			$filename 						= 	$file->getClientOriginalName();
-			$newfilename 					= 	 preg_replace('/\s+/', '_', $filename);
-			$identity_card_image_back		=	$imagePath."/".$newfilename;
-			$updateDataArry['identity_card_image_back']	=	$identity_card_image_back;
-		}
-		
-		/*address_proof_image*/	
-		
-		if(isset($postArray['address_proof_image'])){
-			$file		=	$postArray['address_proof_image'];
-			$imagePath	=	$destinationPath."/".$investorId."/profile/image";
-			$fileUploadObj->createIfNotExists($imagePath);
-			$fileUploadObj->storeFile($imagePath ,$file);
-			$filename 						= 	$file->getClientOriginalName();
-			$newfilename 					= 	 preg_replace('/\s+/', '_', $filename);
-			$address_proof_image		=	$imagePath."/".$newfilename;
-			$updateDataArry	['address_proof_image']	=	$address_proof_image;
-		}
-	
 		$dataUserArray 	= 	array(	'firstname' 					=> ($firstname!="")?$firstname:null,
 									'lastname'						=> ($lastname!="")?$lastname:null,
 									'username'						=> ($displayname!="")?$displayname:null,
@@ -283,21 +243,13 @@ class InvestorProfileModel extends TranWrapper {
 				$dataArray['user_id']	=	$current_user_id;
 			}
 		}							
-									
-		$dataArray 		=   array_merge($dataArray,$updateDataArry);
-						
+				
 		if ($transType == "edit") {
 			if($postArray['isSaveButton']	!=	"yes") {
 				$dataArray['status'] = $status;
 			}
 		}else{
 			$dataArray['status'] = $status;
-		}
-		
-		if(count($updateDataArry) > 0) {
-			foreach($updateDataArry as $key=>$value) {
-				$dataArray[$key]	=	$value;
-			}	
 		}
 		
 		if ($transType != "edit") {
@@ -331,8 +283,64 @@ class InvestorProfileModel extends TranWrapper {
 			return $investorId;
 		}
 	}
+	public	function uploadInvestorProfileAttachments($postArray,$investorId) {
+		
+		/*identity_card_image_front*/
+		
+		$destinationPath 				= 	Config::get('moneymatch_settings.upload_inv');
+		$updateDataArry					=	array();
+		$fileUploadObj					=	new FileUpload();
+		$updateAttachment				=	false;
+		
+		if(isset($postArray['identity_card_image_front'])){
+			$file		=	$postArray['identity_card_image_front'];
+			$imagePath	=	$destinationPath."/".$investorId;
+			$fileUploadObj->createIfNotExists($imagePath);
+			
+			$prefix						=	"idcard_front_";
+			$identity_card_image_front	=	$fileUploadObj->storeFile($imagePath ,$file,$prefix);
+			$updateDataArry['identity_card_image_front']	=	$identity_card_image_front;
+			$updateAttachment			=	true;
+		}
+		
+		/*identity_card_image_back*/
+	
+		if(isset($postArray['identity_card_image_back'])){
+			$file		=	$postArray['identity_card_image_back'];
+			$imagePath	=	$destinationPath."/".$investorId;
+			$fileUploadObj->createIfNotExists($imagePath);
+			
+			$prefix						=	"idcard_back_";
+			$identity_card_image_back	=	$fileUploadObj->storeFile($imagePath ,$file,$prefix);
+			$updateDataArry['identity_card_image_back']	=	$identity_card_image_back;
+			$updateAttachment			=	true;
+		}
+		
+		/*address_proof_image*/	
+		
+		if(isset($postArray['address_proof_image'])){
+			$file		=	$postArray['address_proof_image'];
+			$imagePath	=	$destinationPath."/".$investorId;
+			$fileUploadObj->createIfNotExists($imagePath);
+			
+			$prefix					=	"addr_proof_";
+			$address_proof_image	=	$fileUploadObj->storeFile($imagePath ,$file,$prefix);
+			$updateDataArry	['address_proof_image']	=	$address_proof_image;
+			$updateAttachment		=	true;
+		}
+		
+		if($updateAttachment) {
+			$whereArray	=	["investor_id" 	=> $investorId];
+			$this->dbUpdate("investors", $updateDataArry, $whereArray);
+		}
+	}
 	
 	public function updateInvestorBankInfo($postArray,$investorId,$transType) {
+		
+		
+		
+		$destinationPath 			= 	Config::get('moneymatch_settings.upload_inv');
+		$fileUploadObj				=	new FileUpload();
 		
 		$investorBankId	= $postArray['investor_bankid'];
 		
@@ -349,13 +357,40 @@ class InvestorProfileModel extends TranWrapper {
 			if ($investorBankId < 0) {
 				return -1;
 			}
-			return $investorBankId;
 		}else{
 			
 			$whereArry	=	array("investor_bankid" =>"{$investorBankId}");
 			$this->dbUpdate('investor_banks', $dataArray, $whereArry);
-			return $investorBankId;
 		}
+		$updateAttachment		=	false;
+		if(isset($postArray['bank_statement'])){
+			if(isset($postArray['bank_statement_hidden'])){
+				$filePath		=	$postArray['bank_statement_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+				
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$filePath				=	$destinationPath."/".$investorId;
+			$fileUploadObj->createIfNotExists($filePath);
+			
+			$file					=	$postArray['bank_statement'];
+			
+			$prefix					=	"bank_stat_{$investorBankId}_";
+			$bank_statement_path	=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$updateDataArry			=	array(	"bank_statement_url"=>$bank_statement_path);
+			$updateAttachment		=	true;
+		}
+		if($updateAttachment) {
+			$whereArray	=	["investor_id" 		=> $investorId,
+							 "investor_bankid"	=> $investorBankId];
+			$this->dbUpdate("investor_banks", $updateDataArry, $whereArray);
+		}
+		return $investorBankId;
+	
 	}
 	
 	public function CheckFieldExists($postArray) {

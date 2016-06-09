@@ -39,8 +39,10 @@ class BankProcessModel extends TranWrapper {
 										bank_name,
 										branch_code,
 										bank_account_number,
+										bank_statement_url,
 										verified_status,
 										active_status,
+										{$this->typePrefix}_id,
 										concat(if (verified_status = 0, 1, if (active_status = 0, 2, 3)), 
 												{$this->typePrefix}_bankid) orderby
 								FROM	{$this->typePrefix}_banks
@@ -59,15 +61,26 @@ class BankProcessModel extends TranWrapper {
 		$bankaccnumber	=	$postArray['bankaccnumber'];
 		$bankid			=	$postArray['bankid'];
 		
-		$updateSql	=	"	UPDATE	{$this->typePrefix}_banks
-							SET		bank_code 				=	'".$bankcode."',
-									bank_name 				=	'".$bankname."',
-									branch_code 			=	'".$branchcode."',
-									bank_account_number		=	'".$bankaccnumber."'
-							WHERE	{$this->typePrefix}_bankid 	=	$bankid ";
+		//~ $updateSql	=	"	UPDATE	{$this->typePrefix}_banks
+							//~ SET		bank_code 				=	'".$bankcode."',
+									//~ bank_name 				=	'".$bankname."',
+									//~ branch_code 			=	'".$branchcode."',
+									//~ bank_account_number		=	'".$bankaccnumber."'
+							//~ WHERE	{$this->typePrefix}_bankid 	=	$bankid ";
 		
-		$this->dbExecuteSql($updateSql);	
-		return; 
+		//~ $this->dbExecuteSql($updateSql);	
+		
+		$dataArray = array(	
+							'bank_code' 			=> $bankcode,
+							'bank_name' 			=> $bankname,
+							'branch_code' 			=> $branchcode,
+							'bank_account_number'	=> $bankaccnumber,
+							);
+		
+		$whereArry	=	array("{$this->typePrefix}_bankid" =>"{$bankid}");
+		$this->dbUpdate("{$this->typePrefix}_banks", $dataArray, $whereArry);
+		
+		return $bankid ;
 	
 	}
 	
@@ -78,28 +91,75 @@ class BankProcessModel extends TranWrapper {
 		$branchcode		=	$postArray['branchcode'];
 		$bankaccnumber	=	$postArray['bankaccnumber'];
 		
-		$insertSql	=	"	INSERT INTO {$this->typePrefix}_banks 
-							(	{$this->typePrefix}_id,
-								bank_code, bank_name, 
-								branch_code, bank_account_number, 
-								verified_status, active_status) VALUES 
-							(	{$this->inv_or_borr_id},
-								'".$bankcode."','".$bankname."',
-								'".$branchcode."','".$bankaccnumber."',
-								1, 0)";
+		//~ $insertSql	=	"	INSERT INTO {$this->typePrefix}_banks 
+							//~ (	{$this->typePrefix}_id,
+								//~ bank_code, bank_name, 
+								//~ branch_code, bank_account_number, 
+								//~ verified_status, active_status) VALUES 
+							//~ (	{$this->inv_or_borr_id},
+								//~ '".$bankcode."','".$bankname."',
+								//~ '".$branchcode."','".$bankaccnumber."',
+								//~ 1, 0)";
+		$dataArray = array(	'investor_id' 			=> $this->inv_or_borr_id,
+							'bank_code' 			=> $bankcode,
+							'bank_name' 			=> $bankname,
+							'branch_code' 			=> $branchcode,
+							'bank_account_number'	=> $bankaccnumber,
+							'verified_status' 		=> 1,
+							'active_status' 		=> 0,
+							);
+							
+		$bankId =  $this->dbInsert("{$this->typePrefix}_banks", $dataArray, true);
+		return $bankId ;
+		//~ $this->dbExecuteSql($insertSql);
 		
-		$this->dbExecuteSql($insertSql);
 		return true;		
 	}
 	
 	function processBankDetails($postArray) {		
 		$transtype	=	$postArray['transtype'];
 		if($transtype	==	"add") {
-			$this->addBankDetails($postArray);			
+			$bankId	=	$this->addBankDetails($postArray);			
 		}else{			
-			$this->updateBankDetails($postArray);
-		}		
+			$bankId	=	$this->updateBankDetails($postArray);
+		}	
+		$this->uploadBankStatementAttachment($postArray,$bankId);		
 	}	
+	
+	function  uploadBankStatementAttachment($postArray,$bankId) {
+		
+		$destinationPath 			= 	Config::get('moneymatch_settings.upload_inv');
+		$fileUploadObj				=	new FileUpload();
+		
+		$updateAttachment		=	false;
+		if(isset($postArray['bank_statement'])){
+			if(isset($postArray['bank_statement_hidden'])){
+				$filePath		=	$postArray['bank_statement_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+				
+			}
+			
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$filePath				=	$destinationPath."/".$this->inv_or_borr_id;
+			$fileUploadObj->createIfNotExists($filePath);
+			
+			$file					=	$postArray['bank_statement'];
+			
+			$prefix					=	"bank_stat_".$bankId."_";
+			$bank_statement_path	=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$updateDataArry			=	array(	"bank_statement_url"=>$bank_statement_path);
+			$updateAttachment		=	true;
+		}
+		if($updateAttachment) {
+			$whereArray	=	["{$this->typePrefix}_id" 		=>$this->inv_or_borr_id,
+							 "{$this->typePrefix}_bankid"	=> $bankId];
+			$this->dbUpdate("{$this->typePrefix}_banks", $updateDataArry, $whereArray);
+		}
+	}
 }
 	
 	

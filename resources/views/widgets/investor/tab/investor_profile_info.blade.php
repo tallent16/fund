@@ -316,6 +316,34 @@
 						</div>
 					</div>
 					<!--------------------row--10--------------------------->
+					<!--------------------row--11--------------------------->
+					<div class="row">						
+						<div class="col-xs-12 col-sm-5 col-lg-3">											
+							<label class="input-required">	{{ Lang::get('Bank Statement') }}</label>												
+						</div>											
+						<div class="col-xs-12 col-sm-7 col-lg-3" 	id="bank_statement_parent">												
+							<input 	type="file" 
+										class="jfilestyle  required" 
+										data-buttonBefore="true" 
+										name="bank_statement"
+										id="bank_statement"
+										/>
+								<input 	type="hidden" 
+										id="bank_statement_hidden"
+										name="bank_statement_hidden"
+										value="{{ $InvPrfMod->bank_statement_url }}"
+											/>	
+								@if($InvPrfMod->bank_statement_url!="")
+									@var	$bankUrl	=	url('download/investor/bank/attachment');	
+									@var	$bankUrl	=	$bankUrl."/".$InvPrfMod->investor_id."_".rand(10,100);	
+									@var	$bankUrl	=	$bankUrl."/".$InvPrfMod->investor_bankid;	
+									<a 	href="{{$bankUrl}}"  
+										class="hyperlink">
+										{{basename($InvPrfMod->bank_statement_url)}}
+									</a>
+								@endif
+						</div>
+					<!--------------------row--11--------------------------->
 				
 			</fieldset>	
 		</div><!-----panel---> 
