@@ -37,6 +37,20 @@ class AdminLoanApprovalController extends MoneyMatchController {
 								)
 						);
 	}
+	public function updateBidCloseDateAction() {
+		
+		$postArray	=	Request::all();
+		$loan_id	=	$postArray['loan_id'];
+		
+		$result	=	$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
+		if($result) {
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
+						->with('success','Bid Close Date Updated  successfully');
+		}else{
+			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
+						->with('failure','Bid Close Date Updated Failed');	
+		}	
+	}
 	
 	public function saveLoanApprovalAction(){
 		

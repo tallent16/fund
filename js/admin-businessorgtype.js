@@ -1,12 +1,21 @@
 $(document).ready(function (){  
 	$("#select_all_list").click(function(){	 
 		checkall_list(this,"select_businessorgtype_id");
-	});			
+	});	
+		
+	//~ $('#form-businessorgtype').on('submit', function(e) {
+			//~ e.unbind().submit();
+          //~ setTimeout(function() {
+               //~ window.location.reload();
+          //~ },0);
+          //~ this.submit();
+    //~ });	
 });	
 
 /*Add New Question*/
 $("#new_businessorgtype").click(function(){
 	addNewRow();
+	 AutoNumber();
 });
 function addNewRow(){
 		htmlTemplate = $("#businessOrgTypeTemplate").html();
@@ -35,3 +44,13 @@ function AutoNumber(){
 		$(this).find('span.slno').text(i);
 	});
 }
+$("#update_businessorgtype").click(function(){	
+	$( "#update_businessorgtype" ).one( "click", function() { 
+		$('#form-businessorgtype').submit();
+	});
+		
+	 setTimeout(function(){
+		  $('#form-businessorgtype').submit();
+		},0);
+	
+ });

@@ -28,6 +28,7 @@
 								name="loan_amount"												
 								id="loan_amount" 
 								decimal="2"
+								{{$commentButtonsVisibe}}
 								value="{{number_format($adminLoanApprMod->apply_amount,2,'.',',')}}"
 						>	
 					</td>
@@ -38,8 +39,9 @@
 						{{ Form::select('purpose_singleline', 
 									$adminLoanApprMod->purposeSingleLineInfo, 
 									$adminLoanApprMod->purpose_singleline, 
-									["class" => "selectpicker required",
-																"id"=>"purpose_singleline"]) }}  	
+									[	"class" => "selectpicker required",
+										"id"=>"purpose_singleline",
+										$commentButtonsVisibe]) }}  	
 				
 					</td>
 					<td class="tab-left-head">{{ Lang::get('Bid Close Date')}}</td>								
@@ -52,6 +54,7 @@
 											class="date-picker form-control required" 
 											name="bid_close_date"
 											value="{{$adminLoanApprMod->bid_close_date}}"
+											{{$disableBidCloseDate}}
 											readonly />
 									<label for="bid_close_date" class="input-group-addon btn">
 										<span class="glyphicon glyphicon-calendar"></span>
@@ -66,7 +69,8 @@
 					<td>
 						{{ Form::select('loan_tenure', $adminLoanApprMod->loan_tenure_list, $adminLoanApprMod->loan_tenure,
 																["class" => "selectpicker text-right required",
-																"id"=>"loan_tenure"]
+																"id"=>"loan_tenure",
+																$commentButtonsVisibe]
 																) 
 						}}		
 					</td>
@@ -76,6 +80,7 @@
 							<input 	type="radio" 
 									name="partial_sub_allowed"
 									value="1"
+									{{$commentButtonsVisibe}}
 									{{$par_sub_allowed_yes}} >
 							{{ Lang::get('borrower-applyloan.yes') }}
 						</label>
@@ -83,6 +88,7 @@
 							<input 	type="radio" 
 									name="partial_sub_allowed"
 									value="2"
+									{{$commentButtonsVisibe}}
 									{{$par_sub_allowed_no}}>
 							{{ Lang::get('borrower-applyloan.no') }}
 						</label>
@@ -94,7 +100,8 @@
 						<input type="text" class="form-control select-width text-right required amount-align" 
 								name="target_interest"												
 								id="target_interest"
-								decimal="2"															
+								decimal="2"	
+								{{$commentButtonsVisibe}}														
 								value="{{$adminLoanApprMod->target_interest}}" >	
 					</td>
 					<td class="tab-left-head">{{ Lang::get('Minimum Limit For Partial Subscription')}}</td>								
@@ -104,6 +111,7 @@
 								 name="min_for_partial_sub"
 								 id="min_for_partial_sub"
 								 decimal="2"
+								 {{$commentButtonsVisibe}}
 								 {{$par_sub_allowed_disabled}}
 								 value="{{number_format($adminLoanApprMod->min_for_partial_sub,2,'.',',')}}">
 				</td>					
@@ -114,6 +122,7 @@
 					<td class="tab-left-head">{{ Lang::get('Payment Type')}}</td>								
 					<td><select id="payment_type" 
 								name="payment_type" 
+								{{$commentButtonsVisibe}}
 								class="selectpicker required">
 								{{$adminLoanApprMod->paymentTypeSelectOptions}}
 						</select>	
@@ -124,6 +133,7 @@
 					<td class="col-sm-3">
 						<select 	id="bid_type" 
 									name="bid_type" 
+									{{$commentButtonsVisibe}}
 									class="selectpicker required"> 
 							{{$adminLoanApprMod->bidTypeSelectOptions}}
 						</select>
@@ -133,15 +143,22 @@
 				</tr>	
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Credit Grade')}}</td>								
-					<td class="col-sm-3">
+					<td class="col-sm-3" id="grade_parent">
 						@var	$gradeInfo	=	[''=>'none']+$adminLoanApprMod->gradeInfo
 					{{ Form::select('grade',$gradeInfo, 
 													$adminLoanApprMod->grade, 
-													['class' => 'selectpicker text-right'])
+													['class' => 'selectpicker text-right',$commentButtonsVisibe,
+													'id'=>"grade"])
 					}}										
 					</td>	
-					<td class="tab-left-head">{{ Lang::get('Status')}}</td>								
-					<td>{{ $adminLoanApprMod->statusText}}</td>													
+					<td class="tab-left-head text-right" colspan="2">
+						<button type="button" 
+									class="btn verification-button"
+									id="update_bidclosedate_button"
+									{{$disableBidCloseDate}} >
+								{{ Lang::get('Update Bid Close Date')}}
+						</button>
+					</td>													
 				</tr>				
 			</tbody>
 		</table>

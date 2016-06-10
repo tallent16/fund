@@ -78,10 +78,10 @@ class AdminLoanDocumentsModel extends TranWrapper {
 	
 		$sql			=	"SELECT COUNT(*) 
 							FROM	loan_doc_master
-							WHERENOTIN	loan_doc_id in ({$whereId}) ";	
+							WHERE	loan_doc_id in ({$whereId}) ";	
 							
 		$count			=	$this->dbFetchOne($sql);
-		//echo "<pre>",print_r($count),"</pre>"; die;		
+			
 		if ($count > 0) {
 			$this->errorText	=	"Loan Documents marked for deletion is already in use. Cannot delete";
 			return -1;

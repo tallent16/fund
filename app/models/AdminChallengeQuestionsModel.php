@@ -56,18 +56,18 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 		}
 			
 		/*Check before delete*/	
-		$idArray_sql	=	"SELECT user_id from user_challenges";
+		$idArray_sql	=	"SELECT challenge_id from user_challenges";
 		
 		$count_id		=	$this->dbFetchAll($idArray_sql);
 		
 		foreach($count_id as $row){
-			$this->listids[]=$row->user_id;
+			$this->listids[]=$row->challenge_id;
 		}
 		
 		$whereId		=	implode(",", $this->listids);		
 	
 		$sql			=	"SELECT COUNT(*) 
-							FROM	user_challenges
+							FROM	challenge_questions
 							WHERE	challenge_id in ({$whereId}) ";	
 						
 		$count			=	$this->dbFetchOne($sql);

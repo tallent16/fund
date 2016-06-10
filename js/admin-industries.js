@@ -7,6 +7,7 @@ $(document).ready(function (){
 /*Add New Question*/
 $("#new_industry").click(function(){
 	addNewRow();
+	 AutoNumber();
 });
 function addNewRow(){
 		htmlTemplate = $("#industryTemplate").html();

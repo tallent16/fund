@@ -7,6 +7,7 @@ $(document).ready(function (){
 /*Add New Question*/
 $("#new_doc").click(function(){
 	addNewRow();
+	AutoNumber();     
 });
 function addNewRow(){
 		htmlTemplate = $("#loandocTemplate").html();

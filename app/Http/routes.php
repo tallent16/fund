@@ -234,6 +234,10 @@ Route::get('admin/loandocrequired',  		[	'as' 			=> 	'admin.loandocrequired',
 Route::post('admin/loandocrequired',  		[	'uses' 			=>	'AdminLoanDocumentsController@saveAction'
 											]
 			);		
+
+Route::get('admin/changeofbank',  'AdminChangeofBankController@indexAction');
+Route::get('admin/approvechangeofbank',  'AdminApproveChangeofBankController@indexAction');
+
 		
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
@@ -531,6 +535,12 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
     Route::post('admin/loanapproval/save',
 									[	
 										'uses' 			=>	'AdminLoanApprovalController@saveLoanApprovalAction'
+									]
+			);
+		
+    Route::post('admin/loanapproval/updateBidCloseDate',
+									[	
+										'uses' 			=>	'AdminLoanApprovalController@updateBidCloseDateAction'
 									]
 			);
     Route::post('admin/loanapproval/save_comments',

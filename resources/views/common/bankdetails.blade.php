@@ -361,7 +361,7 @@
 						</div>				
 				<div class="col-sm-12">	 
 					<div class="pull-right">
-						<button type="button" id="save_button_XXX" class="btn button-orange">{{ Lang::get('SAVE') }}</button>	
+						<button type="button" id="save_button_XXX" class="btn verification-button">{{ Lang::get('SUBMIT FOR APPROVAL') }}</button>	
 					</div>
 				</div>
 			</form>		

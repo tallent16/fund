@@ -58,6 +58,11 @@ $(document).ready(function (){
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/save");
 		$("#form-profile").submit();
 	});
+	$("#update_bidclosedate_button").on("click",function(){
+		$("#admin_process").val("update_bidclosedate");
+		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/updateBidCloseDate");
+		$("#form-profile").submit();
+	});
 	$("#save_comment_button").click(function(){
 		
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/save_comments");
@@ -86,28 +91,52 @@ $(document).ready(function (){
 		
 		$('span.error').remove();
 		$('.has-error').removeClass("has-error");
-		if($("#bid_close_date").length) {
-			checkAjaxValidation();
-			if ($("#loan_details").has('.has-error').length > 0) {
-				event.preventDefault();
+		if($("#admin_process").val()	==	"approve" || $("#admin_process").val()	==	"update_bidclosedate") {
+			if($("#bid_close_date").length) {
+				checkAjaxValidation();
+				if ($("#loan_details").has('.has-error').length > 0) {
+					event.preventDefault();
+				}
 			}
 		}
-		$partial_sub		=	$("input[name=partial_sub_allowed]:checked").val();
-		$partial_sub_amt	=	numeral($("#min_for_partial_sub").val()).value();
-		if($partial_sub	==	1) {
-			if($partial_sub_amt	==	"") {
-				var $parentTag = $("#min_for_partial_sub_parent");
-				$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+		if($("#admin_process").val()	==	"approve") {
+			
+			$partial_sub		=	$("input[name=partial_sub_allowed]:checked").val();
+			$partial_sub_amt	=	numeral($("#min_for_partial_sub").val()).value();
+			
+			if($("#grade").find("option:selected").val()	==	"") {
+				
+				$('.nav-tabs a[href="#loan_details"]').tab('show');
+				$("#grade_parent").addClass('has-error').append('<span class="control-label error">Please select the grade</span>');
 				event.preventDefault();	
-			}	
-			if($partial_sub_amt	==	0	) {
-				var $parentTag = $("#min_for_partial_sub_parent");
-				$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+				return;
+			}
+			
+			if($partial_sub	==	1) {
+				if($partial_sub_amt	==	"") {
+					var $parentTag = $("#min_for_partial_sub_parent");
+					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+					$('.nav-tabs a[href="#loan_details"]').tab('show');
+					event.preventDefault();	
+					return;
+				}	
+				if($partial_sub_amt	==	0	) {
+					var $parentTag = $("#min_for_partial_sub_parent");
+					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+					$('.nav-tabs a[href="#loan_details"]').tab('show');
+					event.preventDefault();	
+					return;
+				}	
+			}
+			if(validateTab("risk_factor")) {
+				$('.nav-tabs a[href="#risk_factor"]').tab('show');
 				event.preventDefault();	
-			}	
-		}
-		if(!formLoanValid){
-			event.preventDefault();
+				return;
+			}
+			
+			if(!formLoanValid){
+				event.preventDefault();
+			}
 		}
 	});
 		$(".amount-align").on("focus", function() {
@@ -183,4 +212,22 @@ function checkAjaxValidation() {
 							$('.nav-tabs a[href="#loan_details"]').tab('show');
 					}
 			});
+}
+function validateTab(cur_tab) {	
+	
+	$("#"+cur_tab+" :input.required").each(function(){		
+		var	input_id	=	$(this).attr("id");
+		var inputVal 	= 	$(this).val();
+		var $parentTag = $("#"+input_id+"_parent");
+	
+		if(inputVal == ''){
+			$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+		}
+	});
+	
+	if ($("#"+cur_tab).has('.has-error').length > 0)
+		return true;
+	else
+		return false;
+		
 }

@@ -131,6 +131,9 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.loan_product_image,
 											loans.loan_video_url,
 											loans.loan_risk_grade grade,
+											loans.risk_industry,
+											loans.risk_strength,
+											loans.risk_weakness,
 											users.firstname
 									FROM 	loans,borrowers,users
 									WHERE	loans.loan_id		=	{$loan_id} 
@@ -227,12 +230,16 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
 			$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
 		}
+		
 		if( (isset($postArray['hidden_loan_statusText']) &&
 					$postArray['hidden_loan_statusText']	==	"corrections_required" )
 				||(Auth::user()->usertype	==	USER_TYPE_ADMIN) ) {
 			if (isset($postArray['comment_row'])) {
 				$this->saveLoanApplyComments($postArray['comment_row'],$loanId);
 			}
+		}
+		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+			$this->updateLoanGradeRiskFactor($postArray,$loanId);
 		}
 		return $loanId;
 	}
@@ -664,7 +671,6 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		return $loanId;
 	}
 	
-	
 	public function getBorrowerAllLoanDocUrl($doc_ids) {
 		
 		$docUrls					=	array();
@@ -681,5 +687,24 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		return $docUrls;
 	}
 	
+	
+	public function updateLoanGradeRiskFactor($postArray,$loanId) {
+		
+		$loan_risk_grade	=	($postArray['grade']	!=	"")?$postArray['grade']:NULL;
+		$risk_industry		=	($postArray['risk_industry']	!=	"")?$postArray['risk_industry']:NULL;
+		$risk_strength		=	($postArray['risk_strength']	!=	"")?$postArray['risk_strength']:NULL;
+		$risk_weakness		=	($postArray['risk_weakness']	!=	"")?$postArray['risk_weakness']:NULL;
+		
+		$dataArray			=	array(	"loan_risk_grade"=>$loan_risk_grade,
+										"risk_industry"=>$risk_industry,	
+										"risk_strength"=>$risk_strength,	
+										"risk_weakness"=>$risk_weakness
+										);
+		$whereArry			=	array("loan_id" =>"{$loanId}");
+		
+		$this->dbUpdate('loans', $dataArray, $whereArry);
+				
+		return $loanId;
+	}
 	
 }

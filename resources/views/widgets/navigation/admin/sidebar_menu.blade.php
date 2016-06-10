@@ -51,7 +51,13 @@
 						<li>
 							<a href="{{ url ('admin/investorwithdrawallist') }}">{{ Lang::get('Investor Withdrawal List') }}</a>
 						</li>
-					@endpermission			
+					@endpermission	
+					<li>
+						<a href="{{ url ('admin/changeofbank') }}">{{ Lang::get('Change of Bank') }}</a>
+					</li>
+					<li>
+						<a href="{{ url ('admin/approvechangeofbank') }}">{{ Lang::get('Approve Change of Bank') }}</a>
+					</li>		
 				</ul>	
 		</li>
 	@endpermission

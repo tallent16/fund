@@ -24,6 +24,15 @@
 @else
 	@var	$screenMode	=	"borrower"
 @endif
+
+@if( ($adminLoanApprMod->loan_status	==	 LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+		|| ($adminLoanApprMod->loan_status	==	 LOAN_STATUS_APPROVED)
+		|| ($adminLoanApprMod->loan_status	==	 LOAN_STATUS_PENDING_COMMENTS)
+		|| ($adminLoanApprMod->loan_status	==	 LOAN_STATUS_CLOSED_FOR_BIDS))
+			@var	$disableBidCloseDate	=	""
+@else
+	@var	$disableBidCloseDate	=	"disabled"
+@endif
 <div class="col-sm-12 space-around">
 	
 	<div class="panel-primary panel-container">
@@ -64,13 +73,13 @@
 						value="{{$adminLoanApprMod->purpose}}">
 				<div class="panel-body applyloan table-border-custom">	
 					<div class="col-sm-12 text-right"> 
-						<button type="button" 
+						
+						@if($adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+								<button type="button" 
 									class="btn verification-button"
 									id="save_loanapply_button">						
-								{{ Lang::get('Save')}}
-						</button>	
-						@if($adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-							
+									{{ Lang::get('Save')}}
+								</button>	
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 									@if( $adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 										@permission('approve.admin.loanapproval')			
@@ -127,6 +136,12 @@
 									</li>
 									<li>
 										<a 	data-toggle="tab"
+											href="#risk_factor">
+											{{ Lang::get('RISK FACTOR') }}
+										</a>
+									</li>								
+									<li>
+										<a 	data-toggle="tab"
 											href="#comments">
 											{{ Lang::get('COMMENTS') }}
 										</a>
@@ -137,8 +152,11 @@
 									<!-------first-tab--------------------------------->
 									@include('widgets.admin.tab.loanapproval_loandetails')
 									<!-------second tab--starts------------------------>
+									@include('widgets.admin.tab.risk_factor')						
+									<!-------Third tab--starts------------------------>
 									@include('widgets.admin.tab.loanapproval_comments')						
-								</div><!--tab content-->
+									<!--tab content-->
+								</div>
 							</div>	
 						</div>
 				</div><!--panel-body--->

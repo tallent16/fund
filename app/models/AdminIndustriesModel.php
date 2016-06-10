@@ -89,19 +89,20 @@ class AdminIndustriesModel extends TranWrapper {
 		}
 		//die;	
 		/*Check before delete*/	
-		$idArray_sql	=	"SELECT user_id from borrowers";
+		$idArray_sql	=	"SELECT industry from borrowers";
 		
 		$count_id		=	$this->dbFetchAll($idArray_sql);
 		
 		foreach($count_id as $row){
-			$this->listids[]=$row->user_id;
+			$this->listids[]=$row->industry;
 		}
 		
 		$whereId		=	implode(",", $this->listids);		
 	
 		$sql			=	"SELECT COUNT(*) 
-							FROM	borrowers
-							WHERE	industry in ({$whereId}) ";	
+							FROM	codelist_details
+							WHERE	codelist_value in ({$whereId}) 
+							AND codelist_id = 15 ";	
 						
 		$count			=	$this->dbFetchOne($sql);
 				

@@ -61,21 +61,22 @@ class AdminBusinessOrgTypeModel extends TranWrapper {
 				$boIds[]	=	$id;				
 			}			
 		}
-			
+		
+		
 		/*Check before delete*/	
 		
-		$idArray_sql	=	"SELECT user_id from borrowers";
+		$idArray_sql	=	"SELECT bo_id from borrowers";
 		
 		$count_id		=	$this->dbFetchAll($idArray_sql);
 		
 		foreach($count_id as $row){
-			$this->listids[]=$row->user_id;
+			$this->listids[]=$row->bo_id;
 		}
 	
 		$whereId		=	implode(",", $this->listids);		
 	
 		$sql			=	"SELECT COUNT(*) 
-							FROM	borrowers
+							FROM	business_organisations
 							WHERE	bo_id in ({$whereId}) ";	
 							
 		/*$sql			=	"SELECT count(bo_id)
