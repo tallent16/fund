@@ -19,7 +19,7 @@ class AdminChangeofBankController extends MoneyMatchController {
 		$this->adminChangeBankModel->getborrowerinvestorbanks();
 		
 		$withArry	=	array(	"adminbanklistModel" => $this->adminChangeBankModel,
-								"classname"=>"fa fa-user fa-fw");								
+								"classname"=>"fa fa-user fa-fw");
 							
 		
 		return view('admin.admin-changeofbank')

@@ -14,15 +14,26 @@ $(document).ready(function (){
 		
 		$("#admin_process").val("return_borrower");
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/return_borrower");
-		if(($('#commentBoxContainer .commentClass:checked').length)
-			|| ($('#commentBoxContainer .commentClass').length == 0) ){
+		if( ($('#commentBoxContainer .commentClass').length == 0)){
 			errMessage	=	"There is no open comments to return back to borrower";
 			showDialog("",errMessage);
 			$('.nav-tabs a[href="#comments"]').tab('show');
 			formLoanValid	=	false;
 		}else{
-			formLoanValid	=	true;
+			var listUnCheck	=	$('#commentBoxContainer .commentClass').length;
+			var listChecked	=	$('#commentBoxContainer .commentClass:checked').length;
+			if(listUnCheck	==	listChecked) {
+				errMessage	=	"There is no open comments to return back to borrower";
+				showDialog("",errMessage);
+				$('.nav-tabs a[href="#comments"]').tab('show');
+				formLoanValid	=	false;
+				
+			}else {
+				formLoanValid	=	true;
+				
+			}
 		}
+		console.log(formLoanValid);
 		$("#form-profile").submit();
     });
 	$("#approve_loanapply_button").click(function(){
@@ -35,6 +46,7 @@ $(document).ready(function (){
 			
 			$('.nav-tabs a[href="#comments"]').tab('show');
 			formLoanValid	=	true;
+			return;
 		}
 		
 		$("#form-profile").submit();
@@ -134,9 +146,10 @@ $(document).ready(function (){
 				return;
 			}
 			
-			if(!formLoanValid){
-				event.preventDefault();
-			}
+			
+		}
+		if(!formLoanValid){
+			event.preventDefault();	
 		}
 	});
 		$(".amount-align").on("focus", function() {
@@ -160,6 +173,7 @@ $(document).ready(function (){
 			$parentTag.find("span.error").remove();
 		}
 	});
+
 });
 
 function addNewLoanApplyCommentRow(screenType){

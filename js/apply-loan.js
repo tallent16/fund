@@ -102,7 +102,7 @@ function callTabValidateFunc() {
 	if(cur_tab	==	"loans_info") {
 		$('.nav-tabs a[href="#documents_submitted"]').tab('show');
 		$('a[href="#documents_submitted"]').parent().removeClass("disabled");	
-		if($("#hidden_loan_status").val()	==	""){
+		if($("#hidden_loan_statusText").val()	==	""){
 			$("#next_button").hide();
 			$("#submit_button").show();
 		}	
@@ -150,7 +150,7 @@ function validateTab(cur_tab) {
 }
 function callcheckAllTabFilledFunc() {
 	var	completeLoanDetails	=	$("#completeLoanDetails").val();	
-	if(completeLoanDetails){//check Company Info Filled
+	if(parseInt(completeLoanDetails)){//check Company Info Filled
 		$('.nav-tabs a[href="#documents_submitted"]').parent().removeClass("disabled");
 		//Enable the Director Info Tab
 	}

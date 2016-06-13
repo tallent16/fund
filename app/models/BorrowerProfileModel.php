@@ -645,58 +645,60 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerBankInfo($postArray,$borrowerId,$transType) {
 		
-		$bank_statement				= 	$postArray['bank_statement'];
-		$destinationPath 			= 	Config::get('moneymatch_settings.upload_bor');
-		$fileUploadObj				=	new FileUpload();
-		
-		$dataArray = array(	'borrower_id' 			=> $borrowerId,
-							'bank_code' 			=> $postArray['bank_code'],
-							'bank_name' 			=> $postArray['bank_name'],
-							'branch_code' 			=> $postArray['branch_code'],
-							'bank_account_number'	=> ($postArray['bank_account_number']!="")
-																				?$postArray['bank_account_number']:NULL,
-							'active_status' 		=> 1);
-							
-		if ($transType != "edit") {
-			$borrowerBankId =  $this->dbInsert('borrower_banks', $dataArray, true);
-			if ($borrowerBankId < 0) {
-				return -1;
-			}
-		
-		}else{
-			$borrowerBankId	= $postArray['borrower_bankid'];
-			$whereArry	=	array("borrower_bankid" =>"{$borrowerBankId}");
-			$this->dbUpdate('borrower_banks', $dataArray, $whereArry);
-		}
-		$updateAttachment		=	false;
-		if(isset($bank_statement)){
-			if(isset($postArray['bank_statement_hidden'])){
-				$filePath		=	$postArray['bank_statement_hidden'];
-				$fileUploadObj->deleteFile($filePath);
-				
-			}
-			unset($prefix);
-			unset($filename);
-			unset($newfilename);
-			unset($file);
+		if(isset($postArray['bank_statement'])) {
+			$bank_statement				= 	$postArray['bank_statement'];
+			$destinationPath 			= 	Config::get('moneymatch_settings.upload_bor');
+			$fileUploadObj				=	new FileUpload();
 			
-			$file				=	$bank_statement;
-			$filePath			=	$destinationPath."/".$borrowerId;
-			$prefix				=	"bank_stat_{$borrowerBankId}_";
-			$fileUploadObj->storeFile($filePath ,$file,$prefix);
-			$filename 				= 	$file->getClientOriginalName();
-			$newfilename 			= 	preg_replace('/\s+/', '_', $filename);
-			$newfilename 			= 	$prefix.$newfilename;
-			$bank_statement			=	$filePath."/".$newfilename;
-			$updateDataArry			=	array(	"bank_statement_url"=>$bank_statement);
-			$updateAttachment		=	true;
+			$dataArray = array(	'borrower_id' 			=> $borrowerId,
+								'bank_code' 			=> $postArray['bank_code'],
+								'bank_name' 			=> $postArray['bank_name'],
+								'branch_code' 			=> $postArray['branch_code'],
+								'bank_account_number'	=> ($postArray['bank_account_number']!="")
+																					?$postArray['bank_account_number']:NULL,
+								'active_status' 		=> 1);
+								
+			if ($transType != "edit") {
+				$borrowerBankId =  $this->dbInsert('borrower_banks', $dataArray, true);
+				if ($borrowerBankId < 0) {
+					return -1;
+				}
+			
+			}else{
+				$borrowerBankId	= $postArray['borrower_bankid'];
+				$whereArry	=	array("borrower_bankid" =>"{$borrowerBankId}");
+				$this->dbUpdate('borrower_banks', $dataArray, $whereArry);
+			}
+			$updateAttachment		=	false;
+			if(isset($bank_statement)){
+				if(isset($postArray['bank_statement_hidden'])){
+					$filePath		=	$postArray['bank_statement_hidden'];
+					$fileUploadObj->deleteFile($filePath);
+					
+				}
+				unset($prefix);
+				unset($filename);
+				unset($newfilename);
+				unset($file);
+				
+				$file				=	$bank_statement;
+				$filePath			=	$destinationPath."/".$borrowerId;
+				$prefix				=	"bank_stat_{$borrowerBankId}_";
+				$fileUploadObj->storeFile($filePath ,$file,$prefix);
+				$filename 				= 	$file->getClientOriginalName();
+				$newfilename 			= 	preg_replace('/\s+/', '_', $filename);
+				$newfilename 			= 	$prefix.$newfilename;
+				$bank_statement			=	$filePath."/".$newfilename;
+				$updateDataArry			=	array(	"bank_statement_url"=>$bank_statement);
+				$updateAttachment		=	true;
+			}
+			if($updateAttachment) {
+				$whereArray	=	["borrower_id" 		=> $borrowerId,
+								 "borrower_bankid"	=> $borrowerBankId];
+				$this->dbUpdate("borrower_banks", $updateDataArry, $whereArray);
+			}
+			return $borrowerBankId;
 		}
-		if($updateAttachment) {
-			$whereArray	=	["borrower_id" 		=> $borrowerId,
-							 "borrower_bankid"	=> $borrowerBankId];
-			$this->dbUpdate("borrower_banks", $updateDataArry, $whereArray);
-		}
-		return $borrowerBankId;
 	}
 	
 	public function processDropDowns($bor_id) {

@@ -125,6 +125,7 @@
 								class="btn verification-button"
 								/>
 					@endif
+				
 					@if( ($BorModLoan->loan_status	==	LOAN_STATUS_NEW)
 						||  ($BorModLoan->loan_status	==	LOAN_STATUS_PENDING_COMMENTS))
 						<button type="submit" 

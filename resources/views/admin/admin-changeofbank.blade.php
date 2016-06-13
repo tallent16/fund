@@ -35,7 +35,7 @@
 						@foreach($bank_list as $row)
 						<tr>
 							<td>{{$row->borrower_bankid}}</td>
-							<td>{{$row->borrower_id}}</td>
+							<td>{{$row->type}}</td>
 							<td>{{$row->bank_code}}</td>
 							<td>{{$row->bank_name}}</td>
 							<td>{{$row->branch_code}}</td>

@@ -100,6 +100,14 @@
 									@var	$actionUrl		=	url('admin/disburseloan/')
 									@var	$actionUrl		=	$actionUrl."/".$loan_id		
 							@endif
+							@if  ($loanlistRow->status	==	LOAN_STATUS_LOAN_REPAID)
+									@var	$actionUrl		=	url('admin/disburseloan/')
+									@var	$actionUrl		=	$actionUrl."/".$loan_id		
+							@endif
+							@if  ($loanlistRow->status	==	LOAN_STATUS_PENDING_COMMENTS)
+								@var	$actionUrl		=	url('admin/loanapproval/')
+								@var	$actionUrl		=	$actionUrl."/".$loan_id								
+							@endif
 									<tr class="odd" id="11" role="row">								
 										<td class="text-left">
 											<a href="{{$actionUrl}}">

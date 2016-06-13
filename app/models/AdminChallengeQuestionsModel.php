@@ -31,9 +31,9 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {			
 		
 			$id			= $newRows['id'][$rowIndex];
-			
+			$delete = false;
 			if ($id == 0) {							
-				$update = false;				
+				$update = false;		 		
 			} else {
 				$update = true;				
 			}
@@ -45,7 +45,7 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 								'slno'	=> $slno );				
 				
 			/*update/insert*/						
-			if ($update) {				
+			if ($update) {
 				$whereArray	=	[ "challenge_id"	=> $id];
 				$this->dbUpdate('challenge_questions', $dataArray, $whereArray);
 				$questionIds[]	=	$id;	
@@ -56,7 +56,7 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 		}
 			
 		/*Check before delete*/	
-		$idArray_sql	=	"SELECT challenge_id from user_challenges";
+		$idArray_sql	=	"SELECT challenge_id FROM challenge_questions";
 		
 		$count_id		=	$this->dbFetchAll($idArray_sql);
 		
@@ -64,14 +64,18 @@ class AdminChallengeQuestionsModel extends TranWrapper {
 			$this->listids[]=$row->challenge_id;
 		}
 		
-		$whereId		=	implode(",", $this->listids);		
-	
+		$deletedids 		= array_diff($this->listids,$questionIds);
+		
+		//echo "<pre>",print_r($deletedids),"</pre>"; die; 
+		
+		$whereId		=	implode(",", $deletedids);		
+	 
 		$sql			=	"SELECT COUNT(*) 
-							FROM	challenge_questions
+							FROM	user_challenges
 							WHERE	challenge_id in ({$whereId}) ";	
 						
 		$count			=	$this->dbFetchOne($sql);
-				
+		echo "<pre>",print_r($count),"</pre>"; die; 	
 		if ($count > 0) {
 			$this->errorText	=	"Challenge question marked for deletion is already in use. Cannot delete";
 			return -1;

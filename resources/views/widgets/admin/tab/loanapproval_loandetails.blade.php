@@ -182,19 +182,19 @@
 							@var	$loan_url	=	$adminLoanApprMod->submitted_document_details[$documentRowIndex]
 							@var	$loan_id	=	$adminLoanApprMod->submitted_document_details[$documentRowIndex]
 							@var	$loan_url	=	"admin/loandocdownload/".$loan_url
-							<a 	href="javascript:void(0)"
-								data-download-url="{{url($loan_url)}}"
-								class="btn button-grey borrower_doc_download">{{ Lang::get('Show Docs') }}
-							</a>
+							{{	basename($adminLoanApprMod->submitted_document_details
+																['loan_doc_url'][$documentRowIndex])
+							}}
 							<input type="hidden" name="documents[]" value="{{$loan_id}}" />
 							@var	$isDocumentAvailable	=	"yes"
 						@endif	
 					</div>
 					<div class="col-sm-1 text-right">		
 						@if($isDocumentAvailable	==	"yes")		
-							{{ Lang::get('Available') }}		
-						@else
-							{{ Lang::get('None') }}
+							<a 	href="javascript:void(0)"
+								data-download-url="{{url($loan_url)}}"
+								>{{ Lang::get('View') }}
+							</a>
 						@endif									
 					</div>
 				</div>	

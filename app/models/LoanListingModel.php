@@ -23,12 +23,12 @@ class LoanListingModel extends TranWrapper {
 	public function __construct(){	
 		
 		// This will be called only from the borrower / Investors' model so this will be investor or borrower
-		//$this->userType 		= 	$this->getUserType();
+		$this->userType 		= 	$this->getUserType();
 		
-		//$this->inv_or_borr_id	=	($this->userType == 1)? $this->getCurrentBorrowerID(): 
-															//$this->getCurrentInvestorID();
-		//$this->typePrefix		=	($this->userType == 1)? "borrower":
-															//"investor";
+		$this->inv_or_borr_id	=	($this->userType == 1)? $this->getCurrentBorrowerID(): 
+															$this->getCurrentInvestorID();
+		$this->typePrefix		=	($this->userType == 1)? "borrower":
+															"investor";
 	}
 	
 	public function processDropDowns() {
@@ -110,7 +110,7 @@ class LoanListingModel extends TranWrapper {
 												
 		$tenureWhere		=	 ($filterTenure == "all"?"":" AND loan_tenure ".$filterTenure. " ");
 
-		$gradeWhere			=	($filterGrade == "all"? "":" AND borrowers.borrower_risk_grade ".$filterGrade. " ");
+		$gradeWhere			=	($filterGrade == "all"? "":" AND loan_risk_grade ".$filterGrade. " ");
 		
 		$loanlist_sql		=	"	SELECT	loans.loan_id,
 											business_name,
@@ -122,7 +122,7 @@ class LoanListingModel extends TranWrapper {
 											round(apply_amount,2) apply_amount,
 											target_interest,
 											datediff(bid_close_date, now()) days_to_go,
-											borrower_risk_grade,
+											IFNULL(loan_risk_grade,'') borrower_risk_grade,
 											repayment_type,
 											company_image_thumbnail,
                                             if (ifnull(featured.loan_id,-1) = -1, 0, 1) isfeatured

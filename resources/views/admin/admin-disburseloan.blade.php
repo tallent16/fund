@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @section('page_heading',Lang::get('Manage Loans') )
 @section('section')  
+
 <form method="post" action="{{url('admin/savedisbursement')}}">
 <input type="hidden" id="loan_id" name="loan_id" value="{{$bidsModel->loan_id}}" />
 <input type="hidden" id="hidden_token" name="_token" value="{{ csrf_token() }}" />
@@ -10,7 +11,16 @@
 			<div class="panel-heading panel-headsection"><!--panel head-->
 				<div class="row">
 					<div class="col-sm-12">
-						<span class="pull-left">{{ Lang::get('DISBURSE LOAN')}}</span> 
+						<span class="pull-left">
+							@if( ($bidsModel->loan_status	==	LOAN_STATUS_DISBURSED)
+								||	($bidsModel->loan_status	==	LOAN_STATUS_LOAN_REPAID))
+								{{ Lang::get('LOAN DETAIL')}}
+								@var	$disableFields	=	"disabled"
+							@else
+								@var	$disableFields	=	""
+								{{ Lang::get('DISBURSE LOAN')}}
+							@endif	
+						</span> 
 					</div>
 				</div>					
 			</div><!--panel head end-->
@@ -44,6 +54,7 @@
 									class="disbursement_date form-control" 
 									name="disbursement_date"
 									required
+									{{$disableFields}}
 									value="{{$bidsModel->system_date}}" />
 
 							<label for="disbursement_date" class="input-group-addon btn">
@@ -160,7 +171,8 @@
 								class="form-control"
 								name="payment_ref"												
 								id="payment_ref"
-								required 											
+								required
+								{{$disableFields}} 											
 								value="">	
 					</div>
 
@@ -172,6 +184,7 @@
 					<div class="col-xs-12 col-sm-7 col-lg-3">									
 						<textarea rows="3" class="form-control" 
 								name="remarks" 
+								{{$disableFields}}
 								id="remarks"></textarea>	
 					</div>	
 									
@@ -191,9 +204,31 @@
 					</div>					
 				</div>
 				
+				<div class="row"><!--row--2-->
+					<div class="table-responsive">
+						<table class="table table-bordered .tab-fontsize" id="bidsummary">		
+							<tbody>
+								<tr>
+									<th class="tab-head col-sm-4 text-left">
+										{{Lang::get('Investor')}}</th>
+									<th class="tab-head col-sm-2 text-left">
+										{{Lang::get('Bid Date')}}</th>
+									<th class="tab-head col-sm-2 text-right">
+										{{Lang::get('Bid Amount')}}</th>								
+									<th class="tab-head col-sm-2 text-right">
+										{{Lang::get('Bid Interest')}}</th>
+									<th class="tab-head col-sm-2 text-right">
+										{{Lang::get('Accepted Amount')}}</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div><!----panel-body--->	
-	</div><!----panel-container--->
+			
+		</div><!----panel-container--->
 </div>
+
 </form>
 <input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
  @section ('popup-box_panel_title',Lang::get('Repayment Schedule'))

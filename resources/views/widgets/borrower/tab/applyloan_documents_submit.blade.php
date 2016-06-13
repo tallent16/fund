@@ -24,9 +24,13 @@
 										title="{{ $documentRow['doc_name'] }}">
 										<i class="fa fa-question"></i></a>
 								</div>
-								<div class="col-sm-5" id="documents_{{$i}}_parent">										
+								@var	$isRequired	=	""
+								<div class="col-sm-5" id="documents_{{$i}}_parent">		
+									@if($documentRow['is_mandatory'])
+										@var	$isRequired	=	"required"
+									@endif
 										<input 	type="file" 
-												class="jfilestyle required" 
+												class="jfilestyle {{$isRequired}}" 
 												data-buttonBefore="true" 
 												name="documents[]"
 												id="documents_{{$i}}">	

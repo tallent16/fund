@@ -46,6 +46,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $completeLoanDetails				= 	0;
 	public 	$gradeInfo 						= 	array();
 	public 	$grade 							= 	"";
+	public 	$loan_status 					= 	"";
+	
 	
 	public function getBorrowerLoanDetails($loan_id) {
 		
@@ -366,6 +368,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 					}else{
 						if($this->checkLoanDocumentUpdate($loan_doc_id,$loan_id)) {
 							$whereArry	=	array("loan_id" =>"{$loan_id}","loan_doc_id" =>"{$loan_doc_id}");
+							
 							$this->dbUpdate('loan_docs_submitted', $dataArray, $whereArry);
 						}else{
 							$result =  $this->dbInsert('loan_docs_submitted', $dataArray, true);
@@ -374,9 +377,15 @@ class BorrowerApplyLoanModel extends TranWrapper {
 							}
 						}
 					}
-					
+					$prefix			=	"doc_{$loan_doc_id}_";
+					$loan_doc_url	=	$fileUploadObj->storeFile($destinationPath ,$file,$prefix);
+					unset($dataArray);
+					unset($whereArry);
+					$dataArray 		= 	array(	'loan_doc_url'	=> $loan_doc_url);	
+					$whereArry		=	array("loan_id" =>"{$loan_id}","loan_doc_id" =>"{$loan_doc_id}");
+					$this->dbUpdate('loan_docs_submitted', $dataArray, $whereArry);
 			// Insert or Update the loan documents list	
-				$fileUploadObj->storeFile($destinationPath ,$file);
+				
 			}
 		}
 		return 1;
