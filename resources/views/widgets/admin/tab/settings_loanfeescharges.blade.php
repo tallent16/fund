@@ -2,6 +2,7 @@
 	<div class="panel panel-default applyloan">   
 		<div class="panel-body">
 			<div class="col-sm-12">
+				@foreach($settings_list as $row)
 				<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Loan Monthly Pay by Day')}}
@@ -10,7 +11,7 @@
 						<input type="text" class="form-control" 
 								name="loan_monthly"												
 								id="loan_monthly"
-								value="">										
+								value="{{$row->monthly_pay_by_date}}">										
 					</div>
 				</div>		
 				<div class="row">
@@ -21,7 +22,7 @@
 						<input type="text" class="form-control" 
 								name="processing_fixed_fees"												
 								id="processing_fixed_fees"
-								value="">										
+								value="{{$row->loan_fixed_fees}}">										
 					</div>
 				</div>		
 				<div class="row">
@@ -32,7 +33,7 @@
 						<input type="text" class="form-control" 
 								name="processing_fees_percent"												
 								id="processing_fees_percent"
-								value="">										
+								value="{{$row->loan_fees_percent}}">										
 					</div>
 				</div>		
 				<div class="row">
@@ -43,7 +44,7 @@
 						<input type="text" class="form-control" 
 								name="processing_fee_minimum"												
 								id="processing_fee_minimum"
-								value="">										
+								value="{{$row->loan_fees_minimum_applicable}}">										
 					</div>
 				</div>	
 				<div class="row">
@@ -54,7 +55,7 @@
 						<input type="text" class="form-control" 
 								name="penalty_process_fee"												
 								id="penalty_process_fee"
-								value="">										
+								value="{{$row->penalty_fee_minimum}}">										
 					</div>
 				</div>	
 				<div class="row">
@@ -65,7 +66,7 @@
 						<input type="text" class="form-control" 
 								name="penalty_process_percent"												
 								id="penalty_process_percent"
-								value="">										
+								value="{{$row->penalty_fee_percent}}">										
 					</div>
 				</div>
 				<div class="row">
@@ -76,9 +77,10 @@
 						<input type="text" class="form-control" 
 								name="penalty_interest"												
 								id="penalty_interest"
-								value="">										
+								value="{{$row->penalty_interest}}">										
 					</div>
-				</div>		
+				</div>	
+				@endforeach	
 			</div>
 			
 		</div>

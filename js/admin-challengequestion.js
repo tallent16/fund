@@ -25,8 +25,10 @@ function addNewRow(){
 $("#delete_question").click(function(event){
 	$('table#admin_table tr').each(function (i) {
 		if ($(this).find('input.select_question_id').is(':checked')) {
-			$(this).closest('tr').remove();
-			$('#delete_check').html(function(i, val) { return +val+1 });
+			$(this).closest('tr').remove();			
+			$('#delete_check').val( function(i, oldval) {
+				return parseInt( oldval, 10) + 1;
+			});
 		}
 	});
      AutoNumber();

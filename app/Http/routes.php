@@ -201,7 +201,15 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 });
 
 //Settings Configuration
-Route::get('admin/settings',  'AdminSettingsController@indexAction');
+//Route::get('admin/settings',  'AdminSettingsController@indexAction');
+
+Route::get('admin/settings',  	[	'as' 			=> 	'admin.settings', 
+												'uses' 			=>	'AdminSettingsController@indexAction'
+											]
+			);
+Route::post('admin/settings',  	[	'uses' 			=>	'AdminSettingsController@saveAction'
+											]
+			);
 
 Route::get('admin/challengequestions',  	[	'as' 			=> 	'admin.challengequestions', 
 												'uses' 			=>	'AdminChallengeQuestionsController@indexAction'

@@ -31,6 +31,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 	
 	public	$repayment_schedule = array();
 	public 	$investor_repayment	= array();
+	public 	$loanInvestors		= array();
 	
 	public function getDisburseDetails($loan_id) {
 		
@@ -405,6 +406,46 @@ class AdminDisburseLoanModel extends TranWrapper {
 	
 		
 	}
-
+	
+	public function getAllInvestorByLoan($loan_id) {
+		
+		$bidsInfo_sql	=	"	SELECT	users.username,
+										bid_id,
+										investors.investor_id,
+										date_format(bid_datetime, '%d-%m-%Y %h:%i') bid_datetime,
+										bid_amount,
+										bid_interest_rate,
+										accepted_amount
+								FROM	users,
+										investors,
+										loan_bids
+								WHERE	loan_bids.loan_id = :loan_id
+								AND		loan_bids.investor_id = investors.investor_id
+								AND		investors.user_id = users.user_id
+								AND		loan_bids.bid_status != :bid_cancelled 
+								ORDER BY bid_interest_rate, bid_datetime";
+								
+		$bidsInfo_args	=	[	"loan_id" => $loan_id, 
+								"bid_cancelled" => LOAN_BIDS_STATUS_CANCELLED
+							];
+		
+		$this->loanInvestors	=	$this->dbFetchWithParam($bidsInfo_sql, $bidsInfo_args);
+	}
+	
+	public function getInvestorRepay($loan_id,$investor_id) {
+		
+		$investorInfo_sql	=	"	SELECT	installment_number,
+											payment_scheduled_date,
+											principal_amount,
+											interest_amount,
+											
+									FROM	investor_repayment_schedule
+									WHERE	loan_id = {$loan_id}
+									AND		investor_id = {$investor_id}
+									ORDER BY installment_number";
+								
+		
+		$this->loanInvestors	=	$this->dbFetchWithParam($bidsInfo_sql, $bidsInfo_args);
+	}
 						
 }

@@ -5,7 +5,9 @@
 @section('page_heading',Lang::get('Settings') )
 @section('section')  
 <div class="col-sm-12 space-around">
-	
+	<form class="form-inline" id="form-settings" method="post" enctype="multipart/form-data">	
+	<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
+		@var $settings_list = $adminsettingModel->settingsList;
 		<div class="row">
 			<div class="col-lg-12 col-md-6 col-xs-12">
 				<ul class="nav nav-tabs">
@@ -50,7 +52,7 @@
 		</div>
 		
 		<button type="submit" class="btn verification-button">Save Settings</button>
-	
+	</form>	
 </div>
 	@endsection  
 @stop

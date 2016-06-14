@@ -78,7 +78,10 @@
 	@endpermission	
 	<li>
 		<a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('Settings') }} <span class="fa arrow"></span></a> 
-			<ul class="nav nav-second-level">				
+			<ul class="nav nav-second-level">	
+				<li>
+					<a href="{{ url ('admin/settings') }}">{{ Lang::get('Settings') }}</a>
+				</li>			
 				<li>
 					<a href="{{ url ('admin/challengequestions') }}">{{ Lang::get('Challenge Questions') }}</a>
 				</li>

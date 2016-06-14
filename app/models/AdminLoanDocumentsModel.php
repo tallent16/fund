@@ -32,6 +32,8 @@ class AdminLoanDocumentsModel extends TranWrapper {
 		
 			$id			= $newRows['id'][$rowIndex];
 			
+			$delete_check = $postArray['delete_check'];
+			
 			if ($id == 0) {		
 				$update = false;				
 			} else {
@@ -54,8 +56,10 @@ class AdminLoanDocumentsModel extends TranWrapper {
 				
 			/*update/insert*/						
 			if ($update) {	
-				$whereArray	=	[ "loan_doc_id"	=> $id];
-				$this->dbUpdate('loan_doc_master', $dataArray, $whereArray);				
+				if($delete_check == 0){
+					$whereArray	=	[ "loan_doc_id"	=> $id];
+					$this->dbUpdate('loan_doc_master', $dataArray, $whereArray);		
+				}		
 				$docIds[]	=	$id;							
 			} else {				
 				$id	 =  $this->dbInsert('loan_doc_master', $dataArray, true);				
@@ -65,20 +69,23 @@ class AdminLoanDocumentsModel extends TranWrapper {
 	
 		/*Check before delete*/	
 		
-		$idArray_sql	=	"SELECT loan_doc_id 
-								FROM loan_docs_submitted ";
+		$idArray_sql	=	"SELECT 
+								loan_doc_id 
+								FROM loan_doc_master";
 		
 		$count_id		=	$this->dbFetchAll($idArray_sql);
 		
 		foreach($count_id as $row){
 			$this->listids[]=$row->loan_doc_id;
 		}
+		
+		$deletedids 		= array_diff($this->listids,$docIds);
 			
-		$whereId		=	implode(",", $this->listids);		
+		$whereId		=	implode(",", $deletedids);		
 	
 		$sql			=	"SELECT COUNT(*) 
-							FROM	loan_doc_master
-							WHERE	loan_doc_id in ({$whereId}) ";	
+								FROM	loan_docs_submitted
+								WHERE	loan_doc_id in ({$whereId}) ";	
 							
 		$count			=	$this->dbFetchOne($sql);
 			

@@ -535,14 +535,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 										repayment_schedule_date schd_date,
 										ifnull(repayment_actual_date ,'') act_date,
 										date_format(repayment_schedule_date ,'%Y-%m') inst_period,
-										ROUND(if (date(repayment_schedule_date) < date(now()),
-												if (penalty_type_applicable in (1,3), 
-														repayment_scheduled_amount * 
-															power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
-																datediff(now(), repayment_schedule_date)), 0) + 
-												if (penalty_type_applicable in (2,3),
-														ifnull(penalty_fixed_amount, 0), 0) -
-												repayment_scheduled_amount, 0),2) penalty,
+										ROUND(if ( date(repayment_schedule_date) < date(now()) && repayment_status = 1,
+											repayment_scheduled_amount * (penalty_fee_percent/100) / 365 * datediff(now(), repayment_schedule_date) + 
+											greatest(repayment_scheduled_amount * (penalty_fee_percent / 100), penalty_fee_minimum), 0),2) penalty,
 										ROUND(repayment_scheduled_amount,2) schd_amount,
 										CASE repayment_status
 											   when '1' and (datediff(now(), repayment_schedule_date) > 0)
@@ -553,25 +548,20 @@ class BorrowerRepayLoansModel extends TranWrapper {
 										END as repayment_status,
 										repayment_status dataStatus,
 										IFNULL(payments.trans_reference_number,'') trans_reference_number
-										FROM	(
-													SELECT 		*	 
-													FROM 		borrower_repayment_schedule
-													WHERE 		repayment_status in (1,2)
-													GROUP BY 	loan_id
-													HAVING 		repayment_schedule_date = MIN(repayment_schedule_date)
-													UNION
-													SELECT 		* 
-													FROM 		borrower_repayment_schedule a
-													WHERE 		installment_number = 
-															(	SELECT 	max(installment_number) 
-																FROM 	borrower_repayment_schedule b
-																WHERE	a.loan_id = b.loan_id
-																AND		b.repayment_status = 3)
-												) loan_repayment
-												LEFT JOIN	payments
-												ON	loan_repayment.payment_id	=	payments.payment_id,
-												loans
-										WHERE	loans.loan_id = loan_repayment.loan_id ";
+									FROM	(
+											SELECT * FROM borrower_repayment_schedule WHERE repayment_status = 3
+											UNION
+											SELECT * FROM borrower_repayment_schedule a
+											WHERE 		installment_number = 
+													(	SELECT 	min(installment_number) 
+														FROM 	borrower_repayment_schedule b
+														WHERE	a.loan_id = b.loan_id
+														AND		b.repayment_status in (1,2))
+										) loan_repayment
+										LEFT JOIN	payments
+										ON	loan_repayment.payment_id	=	payments.payment_id,
+										loans
+									WHERE	loans.loan_id = loan_repayment.loan_id";
 					
 		$this->repaymentLoanList	=	$this->dbFetchAll($repaymentloan_sql);	
 		

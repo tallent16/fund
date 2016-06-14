@@ -21,12 +21,12 @@ class AdminChangeofBankModel extends TranWrapper {
 		
 		$boin_sql = "SELECT 
 							borrower_bankid,
-								(SELECT users.usertype as type
+							/*	(SELECT users.usertype as type
 								FROM borrower_banks
 								INNER JOIN borrowers
 									ON borrower_banks.borrower_id = borrowers.borrower_id
 								INNER JOIN users 
-									ON borrowers.user_id = users.user_id ),
+									ON borrowers.user_id = users.user_id ),*/
 							borrower_id,
 							bank_code,
 							bank_name,

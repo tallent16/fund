@@ -10,6 +10,7 @@
 	
 	<form method="post" id="form-businessorgtype" action="">
 	<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">	
+	<input type="hidden" name="delete_check" id="delete_check" value="0">	
 	<div class="row">		
 		<div class="col-lg-12 col-md-12">
 			<div class="panel panel-primary panel-container">				

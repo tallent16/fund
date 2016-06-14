@@ -28,6 +28,9 @@ $("#delete_doc").click(function(){
 	$('table#admin_table tr').each(function (i) {
 		if ($(this).find('input.select_loandoc_id').is(':checked')) {
 			$(this).closest('tr').remove();
+			$('#delete_check').val( function(i, oldval) {
+				return parseInt( oldval, 10) + 1;
+			});
 		}
 	});  
 	 AutoNumber();     

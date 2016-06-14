@@ -18,11 +18,11 @@ $(document).ready(function (){
 	//~ }
 	//~ , "Letters, numbers ,special characters"); 
 	 $.validator.addMethod("custompasswordstrength", function(value, element) {   
-		return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{10,15}$/.test(value);
+		return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@#$!%*?&])[A-Za-z\d$@#$!%*?&]{10,15}$/.test(value);
 	}
 	, "Letters, numbers ,special characters"); 
 	 
-	 var errPattern	=	'Please enter min 10 and max 15 characters with atleast 1 letter ';
+	 var errPattern	=	'Please enter min 10 and max 15 characters with atleast Upper case letter ';
 		 errPattern	=	errPattern+'& 1 number & 1 specialcharacter((!@#$%^&*)';
 		 
 	 $('#form-register').validate({

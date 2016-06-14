@@ -32,7 +32,7 @@ class AdminBusinessOrgTypeModel extends TranWrapper {
 		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {			
 		
 			$id			= $newRows['id'][$rowIndex];
-			
+			$delete_check = $postArray['delete_check'];
 			if ($id == 0) {		
 				$update = false;				
 			} else {
@@ -53,8 +53,10 @@ class AdminBusinessOrgTypeModel extends TranWrapper {
 				
 			/*update/insert*/						
 			if ($update) {	
-				$whereArray	=	[ "bo_id"	=> $id];
-				$this->dbUpdate('business_organisations', $dataArray, $whereArray);				
+				if($delete_check == 0){
+					$whereArray	=	[ "bo_id"	=> $id];
+					$this->dbUpdate('business_organisations', $dataArray, $whereArray);		
+				}		
 				$boIds[]	=	$id;							
 			} else {				
 				$id	 =  $this->dbInsert('business_organisations', $dataArray, true);				
@@ -65,26 +67,24 @@ class AdminBusinessOrgTypeModel extends TranWrapper {
 		
 		/*Check before delete*/	
 		
-		$idArray_sql	=	"SELECT bo_id from borrowers";
+		$idArray_sql	=	"SELECT 
+								bo_id 
+								FROM borrowers";
 		
 		$count_id		=	$this->dbFetchAll($idArray_sql);
 		
 		foreach($count_id as $row){
 			$this->listids[]=$row->bo_id;
 		}
+		
+		$deletedids 		= array_diff($this->listids,$boIds);
 	
-		$whereId		=	implode(",", $this->listids);		
+		$whereId		=	implode(",", $deletedids);		
 	
 		$sql			=	"SELECT COUNT(*) 
-							FROM	business_organisations
-							WHERE	bo_id in ({$whereId}) ";	
+								FROM	business_organisations
+								WHERE	bo_id in ({$whereId}) ";	
 							
-		/*$sql			=	"SELECT count(bo_id)
-								FROM  business_organisations
-								WHERE EXISTS (SELECT * 
-								FROM   borrowers 
-								WHERE  business_organisations.bo_id = borrowers.bo_id)";	*/				
-						
 		$count			=	$this->dbFetchOne($sql);
 				
 		if ($count > 0) {
