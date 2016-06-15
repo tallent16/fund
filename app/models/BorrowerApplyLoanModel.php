@@ -308,7 +308,11 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	// echo "<pre>",print_r($dataArray),"</pre>";
 		
 		if ($transType != "edit") {
-			$dataArray['bid_close_date']	=	$this->getDbDateFormat(date('d-m-Y', strtotime("+20 days")));
+			$dataArray['bid_close_date']		=	$this->getDbDateFormat(date('d-m-Y', strtotime("+20 days")));
+			
+			$dataArray['penalty_interest']		=	$this->getSystemSettingFieldByKey("penalty_interest");
+			$dataArray['penalty_fee_minimum']	=	$this->getSystemSettingFieldByKey("penalty_fee_minimum");
+			$dataArray['penalty_fee_percent']	=	$this->getSystemSettingFieldByKey("penalty_fee_percent");
 			
 			$loanId =  $this->dbInsert('loans', $dataArray, true);
 			if ($loanId < 0) {

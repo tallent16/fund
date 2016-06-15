@@ -97,11 +97,11 @@
 									@var	$actionUrl		=	$actionUrl."/".$loan_id		
 							@endif
 							@if  ($loanlistRow->status	==	LOAN_STATUS_DISBURSED)
-									@var	$actionUrl		=	url('admin/disburseloan/')
+									@var	$actionUrl		=	url('admin/loanview/')
 									@var	$actionUrl		=	$actionUrl."/".$loan_id		
 							@endif
 							@if  ($loanlistRow->status	==	LOAN_STATUS_LOAN_REPAID)
-									@var	$actionUrl		=	url('admin/disburseloan/')
+									@var	$actionUrl		=	url('admin/loanview/')
 									@var	$actionUrl		=	$actionUrl."/".$loan_id		
 							@endif
 							@if  ($loanlistRow->status	==	LOAN_STATUS_PENDING_COMMENTS)

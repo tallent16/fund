@@ -1,7 +1,9 @@
 <?php namespace App\models;
 class AdminSettingsModel extends TranWrapper {
 	
-	public $settingsList	=	array();
+	public $settingsList		=	array();
+	public $moduleList			=	array();
+	public $defaultmoduleval	=	"all";
 	
 	public function getGeneralSettings(){
 		
@@ -34,6 +36,43 @@ class AdminSettingsModel extends TranWrapper {
 		$this->settingsList = 	$result;						
 		
 	}	
+	
+	public function getModuleDropdown(){
+		
+		$module_sql			=	 "SELECT DISTINCT module FROM system_messages";
+							
+		$result_module		=	$this->dbFetchAll($module_sql);
+			
+		$moduleListing		= 	$result_module;		
+		
+		$this->moduleList['all'] 	=	'All';
+		
+		foreach($moduleListing as $module_row) {
+			$this->moduleList[] = $module_row->module;		
+		}		
+	}
+	
+	public function getModuleTable($defaultmodule){
+		
+		$moduleWhere		= ($defaultmodule == "All")? 
+										"module":	"'{$defaultmodule}'";
+								
+		$module_sql			= "	SELECT 
+									module,
+									event_action,
+									slug_name,
+									message_text,
+									send_email,
+										CASE send_email
+										   when 1  then 'Yes'
+										   when 0  then 'No'										  
+										END as send_email_text 
+								FROM system_messages 
+								WHERE module = {$moduleWhere} ";
+								
+		$module_rs		= 	$this->dbFetchAll($module_sql);
+		return	$module_rs;
+	}
 	
 	public function updateGeneralSettings($postArray){
 		
@@ -95,6 +134,5 @@ class AdminSettingsModel extends TranWrapper {
 		}else{
 			return 	-1;
 		}
-	}
-	
+	}	
 }

@@ -167,10 +167,17 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$file_names			=	$this->borrowerApplyLoanModel->getBorrowerAllLoanDocUrl($doc_ids);
 		
 		$zip = new ZipArchive();
-	
-		if ($zip->open($archive_file_name, ZIPARCHIVE::OVERWRITE )!==TRUE) {
-			exit("cannot open <$archive_file_name>\n");
+		if(file_exists($archive_file_name)) {
+			if ($zip->open($archive_file_name, ZIPARCHIVE::OVERWRITE )!==TRUE) {
+				exit("cannot open <$archive_file_name>\n");
+			}
+		}else{
+			if ($zip->open($archive_file_name, ZIPARCHIVE::CREATE )!==TRUE) {
+				exit("cannot open <$archive_file_name>\n");
+			}
 		}
+		
+		
 		
 		foreach($file_names as $files){
 			$download_file = file_get_contents($files);

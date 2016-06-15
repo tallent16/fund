@@ -18,10 +18,12 @@ class AdminSettingsController extends MoneyMatchController {
 	}
 	
 	public function indexAction() {
-		
+		$defaultmodule = "all";
 		$submitted	=	false;
 		
 		$returnvalue = $this->adminSettingsModel->getGeneralSettings();	
+		
+		$re=$this->adminSettingsModel->getModuleDropdown();	
 		
 		$withArry	=	array(	"adminsettingModel" => $this->adminSettingsModel,
 								"classname"=>"fa fa-user fa-fw",
@@ -30,6 +32,17 @@ class AdminSettingsController extends MoneyMatchController {
 		
 		return view('admin.admin-settings')
 						->with($withArry); 
+	}
+	
+	public function ajaxAction() {	
+		
+		$defaultmodule 	= 'all';
+		
+		if (isset($_REQUEST["modulelist"])) 
+			$defaultmodule 	= $_REQUEST["modulelist"];
+			
+		$response_data 	= 	$this->adminSettingsModel->getModuleTable($defaultmodule);
+		return json_encode(array("rows"=>$response_data));		
 	}
 	
 	public function saveAction() {

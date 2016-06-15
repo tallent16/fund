@@ -210,6 +210,7 @@ Route::get('admin/settings',  	[	'as' 			=> 	'admin.settings',
 Route::post('admin/settings',  	[	'uses' 			=>	'AdminSettingsController@saveAction'
 											]
 			);
+Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
 
 Route::get('admin/challengequestions',  	[	'as' 			=> 	'admin.challengequestions', 
 												'uses' 			=>	'AdminChallengeQuestionsController@indexAction'
@@ -619,6 +620,16 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 									]
 			);
 	
+	 Route::get('admin/loanview/{loan_id}',
+									[	
+										'as' 			=> 	'admin.loanview', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'view.admin.disburseloan',
+										'redirect_back'	=>	'admin.loanlisting',
+										'action_type'	=>	'view loan detail',
+										'uses' 			=>	'AdminDisburseLoanController@showViewLoanAction'
+									]
+			);
 	//loan documents download action
 	Route::get('admin/loandocdownload/{doc_id}', 'AdminLoanApprovalController@downloadLoanDocumentAction'); 
 	Route::post('admin/downloadAllFiles', 'AdminLoanApprovalController@downloadAllFilesAction'); 
@@ -626,6 +637,8 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 	//ajax call actions
 	Route::post('ajax/getloanrepayschd', 'AdminDisburseLoanController@ajaxGetLoanRepaySchedAction');	
 	Route::get('ajax/getloanrepayschd', 'AdminDisburseLoanController@ajaxGetLoanRepaySchedAction');	
+	
+	Route::post('admin/ajax/getinvestor_repayment', 'AdminDisburseLoanController@ajaxGetInvestorRepaySchedAction');	
 	Route::post('admin/ajaxBidCloseDate/checkvalaidation', 'AdminLoanApprovalController@checkBiCloseDateValidationction'); 
 	
 	//****************************Manage Loans, Approvals Ends ***************************************************************

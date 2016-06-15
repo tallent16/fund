@@ -28,6 +28,8 @@ class AdminDisburseLoanModel extends TranWrapper {
 	public	$firstInstdate = "";
 	public	$plusOneMonth = "";
 	public	$loan_status = 0;
+	public	$repayment_typeText = "";
+	public	$bid_typeText = "";
 	
 	public	$repayment_schedule = array();
 	public 	$investor_repayment	= array();
@@ -50,7 +52,18 @@ class AdminDisburseLoanModel extends TranWrapper {
 											loan_fees_percent,
 											loan_fixed_fees,
 											final_interest_rate,
+											target_interest,
 											repayment_type,
+											case loans.repayment_type 
+												   when 1 then 'Bullet' 
+												   when 2 then 'Monthly Interest'
+												   when 3 then 'EMI'
+											end as repayment_typeText,
+											case loans.bid_type 
+												   when 1 then 'Open Bid' 
+												   when 2 then 'Closed Bid'
+												   when 3 then 'Fixed Interest '
+											end as bid_typeText,
 											loan_fees_minimum_applicable,
 											monthly_pay_by_date,
 											date_format(now(), '%d-%m-%Y') system_date
@@ -411,41 +424,56 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		$bidsInfo_sql	=	"	SELECT	users.username,
 										bid_id,
-										investors.investor_id,
+										mainInvestor.investor_id,
 										date_format(bid_datetime, '%d-%m-%Y %h:%i') bid_datetime,
 										bid_amount,
 										bid_interest_rate,
-										accepted_amount
+										accepted_amount,
+										(	SELECT SUM(principal_amount+interest_amount+IFNULL(penalty_amount,0))
+											FROM	investor_repayment_schedule
+											WHERE	loan_id = {$loan_id}
+											AND		investor_id = mainInvestor.investor_id	
+											AND		status	=	:paid_param
+										) totalrepaid
 								FROM	users,
-										investors,
+										investors mainInvestor,
 										loan_bids
 								WHERE	loan_bids.loan_id = :loan_id
-								AND		loan_bids.investor_id = investors.investor_id
-								AND		investors.user_id = users.user_id
+								AND		loan_bids.investor_id = mainInvestor.investor_id
+								AND		mainInvestor.user_id = users.user_id
 								AND		loan_bids.bid_status != :bid_cancelled 
 								ORDER BY bid_interest_rate, bid_datetime";
-								
+					
 		$bidsInfo_args	=	[	"loan_id" => $loan_id, 
-								"bid_cancelled" => LOAN_BIDS_STATUS_CANCELLED
+								"bid_cancelled" => LOAN_BIDS_STATUS_CANCELLED,
+								"paid_param" => INVESTOR_REPAYMENT_STATUS_VERIFIED
 							];
 		
 		$this->loanInvestors	=	$this->dbFetchWithParam($bidsInfo_sql, $bidsInfo_args);
+		//~ echo "<pre>",print_r($this->loanInvestors),"</pre>";
+		//~ die;
 	}
 	
 	public function getInvestorRepay($loan_id,$investor_id) {
 		
 		$investorInfo_sql	=	"	SELECT	installment_number,
 											payment_scheduled_date,
-											principal_amount,
-											interest_amount,
-											
+											ROUND(principal_amount,2) principal_amount,
+											ROUND(interest_amount,2) interest_amount,
+											(	SELECT 	codelist_value
+												FROM	codelist_details
+												WHERE	codelist_id = 25
+												AND		codelist_code	=	status) statusText,
+											ROUND(IFNULL(penalty_amount,0),2) penalty_amount,
+											ROUND((principal_amount+interest_amount+IFNULL(penalty_amount,0)),2) total_amount
 									FROM	investor_repayment_schedule
 									WHERE	loan_id = {$loan_id}
 									AND		investor_id = {$investor_id}
 									ORDER BY installment_number";
 								
-		
-		$this->loanInvestors	=	$this->dbFetchWithParam($bidsInfo_sql, $bidsInfo_args);
+	
+		$result				=		$this->dbFetchAll($investorInfo_sql);
+		return $result;
 	}
 						
 }

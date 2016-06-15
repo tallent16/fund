@@ -192,6 +192,7 @@
 					<div class="col-sm-1 text-right">		
 						@if($isDocumentAvailable	==	"yes")		
 							<a 	href="javascript:void(0)"
+								class="borrower_doc_download"
 								data-download-url="{{url($loan_url)}}"
 								>{{ Lang::get('View') }}
 							</a>

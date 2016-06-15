@@ -34,7 +34,7 @@ $(".repayment_schedule").on("click", function() {
 		
 	 $.ajax({
 		type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-		url         : baseUrl+'/ajax/getinvestor_repayment', // the url where we want to POST
+		url         : baseUrl+'/admin/ajax/getinvestor_repayment', // the url where we want to POST
 		data        : {
 							loan_id:$(this).attr("data-loan-id"),
 							investor_id:$(this).attr("data-investor-id"),
@@ -97,8 +97,9 @@ function showInvestorRepaymentFunc(data) {
 							"			<th>Schedule Payment Date</th>" +
 							"			<th>Principal Amount</th>" +
 							"			<th>Interest Amount</th>" +
-							"			<th>Status</th>" +
+							"			<th>Penalty Amount</th>" +
 							"			<th>Total Amount</th>" +
+							"			<th>Status</th>" +
 							"		</tr>"+
 							"	</thead>"+
 							"	<tbody>";	
@@ -116,8 +117,9 @@ function showInvestorRepaymentFunc(data) {
 								"			<td>"+newDate+"</td> " +
 								"			<td>"+data[arrIndex]["principal_amount"]+"</td> " +
 								"			<td>"+data[arrIndex]["interest_amount"]+"</td> " +
+								"			<td>"+data[arrIndex]["penalty_amount"]+"</td> " +
+								"			<td>"+data[arrIndex]["total_amount"]+"</td> " +
 								"			<td>"+data[arrIndex]["statusText"]+"</td> " +
-								"			<td>"+data[arrIndex]["payment_schedule_amount"]+"</td> " +
 								"		</tr>";			
 		}
 	}

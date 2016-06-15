@@ -160,8 +160,65 @@
 
 					
 				</div>  <!-- Row 4 -->	
+				
+				<div class="row">  <!-- Row 4 a-->				
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label for="bid_type">
+							{{ Lang::get('Bid Type') }}
+						</label>
+					</div>	
+
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
+						<input 	type="text" 
+								class="form-control"
+								disabled
+								value="{{$bidsModel->bid_typeText}}">	
+					</div>
+
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label>	
+							{{ Lang::get('Repayment Type') }}
+						</label>
+					</div>	
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
+							<input 	type="text" 
+								class="form-control"
+								disabled
+								value="{{$bidsModel->repayment_typeText}}">	
+					</div>	
+									
+				</div>  <!-- Row 4 a -->	
 					
-				<div class="row">  <!-- Row 5-->				
+				<div class="row">  <!-- Row 4 b-->				
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label for="target_interest z">
+							{{ Lang::get('Target Interest') }}
+						</label>
+					</div>	
+
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
+							<input 	type="text" 
+								class="form-control  text-right"
+								disabled
+								value="{{$bidsModel->target_interest}}">	
+					</div>
+
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label>	
+							{{ Lang::get('Final Interest') }}
+						</label>
+					</div>	
+					<div class="col-xs-12 col-sm-7 col-lg-3">									
+							<input 	type="text" 
+								class="form-control  text-right"
+								disabled
+								value="{{$bidsModel->final_interest_rate}}">	
+					</div>	
+									
+				</div>  <!-- Row 4 b -->		
+				
+				<div class="row">  <!-- Row 5-->			
+					@if(Route::currentRouteName()	!=	"admin.loanview")
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label for="payment_ref">
 							{{ Lang::get('Payment Reference') }}
@@ -177,7 +234,7 @@
 								{{$disableFields}} 											
 								value="">	
 					</div>
-
+					@endif	
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>	
 							{{ Lang::get('Remarks') }}
@@ -190,7 +247,8 @@
 								id="remarks"></textarea>	
 					</div>	
 									
-				</div>  <!-- Row 5 -->		
+				</div>  <!-- Row 5 -->	
+				
 				<div class="row">	
 					<div class="col-xs-12 col-sm-7 col-lg-12 space-around">	
 						@permission('showrepayment.admin.disburseloan')			
@@ -205,60 +263,67 @@
 					@endif
 					</div>					
 				</div>
-				<!-- ==================== Showing all investor invested in the loan ===================== -->
-				@if($canViewInvestorList)
-					<div class="space-around">
-						<div class="table-responsive">
-							<table class="table table-bordered .tab-fontsize" id="bidsummary">		
-								<tbody>
-									<tr>
-										<th class="tab-head col-sm-4 text-left">
-											{{Lang::get('Investor')}}</th>
-										<th class="tab-head col-sm-2 text-left">
-											{{Lang::get('Bid Date')}}</th>
-										<th class="tab-head col-sm-2 text-right">
-											{{Lang::get('Bid Amount')}}</th>								
-										<th class="tab-head col-sm-2 text-right">
-											{{Lang::get('Bid Interest')}}</th>
-										<th class="tab-head col-sm-2 text-right">
-											{{Lang::get('Accepted Amount')}}</th>
-										<th class="tab-head col-sm-2 text-right">
-											{{Lang::get('Action')}}</th>
-									</tr>
-									@foreach($bidsModel->loanInvestors as $loanbidRow)
+				@if(Route::currentRouteName()	==	"admin.loanview")
+					<!-- ==================== Showing all investor invested in the loan ===================== -->
+					@if($canViewInvestorList)
+						<div class="space-around">
+							<div class="table-responsive">
+								<table class="table table-bordered .tab-fontsize" id="bidsummary">		
+									<tbody>
 										<tr>
-											<td class="col-sm-4 text-left">
-												{{$loanbidRow->username}}
-											</td>
-											<td class="col-sm-2 text-left">
-												{{$loanbidRow->bid_datetime}}
-											</td>
-											<td class="text-right">
-												{{number_format($loanbidRow->bid_amount, 2, ".", ",")}}
-											</td>								
-											<td class="text-right">
-												{{number_format($loanbidRow->bid_interest_rate, 2, ".", ",")}}
-											</td>										
-											<td>
-												{{number_format($loanbidRow->accepted_amount, 2, '.',',')}}											
-											</td>	
-											<td>
-												<button type="button" 
-														class="btn verification-button repayment_schedule" 
-														data-investor-id="{{$loanbidRow->investor_id}}"
-														data-loan-id="{{$bidsModel->loan_id}}"
-														>
-													{{ Lang::get('Show Repayments')}}
-												</button>
-											</td>	
+											<th class="tab-head col-sm-2 text-left">
+												{{Lang::get('Investor')}}</th>
+											<th class="tab-head col-sm-2 text-left">
+												{{Lang::get('Bid Date')}}</th>
+											<th class="tab-head col-sm-2 text-right">
+												{{Lang::get('Bid Amount')}}</th>								
+											<th class="tab-head col-sm-2 text-right">
+												{{Lang::get('Bid Interest')}}</th>
+											<th class="tab-head col-sm-2 text-right">
+												{{Lang::get('Accepted Amount')}}</th>
+											<th class="tab-head col-sm-2 text-right">
+												{{Lang::get('Total Repaid')}}</th>
+											<th class="tab-head col-sm-2 text-left">
+												{{Lang::get('Action')}}</th>
 										</tr>
-									@endforeach
-								</tbody>
-							</table>
+										@foreach($bidsModel->loanInvestors as $loanbidRow)
+											<tr>
+												<td class="col-sm-2 text-left">
+													{{$loanbidRow->username}}
+												</td>
+												<td class="col-sm-2 text-left">
+													{{$loanbidRow->bid_datetime}}
+												</td>
+												<td class="text-right">
+													{{number_format($loanbidRow->bid_amount, 2, ".", ",")}}
+												</td>								
+												<td class="text-right">
+													{{number_format($loanbidRow->bid_interest_rate, 2, ".", ",")}}
+												</td>										
+												<td class="text-right">
+													{{number_format($loanbidRow->accepted_amount, 2, '.',',')}}											
+												</td>	
+												<td class="text-right">
+													{{number_format($loanbidRow->totalrepaid, 2, '.',',')}}											
+												</td>	
+												<td>
+													<button type="button" 
+															class="btn verification-button repayment_schedule" 
+															data-investor-id="{{$loanbidRow->investor_id}}"
+															data-loan-id="{{$bidsModel->loan_id}}"
+															>
+														{{ Lang::get('Show Repayments')}}
+													</button>
+												</td>	
+											</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
 						</div>
-					</div>
+					@endif
+					<!-- ==================== Showing all investor invested in the loan ===================== -->
 				@endif
-				<!-- ==================== Showing all investor invested in the loan ===================== -->
 			</div><!----panel-body--->	
 			
 		</div><!----panel-container--->
