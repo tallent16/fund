@@ -18,7 +18,7 @@ $(document).ready(function (){
 	//~ }
 	//~ , "Letters, numbers ,special characters"); 
 	 $.validator.addMethod("custompasswordstrength", function(value, element) {   
-		return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@#$!%*?&])[A-Za-z\d$@#$!%*?&]{10,15}$/.test(value);
+		return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{10,15}$/.test(value);
 	}
 	, "Letters, numbers ,special characters"); 
 	 

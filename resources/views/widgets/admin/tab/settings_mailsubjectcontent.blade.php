@@ -14,36 +14,18 @@
 				
 				<div>&nbsp;</div>
 				<div id="module_table"></div>
-				
-				<!--	<div class="row">
-						<div class="col-sm-12">
-							<div class="table-responsive">
-								<table class="table table-bordered .tab-fontsize text-left">		
-									<tbody>
-										<tr>
-											<th class="tab-head text-left col-sm-3">{{ Lang::get('Module')}}</th>	
-											<th class="tab-head text-left col-sm-3">{{ Lang::get('Event')}}</th>	
-											<th class="tab-head text-left col-sm-3">{{ Lang::get('Message')}}</th>	
-											<th class="tab-head text-left col-sm-3">{{ Lang::get('Send Mail')}}</th>	
-										<tr>
-										<tr>
-											<td class="col-sm-3">dfsd</td>	
-											<td class="col-sm-3">dsfds</td>	
-											<td class="col-sm-3">dsfdsds</td>	
-											<td class="col-sm-3">1</td>	
-										<tr>
-											<tr>
-											<td class="col-sm-3">dfsd</td>	
-											<td class="col-sm-3">dsfds</td>	
-											<td class="col-sm-3">dsfdsds</td>	
-											<td class="col-sm-3">1</td>	
-										<tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>-->
 			
+				@section ('popup-box_panel_title',Lang::get('Edit Messages'))
+				@section ('popup-box_panel_body')
+
+				@endsection
+				@include('widgets.modal_box.panel', array(	'id'=>'module_popup',
+															'aria_labelledby'=>'module_popup',
+															'as'=>'popup-box',
+															'class'=>'',
+														))
+				<div id="module_popup"></div>	
+					
 			<!--	<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Event/Action')}}

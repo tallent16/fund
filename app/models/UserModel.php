@@ -51,6 +51,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 		}
 		$row	= array(	"DT_RowId"=>"row_".$users[0]->user_id,
 							"user_id"=>$users[0]->user_id,
+							"enuser_id"=>base64_encode($users[0]->user_id),
 							"username"=>$users[0]->username,
 							"email"=>$users[0]->email,
 							"password"=>"",
@@ -81,6 +82,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				}
 				$row[] 	= array(	"DT_RowId"=>"row_".$adminUserRow->user_id,
 									"user_id"=>$adminUserRow->user_id,
+									"enuser_id"=>base64_encode($adminUserRow->user_id),
 									"username"=>$adminUserRow->username,
 									"email"=>$adminUserRow->email,
 									"password"=>$adminUserRow->password,
@@ -108,6 +110,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 		}
 		$row 	= array(	"DT_RowId"=>"row_".$users[0]->user_id,
 							"user_id"=>$users[0]->user_id,
+							"user_id"=>base64_encode($users[0]->user_id),
 							"username"=>$users[0]->username,
 							"email"=>$users[0]->email,
 							"password"=>"",

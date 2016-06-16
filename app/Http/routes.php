@@ -211,6 +211,7 @@ Route::post('admin/settings',  	[	'uses' 			=>	'AdminSettingsController@saveActi
 											]
 			);
 Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
+Route::post('admin/ajax/editmessage',  'AdminSettingsController@ajaxEditAction');
 
 Route::get('admin/challengequestions',  	[	'as' 			=> 	'admin.challengequestions', 
 												'uses' 			=>	'AdminChallengeQuestionsController@indexAction'
@@ -985,10 +986,17 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
 	 
 	 Route::get('admin/mypage', [
-							'uses' => 'HomeController@mypageAction', 
-							'as' => 'mypage'
-							]
+								'uses' => 'HomeController@mypageAction', 
+								'as' => 'mypage'
+								]
 				);
+	 Route::get('admin/changepassword/{user_id}', 	
+								[
+									'uses' => 'AdminChangePasswordController@indexAction', 
+									'as' => 'admin.changepassword'
+								]
+				);
+	 Route::post('admin/changepassword/save', 'AdminChangePasswordController@saveChangePasswordAction');
 });
 
 // The routes (or pages that are applicable for Borrower Users only

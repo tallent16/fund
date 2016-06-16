@@ -42,7 +42,14 @@ class AdminSettingsController extends MoneyMatchController {
 			$defaultmodule 	= $_REQUEST["modulelist"];
 			
 		$response_data 	= 	$this->adminSettingsModel->getModuleTable($defaultmodule);
+		
 		return json_encode(array("rows"=>$response_data));		
+	}
+	
+	public function ajaxEditAction() {	
+		$slug			= 	Request::get('slug_name');
+		$editresponse_data 	= 	$this->adminSettingsModel->getEditModuleTable($slug);		
+		return json_encode($editresponse_data);			
 	}
 	
 	public function saveAction() {

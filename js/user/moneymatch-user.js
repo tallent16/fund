@@ -161,7 +161,7 @@ function callDataTableFunc(){
 						render: function(data, type, full, meta){
 								
 							var str ="";             					    
-							str=str+'<a href="'+public_path+'/reset" ';
+							str=str+'<a href="'+public_path+'/admin/changepassword/'+data.enuser_id+'"';
 							str=str+' >Change Password </a>';
 							str=str+'/';
 							str=str+'<a href="'+public_path+'/admin/assign-roles/'+data.user_id+'"';

@@ -30,6 +30,7 @@ class AdminManageBorrowersModel extends TranWrapper {
 		$borlist_sql			= "	SELECT 	users.email, 
 											borrowers.business_name, 
 											borrowers.borrower_id, 
+											borrowers.user_id, 
 											borrowers.contact_person, 
 											borrowers.industry, 
 											(	SELECT 	COUNT(loans.loan_id)

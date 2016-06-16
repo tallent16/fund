@@ -35,11 +35,19 @@ $(document).ready(function (){
 
 	}, "Passwords should not match with old password");
 
-	$.validator.addMethod("alphanumeric", function(value, element) {
-		return this.optional(element) || /^(?=.*\d+)(?=.*[!@#$%^&*()_+])[a-zA-Z\d\!@#\$%&\*]{10,}$/.test(value);
+	//~ $.validator.addMethod("alphanumeric", function(value, element) {
+		//~ return this.optional(element) || /^(?=.*\d+)(?=.*[!@#$%^&*()_+])[a-zA-Z\d\!@#\$%&\*]{10,}$/.test(value);
+	//~ }
+	//~ , "Letters, numbers or underscores only please"); 
+	
+	 $.validator.addMethod("custompasswordstrength", function(value, element) {   
+		return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{10,15}$/.test(value);
 	}
-	, "Letters, numbers or underscores only please"); 
-
+	, "Letters, numbers ,special characters"); 
+	
+	 var errPattern	=	'Please enter min 10 and max 15 characters with atleast Upper case letter ';
+		 errPattern	=	errPattern+'& 1 number & 1 specialcharacter((!@#$%^&*)';
+		 
 	 $('#resetpassword').validate({
             errorClass: 'help-block animated fadeInDown',
             errorElement: 'div',
@@ -70,10 +78,8 @@ $(document).ready(function (){
                     //minlength: 3
                 },            
                 'password': {
-                    required: true, 
-					minlength: 10 ,
-                    passwordMatch: true,
-					alphanumeric: true  
+                    required: true,
+					custompasswordstrength:true,
                 },
                 'ConfirmPassword': {
                     required: true,
@@ -89,10 +95,8 @@ $(document).ready(function (){
                     remote: 'Only Registered email are allowed'                            
                 },                
                 'password': {
-                    required: 'Please provide a password', 
-                    passwordMatch: "Passwords should not match with old password" ,
-                    alphanumeric: 'Please enter 10 characters with atleast 1 letter & 1 number & 1 specialcharacter',
-                    minlength: 'Password strength should not be weak & (Min:10 characters)'               
+                    required: 'Please provide a password',
+                    custompasswordstrength: errPattern
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',

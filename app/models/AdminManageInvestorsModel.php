@@ -29,6 +29,7 @@ class AdminManageInvestorsModel extends TranWrapper {
 											users.username display_name,
 											users.mobile mobile_number,
 											investors.investor_id,
+											investors.user_id,
 											(	SELECT 	COUNT(*)
 												FROM 	loan_bids,
 														loans

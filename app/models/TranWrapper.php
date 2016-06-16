@@ -4,6 +4,7 @@ use Mail;
 use Auth;
 use fileupload\FileUpload;
 use File;
+use Hash;
 class TranWrapper extends MoneyMatchModel {
 		
 	public function CheckUserName($userName)	{
@@ -748,4 +749,22 @@ class TranWrapper extends MoneyMatchModel {
 		}
 		return 0;
 	}
+	
+	public function getUserInfoByUserId($user_id){
+		
+		$user_sql	= "	SELECT 	*
+							FROM 	users
+							WHERE	user_id =	{$user_id}";
+		$user_rs = $this->dbFetchAll($user_sql);
+		if(isset($user_rs[0])) {
+			return $user_rs[0];
+		}
+		return 0;
+	}
+	
+	public function checkPasswordByUserID($current_user_password,$current_user_id)	{
+		
+		return Hash::check($current_user_password, $this->getUserInfoByUserId($current_user_id)->password);
+	}
+	
 }

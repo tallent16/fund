@@ -119,6 +119,7 @@
 												</td>
 												<td class="text-center">
 													@var	$encode_inv_id	=	base64_encode($InvRow['investor_id']);
+													@var	$enuser_id		=	base64_encode($InvRow['user_id']);
 													@var	$appClass	=	"disable-indication disabled"
 													@var	$appUrl		=	"javascript:void(0);"
 													@var	$rejClass	=	"disable-indication disabled"
@@ -147,6 +148,8 @@
 															@var	$delUrl		=	$delUrl."/".$encode_inv_id
 														@endpermission
 													@endif
+													@var	$changePasswordUrl	=	url('admin/changepassword')
+													@var	$changePasswordUrl	=	$changePasswordUrl.'/'.$enuser_id
 													<ul class="list-unstyled">
 														<li class="dropdown">
 															<a class="dropdown-toggle" 
@@ -171,6 +174,12 @@
 																	<a href="{{$delUrl}}"  class="{{$delClass}}">
 																		<i class="fa fa-user fa-fw"></i>
 																		{{ Lang::get('Delete') }}
+																	</a>
+																</li>
+																<li>
+																	<a href="{{$changePasswordUrl}}" >
+																		<i class="fa fa-user fa-fw"></i>
+																		{{ Lang::get('Change Password') }}
 																	</a>
 																</li>
 															</ul>	

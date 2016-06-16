@@ -2,7 +2,8 @@
 class AdminSettingsModel extends TranWrapper {
 	
 	public $settingsList		=	array();
-	public $moduleList			=	array();
+	public $moduleList			=	array();	
+	public $module				=	array();	
 	public $defaultmoduleval	=	"all";
 	
 	public function getGeneralSettings(){
@@ -73,6 +74,25 @@ class AdminSettingsModel extends TranWrapper {
 		$module_rs		= 	$this->dbFetchAll($module_sql);
 		return	$module_rs;
 	}
+	
+	public function getEditModuleTable($slug){
+		
+		$editmodule_sql			= "	SELECT 
+										module,
+										event_action,
+										slug_name,
+										message_text,
+										send_email										 
+									FROM system_messages 
+									WHERE slug_name = '{$slug}' ";
+								
+		$editmodule_rs		= 	$this->dbFetchRow($editmodule_sql);
+		
+		if ($editmodule_rs) {
+			$this->module	=	$editmodule_rs;
+		}		
+		return	$this->module;		
+	}	
 	
 	public function updateGeneralSettings($postArray){
 		
