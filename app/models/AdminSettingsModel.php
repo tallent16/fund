@@ -94,6 +94,19 @@ class AdminSettingsModel extends TranWrapper {
 		return	$this->module;		
 	}	
 	
+	public function updateModuleMessage($event_action,$slug){
+		//echo "<pre>",print_r($slug.$event_action),"</pre>"; die;
+		$updatemessage	= "UPDATE system_messages 
+							SET message_text = '{$event_action}' 
+							WHERE slug_name = '{$slug}' ";
+		if($updatemessage)	
+		{
+			return 1;
+		}else { 
+			return -1;
+		}
+	}
+	
 	public function updateGeneralSettings($postArray){
 		
 	//	echo "<pre>",print_r($postArray),"</pre>"; die;

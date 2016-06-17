@@ -207,9 +207,12 @@ Route::get('admin/settings',  	[	'as' 			=> 	'admin.settings',
 												'uses' 			=>	'AdminSettingsController@indexAction'
 											]
 			);
-Route::post('admin/settings',  	[	'uses' 			=>	'AdminSettingsController@saveAction'
+Route::post('admin/system/settings/save',  	[	'uses' 			=>	'AdminSettingsController@saveSystemSettingsAction'
 											]
 			);
+Route::post('admin/system/messages/save',  	[	'uses' 			=>	'AdminSettingsController@saveSystemMessagesAction'
+								]
+);
 Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
 Route::post('admin/ajax/editmessage',  'AdminSettingsController@ajaxEditAction');
 

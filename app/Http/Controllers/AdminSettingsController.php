@@ -47,12 +47,29 @@ class AdminSettingsController extends MoneyMatchController {
 	}
 	
 	public function ajaxEditAction() {	
-		$slug			= 	Request::get('slug_name');
+		$slug				= 	Request::get('slug_name');
 		$editresponse_data 	= 	$this->adminSettingsModel->getEditModuleTable($slug);		
 		return json_encode($editresponse_data);			
 	}
 	
-	public function saveAction() {
+	public function saveSystemMessagesAction() {	
+		
+		$postArray				=	Request::all();
+		//echo "<pre>",print_r($postArray),"</pre>"; die;
+		$event_action			= 	$postArray['event_action'];
+		$slug					= 	$postArray['slug'];
+		$messageresponse_data 	= 	$this->adminSettingsModel->updateModuleMessage($event_action,$slug);
+			
+		if($messageresponse_data) {
+			return redirect()->route('admin.admin/module-messages/update')
+						->with('success','Admin Module Message Updated successfully');
+		}else{
+			return redirect()->route('admin.admin/module-messages/update')
+						->with('failure','Something went wrong!');	
+		}		
+	}
+	
+	public function saveSystemSettingsAction() {
 		
 		$postArray	=	Request::all();
 		$result		=	$this->adminSettingsModel->updateGeneralSettings($postArray);

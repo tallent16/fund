@@ -2,8 +2,10 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script type="text/javascript">
-		
+		var baseurl = "{{url('')}}"
         $(document).ready(function() {
+			
+			
 			$.ajaxSetup({
 				headers: {
 					'X-CSRF-TOKEN': $('#hidden_token').val()
@@ -19,13 +21,13 @@
 					}) // using the done promise callback
 					
 					.done(function(data) {						
-						console.log(data);
+						//console.log(data);
 						showSystemMessagesTab(data);
 					});
 				});
             $("#type").trigger('change');
             /******************************************************/
-			$("#mail_subjectcontent").on('click', '#module_table tr', function (e) {
+			$("#mail_subjectcontent").on('click', '#module_table tr:not(:first)', function (e) {
 				e.stopPropagation();
 				var $this = $(this);
 				var trid = $this.find('#slug').val();
@@ -37,20 +39,51 @@
 						dataType    : 'json'
 					}) // using the done promise callback 
 					
-					.done(function(data) {						
+					.done(function(data) {
 						//console.log(data);
 						showEditForm(data);
 					});
 			});				
 			 /******************************************************/
+			/*  $("#module_message_save").click(function() {	
+				var message =  $('#event_action').val();
+				var slug 	=  $('#slug').val();
+				$.ajax({
+						type: "POST",
+						url: "{{url()}}/admin/module-messages/update",
+						data: {'message_text':message,
+								'slug_name':slug },                   
+						dataType    : 'json'
+					}) // using the done promise callback
+					
+					.done(function(data) {						
+						console.log(data);
+						 $('#alert-module-update').html('Module Updated Successfully');
+					});
+				});*/
         });
         
-        function showEditForm(data){
-			var	str;	
-			str		= str +	"<div class='row'><div class='col-sm-12'>"
+        function callModuleClickEvent(){
+				$('#module_message_save').click(function (){
+					$('#form-settings').attr('action',baseurl+'/admin/system/messages/save');
+					$('#form-settings').submit();
+				});
+		}
+		
+        
+        function showEditForm(data){			
+			var	str_edit ='';
+			var check = '';
+			if(data.send_email==1)			
+			{
+				check = "checked";
+			}else{
+				check = "";
+			}
+			str_edit	  = str_edit +	"<div class='row'><div class='col-sm-12'>"
 						  +	"<div class='col-sm-3'>Module</div>"
-						  + "<div class='col-sm-6'>"+ "<input type='text' class='form-control' name='Module' id='Module' value='"+data.module+"'> "
-						  + "</div></div></div>"	
+						  + "<div class='col-sm-6'>"+ "<input type='text' class='form-control' name='Module' id='Module' value='"+data.module+"' disabled> "
+						  + "</div></div></div>"
 						  +	"<div class='row'><div class='col-sm-12'>"
 						  +	"<div class='col-sm-3'></div>"
 						  + "<div class='col-sm-6'>"+ "<input type='hidden' class='form-control' name='slug' id='slug' value='"+data.slug_name+"'> "
@@ -65,16 +98,30 @@
 						  + "</div></div></div>"
 						  +	"<div class='row'><div class='col-sm-12'>"
 						  +	"<div class='col-sm-3'>Send Mail</div>"
-						  + "<div class='col-sm-6 text-left'>"+ "<input type='checkbox' class='form-control' name='sendmail' id='sendmail' value='"+data.send_email+"'  >"
+						  + "<div class='col-sm-1 text-left'>" + "<input type='checkbox' class='form-control' name='sendmail' id='sendmail' value='"+data.send_email+"'  disabled "+check+" />"
+						  + "</div></div></div>"
+						  +	"<div class='row'><div class='col-sm-12'>"
+						  +	"<div class='col-sm-3'></div>"
+						  +	"<div class='col-sm-4'></div>"
+						  + "<div class='col-sm-2 text-right'>"+ "<input type='button' class='form-control btn btn-primary' name='module_message_save' id='module_message_save' value='save' >"
 						  + "</div></div></div>";
-		
-			$('#module_popup .modal-body').html(str);
-			$('#module_popup').modal("show");			
+			//alert($("#sendmail").val());		
+			$("input:checkbox[value='1']").prop('checked',true);	  
+			//$("#editform input[value=1]").attr('checked',true);
+			
+		/*	if(data.send_email == 0){			  
+				$('input:checkbox[value="' + data.send_email + '"]').prop("checked","false");
+			}else{ $('input:checkbox[value="' + data.send_email + '"]').prop("checked","true");  }*/
+			//alert($('input[name=sendmail]').val());
+			//$("input[type=checkbox]).val().prop("checked",true);
+			$('#module_popup .modal-body').html(str_edit);
+			$('#module_popup').modal("show");		
+			callModuleClickEvent();	
 		}
 		
         function showSystemMessagesTab(data) {
 			
-			var	str;
+			var	str="";
 			str		=	"<div class='row'><div class='table-responsive'><table class='table table-bordered .tab-fontsize text-left'>";
 			str		=	str+"<thead><tr><th class='tab-head text-left col-sm-2'>Module</th>";
 			str		=	str+"<th class='tab-head text-left col-sm-2'>Event Action</th>";		
@@ -92,11 +139,15 @@
 					str	=	str+"<td id='edit_message'>";
 					str	=	str+data.rows[key].message_text+"</td>";					
 					str	=	str+"<td>";
-					str	=	str+data.rows[key].send_email_text+"</td>";
+					str	=	str+data.rows[key].send_email_text+"</td>";					
 					str	=	str+"<td>";
-					str	=	str+"Edit Message"+"</td>";
+					str	=	str+"Edit Message"+"</td>";					
 					str	=	str+"<td>";
-					str	=	str+"Edit Email"+"</td>";
+					if(data.rows[key].send_email_text == "Yes"){
+						str	=	str+"Edit Email";
+					}
+					str	=	str+"</td>";
+					
 					str	=	str+"</tr>";
 				});
 			}else{
@@ -110,9 +161,10 @@
 @endsection
 @section('page_heading',Lang::get('Settings') )
 @section('section')  
+<div id="alert-module-update"></div>	
 <div class="col-sm-12 space-around">
 	@var $settings_list = $adminsettingModel->settingsList;	
-	<form class="form-inline" id="form-settings" method="post" enctype="multipart/form-data">	
+	<form class="form-inline" id="form-settings" method="post" enctype="multipart/form-data" action="{{url('admin/system/settings/save')}}">	
 	<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
 			
 		<div class="row">
