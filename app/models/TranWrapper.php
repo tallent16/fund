@@ -803,9 +803,9 @@ class TranWrapper extends MoneyMatchModel {
 		$result		= $this->dbFetchAll($sql);
 		return $result;
 	}
-	public function getSystemMessageBySlug($slug) {
+	public function getSystemMessageBySlug($slug,$fieldName='message_text') {
 		
-		$sql= "	SELECT 	message_text
+		$sql= "	SELECT 	{$fieldName}
 				FROM 	system_messages
 				WHERE	slug_name ='{$lsug}'";
 		$result		= $this->dbFetchOne($sql);
