@@ -22,9 +22,6 @@ $(document).ready(function (){
 	}
 	, "Letters, numbers ,special characters"); 
 	 
-	 var errPattern	=	'Please enter min 10 and max 15 characters with atleast Upper case letter ';
-		 errPattern	=	errPattern+'& 1 number & 1 specialcharacter((!@#$%^&*)';
-		 
 	 $('#form-register').validate({
             errorClass: 'help-block animated fadeInDown',
             errorElement: 'div',
@@ -94,12 +91,12 @@ $(document).ready(function (){
             messages: {
                 'username': {
                     required: 'Please enter an Username',
-                    remote: 'Username already registered. Please enter a different Username'
+                    remote: usernameExistsMess
                 },
                 'EmailAddress': {
                     required: 'Please enter an email',
                     email: 'Email is not valid',
-                    remote: 'Email already registered. Please enter a different email'
+                    remote: emailExistsMess
                 },
                 'firstname': {
                     required: 'Please enter firstname',                    
@@ -109,9 +106,7 @@ $(document).ready(function (){
                 },
                 'password': {
                     required: 'Please provide a password',
-                    //~ minlength: 'Password strength should not be weak & (Min:10 characters)',
-                    //~ alphanumeric: 'Please enter 10 characters with atleast 1 letter & 1 number & 1 specialcharacter'
-                    custompasswordstrength: errPattern
+                    custompasswordstrength: weakpasswordExistsMess
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',

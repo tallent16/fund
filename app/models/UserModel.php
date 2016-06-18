@@ -36,6 +36,8 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 	 */
 	protected $hidden = ['password', 'remember_token'];
 	
+	public $systemMessages	=	array();
+	
 	public function getLastInsertRow() {
 		
 		$sql	= "	SELECT 	* 
@@ -129,9 +131,11 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 		switch($postArray['Userrole']){
 			case 'Borrower':
 				$userType	=	USER_TYPE_BORROWER;
+				$slug_name	=	"borrower_register_success";
 				break;
 			case 'Investor':
 				$userType	=	USER_TYPE_INVESTOR;
+				$slug_name	=	"investor_register_success";
 				break;
 		}
 		$dataArray		=	array(	'email'=>$postArray['EmailAddress'],
@@ -157,14 +161,6 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				$dataArry	=	array('status' => USER_STATUS_UNVERIFIED,'email_verified'=>USER_EMAIL_UNVERIFIED);
 				$this->dbUpdate('users',$dataArry, $whereArry);
 				
-				$moneymatchSettings = $this->getMailSettingsDetail();
-				if($userType	==	USER_TYPE_BORROWER) {
-					$mailContents		= $moneymatchSettings[0]->borrower_signup_content;
-					$mailSubject		= $moneymatchSettings[0]->borrower_signup_subject;
-				}else{
-					$mailContents		= $moneymatchSettings[0]->investor_signup_content;
-					$mailSubject		= $moneymatchSettings[0]->investor_signup_subject;
-				}
 				$fields 			= array('[borrower_firstname]', '[borrower_lastname]', '[signup_email]',
 											'[investor_firstname]', '[investor_lastname]', ' [confirmation_url]',
 											'[application_name]');
@@ -173,24 +169,26 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				$replace_array 		= array( $postArray['firstname'], $postArray['lastname'], $postArray['EmailAddress'], 
 											$postArray['firstname'], $postArray['lastname'],
 											url()."/activation/".$activation, $moneymatchSettings[0]->application_name);
-									
-				$new_content 		= str_replace($fields, $replace_array, $mailContents);
-				$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
 				
-				$msgarray = array("content" => $new_content);			
-				$msgData = array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
-									"from" => $moneymatchSettings[0]->mail_default_from,
-									"from_name" => $moneymatchSettings[0]->application_name,
-									"to" => $postArray['EmailAddress'],
-									"cc" => $moneymatchSettings[0]->admin_email,
-									"live_mail" => $moneymatchSettings[0]->send_live_mails,
-									"template"=>"emails.confirmation");
-									
-				$mailArry	=	array(	"msgarray"=>$msgarray,
-										"msgData"=>$msgData);
-				$this->sendMail($mailArry);
+				
 		}
 		return	$id;
 	}
 	
+	public function getModuleSystemMessages() {
+		
+		$modId	=	1;
+		
+		$result =	$this->getSystemMessages($modId);
+		
+		if ($result) {
+		
+			foreach($result as $systemRow) {
+				$slug	=	$systemRow->slug_name;
+				$msg	=	$systemRow->message_text;
+				$this->systemMessages[$slug] = $msg;
+			}
+		}
+		return $result;
+	}
 }

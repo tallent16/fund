@@ -52,19 +52,41 @@ class AdminSettingsController extends MoneyMatchController {
 		return json_encode($editresponse_data);			
 	}
 	
-	public function saveSystemMessagesAction() {	
+	public function ajaxEmailEditAction() {	
+		$slug				= 	Request::get('slug_name');		
+		$emailresponse_data 	= 	$this->adminSettingsModel->getEditEmailContent($slug);		
+		return json_encode($emailresponse_data);			
+	}
+	
+	public function saveSystemEmailAction(){
 		
-		$postArray				=	Request::all();
-		//echo "<pre>",print_r($postArray),"</pre>"; die;
+		$postArray				=	Request::all();	
+		$slug					= 	$postArray['slug_name'];	
+		$email_subject			= 	$postArray['email_subject'];	
+		$email_content			= 	$postArray['email_content'];	
+		$saveresponse_data 	= 	$this->adminSettingsModel->updateEmailMessage($email_subject,$email_content,$slug);
+			
+		if($saveresponse_data) {
+			return redirect()->route('admin.settings')
+						->with('success','Admin Email Message Updated successfully');
+		}else{
+			return redirect()->route('admin.settings')
+						->with('failure','Something went wrong!');	
+		}		
+	}
+	
+	public function saveSystemMessagesAction() {
+		
+		$postArray				=	Request::all();		
 		$event_action			= 	$postArray['event_action'];
 		$slug					= 	$postArray['slug'];
 		$messageresponse_data 	= 	$this->adminSettingsModel->updateModuleMessage($event_action,$slug);
 			
 		if($messageresponse_data) {
-			return redirect()->route('admin.admin/module-messages/update')
+			return redirect()->route('admin.settings')
 						->with('success','Admin Module Message Updated successfully');
 		}else{
-			return redirect()->route('admin.admin/module-messages/update')
+			return redirect()->route('admin.settings')
 						->with('failure','Something went wrong!');	
 		}		
 	}
@@ -76,7 +98,7 @@ class AdminSettingsController extends MoneyMatchController {
 		
 		if($result) {
 			return redirect()->route('admin.settings')
-						->with('success','Admin Settings Updated successfully');
+						->with('success','Admin General Settings Updated successfully');
 		}else{
 			return redirect()->route('admin.settings')
 						->with('failure','Something went wrong!');	

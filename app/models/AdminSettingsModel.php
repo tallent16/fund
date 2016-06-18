@@ -4,7 +4,10 @@ class AdminSettingsModel extends TranWrapper {
 	public $settingsList		=	array();
 	public $moduleList			=	array();	
 	public $module				=	array();	
+	public $email				=	array();	
+	public $event_val				=	array();	
 	public $defaultmoduleval	=	"all";
+	
 	
 	public function getGeneralSettings(){
 		
@@ -94,13 +97,44 @@ class AdminSettingsModel extends TranWrapper {
 		return	$this->module;		
 	}	
 	
+	public function getEditEmailContent($slug){
+		$selectemail_sql	=	"SELECT 
+									slug_name,
+									(SELECT event_action 
+										FROM system_messages 
+										WHERE slug_name='{$slug}') as event,
+									email_subject,
+									email_content
+								FROM email_notifications 
+								WHERE slug_name = '{$slug}' ";
+								
+		$editemail_rs		= 	$this->dbFetchRow($selectemail_sql);		
+		//echo "<pre>",print_r($newarray),"</pre>"; die;
+		if ($editemail_rs) {
+			$this->email	=	$editemail_rs;
+		}		
+		return	$this->email;		
+	}		
+	
+	public function updateEmailMessage($email_subject,$email_content,$slug){
+		
+		$dataArray 	   = array( 'email_subject'	=> $email_subject,'email_content' =>$email_content);		
+		$whereArry	   = array('slug_name' =>"{$slug}");
+		$result 	   = $this->dbUpdate('email_notifications', $dataArray, $whereArry );
+		//echo "<pre>",print_r($result),"</pre>"; die;
+		if($result){
+			return 1;
+		}else { 
+			return -1;
+		}
+	}
+	
 	public function updateModuleMessage($event_action,$slug){
-		//echo "<pre>",print_r($slug.$event_action),"</pre>"; die;
-		$updatemessage	= "UPDATE system_messages 
-							SET message_text = '{$event_action}' 
-							WHERE slug_name = '{$slug}' ";
-		if($updatemessage)	
-		{
+			
+		$dataArray 	   = array( 'message_text'	=> $event_action);
+		$whereArry	   = array('slug_name' =>"{$slug}");
+		$result 	   = $this->dbUpdate('system_messages', $dataArray, $whereArry );
+		if($result){
 			return 1;
 		}else { 
 			return -1;

@@ -68,7 +68,29 @@ class TranWrapper extends MoneyMatchModel {
 		$username = $this->dbFetchOne($sql);	
 		return $username;
 	}
-	
+	public function sendMailByModule($slug,$fieldArray,$replaceArray) {
+		
+		$moneymatchSettings = $this->getMailSettingsDetail();
+		
+		$mailContents		= $moneymatchSettings[0]->borrower_signup_content;
+		$mailSubject		= $moneymatchSettings[0]->borrower_signup_subject;
+		
+		$new_content 		= str_replace($fieldArray, $replaceArray, $mailContents);
+		$new_subject 		= str_replace($fieldArray, $replaceArray, $mailSubject);
+		
+		$msgarray = array("content" => $new_content);			
+		$msgData = array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
+							"from" => $moneymatchSettings[0]->mail_default_from,
+							"from_name" => $moneymatchSettings[0]->application_name,
+							"to" => $postArray['EmailAddress'],
+							"cc" => $moneymatchSettings[0]->admin_email,
+							"live_mail" => $moneymatchSettings[0]->send_live_mails,
+							"template"=>"emails.confirmation");
+							
+		$mailArry	=	array(	"msgarray"=>$msgarray,
+								"msgData"=>$msgData);
+		$this->sendMail($mailArry);
+	}
 	public function sendMail($postArray) {
 		
 			//~ $email		=	$postArray['email'];
@@ -767,4 +789,32 @@ class TranWrapper extends MoneyMatchModel {
 		return Hash::check($current_user_password, $this->getUserInfoByUserId($current_user_id)->password);
 	}
 	
+	public function getSystemMessages($modId = '') {
+		
+		$where	=	"";
+		if($modId	!=	'') {
+			$where	=	"WHERE module_id ={$modId}";
+		}
+		$sql= "	SELECT 	slug_name,
+						message_text
+				FROM 	system_messages
+				{$where}";
+		
+		$result		= $this->dbFetchAll($sql);
+		return $result;
+	}
+	public function getSystemMessageBySlug($slug) {
+		
+		$sql= "	SELECT 	message_text
+				FROM 	system_messages
+				WHERE	slug_name ='{$lsug}'";
+		$result		= $this->dbFetchOne($sql);
+		return $result;
+	}
+	
+	public function prnt($postArray,$die=true) {
+		echo "<pre>",print_r($postArray),"</pre>";
+		if($die)
+			die;
+	}
 }
