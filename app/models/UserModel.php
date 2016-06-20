@@ -132,14 +132,13 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 			case 'Borrower':
 				$userType	=	USER_TYPE_BORROWER;
 				$slug_name	=	"borrower_register_success";
-				$sendMail	=	$this->getSystemMessageBySlug($slug_name,"send_email");
 				break;
 			case 'Investor':
 				$userType	=	USER_TYPE_INVESTOR;
 				$slug_name	=	"investor_register_success";
-				$sendMail	=	$this->getSystemMessageBySlug($slug_name,"send_email");
 				break;
 		}
+		$moneymatchSettings = $this->getMailSettingsDetail();
 		$dataArray		=	array(	'email'=>$postArray['EmailAddress'],
 									'password'=>\Hash::make($postArray['ConfirmPassword']),
 									'created_at'=>$current_date,
@@ -171,9 +170,7 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 				$replace_array 		= array( $postArray['firstname'], $postArray['lastname'], $postArray['EmailAddress'], 
 											$postArray['firstname'], $postArray['lastname'],
 											url()."/activation/".$activation, $moneymatchSettings[0]->application_name);
-				
-				if($sendMail)
-					$this->sendMailByModule($slug_name,$fields,$replace_array);
+				$this->sendMailByModule($slug_name,$postArray['EmailAddress'],$fields,$replace_array);
 				
 		}
 		return	$id;

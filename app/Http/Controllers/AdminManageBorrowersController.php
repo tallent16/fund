@@ -59,11 +59,12 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$bor_id		=	$postArray['borrower_id'];
 		$result		=	$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
 		if($result) {
+			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_comments_saved");
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
-						->with('success','Comments saved successfully');
+						->with('success',$successMsg);
 		}else{
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
-						->with('failure','Comments saved Failed');	
+						->with('failure','Borrower Profile comments saved Failed');	
 		}	
 	}
 	
@@ -75,11 +76,12 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$this->borrowerProfileModel->saveComments($postArray['comment_row'],$bor_id);
 		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"return_borrower");
 		if($result) {
+			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_return_to_borrower");
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
-						->with('success','return borrower updated successfully');
+						->with('success',$successMsg);
 		}else{
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
-						->with('failure','return borrower updated Failed');	
+						->with('failure','Profile returned to Borrower Failed');	
 		}	
 	}
 	
@@ -91,11 +93,12 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$this->borrowerProfileModel->processProfile($postArray,$bor_id);
 		$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
 		if($result) {
+			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_approved");
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
-						->with('success','approve borrower updated successfully');
+						->with('success',$successMsg);
 		}else{
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id) ))
-						->with('failure','approved borrower updated Failed');	
+						->with('failure','Borrower Profile information Failed approved');	
 		}	
 	}
 	
@@ -127,11 +130,12 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		if($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) {
 			$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"approve");
 			if($result) {
+				$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_approved");
 				return redirect()->route('admin.manageborrowers')
-							->with('success','approve borrower updated successfully');
+							->with('success',$successMsg);
 			}else{
 				return redirect()->route('admin.manageborrowers')
-							->with('failure','approve borrower updated Failed');	
+							->with('failure','Borrower Profile information Failed approved');	
 			}
 		}
 		return redirect()->to('admin/manageborrowers');
@@ -150,8 +154,9 @@ class AdminManageBorrowersController extends MoneyMatchController {
 				|| ($bor_profile_status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)) {
 			$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"reject");
 			if($result) {
+				$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_reject");
 				return redirect()->route('admin.manageborrowers')
-							->with('success','reject borrower updated successfully');
+							->with('success',$successMsg);
 			}else{
 				return redirect()->route('admin.manageborrowers')
 							->with('failure','reject borrower updated Failed');	
@@ -172,8 +177,9 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		if($this->borrowerProfileModel->getBorrowerActiveLoanStatus($bor_id)	==	0) {
 			$result		=	$this->borrowerProfileModel->updateBorrowerStatus($dataArray,$bor_id,"delete");
 			if($result) {
+				$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_inactive");
 				return redirect()->route('admin.manageborrowers')
-							->with('success','reject borrower updated successfully');
+							->with('success',$successMsg);
 			}else{
 				return redirect()->route('admin.manageborrowers')
 							->with('failure','reject borrower updated Failed');	
@@ -187,11 +193,12 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$result		=	$this->borrowerProfileModel->updateBulkBorrowerStatus($postArray,"approve");
 		if($result) {
+			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_approved");
 			return redirect()->route('admin.manageborrowers')
-						->with('success','approve borrower updated successfully');
+						->with('success',$successMsg);
 		}else{
 			return redirect()->route('admin.manageborrowers')
-						->with('failure','approve borrower updated Failed');	
+						->with('failure','Borrower Profile information Failed approved');	
 		}
 	}
 	
@@ -200,8 +207,9 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$result		=	$this->borrowerProfileModel->updateBulkBorrowerStatus($postArray,"reject");
 		if($result) {
+			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_reject");
 			return redirect()->route('admin.manageborrowers')
-						->with('success','reject borrower updated successfully');
+						->with('success',$successMsg);
 		}else{
 			return redirect()->route('admin.manageborrowers')
 						->with('failure','reject borrower updated Failed');	
@@ -213,8 +221,9 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$result		=	$this->borrowerProfileModel->updateBulkBorrowerStatus($postArray,"delete");
 		if($result) {
+			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_inactive");
 			return redirect()->route('admin.manageborrowers')
-						->with('success','delete borrower updated successfully');
+						->with('success',$successMsg);
 		}else{
 			return redirect()->route('admin.manageborrowers')
 						->with('failure','delete borrower updated Failed');	
@@ -227,9 +236,9 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$bor_id		=	$postArray['borrower_id'];
 		$result		=	$this->borrowerProfileModel->processProfile($postArray,$bor_id);
 		if($result) {
-			
+			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("borrower_profile_update_by_borrwer");
 			return redirect()->route('admin.borrowerprofile', array('bor_id' => base64_encode($bor_id)	))
-						->with('success','borrower profile updated successfully')
+						->with('success',$successMsg)
 						->with('activeTab',$postArray['active_tab']);
 		}else{
 			

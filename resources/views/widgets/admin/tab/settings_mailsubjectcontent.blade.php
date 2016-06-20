@@ -13,8 +13,10 @@
 				</div>
 				
 				<div>&nbsp;</div>
+			
 				<div id="module_table"></div>
 			
+				<div class="row">
 				@section ('popup-box_panel_title',Lang::get('Edit Messages'))
 				@section ('popup-box_panel_body')
 
@@ -23,20 +25,22 @@
 															'aria_labelledby'=>'module_popup',
 															'as'=>'popup-box',
 															'class'=>'',
-														))
+													))
+													
 				<div id="module_popup"></div>
-				
-				@section ('popup-box_panel_title',Lang::get('Edit Email Contents'))
-				@section ('popup-box_panel_body')
+				</div>
+				<div class="row">
+				@section ('email-popup-box_panel_title',Lang::get('Edit Email Contents'))
+				@section ('email-popup-box_panel_body')
 
 				@endsection
 				@include('widgets.modal_box.panel', array(	'id'=>'email_popup',
 															'aria_labelledby'=>'email_popup',
-															'as'=>'popup-box',
+															'as'=>'email-popup-box',
 															'class'=>'',
 														))	
 				<div id="email_popup"></div>	
-					
+				</div>
 			<!--	<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Event/Action')}}

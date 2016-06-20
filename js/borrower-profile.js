@@ -151,12 +151,27 @@ $(document).ready(function (){
 	$("#returnback_button").click(function(){
       $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/return_borrower");
       
-		if($('.commentClass:checked').length){
+		//~ if($('.commentClass:checked').length){
+			//~ errMessage	=	"There is no open comments to return back to borrower";
+			//~ showDialog("",errMessage);
+			//~ formValid	=	false;
+		//~ }else{
+			//~ formValid	=	true;
+		//~ }
+		formValid	=	true;
+		if($('.commentClass:not(#comment_status_XXX)').length	>	0){
+			var uncheckedLen	=	$("#commentBoxContainer .commentClass").length
+			var checkedLen	=	$("#commentBoxContainer .commentClass:checked").length
+			if(checkedLen	==	uncheckedLen){
+				errMessage	=	"There is no open comments to return back to borrower";
+				showDialog("",errMessage);
+				formValid	=	false;
+			}
+		}else{
+			
 			errMessage	=	"There is no open comments to return back to borrower";
 			showDialog("",errMessage);
 			formValid	=	false;
-		}else{
-			formValid	=	true;
 		}
     });
 	
@@ -226,7 +241,7 @@ $(document).ready(function (){
 		}
 		
 		if($("#screen_mode").val()	==	"admin"){
-			
+		
 			if(!formValid){
 				event.preventDefault();
 			}

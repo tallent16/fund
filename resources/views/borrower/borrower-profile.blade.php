@@ -80,24 +80,6 @@
 		
 		<!-----Body Content----->
 		<div class="col-sm-12 space-around"> 
-			
-			@if($submitted)
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="annoucement-msg-container">
-							<div class="alert alert-success">
-								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-								@if($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
-									{{ Lang::get('borrower-profile.success') }}
-								@else
-									{{ Lang::get('borrower-profile.save') }}
-								@endif
-							</div>
-						</div>
-					</div> 
-				</div> 	
-			@endif
-			
 			<form method="post" id="form-profile" name="form-profile" enctype="multipart/form-data">
 				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="trantype" value="{{ $trantype }}">

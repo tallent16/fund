@@ -12,36 +12,36 @@ $(document).ready(function() {
 	/*******************************************************/
 	$("#type").change(function() {	
 		$.ajax({
-				type: "POST",
-				url: "{{url()}}/admin/ajax/systemmessagetable",
-				data: {modulelist: $(this).find(":selected").text()},                   
-				dataType    : 'json'
-			}) // using the done promise callback
-			
-			.done(function(data) {						
-				//console.log(data);
-				showSystemMessagesTab(data);
-			});
+			type: "POST",
+			url: "{{url()}}/admin/ajax/systemmessagetable",
+			data: {modulelist: $(this).find(":selected").text()},                   
+			dataType    : 'json'
+		}) // using the done promise callback
+		
+		.done(function(data) {						
+			//console.log(data);
+			showSystemMessagesTab(data);
 		});
+	});
 	$("#type").trigger('change');
 	/******************************************************/
 	$("#mail_subjectcontent").on('click', '#module_table tr td:nth-child(4),:nth-child(6)', function () {
 		var $this = $(this);	
 		var slugvalue = $this.closest('td').siblings().find('#slug').val();
 		$.ajax({
-				type: "POST",
-				url: "{{url()}}/admin/ajax/editmessage",
-				data: {slug_name:slugvalue },                   
-				dataType    : 'json'
-			}) // using the done promise callback 
-			
-			.done(function(data) {
-				//console.log(data);
-				showEditForm(data);
-			});
+			type: "POST",
+			url: "{{url()}}/admin/ajax/editmessage",
+			data: {slug_name:slugvalue },                   
+			dataType    : 'json'
+		}) // using the done promise callback 
+		
+		.done(function(data) {
+			//console.log(data);
+			showEditForm(data);
+		});
 	});	
 	 /******************************************************/
-	$("#mail_subjectcontent").on('click', '#module_table tr td:last-child', function () {
+	$("#mail_subjectcontent").on('click', '#module_table tr td:last-child', function () { 
 		var $this = $(this);	
 		var slugvalue = $this.closest('td').siblings().find('#slug').val();
 		$.ajax({
@@ -60,10 +60,14 @@ $(document).ready(function() {
 
 function showEditMailContent(data){
 	var	str_emailedit ='';	
-	str_emailedit	  = str_emailedit +
+	str_emailedit	  = str_emailedit + ""
 				  +	"<div class='row'><div class='col-sm-12'>"
 				  +	"<div class='col-sm-3'>Event/Action</div>"
 				  + "<div class='col-sm-6'>"+ "<input type='text' class='form-control' name='eventaction' id='eventaction' value='"+data.event+"'> "
+				  + "</div></div></div>"
+				  + "<div class='row' style='display:none;'><div class='col-sm-12'>"
+				  +	"<div class='col-sm-3'></div>"
+				  + "<div class='col-sm-6'>"+ "<input type='text' class='form-control' name='slug_name' id='slug_name' value='"+data.slug_name+"' > "
 				  + "</div></div></div>"
 				  + "<div class='row'><div class='col-sm-12'>"
 				  +	"<div class='col-sm-3'>Email Subject</div>"
@@ -77,16 +81,23 @@ function showEditMailContent(data){
 				  +	"<div class='col-sm-3'></div>"
 				  +	"<div class='col-sm-4'></div>"
 				  + "<div class='col-sm-2 text-right'>"+ "<input type='button' class='form-control btn btn-primary' name='email_message_save' id='email_message_save' value='save' >"
-				  + "</div></div></div>";
+				  + "</div></div>"
+				  + "<div class='col-sm-12'>"
+				  +	"<hr>"
+				  +	"<p>Note : You can use HTML in the content to make formatting more attractive.<br> You can use the following Shortcodes [borrower_name]"
+				  +	",[borrower_organisation],[loan_apply_date],[loan_bid_close_date],[loan_apply_amount]</p>"
+				  + "<hr>"				  
+				  + "</div></div>";
 	
 	$('#email_popup .modal-body').html(str_emailedit);
 	$('#email_popup').modal("show");	
 	callEmailClickEvent();
+
 }
 function callEmailClickEvent(){
 	$('#email_message_save').click(function (){
 		$('#form-settings').attr('action',baseurl+'/admin/system/emaildata/save');
-		$('#form-settings').submit();
+		$('#form-settings').submit();		
 	});
 }
 function callModuleClickEvent(){
@@ -95,7 +106,8 @@ function callModuleClickEvent(){
 		$('#form-settings').submit();
 	});
 }
-function showEditForm(data){			
+function showEditForm(data){	
+				
 	var	str_edit ='';
 	var check = '';
 	if(data.send_email==1)			
@@ -113,6 +125,10 @@ function showEditForm(data){
 				  + "<div class='col-sm-6'>"+ "<input type='hidden' class='form-control' name='slug' id='slug' value='"+data.slug_name+"'> "
 				  + "</div></div></div>"
 				  +	"<div class='row'><div class='col-sm-12'>"
+				  +	"<div class='col-sm-3'></div>"
+				  + "<div class='col-sm-6'>"+ "<input type='hidden' class='form-control' name='email_slug' id='email_slug' value='"+data.email_slug+"'> "
+				  + "</div></div></div>"
+				  +	"<div class='row'><div class='col-sm-12'>"
 				  +	"<div class='col-sm-3'>Event/Action</div>"
 				  + "<div class='col-sm-6'>"+ "<input type='text' class='form-control' name='event_action' id='event_action' value='"+data.event_action+"' disabled> "
 				  + "</div></div></div>"
@@ -123,6 +139,10 @@ function showEditForm(data){
 				  +	"<div class='row'><div class='col-sm-12'>"
 				  +	"<div class='col-sm-3'>Send Mail</div>"
 				  + "<div class='col-sm-1 text-left'>" + "<input type='checkbox' class='form-control' name='sendmail' id='sendmail' value='"+data.send_email+"'  disabled "+check+" />"
+				  + "</div></div></div>"
+				   + "<div class='row' style='display:none;'><div class='col-sm-12'>"
+				  +	"<div class='col-sm-3'></div>"
+				  + "<div class='col-sm-6'>"+ "<input type='text' class='form-control' name='sendmail' id='sendmail' value='"+data.send_email+"' > "
 				  + "</div></div></div>"
 				  +	"<div class='row'><div class='col-sm-12'>"
 				  +	"<div class='col-sm-3'></div>"

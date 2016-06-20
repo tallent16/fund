@@ -53,6 +53,8 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$company_info_complete			= 	0;
 	public 	$director_info_complete			= 	0;
 	public 	$bank_info_complete				= 	0;
+	public 	$successTxt 					= 	"";
+	
 	protected $table 						= 	'borrowers';
 	
 	protected $primaryKey = 'borrower_id';
@@ -256,6 +258,11 @@ class BorrowerProfileModel extends TranWrapper {
 				}
 		}
 		$this->updateBorrowerBankInfo($postArray,$borrowerId,$transType);
+		if($postArray['isSaveButton']	!=	"yes") {
+			$this->successTxt	=	$this->getSystemMessageBySlug("borrower_profile_submit");
+		} else {
+				$this->successTxt	=	$this->getSystemMessageBySlug("borrower_profile_update_by_borrwer");
+		}
 		return $borrowerId;
 	}
 	
@@ -956,6 +963,7 @@ class BorrowerProfileModel extends TranWrapper {
 					$whereArry	=	array("profile_comments_id" =>$comment_id);
 					$dataArray = array(	
 							'comments'					=> $comments,
+							'comment_status'			=> $comment_status,
 							'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
 					$result =  $this->dbUpdate('profile_comments', $dataArray, $whereArry);
 					$commentIds[]	=	$comment_id;
@@ -1036,26 +1044,31 @@ class BorrowerProfileModel extends TranWrapper {
 			case "approve":
 				$actionSumm =	"Approval";
 				$actionDet  =	"Borrower Profile Approval";
+				$slug_name	=	"borrower_profile_approved";
 				break;
 				
 			case "return_borrower":
 				$actionSumm =	"Comments by Admin";
 				$actionDet  =	"Profile return back to Borrower with comments";
+				$slug_name	=	"borrower_profile_return_to_borrower";
 				break;
 
 			case "reject":
 				$actionSumm =	"Profile Rejected";
 				$actionDet  =	"Borrower Profile Rejected";
+				$slug_name	=	"borrower_profile_reject";
 				break;
 
 			case "delete":
 				$actionSumm =	"Profile Deleted";
 				$actionDet  =	"Borrower Profile Deleted";
+				$slug_name	=	"borrower_profile_inactive";
 				break;
 			
 			default:
 				$actionSumm =	"Submitted for Approval";
 				$actionDet  =	"Profile submitted for approval";
+				$slug_name	=	"";
 				break;
 		}
 		
@@ -1069,59 +1082,8 @@ class BorrowerProfileModel extends TranWrapper {
 		$moneymatchSettings = $this->getMailSettingsDetail();
 		$fields 			= array('[borrower_contact_person]','[application_name]');
 		$replace_array 		= array();
-		
-		if($status	==	"approve") {
-			
-			$mailContents		= 	$moneymatchSettings[0]->borrower_approval_content;
-			$mailSubject		= 	$moneymatchSettings[0]->borrower_approval_subject;
-
-			$replace_array 		= 	array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
-								
-			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
-			$new_subject 		= 	str_replace($fields, $replace_array, $mailSubject);
-			$template			=	"emails.borrApporvalTemplate";
-			
-		//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
-								//~ "subject"=>"Money Match - Borrower Approval",
-								//~ "template"=>"emails.borrApporvalTemplate",
-								//~ "username"=>$borrUserInfo->username,
-								//~ "useremail"=>$borrUserInfo->email
-							//~ );
-		}
-		if($status	==	"return_borrower") {
-			
-				
-			$mailContents		= 	$moneymatchSettings[0]->borrower_profile_comments_content;
-			$mailSubject		= 	$moneymatchSettings[0]->borrower_profile_comments_subject;
-
-			$replace_array 		= 	array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
-								
-			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
-			$new_subject 		= 	str_replace($fields, $replace_array, $mailSubject);
-			$template			=	"emails.borrCorrectionRequiredTemplate";			
-			//~ $mailArray	=	array(	"email"=>"sathya@syllogic.in",
-									//~ "subject"=>"Money Match - Borrower Correction Required",
-									//~ "template"=>"emails.borrCorrectionRequiredTemplate",
-									//~ "username"=>$borrUserInfo->username,
-									//~ "useremail"=>$borrUserInfo->email
-								//~ );
-	
-		}
-		if($status	==	"approve" || $status	==	"return_borrower") {
-			$msgarray 	=	array(	"content" => $new_content);			
-			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
-									"from" => $moneymatchSettings[0]->mail_default_from,
-									"from_name" => $moneymatchSettings[0]->application_name,
-									"to" => $borrUserInfo->email,
-									"cc" => $moneymatchSettings[0]->admin_email,
-									"live_mail" => $moneymatchSettings[0]->send_live_mails,
-									"template"=>$template);
-			
-			$mailArry	=	array(	"msgarray"=>$msgarray,
-									"msgData"=>$msgData);
-			$this->sendMail($mailArry);
-		}
-								
+		$replace_array 		= 	array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
+		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 		return $borrowerId;
 	}
 	
@@ -1134,11 +1096,11 @@ class BorrowerProfileModel extends TranWrapper {
 					break;
 			case	"delete":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_DELETED );
-					$status	=	null;
+					$status	=	"delete";
 					break;
 			case	"reject":
 					$dataArray = array(	'status' 	=>	BORROWER_STATUS_REJECTED );
-					$status	=	null;
+					$status	=	"reject";
 					break;
 		}
 		foreach($postArray['borrower_ids'] as $borRow) {

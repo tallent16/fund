@@ -69,17 +69,6 @@
 				</div>
 			</div>
 		</div>
-		@if($submitted)
-		<div class="col-sm-12">
-			<div class="annoucement-msg-container">
-				<div class="alert alert-success">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					{{ Lang::get('investor-profile.save') }}
-				</div>
-			</div>
-		</div> 
-			
-		@endif
 	</div>
 	<form method="post" id="form-profile" name="form-profile"enctype="multipart/form-data" >
 			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">

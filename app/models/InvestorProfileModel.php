@@ -37,6 +37,7 @@ class InvestorProfileModel extends TranWrapper {
 	public  $allTransList					= array();
 	public  $nationality_code				= "SG";
 	public 	$commentsReplyInfo 				= 	array();
+	public 	$successTxt 					= 	"";
 	
 	public function processDropDowns() {				
 				
@@ -184,7 +185,11 @@ class InvestorProfileModel extends TranWrapper {
 				$this->saveComments($postArray['comment_row'],$investorId);
 			}
 		}
-		
+		if($postArray['isSaveButton']	!=	"yes") {
+			$this->successTxt	=	$this->getSystemMessageBySlug("investor_profile_submit");
+		} else {
+				$this->successTxt	=	$this->getSystemMessageBySlug("investor_profile_update_by_investor");
+		}
 		return $investorId;
 	}
 	
@@ -539,6 +544,7 @@ class InvestorProfileModel extends TranWrapper {
 					$whereArry	=	array("profile_comments_id" =>$comment_id);
 					$dataArray = array(	
 							'comments'					=> $comments,
+							'comment_status'			=> $comment_status,
 							'comment_datetime' 			=> $this->getDbDateFormat(date("d/m/Y")));
 					$result =  $this->dbUpdate('profile_comments', $dataArray, $whereArry);
 					$commentIds[]	=	$comment_id;
@@ -606,27 +612,34 @@ class InvestorProfileModel extends TranWrapper {
 		$moneymatchSettings = 	$this->getMailSettingsDetail();
 		$fields 			= 	array('[investor_firstname]', '[investor_lastname]','[application_name]');
 		$replace_array 		= 	array();
-		
+		$replace_array 		= 	array( 	$invUserInfo->firstname,
+										$invUserInfo->lastname, 
+										$moneymatchSettings[0]->application_name);
+											
 		$moduleName			=	"Investor Profile";
 		switch ($status) {
 			case "approve":
 				$actionSumm =	"Approval";
 				$actionDet  =	"Investor Profile Approval";
+				$slug_name	=	"investor_profile_approved";
 				break;
 				
 			case "return_investor":
 				$actionSumm =	"Comments by Admin";
 				$actionDet  =	"Profile return back to Investor with comments";
+				$slug_name	=	"investor_profile_return_to_investor";
 				break;
 
 			case "reject":
 				$actionSumm =	"Profile Rejected";
 				$actionDet  =	"Investor Profile Rejected";
+				$slug_name	=	"investor_profile_reject";
 				break;
 
 			case "delete":
 				$actionSumm =	"Profile Deleted";
 				$actionDet  =	"Investor Profile Deleted";
+				$slug_name	=	"investor_profile_inactive";
 				break;
 			
 			default:
@@ -640,46 +653,7 @@ class InvestorProfileModel extends TranWrapper {
 
 		$this->dbUpdate('investors', $dataArray, $whereArry);
 		
-		if($status	==	"approve") {
-			
-			$mailContents		= 	$moneymatchSettings[0]->investor_approval_content;
-			$mailSubject		= 	$moneymatchSettings[0]->investor_approval_subject;
-
-			$replace_array 		= 	array( 	$invUserInfo->firstname,
-											$invUserInfo->lastname, 
-											$moneymatchSettings[0]->application_name);
-								
-			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
-			$new_subject 		= 	str_replace($fields, $replace_array, $mailSubject);
-			$template			=	"emails.ApporvalTemplate";					
-		}
-		if($status	==	"return_investor") {
-			
-			$mailContents		= 	$moneymatchSettings[0]->investor_profile_comments_content;
-			$mailSubject		= 	$moneymatchSettings[0]->investor_profile_comments_subject;
-
-			$replace_array 		= 	array( 	$invUserInfo->firstname,
-											$invUserInfo->lastname, 
-											$moneymatchSettings[0]->application_name);
-								
-			$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
-			$new_subject 		=	 str_replace($fields, $replace_array, $mailSubject);
-			$template			=	"emails.CorrectionRequiredTemplate";				
-		}
-		if($status	==	"approve" || $status	==	"return_investor") {			
-			$msgarray 	=	array(	"content" => $new_content);			
-			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
-									"from" => $moneymatchSettings[0]->mail_default_from,
-									"from_name" => $moneymatchSettings[0]->application_name,
-									"to" => $invUserInfo->email,
-									"cc" => $moneymatchSettings[0]->admin_email,
-									"live_mail" => $moneymatchSettings[0]->send_live_mails,
-									"template"=>$template);
-									
-			$mailArry	=	array(	"msgarray"=>$msgarray,
-									"msgData"=>$msgData);
-			$this->sendMail($mailArry);
-		}
+		$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);
 		return $investorId;
 	}
 	

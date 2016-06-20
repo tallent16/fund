@@ -68,28 +68,35 @@ class TranWrapper extends MoneyMatchModel {
 		$username = $this->dbFetchOne($sql);	
 		return $username;
 	}
-	public function sendMailByModule($slug,$fieldArray,$replaceArray) {
+	
+	public function sendMailByModule($slug,$toEmailAddress,$fieldArray,$replaceArray) {
 		
-		$moneymatchSettings = $this->getMailSettingsDetail();
-		
-		$mailContents		= $moneymatchSettings[0]->borrower_signup_content;
-		$mailSubject		= $moneymatchSettings[0]->borrower_signup_subject;
-		
-		$new_content 		= str_replace($fieldArray, $replaceArray, $mailContents);
-		$new_subject 		= str_replace($fieldArray, $replaceArray, $mailSubject);
-		
-		$msgarray = array("content" => $new_content);			
-		$msgData = array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
-							"from" => $moneymatchSettings[0]->mail_default_from,
-							"from_name" => $moneymatchSettings[0]->application_name,
-							"to" => $postArray['EmailAddress'],
-							"cc" => $moneymatchSettings[0]->admin_email,
-							"live_mail" => $moneymatchSettings[0]->send_live_mails,
-							"template"=>"emails.confirmation");
-							
-		$mailArry	=	array(	"msgarray"=>$msgarray,
-								"msgData"=>$msgData);
-		$this->sendMail($mailArry);
+		if( $slug !=	"") {
+			$sendMail	=	$this->getSystemMessageBySlug($slug,"send_email");
+			if($sendMail) {
+				$emailSettings 		= $this->getEmailMessagesBySlug($slug);
+				$moneymatchSettings = $this->getMailSettingsDetail();
+				
+				$mailContents		= $emailSettings[0]->email_content;
+				$mailSubject		= $emailSettings[0]->email_subject;
+				
+				$new_content 		= str_replace($fieldArray, $replaceArray, $mailContents);
+				$new_subject 		= str_replace($fieldArray, $replaceArray, $mailSubject);
+				
+				$msgarray = array("content" => $new_content);			
+				$msgData = array(	"subject" => $new_subject, 
+									"from" => $moneymatchSettings[0]->admin_email,
+									"from_name" => $moneymatchSettings[0]->application_name,
+									"to" => $toEmailAddress,
+									"cc" => $moneymatchSettings[0]->mail_cc_to,
+									"live_mail" => $moneymatchSettings[0]->send_live_mails,
+									"template"=>"emails.emailTemplate");
+									
+				$mailArry	=	array(	"msgarray"=>$msgarray,
+										"msgData"=>$msgData);
+				$this->sendMail($mailArry);
+			}
+		}
 	}
 	public function sendMail($postArray) {
 		
@@ -807,7 +814,7 @@ class TranWrapper extends MoneyMatchModel {
 		
 		$sql= "	SELECT 	{$fieldName}
 				FROM 	system_messages
-				WHERE	slug_name ='{$lsug}'";
+				WHERE	slug_name ='{$slug}'";
 		$result		= $this->dbFetchOne($sql);
 		return $result;
 	}
@@ -816,5 +823,19 @@ class TranWrapper extends MoneyMatchModel {
 		echo "<pre>",print_r($postArray),"</pre>";
 		if($die)
 			die;
+	}
+		
+	public function getEmailMessagesBySlug($slug='') {
+		
+		$where	=	"";
+		if($slug	!=	'') {
+			$where	=	"WHERE Slug_name ='{$slug}'";
+		}
+		$sql= "	SELECT 	*
+				FROM 	email_notifications
+				{$where}";
+		
+		$result		= $this->dbFetchAll($sql);
+		return $result;
 	}
 }

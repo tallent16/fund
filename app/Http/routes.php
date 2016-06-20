@@ -211,10 +211,10 @@ Route::post('admin/system/settings/save',  	[	'uses' 			=>	'AdminSettingsControl
 											]
 			);
 Route::post('admin/system/messages/save',  	[	'uses' 			=>	'AdminSettingsController@saveSystemMessagesAction'
-								]
+											]
 			);
 Route::post('admin/system/emaildata/save',  [	'uses' 			=>	'AdminSettingsController@saveSystemEmailAction'
-								]
+											]
 			);
 Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
 Route::post('admin/ajax/editmessage',  'AdminSettingsController@ajaxEditAction');

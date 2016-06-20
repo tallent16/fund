@@ -19,10 +19,12 @@ class InvestorProfileController extends MoneyMatchController {
 	public function indexAction() {		
 		
 		$submitted	=	false;
+		Session::forget("success");
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
 			$result		=	$this->investorProfileModel->processProfile($postArray);
 			$submitted	=	true;
+			Session::put("success",$this->borrowerProfileModel->successTxt);
 		}
 		$this->investorProfileModel->getInvestorDetails();
 

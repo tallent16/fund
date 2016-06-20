@@ -60,15 +60,15 @@ class AdminSettingsController extends MoneyMatchController {
 	
 	public function saveSystemEmailAction(){
 		
-		$postArray				=	Request::all();	
+		$postArray				=	Request::all();			
 		$slug					= 	$postArray['slug_name'];	
 		$email_subject			= 	$postArray['email_subject'];	
-		$email_content			= 	$postArray['email_content'];	
-		$saveresponse_data 	= 	$this->adminSettingsModel->updateEmailMessage($email_subject,$email_content,$slug);
-			
-		if($saveresponse_data) {
+		$email_content			= 	$postArray['email_content'];
+		$saveresponse_data 		= 	$this->adminSettingsModel->updateEmailMessage($email_subject,$email_content,$slug);
+		//echo "<pre>",print_r($saveresponse_data),"</pre>"; die;	
+		if($saveresponse_data) {			
 			return redirect()->route('admin.settings')
-						->with('success','Admin Email Message Updated successfully');
+						->with('success','Admin Email Message Updated successfully');						
 		}else{
 			return redirect()->route('admin.settings')
 						->with('failure','Something went wrong!');	
@@ -78,11 +78,15 @@ class AdminSettingsController extends MoneyMatchController {
 	public function saveSystemMessagesAction() {
 		
 		$postArray				=	Request::all();		
+	//	echo "<pre>",print_r($postArray),"</pre>"; die;
 		$event_action			= 	$postArray['event_action'];
 		$slug					= 	$postArray['slug'];
-		$messageresponse_data 	= 	$this->adminSettingsModel->updateModuleMessage($event_action,$slug);
-			
-		if($messageresponse_data) {
+		$emailslug				= 	$postArray['email_slug'];
+		$sendmail				= 	$postArray['sendmail'];
+		
+		$messageresponse_data 	= 	$this->adminSettingsModel->updateModuleMessage($event_action,$slug,$emailslug,$sendmail);
+		
+		if($messageresponse_data) {			
 			return redirect()->route('admin.settings')
 						->with('success','Admin Module Message Updated successfully');
 		}else{

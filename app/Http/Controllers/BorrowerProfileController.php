@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use Request;
 use	\App\models\BorrowerProfileModel;
 use Auth;
+use Session;
 class BorrowerProfileController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -20,11 +21,12 @@ class BorrowerProfileController extends MoneyMatchController {
 		
 		$submitted	=	false;
 		$activeTab	=	"#company_info";
+		Session::forget("success");
 		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			$result		=	$this->borrowerProfileModel->processProfile($postArray);
-			$submitted	=	true;
-			$activeTab	=	$postArray['active_tab'];	
+			$postArray		=	Request::all();
+			$result			=	$this->borrowerProfileModel->processProfile($postArray);
+			$activeTab		=	$postArray['active_tab'];	
+			Session::put("success",$this->borrowerProfileModel->successTxt);
 		}
 		
 		$this->borrowerProfileModel->getBorrowerDetails(); 
