@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use Request;
 use Auth;
 use	\App\models\InvestorProfileModel;
+use Session;
 class InvestorProfileController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -19,12 +20,16 @@ class InvestorProfileController extends MoneyMatchController {
 	public function indexAction() {		
 		
 		$submitted	=	false;
-		Session::forget("success");
+		
 		if (Request::isMethod('post')) {
-			$postArray	=	Request::all();
-			$result		=	$this->investorProfileModel->processProfile($postArray);
-			$submitted	=	true;
-			Session::put("success",$this->borrowerProfileModel->successTxt);
+			if(Request::get("isSaveButton")	==	"mobile_update") {
+				$this->updateMobileAction();
+			}else{
+				$postArray	=	Request::all();
+				$result		=	$this->investorProfileModel->processProfile($postArray);
+				$submitted	=	true;
+			}
+			Session::put("success",$this->investorProfileModel->successTxt);
 		}
 		$this->investorProfileModel->getInvestorDetails();
 
@@ -51,12 +56,11 @@ class InvestorProfileController extends MoneyMatchController {
 		}
 	}
 	
-	public function updateAction(){
+	public function updateMobileAction(){
+		
 		$postArray	=	Request::all();
 		$inv_id = $postArray['investor_id'];
-		\Session::put('success','mobile number updated successfully');
 		$this->investorProfileModel->updateMobileNumber($inv_id,$postArray);		
-		return redirect()->route('investor.profile')->with('success','mobile number updated successfully');
 	}
 	
 	

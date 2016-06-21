@@ -31,9 +31,17 @@ class InvestorMiddleWare {
 		if($profileStatus	==	0	||	$profileStatus	==INVESTOR_STATUS_NEW_PROFILE
 									||	$profileStatus	==INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL
 									||	$profileStatus	==INVESTOR_STATUS_COMMENTS_ON_ADMIN) {
-			if($request->url()	!=	url('investor/profile')) {
-				return redirect()->to('investor/profile');
+										
+			switch($request->url()) {
+				case url('investor/profile'):
+				case url('investor/profile/mobile/update'):
+					break;
+				default:
+					return redirect()->to('investor/profile');
 			}
+			//~ if($request->url()	!=	url('investor/profile')) {
+				//~ return redirect()->to('investor/profile');
+			//~ }
 		}
 		
         return $next($request);

@@ -62,9 +62,11 @@
 			<div class="dashboard-alert">
 				@if(session()->has('success'))
 					@include('partials/error', ['type' => 'success', 'message' => session('success')])
+					{{'';session()->forget("success");'';}}
 				@endif
 				@if(session()->has('failure'))
 					@include('partials/error', ['type' => 'danger', 'message' => session('failure')])
+					{{'';session()->forget("failure");'';}}
 				@endif    
 				
 				@if(session()->has('notification'))

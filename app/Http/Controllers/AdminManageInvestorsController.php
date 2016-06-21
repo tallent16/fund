@@ -62,7 +62,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$result		=	$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
 		
 		if($result) {
-			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_comments_saved");
+			$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_comments_saved");
 			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
 						->with('success',$successMsg);
 		}else{
@@ -79,7 +79,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$this->investorProfileModel->saveComments($postArray['comment_row'],$inv_id);
 		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"return_investor");
 		if($result) {
-			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_return_to_investor");
+			$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_return_to_investor");
 			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
 						->with('success',$successMsg);
 		}else{
@@ -98,7 +98,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		}
 		$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
 		if($result) {
-			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_approved");
+			$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_approved");
 			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
 						->with('success',$successMsg);
 		}else{
@@ -119,7 +119,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		if($inv_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) {
 			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"approve");
 			if($result) {
-				$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_approved");
+				$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_approved");
 				return redirect()->route('admin.manageinvestors')
 							->with('success',$successMsg);
 			}else{
@@ -142,9 +142,9 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$dataArray = array(	'status' 	=>	INVESTOR_STATUS_REJECTED );
 		if( ($inv_profile_status	==	INVESTOR_STATUS_NEW_PROFILE) 
 				|| ($inv_profile_status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL)) {
-			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id);
+			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"reject");
 			if($result) {
-				$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_reject");
+				$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_reject");
 				return redirect()->route('admin.manageinvestors')
 							->with('success',$successMsg);
 			}else{
@@ -165,9 +165,9 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		
 		$dataArray = array(	'status' 	=>	INVESTOR_STATUS_DELETED );
 		if($this->investorProfileModel->getInvestorActiveLoanStatus($inv_id)	==	0) {
-			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id);
+			$result		=	$this->investorProfileModel->updateInvestorStatus($dataArray,$inv_id,"delete");
 			if($result) {
-				$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_inactive");
+				$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_inactive");
 				return redirect()->route('admin.manageinvestors')
 							->with('success',$successMsg);
 			}else{
@@ -183,7 +183,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,"approve");
 		if($result) {
-			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_approved");
+			$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_approved");
 			return redirect()->route('admin.manageinvestors')
 						->with('success',$successMsg);
 		}else{
@@ -197,7 +197,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,"reject");
 		if($result) {
-			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_reject");
+			$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_reject");
 			return redirect()->route('admin.manageinvestors')
 						->with('success',$successMsg);
 		}else{
@@ -211,7 +211,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$result		=	$this->investorProfileModel->updateBulkInvestorStatus($postArray,"delete");
 		if($result) {
-			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_inactive");
+			$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_inactive");
 			return redirect()->route('admin.manageinvestors')
 						->with('success',$successMsg);
 		}else{
@@ -233,7 +233,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$inv_id		=	$postArray['investor_id'];
 		$result		=	$this->investorProfileModel->processProfile($postArray,$inv_id);
 		if($result) {
-			$successMsg	=	$this->borrowerProfileModel->getSystemMessageBySlug("investor_profile_approved");
+			$successMsg	=	$this->investorProfileModel->getSystemMessageBySlug("investor_profile_approved");
 			return redirect()->route('admin.investorprofile', array('inv_id' => base64_encode($inv_id)	))
 						->with('success',$successMsg)
 						->with('activeTab',$postArray['active_tab']);

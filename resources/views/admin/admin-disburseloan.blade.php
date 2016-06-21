@@ -14,15 +14,23 @@
 						<span class="pull-left">
 							@if( ($bidsModel->loan_status	==	LOAN_STATUS_DISBURSED)
 								||	($bidsModel->loan_status	==	LOAN_STATUS_LOAN_REPAID))
-								{{ Lang::get('LOAN DETAIL')}}
+								{{ Lang::get('Loan Details')}}
 								@var	$disableFields	=	"disabled"
 								@var 	$canViewInvestorList	=	true
 							@else
 								@var	$disableFields	=	""
 								@var 	$canViewInvestorList	=	false
-								{{ Lang::get('DISBURSE LOAN')}}
+								{{ Lang::get('Disburse Loan')}}
 							@endif	
 						</span> 
+						<span >
+							{{ Lang::get('Borrower Repayment Schedule')}}
+						</span> 
+						<span>
+							{{ Lang::get('Investors Repayment Schedule')}}
+						</span> 
+						
+						
 					</div>
 				</div>					
 			</div><!--panel head end-->
@@ -43,31 +51,7 @@
 								value="{{$bidsModel->loan_reference_number}}" 
 								disabled>	
 					</div>	
-				
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Disbursement Date') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3 controls">
-						<div class="input-group">
-							<input 	id="disbursement_date" 
-									type="text" 
-									class="disbursement_date form-control" 
-									name="disbursement_date"
-									required
-									{{$disableFields}}
-									value="{{$bidsModel->system_date}}" />
 
-							<label for="disbursement_date" class="input-group-addon btn">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</label>
-						</div>
-					</div>
-					
-				</div> <!-- Row 1 -->
-				
-				<div class="row"><!-- Row 2 -->	
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
 							{{ Lang::get('Sanctioned Amount') }}
@@ -82,53 +66,10 @@
 								"{{number_format($bidsModel->loan_sanctioned_amount, 2, '.', ',')}}"
 								disabled>	
 					</div>
-			
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Fees Type Applicable') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<input 	type="text" 
-								class="form-control text-right"
-								name="fees_type_applicable"												
-								id="fees_type_applicable" 											
-								value="{{ Lang::get($bidsModel->codelist_value) }}"
-								disabled>	
-					</div>
 					
-				</div><!-- Row 2 -->
+				</div> <!-- Row 1 -->
 				
-				<div class="row"><!-- Row 3-->			
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Processing Fee (%)') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">	
-						<input 	type="text" 
-								class="form-control text-right"
-								name="loan_fees_percent"												
-								id="loan_fees_percent" 											
-								value="{{number_format($bidsModel->loan_fees_percent, 2, '.', ',')}}"
-								disabled>	
-					</div>
-					
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-							<label>{{ Lang::get('Fixed Fees') }}</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<input 	type="text" 
-								class="form-control text-right"
-								name="loan_fixed_fees"												
-								id="loan_fixed_fees" 											
-								value="{{number_format($bidsModel->loan_fixed_fees, 2, '.', ',')}}" 
-								disabled>	
-					</div>	
-							
-				</div><!-- Row 3 -->
-				
-				<div class="row"><!-- Row 4-->
+				<div class="row"><!-- Row 2 -->	
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label>
 							{{ Lang::get('Total Processing Fees') }}
@@ -157,10 +98,51 @@
 								disabled
 								>	
 					</div>
-
 					
-				</div>  <!-- Row 4 -->	
+				</div><!-- Row 2 -->
 				
+				<div class="row"><!-- Row 3-->			
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label>
+							{{ Lang::get('Disbursement Date') }}
+						</label>
+					</div>	
+					<div class="col-xs-12 col-sm-7 col-lg-3 controls">
+						<div class="input-group">
+							<input 	id="disbursement_date" 
+									type="text" 
+									class="disbursement_date form-control" 
+									name="disbursement_date"
+									required
+									{{$disableFields}}
+									value="{{$bidsModel->system_date}}" />
+
+							<label for="disbursement_date" class="input-group-addon btn">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</label>
+						</div>
+					</div>
+					
+					<div class="col-xs-12 col-sm-5 col-lg-3">
+						<label>
+							{{ Lang::get('Monthly Pay-by Day') }}
+						</label>
+					</div>	
+					<div class="col-xs-12 col-sm-7 col-lg-3 controls">
+						<div class="input-group">
+							<input 	id="monthly_pay_by_date" 
+									type="text" 
+									class="monthly_pay_by_date form-control" 
+									name="monthly_pay_by_date"
+									required
+									{{$disableFields}}
+									value="{{$bidsModel->monthly_pay_by_date}}" />
+
+						</div>
+					</div>					
+				</div><!-- Row 3 -->
+				
+			
 				<div class="row">  <!-- Row 4 a-->				
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label for="bid_type">

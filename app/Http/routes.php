@@ -1053,12 +1053,11 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('investor/dashboard', 'InvestorDashboardController@indexAction');
     
     // Investor Profile
-    Route:get('investor/profile', ['as'=>'investor.profile','uses'=>'InvestorProfileController@indexAction']);
+   
     Route::post('investor/profile', 'InvestorProfileController@indexAction');
     Route::post('investor/checkFieldExists', 'InvestorProfileController@ajaxCheckFieldExistsAction');
 	Route::get('investor/loanslist', 'LoanListingController@indexAction');
-	Route::post('investor/profile/update','InvestorProfileController@updateAction');
-  
+	
 	// Loans 
     Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
     Route::match(['get', 'post'],'investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
@@ -1090,7 +1089,8 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	   	
     Route::post('investor/ajax/availableBalance', 'LoanDetailsController@ajaxAvailableBalanceAction');	   	
 });
-
+ Route:get('investor/profile', ['as'=>'investor.profile','uses'=>'InvestorProfileController@indexAction']);
+ 
 // Common Modules
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');
 Route::get('getActiveLoans', 'LoanListingAllController@getActiveLoansAction');

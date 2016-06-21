@@ -686,6 +686,7 @@ class InvestorProfileModel extends TranWrapper {
 		$userInfo	=	$this->getInvestorIdByUserInfo($inv_id);
 		$whereArry = array('user_id'=>$userInfo->user_id);
 		$this->dbUpdate('users', $dataArray, $whereArry);
+		$this->successTxt	=	$this->getSystemMessageBySlug("investor_profile_mobile_update");
 	}
 	
 }

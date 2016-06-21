@@ -77,7 +77,7 @@ class AdminSettingsController extends MoneyMatchController {
 	
 	public function saveSystemMessagesAction() {
 		
-		$postArray				=	Request::all();		
+		$postArray				=	Request::all();	
 	//	echo "<pre>",print_r($postArray),"</pre>"; die;
 		$event_action			= 	$postArray['event_action'];
 		$slug					= 	$postArray['slug'];

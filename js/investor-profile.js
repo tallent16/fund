@@ -122,7 +122,9 @@ $(document).ready(function (){
 		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/return_investor");
 		formValid	=	true;
 		if($('.commentClass:not(#comment_status_XXX)').length	>	0){
-			if($('.commentClass:checked').length){
+			var uncheckedLen	=	$("#commentBoxContainer .commentClass").length
+			var checkedLen	=	$("#commentBoxContainer .commentClass:checked").length
+			if(checkedLen	==	uncheckedLen){
 				errMessage	=	"There is no open comments to return back to investor";
 				showDialog("",errMessage);
 				formValid	=	false;
@@ -139,8 +141,8 @@ $(document).ready(function (){
     });
     
 	$("#update_mobile_button").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/investor/profile/update");
-      $("#form-profile").submit();
+        $("#isSaveButton").val("mobile_update");
+		$("#form-profile").submit();
     });
     checkAllTabCompleteStatus();
 });
