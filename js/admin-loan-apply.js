@@ -78,8 +78,7 @@ $(document).ready(function (){
 	$("#save_comment_button").click(function(){
 		
 		$("#form-profile").attr("action",baseUrl+"/admin/loanapproval/save_comments");
-		$("#form-profile").submit();
-    });
+	});
 	
 	$(".borrower_doc_download").on("click",function(){
 		var	loan_doc_url	=	$(this).attr("data-download-url");

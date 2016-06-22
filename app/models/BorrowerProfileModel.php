@@ -261,7 +261,7 @@ class BorrowerProfileModel extends TranWrapper {
 		if($postArray['isSaveButton']	!=	"yes") {
 			$this->successTxt	=	$this->getSystemMessageBySlug("borrower_profile_submit");
 		} else {
-				$this->successTxt	=	$this->getSystemMessageBySlug("borrower_profile_update_by_borrwer");
+			$this->successTxt	=	$this->getSystemMessageBySlug("borrower_profile_update_by_borrwer");
 		}
 		return $borrowerId;
 	}

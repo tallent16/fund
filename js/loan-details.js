@@ -78,6 +78,7 @@ $(document).ready(function (){
 			$("#confirmation_button").prop("disabled",true);
 		}
 	});
+	
 });
 
 
@@ -148,38 +149,49 @@ function validateForm() {
 	var	errorMesage			=	"";
 	getAvailableBalance();
 	AvailableBalance		=	$("#available_balance").val()
-	if(bid_amount	<=	0) {
-		errorMesage			=	"Bid Amount Should be greater than zero <br>";
-	}
-			
-	if(bid_interest_rate	<=	0) {
-		errorMesage			=	"Bid Interest Rate Should be greater than zero <br>";
-	}
-	if(errorMesage	!=	""	) {
-		showDialog("",errorMesage);
-		formValid	= false;
-		return;
-	}
-	
 	if(	AvailableBalance	==	0) {
-		showDialog("","You have insufficient balance to bid");
+		showDialog("",getBidSystemMessageBySlug("insufficient_available_balance"));
 		formValid	= false;
 		return;
 	}else{
-		
-		if(bid_amount	>	AvailableBalance) {
-			showDialog("","Bid Amount should not be greater than Available Balance");
+		if(bid_amount	<=	0) {
+			errorMesage			=	getBidSystemMessageBySlug("bid_amount_greater_zero");
+		}
+				
+		if(bid_interest_rate	<=	0) {
+			if(errorMesage	==	""	) {
+				errorMesage			=	getBidSystemMessageBySlug("bid_interest_greater_zero");
+			}
+		}
+		if(errorMesage	!=	""	) {
+			showDialog("",errorMesage);
 			formValid	= false;
 			return;
 		}
 		
-	}
-	if(bid_amount	<	minimum_bid_amount) {
-		showDialog("","The Minimum Bid amount is SGD "+minimum_bid_amount);
-		formValid	= false;
-		return;
+		if(bid_amount	>	AvailableBalance) {
+				showDialog("",getBidSystemMessageBySlug("bid_amount_greater_availbal")	);
+				formValid	= false;
+				return;
+		}
+		
+		if(bid_amount	<	minimum_bid_amount) {
+			showDialog("","The Minimum Bid amount is SGD "+minimum_bid_amount);
+			formValid	= false;
+			return;
+		}
 	}
 	callBidInformationPopup();
 	formValid	= true;
+	
+}
 
+function getBidSystemMessageBySlug(slugName) {
+	var messageTxt	=	"";
+	$.each(jsonBidMessage, function(index, value){
+		if(slugName	==	jsonBidMessage[index].slug_name)
+			messageTxt	=	jsonBidMessage[index].message_text
+		
+	});
+	return messageTxt;
 }

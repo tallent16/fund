@@ -19,6 +19,8 @@ class AdminManageBidsModel extends TranWrapper {
 	public $loan_status = 0;
 	public $loan_status_text = "";
 	public $loan_id = 0;
+	public $borrower_id = 0;
+	public $successTxt = "";
 	
 	public $loanBids = array();
 	
@@ -28,6 +30,7 @@ class AdminManageBidsModel extends TranWrapper {
 										loan_reference_number,
 										purpose_singleline,
 										borrowers.business_name,
+										borrowers.borrower_id,
 										apply_amount,
 										date_format(apply_date, '%d-%m-%Y') apply_date,
 										loan_tenure,
@@ -121,7 +124,21 @@ class AdminManageBidsModel extends TranWrapper {
 		$where			=	["loan_id"	=>	$loanId];
 		
 		$this->dbUpdate($tableName, $dataArray, $where);
-		return;
+		
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrowerId);
+		$borrInfo			=	$this->getBorrowerInfoById($this->borrowerId);
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		
+		$fields 			= array('[borrower_contact_person]','[application_name]',
+									'[loan_number]');
+		$replace_array 		= array();
+		$replace_array 		= array( 	$borrInfo->contact_person, 
+										$moneymatchSettings[0]->application_name,
+										$this->loan_reference_number );
+		$slug_name			=	"loan_bid_closed";									
+		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+		$this->successTxt	=	$this->getSystemMessageBySlug("loan_bid_closed");
+		return;	
 		
 		
 	}
@@ -132,6 +149,8 @@ class AdminManageBidsModel extends TranWrapper {
 		 */
 		$acceptAmtArray	=	$_REQUEST["accepted_amount"];
 		$interestArray	=	$_REQUEST["bid_interest"];
+		$bidAmtArray	=	$_REQUEST["bid_amount"];
+		$investorArray	=	$_REQUEST["investor_ids"];
 		$loanApplyAmt	=	0;
 		$totAcceptedAmt	=	0;
 		$finalInterest	=	0;
@@ -180,7 +199,7 @@ class AdminManageBidsModel extends TranWrapper {
 		* 				make the bid_status as rejected
 		*/
 		
-		
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
 
 		foreach ($acceptAmtArray as $bidId => $acceptedAmount) {
 			$tableName		=	"loan_bids";
@@ -202,6 +221,26 @@ class AdminManageBidsModel extends TranWrapper {
 			$tableName		=	"loan_bids";
 			$this->dbUpdate($tableName, $dataArray, $where);
 			
+			$investorId			=	$investorArray[$bidId];
+			$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+			
+			$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
+											'[loan_number]',
+											'[bid_amount]',
+											'[bid_accepted_amount	]',
+											'[application_name]',
+											);
+			$replace_array 		= 	array( 		$invUserInfo->firstname,
+												$invUserInfo->lastname,
+												$bidAmtArray[$bidId],
+												$acceptAmount,
+												$this->loan_reference_number );
+			if($bidStatus	==		LOAN_BIDS_STATUS_ACCEPTED)							
+				$slug_name			=	"loan_bids_accepted";									
+			else
+				$slug_name			=	"loan_bids_rejected";		
+											
+			$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 		}
 	
 		$tableName		=	"loans";
@@ -211,7 +250,7 @@ class AdminManageBidsModel extends TranWrapper {
 		$where			=	["loan_id"	=>	$loanId];
 		
 		$this->dbUpdate($tableName, $dataArray, $where);
-
+		$this->successTxt	=	$this->getSystemMessageBySlug("loan_bids_accepted");
 		return;
 	}
 	
@@ -229,6 +268,20 @@ class AdminManageBidsModel extends TranWrapper {
 		$where			=	["loan_id"	=>	$loanId];
 		
 		$this->dbUpdate($tableName, $dataArray, $where);
+				
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrower_id);
+		$borrInfo			=	$this->getBorrowerInfoById($this->borrower_id);
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		
+		$fields 			= array('[borrower_contact_person]','[application_name]',
+									'[loan_number]');
+		$replace_array 		= array();
+		$replace_array 		= array( 	$borrInfo->contact_person, 
+										$moneymatchSettings[0]->application_name,
+										$this->loan_reference_number );
+		$slug_name			=	"loan_cancelled";									
+		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+		
 		return;
 	}
 	

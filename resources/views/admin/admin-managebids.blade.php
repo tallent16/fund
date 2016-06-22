@@ -176,10 +176,15 @@
 											</td>
 											<td class="text-right">
 												{{number_format($loanbidRow->bid_amount, 2, ".", ",")}}
-												<input type="hidden" id="bid_amount_{{$rownum}}"
+												<input type="hidden" 
+														id="bid_amount_{{$rownum}}"
+														name="bid_amount[{{$loanbidRow->bid_id}}]" 
 														class="bid_amount"
 														rownum="{{$rownum}}"
 														value="{{$loanbidRow->bid_amount}}" />
+												<input type="hidden" 
+														name="investor_ids[{{$loanbidRow->bid_id}}]" 
+														value="{{$loanbidRow->investor_id}}" />
 											</td>								
 											<td class="text-right">
 												{{number_format($loanbidRow->bid_interest_rate, 2, ".", ",")}}

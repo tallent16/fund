@@ -1,7 +1,5 @@
 @extends('layouts.dashboard')
-@section('bottomscripts')	
-	
-	
+@section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script>

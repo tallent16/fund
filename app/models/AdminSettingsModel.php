@@ -5,37 +5,37 @@ class AdminSettingsModel extends TranWrapper {
 	public $moduleList			=	array();	
 	public $module				=	array();	
 	public $email				=	array();	
-	public $event_val				=	array();	
+	public $event_val			=	array();	
 	public $defaultmoduleval	=	"all";
 	
 	/**Fetching the Records to display in frontend**/
 	public function getGeneralSettings(){
 		
-		$settings_sql = "SELECT 
-								application_name,
-								admin_email,
-								admin_email_label,
-								backend_email,
-								backend_email_label,
-								mail_cc_to,
-								send_live_mails,
-								mail_driver,
-								mail_host,
-								mail_port,
-								mail_encryption,
-								mail_username,
-								mail_password,
-								monthly_pay_by_date,
-								loan_fixed_fees,
-								loan_fees_percent,
-								loan_fees_minimum_applicable,
-								penalty_fee_minimum,
-								penalty_fee_percent,
-								penalty_interest 
-							FROM
-								system_settings";
+		$settings_sql 		= "SELECT 
+									application_name,
+									admin_email,
+									admin_email_label,
+									backend_email,
+									backend_email_label,
+									mail_cc_to,
+									send_live_mails,
+									mail_driver,
+									mail_host,
+									mail_port,
+									mail_encryption,
+									mail_username,
+									mail_password,
+									monthly_pay_by_date,
+									loan_fixed_fees,
+									loan_fees_percent,
+									loan_fees_minimum_applicable,
+									penalty_fee_minimum,
+									penalty_fee_percent,
+									penalty_interest 
+								FROM
+									system_settings";
 							
-		$result			=	$this->dbFetchAll($settings_sql);
+		$result				=	$this->dbFetchAll($settings_sql);
 			
 		$this->settingsList = 	$result;						
 		
@@ -43,7 +43,9 @@ class AdminSettingsModel extends TranWrapper {
 	/**Dropdown Module**/
 	public function getModuleDropdown(){
 		
-		$module_sql			=	 "SELECT DISTINCT module FROM system_messages";
+		$module_sql			=	 "SELECT 
+									DISTINCT module 
+									FROM system_messages";
 							
 		$result_module		=	$this->dbFetchAll($module_sql);
 			
@@ -74,7 +76,7 @@ class AdminSettingsModel extends TranWrapper {
 								FROM system_messages 
 								WHERE module = {$moduleWhere} ";
 								
-		$module_rs		= 	$this->dbFetchAll($module_sql);
+		$module_rs			= 	$this->dbFetchAll($module_sql);
 		return	$module_rs;
 	}
 	/**Display System Messages**/
@@ -92,10 +94,10 @@ class AdminSettingsModel extends TranWrapper {
 									FROM system_messages 
 									WHERE slug_name = '{$slug}' ";
 								
-		$editmodule_rs		= 	$this->dbFetchRow($editmodule_sql);
+		$editmodule_rs			= 	$this->dbFetchRow($editmodule_sql);
 		
 		if ($editmodule_rs) {
-			$this->module	=	$editmodule_rs;
+			$this->module		=	$editmodule_rs;
 		}		
 		return	$this->module;		
 	}	
@@ -112,7 +114,7 @@ class AdminSettingsModel extends TranWrapper {
 								WHERE slug_name = '{$slug}' ";
 								
 		$editemail_rs		= 	$this->dbFetchRow($selectemail_sql);		
-		//echo "<pre>",print_r($newarray),"</pre>"; die;
+		
 		if ($editemail_rs) {
 			$this->email	=	$editemail_rs;
 		}		
@@ -121,10 +123,11 @@ class AdminSettingsModel extends TranWrapper {
 	/**Save Email Contents**/
 	public function updateEmailMessage($email_subject,$email_content,$slug){
 		
-		$dataArray 	   = array( 'email_subject'	=> $email_subject,'email_content' =>$email_content);		
+		$dataArray 	   = array( 'email_subject'	=> $email_subject,
+								'email_content' =>$email_content);		
 		$whereArry	   = array('slug_name' =>"{$slug}");
 		$result_email  = $this->dbUpdate('email_notifications', $dataArray, $whereArry );
-		//echo "<pre>",print_r($result_email),"</pre>"; die;
+		
 		if($result_email){
 			return 1;
 		}
@@ -133,14 +136,14 @@ class AdminSettingsModel extends TranWrapper {
 	public function updateModuleMessage($event_action,$slug,$emailslug,$sendmail){
 		
 		/*Delete or Insert row based on email notification has slug*/
-				
+			
 		if($sendmail){
-			if(!$emailslug){
-				$dataArray	= array( 'slug_name' => $slug ,
-							'email_subject' => 'Default' ,
-							'email_content' => 'Default');
-				 $this->dbInsert('email_notifications', $dataArray, true);					
-			}
+			is_null($emailslug);
+			$dataArray	= array( 'slug_name' => $slug ,
+								'email_subject' => 'Default' ,
+								'email_content' => 'Default');
+			
+			 $this->dbInsert('email_notifications', $dataArray, true);		
 		}else{
 			if($emailslug){
 				$where		= array('slug_name' =>"{$emailslug}");
@@ -151,17 +154,15 @@ class AdminSettingsModel extends TranWrapper {
 		/**Update the Event Messages**/	
 		$dataArray 	   = array( 'message_text'	=> $event_action);
 		$whereArry	   = array('slug_name' =>"{$slug}");
-		$result 	   = $this->dbUpdate('system_messages', $dataArray, $whereArry );
+		$result 	   = $this->dbUpdate('system_messages', $dataArray, $whereArry );		
 		
-		//echo "<pre>",print_r($dataArray),"</pre>"; die;
 		if($result){
 			return 1;
 		}
 	}
 	
-	public function updateGeneralSettings($postArray){
-		
-	//	echo "<pre>",print_r($postArray),"</pre>"; die;
+	public function updateGeneralSettings($postArray){		
+	
 		if(isset($postArray)){
 			/*First Tab*/
 			$application_Name 		= $postArray['application_name'];
@@ -211,7 +212,7 @@ class AdminSettingsModel extends TranWrapper {
 							'penalty_fee_percent'			=> $penaltyProcessPercent,
 							'penalty_interest'				=> $penaltyInterest							
 						);			
-		//echo "<pre>",print_r($dataArray),"</pre>"; die;				
+		
 		$whereArray	=	[ "application_name"	=> $application_Name];
 		$id = $this->dbUpdate('system_settings', $dataArray, $whereArray);
 		if($id)		{		 

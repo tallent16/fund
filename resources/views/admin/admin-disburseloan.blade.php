@@ -2,328 +2,76 @@
 @section('page_heading',Lang::get('Manage Loans') )
 @section('section')  
 
-<form method="post" action="{{url('admin/savedisbursement')}}">
+@if( ($bidsModel->loan_status	==	LOAN_STATUS_DISBURSED) || ($bidsModel->loan_status	==	LOAN_STATUS_LOAN_REPAID))
+	@var	$disableFields			=	"disabled"
+	@var	$dispTitle				=	Lang::get("Loan Details")
+	@var 	$canViewInvestorList	=	true
+	@var	$button1Text			=	Lang::get("Reschedule Repayment")
+	@var	$button1Id				=	"reschdLoan"
+	@var	$button2Text			=	Lang::get("Save Rescheduled Loan")
+	@var	$button2Id				=	"saveReschd"
+	@var	$actionUrl				=	url('admin/saveResched')
+	
+@else
+	@var	$dispTitle				=	Lang::get("Loan Disbursal")
+	@var	$disableFields			=	""
+	@var 	$canViewInvestorList	=	false
+	@var	$button1Text			=	Lang::get("Disburse Loan")
+	@var	$button1Id				=	"reschdLoan"
+	@var	$buttonText				=	Lang::get("Generate Repay Schedule")
+	@var	$button2Id				=	"reschdLoan"
+	@var	$actionUrl				=	url('admin/savedisbursement')
+@endif
+					
+					
+<form 	method="post" 
+		action="{{$actionUrl}}">
 <input type="hidden" id="loan_id" name="loan_id" value="{{$bidsModel->loan_id}}" />
 <input type="hidden" id="hidden_token" name="_token" value="{{ csrf_token() }}" />
 <div class="col-sm-12 space-around">	
-	<div class="panel-primary panel-container disburse-loan">
-		
-			<div class="panel-heading panel-headsection"><!--panel head-->
-				<div class="row">
-					<div class="col-sm-12">
-						<span class="pull-left">
-							@if( ($bidsModel->loan_status	==	LOAN_STATUS_DISBURSED)
-								||	($bidsModel->loan_status	==	LOAN_STATUS_LOAN_REPAID))
-								{{ Lang::get('Loan Details')}}
-								@var	$disableFields	=	"disabled"
-								@var 	$canViewInvestorList	=	true
-							@else
-								@var	$disableFields	=	""
-								@var 	$canViewInvestorList	=	false
-								{{ Lang::get('Disburse Loan')}}
-							@endif	
-						</span> 
-						<span >
-							{{ Lang::get('Borrower Repayment Schedule')}}
-						</span> 
-						<span>
-							{{ Lang::get('Investors Repayment Schedule')}}
-						</span> 
-						
-						
-					</div>
-				</div>					
-			</div><!--panel head end-->
-
-			<div class="panel-body applyloan table-border-custom input-space">
-								
-				<div class="row"><!-- Row 1 -->					
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Loan Reference No')}}
-						</label>
-					</div>								
-					<div class="col-xs-12 col-sm-7 col-lg-3">
-						<input 	type="text" 
-								class="form-control"
-								name="loan_reference_number"
-								id="loan_ref_num" 											
-								value="{{$bidsModel->loan_reference_number}}" 
-								disabled>	
-					</div>	
-
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Sanctioned Amount') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<input 	type="text" 
-								class="form-control text-right"
-								name="loan_sanctioned_amount"
-								id="loan_sanctioned_amount"
-								value=
-								"{{number_format($bidsModel->loan_sanctioned_amount, 2, '.', ',')}}"
-								disabled>	
-					</div>
-					
-				</div> <!-- Row 1 -->
-				
-				<div class="row"><!-- Row 2 -->	
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Total Processing Fees') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<input 	type="text" 
-								class="form-control text-right"
-								name="loan_process_fees"											
-								id="loan_process_fees" 											
-								value="{{number_format($bidsModel->loan_process_fees, 2, '.', ',')}}" 
-								disabled>	
-					</div>
-								
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Amount Disbursed') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<input 	type="text" 
-								class="form-control text-right"
-								name="amount_disbursed"												
-								id="amount_disbursed" 											
-								value="{{number_format($bidsModel->amount_disbursed, 2, '.', ',')}}"
-								disabled
-								>	
-					</div>
-					
-				</div><!-- Row 2 -->
-				
-				<div class="row"><!-- Row 3-->			
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Disbursement Date') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3 controls">
-						<div class="input-group">
-							<input 	id="disbursement_date" 
-									type="text" 
-									class="disbursement_date form-control" 
-									name="disbursement_date"
-									required
-									{{$disableFields}}
-									value="{{$bidsModel->system_date}}" />
-
-							<label for="disbursement_date" class="input-group-addon btn">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</label>
-						</div>
-					</div>
-					
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>
-							{{ Lang::get('Monthly Pay-by Day') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3 controls">
-						<div class="input-group">
-							<input 	id="monthly_pay_by_date" 
-									type="text" 
-									class="monthly_pay_by_date form-control" 
-									name="monthly_pay_by_date"
-									required
-									{{$disableFields}}
-									value="{{$bidsModel->monthly_pay_by_date}}" />
-
-						</div>
-					</div>					
-				</div><!-- Row 3 -->
-				
+	<div class="col-lg-12 col-md-6 col-xs-12">
+		<!-----Tab Starts----->
+		<ul class="nav nav-tabs">
+			<li class="active" id="loan_details_parent" >
+				<a 	data-toggle="tab" 
+					href="#loan_detail_main">
+					{{$dispTitle}}
+				</a>
+			</li>
+			<li  id="borr_repay_schd_parent" >
+				<a 	data-toggle="tab" 
+					href="#borr_repay_schd">
+					{{ Lang::get('Borrower Repayment Schedule')}}
+				</a>
+			</li>
 			
-				<div class="row">  <!-- Row 4 a-->				
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label for="bid_type">
-							{{ Lang::get('Bid Type') }}
-						</label>
-					</div>	
-
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<input 	type="text" 
-								class="form-control"
-								disabled
-								value="{{$bidsModel->bid_typeText}}">	
-					</div>
-
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>	
-							{{ Lang::get('Repayment Type') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-							<input 	type="text" 
-								class="form-control"
-								disabled
-								value="{{$bidsModel->repayment_typeText}}">	
-					</div>	
-									
-				</div>  <!-- Row 4 a -->	
-					
-				<div class="row">  <!-- Row 4 b-->				
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label for="target_interest z">
-							{{ Lang::get('Target Interest') }}
-						</label>
-					</div>	
-
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-							<input 	type="text" 
-								class="form-control  text-right"
-								disabled
-								value="{{$bidsModel->target_interest}}">	
-					</div>
-
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>	
-							{{ Lang::get('Final Interest') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-							<input 	type="text" 
-								class="form-control  text-right"
-								disabled
-								value="{{$bidsModel->final_interest_rate}}">	
-					</div>	
-									
-				</div>  <!-- Row 4 b -->		
-				
-				<div class="row">  <!-- Row 5-->			
-					@if(Route::currentRouteName()	!=	"admin.loanview")
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label for="payment_ref">
-							{{ Lang::get('Payment Reference') }}
-						</label>
-					</div>	
-
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<input 	type="text" 
-								class="form-control"
-								name="payment_ref"												
-								id="payment_ref"
-								required
-								{{$disableFields}} 											
-								value="">	
-					</div>
-					@endif	
-					<div class="col-xs-12 col-sm-5 col-lg-3">
-						<label>	
-							{{ Lang::get('Remarks') }}
-						</label>
-					</div>	
-					<div class="col-xs-12 col-sm-7 col-lg-3">									
-						<textarea rows="3" class="form-control" 
-								name="remarks" 
-								{{$disableFields}}
-								id="remarks"></textarea>	
-					</div>	
-									
-				</div>  <!-- Row 5 -->	
-				
-				<div class="row">	
-					<div class="col-xs-12 col-sm-7 col-lg-12 space-around">	
-						@permission('showrepayment.admin.disburseloan')			
-							<button type="button" class="btn verification-button" id="get_repay_schd">
-								{{ Lang::get('Show Repayment Schedule')}}</button>	
-						@endpermission
-					@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
-						@permission('disburse.admin.disburseloan')				
-							<button type="submit" class="btn verification-button">
-								{{ Lang::get('Disburse Loan')}}</button>
-						@endpermission
-					@endif
-					</div>					
-				</div>
-				@if(Route::currentRouteName()	==	"admin.loanview")
-					<!-- ==================== Showing all investor invested in the loan ===================== -->
-					@if($canViewInvestorList)
-						<div class="space-around">
-							<div class="table-responsive">
-								<table class="table table-bordered .tab-fontsize" id="bidsummary">		
-									<tbody>
-										<tr>
-											<th class="tab-head col-sm-2 text-left">
-												{{Lang::get('Investor')}}</th>
-											<th class="tab-head col-sm-2 text-left">
-												{{Lang::get('Bid Date')}}</th>
-											<th class="tab-head col-sm-2 text-right">
-												{{Lang::get('Bid Amount')}}</th>								
-											<th class="tab-head col-sm-2 text-right">
-												{{Lang::get('Bid Interest')}}</th>
-											<th class="tab-head col-sm-2 text-right">
-												{{Lang::get('Accepted Amount')}}</th>
-											<th class="tab-head col-sm-2 text-right">
-												{{Lang::get('Total Repaid')}}</th>
-											<th class="tab-head col-sm-2 text-left">
-												{{Lang::get('Action')}}</th>
-										</tr>
-										@foreach($bidsModel->loanInvestors as $loanbidRow)
-											<tr>
-												<td class="col-sm-2 text-left">
-													{{$loanbidRow->username}}
-												</td>
-												<td class="col-sm-2 text-left">
-													{{$loanbidRow->bid_datetime}}
-												</td>
-												<td class="text-right">
-													{{number_format($loanbidRow->bid_amount, 2, ".", ",")}}
-												</td>								
-												<td class="text-right">
-													{{number_format($loanbidRow->bid_interest_rate, 2, ".", ",")}}
-												</td>										
-												<td class="text-right">
-													{{number_format($loanbidRow->accepted_amount, 2, '.',',')}}											
-												</td>	
-												<td class="text-right">
-													{{number_format($loanbidRow->totalrepaid, 2, '.',',')}}											
-												</td>	
-												<td>
-													<button type="button" 
-															class="btn verification-button repayment_schedule" 
-															data-investor-id="{{$loanbidRow->investor_id}}"
-															data-loan-id="{{$bidsModel->loan_id}}"
-															>
-														{{ Lang::get('Show Repayments')}}
-													</button>
-												</td>	
-											</tr>
-										@endforeach
-									</tbody>
-								</table>
-							</div>
-						</div>
-					@endif
-					<!-- ==================== Showing all investor invested in the loan ===================== -->
-				@endif
-			</div><!----panel-body--->	
+			<li  id="inv_repay_schd_parent" >
+				<a 	data-toggle="tab" 
+					href="#inv_repay_schd">
+					{{ Lang::get('Investor Repayment Schedule')}}
+				</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<!-----First Tab content Starts----->
+				@include('widgets.admin.tab.loandisb_loandetails')
+			<!-----First Tab content end----->
 			
-		</div><!----panel-container--->
+			<!-----Second Tab content Starts----->
+				@include('widgets.admin.tab.loandisb_borr_repayschd')
+			<!-----First Tab content end----->
+			
+			<!-----Third Tab content Starts----->
+				@include('widgets.admin.tab.loandisb_inv_repayschd')
+			<!-----First Tab content end----->
+			
+		</div> <!-- Tab Contents end -->
+	
+			
+	</div><!----panel-container--->
 </div>
-
 </form>
-<input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
- @section ('popup-box_panel_title',Lang::get('Repayment Schedule'))
-	@section ('popup-box_panel_body')
-		
-	@endsection
-	@include('widgets.modal_box.panel', array(	'id'=>'payschd_popup',
-												'aria_labelledby'=>'payschd_popup',
-												'as'=>'popup-box',
-												'class'=>'',
-											))
-<div id="payschd_popup" title="Repayment Schedule" style="display:none" >
-</div>
+
 @endsection  
 @section('bottomscripts')
 <script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>	 

@@ -85,7 +85,7 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		$paymentId 		= ($paymentId=="")?0:$paymentId;
 		
 		$this->adminInvestorWithdrawalList->getInvestorsWithDrawInfo($processtype,$investorId,$paymentId);
-		$submitted		=	false;
+		$submitted		=	false;	
 		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 								
 								"classname"=>"fa fa-cc fa-fw",
 								"processtype"=>$processtype,
@@ -129,21 +129,26 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		if($processType	==	"add") {
 			
 			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
-				return redirect()->to('admin/investorwithdrawallist');
+				$successTxt	=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("save_withdrawal_by_admin");
+				return redirect()->to('admin/investorwithdrawallist')->with("success",$successTxt);
 			}else{
-				return redirect()->to('investor/withdrawallist');
+				$successTxt	=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("investor_withdrawal_submit");
+				return redirect()->to('investor/withdrawallist')->with("success",$successTxt);
 			}
 		}
 		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+			$successTxt	=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("save_withdrawal_by_admin");
 			return redirect()->route('admin.investorwithdrawaledit', array(	'payment_id'=>base64_encode($payment_id),
 																			'investor_id'=>base64_encode($investor_id)
 																		)
-								)->with('success','Withdrawal Saved successfully');
+								)->with('success',$successTxt);
 		}else{
+			$successTxt	=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("investor_withdrawal_submit");
+			
 			return redirect()->route('investor.investorwithdrawaledit', array(		'type'		=>	'edit',
 																					'payment_id'=>base64_encode($payment_id)
 																		)
-								)->with('success','Withdrawal Saved successfully');
+								)->with('success',$successTxt);
 			
 		}
 	}
@@ -155,13 +160,14 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		$processType	=	$postArray['tranType'];
 		$payment_id		=	$postArray['payment_id'];
 		$investor_id	=	$postArray['investor_id'];
+		$successTxt		=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("investor_withdrawal_approved");
 		if($processType	==	"add") {
-			return redirect()->to('admin/investorwithdrawallist');
+			return redirect()->to('admin/investorwithdrawallist')->with("success",$successTxt);
 		}
 		return redirect()->route('admin.investorwithdrawaledit', array(	'payment_id'=>base64_encode($payment_id),
 																		'investor_id'=>base64_encode($investor_id)
 																	)
-							)->with('success','Withdrawal Approved successfully');
+							)->with('success',$successTxt);
 	}
 	
 	public function unapproveWithdrawalAction() {
@@ -169,28 +175,30 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		$postArray		=	Request::all();
 		$payment_id		=	$postArray['payment_id'];
 		$investor_id	=	$postArray['investor_id'];
-		
+		$successTxt		=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("investor_withdrawal_unapproved");
 		$this->adminInvestorWithdrawalList->unApproveWithDraw($postArray['trans_id']);
 		return redirect()->route('admin.investorwithdrawaledit', array(	
 																		'payment_id'=>base64_encode($payment_id),
 																		'investor_id'=>base64_encode($investor_id)
 																	)
-							)->with('success','Withdrawal UnApproved successfully');
+							)->with('success',$successTxt);
 	}
 	public function bulkApproveWithdrawalAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorWithdrawalList->bulkApproveWithDraw($postArray);
+		$successTxt	=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("investor_withdrawal_approved");
 		return redirect()->to('admin/investorwithdrawallist')
-					->with('success','Bulk Withdrawal Approved successfully');
+					->with('success',$successTxt);
 	}
 	
 	public function bulkUnApproveWithdrawalAction(){		
 		
 		$postArray	=	Request::all();
-		$this->adminInvestorWithdrawalList->bulkUnApproveWithDraw($postArray);
+		$this->adminInvestorWithdrawalList->bulkunApproveWithDraw($postArray);
+		$successTxt	=	$this->adminInvestorWithdrawalList->getSystemMessageBySlug("investor_withdrawal_unapproved");
 		return redirect()->to('admin/investorwithdrawallist')
-					->with('success','Bulk Withdrawal UnApproved successfully');
+				->with('success',$successTxt);
 	}
 		
 	public function bulkDeleteWithdrawalAction(){		

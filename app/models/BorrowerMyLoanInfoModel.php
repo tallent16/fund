@@ -76,6 +76,7 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 												   when 6 then 'Loan Details'
 												   when 7 then 'Loan Details'
 												   when 9 then 'Loan Details'
+												   when 10 then 'Loan Details'
 											end as viewStatus,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 

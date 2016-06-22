@@ -4,6 +4,7 @@ use Request;
 use	\App\models\BorrowerApplyLoanModel;
 use Response;
 use Lang;
+use Session;
 class BorrowerApplyLoanController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -69,21 +70,21 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		if ($result) {
 			switch ($tranType) {
 				case "add":
-					$withArry["status"]	=	"success";
-					$withArry["msg"]	=	"New Loan Created Successfully";
+				
 					break;
 				
 				case "edit":
-					$withArry["status"]	=	"success";
-					$withArry["msg"]	=	"Loan Updated Successfully";
+					
 					$sourceId			=	$postArray["loan_id"];
 					$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId);
 					break;
 			}
+			Session::put("success",$this->borrowerApplyLoanModel->successTxt);
 			
 		} else {
 			$withArry["status"]	=	"failure";
 			$withArry["msg"]	=	"Failed to create new loan";
+			Session::put("failure","Loan Information failed saved");
 		}
 		return redirect()->to('borrower/myloaninfo');
 	

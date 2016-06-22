@@ -44,8 +44,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		
 		$result	=	$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
 		if($result) {
+			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("loan_bidclose_date_update");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
-						->with('success','Bid Close Date Updated  successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
 						->with('failure','Bid Close Date Updated Failed');	
@@ -62,8 +63,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
 		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
 		if($result) {
+			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("borrower_loan_save_by_admin");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
-						->with('success','loan information Updated  successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
 						->with('failure','loan information Updated Failed');	
@@ -78,8 +80,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		
 		$result		=	$this->borrowerApplyLoanModel->saveLoanApplyComments($postArray['comment_row'],$loan_id);
 		if($result) {
+			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("loan_comments_saved");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
-						->with('success','Comments saved successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
 						->with('failure','Comments saved Failed');	
@@ -96,8 +99,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
 																				$bor_id,"return_borrower");
 		if($result) {
+			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("loan_return_to_borrower");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
-						->with('success','return borrower loan approval updated successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
 						->with('failure','return borrower  loan approval updated Failed');	
@@ -118,8 +122,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
 																				$bor_id,"approve");
 		if($result) {
+			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("loan_approved");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
-						->with('success','approve loanaprroval updated successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
 						->with('failure','approved loanaprroval updated Failed');	
@@ -136,8 +141,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
 																				$bor_id,"cancel");
 		if($result) {
+			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("loan_cancelled");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)) )
-						->with('success','cancel loanapproval updated successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
 						->with('failure','cancel loanapproval updated Failed');	

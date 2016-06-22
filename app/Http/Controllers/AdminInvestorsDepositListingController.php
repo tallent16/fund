@@ -130,21 +130,25 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		$investor_id	=	$postArray['investor_id'];
 		if($processType	==	"add") {
 			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
-				return redirect()->to('admin/investordepositlist');
+				$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("save_deposit_by_admin");
+				return redirect()->to('admin/investordepositlist')->with("success",$successTxt);
 			}else{
-				return redirect()->to('investor/depositlist');
+				$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("investor_deposit_submit");
+				return redirect()->to('investor/depositlist')->with("success",$successTxt);
 			}
 		}
 		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+			$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("save_deposit_by_admin");
 			return redirect()->route('admin.investordepositedit', array(	'payment_id'=>base64_encode($payment_id),
 																			'investor_id'=>base64_encode($investor_id)
 																		)
-								)->with('success','Deposit Saved successfully');
+								)->with('success',$successTxt);
 		}else{
+			$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("investor_deposit_submit");
 			return redirect()->route('investor.investordepositedit', array(		'type'		=>	'edit',
 																				'payment_id'=>base64_encode($payment_id)
 																		)
-								)->with('success','Deposit Saved successfully');
+								)->with('success',$successTxt);
 			
 		}
 	}
@@ -156,13 +160,14 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		$processType	=	$postArray['tranType'];
 		$payment_id		=	$postArray['payment_id'];
 		$investor_id	=	$postArray['investor_id'];
+		$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("investor_deposit_approved");
 		if($processType	==	"add") {
-			return redirect()->to('admin/investordepositlist');
+			return redirect()->to('admin/investordepositlist')->with("success",$successTxt);
 		}
 		return redirect()->route('admin.investordepositedit', array(	'payment_id'=>base64_encode($payment_id),
 																		'investor_id'=>base64_encode($investor_id)
 																	)
-							)->with('success','Deposit Approved successfully');
+							)->with('success',$successTxt);
 	}
 	
 	public function unapproveDepositAction() {
@@ -172,19 +177,21 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		$investor_id	=	$postArray['investor_id'];
 		
 		$this->adminInvestorsDeposit->unApproveDeposit($postArray['trans_id']);
+		$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("investor_deposit_unapproved");
 		return redirect()->route('admin.investordepositedit', array(	
 																		'payment_id'=>base64_encode($payment_id),
 																		'investor_id'=>base64_encode($investor_id)
 																	)
-							)->with('success','Deposit UnApproved successfully');
+							)->with('success',$successTxt);
 	}
 	
 	public function bulkApproveDepositAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorsDeposit->bulkApproveDeposit($postArray);
+		$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("investor_deposit_approved");
 		return redirect()->to('admin/investordepositlist')
-					->with('success','Bulk Deposit Approved successfully');
+					->with('success',$successTxt);
 	}
 		
 	
@@ -192,14 +199,16 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorsDeposit->bulkUnApproveDeposit($postArray);
+		$successTxt	=	$this->adminInvestorsDeposit->getSystemMessageBySlug("investor_deposit_unapproved");
 		return redirect()->to('admin/investordepositlist')
-					->with('success','Bulk Deposit UnApproved successfully');
+					->with('success',$successTxt);
 	}
 		
 	public function bulkDeleteDepositAction(){		
 		
 		$postArray	=	Request::all();
 		$this->adminInvestorsDeposit->bulkDeleteDeposit($postArray);
+		
 		return redirect()->to('admin/investordepositlist')
 					->with('success','Bulk Deposit Deleted successfully');
 	}

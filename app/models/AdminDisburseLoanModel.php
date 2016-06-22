@@ -260,7 +260,18 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		if (!$paymentId) 
 			return -1;
-			
+		$borLoanRepayment	= 	"<br><table class='table'>" .										
+								"	<thead>".
+								"		<tr>" .
+								"			<th>Installment Number</th>" .
+								"			<th>Schedule Payment Date</th>" .
+								"			<th>Principal Amount</th>" .
+								"			<th>Interest Amount</th>" .
+								"			<th>Total Amount</th>" .
+								"		</tr>".
+								"	</thead>".
+								"	<tbody>";	
+							
 		// Insert into Disbursements table
 		$disbData	=	[	"disbursement_date"	=>	$disburseDate,
 							"loan_id"			=>	$loan_id,
@@ -289,8 +300,16 @@ class AdminDisburseLoanModel extends TranWrapper {
 								
 			$this->dbInsert("borrower_repayment_schedule", $borrSchdData, false);
 			
+			$borLoanRepayment .=	"		<tr>".
+								"			<td>".($instNum+1)."</td> " .
+								"			<td>".$repaySchd["payment_scheduled_date"]."</td> " .
+								"			<td>".$repaySchd["principal_amount"]."</td> " .
+								"			<td>".$repaySchd["interest_amount"]."</td> " .
+								"			<td>".$repaySchd["payment_schedule_amount"]."</td> " .
+								"		</tr>";			
 		}
-
+		$borLoanRepayment .=	"</tbody>"+
+							"</table><br><br>";
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
 			foreach ($invRepaySch as $instlNum => $instlDtls ) {
 				$invSchdData	=	[	"loan_id"					=>	$loan_id,
@@ -306,7 +325,20 @@ class AdminDisburseLoanModel extends TranWrapper {
 			}
 		
 		}
-		
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrower_id);
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		$fields 			= 	array(	'[borrower_contact_person]',
+										'[loan_number]',
+										'[loan_sanctioned_amount]',
+										'[borrower_loan_repayment_schedule]',
+										'[application_name]'
+										);
+		$replace_array 		= 	array( 	$borrInfo->contact_person, 
+										$this->loan_reference_number,
+										$this->loan_sanctioned_amount,
+										$borLoanRepayment,
+										$moneymatchSettings[0]->application_name);
+		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 		return 1;
 	}
 

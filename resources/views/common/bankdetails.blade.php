@@ -13,22 +13,7 @@
 @section('page_heading','Banking') 
 @section('section') 
 <div class="col-sm-12 bank-details space-around"> 
-	@if($submitted)
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="annoucement-msg-container" id="success-alert">
-				<div class="alert alert-success">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						@if($tranType	==	"add")							
-							{{ Lang::get('Bank Details added successfully') }}
-						@else
-							{{ Lang::get('Bank Details updated successfully') }}
-						@endif	
-				</div>
-			</div>
-		</div>
-	</div>
-	@endif
+
 	<div class="row">
 		<div class="col-sm-12">	
 			<div class="panel panel-primary panel-container">	

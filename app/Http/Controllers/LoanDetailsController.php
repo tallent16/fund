@@ -2,6 +2,7 @@
 use Request;
 use	\App\models\LoanDetailsModel;
 use Auth;
+use Session;
 class LoanDetailsController extends MoneyMatchController {
 
 	public function __construct() {	
@@ -30,6 +31,7 @@ class LoanDetailsController extends MoneyMatchController {
 			$result		=	$this->loanDetailsModel->processBid($postArray);
 			if($result) {
 				$submitted	=	true;
+				Session::put("success",$this->loanDetailsModel->successTxt);
 			}
 			$subType	=	$postArray['isCancelButton'];			
 		}

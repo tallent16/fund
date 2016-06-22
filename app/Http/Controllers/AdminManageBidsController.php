@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use	\App\models\AdminManageBidsModel;
 use Auth;
+use Session;
 class AdminManageBidsController extends MoneyMatchController {
 	
 	
@@ -28,6 +29,7 @@ class AdminManageBidsController extends MoneyMatchController {
 
 		$this->bidsModel->closeBids($loan_id);
 		$this->bidsModel->getLoanBids($loan_id);
+		Session::put("success",$this->bidsModel->successTxt);
 		return view('admin.admin-managebids')->with(["bidsModel" => $this->bidsModel]);
 
 	}
@@ -38,6 +40,7 @@ class AdminManageBidsController extends MoneyMatchController {
 		$retval = $this->bidsModel->acceptBids($loan_id);
 		
 		$this->bidsModel->getLoanBids($loan_id);
+		Session::put("success",$this->bidsModel->successTxt);
 		return view('admin.admin-managebids')->with(["bidsModel" => $this->bidsModel]);
 
 		

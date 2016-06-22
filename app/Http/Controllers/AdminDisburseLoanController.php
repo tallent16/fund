@@ -1,7 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 use	\App\models\AdminDisburseLoanModel;
-
+use Session;
 class AdminDisburseLoanController extends MoneyMatchController {
 	
 	public function __construct() {	
@@ -26,6 +26,7 @@ class AdminDisburseLoanController extends MoneyMatchController {
 	
 	public function saveDisburseLoanAction() {
 		$this->bidsModel->saveDisburseLoan();
+		Session::put("success",$this->bidsModel->successTxt);
 		return redirect('admin/loanlisting');
 	
 	}	

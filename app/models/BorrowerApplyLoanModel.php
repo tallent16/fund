@@ -47,7 +47,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public 	$gradeInfo 						= 	array();
 	public 	$grade 							= 	"";
 	public 	$loan_status 					= 	"";
-	
+	public 	$successTxt 					= 	"";
 	
 	public function getBorrowerLoanDetails($loan_id) {
 		
@@ -243,6 +243,13 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
 			$this->updateLoanGradeRiskFactor($postArray,$loanId);
 		}
+		
+		if($postArray['isSaveButton']	!=	"yes") {
+			$this->successTxt	=	$this->getSystemMessageBySlug("borrower_loan_submit");
+		} else {
+				$this->successTxt	=	$this->getSystemMessageBySlug("borrower_loan_save_by_borrower");
+		}
+		
 		return $loanId;
 	}
 	
@@ -578,12 +585,6 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		
 		$whereArry			=	array("loan_id" =>"{$loanId}");
 		$this->dbUpdate('loans', $dataArray, $whereArry);
-		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
-		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
-		$moneymatchSettings = 	$this->getMailSettingsDetail();
-		$fields 			= array('[borrower_contact_person]','[application_name]',
-									'[purpose-for-loan]');
-		$replace_array 		= array();
 		$borrName	= $this->getBorrowOrgName($borrowerId);
 		
 		$moduleName		=	"Loans";
@@ -593,85 +594,41 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			case "approve":
 				$actionSumm =	"Approval";
 				$actionDet  =	"Approval of Loans";
+				$slug_name	=	"loan_approved";
 				break;
 				
 			case "return_borrower":
 				$actionSumm =	"Comments by Admin";
 				$actionDet  =	"Loan returned to Borrower with Comments";
+				$slug_name	=	"loan_return_to_borrower";
 				break;
 				
 			case "cancel":
 				$actionSumm =	"Cancelled";
 				$actionDet  =	"Loan Cancelled";
+				$slug_name	=	"loan_cancelled";
 				break;
 			
 		}
-
+		$this->getBorrowerLoanInfo($loanId);
+		
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
 
-
-			
-		if($status	==	"approve") {
-			
-			$mailContents		= $moneymatchSettings[0]->borrower_loan_approval_content;
-			$mailSubject		= $moneymatchSettings[0]->borrower_loan_approval_subject;
-
-			$replace_array 		= array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
-								
-			$new_content 		= str_replace($fields, $replace_array, $mailContents);
-			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
-			$template 			= "emails.borrApporvalTemplate";
-								
-		}
 		
-		if($status	==	"return_borrower") {
-			
-			$mailContents		= $moneymatchSettings[0]->borrower_loan_comments_content;
-			$mailSubject		= $moneymatchSettings[0]->borrower_loan_comments_subject;
-
-			$replace_array 		= array( 	$borrInfo->contact_person, 
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
+		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		
+		$fields 			= array('[borrower_contact_person]','[application_name]',
+								'[purpose-for-loan]','[loan_number]','[loan_apply_date]');
+		$replace_array 		= array();
+		$replace_array 		= array( 	$borrInfo->contact_person, 
 											$moneymatchSettings[0]->application_name,
-											$this->purpose_singleline);
-								
-			$new_content 		= str_replace($fields, $replace_array, $mailContents);
-			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
-			$template 			= "emails.borrLoanApporvalTemplate";
-			
-			
-		}
-		
-		if($status	==	"cancel") {
-			
-			$this->getBorrowerLoanInfo($loanId);
-			
-			$mailContents		= $moneymatchSettings[0]->borrower_loan_cancel_content;
-			$mailSubject		= $moneymatchSettings[0]->borrower_loan_cancel_subject;
-			
-			$replace_array 		= array( 	$borrInfo->contact_person, 
-											$moneymatchSettings[0]->application_name,
-											$this->purpose_singleline);
-								
-			$new_content 		= str_replace($fields, $replace_array, $mailContents);
-			$new_subject 		= str_replace($fields, $replace_array, $mailSubject);
-			$template 			= "emails.borrLoanCancelTemplate";
-			
-		
-		}
-		if($status	==	"approve" || $status	==	"return_borrower" || $status	==	"cancel") {
-			$msgarray 	=	array(	"content" => $new_content);			
-			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$new_subject, 
-									"from" => $moneymatchSettings[0]->mail_default_from,
-									"from_name" => $moneymatchSettings[0]->application_name,
-									"to" => $borrUserInfo->email,
-									"cc" => $moneymatchSettings[0]->admin_email,
-									"live_mail" => $moneymatchSettings[0]->send_live_mails,
-									"template"=>$template);
-									
-			$mailArry	=	array(	"msgarray"=>$msgarray,
-									"msgData"=>$msgData);
-			$this->sendMail($mailArry);
-		}
-								
+											$this->purpose_singleline,
+											$this->loan_reference_number 
+											,$this->apply_date);
+											
+		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 		return $loanId;
 	}
 	

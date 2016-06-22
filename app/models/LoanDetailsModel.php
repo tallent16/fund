@@ -41,7 +41,8 @@ class LoanDetailsModel extends TranWrapper {
 	public 	$finacialRatioInfo 			= 	array();
 	public 	$finacialInfo 				= 	array();
 	public 	$paymentScheduleInfo 		= 	array();
-	
+	public 	$bidSystemMessageInfo 		= 	array();
+	public 	$successTxt 				= 	"";
 	
 	public function __construct($attributes = array()){	
 		
@@ -62,6 +63,7 @@ class LoanDetailsModel extends TranWrapper {
 		$this->getLoanDirector();
 		$this->getBidAverageInterest($loan_id);
 		$this->getLoanComments($loan_id);	
+		$this->getLoanComments($loan_id);	
 		switch($this->userType) {
 			case	USER_TYPE_INVESTOR:
 				$this->getPaymentSchedule($loan_id);
@@ -72,6 +74,7 @@ class LoanDetailsModel extends TranWrapper {
 				$this->getLoanBids($loan_id);
 				break;
 		}
+		$this->bidSystemMessageInfo	=	json_encode($this->getSystemMessages(4));
 	}
 		
 	public function getLoan($loan_id) {
@@ -455,6 +458,8 @@ class LoanDetailsModel extends TranWrapper {
 		
 		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
 		
+		$this->successTxt	=	$this->getSystemMessageBySlug("loan_bids_by_investor");
+		
 		//Update the Available Balance For the Investor
 		
 		return $loanBidId;
@@ -480,7 +485,7 @@ class LoanDetailsModel extends TranWrapper {
 			$resetAvailableBalance	=	$available_balance	+	$prev_bid_amount;
 			$actionSumm =	"Bid Cancelled";
 			$actionDet  =	"Loan Bid Cancelled by Invesotr";
-			
+			$this->successTxt	=	$this->getSystemMessageBySlug("loan_bids_cancelled_by_investor");
 		}else{
 			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
 												'bid_amount' 		=> $bid_amount,
@@ -489,6 +494,7 @@ class LoanDetailsModel extends TranWrapper {
 			$resetAvailableBalance	=	($available_balance	+	$prev_bid_amount)	-	$bid_amount;
 			$actionSumm =	"Loan Bid By Investor";
 			$actionDet  =	"Loan Bid by Investor";
+			$this->successTxt	=	$this->getSystemMessageBySlug("loan_bid_updated");
 			
 		}
 

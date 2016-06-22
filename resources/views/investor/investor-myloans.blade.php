@@ -8,13 +8,15 @@
 </style>
 @endsection
 @section('bottomscripts') 
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	
+	<script>
+		var baseUrl			=	"{{url()}}"
+		var replyUrl		=	baseUrl+'/ajax/investor/send_reply'
+		var	jsonBidMessage	=	{{$LoanDetMod->bidSystemMessageInfo}}
+	</script>	
 	<script src="{{ url("js/loan-details.js") }}" type="text/javascript"></script>		
 	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-	<script>
-		var baseUrl	=	"{{url()}}"
-		var replyUrl=	baseUrl+'/ajax/investor/send_reply'
-	</script>
+	
 	
 @endsection
 @section('page_heading',Lang::get('My Loans'))
@@ -22,18 +24,6 @@
 <input id="hidden_token" name="_token" type="hidden" value="{{csrf_token()}}">
 @var	$commnetInfo	=	$LoanDetMod->commentInfo	
 <div class="col-sm-12 space-around"> 	
-	@if($submitted)
-		<div class="row annoucement-msg-container">
-			<div class="alert alert-success">
-				<a aria-label="close" data-dismiss="alert" class="close" href="#">×</a>	
-					@if($subType	==	"yes")
-						{{Lang::get('Bid Cancelled Successfully')}}
-					@else
-						{{Lang::get('Bid Submitted Successfully')}}
-					@endif			
-			</div>
-		</div>		
-	@endif
 	<div class="row">	
 					
 		<div class="col-sm-12 col-lg-8 ">							

@@ -1,5 +1,5 @@
-<div id="profile_info" class="tab-pane fade">  	
-	<div class="panel panel-default directorinfo"> 						
+<div id="loan_detail_main" class="tab-pane fade in active">  	
+	<div class="panel panel-default loan_details"> 						
 		<div class="panel-body">
 			<div class="row"><!-- Row 1 -->					
 				<div class="col-xs-12 col-sm-5 col-lg-3">

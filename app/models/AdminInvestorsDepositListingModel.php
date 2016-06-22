@@ -326,6 +326,16 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
 		
 		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
+		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
+										'[investor_current_balance]','[application_name]'
+										);
+		$replace_array 		= 	array( 	$invUserInfo->firstname,
+										$invUserInfo->lastname,
+										$resetAvailableBalance, 
+										$moneymatchSettings[0]->application_name);
+		
+		$this->sendMailByModule("investor_deposit_approved",$invUserInfo->email,$fields,$replace_array);
 	}
 	
 	public function unApproveDeposit($trans_id) {
@@ -365,6 +375,17 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
 		
 		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
+		
+		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
+										'[investor_current_balance]','[application_name]'
+										);
+		$replace_array 		= 	array( 	$invUserInfo->firstname,
+										$invUserInfo->lastname,
+										$resetAvailableBalance, 
+										$moneymatchSettings[0]->application_name);
+		
+		$this->sendMailByModule("investor_deposit_unapproved",$invUserInfo->email,$fields,$replace_array);
 	}
 	
 	public function deleteDeposit($trans_id) {

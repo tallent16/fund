@@ -119,7 +119,7 @@
 			<td class="text-center">
 				<label>
 						<input 	type="checkbox" 
-								class="select_newquestion_id"																
+								class="select_question_id"																
 								value="	">
 					</label>
 			</td>

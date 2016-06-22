@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 use	\App\models\BankProcessModel;
 use Request;
+use Session;
 class BankProcessController extends MoneyMatchController {
 
 
@@ -38,10 +39,9 @@ class BankProcessController extends MoneyMatchController {
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
 			$result		=	$this->bankProcessModel->processBankDetails($postArray);
-			$submitted	=	true;
 			$tranType	=	$postArray['transtype'];
+			Session::put("success",$this->bankProcessModel->successTxt);
 		}
-		
 		
 		$this->bankProcessModel->getBanksList();
 		

@@ -365,6 +365,19 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$investorDataArray			=	array("available_balance"	=>	$resetAvailableBalance);
 		
 		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
+		
+		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
+										'[withdraw_request_date]','[investor_current_balance]',
+										'[application_name]'
+										);
+		$replace_array 		= 	array( 	$invUserInfo->firstname,
+										$invUserInfo->lastname,
+										$investorBankTranInfo[0]->entry_date,
+										$resetAvailableBalance, 
+										$moneymatchSettings[0]->application_name);
+		
+		$this->sendMailByModule("investor_withdrawal_approved",$invUserInfo->email,$fields,$replace_array);
 	}
 	
 	public function unApproveWithDraw($trans_id) {
@@ -400,6 +413,19 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$investorDataArray		=	array("available_balance"	=>	$resetAvailableBalance);
 		
 		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
+		
+		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
+										'[withdraw_request_date]','[investor_current_balance]',
+										'[application_name]'
+										);
+		$replace_array 		= 	array( 	$invUserInfo->firstname,
+										$invUserInfo->lastname,
+										$investorBankTranInfo[0]->entry_date,
+										$resetAvailableBalance, 
+										$moneymatchSettings[0]->application_name);
+		
+		$this->sendMailByModule("investor_withdrawal_unapproved",$invUserInfo->email,$fields,$replace_array);
 	}
 	
 	public function deleteWithDraw($trans_id) {

@@ -20,13 +20,8 @@ class AdminChangeofBankModel extends TranWrapper {
 	public function getborrowerinvestorbanks(){
 		
 		$boin_sql = "SELECT 
+							borrower_bankid as type,
 							borrower_bankid,
-							/*	(SELECT users.usertype as type
-								FROM borrower_banks
-								INNER JOIN borrowers
-									ON borrower_banks.borrower_id = borrowers.borrower_id
-								INNER JOIN users 
-									ON borrowers.user_id = users.user_id ),*/
 							borrower_id,
 							bank_code,
 							bank_name,
@@ -35,13 +30,8 @@ class AdminChangeofBankModel extends TranWrapper {
 						FROM borrower_banks
 					UNION ALL
 						SELECT 
-							investor_bankid,	
-								(SELECT users.usertype as type
-								FROM investor_banks
-								INNER JOIN investors
-									ON investor_banks.investor_id = investors.investor_id
-								INNER JOIN users 
-									ON investors.user_id = users.user_id),
+							investor_bankid as type,
+							investor_bankid	,
 							investor_id,
 							bank_code,
 							bank_name,
@@ -54,3 +44,17 @@ class AdminChangeofBankModel extends TranWrapper {
 		
 	}
 }
+/*	(SELECT users.usertype as type
+								FROM borrower_banks
+								INNER JOIN borrowers
+									ON borrower_banks.borrower_id = borrowers.borrower_id
+								INNER JOIN users 
+									ON borrowers.user_id = users.user_id ),
+(SELECT users.usertype as type
+								FROM investor_banks
+								INNER JOIN investors
+									ON investor_banks.investor_id = investors.investor_id
+								INNER JOIN users 
+									ON investors.user_id = users.user_id),
+									* 
+									* */

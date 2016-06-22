@@ -7,14 +7,12 @@ class AdminSettingsController extends MoneyMatchController {
 	public function __construct() {	
 		
 		$this->middleware('auth');
-		$this->init();
-		
+		$this->init();		
 	}	
 	
 	public function littleMoreInit() {
 		
-		$this->adminSettingsModel	=	new AdminSettingsModel;
-		
+		$this->adminSettingsModel	=	new AdminSettingsModel;		
 	}
 	
 	public function indexAction() {

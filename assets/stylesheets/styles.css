@@ -9595,6 +9595,11 @@ table#account-summary, .table-border-custom{
     border-top: none;
     vertical-align: middle;
 }
+a.settings-cursor{
+	cursor: pointer;
+	color:#333;
+	text-decoration:none;
+}
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   

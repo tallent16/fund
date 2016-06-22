@@ -21,7 +21,7 @@ class BankProcessModel extends TranWrapper {
 	public	$userType;
 	public	$bankListRs = array();
 	public  $transtype;
-	
+	public 	$successTxt = 	"";
 	public function __construct($attributes = array()){	
 		
 		// This will be called only from the borrower / Investors' model so this will be investor or borrower
@@ -119,11 +119,14 @@ class BankProcessModel extends TranWrapper {
 	function processBankDetails($postArray) {		
 		$transtype	=	$postArray['transtype'];
 		if($transtype	==	"add") {
-			$bankId	=	$this->addBankDetails($postArray);			
+			$bankId	=	$this->addBankDetails($postArray);		
+			$this->successTxt	=	$this->getSystemMessageBySlug("borrower_bank_submit");	
 		}else{			
 			$bankId	=	$this->updateBankDetails($postArray);
+			$this->successTxt	=	$this->getSystemMessageBySlug("bank_detail_saved");
 		}	
 		$this->uploadBankStatementAttachment($postArray,$bankId);		
+		
 	}	
 	
 	function  uploadBankStatementAttachment($postArray,$bankId) {
