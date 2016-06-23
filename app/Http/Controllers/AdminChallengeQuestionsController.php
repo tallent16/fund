@@ -36,10 +36,10 @@ class AdminChallengeQuestionsController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$result		=	$this->adminchallengequestionModel->updateSecurityQuestions($postArray);
-		
+		$successTxt	=	$this->adminchallengequestionModel->getSystemMessageBySlug("update_challenge_question");
 		if($result) {
 			return redirect()->route('admin.challengequestions')
-						->with('success','Questions Updated successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.challengequestions')
 						->with('failure','Something went wrong!');	

@@ -111,8 +111,10 @@ class AdminRolesModel extends TranWrapper {
 		$transType	=	$postArray['trantype'];
 		
 		if($transType	==	"add") {
+			$this->successTxt	=	$this->getSystemMessageBySlug("add_role_permission");
 			return $this->insertRolePermissionInfo($postArray);
 		}else{
+			$this->successTxt	=	$this->getSystemMessageBySlug("edit_role_permission");
 			$roleID		=	$postArray['role_filter'];
 			return $this->updatePermissionInfo($postArray,$roleID);
 		}
@@ -166,6 +168,7 @@ class AdminRolesModel extends TranWrapper {
 		$where	=	["id" => 	$role_id];
 			
 		$this->dbDelete("roles", $where);
+		$this->successTxt	=	$this->getSystemMessageBySlug("delete_role_permission");
 		return	$role_id;
 	}
 	

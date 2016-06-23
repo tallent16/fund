@@ -39,7 +39,7 @@ $(document).ready(function(){
 	});
 	$("#type").trigger('change');
 	/***************Edit Email Subject and Content Popup****************/
-	$("#mail_subjectcontent").on('click', '#module_table tr td:nth-child(4) a,:nth-child(6) a', function () {
+	$("#mail_subjectcontent").on('click', '#module_table tr td:nth-child(4) a,td:nth-child(6) a', function () {
 		var $this = $(this);	
 		var slugvalue = $this.closest('td').siblings().find('#slug').val();
 		$.ajax({

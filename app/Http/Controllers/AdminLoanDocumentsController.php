@@ -37,10 +37,10 @@ class AdminLoanDocumentsController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$result		=	$this->adminloandocModel->updateLoanDocuments($postArray);
-		
+		$successTxt	=	$this->adminloandocModel->getSystemMessageBySlug("update_loan_documents_required");
 		if($result) {
 			return redirect()->route('admin.loandocrequired')
-						->with('success','Loan documents Updated successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loandocrequired')
 						->with('failure','Something went wrong!');	

@@ -31,17 +31,19 @@
 						</tr>
 					</thead>
 					<tbody>
-						
-						@foreach($bank_list as $row)
-						<tr>
-							<td>{{$row->borrower_bankid}}</td>
-							<td>{{$row->type}}</td>
-							<td>{{$row->bank_code}}</td>
-							<td>{{$row->bank_name}}</td>
-							<td>{{$row->branch_code}}</td>
-							<td>{{$row->bank_account_number}}</td>
-						</tr>
-						@endforeach
+						@if (count($bank_list) > 0)
+							@foreach($bank_list as $row)
+							@var	$editUrl	=	url('admin/approvechangeofbank').'/'.base64_encode($row->user_type).'/'.base64_encode($row->borrower_id).'/'.base64_encode($row->borrower_bankid)
+							<tr>
+								<td><a href="{{$editUrl}}">{{$row->user_type}}</a></td>
+								<td><a href="{{$editUrl}}">{{$row->business_name}}</a></td>
+								<td><a href="{{$editUrl}}">{{$row->bank_code}}</a></td>
+								<td><a href="{{$editUrl}}">{{$row->bank_name}}</a></td>
+								<td><a href="{{$editUrl}}">{{$row->branch_code}}</a></td>
+								<td><a href="{{$editUrl}}">{{$row->bank_account_number}}</a></td>
+							</tr>
+							@endforeach
+						@endif	
 					</tbody>
 				</table>
 			</div>

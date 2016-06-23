@@ -791,6 +791,30 @@ class TranWrapper extends MoneyMatchModel {
 		return 0;
 	}
 	
+	public function getBorrowerInfoByUserId($user_id){
+		
+		$bor_sql	= "	SELECT 	*
+							FROM 	borrowers
+							WHERE	user_id =	{$user_id}";
+		$bor_rs = $this->dbFetchAll($bor_sql);
+		if(isset($bor_rs[0])) {
+			return $bor_rs[0];
+		}
+		return 0;
+	}
+	
+	public function getInvestorInfoByUserId($user_id){
+		
+		$inv_sql	= "	SELECT 	*
+							FROM 	invesstors
+							WHERE	user_id =	{$user_id}";
+		$inv_rs = $this->dbFetchAll($inv_sql);
+		if(isset($inv_rs[0])) {
+			return $inv_rs[0];
+		}
+		return 0;
+	}
+	
 	public function checkPasswordByUserID($current_user_password,$current_user_id)	{
 		
 		return Hash::check($current_user_password, $this->getUserInfoByUserId($current_user_id)->password);

@@ -259,15 +259,10 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 				return	false;	
 			}
 		}
-		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
-			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_VERIFIED; 
-			$paymentStatus				=	PAYMENT_STATUS_VERIFIED;
-			
-		}else{
-			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED; 
-			$paymentStatus				=	PAYMENT_STATUS_UNVERIFIED;
-		}
 		
+		$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED; 
+		$paymentStatus				=	PAYMENT_STATUS_UNVERIFIED;
+
 		$withdrawpaymentInsert_data	=	array(
 										
 											'trans_datetime' 			=>	$this->settlement_date,
@@ -291,7 +286,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 			
 			$paymentId 							=	$this->dbInsert("payments", $withdrawpaymentInsert_data, 1);
 			$withdrawInsert_data['payment_id']	=	$paymentId;
-			$this->dbInsert("investor_bank_transactions", $withdrawInsert_data, 0);
+			$trans_id	=	$this->dbInsert("investor_bank_transactions", $withdrawInsert_data, 1);
 		}else{
 			
 			if($paymentId	==	0) {
@@ -309,14 +304,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		}
 		//Update the Investor Available balance amount
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
-			
-			$available_balance		=	$this->getInvestorAvailableBalanceById($this->investorId);
-			$resetAvailableBalance	=	$available_balance	-	$this->withdrawal_amount;
-			
-			$whereInvestorArray		=	array("investor_id"	=>	$this->investorId);
-			$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
-			
-			$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
+			$this->approveWithDraw($trans_id);
 		}
 	}
 	
@@ -367,6 +355,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
 		
 		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$moneymatchSettings = $this->getMailSettingsDetail();
 		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
 										'[withdraw_request_date]','[investor_current_balance]',
 										'[application_name]'
@@ -415,6 +404,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$this->dbUpdate('investors', $investorDataArray, $investorWhereArray);
 		
 		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$moneymatchSettings = $this->getMailSettingsDetail();
 		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
 										'[withdraw_request_date]','[investor_current_balance]',
 										'[application_name]'

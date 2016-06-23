@@ -253,12 +253,10 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="form-group">	
-									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
-										<button class="btn verification-button"
-												id="save_button">
-												{{ Lang::get('Save')}}
-										</button>
-									@endif
+									<button class="btn verification-button"
+											id="save_button">
+											{{ Lang::get('Save')}}
+									</button>
 									@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 										@if( $adminBorRepayViewMod->repaymentStatus	==	BORROWER_REPAYMENT_STATUS_UNVERIFIED )
 											@permission('approve.admin.borrowerrepayment')	

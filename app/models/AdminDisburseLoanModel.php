@@ -102,7 +102,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 
 	}
 	
-	function computeRepaySchedule($loan_id, $loanProcessDate) {
+	function computeRepaySchedule($loan_id, $loanProcessDate="", $payByDay=0) {
 
 		// Compute the pre-EMI days 
 		/* The first installment may be different from the other installments if the processing
@@ -113,6 +113,13 @@ class AdminDisburseLoanModel extends TranWrapper {
 		 */
 		 
 		$this->getDisburseDetails($loan_id);
+		if ($payByDay != 0) {
+			$this->monthly_pay_by_date = $payByDay;
+		}
+		
+		if ($loanProcessDate == "") {
+			$loanProcessDate = date("Y-m-d");
+		}
 		
 		$loanProcessDay		=	substr($loanProcessDate, 0,2);
 		$loanProcessDate 	=	substr($loanProcessDate, 6,4)."-".substr($loanProcessDate, 3,2)."-".
@@ -245,7 +252,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		if (!$this->dbUpdate("loans", $dataArray, $where)) 
 			return -1;
-			
+
 	
 		// Insert into Payments Table
 		$payData	=	[	"trans_datetime"	=>	$disburseDate,
@@ -260,18 +267,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		if (!$paymentId) 
 			return -1;
-		$borLoanRepayment	= 	"<br><table class='table'>" .										
-								"	<thead>".
-								"		<tr>" .
-								"			<th>Installment Number</th>" .
-								"			<th>Schedule Payment Date</th>" .
-								"			<th>Principal Amount</th>" .
-								"			<th>Interest Amount</th>" .
-								"			<th>Total Amount</th>" .
-								"		</tr>".
-								"	</thead>".
-								"	<tbody>";	
-							
+			
 		// Insert into Disbursements table
 		$disbData	=	[	"disbursement_date"	=>	$disburseDate,
 							"loan_id"			=>	$loan_id,
@@ -300,16 +296,8 @@ class AdminDisburseLoanModel extends TranWrapper {
 								
 			$this->dbInsert("borrower_repayment_schedule", $borrSchdData, false);
 			
-			$borLoanRepayment .=	"		<tr>".
-								"			<td>".($instNum+1)."</td> " .
-								"			<td>".$repaySchd["payment_scheduled_date"]."</td> " .
-								"			<td>".$repaySchd["principal_amount"]."</td> " .
-								"			<td>".$repaySchd["interest_amount"]."</td> " .
-								"			<td>".$repaySchd["payment_schedule_amount"]."</td> " .
-								"		</tr>";			
 		}
-		$borLoanRepayment .=	"</tbody>"+
-							"</table><br><br>";
+
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
 			foreach ($invRepaySch as $instlNum => $instlDtls ) {
 				$invSchdData	=	[	"loan_id"					=>	$loan_id,
@@ -325,20 +313,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 			}
 		
 		}
-		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrower_id);
-		$moneymatchSettings = 	$this->getMailSettingsDetail();
-		$fields 			= 	array(	'[borrower_contact_person]',
-										'[loan_number]',
-										'[loan_sanctioned_amount]',
-										'[borrower_loan_repayment_schedule]',
-										'[application_name]'
-										);
-		$replace_array 		= 	array( 	$borrInfo->contact_person, 
-										$this->loan_reference_number,
-										$this->loan_sanctioned_amount,
-										$borLoanRepayment,
-										$moneymatchSettings[0]->application_name);
-		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+		
 		return 1;
 	}
 
@@ -482,8 +457,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 							];
 		
 		$this->loanInvestors	=	$this->dbFetchWithParam($bidsInfo_sql, $bidsInfo_args);
-		//~ echo "<pre>",print_r($this->loanInvestors),"</pre>";
-		//~ die;
+
 	}
 	
 	public function getInvestorRepay($loan_id,$investor_id) {

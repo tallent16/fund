@@ -68,6 +68,21 @@ class BorrowerRepayLoansController extends MoneyMatchController {
 							
 	}
 	
+	public function saveAction() {
+		
+		$postArray		=	Request::all();
+		$repaymentId 	= 	$postArray['repaymentSchdId'];	
+		$loanid			= 	$postArray['loan_id'];	
+		$result			=	$this->repayloanmodel->saveRepayment($postArray);
+		$successMsg		=	$this->repayloanmodel->getSystemMessageBySlug("repayment_saved");
+		
+		return redirect()->route('borrower.makepayment', array(
+																'repayment_id' => base64_encode($repaymentId),
+																'loan_id' => base64_encode($loanid)	
+																)
+							)->with('success',$successMsg);
+	}
+	
 	public function recalculatePenalityAction(){		
 
 		$postArray	=	Request::all();

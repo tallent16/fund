@@ -24,7 +24,8 @@
 		</div><!--panel head end-->
 
 		<div class="panel-body applyloan table-border-custom input-space">	
-			
+		<form method="post" id="form-approvechangeofbank">
+			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 			<div class="row"><!-- Row 1 -->					
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
@@ -36,7 +37,7 @@
 							type="text" 
 							class="usertype form-control" 
 							name="usertype"									
-							value="" 
+							value="{{$adminbankviewModel->user_type_name}}" 
 							placeholder=""
 							/>	
 				</div>							
@@ -53,7 +54,7 @@
 							type="text" 
 							class="name form-control" 
 							name="name"									
-							value="" 
+							value="{{$adminbankviewModel->name}}"  
 							placeholder=""
 							/>	
 				</div>							
@@ -70,7 +71,7 @@
 							type="text" 
 							class="bankname form-control" 
 							name="bankname"									
-							value="" 
+							value="{{$adminbankviewModel->bank_name}}" 
 							placeholder=""
 							/>	
 				</div>
@@ -84,7 +85,7 @@
 							type="text" 
 							class="bankcode form-control" 
 							name="bankcode"									
-							value="" 
+							value="{{$adminbankviewModel->bank_code}}" 
 							placeholder=""
 							/>	
 				</div>							
@@ -101,7 +102,7 @@
 							type="text" 
 							class="branchcode form-control" 
 							name="branchcode"									
-							value="" 
+							value="{{$adminbankviewModel->branch_code}}"
 							placeholder=""
 							/>
 				</div>
@@ -115,7 +116,7 @@
 							type="text" 
 							class="acc_num form-control" 
 							name="acc_num"									
-							value="" 
+							value="{{$adminbankviewModel->bank_account_number}}" 
 							placeholder=""
 							/>
 				</div>							
@@ -157,7 +158,7 @@
 			<!-- button-->
 			
 		</div>	
-		
+		</form>
 	</div>
 </div>	
 	@endsection  

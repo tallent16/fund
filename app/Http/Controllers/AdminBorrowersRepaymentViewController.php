@@ -52,11 +52,12 @@ class AdminBorrowersRepaymentViewController extends MoneyMatchController {
 		$loanid			= 	$postArray['loan_id'];
 		
 		$this->adminBorrowerRepaymentView->saveRepayment($postArray);
+		$successMsg		=	$this->adminBorrowerRepaymentView->getSystemMessageBySlug("repayment_saved_admin");
 		return redirect()->route('admin.borrowersrepayview', array(	'type' => 'edit',
 																	'installment_id'=>base64_encode($installmentId),
 																	'loan_id'=>base64_encode($loanid)
 																)
-							)->with('success','Saved successfully');
+							)->with('success',$successMsg);
 	}
 	
 	public function approveAction(){		
@@ -66,11 +67,12 @@ class AdminBorrowersRepaymentViewController extends MoneyMatchController {
 		$loanid			= 	$postArray['loan_id'];
 		
 		$this->adminBorrowerRepaymentView->saveRepayment($postArray);
+		$successMsg		=	$this->adminBorrowerRepaymentView->getSystemMessageBySlug("repayment_approved");
 		return redirect()->route('admin.borrowersrepayview', array(	'type' => 'edit',
 																	'installment_id'=>base64_encode($installmentId),
 																	'loan_id'=>base64_encode($loanid)
 																)
-							)->with('success','Approved successfully');
+							)->with('success',$successMsg);
 	}
 	
 	public function unapproveAction(){		
@@ -80,12 +82,12 @@ class AdminBorrowersRepaymentViewController extends MoneyMatchController {
 		$instNum		=	$postArray['installment_number'];
 		$installmentId 	= 	$postArray['repaymentSchdId'];;	
 		$this->adminBorrowerRepaymentView->unapprovePayments($loanId, $instNum);
-		
+		$successMsg		=	$this->adminBorrowerRepaymentView->getSystemMessageBySlug("repayment_unapproved");
 		return redirect()->route('admin.borrowersrepayview', array(	'type' => 'edit',
 																	'installment_id'=>base64_encode($installmentId),
 																	'loan_id'=>base64_encode($loanId)
 																)
-							)->with('success','Unapproved successfully');
+							)->with('success',$successMsg);
 	}
 	
 	

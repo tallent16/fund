@@ -64,9 +64,11 @@ class AdminSettingsController extends MoneyMatchController {
 		$email_content			= 	$postArray['email_content'];
 		$saveresponse_data 		= 	$this->adminSettingsModel->updateEmailMessage($email_subject,$email_content,$slug);
 		//echo "<pre>",print_r($saveresponse_data),"</pre>"; die;	
+		$successTxt	=	$this->adminSettingsModel->successTxt;
 		if($saveresponse_data) {			
 			return redirect()->route('admin.settings')
-						->with('success','Admin Email Message Updated successfully');						
+						//~ ->with('success','Admin Email Message Updated successfully');						
+						->with('success',$successTxt);					
 		}else{
 			return redirect()->route('admin.settings')
 						->with('failure','Something went wrong!');	
@@ -83,10 +85,11 @@ class AdminSettingsController extends MoneyMatchController {
 		$sendmail				= 	$postArray['sendmail'];
 		
 		$messageresponse_data 	= 	$this->adminSettingsModel->updateModuleMessage($event_action,$slug,$emailslug,$sendmail);
-		
+		$successTxt	=	$this->adminSettingsModel->successTxt;
 		if($messageresponse_data) {			
 			return redirect()->route('admin.settings')
-						->with('success','Admin Module Message Updated successfully');
+						//~ ->with('success','Admin Module Message Updated successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.settings')
 						->with('failure','Something went wrong!');	
@@ -97,10 +100,11 @@ class AdminSettingsController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$result		=	$this->adminSettingsModel->updateGeneralSettings($postArray);
-		
+		$successTxt	=	$this->adminSettingsModel->successTxt;
 		if($result) {
 			return redirect()->route('admin.settings')
-						->with('success','Admin General Settings Updated successfully');
+						//~ ->with('success','Admin General Settings Updated successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.settings')
 						->with('failure','Something went wrong!');	

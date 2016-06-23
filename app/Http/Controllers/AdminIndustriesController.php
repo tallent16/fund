@@ -34,10 +34,10 @@ class AdminIndustriesController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$result		=	$this->adminindustryModel->updateIndustries($postArray);
-		
+		$successTxt	=	$this->adminindustryModel->getSystemMessageBySlug("update_industry_type");
 		if($result) {
 			return redirect()->route('admin.industries')
-						->with('success','Industries Updated successfully');
+							->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.industries')
 						->with('failure','Something went wrong!');	

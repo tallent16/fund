@@ -17,6 +17,10 @@ $(document).ready(function(){
 			format: 'dd-mm-yyyy' 
 			}); 
 			getAvailableBalance();
+		$("select#investor_id").on("change",function() {
+			$("#approve_button").hide();
+			getAvailableBalance();
+		});
 }); 
 					
 		$(".amount-align").on("focus", function() {
@@ -53,7 +57,7 @@ $(document).ready(function(){
 				var	withdrawal_amount	=	numeral($("#withdrawal_amount").val()).value();
 				getAvailableBalance();
 				
-				AvailableBalance		=	$("#avail_bal").val();
+				AvailableBalance		=	numeral($("#avail_bal").val()).value();
 				
 				var	request_date		=	$("#request_date").val();
 				var	settlement_date		=	$("#settlement_date").val();
@@ -102,11 +106,13 @@ $(document).ready(function(){
 					  type: "POST",
 					  async : false,
 					  cache:false,
-					  data:{investor_id:$("#investor_id").val()},
+					  data:{investor_id:$("select#investor_id").find("option:selected").val()},
 					  url: baseUrl+"/admin/investor/ajax/availableBalance"
 					  
 					}).done(function(data) {
-						$("#avail_bal").val(data);
+						var avail_bal	=	numeral(data).format("0,000.00")
+						$("#avail_bal").val(avail_bal);
+						$("#approve_button").show();
 					});
 				}
 			}

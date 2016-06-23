@@ -4,21 +4,25 @@
 			<div class="table-responsive">
 				<table class="table table-bordered .tab-fontsize" id="bidsummary">		
 					<tbody>
-						<tr>
+						<tr id="brt_header">
 							<th class="tab-head col-sm-2 text-left">
-								{{Lang::get('Investor')}}</th>
+								{{Lang::get('Inst Number')}}</th>
 							<th class="tab-head col-sm-2 text-left">
-								{{Lang::get('Bid Date')}}</th>
+								{{Lang::get('Schd Date')}}</th>
 							<th class="tab-head col-sm-2 text-right">
-								{{Lang::get('Bid Amount')}}</th>								
+								{{Lang::get('Actual Date')}}</th>								
 							<th class="tab-head col-sm-2 text-right">
-								{{Lang::get('Bid Interest')}}</th>
+								{{Lang::get('Principal')}}</th>
 							<th class="tab-head col-sm-2 text-right">
-								{{Lang::get('Accepted Amount')}}</th>
+								{{Lang::get('Interest')}}</th>
 							<th class="tab-head col-sm-2 text-right">
-								{{Lang::get('Total Repaid')}}</th>
+								{{Lang::get('Penalty Fees')}}</th>
 							<th class="tab-head col-sm-2 text-left">
-								{{Lang::get('Action')}}</th>
+								{{Lang::get('Penalty Int.')}}</th>
+							<th class="tab-head col-sm-2 text-left">
+								{{Lang::get('Total')}}</th>
+							<th class="tab-head col-sm-2 text-left">
+								{{Lang::get('Status')}}</th>
 						</tr>
 						@foreach($bidsModel->loanInvestors as $loanbidRow)
 						<tr>
@@ -57,3 +61,41 @@
 		</div>
 	</div>
 </div>
+
+<script>
+
+var disbursedColTitles["Inst Number", "Schd Date", "Actual Date", "Principal", "Interest", 
+						"Penalty Fees", "Penalty Int", "Total", "Status"];
+						
+var acceptedColTitles["Inst Number", "Schd Date", "Principal", "Interest", "Total"];
+						
+var	disbursedColNames['inst_number', 'repayment_schedule_date', 'repayment_actual_date', 
+						'principal_component', 'interest_component', 'repayment_penalty_charges',
+						'repayment_penalty_interest', 'repayment_status']
+						
+						
+function createHeaderDisbursed() {
+	// To create the header row for the Payment Schedule when status is Disbursed or Repaid
+	
+}
+
+function createHeaderAccepted() {
+	
+}
+
+function createTabRowDisbursed() {
+	
+}
+
+function createTabRowAccepted() {
+	
+}
+
+function createRepayTable(instArray) {
+	// To build the table rows
+	
+	
+}
+
+
+</script>

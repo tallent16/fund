@@ -481,6 +481,7 @@ class LoanDetailsModel extends TranWrapper {
 		if($postArray['isCancelButton']	==	"yes") {
 			
 			$dataArray 				= 	array(	'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
+												'process_date' 		=> $this->getDbDateFormat(date("d/m/Y")),
 												'bid_status' 		=> LOAN_BIDS_STATUS_CANCELLED);
 			$resetAvailableBalance	=	$available_balance	+	$prev_bid_amount;
 			$actionSumm =	"Bid Cancelled";

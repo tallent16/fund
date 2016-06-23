@@ -31,8 +31,9 @@ class AdminAssignRolesController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$result		=	$this->adminAssignRolesModel->saveUserRoles($postArray);
 		if($result) {
+			$successTxt	=	$this->adminAssignRolesModel->getSystemMessageBySlug("roles_for_user");
 			return redirect()->route('admin.assignroles', array('user_id' => $postArray['user_id']))
-						->with('success','Roles assigned successfully');
+						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.assignroles', array('user_id' => $postArray['user_id']))
 						->with('failure','Roles assigned Failed');	

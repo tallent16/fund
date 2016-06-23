@@ -43,8 +43,8 @@ class AdminChangePasswordController extends MoneyMatchController {
 		}
 		
 		$this->adminChangePasswordModel->updateChangePassword($postArray);
-		
+		$successTxt	=	$this->adminChangePasswordModel->successTxt;
 		return redirect()->route($this->adminChangePasswordModel->returnRouteName)
-						->with('success','User Password Changed successfully');
+						->with('success',$successTxt);
 	}
 }

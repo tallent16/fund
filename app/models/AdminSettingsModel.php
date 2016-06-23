@@ -7,7 +7,7 @@ class AdminSettingsModel extends TranWrapper {
 	public $email				=	array();	
 	public $event_val			=	array();	
 	public $defaultmoduleval	=	"all";
-	
+	public $successTxt			=	"";
 	/**Fetching the Records to display in frontend**/
 	public function getGeneralSettings(){
 		
@@ -127,7 +127,7 @@ class AdminSettingsModel extends TranWrapper {
 								'email_content' =>$email_content);		
 		$whereArry	   = array('slug_name' =>"{$slug}");
 		$result_email  = $this->dbUpdate('email_notifications', $dataArray, $whereArry );
-		
+		$this->successTxt	=	$this->getSystemMessageBySlug("update_email_message");
 		if($result_email){
 			return 1;
 		}
@@ -155,7 +155,7 @@ class AdminSettingsModel extends TranWrapper {
 		$dataArray 	   = array( 'message_text'	=> $event_action);
 		$whereArry	   = array('slug_name' =>"{$slug}");
 		$result 	   = $this->dbUpdate('system_messages', $dataArray, $whereArry );		
-		
+		$this->successTxt	=	$this->getSystemMessageBySlug("update_module_message");
 		if($result){
 			return 1;
 		}
@@ -215,6 +215,7 @@ class AdminSettingsModel extends TranWrapper {
 		
 		$whereArray	=	[ "application_name"	=> $application_Name];
 		$id = $this->dbUpdate('system_settings', $dataArray, $whereArray);
+		$this->successTxt	=	$this->getSystemMessageBySlug("update_system_settings");
 		if($id)		{		 
 			return 	1;
 		}

@@ -230,16 +230,10 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"username", $this->username);
-		
-		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
-			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_VERIFIED; 
-			$paymentStatus				=	PAYMENT_STATUS_VERIFIED;
-			
-		}else{
-			$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED; 
-			$paymentStatus				=	PAYMENT_STATUS_UNVERIFIED;
-		}
-		
+	
+		$invBankTransStatus			=	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED; 
+		$paymentStatus				=	PAYMENT_STATUS_UNVERIFIED;
+
 		$depositpaymentInsert_data	=	array(
 										'trans_datetime' =>$this->deposit_date,
 										'trans_type' => PAYMENT_TRANSCATION_INVESTOR_DEPOSIT,							
@@ -261,7 +255,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			
 			$paymentId 							=	$this->dbInsert("payments", $depositpaymentInsert_data, 1);
 			$depositInsert_data['payment_id']	=	$paymentId;
-			$this->dbInsert("investor_bank_transactions", $depositInsert_data, 0);
+			$trans_id	=	$this->dbInsert("investor_bank_transactions", $depositInsert_data, 1);
 		}else{
 			
 			if($paymentId	==	0) {
@@ -279,19 +273,12 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		}
 		//Update the Investor Available balance amount
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes"){
-			
-			$available_balance		=	$this->getInvestorAvailableBalanceById($this->investorId);
-			$resetAvailableBalance	=	$available_balance	+	$this->deposit_amount;
-			
-			$whereInvestorArray		=	array("investor_id"	=>	$this->investorId);
-			$dataInvestorArray		=	array("available_balance"	=>	$resetAvailableBalance);
-			
-			$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
+			$this->approveDeposit($trans_id);
 		}
 	}
 	
 	public function approveDeposit($trans_id) {
-		
+		\Log::error("approve Deposit:".$trans_id);
 		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;
@@ -327,6 +314,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		
 		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
 		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
 		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
 										'[investor_current_balance]','[application_name]'
 										);
@@ -377,6 +365,8 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$this->dbUpdate('investors', $dataInvestorArray, $whereInvestorArray);
 		
 		$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+		$moneymatchSettings = $this->getMailSettingsDetail();
+		
 		$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
 										'[investor_current_balance]','[application_name]'
 										);

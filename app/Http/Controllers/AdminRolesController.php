@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use	\App\models\AdminRolesModel;
 use Request;
+use Session;
 class AdminRolesController extends MoneyMatchController {
 	
 	
@@ -28,8 +29,10 @@ class AdminRolesController extends MoneyMatchController {
 	public function deleteAction($role_id){
 		
 		$this->adminRolesModel->deleteRole($role_id);
+		$successTxt	=	$this->adminRolesModel->successTxt;
+		
 		return redirect()->route('admin.roles')
-						->with('success','Role deleted successfully');
+						->with('success',$successTxt);
 	}
 		
 	public function roleUsersAction($role_id){
@@ -67,12 +70,13 @@ class AdminRolesController extends MoneyMatchController {
 		$postArray				=	Request::all();
 		$role_id				=	$postArray['role_filter'];
 		$this->adminRolesModel->processPermission($postArray);
+		$successTxt	=	$this->adminRolesModel->successTxt;
 		if($postArray['trantype']	==	"add") {
 			return redirect()->to('admin/roles')
-						->with('success','New role created successfully');
+						->with('success',$successTxt);
 		}
 		return redirect()->route('admin.rolepermission.edit', array('role_id' => $role_id))
-						->with('success','Role updated successfully');
+						->with('success',$successTxt);
 	}
 	
 	//checks the Role Name exists or not

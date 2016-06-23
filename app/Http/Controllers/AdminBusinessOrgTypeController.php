@@ -34,10 +34,10 @@ class AdminBusinessOrgTypeController extends MoneyMatchController {
 	public function saveAction() {		
 		$postArray		=	Request::all();		
 		$result			=	$this->adminbusiorgtypeModel->updateBusinessOrgTypes($postArray);
-	
+		$successTxt		=	$this->adminbusiorgtypeModel->getSystemMessageBySlug("update_organisation_type");
 		if($result) {
 			return redirect()->route('admin.businessorgtype')
-						->with('success','Business Organisation Type Updated Successfully');
+							->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.businessorgtype')
 						->with('failure','Something went wrong!');	

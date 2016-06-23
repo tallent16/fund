@@ -18,7 +18,7 @@ class AdminDisburseLoanController extends MoneyMatchController {
 	public function showDisburseLoanAction($loan_id) {
 		$loan_id = base64_decode($loan_id);
 		$this->bidsModel->getDisburseDetails($loan_id);
-		
+		$this->bidsModel->computeRepaySchedule($loanId); // Computation will be based on today's date being the disbursal date
 		return view('admin.admin-disburseloan')->with(array("bidsModel" => $this->bidsModel,
 													"classname"=>"fa fa-thumbs-up fa-fw"));	
 		
@@ -34,7 +34,8 @@ class AdminDisburseLoanController extends MoneyMatchController {
 	public function ajaxGetLoanRepaySchedAction() {
 		$loanId =	$_REQUEST["loan_id"];
 		$disburseDate = $_REQUEST["disburse_date"];
-		$retval = $this->bidsModel->computeRepaySchedule($loanId, $disburseDate);
+		$payByDay = $_REQUEST["monthly_pay_by_date"];
+		$retval = $this->bidsModel->computeRepaySchedule($loanId, $disburseDate, $payByDay);
 		return $retval;
 	
 	}

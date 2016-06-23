@@ -297,7 +297,28 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		$whereArray		=	Array ( "loan_id"			=>	$loanId,
 									"installment_number"=>	$instNum);
 		$this->dbUpdate("investor_repayment_schedule", $dataArray, $whereArray);
-
+		
+		//=================== Send mail to borrower repayment approved starts =====================================
+		
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrowerId);
+		$borrInfo			=	$this->getBorrowerInfoById($this->borrowerId);
+		$moneymatchSettings = $this->getMailSettingsDetail();
+		$slug_name			=	"repayment_approved";
+		$fields 			= array(
+									'[borrower_contact_person]',
+									'[installment_number]',
+									'[loan_number]',
+									'[application_name]');
+		$replace_array 		= array();
+		$replace_array 		= 	array( 
+										$borrInfo->contact_person, 
+										$instNum,
+										$this->loanRefNumber,
+										$moneymatchSettings[0]->application_name);
+		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+		
+		//====================Send mail to borrower repayment approved ends ========================================
+		
 		// Update the Investor Available Balance
 		$invList_sql	=	"	SELECT	investor_id,
 										payment_schedule_amount + ifnull(penalty_amount, 0) payAmt
@@ -321,10 +342,53 @@ class BorrowerRepayLoansModel extends TranWrapper {
 								WHERE	investor_id = {$invId}";
 			
 			$this->dbExecuteSql($updSql);
+			//=================== Send mail to investor repayment received starts =====================================
 
+			$invUserInfo		=	$this->getInvestorIdByUserInfo($invId);
+			$moneymatchSettings = 	$this->getMailSettingsDetail();
+			$slug_name			=	"repayment_received_investor";
+			$available_balance	=	$this->getInvestorAvailableBalanceById($invId);
+			$fields 			= array(
+										'[investor_firstname]',
+										'[investor_lastname]',
+										'[installment_number]',
+										'[loan_number]',
+										'[investor_current_balance]',
+										'[application_name]');
+			$replace_array 		= array();
+			$replace_array 		= 	array( 
+											$invUserInfo->firstname, 
+											$invUserInfo->lastname, 
+											$instNum,
+											$this->loanRefNumber,
+											$available_balance,
+											$moneymatchSettings[0]->application_name);
+			$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);
+			
+			//====================Send mail to investor repayment received ends =======================================
 		}									
 		$status	=	$this->checkLoanRepaymentCompleted($loanId);
 		if($status) {
+			//=================== Send mail to borrower repayment completed starts =====================================
+			
+			$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrowerId);
+			$borrInfo			=	$this->getBorrowerInfoById($this->borrowerId);
+			$moneymatchSettings = 	$this->getMailSettingsDetail();
+			$slug_name			=	"loan_repayment_complete";
+			$fields 			= array(
+										'[borrower_contact_person]',
+										'[installment_number]',
+										'[loan_number]',
+										'[application_name]');
+			$replace_array 		= array();
+			$replace_array 		= 	array( 
+											$borrInfo->contact_person, 
+											$instNum,
+											$this->loanRefNumber,
+											$moneymatchSettings[0]->application_name);
+			$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+			
+			//====================Send mail to borrower repayment completed ends =======================================
 			$this->updateBorrowerApplyLoanStatus($loanId,LOAN_STATUS_LOAN_REPAID);
 		}	
 	}
@@ -333,7 +397,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 
 		
 		// Approve the payment in the Payment Table
-		$payId_sql		=	"	SELECT 	payment_id, loan_reference_number
+		$payId_sql		=	"	SELECT 	payment_id, loan_reference_number,borrower_repayment_schedule.borrower_id
 								FROM	borrower_repayment_schedule, loans
 								WHERE	borrower_repayment_schedule.loan_id = :loan_id
 								AND		installment_number = :inst_num 
@@ -347,6 +411,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		
 		$paymentId		=	$payId_rs[0]->payment_id;
 		$loanRefNumber	=	$payId_rs[0]->loan_reference_number;
+		$borrowerId		=	$payId_rs[0]->borrower_id;
 		
 		$dataArray		=	Array (	"status"	=>	PAYMENT_STATUS_UNVERIFIED);
 		$whereArray		=	Array ( "payment_id"	=> $paymentId);
@@ -371,7 +436,27 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		$whereArray		=	Array ( "loan_id"			=>	$loanId,
 									"installment_number"=>	$instNum);
 		$this->dbUpdate("investor_repayment_schedule", $dataArray, $whereArray);
-
+		
+		//=================== Send mail to borrower repayment unapproved starts =====================================
+		
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
+		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		$slug_name			=	"repayment_unapproved";
+		$fields 			= array(
+									'[borrower_contact_person]',
+									'[installment_number]',
+									'[loan_number]',
+									'[application_name]');
+		$replace_array 		= array();
+		$replace_array 		= 	array( 
+										$borrInfo->contact_person, 
+										$instNum,
+										$loanRefNumber,
+										$moneymatchSettings[0]->application_name);
+		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+		
+		//====================Send mail to borrower repayment unapproved ends ========================================
 		// Update the Investor Available Balance
 		$invList_sql	=	"	SELECT	investor_id,
 										payment_schedule_amount + ifnull(penalty_amount, 0) payAmt
@@ -395,15 +480,62 @@ class BorrowerRepayLoansModel extends TranWrapper {
 								WHERE	investor_id = {$invId}";
 			
 			$this->dbExecuteSql($updSql);
+			//=================== Send mail to investor repayment received starts =====================================
 
-		}									
-		$this->updateLoanStatus($loanId,LOAN_STATUS_DISBURSED);
+			$invUserInfo		=	$this->getInvestorIdByUserInfo($invId);
+			$moneymatchSettings = 	$this->getMailSettingsDetail();
+			$slug_name			=	"repayment_cancelled_received_investor";
+			$available_balance	=	$this->getInvestorAvailableBalanceById($invId);
+			$fields 			= array(
+										'[investor_firstname]',
+										'[investor_lastname]',
+										'[installment_number]',
+										'[loan_number]',
+										'[investor_current_balance]',
+										'[application_name]');
+			$replace_array 		= array();
+			$replace_array 		= 	array( 
+											$invUserInfo->firstname, 
+											$invUserInfo->lastname, 
+											$instNum,
+											$loanRefNumber,
+											$available_balance,
+											$moneymatchSettings[0]->application_name);
+			$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);
+			
+			//====================Send mail to investor repayment received ends =======================================
+
+		}
+		if($this->getLoanStatus($loanId)	==	LOAN_STATUS_LOAN_REPAID) {
+			//=================== Send mail to borrower repayment completed cancelled starts===========================
+			
+			$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrowerId);
+			$borrInfo			=	$this->getBorrowerInfoById($this->borrowerId);
+			$moneymatchSettings = 	$this->getMailSettingsDetail();
+			$slug_name			=	"loan_repayment_complete_cancelled";
+			$fields 			= array(
+										'[borrower_contact_person]',
+										'[installment_number]',
+										'[loan_number]',
+										'[application_name]');
+			$replace_array 		= array();
+			$replace_array 		= 	array( 
+											$borrInfo->contact_person, 
+											$instNum,
+											$this->loanRefNumber,
+											$moneymatchSettings[0]->application_name);
+			$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+			
+			//====================Send mail to borrower repayment completed cancelled ends =============================
+		}
+		$this->updateBorrowerApplyLoanStatus($loanId,LOAN_STATUS_DISBURSED);
 	}
 
 	// This function is called when the save button is clicked
 	public function saveRepayment($postArray) {
 		
 		$this->loanId 				= 	$postArray["loan_id"];
+		$this->loanRefNumber 		= 	$postArray["loan_reference_number"];
 		$this->borrowerId			=	$postArray["borrower_id"];
 		$this->amountPaid 			=  	$this->makefloat($postArray["amount_Paid"]);
 		$this->principalAmount		=	$this->makefloat($postArray["principal_amount"]);
@@ -437,7 +569,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		}
 
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-								"Loan Reference Nu",$this->loan_reference_number);
+								"Loan Reference Nu",$this->loanRefNumber);
 
 
 		// For the Payments Table
@@ -490,14 +622,14 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$investBids_sql			=	"SELECT investor_id, 
 												bid_amount
 										 FROM	loan_bids
-										 WHERE	loan_id = {$loanId}
+										 WHERE	loan_id = {$this->loanId}
 										 AND	bid_status = ".LOAN_BIDS_STATUS_ACCEPTED;
 				
 			$investBids_rs			=	$this->dbFetchAll($investBids_sql);
 
 			$loanSanctionedAmt_sql	=	"SELECT	loan_sanctioned_amount
 										 FROM	loans
-										 WHERE	loan_id = {$loanId}";
+										 WHERE	loan_id = {$this->loanId}";
 										 
 			$loanSanctionedAmt	=	$this->dbFetchOne($loanSanctionedAmt_sql);
 			

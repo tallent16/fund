@@ -253,7 +253,7 @@ Route::post('admin/loandocrequired',  		[	'uses' 			=>	'AdminLoanDocumentsContro
 			);		
 
 Route::get('admin/changeofbank',  'AdminChangeofBankController@indexAction');
-Route::get('admin/approvechangeofbank',  'AdminApproveChangeofBankController@indexAction');
+Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  'AdminChangeofBankController@editApproveAction'); 
 
 		
 // The routes (or pages that are applicable for admin users only
@@ -1042,7 +1042,12 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	Route::post('borrower/ajax/trans_detail', 'BorrowerTransHistoryController@ajaxTransationAction');	
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');
 	Route::get('borrower/settings', 'BorrowerSettingsController@indexAction');	
-	Route::match(['get', 'post'],'borrower/makepayment/{repayment_id}/{loan_id}', 'BorrowerRepayLoansController@paymentAction');
+	Route::get('borrower/makepayment/{repayment_id}/{loan_id}', 
+									[	'as'	=>	'borrower.makepayment',
+										'uses'	=>	'BorrowerRepayLoansController@paymentAction'
+									]
+			);
+	Route::post('borrower/borrowersrepayview/save','BorrowerRepayLoansController@saveAction');
 	Route::post('borrower/ajax/recalculatePenality','BorrowerRepayLoansController@recalculatePenalityAction');
 });
 
