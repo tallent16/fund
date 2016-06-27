@@ -45,6 +45,7 @@
 										class="btn verification-button repayment_schedule" 
 										data-investor-id="{{$loanbidRow->investor_id}}"
 										data-loan-id="{{$bidsModel->loan_id}}"
+										onclick="showInvInst({{$loanbidRow->investor_id}})"
 										>
 									{{ Lang::get('Show Repayments')}}
 								</button>
@@ -54,6 +55,14 @@
 					</tbody>
 				</table>
 			</div>			
+			<div class="table-responsive">
+				<table class="table table-bordered .tab-fontsize" id="invInst">		
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>	
+			
 		</div>
 	</div>
 </div>

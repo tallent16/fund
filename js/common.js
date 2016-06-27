@@ -29,6 +29,14 @@ $(document).ready(function (){
           return "New information not saved. Do you wish to leave the page?";
       }
 	}
+	
+	$('#welcome_message').exists(function() {
+		$('#welcome_message').modal();
+	});
+	
+	$('#welcome_message').on('hidden.bs.modal', function (e) {
+		updateShowWelcomeMessageStatus();
+	});
 });
 
 function cancelNavigation(retval) {
@@ -189,7 +197,30 @@ function checkAdminAllCommentsClosed(){
 		return true;
 	return false;
 }
-
+function updateShowWelcomeMessageStatus() {
+		
+		ajaxUrl	=	$("#welcome_message_url").val();
+		userId	=	$("#welcome_message_userId").val();
+		if(	$("#show_welcome_message").is(":checked")) {
+			var	show_welcome_popup	=	1;
+		}else{
+			var	show_welcome_popup	=	0;
+		}
+		// process the form
+			$.ajax({
+				type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+				url         : ajaxUrl, // the url where we want to POST
+				data        : {		
+									show_welcome_popup:show_welcome_popup,
+									userId:userId
+									
+								},
+			})
+				// using the done promise callback
+				.done(function(data) {
+				
+			});
+}
 function callSubmitReplyActionFunc() { 
 	 $(".submit_reply").on('click',function(){
 		var commentID	=	$(this).attr("id");
@@ -338,6 +369,16 @@ function checkall_list(obj,classname){
 		});         
 	}
 }
+
+$.fn.exists = function(callback) {
+  var args = [].slice.call(arguments, 1);
+
+  if (this.length) {
+    callback.call(this, args);
+  }
+
+  return this;
+};
 
 /*------------------------------------------------------------------------
  * Maths Functions to get a proper rounding, ceil, floor of a number

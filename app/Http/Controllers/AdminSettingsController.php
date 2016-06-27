@@ -62,12 +62,10 @@ class AdminSettingsController extends MoneyMatchController {
 		$slug					= 	$postArray['slug_name'];	
 		$email_subject			= 	$postArray['email_subject'];	
 		$email_content			= 	$postArray['email_content'];
-		$saveresponse_data 		= 	$this->adminSettingsModel->updateEmailMessage($email_subject,$email_content,$slug);
-		//echo "<pre>",print_r($saveresponse_data),"</pre>"; die;	
+		$saveresponse_data 		= 	$this->adminSettingsModel->updateEmailMessage($email_subject,$email_content,$slug);		
 		$successTxt	=	$this->adminSettingsModel->successTxt;
 		if($saveresponse_data) {			
-			return redirect()->route('admin.settings')
-						//~ ->with('success','Admin Email Message Updated successfully');						
+			return redirect()->route('admin.settings')												
 						->with('success',$successTxt);					
 		}else{
 			return redirect()->route('admin.settings')
@@ -77,8 +75,7 @@ class AdminSettingsController extends MoneyMatchController {
 	
 	public function saveSystemMessagesAction() {
 		
-		$postArray				=	Request::all();	
-	//	echo "<pre>",print_r($postArray),"</pre>"; die;
+		$postArray				=	Request::all();		
 		$event_action			= 	$postArray['event_action'];
 		$slug					= 	$postArray['slug'];
 		$emailslug				= 	$postArray['email_slug'];
@@ -87,8 +84,7 @@ class AdminSettingsController extends MoneyMatchController {
 		$messageresponse_data 	= 	$this->adminSettingsModel->updateModuleMessage($event_action,$slug,$emailslug,$sendmail);
 		$successTxt	=	$this->adminSettingsModel->successTxt;
 		if($messageresponse_data) {			
-			return redirect()->route('admin.settings')
-						//~ ->with('success','Admin Module Message Updated successfully');
+			return redirect()->route('admin.settings')						
 						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.settings')
@@ -98,12 +94,11 @@ class AdminSettingsController extends MoneyMatchController {
 	
 	public function saveSystemSettingsAction() {
 		
-		$postArray	=	Request::all();
+		$postArray	=	Request::all();		
 		$result		=	$this->adminSettingsModel->updateGeneralSettings($postArray);
 		$successTxt	=	$this->adminSettingsModel->successTxt;
 		if($result) {
-			return redirect()->route('admin.settings')
-						//~ ->with('success','Admin General Settings Updated successfully');
+			return redirect()->route('admin.settings')						
 						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.settings')

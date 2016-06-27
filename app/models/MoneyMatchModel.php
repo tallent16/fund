@@ -8,7 +8,10 @@ class MoneyMatchModel extends Model {
 
 	public $auditKey = 0;
 	private $auditDb;
-	public $auditFlag = false;
+	public $auditFlag 				= false;
+	public $systemAllSetting 		= "";
+	public $systemAllMessage 		=	array();
+	public $emailAllNotification 	= 	array();
 	
 	public function constructSelectOption($options, $displayColumn, $valueColumn, $currentValue, $defaultOption) {
 		// To construct the options required for HTML Select 
@@ -313,4 +316,39 @@ class MoneyMatchModel extends Model {
 		}
 	}
 	
+	public function getAllSystemSettings() {
+		
+		$sql= "	SELECT 	*
+				FROM 	system_settings";
+		
+		$result		= $this->dbFetchRow($sql);
+		$this->systemAllSetting =	$result;
+		return $result;
+	}
+	
+	public function getAllSystemMessages() {
+		
+		$sql= "	SELECT *
+				FROM 	system_messages";
+		
+		$result		= $this->dbFetchAll($sql);
+		foreach($result as $systemMsgRow) {
+			$mod_id			=	$systemMsgRow->module_id;
+			$slug			=	$systemMsgRow->slug_name;
+			$messageText	=	$systemMsgRow->message_text;
+			
+			$this->systemAllMessage[$mod_id][$slug]	=	$messageText;
+		}
+		return $result;
+	}
+	//~ public function getAllSystemMessages() {
+		
+		//~ $sql= "	SELECT *
+				//~ FROM 	system_messages";
+		
+		//~ $result		= $this->dbFetchAll($sql);
+		//~ $emailNotification
+		//~ return $result;
+	//~ }
 }
+

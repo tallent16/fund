@@ -32,8 +32,41 @@
 				</div>
 					
 			</div> <!-- Row 1 -->
-				
+			
+			
 			<div class="row"><!-- Row 2 -->	
+				<div class="col-xs-12 col-sm-5 col-lg-3">
+					<label>
+						{{ Lang::get('Fixed Fees') }}
+					</label>
+				</div>	
+				<div class="col-xs-12 col-sm-7 col-lg-3">									
+					<input 	type="text" 
+							class="form-control text-right"
+							name="loan_fixed_fees"											
+							id="loan_fixed_fees" 											
+							value="{{number_format($bidsModel->loan_fixed_fees, 2, '.', ',')}}" 
+							disabled>	
+				</div>
+							
+				<div class="col-xs-12 col-sm-5 col-lg-3">
+					<label>
+						{{ Lang::get('Loan Fees (%)') }}
+					</label>
+				</div>	
+				<div class="col-xs-12 col-sm-7 col-lg-3">									
+					<input 	type="text" 
+							class="form-control text-right"
+							name="loan_fees_percent"												
+							id="loan_fees_percent" 											
+							value="{{number_format($bidsModel->loan_fees_percent, 2, '.', ',')}}"
+							disabled
+							>	
+				</div>
+				
+			</div><!-- Row 2 -->
+			
+			<div class="row"><!-- Row 3 -->	
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
 						{{ Lang::get('Total Processing Fees') }}
@@ -63,9 +96,9 @@
 							>	
 				</div>
 				
-			</div><!-- Row 2 -->
+			</div><!-- Row 3-->
 				
-			<div class="row"><!-- Row 3-->			
+			<div class="row"><!-- Row 4-->			
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
 						{{ Lang::get('Disbursement Date') }}
@@ -78,6 +111,7 @@
 								class="disbursement_date form-control" 
 								name="disbursement_date"
 								required
+								onchange="haveToRecalc()"
 								{{$disableFields}}
 								value="{{$bidsModel->system_date}}" />
 
@@ -99,14 +133,15 @@
 								class="monthly_pay_by_date form-control" 
 								name="monthly_pay_by_date"
 								required
+								onchange="haveToRecalc()"
 								{{$disableFields}}
 								value="{{$bidsModel->monthly_pay_by_date}}" />
 
 					</div>
 				</div>					
-			</div><!-- Row 3 -->
+			</div><!-- Row 4 -->
 		
-			<div class="row">  <!-- Row 4 a-->				
+			<div class="row">  <!-- Row 5-->				
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label for="bid_type">
 						{{ Lang::get('Bid Type') }}
@@ -132,9 +167,9 @@
 							value="{{$bidsModel->repayment_typeText}}">	
 				</div>	
 								
-			</div>  <!-- Row 4 a -->	
+			</div>  <!-- Row 5-->	
 					
-			<div class="row">  <!-- Row 4 b-->				
+			<div class="row">  <!-- Row 6-->				
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label for="target_interest z">
 						{{ Lang::get('Target Interest') }}
@@ -160,9 +195,9 @@
 							value="{{$bidsModel->final_interest_rate}}">	
 				</div>	
 								
-			</div>  <!-- Row 4 b -->		
+			</div>  <!-- Row 6 -->		
 				
-			<div class="row">  <!-- Row 5-->			
+			<div class="row">  <!-- Row 7-->			
 				@if(Route::currentRouteName()	!=	"admin.loanview")
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label for="payment_ref">
@@ -192,7 +227,7 @@
 							id="remarks"></textarea>	
 				</div>	
 								
-			</div>  <!-- Row 5 -->	
+			</div>  <!-- Row 7 -->	
 				
 		</div>
 	</div>

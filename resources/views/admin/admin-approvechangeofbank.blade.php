@@ -24,8 +24,13 @@
 		</div><!--panel head end-->
 
 		<div class="panel-body applyloan table-border-custom input-space">	
-		<form method="post" id="form-approvechangeofbank">
-			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+		<form method="post" id="form-approvechangeofbank" action="{{url('admin/approvechangeofbank/approve')}}">
+			<input type="hidden" name="_token" 		id="_token" 	value="{{ csrf_token() }}">
+			<input type="hidden" name="bor_bankid" 	id="bor_bankid" value="{{$adminbankviewModel->borrower_id }}">
+			<input type="hidden" name="bor_id" 		id="bor_id" 	value="{{$adminbankviewModel->borrower_bankid }}">
+			<input type="hidden" name="inv_id" 		id="inv_id" 	value="{{$adminbankviewModel->investor_id }}">
+			<input type="hidden" name="inv_bankid" 	id="inv_bankid" value="{{$adminbankviewModel->investor_bankid }}">
+			<input type="hidden" name="usertype" 	id="usertype" 	value="{{$adminbankviewModel->user_type_name }}">
 			<div class="row"><!-- Row 1 -->					
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
@@ -143,12 +148,14 @@
 				<div class="col-lg-12 space-around">
 					<div class="form-group">
 						<button class="btn verification-button"
-									id="save_button"											
+									id="save_button"	
+									type="submit"										
 									 >
 							 {{ Lang::get('Approve')}}
 						</button>
 						<button class="btn verification-button"
-									id="reject_button"											
+									id="reject_button"	
+									type="button"										
 									 >
 							 {{ Lang::get('Reject')}}
 						</button>

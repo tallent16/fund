@@ -4,11 +4,32 @@ $(document).ready(function (){
 		headers: {
 			'X-CSRF-TOKEN': $('#hidden_token').val()
 		}
+		//~ console.log(systemAllSetting);
 	});
 	$('#reg-submit-btn').click(function (e) {
 		e.preventDefault();
 
 		if ($('#form-register').valid()) {
+			$("#toc_information").modal();
+			if($("input[name='Userrole']:checked").val()	==	"Investor") {
+				$("#toc_messageblock").html(toc_investor);
+			}else{
+				$("#toc_messageblock").html(toc_borrower);
+			}
+		}
+	 }); 
+	 
+	$('#read_toc_message').click(function (e) {
+		if($(this).is(":checked")) {
+			$("#toc_message_submit").removeAttr("disabled");
+		}else{
+			$("#toc_message_submit").attr("disabled",true);
+			$("#toc_message_submit").prop("disabled",true);
+		}
+	 }); 
+	$('#toc_message_submit').click(function (e) {
+		
+		if($("#read_toc_message").is(":checked")) {
 			$('#form-register').submit();
 		}
 	 }); 

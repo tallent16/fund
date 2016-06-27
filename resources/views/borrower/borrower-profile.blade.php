@@ -77,7 +77,14 @@
 		@if(session()->has("activeTab"))
 			@var	$activeTab	=	session("activeTab")
 		@endif
-		
+		@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+			@if( ($modelBorPrf->company_profile=="") || 
+				($modelBorPrf->company_aboutus==""))
+				@var $profile_info_tab	=	0
+			@else
+				@var $profile_info_tab	=	1
+			@endif
+		@endif
 		<!-----Body Content----->
 		<div class="col-sm-12 space-around"> 
 			<form method="post" id="form-profile" name="form-profile" enctype="multipart/form-data">
@@ -93,6 +100,7 @@
 				<input type="hidden" name="admin_process" id="admin_process" value="">
 				<input type="hidden" id="company_info_complete" value="{{$modelBorPrf->company_info_complete}}">
 				<input type="hidden" id="director_info_complete" value="{{$modelBorPrf->director_info_complete}}">
+				<input type="hidden" id="profile_info_complete" value="{{$profile_info_tab}}">
 				<input type="hidden" id="bank_info_complete" value="{{$modelBorPrf->bank_info_complete}}">
 				<input type="hidden" id="active_tab" name="active_tab" value="{{$activeTab}}">
 				<div class="row">	
@@ -113,7 +121,7 @@
 								</a>
 							</li>
 							@if($canViewProfileInfoTab	==	"yes")	  
-								<li id="profile_info_parent">
+								<li  class="disabled"  id="profile_info_parent">
 									<a 	data-toggle="tab"
 										href="#profile_info">
 										{{ Lang::get('borrower-profile.profile_info') }}
@@ -128,7 +136,7 @@
 									</a>
 								</li>	
 							@endif
-								<li id="financial_info_parent">
+								<li  class="disabled"  id="financial_info_parent">
 									<a 	data-toggle="tab"
 										href="#financial_info">
 										{{ Lang::get('borrower-profile.financial_info') }}

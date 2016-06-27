@@ -163,4 +163,11 @@ class UserController extends MoneyMatchController {
 			return json_encode(array("data"=>$rows,"options"=>$options));
 		}
 	}
+	
+	public function uploadShowWelcomeMessageStatus() {
+		
+		$postArray	=	Request::all();
+		$this->user->uploadShowWelcomeMessageStatus($postArray);
+		return "update successfully";
+	} 
 }

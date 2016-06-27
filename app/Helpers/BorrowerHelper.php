@@ -59,5 +59,19 @@ class BorrowerHelper {
 		}
 		
 	}
+	
+		
+	public static function getWelcomeMessage() {
+		
+		
+		$pdoDB 			=	DB::connection()->getPdo();
+		$welcomeMsgSql	=	"	SELECT 	firsttime_borrower_popup
+								FROM 	system_settings";
+	
+		$query = $pdoDB->prepare($welcomeMsgSql);
+		$query->execute();
+		$welcomeMsg = $query->fetchColumn();
+		return $welcomeMsg;
+	}
 }
 ?>

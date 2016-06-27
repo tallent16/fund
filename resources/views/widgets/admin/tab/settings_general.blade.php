@@ -78,7 +78,7 @@
 						<br>					
 					</div>
 				</div>	
-				@endforeach			
+				@endforeach	
 			</div>
 			
 		</div>

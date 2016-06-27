@@ -39,4 +39,16 @@ class AdminChangeofBankController extends MoneyMatchController {
 		return view('admin.admin-approvechangeofbank')
 									->with($withArry);
 	}
+	public function updateApproveBankAction(){
+		$postArray	=	Request::all();
+		$result = $this->adminChangeBankModel->updateborrowerinvestorbankapprove($postArray);
+		if($result) {
+			$successTxt ="Approved successfully";
+			return redirect()->route('admin.changeofbank')
+							->with('success',$successTxt);
+		}else{
+			return redirect()->route('admin.changeofbank')
+						->with('failure','Something went wrong!');	
+		}
+	}
 }

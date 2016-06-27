@@ -34,6 +34,18 @@
 							{{ Lang::get('Loan Fees And Charges') }}
 						</a>
 					</li>
+					<li>
+						<a 	data-toggle="tab"
+							href="#termsandconditions">
+							{{ Lang::get('Terms And Conditions') }}
+						</a>
+					</li>
+					<li>
+						<a 	data-toggle="tab"
+							href="#firsttimepopup">
+							{{ Lang::get('First Time Popup') }}
+						</a>
+					</li>
 				</ul>
 								
 				<div class="tab-content">
@@ -45,6 +57,10 @@
 					@include('widgets.admin.tab.settings_mailsubjectcontent')
 					<!-------fourth tab--starts------------------------>
 					@include('widgets.admin.tab.settings_loanfeescharges')
+					<!-------fifth tab--starts------------------------>
+					@include('widgets.admin.tab.settings_termsandconditions')
+					<!-------sixth tab--starts------------------------>
+					@include('widgets.admin.tab.settings_firsttimepopup')
 				</div><!--tab content-->
 				
 			</div>

@@ -7,6 +7,10 @@ use File;
 use Hash;
 class TranWrapper extends MoneyMatchModel {
 		
+	public function __construct() {
+		$this->getAllSystemSettings();
+		$this->getAllSystemMessages();
+	}
 	public function CheckUserName($userName)	{
 		
 		$sql	= "	SELECT 	count(*) cnt 

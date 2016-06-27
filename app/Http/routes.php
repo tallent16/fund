@@ -252,9 +252,25 @@ Route::post('admin/loandocrequired',  		[	'uses' 			=>	'AdminLoanDocumentsContro
 											]
 			);		
 
-Route::get('admin/changeofbank',  'AdminChangeofBankController@indexAction');
-Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  'AdminChangeofBankController@editApproveAction'); 
-
+//Route::get('admin/changeofbank',  'AdminChangeofBankController@indexAction');
+//Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  'AdminChangeofBankController@editApproveAction'); 
+Route::get('admin/changeofbank',  	[	'as' 			=> 	'admin.changeofbank', 
+										'uses' 			=>	'AdminChangeofBankController@indexAction'
+									]
+			);
+Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  [	 
+												'uses' 			=>	'AdminChangeofBankController@editApproveAction'
+												]
+			);
+//~ Route::post('admin/approvechangeofbank/approve',  [	 
+												//~ 'as' 			=> 	'admin.changeofbank', 
+												//~ 'uses' 			=>	'AdminChangeofBankController@updateApproveBankAction'
+												//~ ]
+			//~ );
+Route::post('admin/approvechangeofbank/approve',  [	 
+												'uses' 			=>	'AdminChangeofBankController@updateApproveBankAction'
+												]
+			);
 		
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
@@ -1114,6 +1130,7 @@ Route::get('download/borrower/bank/attachment/{profile_id}/{bank_id}',
 																		'BorrowerProfileController@downloadBankAction');
 Route::get('download/investor/bank/attachment/{profile_id}/{bank_id}',
 																		'InvestorProfileController@downloadBankAction');
+Route::post('update/show_welcome/popup','UserController@uploadShowWelcomeMessageStatus');
 /*
 Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";

@@ -122,11 +122,7 @@
 			@if( isset($LoanDetMod->bidDetail['bid_interest_rate']) )
 				@var	$bid_interest_rate	=	$LoanDetMod->bidDetail['bid_interest_rate']
 			@else
-				@if($LoanDetMod->bid_type	==	LOAN_BID_TYPE_FIXED_INTEREST)
-					@var	$bid_interest_rate	=	$LoanDetMod->target_interest
-				@else
-					@var	$bid_interest_rate	=	"0.00"
-				@endif
+				@var	$bid_interest_rate	=	$LoanDetMod->target_interest
 			@endif
 			
 			@if($LoanDetMod->bid_type	==	LOAN_BID_TYPE_FIXED_INTEREST)

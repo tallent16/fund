@@ -67,20 +67,30 @@ class CustomAuthController extends MoneyMatchController {
 			
              if($userType	==	USER_TYPE_BORROWER) {
 				$profileStatus	=	BorProfile::checkProfileStatus();
+				$welcomeMessage	=	BorProfile::getWelcomeMessage();
 				if( ($profileStatus	==	BORROWER_STATUS_DELETED)
 					|| ( $profileStatus	==	BORROWER_STATUS_REJECTED ) ) {
 					Auth::logout();
 					return redirect($this->loginPath())
 							->withErrors(['email' => "You cannot access the account"]);
 				}
+				if(Auth::user()->show_welcome_popup	==	1) {
+					Session::put("show_welcome_popup","yes");
+					Session::put("welcome_message",$welcomeMessage);
+				}
 			}
              if($userType	==	USER_TYPE_INVESTOR) {
 				$profileStatus	=	InvBal::checkProfileStatus();
+				$welcomeMessage	=	InvBal::getWelcomeMessage();
 				if( ($profileStatus	==	INVESTOR_STATUS_DELETED)
 					|| ( $profileStatus	==	INVESTOR_STATUS_REJECTED ) ) {
 					Auth::logout();
 					return redirect($this->loginPath())
 							->withErrors(['email' => "You cannot access the account"]);
+				}
+				if(Auth::user()->show_welcome_popup	==	1) {
+					Session::put("show_welcome_popup","yes");
+					Session::put("welcome_message",$welcomeMessage);
 				}
 			}
 			
@@ -133,5 +143,6 @@ class CustomAuthController extends MoneyMatchController {
 	 */
 	public function loginPath() {
 		return property_exists($this, 'loginPath') ? $this->loginPath : '/auth/login';
-	}  
+	}
+	
 }

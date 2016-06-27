@@ -192,4 +192,13 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 		}
 		return $result;
 	}
+	
+	public function uploadShowWelcomeMessageStatus($postArray) {
+		
+			$userId				=	$postArray['userId'];
+			$show_welcome_popup	=	$postArray['show_welcome_popup'];
+			$whereArry			=	array("user_id" =>$userId);
+			$dataArry			=	array('show_welcome_popup' => $show_welcome_popup);
+			$this->dbUpdate('users',$dataArry, $whereArry);
+	}
 }

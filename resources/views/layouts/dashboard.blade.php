@@ -83,4 +83,9 @@
 		</div><!-- /#page-wrapper -->
 		
     </div><!-- /#wrapper -->
+    @if(session()->has('show_welcome_popup'))
+		@include('partials/welcome_message', ['message' => session('welcome_message')])
+		{{'';session()->forget("show_welcome_popup");'';}}
+		{{'';session()->forget("welcome_message");'';}}
+	@endif
 @stop

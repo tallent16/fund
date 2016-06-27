@@ -503,9 +503,13 @@ function checkAllTabCompleteStatus() {
 	var	profile_status			=	$("#profile_status").val();
 	var	company_info_complete	=	$("#company_info_complete").val();
 	var	director_info_complete	=	$("#director_info_complete").val();
+	var	profile_info_complete	=	$("#profile_info_complete").val();
 	var	bank_info_complete		=	$("#bank_info_complete").val();
 	var	active_tab				=	$("#active_tab").val();
-	
+	console.log("profile_status:"+profile_status);
+	console.log("company_info_complete:"+company_info_complete);
+	console.log("director_info_complete:"+director_info_complete);
+	console.log("bank_info_complete:"+bank_info_complete);
 	if ( profile_status	== "New profile") {
 		
 		if (parseInt(company_info_complete)) {
@@ -513,18 +517,30 @@ function checkAllTabCompleteStatus() {
 			hide_next_button();
 		} else {
 			disable_director_info_tab();
+			disable_profile_info_tab();
+			disable_financial_info_tab();
 			disable_bank_info_tab();
 			show_next_button();
+			return;
 		}
 
 		if (parseInt(director_info_complete)) {
-			enable_bank_info_tab();
+			enable_profile_info_tab();
+			
 		} else {
+			disable_financial_info_tab();
 			disable_bank_info_tab();
+			return;
 		}
+		if (parseInt(profile_info_complete)) {
+			enable_financial_info_tab();
+			enable_bank_info_tab();
+		} 
 		
 	}else {
 		enable_director_info_tab();
+		enable_profile_info_tab();
+		enable_financial_info_tab();
 		enable_bank_info_tab();
 	}
 	switch(active_tab){
@@ -540,6 +556,7 @@ function checkAllTabCompleteStatus() {
 		case "#profile_info":
 			if(!$("#profile_info_parent").hasClass("disabled")) {
 				$('.nav-tabs a[href="#profile_info"]').tab('show');
+				currentTabNextButton($("#profile_info_parent"));
 			}
 			break;
 		case "#financial_info":
@@ -574,6 +591,22 @@ function disable_director_info_tab() {
 	$("#director_info_parent").addClass("disabled");
 }
 
+function enable_profile_info_tab() {
+	$("#profile_info_parent").removeClass("disabled");
+}
+function disable_profile_info_tab() {
+
+	$("#profile_info_parent").addClass("disabled");
+}
+
+function enable_financial_info_tab() {
+	$("#financial_info_parent").removeClass("disabled");
+}
+function disable_financial_info_tab() {
+
+	$("#financial_info_parent").addClass("disabled");
+}
+
 function enable_bank_info_tab() {
 	$("#bank_info_parent").removeClass("disabled");
 }
@@ -592,6 +625,7 @@ function currentTabNextButton($this) {
 	var	profile_status			=	$("#profile_status").val();
 	var	company_info_complete	=	$("#company_info_complete").val();
 	var	director_info_complete	=	$("#director_info_complete").val();
+	var	profile_info_complete	=	$("#profile_info_complete").val();
 	var	bank_info_complete		=	$("#bank_info_complete").val();
 	
 	if ( profile_status	== "New profile") {
@@ -604,6 +638,13 @@ function currentTabNextButton($this) {
 		}
 		if($this.find("a").attr("href")	==	"#director_info") {
 			if (parseInt(director_info_complete))  {
+				hide_next_button();
+			}else{
+				show_next_button();
+			}
+		}
+		if($this.find("a").attr("href")	==	"#profile_info") {
+			if (parseInt(profile_info_complete))  {
 				hide_next_button();
 			}else{
 				show_next_button();

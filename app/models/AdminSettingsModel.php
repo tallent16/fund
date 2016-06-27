@@ -31,14 +31,18 @@ class AdminSettingsModel extends TranWrapper {
 									loan_fees_minimum_applicable,
 									penalty_fee_minimum,
 									penalty_fee_percent,
-									penalty_interest 
+									penalty_interest,
+									toc_investor,
+									toc_borrower,
+									firsttime_borrower_popup,
+									firsttime_investor_popup
 								FROM
 									system_settings";
 							
 		$result				=	$this->dbFetchAll($settings_sql);
-			
-		$this->settingsList = 	$result;						
 		
+		$this->settingsList = 	$result;						
+		 
 	}	
 	/**Dropdown Module**/
 	public function getModuleDropdown(){
@@ -187,6 +191,12 @@ class AdminSettingsModel extends TranWrapper {
 			$penaltyProcessFee		= $postArray['penalty_process_fee'];	
 			$penaltyProcessPercent	= $postArray['penalty_process_percent'];	
 			$penaltyInterest		= $postArray['penalty_interest'];	
+			/*Fifth Tab*/	
+			$borrower_terms			= $postArray['bor_terms'];	
+			$investor_terms			= $postArray['inv_terms'];			
+			/*Sixth Tab*/			
+			$borrower_firstpopup	= $postArray['bor_popup'];	
+			$investor_firstpopup	= $postArray['inv_popup'];	
 		}
 		// Construct the data array
 		$dataArray = array(	'application_name'				=> $application_Name,								
@@ -210,11 +220,16 @@ class AdminSettingsModel extends TranWrapper {
 							'loan_fees_minimum_applicable'	=> $processFeeMinimum,
 							'penalty_fee_minimum'			=> $penaltyProcessFee,
 							'penalty_fee_percent'			=> $penaltyProcessPercent,
-							'penalty_interest'				=> $penaltyInterest							
+							'penalty_interest'				=> $penaltyInterest,
+							
+							'toc_borrower'					=> $borrower_terms,						
+							'toc_investor'					=> $investor_terms,					
+							'firsttime_borrower_popup'		=> $borrower_firstpopup,					
+							'firsttime_investor_popup'		=> $investor_firstpopup						
 						);			
 		
 		$whereArray	=	[ "application_name"	=> $application_Name];
-		$id = $this->dbUpdate('system_settings', $dataArray, $whereArray);
+		$id = $this->dbUpdate('system_settings', $dataArray, $whereArray);		
 		$this->successTxt	=	$this->getSystemMessageBySlug("update_system_settings");
 		if($id)		{		 
 			return 	1;

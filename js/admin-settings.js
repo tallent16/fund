@@ -209,3 +209,27 @@ function showSystemMessagesTab(data) {
 	str	=	str+"</tbody></table></div></div>";
 	$('#module_table').html(str);
 }
+function previewBorTerms(){	
+	var bortermscontent = $('#bor_terms').val();
+	var displaycontentformat = "<div class='row'><div class='col-sm-12'>"+bortermscontent+"</div></div>";
+	$('#borTermsPopup .modal-body').html(displaycontentformat);
+	$('#borTermsPopup').modal("show");
+}
+function previewInvTerms(){	
+	var invtermscontent = $('#inv_terms').val();
+	var displaycontentformat = "<div class='row'><div class='col-sm-12'>"+invtermscontent+"</div></div>";
+	$('#invTermsPopup .modal-body').html(displaycontentformat);
+	$('#invTermsPopup').modal("show");
+}
+function previewBorFirsttimePopup(){	
+	var borfirstcontent = $('#bor_popup').val();
+	var displaycontentformat = "<div class='row'><div class='col-sm-12'>"+borfirstcontent+"</div></div>";
+	$('#borFirstPopup .modal-body').html(displaycontentformat);
+	$('#borFirstPopup').modal("show");
+}
+function previewInvFirsttimePopup(){	
+	var invfirstcontent = $('#inv_popup').val();
+	var displaycontentformat = "<div class='row'><div class='col-sm-12'>"+invfirstcontent+"</div></div>";
+	$('#invFirstPopup .modal-body').html(displaycontentformat);
+	$('#invFirstPopup').modal("show");
+}

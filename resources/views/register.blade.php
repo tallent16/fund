@@ -7,6 +7,9 @@
 		var emailExistsMess				=	"{{$regMod->systemMessages['register_email_present']}}"
 		var usernameExistsMess			=	"{{$regMod->systemMessages['register_username_present']}}"
 		var weakpasswordExistsMess		=	"{{$regMod->systemMessages['register_weak_password']}}"
+		var toc_investor				=	"{{addslashes($regMod->systemAllSetting['toc_investor'])}}"
+		var toc_borrower				=	"{{addslashes($regMod->systemAllSetting['toc_borrower'])}}"
+		
 	</script>
 	<script src="{{ url('js/register.js') }}" type="text/javascript"></script>	  
 
@@ -234,7 +237,7 @@
 					<div class="row">
 						<div class="col-xs-12 form-group">
 							<button id="reg-submit-btn" 
-									type="submit" 
+									type="button" 
 									class="btn btn-success register-button">
 									<i class="fa pull-right"></i> 
 									{{ Lang::get('register.signup') }}
@@ -256,6 +259,15 @@
         </div>
     </div>
 </div>
+@section ('popup-box_panel_title',Lang::get('Terms & Conditions'))
+	@section ('popup-box_panel_body')
+		@include('widgets.modal_box.toc_message')
+	@endsection
+	@include('widgets.modal_box.panel', array(	'id'=>'toc_information',
+												'aria_labelledby'=>'toc_information',
+												'as'=>'popup-box',
+												'class'=>'',
+											))
 <!-- END Register Content -->
 @endsection
 @stop

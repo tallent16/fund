@@ -9600,6 +9600,9 @@ a.settings-cursor{
 	color:#333;
 	text-decoration:none;
 }
+.pull-bottom{
+	margin-top:6em;
+}
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   
