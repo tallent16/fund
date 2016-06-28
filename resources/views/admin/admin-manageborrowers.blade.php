@@ -137,14 +137,14 @@
 													@if(($BorRow['status']	==	BORROWER_STATUS_NEW_PROFILE)
 														|| ($BorRow['status']	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL))
 														@permission('reject.admin.manageborrowers')
-															@var	$rejClass	=	""
+															@var	$rejClass	=	"manageborrowers_reject"
 															@var	$rejUrl		=	url('admin/manageborrowers/reject/')
 															@var	$rejUrl		=	$rejUrl."/".$encode_bor_id
 														@endpermission
 													@endif
 													@if($BorRow['active_loan'] == 0)
 														@permission('delete.admin.manageborrowers')
-															@var	$delClass	=	""
+															@var	$delClass	=	"manageborrowers_delete"
 															@var	$delUrl		=	url('admin/manageborrowers/delete/')
 															@var	$delUrl		=	$delUrl."/".$encode_bor_id
 														@endpermission

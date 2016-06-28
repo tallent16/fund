@@ -136,14 +136,14 @@
 													@if(($InvRow['status']	==	INVESTOR_STATUS_NEW_PROFILE)
 														|| ($InvRow['status']	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL))
 														@permission('reject.admin.manageinvestors')
-															@var	$rejClass	=	""
+															@var	$rejClass	=	"manageinvestors_reject"
 															@var	$rejUrl		=	url('admin/manageinvestors/reject/')
 															@var	$rejUrl		=	$rejUrl."/".$encode_inv_id
 														@endpermission
 													@endif
 													@if($InvRow['active_loan'] == 0)
 														@permission('delete.admin.manageinvestors')
-															@var	$delClass	=	""
+															@var	$delClass	=	"manageinvestors_delete"
 															@var	$delUrl		=	url('admin/manageinvestors/delete/')
 															@var	$delUrl		=	$delUrl."/".$encode_inv_id
 														@endpermission

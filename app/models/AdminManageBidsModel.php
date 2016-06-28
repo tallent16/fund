@@ -214,7 +214,9 @@ class AdminManageBidsModel extends TranWrapper {
 			}
 			
 			$dataArray		=	["bid_status" 			=>	$bidStatus, 
-								 "accepted_amount" 		=>	$acceptAmount];
+								 "accepted_amount" 		=>	$acceptAmount,
+								'process_date' 		=> $this->getDbDateFormat(date("d/m/Y"))
+								 ];
 
 			$where			=	["bid_id" 	=>	$bidId];
 			

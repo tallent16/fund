@@ -47,11 +47,13 @@ class VerifyPermission
 			}
 			if (array_key_exists('redirect_back', $actions)) {
 				return redirect()->route($actions['redirect_back'])
-						->with('failure','You do not have permission to '.$actions['action_type']);
+						->with('failure','You are not authorized to perform this  action.
+											Please contact the system administrator for more information');
 			}else{
 				
 				return redirect()->route('mypage')
-						->with('failure','You do not have permission to access the page');
+						->with('failure','You are not authorized to view this page.
+											Please contact the system administrator for more information.');
 			}
 		}
 		return $next($request);

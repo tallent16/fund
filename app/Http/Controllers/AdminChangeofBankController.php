@@ -18,7 +18,7 @@ class AdminChangeofBankController extends MoneyMatchController {
 		
 		$this->adminChangeBankModel->getborrowerinvestorbanks();
 		
-		$withArry	=	array(	"adminbanklistModel" => $this->adminChangeBankModel,
+		$withArry		=	array(	"adminbanklistModel" => $this->adminChangeBankModel,
 								"classname"=>"fa fa-user fa-fw");
 		
 		return view('admin.admin-changeofbank')
@@ -33,7 +33,7 @@ class AdminChangeofBankController extends MoneyMatchController {
 		
 		$this->adminChangeBankModel->getborrowerinvestorbankinfo($usertype,$borrower_id,$borbankid);
 		
-		$withArry	=	array(	"adminbankviewModel" => $this->adminChangeBankModel,
+		$withArry		=	array(	"adminbankviewModel" => $this->adminChangeBankModel,
 								"classname"=>"fa fa-user fa-fw");
 							
 		return view('admin.admin-approvechangeofbank')
@@ -41,14 +41,28 @@ class AdminChangeofBankController extends MoneyMatchController {
 	}
 	public function updateApproveBankAction(){
 		$postArray	=	Request::all();
-		$result = $this->adminChangeBankModel->updateborrowerinvestorbankapprove($postArray);
+		$result 	= $this->adminChangeBankModel->updateborrowerinvestorbankapprove($postArray);
 		if($result) {
-			$successTxt ="Approved successfully";
-			return redirect()->route('admin.changeofbank')
+			$successTxt =	"Approved Successfully";
+			return redirect()->route('admin.approve')
 							->with('success',$successTxt);
 		}else{
-			return redirect()->route('admin.changeofbank')
+			return redirect()->route('admin.approve')
 						->with('failure','Something went wrong!');	
 		}
 	}
+	public function rejectBankAction(){
+		$postArray		=	Request::all();		
+		$result_reject 	= $this->adminChangeBankModel->deleteborrowerinvestorbankrecord($postArray);		
+		if($result_reject) {
+			//echo 'right'; echo "<pre>",print_r($result_reject),"</pre>"; die;
+			$successTxt =	"Record Deleted Successfully";
+			return redirect()->route('admin.changeofbank')
+							->with('success',$successTxt);
+		}else{
+			//echo "<pre>",print_r($result_reject),"</pre>"; die;
+			return redirect()->route('admin.changeofbank')
+						->with('failure','Something went wrong!');	
+		}
+	}	
 }

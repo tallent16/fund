@@ -258,17 +258,18 @@ Route::get('admin/changeofbank',  	[	'as' 			=> 	'admin.changeofbank',
 										'uses' 			=>	'AdminChangeofBankController@indexAction'
 									]
 			);
-Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  [	 
+Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  [	
+												'as' 			=> 	'admin.approve', 
 												'uses' 			=>	'AdminChangeofBankController@editApproveAction'
 												]
 			);
-//~ Route::post('admin/approvechangeofbank/approve',  [	 
-												//~ 'as' 			=> 	'admin.changeofbank', 
-												//~ 'uses' 			=>	'AdminChangeofBankController@updateApproveBankAction'
-												//~ ]
-			//~ );
-Route::post('admin/approvechangeofbank/approve',  [	 
+
+Route::post('admin/approvechangeofbank/approve',  [	 												
 												'uses' 			=>	'AdminChangeofBankController@updateApproveBankAction'
+												]
+			);
+Route::post('admin/approvechangeofbank/reject',  [	 
+												'uses' 			=>	'AdminChangeofBankController@rejectBankAction'
 												]
 			);
 		

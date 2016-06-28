@@ -261,12 +261,10 @@ function onFocusNumberField($thisField) {
 		console.log($thisField);
 		$valueofNumber = numeral($($thisField).val()).value();
 		$($thisField).attr("placeholder", "0");
-		if ($valueofNumber == 0) {
-			$($thisField).val("");
-		}
+		$($thisField).val($valueofNumber);
 
 	}
-	//  $($thisField).select()
+	$($thisField).select()
 }
 
 function onBlurNumberField($thisField) {

@@ -62,7 +62,7 @@
 									<td class="text-left">
 										@if($roleRow->system	==	0)
 											<a href="{{url('admin/roles/delete').'/'.$roleRow->id}}"
-												onclick="return confirm('Are you sure to delete role?')">
+												class="manageroles_delete">
 												{{Lang::get('Delete')}}
 											</a>
 										@endif

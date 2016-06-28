@@ -10,7 +10,7 @@
 		<form 	method="post" 
 				action=""
 				id="form-changeofbank">
-			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">			
 			
 			<div class="table-responsive">
 				<table class="table tab-fontsize text-left">
@@ -41,6 +41,8 @@
 								<td><a href="{{$editUrl}}">{{$row->bank_name}}</a></td>
 								<td><a href="{{$editUrl}}">{{$row->branch_code}}</a></td>
 								<td><a href="{{$editUrl}}">{{$row->bank_account_number}}</a></td>
+								<input type="hidden" name="bank_statement_url" id="bank_statement_url" 
+								value="{{$row->bank_statement_url}}">
 							</tr>
 							@endforeach
 						@endif	

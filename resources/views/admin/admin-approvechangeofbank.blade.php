@@ -7,13 +7,17 @@
 		$(document).ready(function(){ 	
 			$(".jfilestyle").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
 		}); 
+		$('#reject_button').click(function (){
+			$('#form-approvechangeofbank').attr('action',baseUrl+'/admin/approvechangeofbank/reject');
+			$('#form-approvechangeofbank').submit();	
+		});		
 	</script>
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 @endsection
 @section('page_heading',Lang::get('Approve Change of Bank Requests'))
 @section('section')  
 <div class="col-sm-12 space-around">
-	<div class="panel-primary panel-container">
+	<div class="panel-primary panel-container borrower-admin">
 		
 		<div class="panel-heading panel-headsection"><!--panel head-->
 			<div class="row">
@@ -24,10 +28,12 @@
 		</div><!--panel head end-->
 
 		<div class="panel-body applyloan table-border-custom input-space">	
-		<form method="post" id="form-approvechangeofbank" action="{{url('admin/approvechangeofbank/approve')}}">
+		<form method="post" id="form-approvechangeofbank" 
+							action="{{url('admin/approvechangeofbank/approve')}}"
+							>
 			<input type="hidden" name="_token" 		id="_token" 	value="{{ csrf_token() }}">
-			<input type="hidden" name="bor_bankid" 	id="bor_bankid" value="{{$adminbankviewModel->borrower_id }}">
-			<input type="hidden" name="bor_id" 		id="bor_id" 	value="{{$adminbankviewModel->borrower_bankid }}">
+			<input type="hidden" name="bor_id" 		id="bor_id"		value="{{$adminbankviewModel->borrower_id }}">
+			<input type="hidden" name="bor_bankid" 	id="bor_bankid" value="{{$adminbankviewModel->borrower_bankid }}">
 			<input type="hidden" name="inv_id" 		id="inv_id" 	value="{{$adminbankviewModel->investor_id }}">
 			<input type="hidden" name="inv_bankid" 	id="inv_bankid" value="{{$adminbankviewModel->investor_bankid }}">
 			<input type="hidden" name="usertype" 	id="usertype" 	value="{{$adminbankviewModel->user_type_name }}">
@@ -44,7 +50,7 @@
 							name="usertype"									
 							value="{{$adminbankviewModel->user_type_name}}" 
 							placeholder=""
-							/>	
+							disabled />	
 				</div>							
 			</div> <!-- Row 1 -->
 			
@@ -61,7 +67,7 @@
 							name="name"									
 							value="{{$adminbankviewModel->name}}"  
 							placeholder=""
-							/>	
+							disabled />	
 				</div>							
 			</div> <!-- Row 2 -->
 			
@@ -78,7 +84,7 @@
 							name="bankname"									
 							value="{{$adminbankviewModel->bank_name}}" 
 							placeholder=""
-							/>	
+							disabled />	
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
@@ -92,7 +98,7 @@
 							name="bankcode"									
 							value="{{$adminbankviewModel->bank_code}}" 
 							placeholder=""
-							/>	
+							disabled />	
 				</div>							
 			</div> <!-- Row 3-->
 			
@@ -109,7 +115,7 @@
 							name="branchcode"									
 							value="{{$adminbankviewModel->branch_code}}"
 							placeholder=""
-							/>
+							disabled />
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
@@ -123,7 +129,7 @@
 							name="acc_num"									
 							value="{{$adminbankviewModel->bank_account_number}}" 
 							placeholder=""
-							/>
+							disabled />
 				</div>							
 			</div> <!-- Row 4-->
 			
@@ -140,7 +146,13 @@
 								name="account_proof"
 								id="account_proof"
 								accept="image/*" 
-								/>	
+								disabled />	
+					
+					@if($adminbankviewModel->bank_statement_url)
+						<a  href='{{url($adminbankviewModel->bank_statement_url)}}'>							
+							{{basename($adminbankviewModel->bank_statement_url)}}							
+						</a>
+					@endif
 				</div>							
 			</div> <!-- Row 4-->
 			<!-- button-->
@@ -154,8 +166,8 @@
 							 {{ Lang::get('Approve')}}
 						</button>
 						<button class="btn verification-button"
-									id="reject_button"	
-									type="button"										
+									id="reject_button"
+									type="button"																			
 									 >
 							 {{ Lang::get('Reject')}}
 						</button>

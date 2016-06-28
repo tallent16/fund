@@ -74,11 +74,11 @@
 				@endif
 				@if ($bidsModel->loan_status == LOAN_STATUS_DISBURSED) 
 					@permission('admin.reschedule.loans')
-						<button  type="cancel" class="btn verification-button" id="reschdLoan" onclick="reschdLoan()"
-								onclick="reschdInsts()">
+						<button  type="cancel" class="btn verification-button" id="reschdLoan" onclick="reschdInsts()">
 								{{Lang::get("Reschedule Repayment")}}</button>
 					
-						<button type="submit" class="btn verification-button cancel" id="saveReschd" style="display:none">
+						<button type="submit" class="btn verification-button" id="saveReschd" onclick="saveReschd()"
+						style="display:none">
 								{{ Lang::get("Save Rescheduled Loan")}}</button>
 					@endpermission
 				@endif
@@ -89,14 +89,229 @@
 </div>
 </form>
 
+<div id="dummyDiv" style="display:none">
+	<table id="borrEditSchd">
+		<tr id="borrRow_XXX">
+			<td>
+				<input id="inst_number" 
+					type="text" 
+					style="width:60px; text-align:right;" 
+					value="xxx_inst_number" 
+					disabled 
+					readonly
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="orig_date" 
+					type="text" 
+					style="width:100px; text-align:left;" 
+					value="xxx_repayment_schedule_date" 
+					disabled 
+					readonly
+					class="form-control  date-field"> 
+			</td>
+			<td>
+				<input id="repayment_schedule_date" 
+					type="text" 
+					style="width:100px; text-align:left;" 
+					name="repayment_schedule_date[_XXX]" 
+					class="edit_toggle_XXX"
+					value="xxx_repayment_schedule_date"
+					disabled 
+					class="form-control  date-field"> 
+					
+				<label for="repayment_schedule_date" class="input-group-addon btn">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</label>
+			</td>
+			principal_component
+			interest_component
+			penalty_interest
+			
+			<td>
+				<input id="principal_component_XXX" 
+					type="text" 
+					style="width:90px; text-align:right;" 
+					name="principal_component[_XXX]" 
+					readonly
+					value="xxx_principal_component" 
+					class="borr_prin_amt"
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="interest_component_XXX" 
+					type="text" 
+					style="width:90px; text-align:right;" 
+					name="interest_component[_XXX]" 
+					value="xxx_interest_component" 
+					class="borr_int_amt"
+					readonly
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="penalty_interest_XXX" 
+					type="text" 
+					style="width:80px; text-align:right;" 
+					name="penalty_interest[_XXX]" 
+					value="xxx_repayment_penalty_interest" 
+					class="borr_penalty_interest"
+					readonly
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="penalty_fee_XXX" 
+					type="text" 
+					style="width:80px; text-align:right;" 
+					name="penalty_fee[_XXX]" 
+					class="edit_toggle_XXX borr_penalty_fee"
+					value="xxx_repayment_penalty_charges" 
+					onchange="computeBorrTotal(_XXX)"
+					decimal="2"
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="total_XXX" 
+					type="text" 
+					style="width:90px; text-align:right;" 
+					name="total" 
+					
+					value="xxx_total" 
+					readonly
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="status" 
+					type="text" 
+					style="width:90px; text-align:left;" 
+					value="xxx_repayment_status" 
+					disabled 
+					readonly
+					class="form-control "> 
+			</td>
+			<td>
+				<i class="fa fa-edit" onclick="editInst(1)" )=""></i>
+			</td>
+		</tr>
+	
+	</table>
+	
+	<table id="invEditSchd">
+		<tr id="invRow_XXX" class="invRow_XXX" style="display:none">
+			<td>&nbsp;</td>
+			<td colspan="2">
+				<input id="investor_name_XXX_xxx_invId" 
+					type="text" style=" text-align:left;" 
+					value="xxx_invName" 
+					readonly 
+					class="form-control ">
+			</td>
+
+			
+			<td>
+				<input id="principal_component_XXX_xxx_invId" 
+					type="text" 
+					style=" text-align:right;" 
+					name="principal_component[xxx_invId][_XXX]" 
+					onchange="computeInvTotal(_XXX, xxx_invId)"
+					decimal="2"
+					value="xxx_principal_component" 
+					class="form-control ">
+			</td>
+			
+			<td>
+				<input id="interest_component_XXX_xxx_invId" 
+					type="text" 
+					style=" text-align:right;" 
+					name="interest_component[xxx_invId][_XXX]" 
+					onchange="computeInvTotal(_XXX, xxx_invId)"
+					decimal="2"
+					value="xxx_interest_component" 
+					class="form-control ">
+			</td>
+			
+			
+			<td>&nbsp;</td>
+			<td>
+				<input id="penalty_interest_XXX_xxx_invId" 
+					type="text" style=" 
+					text-align:right;" 
+					name="penalty_interest[xxx_invId][_XXX]" 
+					onchange="computeInvTotal(_XXX, xxx_invId)"
+					decimal="2"
+					value="xxx_repayment_penalty_interest" 
+					class="form-control ">
+			</td>
+			
+			<td>
+				<input id="total_XXX_xxx_invId" 
+					type="text" 
+					style=" text-align:right;" 
+					name="total"
+					value="xxx_total" 
+					readonly
+					class="form-control ">
+			</td>
+		</tr>
+	</table>
+	<table id="borrDisbSchd">
+		<tr>
+			<td class="text-left"> xxx_inst_number</td>
+			<td class="text-left"> xxx_payment_schedule_date</td>
+			<td class="text-left"> xxx_repayment_actual_date</td>
+			<td class="text-right"> xxx_principal_component</td>
+			<td class="text-right"> xxx_interest_component</td>
+			<td class="text-right"> xxx_repayment_penalty_charges</td>
+			<td class="text-right"> xxx_repayment_penalty_interest</td>
+			<td class="text-right"> xxx_total</td>
+			<td class="text-left"> xxx_repayment_status</td>
+		</tr>
+	
+	</table>
+	<table id="InvDisbSchd">
+		<tr>
+			<td class="text-left"> xxx_inst_number</td>
+			<td class="text-left"> xxx_payment_schedule_date</td>
+			<td class="text-left"> xxx_repayment_actual_date</td>
+			<td class="text-right"> xxx_principal_component</td>
+			<td class="text-right"> xxx_interest_component</td>
+			<td class="text-right"> xxx_repayment_penalty_interest</td>
+			<td class="text-right"> xxx_total</td>
+			<td class="text-left"> xxx_repayment_status</td>
+		</tr>
+	
+	</table>
+	<table id="AccSchd">
+		<tr>
+			<td class="text-left"> xxx_inst_number</td>
+			<td class="text-left"> xxx_payment_scheduled_date</td>
+			<td class="text-right"> xxx_principal_amount</td>
+			<td class="text-right"> xxx_interest_amount</td>
+			<td class="text-right"> xxx_payment_schedule_amount</td>
+		</tr>
+	</table>
+</div>
 @endsection  
 @section('bottomscripts')
 <script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>	 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 <script src="{{ url('js/moment.js') }}" type="text/javascript"></script>	
+<script src="{{ url('js/numeral.min.js') }}" type="text/javascript"></script>	
+
 <script>		
 var baseUrl	=	"{{url('')}}"
-
+<?php	$index = 0 ?>
+invInfo	=	[]
+@foreach($bidsModel->loanInvestors as $loanbidRow)
+	invInfo[{{$index}}] = {"inv_id": "{{$loanbidRow->investor_id}}",
+				 "inv_name":"{{$loanbidRow->username}}" }
+	<?php $index++ ?>
+@endforeach
+	
 
 
 
@@ -110,7 +325,6 @@ function reschdLoan() {
 	$("reschdLoan").hide();
 	$("saveReschd").show();
 }
-
 
 function haveToRecalc() {
 	
@@ -142,90 +356,33 @@ $("form").submit(function(event) {
 	})	
 })
 
-disbColTitles	=	['{{Lang::get("Inst Number")}}', '{{Lang::get("Schd Date")}}', '{{Lang::get("Actual Date")}}',
-					   '{{Lang::get("Principal")}}', '{{Lang::get("Interest")}}', '{{Lang::get("Penalty Fees")}}', 
-					   '{{Lang::get("Penalty Int")}}', '{{Lang::get("Total")}}', '{{Lang::get("Status")}}'];
-						
-accColTitles	=	['{{Lang::get("Inst Number")}}', '{{Lang::get("Schd Date")}}', '{{Lang::get("Principal")}}', 
-						'{{Lang::get("Interest")}}', '{{Lang::get("Total")}}'];
-						
-disbColNames		=	['inst_number', 'payment_schedule_date', 'repayment_actual_date', 
-						'principal_component', 'interest_component', 'repayment_penalty_charges',
-						'repayment_penalty_interest', 'total', 'repayment_status']
-
-accColNames		=	['inst_number', 'payment_scheduled_date', 'principal_amount', 'interest_amount', 
-						'payment_schedule_amount']	
-						
-						
-
-disbColTypes	=	["text", "text", "text", "decimal", "decimal", "decimal", "decimal", "decimal", "text"]
-accColTypes		=	["text", "text", "decimal", "decimal", "decimal"]
-
-
 invRepaySchd	=	{{$bidsModel->jsonInvRepay}}
-
-function createTableHeader(userType) {
-	@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
-		colTitles	=	accColTitles
-		colTypes	=	accColTypes
-	@else 
-		colTitles	=	disbColTitles
-		colTypes	=	disbColTypes
-	@endif
-	
-	if (userType == 'borrower') 
-		tableId = '#bidsummary'
-	else
-		tableId = '#invInst'
-	
-	// To create the header row for the Payment Schedule when status is Disbursed or Repaid
-	headHtml = "";
-	for (ind = 0;ind < colTitles.length; ind++) {
-		if (userType != 'borrower' && ind == 5) 
-			continue;
-			
-		if (colTypes[ind] == "text")
-			textAlign	=	"text-left"
-		else
-			textAlign	=	"text-right"
-			
-		headHtml += '<th class="tab-head col-sm-1 ' + textAlign + '">' + colTitles[ind] + '</th>';
-	}
-	headHtml = "<tr>"+ headHtml + "</tr>"
-	$(tableId).append(headHtml);
-	
-}
-
 
 function createTableRows(userType, rowData) {
 	@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
-		colNames	=	accColNames
-		colTypes	=	accColTypes
+		sourceTable		=	'#AccSchd tbody'
 	@else 
-		colNames	=	disbColNames
-		colTypes	=	disbColTypes
+		if (userType = 'borrower') 
+			sourceTable =  '#borrDisbSchd tbody'
+		else
+			sourceTable =  '#invDisbSchd tbody'
 	@endif
 	
 	if (userType == 'borrower') 
-		tableId = '#bidsummary'
+		targetTable = '#bidsummary'
 	else
-		tableId = '#invInst'
+		targetTable = '#invInst'
 		
-	rowHtml = ""
-	for (ind=0; ind < colNames.length; ind++) {
-		if (userType != 'borrower' && ind == 5) 
-			continue;
-			
-		if (colTypes[ind] == "text")
-			textAlign	=	"text-left"
-		else
-			textAlign	=	"text-right"
-		rowHtml += 	'<td class="' + textAlign + '"> ' + rowData[colNames[ind]] + '</td>';
-		
-	}
-	rowHtml = "<tr>" + rowHtml + "</tr>"
-	$(tableId).append(rowHtml);
+	rowHtml = $(sourceTable).html();
 
+	
+	$.each (rowData, function (key, value) {
+		rE	=	new RegExp("xxx_" + key, "g")
+		
+		rowHtml = rowHtml.replace(rE, value);
+	})
+	
+	$(targetTable).append(rowHtml);
 }
 
 function recalcRepay() {
@@ -269,9 +426,8 @@ function recalcRepay() {
 
 function showInvInst(invId) {
 	// First remove the rows from the HTML Table
-	$('#invInst tr').remove();
+	$('#invInst tr:not(:first)').remove();
 	
-	createTableHeader('investor');
 	invInstData	=	invRepaySchd[invId];
 	invInstLen	=	invInstData.length
 	
@@ -290,17 +446,120 @@ function reschdInsts() {
 		invJson		=	{{$bidsModel->jsonInvRepay}}
 	@endif
 	$('#bidsummary tr:not(:first)').remove();
-	<?php	$index = 0 ?>
-	@foreach($bidsModel->loanInvestors as $loanbidRow)
-		invInfo[{{$index}}] = {'inv_id': '{{$loanbidRow->investor_id}}',
-					 'inv_name':'{{$loanbidRow->username}}' }
-		<?php $index++ ?>
-	@endforeach
+	
+	for (browIndex=0; browIndex < borrJson.length; browIndex ++) {
+		borrRowData	=	borrJson[browIndex]
+		borrRowData['inst_number'] = browIndex+1
+		instNumber	=	browIndex + 1
+
+		rowHtml	=	$("#borrEditSchd tbody").html()
+		
+		$.each(borrRowData, function (key, value) {
+			rE	=	new RegExp("xxx_" + key, "g")
+			rowHtml	=	rowHtml.replace(rE, value)
+		})
+		
+		rowHtml = rowHtml.replace(/_XXX/g, instNumber)
+
+		$("#bidsummary").append(rowHtml);
+		
+		for (invIndex = 0; invIndex < invInfo.length; invIndex++) {
+			invId	=	invInfo[invIndex]['inv_id'];
+			invName	=	invInfo[invIndex]['inv_name']
+			invRowData	=	invJson[invId][browIndex]
+			invRowData['Invname'] = invName
+			
+			rowHtml = $("#invEditSchd tbody").html()
+			
+			$.each(invRowData, function (key, value) {
+				rE	=	new RegExp("xxx_" + key, "g")				
+				rowHtml = rowHtml.replace(rE, value)
+			})
+			
+			rowHtml = rowHtml.replace(/_XXX/g, instNumber)
+			rE	=	new RegExp("xxx_invId", "g")
+			alert (rE.toString());
+			rowHtml = rowHtml.replace(rE, invId);
+			
+			rE	=	new RegExp("xxx_invName", "g")
+			rowHtml = rowHtml.replace(rE, invName);
+			
+			$("#bidsummary").append(rowHtml);
+		}
+	}
+	
+}
+
+
+
+function editInst(instNumber) {
+	$(".edit_toggle"+instNumber).each (function () {
+		$(this).removeAttr("disabled")
+	})
+
+	invRowClass = ".invRow" + instNumber
+	$(invRowClass).show();
+	 
+	$("#reschdLoan").hide()
+	$("#saveReschd").show()
+	$("input[decimal]").each(function() {
+		
+		$(this).on("focus", function () {
+			onFocusNumberField(this)
+		})
+		$(this).on("blur", function () {
+			onBlurNumberField(this)
+		})
+	})
+	
+	$('#repayment_schedule_date').datetimepicker({
+		autoclose: true, 
+		minView: 2,
+		format: 'dd-mm-yyyy' 
+	}); 
+	
+	submitForm = false;
+}
+
+function saveReschd() {
+	loanAmt	=	{{$bidsModel->loan_sanctioned_amount}}
+	
+	
+	
+	
+}
+
+function computeInvTotal(instNumb, invId) {
+	intAmt = numeral($("#interest_component" + instNumb + invId).val())
+	prinAmt = numeral($("#principal_component" + instNumb + invId).val())
+	penAmt = numeral($("#penalty_interest" + instNumb + invId).val())
+	
+	total = intAmt + prinAmt + penAmt
+	$("#total" + instNumb + invId).val(numeral(total).format("0,000.00"))
+	instPrinAmt = 0; // Principal Amt for this installment
+	instIntAmt	= 0; // Interest Amt for this installment
+	instPenInt	= 0; // Penalty Interest for this installment (in case of late payment)
+	instPenFee	= 0; // Penalty Fees for this installment (in case of late payment)
+	
+	for (invIndex = 0; invIndex < invInfo.length; invIndex++) {
+		invId	=	invInfo[invIndex]['inv_id'];
+		invPrinAmt = $("#principal_component" + instNumb + invId).val();
+		invIntAmt = $("#interest_component" + instNumb + invId).val();
+		invPenInt = $("#penalty_interest" + instNumb + invId).val();
+		
+		instPrinAmt += numeral(invPrinAmt);
+		instIntAmt += numeral(invIntAmt);
+		instPenInt += numeral(invPenInt);
+	}
+	
+		
+		
+		
+	
 }
 
 $(document).ready(function () {
 
-	createTableHeader('borrower');
 	@foreach($bidsModel->repayment_schedule as $key => $repaySchd)
 
 		@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
