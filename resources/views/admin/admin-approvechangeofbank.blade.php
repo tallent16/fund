@@ -37,7 +37,8 @@
 			<input type="hidden" name="inv_id" 		id="inv_id" 	value="{{$adminbankviewModel->investor_id }}">
 			<input type="hidden" name="inv_bankid" 	id="inv_bankid" value="{{$adminbankviewModel->investor_bankid }}">
 			<input type="hidden" name="usertype" 	id="usertype" 	value="{{$adminbankviewModel->user_type_name }}">
-			<div class="row"><!-- Row 1 -->					
+			<input type="hidden" name="bank_statement_url" 	id="bank_statement_url" 	value=			    "{{$adminbankviewModel->bank_statement_url}}">
+			<div class="row"><!-- Row 1 -->					   
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label>
 						{{ Lang::get('User Type')}}
@@ -146,7 +147,8 @@
 								name="account_proof"
 								id="account_proof"
 								accept="image/*" 
-								disabled />	
+								disabled 
+								 />	
 					
 					@if($adminbankviewModel->bank_statement_url)
 						<a  href='{{url($adminbankviewModel->bank_statement_url)}}'>							

@@ -1,13 +1,9 @@
 <?php namespace App\models;
-use fileupload\FileUpload;
 use File;
-use Config;
-use Log;
-use Auth;
 class AdminChangeofBankModel extends TranWrapper {
 	
-	public 	$bank_lists 	= array();
-	public  $account_proof 	= "";
+	public 	$bank_lists 	= array();	
+	public 	$successTxt		=	"";
 	/****List the borrower/investor bank Entries***/
 	public function getborrowerinvestorbanks(){
 		
@@ -140,8 +136,7 @@ class AdminChangeofBankModel extends TranWrapper {
 			$bor_id				= $postArray['bor_id'];
 			$inv_bankid			= $postArray['inv_bankid'];
 			$inv_id				= $postArray['inv_id'];
-			$usertype			= $postArray['usertype'];	
-			
+			$usertype			= $postArray['usertype'];			
 			
 			if($usertype == "Borrower"){			
 				$bor_sql	="UPDATE borrower_banks 
@@ -164,7 +159,20 @@ class AdminChangeofBankModel extends TranWrapper {
 										END";
 				
 				$result	=	$this->dbExecuteSql($bor_sql);
-				
+				/****Send mail after approval for borrower*****/
+				$slug_name			= 	"borrower_bank_change_approved";				
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug_name);	//success message from DB
+				$moneymatchSettings = 	$this->getMailSettingsDetail();
+				$borrUserInfo		=	$this->getBorrowerIdByUserInfo($bor_id);
+				$borrInfo			=	$this->getBorrowerInfoById($bor_id);
+				$fields				=	array(
+												'[borrower_contact_person]',											
+												'[application_name]');	
+				$replace_array 		= 	array();
+				$replace_array 		= 	array( 
+											$borrInfo->contact_person,											
+											$moneymatchSettings[0]->application_name);		
+				$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 				if($result)
 				{
 					return 1;
@@ -189,7 +197,19 @@ class AdminChangeofBankModel extends TranWrapper {
 										ELSE verified_status  
 									END";
 					
-				$result	=	$this->dbExecuteSql($inv_sql);				
+				$result	=	$this->dbExecuteSql($inv_sql);
+				/****Send mail after approval for investor*****/
+				$slug_name			= 	"investor_bank_change_approved";
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug_name);	 ////success message from DB
+				$moneymatchSettings = 	$this->getMailSettingsDetail();
+				$invUserInfo		=	$this->getInvestorIdByUserInfo($inv_id);
+				$invInfo			=	$this->getInvestorInfoById($inv_id);
+				$fields				=	array('[investor_firstname]', '[investor_lastname]','[application_name]');
+				$replace_array 		= 	array();
+				$replace_array 		= 	array( 	$invUserInfo->firstname,
+												$invUserInfo->lastname, 
+												$moneymatchSettings[0]->application_name);	
+				$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);				
 				if($result)
 				{
 					return 1;
@@ -199,6 +219,7 @@ class AdminChangeofBankModel extends TranWrapper {
 	}
 	/*****reject button*****/
 	public function deleteborrowerinvestorbankrecord($postArray){
+		
 		if($postArray)
 		{
 			$bor_bankid	= $postArray['bor_bankid'];
@@ -207,22 +228,55 @@ class AdminChangeofBankModel extends TranWrapper {
 			$inv_id		= $postArray['inv_id'];
 			$usertype	= $postArray['usertype'];	
 			
+			if($postArray['bank_statement_url']){				
+				$accountproof	= $postArray['bank_statement_url'];	
+			}
+			$full_path	=	url().'/'.$accountproof;
+			
 			if($usertype == "Borrower"){				
 				$where	 = array('borrower_bankid' =>"{$bor_bankid}",
-									'borrower_id'  =>"{$bor_id}");				
-				$result  =	$this->dbDelete('borrower_banks', $where);					
-				if($result){
-					return 1;
+									'borrower_id'  =>"{$bor_id}");		
+				
+				$result  =	$this->dbDelete('borrower_banks', $where);	
+				if(File::exists($full_path)){
+					File::Delete($full_path);
 				}		
+				/****Send mail after borrower bank reject *****/
+				$slug_name			= 	"borrower_bank_reject";				
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug_name);	//success message from DB
+				$moneymatchSettings = 	$this->getMailSettingsDetail();
+				$borrUserInfo		=	$this->getBorrowerIdByUserInfo($bor_id);
+				$borrInfo			=	$this->getBorrowerInfoById($bor_id);
+				$fields				=	array(
+												'[borrower_contact_person]',											
+												'[application_name]');	
+				$replace_array 		= 	array();
+				$replace_array 		= 	array( 
+											$borrInfo->contact_person,											
+											$moneymatchSettings[0]->application_name);		
+				$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);		
+				return 1;		
 			}else{
 				$where	= array('investor_bankid' =>"{$inv_bankid}",
 									'investor_id' =>"{$inv_id}");				
 				$result =	$this->dbDelete('investor_banks', $where);	
-				//echo "<pre>",print_r($result),"</pre>"; die;
-				if($result){
-					return 1;
-				}		
-			}			
+				if(File::exists($full_path)){
+					File::Delete($full_path);
+				}
+				/****Send mail after investor bank reject *****/
+				$slug_name			= 	"investor_bank_reject";
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug_name);	 //success message from DB
+				$moneymatchSettings = 	$this->getMailSettingsDetail();
+				$invUserInfo		=	$this->getInvestorIdByUserInfo($inv_id);
+				$invInfo			=	$this->getInvestorInfoById($inv_id);
+				$fields				=	array('[investor_firstname]', '[investor_lastname]','[application_name]');
+				$replace_array 		= 	array();
+				$replace_array 		= 	array( 	$invUserInfo->firstname,
+												$invUserInfo->lastname, 
+												$moneymatchSettings[0]->application_name);	
+				$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);			
+				return 1;					
+			}					
 		}
 	}
 	

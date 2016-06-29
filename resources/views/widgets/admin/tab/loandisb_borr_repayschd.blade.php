@@ -30,11 +30,11 @@
 						</th>
 						
 						<th class="tab-head col-sm-1 text-left">
-							Schd Date
+							Schd / Actual Date
 						</th>
 						
 						<th class="tab-head col-sm-1 text-left">
-							Actual Date
+							New Schd Date
 						</th>
 						
 						<th class="tab-head col-sm-1 text-right">

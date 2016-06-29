@@ -77,7 +77,7 @@
 						<button  type="cancel" class="btn verification-button" id="reschdLoan" onclick="reschdInsts()">
 								{{Lang::get("Reschedule Repayment")}}</button>
 					
-						<button type="submit" class="btn verification-button" id="saveReschd" onclick="saveReschd()"
+						<button type="submit" class="btn verification-button" id="saveReschd" onclick="saveResc(0)"
 						style="display:none">
 								{{ Lang::get("Save Rescheduled Loan")}}</button>
 					@endpermission
@@ -111,81 +111,77 @@
 					class="form-control  date-field"> 
 			</td>
 			<td>
-				<input id="repayment_schedule_date" 
-					type="text" 
-					style="width:100px; text-align:left;" 
-					name="repayment_schedule_date[_XXX]" 
-					class="edit_toggle_XXX"
-					value="xxx_repayment_schedule_date"
-					disabled 
-					class="form-control  date-field"> 
-					
-				<label for="repayment_schedule_date" class="input-group-addon btn">
-					<span class="glyphicon glyphicon-calendar"></span>
-				</label>
+				<div class="controls">
+					<div class="input-group">
+						<input id="repayment_schedule_date_XXX" 
+							type="text" 
+							style="width:100px; text-align:left;" 
+							name="borrSchd[_XXX][repayment_schedule_date]" 
+							value="xxx_repayment_schedule_date"
+							disabled 
+							class="form-control date-field edit_toggle_XXX"> 
+							
+						<label for="repayment_schedule_date" class="input-group-addon btn">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</label>
+					</div>
+				</div>
 			</td>
-			principal_component
-			interest_component
-			penalty_interest
-			
+
 			<td>
 				<input id="principal_component_XXX" 
 					type="text" 
 					style="width:90px; text-align:right;" 
-					name="principal_component[_XXX]" 
+					name="borrSchd[_XXX][principal_component]" 
 					readonly
 					value="xxx_principal_component" 
-					class="borr_prin_amt"
 					disabled 
-					class="form-control "> 
+					class="form-control borr_prin_amt "> 
 			</td>
 			<td>
 				<input id="interest_component_XXX" 
 					type="text" 
 					style="width:90px; text-align:right;" 
-					name="interest_component[_XXX]" 
+					name="borrSchd[_XXX][interest_component]" 
 					value="xxx_interest_component" 
-					class="borr_int_amt"
 					readonly
 					disabled 
-					class="form-control "> 
+					class="form-control borr_int_amt"> 
 			</td>
-			<td>
-				<input id="penalty_interest_XXX" 
-					type="text" 
-					style="width:80px; text-align:right;" 
-					name="penalty_interest[_XXX]" 
-					value="xxx_repayment_penalty_interest" 
-					class="borr_penalty_interest"
-					readonly
-					disabled 
-					class="form-control "> 
-			</td>
+			
 			<td>
 				<input id="penalty_fee_XXX" 
 					type="text" 
 					style="width:80px; text-align:right;" 
-					name="penalty_fee[_XXX]" 
+					name="borrSchd[_XXX][penalty_fee]" 
 					class="edit_toggle_XXX borr_penalty_fee"
 					value="xxx_repayment_penalty_charges" 
 					onchange="computeBorrTotal(_XXX)"
 					decimal="2"
 					disabled 
-					class="form-control "> 
+					class="form-control borr_penalty_fee"> 
+			</td>
+			<td>
+				<input id="penalty_interest_XXX" 
+					type="text" 
+					style="width:80px; text-align:right;" 
+					name="borrSchd[_XXX][penalty_interest]" 
+					value="xxx_repayment_penalty_interest" 
+					disabled 
+					class="form-control borr_penalty_interest"> 
 			</td>
 			<td>
 				<input id="total_XXX" 
 					type="text" 
 					style="width:90px; text-align:right;" 
 					name="total" 
-					
 					value="xxx_total" 
 					readonly
 					disabled 
-					class="form-control "> 
+					class="form-control borr_total"> 
 			</td>
 			<td>
-				<input id="status" 
+				<input id="status_XXX" 
 					type="text" 
 					style="width:90px; text-align:left;" 
 					value="xxx_repayment_status" 
@@ -194,8 +190,67 @@
 					class="form-control "> 
 			</td>
 			<td>
-				<i class="fa fa-edit" onclick="editInst(1)" )=""></i>
+				<i id="fa_edit_XXX" class="fa fa-edit" onclick="editInst(_XXX)" )=""></i>
 			</td>
+		</tr>
+	
+	</table>
+	
+	<table id="borrEditSchdTotal">
+		<tr id="borrRow_XXX">
+			<td colspan=3 >
+				<span style="text-align:right">
+				Total
+				</span>
+			</td>
+
+			<td>
+				<input id="total_prinamt"
+					type="text" 
+					style="width:90px; text-align:right;" 
+					readonly
+					value="" 
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="total_intamt" 
+					type="text" 
+					style="width:90px; text-align:right;" 
+					value="" 
+					readonly
+					disabled 
+					class="form-control "> 
+			</td>
+			
+			<td>
+				<input id="total_penfee" 
+					type="text" 
+					style="width:80px; text-align:right;" 
+					value="" 
+					decimal="2"
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="total_penint" 
+					type="text" 
+					style="width:80px; text-align:right;" 
+					value="" 
+					readonly
+					disabled 
+					class="form-control "> 
+			</td>
+			<td>
+				<input id="total_repayment" 
+					type="text" 
+					style="width:90px; text-align:right;" 
+					value="" 
+					readonly
+					disabled 
+					class="form-control"> 
+			</td>
+			
 		</tr>
 	
 	</table>
@@ -216,7 +271,7 @@
 				<input id="principal_component_XXX_xxx_invId" 
 					type="text" 
 					style=" text-align:right;" 
-					name="principal_component[xxx_invId][_XXX]" 
+					name="invSchd[xxx_invId][_XXX][principal_component]" 
 					onchange="computeInvTotal(_XXX, xxx_invId)"
 					decimal="2"
 					value="xxx_principal_component" 
@@ -227,7 +282,7 @@
 				<input id="interest_component_XXX_xxx_invId" 
 					type="text" 
 					style=" text-align:right;" 
-					name="interest_component[xxx_invId][_XXX]" 
+					name="invSchd[xxx_invId][_XXX][interest_component]" 
 					onchange="computeInvTotal(_XXX, xxx_invId)"
 					decimal="2"
 					value="xxx_interest_component" 
@@ -240,7 +295,7 @@
 				<input id="penalty_interest_XXX_xxx_invId" 
 					type="text" style=" 
 					text-align:right;" 
-					name="penalty_interest[xxx_invId][_XXX]" 
+					name="invSchd[xxx_invId][_XXX][penalty_interest]" 
 					onchange="computeInvTotal(_XXX, xxx_invId)"
 					decimal="2"
 					value="xxx_repayment_penalty_interest" 
@@ -271,8 +326,8 @@
 			<td class="text-left"> xxx_repayment_status</td>
 		</tr>
 	
-	</table>
-	<table id="InvDisbSchd">
+	</table> 
+	<table id="invDisbSchd">
 		<tr>
 			<td class="text-left"> xxx_inst_number</td>
 			<td class="text-left"> xxx_payment_schedule_date</td>
@@ -362,7 +417,7 @@ function createTableRows(userType, rowData) {
 	@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
 		sourceTable		=	'#AccSchd tbody'
 	@else 
-		if (userType = 'borrower') 
+		if (userType == 'borrower') 
 			sourceTable =  '#borrDisbSchd tbody'
 		else
 			sourceTable =  '#invDisbSchd tbody'
@@ -439,7 +494,26 @@ function showInvInst(invId) {
 	
 }
 
-function reschdInsts() {
+function confirmResch() {
+	
+	
+}
+
+function reschdInsts(callback_response= 0) {
+	
+	switch (callback_response) {
+		
+		case -1:
+			return;
+			break;
+			
+		case 0:
+			showDialogWithOkCancel("FYN", "{{$bidsModel->systemAllMessage[4]['loan_resched_confirm']}}", "reschdInsts");
+			return;
+			break;
+			
+	}
+			
 	// To build the table rows
 	@if ($bidsModel->loan_status == LOAN_STATUS_DISBURSED)
 		borrJson	=	{{$bidsModel->jsonBorrRepay}}
@@ -460,9 +534,14 @@ function reschdInsts() {
 		})
 		
 		rowHtml = rowHtml.replace(/_XXX/g, instNumber)
-
-		$("#bidsummary").append(rowHtml);
 		
+		$("#bidsummary").append(rowHtml);
+		statusId	=	"#status"+instNumber
+		
+		paidStatus	=	$(statusId).val()
+		if (paidStatus != 'Unpaid') {
+			$("#fa_edit"+instNumber).remove();
+		}
 		for (invIndex = 0; invIndex < invInfo.length; invIndex++) {
 			invId	=	invInfo[invIndex]['inv_id'];
 			invName	=	invInfo[invIndex]['inv_name']
@@ -478,7 +557,6 @@ function reschdInsts() {
 			
 			rowHtml = rowHtml.replace(/_XXX/g, instNumber)
 			rE	=	new RegExp("xxx_invId", "g")
-			alert (rE.toString());
 			rowHtml = rowHtml.replace(rE, invId);
 			
 			rE	=	new RegExp("xxx_invName", "g")
@@ -487,6 +565,20 @@ function reschdInsts() {
 			$("#bidsummary").append(rowHtml);
 		}
 	}
+	
+	rowHtml	=	$("#borrEditSchdTotal tbody").html()
+	
+	$("#inv_repay_schd_parent").hide()
+	$("#inv_repay_schd").hide()
+	
+	$("#label_remarks").text("{{Lang::get('Notes for Reschedule')}}")
+	$("#remarks").attr("name", "reschd_notes");
+	$("#remarks").attr("required", true);
+	$("#remarks").attr("disabled", false);
+	$("#reschdLoan").hide()
+	$("#saveReschd").show()
+	$("#bidsummary").append(rowHtml);
+	computeGrandTotal();
 	
 }
 
@@ -500,8 +592,7 @@ function editInst(instNumber) {
 	invRowClass = ".invRow" + instNumber
 	$(invRowClass).show();
 	 
-	$("#reschdLoan").hide()
-	$("#saveReschd").show()
+	
 	$("input[decimal]").each(function() {
 		
 		$(this).on("focus", function () {
@@ -521,43 +612,112 @@ function editInst(instNumber) {
 	submitForm = false;
 }
 
-function saveReschd() {
-	loanAmt	=	{{$bidsModel->loan_sanctioned_amount}}
-	
-	
+function saveResc(callback_response) {
+	switch (callback_response) {
+		case -1:
+			return;
+			break;
+			
+		case 0:
+			loanAmt	=	{{$bidsModel->loan_sanctioned_amount}}
+			totPrin =	numeral($("#total_prinamt").val())
+			
+			if (totPrin > loanAmt) {
+				showDialog("FYN", "{{$bidsModel->systemAllMessage[4]['loan_reschd_entry_error']}}")
+				return
+			}
+			
+		
+			if (totPrin < loanAmt) {
+				showDialogWithOkCancel("FYN", "{{$bidsModel->systemAllMessage[4]['loan_resched_confirm_writeoff']}}", "saveReschd");
+				return;
+			}
+			break;
+			
+	}
+	submitForm	=	true
+	$("form").submit();
 	
 	
 }
 
 function computeInvTotal(instNumb, invId) {
-	intAmt = numeral($("#interest_component" + instNumb + invId).val())
-	prinAmt = numeral($("#principal_component" + instNumb + invId).val())
-	penAmt = numeral($("#penalty_interest" + instNumb + invId).val())
+	
+	// Compute the total that has been entered for each of the investor and post it to the Main Repayment Installment
+	objId	=	"#principal_component" + instNumb +"_" +  invId
+	obj		=	$(objId);
+	val		=	$(objId).val();
+	intAmt = numeral($("#interest_component" + instNumb + "_" + invId).val())
+	prinAmt = numeral($(objId).val())
+	penAmt = numeral($("#penalty_interest" + instNumb +"_" +  invId).val())
 	
 	total = intAmt + prinAmt + penAmt
-	$("#total" + instNumb + invId).val(numeral(total).format("0,000.00"))
+	$("#total" + instNumb + "_" + invId).val(numeral(total).format("0,000.00"))
 	instPrinAmt = 0; // Principal Amt for this installment
 	instIntAmt	= 0; // Interest Amt for this installment
 	instPenInt	= 0; // Penalty Interest for this installment (in case of late payment)
 	instPenFee	= 0; // Penalty Fees for this installment (in case of late payment)
 	
+	
 	for (invIndex = 0; invIndex < invInfo.length; invIndex++) {
 		invId	=	invInfo[invIndex]['inv_id'];
-		invPrinAmt = $("#principal_component" + instNumb + invId).val();
-		invIntAmt = $("#interest_component" + instNumb + invId).val();
-		invPenInt = $("#penalty_interest" + instNumb + invId).val();
+		invPrinAmt = $("#principal_component" + instNumb + "_" +  invId).val();
+		invIntAmt = $("#interest_component" + instNumb + "_" + invId).val();
+		invPenInt = $("#penalty_interest" + instNumb + "_" + invId).val();
 		
 		instPrinAmt += numeral(invPrinAmt);
 		instIntAmt += numeral(invIntAmt);
 		instPenInt += numeral(invPenInt);
 	}
 	
-		
-		
-		
+	instPenfee = numeral($("#penalty_fee"+instNumb).val())
+	instTotal = instPrinAmt + instIntAmt + instPenInt + instPenFee
+	$("#total" + instNumb).val(numeral(instTotal).format("0,000.00"))
+	$("#penalty_interest" + instNumb).val(numeral(instPenInt).format("0,000.00"))
+	$("#interest_component" + instNumb).val(numeral(instIntAmt).format("0,000.00"))
+	$("#interest_component" + instNumb).val(numeral(instIntAmt).format("0,000.00"))
+	$("#principal_component" + instNumb).val(numeral(instPrinAmt).format("0,000.00"))
+
+	computeGrandTotal();
+	
 	
 }
 
+function computeGrandTotal() {
+	totalPrin	=	0;
+	totalInt	=	0;
+	totalPenInt	=	0;
+	totalPenFee	=	0;
+	totalRepay	=	0;
+	
+	$(".borr_prin_amt").each (function () {
+		totalPrin += numeral($(this).val())
+	})
+
+	$(".borr_int_amt").each (function () {
+		totalInt += numeral($(this).val())
+	})
+	
+	$(".borr_penalty_interest").each (function () {
+		totalPenInt += numeral($(this).val())
+	})
+
+	$(".borr_penalty_fee").each (function () {
+		totalPenFee += numeral($(this).val())
+	})
+
+	$(".borr_total").each (function () {
+		totalRepay += numeral($(this).val())
+	})
+
+	$("#total_prinamt").val(numeral(totalPrin).format("0,000.00"));
+	$("#total_intamt").val(numeral(totalInt).format("0,000.00"));
+	$("#total_penint").val(numeral(totalPenInt).format("0,000.00"));
+	$("#total_penfee").val(numeral(totalPenFee).format("0,000.00"));
+	$("#total_repayment").val(numeral(totalRepay).format("0,000.00"));
+	
+	
+}
 $(document).ready(function () {
 
 	@foreach($bidsModel->repayment_schedule as $key => $repaySchd)

@@ -101,7 +101,6 @@ Route::group(['prefix' => ''], function() {
     define('LOAN_STATUS_LOAN_REPAID', '10');
 
 
-
     /* To do 
      * delete the two status and use BANK_VERIFIED_STATUS instead
      */
@@ -121,6 +120,7 @@ Route::group(['prefix' => ''], function() {
     define('BORROWER_REPAYMENT_STATUS_UNPAID', '1');  
     define('BORROWER_REPAYMENT_STATUS_UNVERIFIED', '2');
     define('BORROWER_REPAYMENT_STATUS_PAID', '3');
+    define('BORROWER_REPAYMENT_STATUS_CANCELLED', '4');
 
     define('BANK_DETAILS_VERIFIED', '2');
     define('BANK_DETAILS_UNVERIFIED', '1');
@@ -203,22 +203,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 //Settings Configuration
 //Route::get('admin/settings',  'AdminSettingsController@indexAction');
 
-Route::get('admin/settings',  	[	'as' 			=> 	'admin.settings', 
-												'uses' 			=>	'AdminSettingsController@indexAction'
-											]
-			);
-Route::post('admin/system/settings/save',  	[	'uses' 			=>	'AdminSettingsController@saveSystemSettingsAction'
-											]
-			);
-Route::post('admin/system/messages/save',  	[	'uses' 			=>	'AdminSettingsController@saveSystemMessagesAction'
-											]
-			);
-Route::post('admin/system/emaildata/save',  [	'uses' 			=>	'AdminSettingsController@saveSystemEmailAction'
-											]
-			);
-Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
-Route::post('admin/ajax/editmessage',  'AdminSettingsController@ajaxEditAction');
-Route::post('admin/ajax/editmailcontent',  'AdminSettingsController@ajaxEmailEditAction');
+
 
 Route::get('admin/challengequestions',  	[	'as' 			=> 	'admin.challengequestions', 
 												'uses' 			=>	'AdminChallengeQuestionsController@indexAction'
@@ -277,7 +262,53 @@ Route::post('admin/approvechangeofbank/reject',  [
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
 
 	 Route::get('admin/login',array('middleware' => 'auth', 'uses' => 'AdminController@index'));
+	 
+//****************************Settings - General & Messages Starts********************************************
+
+	Route::get('admin/settings',  	[	'as' 			=> 	'admin.settings', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'view_general_message.admin.settings',
+										'uses' 			=>	'AdminSettingsController@indexAction'
+									]
+				);
+	Route::post('admin/system/settings/save',  	
+									[	
+										'as' 			=> 	'admin.settings', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'edit_general_message.admin.settings',
+										'uses' 			=>	'AdminSettingsController@saveSystemSettingsAction'
+												
+									]
+			);
+			
 	
+	Route::post('admin/system/messages/save',  									
+									[	
+										'as' 			=> 	'admin.settings', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'edit_general_message.admin.settings',
+										'uses' 			=>	'AdminSettingsController@saveSystemMessagesAction'
+												
+									]			
+												
+				);
+	Route::post('admin/system/emaildata/save',  
+									[	
+										'as' 			=> 	'admin.settings', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'edit_general_message.admin.settings',
+										'uses' 			=>	'AdminSettingsController@saveSystemEmailAction'
+												
+									]			
+				);
+//****************************Settings - General & Messages Ends***********************************************
+
+//****************************Settings - Challenge questions Starts*******************************************
+
+
+//****************************Settings - Challenge questions Ends*******************************************
+
+
  //****************************Manage Profiles for Borrowers Starts*********************************************
  
 	Route::get('admin/manageborrowers', [	'as' 			=> 	'admin.manageborrowers', 
@@ -624,6 +655,17 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										'uses' 			=>	'AdminDisburseLoanController@showDisburseLoanAction'
 									]
 			);
+	
+    Route::post('admin/saveResched',
+									[	
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'admin.reschedule.loans',
+										'redirect_back'	=>	'admin.loanlisting',
+										'action_type'	=>	'view disburse loan',
+										'uses' 			=>	'AdminDisburseLoanController@saveReschedAction'
+									]
+			);
+	
 	
     Route::post('admin/disburseloan/{loan_id}',
 									[	
@@ -1007,6 +1049,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 		Route::post('admin/ajax/user_master', 'UserController@view_user');
 		Route::post('admin/ajax/CheckRoleNameavailability', 'AdminRolesController@CheckRoleNameavailability');
 		
+		Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
+		Route::post('admin/ajax/editmessage',  'AdminSettingsController@ajaxEditAction');
+		Route::post('admin/ajax/editmailcontent',  'AdminSettingsController@ajaxEmailEditAction');
+
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
 	 
 	 Route::get('admin/mypage', [

@@ -69,29 +69,30 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="row">
-		<div class="col-sm-12">	
-			<button type="button"
-					id="new_industry"
-					class="btn verification-button"	>
-					<i class="fa pull-right"></i>
-					{{ Lang::get('New Questions')}}
-			</button>
-			<button type="button"
-					id="delete_industry"
-					class="btn verification-button"	>
-					<i class="fa pull-right"></i>
-					{{ Lang::get('Delete Selected')}}
-			</button>
-			<button type="submit"
-					id="update_industry"
-					class="btn verification-button"	>
-					<i class="fa pull-right"></i>
-					{{ Lang::get('Save')}}
-			</button>
+	@permission('edit_organisation_type.admin.settings')	
+		<div class="row">
+			<div class="col-sm-12">	
+				<button type="button"
+						id="new_industry"
+						class="btn verification-button"	>
+						<i class="fa pull-right"></i>
+						{{ Lang::get('New Questions')}}
+				</button>
+				<button type="button"
+						id="delete_industry"
+						class="btn verification-button"	>
+						<i class="fa pull-right"></i>
+						{{ Lang::get('Delete Selected')}}
+				</button>
+				<button type="submit"
+						id="update_industry"
+						class="btn verification-button"	>
+						<i class="fa pull-right"></i>
+						{{ Lang::get('Save')}}
+				</button>
+			</div>
 		</div>
-	</div>
+	@endpermission
 	</form>	
 </div>
 <div class="space-around">&nbsp;</div>

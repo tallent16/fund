@@ -59,7 +59,8 @@ class AdminRolesModel extends TranWrapper {
 													6=>"Reports",
 													7=>"Manage Users",
 													8=>"Manage Roles",
-													9=>"Admin comment"
+													9=>"Admin comment",
+													10=>"Settings"
 												);
 		
 		$this->filterRoleValue			=	$role_id;

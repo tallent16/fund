@@ -216,7 +216,7 @@
 				</div>
 				@endif	
 				<div class="col-xs-12 col-sm-5 col-lg-3">
-					<label>	
+					<label id="label_remarks">	
 						{{ Lang::get('Remarks') }}
 					</label>
 				</div>	

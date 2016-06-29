@@ -77,29 +77,30 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="row">
-		<div class="col-sm-12">	
-			<button type="button"
-					id="new_businessorgtype"
-					class="btn verification-button"	>
-					<i class="fa pull-right"></i>
-					{{ Lang::get('New Business Org Type')}}
-			</button>
-			<button type="button"
-					id="delete_businessorgtype"
-					class="btn verification-button"	>
-					<i class="fa pull-right"></i>
-					{{ Lang::get('Delete Selected')}}
-			</button>
-			<button type="submit"
-					id="update_businessorgtype"
-					class="btn verification-button"	>
-					<i class="fa pull-right"></i>
-					{{ Lang::get('Save')}}
-			</button>
+	@permission('edit_organisation_type.admin.settings')	
+		<div class="row">
+			<div class="col-sm-12">	
+				<button type="button"
+						id="new_businessorgtype"
+						class="btn verification-button"	>
+						<i class="fa pull-right"></i>
+						{{ Lang::get('New Business Org Type')}}
+				</button>
+				<button type="button"
+						id="delete_businessorgtype"
+						class="btn verification-button"	>
+						<i class="fa pull-right"></i>
+						{{ Lang::get('Delete Selected')}}
+				</button>
+				<button type="submit"
+						id="update_businessorgtype"
+						class="btn verification-button"	>
+						<i class="fa pull-right"></i>
+						{{ Lang::get('Save')}}
+				</button>
+			</div>
 		</div>
-	</div>
+	@endpermission
 	</form>	
 </div>
 

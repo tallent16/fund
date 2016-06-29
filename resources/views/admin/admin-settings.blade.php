@@ -65,8 +65,9 @@
 				
 			</div>
 		</div>
-		
-		<button type="submit" id="update_settings" class="btn verification-button">Save Settings</button>
+		@permission('edit_general_message.admin.settings')	
+			<button type="submit" id="update_settings" class="btn verification-button">Save Settings</button>
+		@endpermission
 	</form>	
 </div>
 	@endsection  

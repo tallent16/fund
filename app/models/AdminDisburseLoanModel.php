@@ -277,12 +277,14 @@ class AdminDisburseLoanModel extends TranWrapper {
 			$this->fillInvestorRepaymentSchedule($investorId, $invInterest, $acceptAmount);
 		}
 		
-
+		// get the list of investors
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
 			$investors[] = $investorId;
 		}
 		
 		$totPrin	=	 0;
+		
+		
 		
 		foreach ($this->investor_repayment[$investorId] as $instlNum => $instlDtls ) {
 			$schDate	= $instlDtls["payment_scheduled_date"];
@@ -292,25 +294,31 @@ class AdminDisburseLoanModel extends TranWrapper {
 			$emiAmt		=	0;
 			
 			foreach ($investors as $investorId) {
-				$prinAmt = $prinAmt + $this->investor_repayment[$investorId][$instlNum]["principal_amount"];
-				$intAmt = $intAmt + $this->investor_repayment[$investorId][$instlNum]["interest_amount"];
-				$emiAmt = $emiAmt + $this->investor_repayment[$investorId][$instlNum]["payment_schedule_amount"];
-				$this->investor_repayment[$investorId][$instlNum]["principal_amount"] = number_format($prinAmt, 2, ".", ",");
-				$this->investor_repayment[$investorId][$instlNum]["interest_amount"] = number_format($intAmt, 2, ".", ",");
-				$this->investor_repayment[$investorId][$instlNum]["payment_schedule_amount"] = number_format($emiAmt, 2, ".", ",");
+				$tmpPrin	=	$this->investor_repayment[$investorId][$instlNum]["principal_amount"];
+				$tmpInt		=	$this->investor_repayment[$investorId][$instlNum]["interest_amount"];
+				$tmpEmi		=	$this->investor_repayment[$investorId][$instlNum]["payment_schedule_amount"];
+
+				$prinAmt += $tmpPrin;
+				$intAmt += $tmpInt;
+				$emiAmt += $tmpEmi;
+				
+				$this->investor_repayment[$investorId][$instlNum]["principal_amount"] = number_format($tmpPrin, 2, ".", ",");
+				$this->investor_repayment[$investorId][$instlNum]["interest_amount"] = number_format($tmpInt, 2, ".", ",");
+				$this->investor_repayment[$investorId][$instlNum]["payment_schedule_amount"] = number_format($tmpEmi, 2, ".", ",");
 				$this->investor_repayment[$investorId][$instlNum]["payment_scheduled_date"] = $tmpDate;
+
 			}
 			
 
-			
+
 			$this->repayment_schedule[$instlNum]["payment_scheduled_date"] = $tmpDate;
 			$this->repayment_schedule[$instlNum]["principal_amount"] = number_format($prinAmt, 2, ".", ",");
 			$this->repayment_schedule[$instlNum]["interest_amount"] = number_format($intAmt, 2, ".", ",");
 			$this->repayment_schedule[$instlNum]["payment_schedule_amount"] = number_format($emiAmt, 2, ".", ",");
-			
+
 			$totPrin	=	 $totPrin + $prinAmt;
 		}
-		
+	
 		$this->bothSchd['borrSchd'] = $this->repayment_schedule;
 		$this->bothSchd['invSchd'] = $this->investor_repayment;
 		
@@ -449,6 +457,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 			$lastInstallment = $this->loan_tenure;
 		}
 		
+	
 		// If the disbursement date is other than the pay by date, then there will be a pre-emi component
 		// for the difference between the disbursement date and the next pay-by date
 		
@@ -478,7 +487,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 						$interestAmt	=	round($balOs * $adjInterest, 2);
 						$principalAmt	=	$monthlyEmi - $interestAmt;
 						$balOs			=	$balOs - $principalAmt;
-						if ($instNumber == $this->loan_tenure) {
+						if ($instNumber + 1 == $this->loan_tenure + ($this->preEmiDays > 0?1:0) ) {
 							$principalAmt = $principalAmt + $balOs;
 							$monthlyEmi = $monthlyEmi + $balOs;
 						}
@@ -509,7 +518,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 						$interestAmt	=	round($monthlyEmi, 2);
 						$principalAmt	=	0;
 						$balOs			=	$acceptAmount;
-						if ($instNumber == $this->loan_tenure + ($this->preEmiDays > 0?0:1)) {
+						if ($instNumber + 1 == $this->loan_tenure + ($this->preEmiDays > 0?1:0)) {
 							$principalAmt = $acceptAmount;
 							$monthlyEmi = $monthlyEmi + $acceptAmount;
 						}
