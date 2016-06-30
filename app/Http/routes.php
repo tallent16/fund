@@ -203,60 +203,9 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 //Settings Configuration
 //Route::get('admin/settings',  'AdminSettingsController@indexAction');
 
-
-
-Route::get('admin/challengequestions',  	[	'as' 			=> 	'admin.challengequestions', 
-												'uses' 			=>	'AdminChallengeQuestionsController@indexAction'
-											]
-			);
-Route::post('admin/challengequestions',  	[	'uses' 			=>	'AdminChallengeQuestionsController@saveAction'
-											]
-			);
-
-Route::get('admin/businessorgtype',  		[	'as' 			=> 	'admin.businessorgtype', 
-												'uses' 			=>	'AdminBusinessOrgTypeController@indexAction'
-											]
-			);
-Route::post('admin/businessorgtype',  		[	'uses' 			=>	'AdminBusinessOrgTypeController@saveAction'
-											]
-			);		
-
-Route::get('admin/industries',  		[	'as' 			=> 	'admin.industries', 
-											'uses' 			=>	'AdminIndustriesController@indexAction'
-										]
-		);	
-Route::post('admin/industries',  		[	'uses' 			=>	'AdminIndustriesController@saveAction'
-											]
-			);		
-
-Route::get('admin/loandocrequired',  		[	'as' 			=> 	'admin.loandocrequired', 
-											'uses' 			=>	'AdminLoanDocumentsController@indexAction'
-										]
-		);	
-Route::post('admin/loandocrequired',  		[	'uses' 			=>	'AdminLoanDocumentsController@saveAction'
-											]
-			);		
-
 //Route::get('admin/changeofbank',  'AdminChangeofBankController@indexAction');
 //Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  'AdminChangeofBankController@editApproveAction'); 
-Route::get('admin/changeofbank',  	[	'as' 			=> 	'admin.changeofbank', 
-										'uses' 			=>	'AdminChangeofBankController@indexAction'
-									]
-			);
-Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  [	
-												'as' 			=> 	'admin.approve', 
-												'uses' 			=>	'AdminChangeofBankController@editApproveAction'
-												]
-			);
 
-Route::post('admin/approvechangeofbank/approve',  [	 												
-												'uses' 			=>	'AdminChangeofBankController@updateApproveBankAction'
-												]
-			);
-Route::post('admin/approvechangeofbank/reject',  [	 
-												'uses' 			=>	'AdminChangeofBankController@rejectBankAction'
-												]
-			);
 		
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
@@ -273,9 +222,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 				);
 	Route::post('admin/system/settings/save',  	
 									[	
-										'as' 			=> 	'admin.settings', 
+										
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'edit_general_message.admin.settings',
+										'redirect_back'	=>	'admin.settings',
 										'uses' 			=>	'AdminSettingsController@saveSystemSettingsAction'
 												
 									]
@@ -284,9 +234,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 	
 	Route::post('admin/system/messages/save',  									
 									[	
-										'as' 			=> 	'admin.settings', 
+										
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'edit_general_message.admin.settings',
+										'redirect_back'	=>	'admin.settings',
 										'uses' 			=>	'AdminSettingsController@saveSystemMessagesAction'
 												
 									]			
@@ -294,9 +245,10 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 				);
 	Route::post('admin/system/emaildata/save',  
 									[	
-										'as' 			=> 	'admin.settings', 
+										
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'edit_general_message.admin.settings',
+										'redirect_back'	=>	'admin.settings',
 										'uses' 			=>	'AdminSettingsController@saveSystemEmailAction'
 												
 									]			
@@ -305,8 +257,118 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 
 //****************************Settings - Challenge questions Starts*******************************************
 
+Route::get('admin/challengequestions',  [	'as' 			=> 	'admin.challengequestions', 
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'view_challenge_question.admin.settings',
+											'uses' 			=>	'AdminChallengeQuestionsController@indexAction'
+										]
+			);
+Route::post('admin/challengequestions', [	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'edit_challenge_question.admin.settings',
+											'redirect_back'	=>	'admin.challengequestions',
+											'uses' 			=>	'AdminChallengeQuestionsController@saveAction'
+										]
+			);
 
 //****************************Settings - Challenge questions Ends*******************************************
+
+//****************************Settings - Organisation type  Starts*******************************************
+
+Route::get('admin/businessorgtype',  [		'as' 			=> 	'admin.businessorgtype', 
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'view_organisation_type.admin.settings',
+											'uses' 			=>	'AdminBusinessOrgTypeController@indexAction'
+										]
+			);
+Route::post('admin/businessorgtype', [	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'edit_organisation_type.admin.settings',
+											'redirect_back'	=>	'admin.businessorgtype',
+											'uses' 			=>	'AdminBusinessOrgTypeController@saveAction'
+										]
+			);
+
+
+//****************************Settings - Organisation type  Ends*******************************************
+
+//****************************Settings - Industries  Starts*******************************************
+
+Route::get('admin/industries',  [			'as' 			=> 	'admin.industries', 
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'view_industries.admin.settings',
+											'uses' 			=>	'AdminIndustriesController@indexAction'
+										]
+			);
+Route::post('admin/industries', [	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'edit_industries.admin.settings',
+											'redirect_back'	=>	'admin.industries',
+											'uses' 			=>	'AdminIndustriesController@saveAction'
+										]
+			);
+
+
+//****************************Settings - Industries  Ends*******************************************
+
+//****************************Settings - loandocrequired  Starts*******************************************
+
+Route::get('admin/loandocrequired',  [		'as' 			=> 	'admin.loandocrequired', 
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'view_documents_required.admin.settings',
+											'uses' 			=>	'AdminLoanDocumentsController@indexAction'
+									]
+			);
+Route::post('admin/loandocrequired', [	
+											'middleware' 	=> 	'permission',
+											'permission'	=>	'edit_documents_required.admin.settings',
+											'redirect_back'	=>	'admin.loandocrequired',
+											'uses' 			=>	'AdminLoanDocumentsController@saveAction'
+									]
+			);
+
+
+//****************************Settings - loandocrequired  Ends*******************************************
+
+//****************************Settings - changeofbank  Starts*******************************************
+
+Route::get('admin/changeofbank',  	[	'as' 			=> 	'admin.changeofbank', 
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'view_changeofbank.admin.banking',
+										'uses' 			=>	'AdminChangeofBankController@indexAction'
+									]
+			);
+Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',
+									[	
+									'as' 			=> 	'admin.changeofbankedit', 
+									'middleware' 	=> 	'permission',
+									'permission'	=>	'edit_changeofbank.admin.banking',
+									'redirect_back'	=>	'admin.changeofbank',
+									'uses' 			=>	'AdminChangeofBankController@editApproveAction'
+									]
+			);
+
+Route::post('admin/approvechangeofbank/approve', 
+									[	 
+											
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'approve_changeofbank.admin.banking',
+										'redirect_back'	=>	'admin.changeofbankedit',
+										'uses' 			=>	'AdminChangeofBankController@updateApproveBankAction'
+									]
+			);
+Route::post('admin/approvechangeofbank/reject',  
+									[	 
+										
+										'middleware' 	=> 	'permission',
+										'permission'	=>	'reject_changeofbank.admin.banking',
+										'redirect_back'	=>	'admin.changeofbankedit',
+										'uses' 	=>	'AdminChangeofBankController@rejectBankAction'
+									]
+			);
+
+
+//****************************Settings - changeofbank  Ends*******************************************
 
 
  //****************************Manage Profiles for Borrowers Starts*********************************************

@@ -670,5 +670,147 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		
 	}
+	
+	public function saveReschedLoans() {
+		$postArray	=	$_POST;
+		/*
+		insert a new row in resch_info
+
+		Get the original values of 
+			borrower repayment schedule
+			investor repayment schedule
+			
+		for every row in brs,
+			get the new value 
+				update the resch_brs
+				
+		for every row in irs,
+			get the new value
+				update the resch_irs
+
+				
+		update brs with the new values
+
+		update irs with the new values
+
+		voila you are done */
+
+
+		$loanId		=	$postArray['loan_id'];
+		$reschDate	=	$this->getDbDateFormat($postArray['reschd_date']);
+		$reschNotes	=	$postArray['reschd_notes'];
+		
+		$totPrin	=	$postArray['total_prinamt'];
+		$totInt		=	$postArray['total_intamt'];
+		$totPenFee	=	$postArray['total_penfee'];
+		$totPenInt	=	$postArray['total_penint'];
+		$totPayable	=	$postArray['total_repayment'];
+		
+		$sql		=	"	SELECT SUM(principal_component) old_prinamt, 
+									SUM(interest_component) old_intamt
+							FROM	borrower_repayment_schedule
+							WHERE	loan_id = :loan_id ";
+		
+		$rs			=	$this->dbFetchWithParam($sql, ["loan_id" => $loanId]);
+		
+		$oldPrin	=	$rs[0]->old_prinamt;
+		$oldInt		=	$rs[0]->old_intamt;
+		
+		$dataArray	=	[	"reschd_date" =>  $reschDate,
+							"loan_id" => $loanId,
+							"old_prin_amt" => $oldPrin,
+							"new_prin_amt" => $totPrin,
+							"old_int_amt" => $oldInt,
+							"new_int_amt" => $totInt,
+							"reschedule_notes" => $reschNotes];
+							
+		$rschdId	=	$this->dbInsert('loan_reschedule_info', $dataArray, true);
+
+		$sql	=	"	SELECT 	* FROM borrower_repayment_schedule WHERE loan_id = :loan_id ";
+		
+		$rs		=	$this->dbFetchWithParam($sql, ["loan_id" => $loanId]);
+		
+		
+		foreach ($rs	as $row) {
+			$instNum	=	$row->installment_number;
+			$borrId		=	$row->borrower_id;
+			
+			unset($dataArray);
+			$dataArray	=	[	'loan_id' =>	$loanId,
+								'borrower_id' => $row->borrower_id,
+								'reschd_info_id' => $rschdId,
+								'installment_number' => $instNum,
+								'old_schd_date' => $row->repayment_schedule_date,
+								'new_schd_date' => $this->getDbDateFormat($postArray['borrSchd'][$instNum]['repayment_schedule_date']),
+								'old_prin_amt' => $row->principal_component,
+								'new_prin_amt' => $this->makeFloat($postArray['borrSchd'][$instNum]['principal_component']),
+								'old_int_amt' => $row->interest_component,
+								'new_int_amt' => $this->makeFloat($postArray['borrSchd'][$instNum]['interest_component']),
+								'old_penalty_int' => $row->repayment_penalty_interest,
+								'new_penalty_int' => $this->makeFloat($postArray['borrSchd'][$instNum]['penalty_interest']),
+								'old_penalty_fee' => $row->repayment_penalty_charges,
+								'new_penalty_fee' => $this->makeFloat($postArray['borrSchd'][$instNum]['penalty_fee']),
+								'old_schd_amt' =>  $row->repayment_scheduled_amount,
+								'new_schd_amt' => $this->makeFloat($postArray['borrSchd'][$instNum]['total'])];
+								
+			$this->dbInsert("borrower_rescheduled_details", $dataArray, false);
+			
+			unset($dataArray);
+			
+			$dataArray	=	[	'repayment_schedule_date' => $this->getDbDateFormat($postArray['borrSchd'][$instNum]['repayment_schedule_date']),
+								'principal_component' => $this->makeFloat($postArray['borrSchd'][$instNum]['principal_component']),
+								'interest_component' => $this->makeFloat($postArray['borrSchd'][$instNum]['interest_component']),
+								'repayment_penalty_interest' => $this->makeFloat($postArray['borrSchd'][$instNum]['penalty_interest']),
+								'repayment_penalty_charges' => $this->makeFloat($postArray['borrSchd'][$instNum]['penalty_fee']),
+								'repayment_scheduled_amount' => $this->makeFloat($postArray['borrSchd'][$instNum]['total'])];
+								
+			$whereArray	=	[ 'loan_id' => $loanId,
+							  'installment_number' => $instNum ];
+							  
+			$this->dbUpdate("borrower_repayment_schedule", $dataArray, $whereArray);
+
+		}
+		
+		$sql	=	"	SELECT 	* FROM investor_repayment_schedule WHERE loan_id = :loan_id ";	
+		$rs		=	$this->dbFetchWithParam($sql, ["loan_id" => $loanId]);
+		
+		foreach ($rs	as $row) {
+			$instNum	=	$row->installment_number;
+			$invId		=	$row->investor_id;
+			
+			unset($dataArray);
+			$dataArray	=	[	'loan_id' => $loanId,
+								'investor_id' => $row->investor_id,
+								'reschd_info_id' => $rschdId,
+								'installment_number' => $instNum,
+								'old_schd_date' => $row->payment_scheduled_date,
+								'new_schd_date' => $this->getDbDateFormat($postArray['borrSchd'][$instNum]['repayment_schedule_date']),
+								'old_prin_amt' => $row->principal_amount,
+								'new_prin_amt' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['principal_component']),
+								'old_int_amt' => $row->interest_amount,
+								'new_int_amt' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['interest_component']),
+								'old_penalty_int' => $row->penalty_amount,
+								'new_penalty_int' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['penalty_interest']),
+								'old_schd_amt' => $row->payment_schedule_amount,
+								'new_schd_amt' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['total'])];
+								
+			$this->dbInsert("borrower_rescheduled_details", $dataArray, false);
+			
+			unset($dataArray);
+			
+			$dataArray	=	[	'payment_scheduled_date' => $this->getDbDateFormat($postArray['borrSchd'][$instNum]['repayment_schedule_date']),
+								'principal_amount' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['principal_component']),
+								'interest_amount' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['interest_component']),
+								'penalty_amount' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['penalty_interest']),
+								'payment_schedule_amount' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['total'])];
+								
+			$whereArray	=	[ 'loan_id' => $loanId,
+							  'installment_number' => $instNum,
+							  'investor_id' => $invId ];
+							  
+			$this->dbUpdate("investor_repayment_schedule", $dataArray, $whereArray);
+
+		}		
+	}
 						
 }

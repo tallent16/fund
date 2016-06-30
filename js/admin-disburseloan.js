@@ -5,6 +5,11 @@ $(document).ready(function(){
 		minView: 2,
 		format: 'dd-mm-yyyy' 
 	}); 
+	$('#reschd_date').datetimepicker({
+		autoclose: true, 
+		minView: 2,
+		format: 'dd-mm-yyyy' 
+	}); 
 	
    $.ajaxSetup({
 		headers: {

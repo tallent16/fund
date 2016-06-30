@@ -52,9 +52,11 @@
 							<a href="{{ url ('admin/investorwithdrawallist') }}">{{ Lang::get('Investor Withdrawal List') }}</a>
 						</li>
 					@endpermission	
-					<li>
-						<a href="{{ url ('admin/changeofbank') }}">{{ Lang::get('Bank Change Request') }}</a>
-					</li>	
+					@permission('view_changeofbank.admin.banking')
+						<li>
+							<a href="{{ url ('admin/changeofbank') }}">{{ Lang::get('Bank Change Request') }}</a>
+						</li>	
+					@endpermission
 				</ul>	
 		</li>
 	@endpermission
@@ -76,21 +78,31 @@
 	<li>
 		<a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('Settings') }} <span class="fa arrow"></span></a> 
 			<ul class="nav nav-second-level">	
-				<li>
-					<a href="{{ url ('admin/settings') }}">{{ Lang::get('General & Messages') }}</a>
-				</li>			
-				<li>
-					<a href="{{ url ('admin/challengequestions') }}">{{ Lang::get('Challenge Questions') }}</a>
-				</li>
-				<li>
-					<a href="{{ url ('admin/businessorgtype') }}">{{ Lang::get('Business Organisation Type') }}</a>
-				</li>
-				<li>
-					<a href="{{ url ('admin/industries') }}">{{ Lang::get('Industries') }}</a>
-				</li>
-				<li>
-					<a href="{{ url ('admin/loandocrequired') }}">{{ Lang::get('Loan Documents Required') }}</a>
-				</li>
+				@permission('view_general_message.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/settings') }}">{{ Lang::get('General & Messages') }}</a>
+					</li>	
+				@endpermission	
+				@permission('view_challenge_question.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/challengequestions') }}">{{ Lang::get('Challenge Questions') }}</a>
+					</li>
+				@endpermission
+				@permission('view_organisation_type.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/businessorgtype') }}">{{ Lang::get('Business Organisation Type') }}</a>
+					</li>
+				@endpermission
+				@permission('view_industries.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/industries') }}">{{ Lang::get('Industries') }}</a>
+					</li>
+				@endpermission	
+				@permission('view_general_message.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/loandocrequired') }}">{{ Lang::get('Loan Documents Required') }}</a>
+					</li>
+				@endpermission	
 			</ul>
 	</li>	  
 </ul>

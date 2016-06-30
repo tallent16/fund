@@ -68,7 +68,7 @@ class AdminDisburseLoanController extends MoneyMatchController {
 	
 	public function saveReschedAction() {
 		
-		$this->bidsModel->prnt($_POST);
+		$this->bidsModel->saveReschedLoans();
 		return redirect('admin/loanlisting');
 	}
 	

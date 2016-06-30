@@ -214,7 +214,31 @@
 							{{$disableFields}} 											
 							value="">	
 				</div>
+				@else
+				<div class="col-xs-12 col-sm-5 col-lg-3" style="display:none" id="reschd_date_label">
+					<label for="payment_ref">
+						{{ Lang::get('Reschedule Date') }}
+					</label>
+				</div>	
+
+				<div class="col-xs-12 col-sm-7 col-lg-3 reschd_date" style="display:none" id="reschd_date_div" >									
+					<div class="input-group">
+
+						<input 	type="text" 
+								class="form-control"
+								name="reschd_date"												
+								id="reschd_date"
+								value="">	
+								
+						<label for="reschd_date" class="input-group-addon btn">
+								<span class="glyphicon glyphicon-calendar"></span>
+						</label>
+					</div>
+				</div>
+				
 				@endif	
+				
+				
 				<div class="col-xs-12 col-sm-5 col-lg-3">
 					<label id="label_remarks">	
 						{{ Lang::get('Remarks') }}

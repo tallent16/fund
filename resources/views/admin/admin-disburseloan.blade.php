@@ -14,14 +14,12 @@
 	@var 	$canViewInvestorList	=	false
 	@var	$actionUrl				=	url('admin/savedisbursement')
 @endif
-					
-					
 <form 	id="disbForm"
 		method="post" 
 		action="{{$actionUrl}}">
 <input type="hidden" id="loan_id" name="loan_id" value="{{$bidsModel->loan_id}}" />
 <input type="hidden" id="hidden_token" name="_token" value="{{ csrf_token() }}" />
-<div class="col-sm-12 space-around">	
+<div class="space-around">	
 	<div class="col-lg-12 col-md-6 col-xs-12">
 		<!-----Tab Starts----->
 		<ul class="nav nav-tabs">
@@ -74,7 +72,7 @@
 				@endif
 				@if ($bidsModel->loan_status == LOAN_STATUS_DISBURSED) 
 					@permission('admin.reschedule.loans')
-						<button  type="cancel" class="btn verification-button" id="reschdLoan" onclick="reschdInsts()">
+						<button  type="cancel" class="btn verification-button" id="reschdLoan" onclick="reschdInsts(0)">
 								{{Lang::get("Reschedule Repayment")}}</button>
 					
 						<button type="submit" class="btn verification-button" id="saveReschd" onclick="saveResc(0)"
@@ -121,7 +119,7 @@
 							disabled 
 							class="form-control date-field edit_toggle_XXX"> 
 							
-						<label for="repayment_schedule_date" class="input-group-addon btn">
+						<label for="repayment_schedule_date_XXX" class="input-group-addon btn">
 							<span class="glyphicon glyphicon-calendar"></span>
 						</label>
 					</div>
@@ -174,7 +172,7 @@
 				<input id="total_XXX" 
 					type="text" 
 					style="width:90px; text-align:right;" 
-					name="total" 
+					name="borrSchd[_XXX][total]" 
 					value="xxx_total" 
 					readonly
 					disabled 
@@ -208,6 +206,7 @@
 				<input id="total_prinamt"
 					type="text" 
 					style="width:90px; text-align:right;" 
+					name="total_prinamt"
 					readonly
 					value="" 
 					disabled 
@@ -217,6 +216,7 @@
 				<input id="total_intamt" 
 					type="text" 
 					style="width:90px; text-align:right;" 
+					name="total_intamt"
 					value="" 
 					readonly
 					disabled 
@@ -227,6 +227,7 @@
 				<input id="total_penfee" 
 					type="text" 
 					style="width:80px; text-align:right;" 
+					name="total_penfee"
 					value="" 
 					decimal="2"
 					disabled 
@@ -236,6 +237,7 @@
 				<input id="total_penint" 
 					type="text" 
 					style="width:80px; text-align:right;" 
+					name="total_penint"
 					value="" 
 					readonly
 					disabled 
@@ -245,6 +247,7 @@
 				<input id="total_repayment" 
 					type="text" 
 					style="width:90px; text-align:right;" 
+					name="total_repayment"
 					value="" 
 					readonly
 					disabled 
@@ -306,7 +309,7 @@
 				<input id="total_XXX_xxx_invId" 
 					type="text" 
 					style=" text-align:right;" 
-					name="total"
+					name="invSchd[xxx_invId][_XXX][total]"
 					value="xxx_total" 
 					readonly
 					class="form-control ">
@@ -324,6 +327,8 @@
 			<td class="text-right"> xxx_repayment_penalty_interest</td>
 			<td class="text-right"> xxx_total</td>
 			<td class="text-left"> xxx_repayment_status</td>
+			<td class="text-left"> </td>
+			
 		</tr>
 	
 	</table> 
@@ -337,6 +342,7 @@
 			<td class="text-right"> xxx_repayment_penalty_interest</td>
 			<td class="text-right"> xxx_total</td>
 			<td class="text-left"> xxx_repayment_status</td>
+			<td class="text-left"> </td>
 		</tr>
 	
 	</table>
@@ -499,7 +505,9 @@ function confirmResch() {
 	
 }
 
-function reschdInsts(callback_response= 0) {
+function reschdInsts(callback_response) {
+	
+	canContinue = false;
 	
 	switch (callback_response) {
 		
@@ -512,7 +520,13 @@ function reschdInsts(callback_response= 0) {
 			return;
 			break;
 			
+		case 1:
+			canContinue = true;
+			
 	}
+	
+	if (!canContinue) 
+		return;
 			
 	// To build the table rows
 	@if ($bidsModel->loan_status == LOAN_STATUS_DISBURSED)
@@ -542,6 +556,13 @@ function reschdInsts(callback_response= 0) {
 		if (paidStatus != 'Unpaid') {
 			$("#fa_edit"+instNumber).remove();
 		}
+		
+		$('#repayment_schedule_date'+instNumber).datetimepicker({
+			autoclose: true, 
+			minView: 2,
+			format: 'dd-mm-yyyy' 
+		}); 
+		
 		for (invIndex = 0; invIndex < invInfo.length; invIndex++) {
 			invId	=	invInfo[invIndex]['inv_id'];
 			invName	=	invInfo[invIndex]['inv_name']
@@ -575,9 +596,20 @@ function reschdInsts(callback_response= 0) {
 	$("#remarks").attr("name", "reschd_notes");
 	$("#remarks").attr("required", true);
 	$("#remarks").attr("disabled", false);
+
+	$("#reschd_date_label").show();
+	$("#reschd_date_div").show();
+	$("#reschd_date").attr("required", true);
 	$("#reschdLoan").hide()
 	$("#saveReschd").show()
+	
 	$("#bidsummary").append(rowHtml);
+	$('#reschd_date').datetimepicker({
+		autoclose: true, 
+		minView: 2,
+		format: 'dd-mm-yyyy' 
+	}); 
+	// initiateDateFieldFunc();
 	computeGrandTotal();
 	
 }
@@ -602,12 +634,6 @@ function editInst(instNumber) {
 			onBlurNumberField(this)
 		})
 	})
-	
-	$('#repayment_schedule_date').datetimepicker({
-		autoclose: true, 
-		minView: 2,
-		format: 'dd-mm-yyyy' 
-	}); 
 	
 	submitForm = false;
 }
@@ -744,7 +770,13 @@ $(document).ready(function () {
 		createTableRows('borrower', rowData);
 	@endforeach	
 })
-
+function initiateDateFieldFunc() {
+	$('.date-field').datetimepicker({
+		autoclose: true, 
+		minView: 2,
+		format: 'dd-mm-yyyy' 
+	}); 
+}
 </script>
 <script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>
 @endsection

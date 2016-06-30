@@ -20,7 +20,7 @@ class AdminRolesController extends MoneyMatchController {
 		
 		$this->adminRolesModel->getRoleList();
 		$withArry	=	array(	"adminRolesModel" => $this->adminRolesModel, 
-								"classname"=>"fa fa-list-alt fa-fw");
+								"classname"=>"fa fa-user fa-fw");
 		return view('admin.admin-roles')
 				->with($withArry); 
 	
@@ -39,7 +39,7 @@ class AdminRolesController extends MoneyMatchController {
 		
 		$this->adminRolesModel->getRoleUsers($role_id);
 		$withArry	=	array(	"adminRolesModel" => $this->adminRolesModel, 
-								"classname"=>"fa fa-list-alt fa-fw");
+								"classname"=>"fa fa-user fa-fw");
 		return view('admin.admin-role-users')
 				->with($withArry); 
 	
@@ -50,7 +50,7 @@ class AdminRolesController extends MoneyMatchController {
 		$this->adminRolesModel->getRolePermissionDetails($role_id);
 		$withArry	=	array(	"adminRolesModel" 	=>	$this->adminRolesModel, 
 								"trantype"			=>	'add',
-								"classname"=>"fa fa-list-alt fa-fw");
+								"classname"=>"fa fa-user fa-fw");
 		return view('admin.admin-role-permissions')
 				->with($withArry); 
 	}
@@ -60,7 +60,7 @@ class AdminRolesController extends MoneyMatchController {
 		$this->adminRolesModel->getRolePermissionDetails($role_id);
 		$withArry	=	array(	"adminRolesModel" 	=>	$this->adminRolesModel, 
 								"trantype"			=>	'edit',
-								"classname"=>"fa fa-list-alt fa-fw");
+								"classname"=>"fa fa-user fa-fw");
 		return view('admin.admin-role-permissions')
 				->with($withArry); 
 	}

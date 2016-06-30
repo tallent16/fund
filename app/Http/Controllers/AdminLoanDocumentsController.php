@@ -25,7 +25,7 @@ class AdminLoanDocumentsController extends MoneyMatchController {
 		$this->adminloandocModel->getLoanDocuments();
 	
 		$withArry	=	array(	"adminloandocModel" => $this->adminloandocModel,
-								"classname"=>"fa fa-user fa-fw",
+								"classname"=>"fa fa-cogs fa-fw",
 								"submitted"=>$submitted 
 							);
 		return view('admin.admin-loandocuments')

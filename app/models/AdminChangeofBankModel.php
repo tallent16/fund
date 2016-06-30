@@ -4,7 +4,7 @@ class AdminChangeofBankModel extends TranWrapper {
 	
 	public 	$bank_lists 	= array();	
 	public 	$successTxt		=	"";
-	/****List the borrower/investor bank Entries***/
+	/*---------------------------List the borrower/investor bank Entries-----------------------------------------------*/
 	public function getborrowerinvestorbanks(){
 		
 		$boin_sql = "SELECT 
@@ -51,7 +51,7 @@ class AdminChangeofBankModel extends TranWrapper {
 		$this->bank_lists = $res;
 		
 	}
-	/****Edit Approve Screen***/
+	/*---------------------------------Edit Approve Screen------------------------------------------------------------*/
 	public function getborrowerinvestorbankinfo($usertype,$borinv_id,$borinvbankid){
 		
 		if($usertype == "Borrower"){
@@ -127,7 +127,7 @@ class AdminChangeofBankModel extends TranWrapper {
 			}
 		}		
 	}
-	/***Approve button*****/ 
+	/*---------------------------------------------Approve button------------------------------------------------------*/ 
 	public function updateborrowerinvestorbankapprove($postArray){
 		
 		if($postArray)
@@ -140,23 +140,24 @@ class AdminChangeofBankModel extends TranWrapper {
 			
 			if($usertype == "Borrower"){			
 				$bor_sql	="UPDATE borrower_banks 
-										SET 										
-										active_status= 
-										CASE 
-											WHEN 
-												borrower_bankid IN ({$bor_bankid})
-												AND borrower_id IN ({$bor_id	 })
-											THEN 1 
-											ELSE 0 
-											END,
-										verified_status= 
-										CASE 
-											WHEN 
-												borrower_bankid IN ({$bor_bankid})
-												AND borrower_id IN ({$bor_id	 }) 
-											THEN 1 
-											ELSE verified_status  
-										END";
+								SET 										
+								active_status= 
+								CASE 
+									WHEN 
+										borrower_bankid IN ({$bor_bankid})
+										AND borrower_id IN ({$bor_id	 })
+									THEN 1 
+									ELSE 0 
+									END,
+								verified_status= 
+								CASE 
+									WHEN 
+										borrower_bankid IN ({$bor_bankid})
+										AND borrower_id IN ({$bor_id	 }) 
+									THEN 1 
+									ELSE verified_status  
+								END
+								WHERE  borrower_id IN ({$bor_id	 })";
 				
 				$result	=	$this->dbExecuteSql($bor_sql);
 				/****Send mail after approval for borrower*****/
@@ -180,22 +181,23 @@ class AdminChangeofBankModel extends TranWrapper {
 				}						
 			}else{			
 				$inv_sql	= "UPDATE investor_banks 
-									SET 
-									active_status= 
-									CASE 
-										WHEN 
-											investor_bankid IN ({$inv_bankid })
-											AND investor_id IN ({$inv_id})	 
-										THEN 1 
-										ELSE 0 
-										END,
-										verified_status= CASE 
-										WHEN
-											 investor_bankid IN ({$inv_bankid })
-											 AND investor_id IN ({$inv_id})	 
-										THEN 1 
-										ELSE verified_status  
-									END";
+								SET 
+								active_status= 
+								CASE 
+									WHEN 
+										investor_bankid IN ({$inv_bankid })
+										AND investor_id IN ({$inv_id})	 
+									THEN 1 
+									ELSE 0 
+									END,
+									verified_status= CASE 
+									WHEN
+										 investor_bankid IN ({$inv_bankid })
+										 AND investor_id IN ({$inv_id})	 
+									THEN 1 
+									ELSE verified_status  
+								END
+								WHERE  investor_id IN ({$inv_id})";
 					
 				$result	=	$this->dbExecuteSql($inv_sql);
 				/****Send mail after approval for investor*****/
@@ -217,7 +219,7 @@ class AdminChangeofBankModel extends TranWrapper {
 			}		
 		}		
 	}
-	/*****reject button*****/
+	/*-----------------------------------------reject button---------------------------------------------------------*/
 	public function deleteborrowerinvestorbankrecord($postArray){
 		
 		if($postArray)
@@ -231,16 +233,17 @@ class AdminChangeofBankModel extends TranWrapper {
 			if($postArray['bank_statement_url']){				
 				$accountproof	= $postArray['bank_statement_url'];	
 			}
-			$full_path	=	url().'/'.$accountproof;
+			$full_path	=	base_path().'/'.$accountproof;		//basepath for uploaded doc url
 			
 			if($usertype == "Borrower"){				
 				$where	 = array('borrower_bankid' =>"{$bor_bankid}",
-									'borrower_id'  =>"{$bor_id}");		
-				
+									'borrower_id'  =>"{$bor_id}");	
+										
+				if(file_exists($full_path)){
+					File::delete($full_path);                   //uploaded file has been deleted when record deletes in db
+				}
 				$result  =	$this->dbDelete('borrower_banks', $where);	
-				if(File::exists($full_path)){
-					File::Delete($full_path);
-				}		
+						
 				/****Send mail after borrower bank reject *****/
 				$slug_name			= 	"borrower_bank_reject";				
 				$this->successTxt	=	$this->getSystemMessageBySlug($slug_name);	//success message from DB
@@ -258,11 +261,13 @@ class AdminChangeofBankModel extends TranWrapper {
 				return 1;		
 			}else{
 				$where	= array('investor_bankid' =>"{$inv_bankid}",
-									'investor_id' =>"{$inv_id}");				
-				$result =	$this->dbDelete('investor_banks', $where);	
-				if(File::exists($full_path)){
-					File::Delete($full_path);
-				}
+									'investor_id' =>"{$inv_id}");	
+								
+				if(file_exists($full_path)){										
+					File::delete($full_path);				//uploaded file has been deleted when record deletes in db
+				}								
+				$result =	$this->dbDelete('investor_banks', $where);					
+				
 				/****Send mail after investor bank reject *****/
 				$slug_name			= 	"investor_bank_reject";
 				$this->successTxt	=	$this->getSystemMessageBySlug($slug_name);	 //success message from DB
@@ -278,6 +283,5 @@ class AdminChangeofBankModel extends TranWrapper {
 				return 1;					
 			}					
 		}
-	}
-	
+	}	
 }

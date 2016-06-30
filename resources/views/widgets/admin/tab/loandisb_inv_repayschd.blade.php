@@ -5,7 +5,7 @@
 				<table class="table table-bordered .tab-fontsize" id="bidsummary">		
 					<tbody>
 						<tr>
-							<th class="tab-head col-sm-2 text-left">
+							<th class="tab-head col-sm-1 text-left">
 								{{Lang::get('Investor')}}</th>
 							<th class="tab-head col-sm-2 text-left">
 								{{Lang::get('Bid Date')}}</th>
@@ -22,7 +22,7 @@
 						</tr>
 						@foreach($bidsModel->loanInvestors as $loanbidRow)
 						<tr>
-							<td class="col-sm-2 text-left">
+							<td class="col-sm-1 text-left">
 								{{$loanbidRow->username}}
 							</td>
 							<td class="col-sm-2 text-left">
@@ -60,10 +60,10 @@
 					<tbody>
 						@if ($bidsModel->loan_status == LOAN_STATUS_BIDS_ACCEPTED) 
 						<th class="tab-head col-sm-1 text-left">
-							Inst Number
+							Inst NO
 						</th>
 							
-						<th class="tab-head col-sm-1 text-left">
+						<th class="tab-head col-sm-2 text-left">
 							Schd Date
 						</th>
 						
@@ -80,14 +80,14 @@
 						</th>
 					@else
 					<th class="tab-head col-sm-1 text-left">
-							Inst Number
+							Inst No
 						</th>
 						
-						<th class="tab-head col-sm-1 text-left">
+						<th class="tab-head col-sm-2 text-left">
 							Schd Date
 						</th>
 						
-						<th class="tab-head col-sm-1 text-left">
+						<th class="tab-head col-sm-2 text-left">
 							Actual Date
 						</th>
 						
@@ -99,11 +99,11 @@
 							Interest
 						</th>
 						
-						<th class="tab-head col-sm-1 text-right">
+						<th class="tab-head col-sm-2 text-right">
 							Penalty Int
 						</th>
 						
-						<th class="tab-head col-sm-1 text-right">
+						<th class="tab-head col-sm-2 text-right">
 							Total
 						</th>
 						

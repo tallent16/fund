@@ -24,7 +24,7 @@ class AdminSettingsController extends MoneyMatchController {
 		$re=$this->adminSettingsModel->getModuleDropdown();	
 		
 		$withArry	=	array(	"adminsettingModel" => $this->adminSettingsModel,
-								"classname"=>"fa fa-user fa-fw",
+								"classname"=>"fa fa-cogs fa-fw",
 								"submitted"=>$submitted 								
 							);
 		

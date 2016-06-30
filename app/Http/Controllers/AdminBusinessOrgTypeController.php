@@ -24,7 +24,7 @@ class AdminBusinessOrgTypeController extends MoneyMatchController {
 		$this->adminbusiorgtypeModel->getBusinessOrgTypes();
 	
 		$withArry	=	array(	"adminbusinessorgModel" => $this->adminbusiorgtypeModel,
-								"classname"=>"fa fa-user fa-fw",
+								"classname"=>"fa fa-cogs fa-fw",
 								"submitted"=>$submitted 
 							);					
 		

@@ -26,14 +26,14 @@
 						</th>
 					@else
 						<th class="tab-head col-sm-1 text-left">
-							Inst Number
+							Inst No
 						</th>
 						
-						<th class="tab-head col-sm-1 text-left">
+						<th class="tab-head col-sm-2 text-left">
 							Schd / Actual Date
 						</th>
 						
-						<th class="tab-head col-sm-1 text-left">
+						<th class="tab-head col-sm-2 text-left">
 							New Schd Date
 						</th>
 						
@@ -46,7 +46,7 @@
 						</th>
 						
 						<th class="tab-head col-sm-1 text-right">
-							Penalty Fees
+							Penalty
 						</th>
 						
 						<th class="tab-head col-sm-1 text-right">
@@ -59,6 +59,9 @@
 						
 						<th class="tab-head col-sm-1 text-left">
 							Status
+						</th>
+						<th class="tab-head col-sm-1 text-left">
+							
 						</th>
 					@endif
 					

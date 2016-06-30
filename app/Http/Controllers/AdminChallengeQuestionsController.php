@@ -24,7 +24,7 @@ class AdminChallengeQuestionsController extends MoneyMatchController {
 		$this->adminchallengequestionModel->getSecurityQuestions();
 	
 		$withArry	=	array(	"adminchallqueModel" => $this->adminchallengequestionModel,
-								"classname"=>"fa fa-user fa-fw",
+								"classname"=>"fa fa-cogs fa-fw",
 								"submitted"=>$submitted 
 							);
 		return view('admin.admin-challengequestions')

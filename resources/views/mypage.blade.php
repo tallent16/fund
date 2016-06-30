@@ -78,7 +78,12 @@
 			<li>
 				<a href="{{ url ('admin/investorwithdrawallist') }}">{{ Lang::get('Investor Withdrawal List') }}</a>
 			</li>
-				@endpermission
+		@endpermission
+		@permission('view_changeofbank.admin.banking')
+			<li>
+				<a href="{{ url ('admin/changeofbank') }}">{{ Lang::get('Bank Change Request') }}</a>
+			</li>	
+		@endpermission
 		@permission('view.admin.reports')
 		<li>
 			<a href="{{ url ('admin/reports') }}">{{ Lang::get('Reports') }} </a> 
@@ -94,6 +99,31 @@
 				<a href="{{ url ('admin/roles') }}">{{ Lang::get('Manage Roles') }} </a> 
 			</li>
 		@endpermission		  
+		@permission('view_general_message.admin.settings') 
+				<li>
+					<a href="{{ url ('admin/settings') }}">{{ Lang::get('General & Messages') }}</a>
+				</li>	
+			@endpermission	
+			@permission('view_challenge_question.admin.settings') 
+				<li>
+					<a href="{{ url ('admin/challengequestions') }}">{{ Lang::get('Challenge Questions') }}</a>
+				</li>
+			@endpermission
+			@permission('view_organisation_type.admin.settings') 
+				<li>
+					<a href="{{ url ('admin/businessorgtype') }}">{{ Lang::get('Business Organisation Type') }}</a>
+				</li>
+			@endpermission
+			@permission('view_industries.admin.settings') 
+				<li>
+					<a href="{{ url ('admin/industries') }}">{{ Lang::get('Industries') }}</a>
+				</li>
+			@endpermission	
+			@permission('view_general_message.admin.settings') 
+				<li>
+					<a href="{{ url ('admin/loandocrequired') }}">{{ Lang::get('Loan Documents Required') }}</a>
+				</li>
+			@endpermission	
 		</ul>
 	</div>
 	<!--------------------------------------------------->

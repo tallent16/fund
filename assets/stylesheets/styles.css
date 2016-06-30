@@ -9617,15 +9617,15 @@ a.settings-cursor{
 	table.table.tab-label {   
 		margin: 30% 0 0 0;
 	}	
-	#page-wrapper .table-responsive{
+	/*#page-wrapper .table-responsive{
 		overflow-x:visible;
-	}
+	}*/
 }
 @media (min-width:1280px) and (max-width:1920px) {
 	.borrower-admin .table-responsive,
-	#page-wrapper .table-responsive{
+/*	#page-wrapper .table-responsive{
 		overflow-x:visible;
-	}
+	}*/
 }
 @media(max-width:1280px) {
 	.loan-list-image img {
@@ -9640,9 +9640,9 @@ a.settings-cursor{
 	table.table.tab-label {   
 		margin: 53% 0 0 0;
 	}
-	#page-wrapper .table-responsive{
+	/*#page-wrapper .table-responsive{
 		overflow-x:visible;
-	}
+	}*/
 }
 @media(max-width:980px) {
 	.loan-list-image .imageoverlap{

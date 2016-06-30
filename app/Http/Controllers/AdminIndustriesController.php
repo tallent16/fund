@@ -23,7 +23,7 @@ class AdminIndustriesController extends MoneyMatchController {
 		$this->adminindustryModel->getIndustryList();
 	
 		$withArry	=	array(	"adminindustryModel" => $this->adminindustryModel,
-								"classname"=>"fa fa-user fa-fw",
+								"classname"=>"fa fa-cogs fa-fw",
 								"submitted"=>$submitted 
 							);
 		return view('admin.admin-industries')

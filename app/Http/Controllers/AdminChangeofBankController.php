@@ -19,7 +19,7 @@ class AdminChangeofBankController extends MoneyMatchController {
 		$this->adminChangeBankModel->getborrowerinvestorbanks();
 		
 		$withArry		=	array(	"adminbanklistModel" => $this->adminChangeBankModel,
-									"classname"=>"fa fa-user fa-fw");
+									"classname"=>"fa fa-cc fa-fw");
 		
 		return view('admin.admin-changeofbank')
 							->with($withArry);
@@ -34,7 +34,7 @@ class AdminChangeofBankController extends MoneyMatchController {
 		$this->adminChangeBankModel->getborrowerinvestorbankinfo($usertype,$borrower_id,$borbankid);
 		
 		$withArry		=	array(	"adminbankviewModel" => $this->adminChangeBankModel,
-									"classname"=>"fa fa-user fa-fw");
+									"classname"=>"fa fa-cc fa-fw");
 							
 		return view('admin.admin-approvechangeofbank')
 									->with($withArry);
@@ -56,7 +56,7 @@ class AdminChangeofBankController extends MoneyMatchController {
 			
 			if($usertype == "Borrower"){
 				$successTxt	=	$this->adminChangeBankModel->successTxt;	
-				return redirect()->route('admin.approve', array(		'usertype'=>base64_encode($usertype),
+				return redirect()->route('admin.changeofbankedit', array(		'usertype'=>base64_encode($usertype),
 																		'borrower_id'=>base64_encode($id),
 																		'borrower_bankid'=>base64_encode($bankid)
 																	)
@@ -64,7 +64,7 @@ class AdminChangeofBankController extends MoneyMatchController {
 									->with('success',$successTxt);
 			}else{
 				$successTxt	=	$this->adminChangeBankModel->successTxt;	
-				return redirect()->route('admin.approve', array(		'usertype'=>base64_encode($usertype),
+				return redirect()->route('admin.changeofbankedit', array(		'usertype'=>base64_encode($usertype),
 																		'investor_id'=>base64_encode($id),
 																		'investor_bankid'=>base64_encode($bankid)
 																	)
@@ -77,19 +77,19 @@ class AdminChangeofBankController extends MoneyMatchController {
 			
 			$successTxt =	"Something went wrong";			
 			if($usertype == "Borrower"){
-				return redirect()->route('admin.approve', array(		'usertype'=>base64_encode($usertype),
+				return redirect()->route('admin.changeofbankedit', array(		'usertype'=>base64_encode($usertype),
 																		'borrower_id'=>base64_encode($id),
 																		'borrower_bankid'=>base64_encode($bankid)
 																	)
 											)
-									->with('success',$successTxt);
+									->with('failure',$successTxt);
 			}else{
-				return redirect()->route('admin.approve', array(		'usertype'=>base64_encode($usertype),
+				return redirect()->route('admin.changeofbankedit', array(		'usertype'=>base64_encode($usertype),
 																		'investor_id'=>base64_encode($id),
 																		'investor_bankid'=>base64_encode($bankid)
 																	)
 											)
-									->with('success',$successTxt);				
+									->with('failure',$successTxt);				
 				
 				}			
 						
