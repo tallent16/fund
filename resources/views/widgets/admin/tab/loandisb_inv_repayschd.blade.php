@@ -2,7 +2,7 @@
 	<div class="panel panel-default inv_repay_schd"> 						
 		<div class="panel-body">
 			<div class="table-responsive">
-				<table class="table table-bordered .tab-fontsize" id="bidsummary">		
+				<table class="table table-bordered table-striped" id="bidsummary">		
 					<tbody>
 						<tr>
 							<th class="tab-head col-sm-1 text-left">
@@ -56,7 +56,7 @@
 				</table>
 			</div>			
 			<div class="table-responsive">
-				<table class="table table-bordered .tab-fontsize" id="invInst">		
+				<table class="table table-bordered table-striped" id="invInst">		
 					<tbody>
 						@if ($bidsModel->loan_status == LOAN_STATUS_BIDS_ACCEPTED) 
 						<th class="tab-head col-sm-1 text-left">
@@ -109,6 +109,9 @@
 						
 						<th class="tab-head col-sm-1 text-left">
 							Status
+						</th>
+						<th class="tab-head text-left">
+							
 						</th>
 					@endif
 					</tbody>

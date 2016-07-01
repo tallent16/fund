@@ -93,8 +93,8 @@ function showEditMailContent(data){
 				  + "</div></div></div>"				
 				  +	"<div class='row'><div class='col-sm-12'>"
 				  +	"<div class='col-sm-3'></div>"
-				  +	"<div class='col-sm-4'></div>"
-				  + "<div class='col-sm-2 text-right'>"+ "<input type='button' class='form-control btn btn-primary' name='email_message_save' id='email_message_save' value='save' >"
+				  +	"<div class='col-sm-3'></div>"
+				  + "<div class='col-sm-3 text-right'>"+ "<input type='button' class='form-control btn verification-button' name='email_message_save' id='email_message_save' value='save' >"
 				  + "</div></div>"
 				  + "<div class='col-sm-12'>"
 				  +	"<hr>"
@@ -156,9 +156,9 @@ function showEditMessageContent(data){
 				  + "</div></div></div>"
 				  +	"<div class='row'><div class='col-sm-12'>"
 				  +	"<div class='col-sm-3'></div>"
-				  +	"<div class='col-sm-4'></div>"
-				  + "<div class='col-sm-2 text-right'>"+ "<input type='button' class='form-control btn btn-primary' name='module_message_save' id='module_message_save' value='save' >"
-				  + "</div></div></div>";
+				  +	"<div class='col-sm-3'></div>"				 
+				  + "<div class='col-sm-3 text-right'>"+ "<input type='button' class='form-control btn verification-button' name='module_message_save' id='module_message_save' value='save' ></div>"			  
+				  +	"<div class='col-sm-3'></div></div></div>";
 	$('#module_popup .modal-body').html(str_edit);
 	$('#module_popup').modal("show");		
 	callModuleClickEvent();	

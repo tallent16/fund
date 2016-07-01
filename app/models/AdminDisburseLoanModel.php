@@ -695,16 +695,21 @@ class AdminDisburseLoanModel extends TranWrapper {
 
 		voila you are done */
 
+		$moduleName	=	"Loan Process";
+		$actionSumm =	"Loan Rescheduled";
+		$actionDet  =	"Loan Rescheduled";
 
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"Loan Reference Nu",$this->loan_reference_number);
 		$loanId		=	$postArray['loan_id'];
 		$reschDate	=	$this->getDbDateFormat($postArray['reschd_date']);
 		$reschNotes	=	$postArray['reschd_notes'];
 		
-		$totPrin	=	$postArray['total_prinamt'];
-		$totInt		=	$postArray['total_intamt'];
-		$totPenFee	=	$postArray['total_penfee'];
-		$totPenInt	=	$postArray['total_penint'];
-		$totPayable	=	$postArray['total_repayment'];
+		$totPrin	=	$this->makeFloat($postArray['total_prinamt']);
+		$totInt		=	$this->makeFloat($postArray['total_intamt']);
+		$totPenFee	=	$this->makeFloat($postArray['total_penfee']);
+		$totPenInt	=	$this->makeFloat($postArray['total_penint']);
+		$totPayable	=	$this->makeFloat($postArray['total_repayment']);
 		
 		$sql		=	"	SELECT SUM(principal_component) old_prinamt, 
 									SUM(interest_component) old_intamt

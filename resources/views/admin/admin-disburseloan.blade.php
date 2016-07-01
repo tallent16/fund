@@ -93,7 +93,7 @@
 			<td>
 				<input id="inst_number" 
 					type="text" 
-					style="width:60px; text-align:right;" 
+					style="width:50px;text-align:right;" 
 					value="xxx_inst_number" 
 					disabled 
 					readonly
@@ -102,7 +102,7 @@
 			<td>
 				<input id="orig_date" 
 					type="text" 
-					style="width:100px; text-align:left;" 
+					style="width:130px;text-align:left;" 
 					value="xxx_repayment_schedule_date" 
 					disabled 
 					readonly
@@ -365,6 +365,8 @@
 
 <script>		
 var baseUrl	=	"{{url('')}}"
+
+
 <?php	$index = 0 ?>
 invInfo	=	[]
 @foreach($bidsModel->loanInvestors as $loanbidRow)
@@ -372,9 +374,6 @@ invInfo	=	[]
 				 "inv_name":"{{$loanbidRow->username}}" }
 	<?php $index++ ?>
 @endforeach
-	
-
-
 
 @if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
 	submitForm	=	true;
@@ -382,22 +381,11 @@ invInfo	=	[]
 	submitForm	=	false;
 @endif
 
-function reschdLoan() {
-	$("reschdLoan").hide();
-	$("saveReschd").show();
-}
+invRepaySchd	=	{{$bidsModel->jsonInvRepay}}
+reschdEdited	=	false; // To ensure that the user is not trying to save the Rescheduled loan without any changes
 
-function haveToRecalc() {
-	
-	// The user has changed the disbursement date details. Don't allow him to disburse the loan
-	// till he recalculates the schedule
-	$("#disbLoan").hide();
-	$("#regenSchd").show();
-	$("#payment_ref").removeAttr("required");	
-	submitForm = false;
-	
-}
 $("form").submit(function(event) {
+	// To do validations before the submit happens
 	system_date = "{{$bidsModel->system_date}}";
 	disburse_date = $("#disbursement_date").val();
 	
@@ -417,9 +405,50 @@ $("form").submit(function(event) {
 	})	
 })
 
-invRepaySchd	=	{{$bidsModel->jsonInvRepay}}
+$(document).ready(function () {
+	
+	@foreach($bidsModel->repayment_schedule as $key => $repaySchd)
+		// The display fields for the Repayment schedules are different 
+		// when the status is accepted / disbursed. When accepted, the actual date and penalty
+		// columns are not shown.
+		@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
+			rowData	=	{'inst_number': '{{$key + 1}}',
+						 'payment_scheduled_date': '{{$repaySchd["payment_scheduled_date"]}}', 
+						 'principal_amount': '{{$repaySchd["principal_amount"]}}', 
+						 'interest_amount': '{{$repaySchd["interest_amount"]}}', 
+						 'payment_schedule_amount': '{{$repaySchd["payment_schedule_amount"]}}'}
+		@else
+			rowData	=	{'inst_number': '{{$key + 1}}', 
+						 'payment_schedule_date': '{{$repaySchd["repayment_schedule_date"]}}',
+						 'repayment_actual_date': '{{$repaySchd["repayment_actual_date"]}}', 
+						 'principal_component': '{{$repaySchd["principal_component"]}}',
+						 'interest_component': '{{$repaySchd["interest_component"]}}',
+						 'repayment_penalty_charges': '{{$repaySchd["repayment_penalty_charges"]}}',
+						 'repayment_penalty_interest': '{{$repaySchd["repayment_penalty_interest"]}}', 
+						 'total': '{{$repaySchd["total"]}}', 
+						 'repayment_status': '{{$repaySchd["repayment_status"]}}'}
+		@endif
+
+		createTableRows('borrower', rowData);
+	@endforeach	
+})
+
+
+function haveToRecalc() {
+	
+	// The user has changed the disbursement date details. Don't allow him to disburse the loan
+	// till he recalculates the schedule
+	$("#disbLoan").hide();
+	$("#regenSchd").show();
+	$("#payment_ref").removeAttr("required");	
+	submitForm = false;
+	
+}
 
 function createTableRows(userType, rowData) {
+	// Common function for loading the table data for the Borrower & Investor repayment schedules
+	// called at the time of loading the page (for borrowers), when the user clicks on show investor 
+	// schedules and when the user clicks on Recalculate repayment schedule
 	@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
 		sourceTable		=	'#AccSchd tbody'
 	@else 
@@ -447,9 +476,12 @@ function createTableRows(userType, rowData) {
 }
 
 function recalcRepay() {
+	// The user has changed the disbursement date or the pay-by date
+	// and has to recalculate the repayment
+	
 	// First remove the rows from the HTML Table
-	
-	
+	$('#bidsummary tr:not(:first)').remove();
+
 	loanId		=	$("#loan_id").val();
 	disbDate 	=	$("#disbursement_date").val();
 	payByDay	=	$("#monthly_pay_by_date").val();
@@ -462,7 +494,6 @@ function recalcRepay() {
 	  url: baseUrl+"/ajax/getloanrepayschd?loan_id="+loanId+"&disburse_date=" + 
 						disbDate + "&monthly_pay_by_date=" + payByDay,
 	}).done(function(data) {
-		$('#bidsummary tr:not(:first)').remove();
 		invRepaySchd 	= data['invSchd']
 		borrRepaySchd 	= data['borrSchd']
 		numofInst		= borrRepaySchd.length
@@ -474,10 +505,10 @@ function recalcRepay() {
 			
 		}
 		
-		// The user has changed the disbursement date details and has asked for recalculation
-		// of the repayment schedule
-		// After the repayment schedule is recalculated, show the disburse loan button 
+		// Hide the Regenerate payment schdule button
 		$("#regenSchd").hide();
+		
+		// show the Disburse loan button
 		$("#disbLoan").show();
 		$("#payment_ref").attr("required", true);
 		submitForm = true;
@@ -486,6 +517,7 @@ function recalcRepay() {
 }
 
 function showInvInst(invId) {
+	// When the user clicks on the show repayment schedule button
 	// First remove the rows from the HTML Table
 	$('#invInst tr:not(:first)').remove();
 	
@@ -500,27 +532,34 @@ function showInvInst(invId) {
 	
 }
 
-function confirmResch() {
-	
-	
-}
-
 function reschdInsts(callback_response) {
+	// When the user clicks on the "Reschedule Loan" button
+	// Before we reschedule the loan, we need to ask for a confirmation/
+	// Since jQuery execution doesn't wait while the modal window is being shown
+	// we need to manually control the execution flow
 	
+	// The default action of the button means that if the user presses [enter] in any of the fields, then this funciton is called
+	// To prevent this, check if the button is hidden and if hidden then don't execute any further
+	if (!$("#reschdLoan").is(":visible")) 
+		return;
+
 	canContinue = false;
 	
 	switch (callback_response) {
 		
 		case -1:
+			// The response from the modal dialog box for cancelling the operation
 			return;
 			break;
 			
 		case 0:
+			// The initial call from the button. Just show the dialog and return
 			showDialogWithOkCancel("FYN", "{{$bidsModel->systemAllMessage[4]['loan_resched_confirm']}}", "reschdInsts");
 			return;
 			break;
 			
 		case 1:
+			// the response from the modal dialog box to go ahead with the reschedule
 			canContinue = true;
 			
 	}
@@ -617,6 +656,7 @@ function reschdInsts(callback_response) {
 
 
 function editInst(instNumber) {
+	$("#bidsummary").removeClass('table-striped');
 	$(".edit_toggle"+instNumber).each (function () {
 		$(this).removeAttr("disabled")
 	})
@@ -636,9 +676,14 @@ function editInst(instNumber) {
 	})
 	
 	submitForm = false;
+	reschdEdited = true;
 }
 
 function saveResc(callback_response) {
+	if (!reschdEdited) {
+		showDialog("FYN", "{{$bidsModel->systemAllMessage[4]['loan_resched_nothing_to_save']}}")
+		return;
+	}
 	switch (callback_response) {
 		case -1:
 			return;
@@ -696,17 +741,25 @@ function computeInvTotal(instNumb, invId) {
 		instPenInt += numeral(invPenInt);
 	}
 	
-	instPenfee = numeral($("#penalty_fee"+instNumb).val())
+	
 	instTotal = instPrinAmt + instIntAmt + instPenInt + instPenFee
 	$("#total" + instNumb).val(numeral(instTotal).format("0,000.00"))
 	$("#penalty_interest" + instNumb).val(numeral(instPenInt).format("0,000.00"))
 	$("#interest_component" + instNumb).val(numeral(instIntAmt).format("0,000.00"))
-	$("#interest_component" + instNumb).val(numeral(instIntAmt).format("0,000.00"))
-	$("#principal_component" + instNumb).val(numeral(instPrinAmt).format("0,000.00"))
+	$("#penalty_interest" + instNumb).val(numeral(instPenInt).format("0,000.00"))
+	computeBorrTotal(instNumb);
+	
+}
 
+function computeBorrTotal(instNumb) {
+	borrPrin	=	numeral($("#principal_component"+instNumb).val())
+	borrInst	=	numeral($("#interest_component"+instNumb).val())
+	borrPenFee	=	numeral($("#penalty_fee"+instNumb).val())
+	borrPenInt	=	numeral($("#penalty_interest"+instNumb).val())
+	
+	instTotal	=	borrPrin + borrInst + borrPenFee + borrPenInt;
+	$("#total"+instNumb).val(numeral(instTotal).format("0,000.00"))
 	computeGrandTotal();
-	
-	
 }
 
 function computeGrandTotal() {
@@ -735,7 +788,7 @@ function computeGrandTotal() {
 	$(".borr_total").each (function () {
 		totalRepay += numeral($(this).val())
 	})
-
+	
 	$("#total_prinamt").val(numeral(totalPrin).format("0,000.00"));
 	$("#total_intamt").val(numeral(totalInt).format("0,000.00"));
 	$("#total_penint").val(numeral(totalPenInt).format("0,000.00"));
@@ -744,39 +797,7 @@ function computeGrandTotal() {
 	
 	
 }
-$(document).ready(function () {
 
-	@foreach($bidsModel->repayment_schedule as $key => $repaySchd)
-
-		@if($bidsModel->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED)
-			rowData	=	{'inst_number': '{{$key + 1}}',
-						 'payment_scheduled_date': '{{$repaySchd["payment_scheduled_date"]}}', 
-						 'principal_amount': '{{$repaySchd["principal_amount"]}}', 
-						 'interest_amount': '{{$repaySchd["interest_amount"]}}', 
-						 'payment_schedule_amount': '{{$repaySchd["payment_schedule_amount"]}}'}
-		@else
-
-			rowData	=	{'inst_number': '{{$key + 1}}', 
-						 'payment_schedule_date': '{{$repaySchd["repayment_schedule_date"]}}',
-						 'repayment_actual_date': '{{$repaySchd["repayment_actual_date"]}}', 
-						 'principal_component': '{{$repaySchd["principal_component"]}}',
-						 'interest_component': '{{$repaySchd["interest_component"]}}',
-						 'repayment_penalty_charges': '{{$repaySchd["repayment_penalty_charges"]}}',
-						 'repayment_penalty_interest': '{{$repaySchd["repayment_penalty_interest"]}}', 
-						 'total': '{{$repaySchd["total"]}}', 
-						 'repayment_status': '{{$repaySchd["repayment_status"]}}'}
-		@endif
-
-		createTableRows('borrower', rowData);
-	@endforeach	
-})
-function initiateDateFieldFunc() {
-	$('.date-field').datetimepicker({
-		autoclose: true, 
-		minView: 2,
-		format: 'dd-mm-yyyy' 
-	}); 
-}
 </script>
 <script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>
 @endsection

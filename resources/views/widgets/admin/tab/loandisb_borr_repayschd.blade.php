@@ -2,11 +2,11 @@
 	<div class="panel panel-default borr_repay_schd"> 						
 		<div class="panel-body">
 			<div class="table-responsive">
-				<table class="table table-bordered .tab-fontsize" id="bidsummary">	
+				<table class="table table-bordered table-striped" id="bidsummary">	
 					<tr>	
 					@if ($bidsModel->loan_status == LOAN_STATUS_BIDS_ACCEPTED) 
 						<th class="tab-head col-sm-1 text-left">
-							Inst Number
+							Inst No
 						</th>
 							
 						<th class="tab-head col-sm-1 text-left">
@@ -60,7 +60,7 @@
 						<th class="tab-head col-sm-1 text-left">
 							Status
 						</th>
-						<th class="tab-head col-sm-1 text-left">
+						<th class="tab-head text-left">
 							
 						</th>
 					@endif

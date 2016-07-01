@@ -37,6 +37,15 @@ $(document).ready(function (){
 	$('#welcome_message').on('hidden.bs.modal', function (e) {
 		updateShowWelcomeMessageStatus();
 	});
+	$(".modal").on('shown.bs.modal', function(e) {
+		modalBodyScrollable();
+		//~ $('body').on('wheel.modal mousewheel.modal', function () {return false;});
+	});
+	//~ $(".modal").on('hidden.bs.modal', function () {
+		//~ $('body').off('wheel.modal mousewheel.modal');
+	//~ });
+	$(window).on('resize', modalBodyScrollable);
+	
 });
 
 function cancelNavigation(retval) {
@@ -377,6 +386,29 @@ $.fn.exists = function(callback) {
 
   return this;
 };
+
+function modalBodyScrollable() {
+	
+	console.log(window.innerWidth/2);
+		$customWidth	=	window.innerWidth/2;
+		$customHeight	=	parseInt(window.innerHeight)-125;
+	
+		
+		//~ $('.modal-content').css({maxHeight:($customHeight+'px') });
+		$contentHeight	=	$('.modal-content').innerHeight();
+		$headerHeight	=	$('.modal-header').innerHeight();
+		console.log("$contentHeight"+$contentHeight);
+		console.log("$headerHeight"+$headerHeight);
+		
+		$bodyHeight		=	parseInt($contentHeight) - parseInt($headerHeight);
+		console.log("$contentHeight"+$bodyHeight);
+		//~ $('.modal-body').css({maxHeight:(parseInt($bodyHeight) +'px'),
+								//~ 'overflow-y':'scroll'
+						 //~ });
+		$('.modal-body').css({maxHeight:($customHeight +'px'),
+								'overflow-y':'scroll'
+						 });
+}
 
 /*------------------------------------------------------------------------
  * Maths Functions to get a proper rounding, ceil, floor of a number

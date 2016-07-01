@@ -7,7 +7,7 @@
 		var emailExistsMess				=	"{{$regMod->systemMessages['register_email_present']}}"
 		var usernameExistsMess			=	"{{$regMod->systemMessages['register_username_present']}}"
 		var weakpasswordExistsMess		=	"{{$regMod->systemMessages['register_weak_password']}}"
-		var toc_investor				=	"{{addslashes($regMod->systemAllSetting['toc_investor'])}}"
+		var toc_investor				=	"{{addslashes($regMod->systemAllSetting['toc_investor'])}}"						
 		var toc_borrower				=	"{{addslashes($regMod->systemAllSetting['toc_borrower'])}}"
 		
 	</script>

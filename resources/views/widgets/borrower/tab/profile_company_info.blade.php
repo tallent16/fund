@@ -55,7 +55,7 @@
 									id="business_registration_number" 
 									name="business_registration_number"
 									value="{{ $modelBorPrf->business_registration_number }}"
-									class="form-control text-right required numeric"
+									class="form-control required"
 									/>									
 					</div>
 					

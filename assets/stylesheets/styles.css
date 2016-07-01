@@ -5705,14 +5705,14 @@ a.list-group-item-danger.active:focus {
   font-size: 21px;
   font-weight: bold;
   line-height: 1;
-  color: #fff;
+  color: #222;
   text-shadow: 0 1px 0 #fff;
   filter: alpha(opacity=20);
  /*opacity: .2;*/
 }
 .close:hover,
 .close:focus {
-  color: #000;
+  color: #7B7B7B;
   text-decoration: none;
   cursor: pointer;
   filter: alpha(opacity=50);
@@ -9547,16 +9547,22 @@ table#account-summary, .table-border-custom{
 }
 /*******************************Admin Manage Bids***********************/
 #bidsummary tbody > tr > td,
-#bidsummary tbody > tr > th{
+#bidsummary tbody > tr > th,
+#invInst tbody > tr > th,
+#invInst tbody > tr > td{
 	border:none;
 	vertical-align: middle;
 }
+#bidsummary tbody > tr > td{
+	padding:6px;
+}
 #bidsummary tbody > tr:last-child{
 	border-bottom:none;
-}
-#bidsummary tbody > tr{
+}/*
+#bidsummary tbody > tr,
+#invInst tbody > tr{
 	border-bottom:1px solid #ccc;
-}
+}*/
 #managebids table,#loan_details table{
 	background-color:#fff;
 	border-top: none;

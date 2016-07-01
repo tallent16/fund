@@ -84,6 +84,8 @@
 			@else
 				@var $profile_info_tab	=	1
 			@endif
+		@else
+			@var $profile_info_tab	=	1
 		@endif
 		<!-----Body Content----->
 		<div class="col-sm-12 space-around"> 

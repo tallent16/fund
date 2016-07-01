@@ -8,9 +8,12 @@
 					</label>
 				</div>								
 				<div class="col-xs-12 col-sm-7 col-lg-3">
+					<input type="hidden"
+							name="loan_reference_number"
+							value="{{$bidsModel->loan_reference_number}}"/>
+							
 					<input 	type="text" 
 							class="form-control"
-							name="loan_reference_number"
 							id="loan_ref_num" 											
 							value="{{$bidsModel->loan_reference_number}}" 
 							disabled>	
@@ -221,7 +224,7 @@
 					</label>
 				</div>	
 
-				<div class="col-xs-12 col-sm-7 col-lg-3 reschd_date" style="display:none" id="reschd_date_div" >									
+				<div class="col-xs-12 col-sm-7 col-lg-3 reschd_date controls" style="display:none" id="reschd_date_div" >									
 					<div class="input-group">
 
 						<input 	type="text" 

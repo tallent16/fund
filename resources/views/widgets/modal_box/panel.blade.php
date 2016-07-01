@@ -3,12 +3,15 @@
 		role="dialog" 
 		aria-labelledby="{{$aria_labelledby}}" 
 		aria-hidden="true" 
+		data-backdrop="static"
 		style="display: none;">
 
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header  {{$class}}">
-				<button type="button" class="close itrack-modal-close" data-dismiss="modal" aria-hidden="true">
+				<button type="button" class="close itrack-modal-close" 
+					data-dismiss="modal" aria-hidden="true"
+					>
 						×
 				</button>
 				<h4 class="modal-title" id="{{$id}}Label">

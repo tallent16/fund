@@ -229,7 +229,7 @@ class InvestorProfileModel extends TranWrapper {
 			$date_of_birth				= 	$this->getDbDateFormat($date_of_birth);
 		$nric_number 					= 	$postArray['nric_number'];
 		
-		$this->uploadInvestorProfileAttachments($postArray,$investorId);
+		
 		
 		$dataUserArray 	= 	array(	'firstname' 					=> ($firstname!="")?$firstname:null,
 									'lastname'						=> ($lastname!="")?$lastname:null,
@@ -261,6 +261,8 @@ class InvestorProfileModel extends TranWrapper {
 			
 			//Insert the investor table
 			$investorId =  $this->dbInsert('investors', $dataArray, true);
+			
+			$this->uploadInvestorProfileAttachments($postArray,$investorId);
 			if ($investorId < 0) {
 				return -1;
 			}
@@ -271,12 +273,15 @@ class InvestorProfileModel extends TranWrapper {
 			//Update the users table
 			$whereUserArry		=	array("user_id" =>"{$current_user_id}");
 			$this->dbUpdate('users', $dataUserArray, $whereUserArry);
-			return $investorId;
+			return $investorId;		
+			
 		}else{
 			
 			//Update the investor table
 			$whereArry	=	array("investor_id" =>"{$investorId}");
 			$this->dbUpdate('investors', $dataArray, $whereArry);
+			
+			$this->uploadInvestorProfileAttachments($postArray,$investorId);
 			
 			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
 				$user_info			=	$this->getUseridByInvestorID($investorId);
@@ -285,8 +290,9 @@ class InvestorProfileModel extends TranWrapper {
 			//Update the users table
 			$whereUserArry		=	array("user_id" =>"{$current_user_id}");
 			$this->dbUpdate('users', $dataUserArray, $whereUserArry);
-			return $investorId;
+			return $investorId;			
 		}
+		
 	}
 	public	function uploadInvestorProfileAttachments($postArray,$investorId) {
 		
@@ -334,15 +340,13 @@ class InvestorProfileModel extends TranWrapper {
 			$updateAttachment		=	true;
 		}
 		
-		if($updateAttachment) {
+		if($updateAttachment) {			
 			$whereArray	=	["investor_id" 	=> $investorId];
 			$this->dbUpdate("investors", $updateDataArry, $whereArray);
 		}
 	}
 	
-	public function updateInvestorBankInfo($postArray,$investorId,$transType) {
-		
-		
+	public function updateInvestorBankInfo($postArray,$investorId,$transType) {		
 		
 		$destinationPath 			= 	Config::get('moneymatch_settings.upload_inv');
 		$fileUploadObj				=	new FileUpload();
