@@ -110,10 +110,10 @@
 			</td>
 			<td>
 				<div class="controls">
-					<div class="input-group">
+					<div class="input-group" style="width:150px;">
 						<input id="repayment_schedule_date_XXX" 
 							type="text" 
-							style="width:100px; text-align:left;" 
+							style="text-align:left;" 
 							name="borrSchd[_XXX][repayment_schedule_date]" 
 							value="xxx_repayment_schedule_date"
 							disabled 
@@ -181,7 +181,7 @@
 			<td>
 				<input id="status_XXX" 
 					type="text" 
-					style="width:90px; text-align:left;" 
+					style="width:70px; text-align:left;" 
 					value="xxx_repayment_status" 
 					disabled 
 					readonly
@@ -533,6 +533,7 @@ function showInvInst(invId) {
 }
 
 function reschdInsts(callback_response) {
+	$("#bidsummary").removeClass('table-striped table-bordered');
 	// When the user clicks on the "Reschedule Loan" button
 	// Before we reschedule the loan, we need to ask for a confirmation/
 	// Since jQuery execution doesn't wait while the modal window is being shown
@@ -656,7 +657,7 @@ function reschdInsts(callback_response) {
 
 
 function editInst(instNumber) {
-	$("#bidsummary").removeClass('table-striped');
+	$("#bidsummary").removeClass('table-striped table-bordered');
 	$(".edit_toggle"+instNumber).each (function () {
 		$(this).removeAttr("disabled")
 	})

@@ -177,10 +177,10 @@ function showSystemMessagesTab(data) {
 	str		=	"<div class='row'><div class='table-responsive'><table class='table table-bordered .tab-fontsize text-left'>";
 	str		=	str+"<thead><tr><th class='tab-head text-left col-sm-2'>Module</th>";
 	str		=	str+"<th class='tab-head text-left col-sm-2'>Event Action</th>";		
-	str		=	str+"<th class='tab-head text-left col-sm-6'>Message</th>";
-	str		=	str+"<th class='tab-head text-left col-sm-1'>Send Email</th>";
-	str		=	str+"<th class='tab-head text-center col-sm-1'>Message</th>";
-	str		=	str+"<th class='tab-head text-center col-sm-1'>Email</th></tr></thead>";
+	str		=	str+"<th class='tab-head text-left col-sm-5'>Message</th>";
+	str		=	str+"<th class='tab-head text-center col-sm-1'>Send Email</th>";
+	str		=	str+"<th class='tab-head text-center col-sm-1'>Edit Message</th>";
+	str		=	str+"<th class='tab-head text-center col-sm-1'>Edit Email</th></tr></thead>";
 	str		=	str+"<tbody>";
 	if(data.rows.length > 0){
 		$.each( data.rows, function( key ) {
@@ -191,7 +191,7 @@ function showSystemMessagesTab(data) {
 			str	=	str+data.rows[key].event_action+"</td>";
 			str	=	str+"<td id='edit_message'><a class='settings-cursor'>";
 			str	=	str+data.rows[key].message_text+"</a></td>";					
-			str	=	str+"<td>";
+			str	=	str+"<td class='text-center'>";
 			str	=	str+data.rows[key].send_email_text+"</td>";					
 			str	=	str+"<td class='text-center'>";
 			str	=	str+"<a class='settings-cursor' title='Edit Message'><i class='fa fa-edit'></i>"+"</a></td>";					

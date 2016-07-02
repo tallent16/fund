@@ -4,11 +4,9 @@
 	<script src="{{ url('js/passwordstrength.js') }}" type="text/javascript"></script>	  
 	<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	  
 	<script>
-		var emailExistsMess				=	"{{$regMod->systemMessages['register_email_present']}}"
-		var usernameExistsMess			=	"{{$regMod->systemMessages['register_username_present']}}"
-		var weakpasswordExistsMess		=	"{{$regMod->systemMessages['register_weak_password']}}"
-		var toc_investor				=	"{{addslashes($regMod->systemAllSetting['toc_investor'])}}"						
-		var toc_borrower				=	"{{addslashes($regMod->systemAllSetting['toc_borrower'])}}"
+		
+		var systemSettings					=	{{json_encode($regMod->systemAllSetting)}}
+		var systemMessages					=	{{json_encode($regMod->systemAllMessage[1])}}
 		
 	</script>
 	<script src="{{ url('js/register.js') }}" type="text/javascript"></script>	  

@@ -9549,9 +9549,14 @@ table#account-summary, .table-border-custom{
 #bidsummary tbody > tr > td,
 #bidsummary tbody > tr > th,
 #invInst tbody > tr > th,
-#invInst tbody > tr > td{
+#invInst tbody > tr > td,
+#module_table tr > td,
+#module_table tr > th{
 	border:none;
 	vertical-align: middle;
+}
+#module_table tbody > tr{
+	border-bottom:1px solid #ccc;
 }
 #bidsummary tbody > tr > td{
 	padding:6px;

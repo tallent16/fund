@@ -662,6 +662,18 @@ class TranWrapper extends MoneyMatchModel {
 		return $moneymatch_rs;
 	}
 	
+	public function getEmailLogo(){
+		
+		$logo_sql		= "	SELECT 	email_logo
+							FROM 	system_settings";
+				
+		$logo_rs 		= $this->dbFetchOne($logo_sql);
+		
+		$logo_url		= base_path()."/".$logo_rs;
+		
+		return '<img src="'.$logo_url.'">';
+	}
+	
 	public function getRoleNameById($role_id)	{
 		
 		$sql= "	SELECT 	name

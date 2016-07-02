@@ -12,9 +12,9 @@ $(document).ready(function (){
 		if ($('#form-register').valid()) {
 			$("#toc_information").modal();
 			if($("input[name='Userrole']:checked").val()	==	"Investor") {
-				$("#toc_messageblock").html(toc_investor);
+				$("#toc_messageblock").html(systemSettings['toc_investor']);
 			}else{
-				$("#toc_messageblock").html(toc_borrower);
+				$("#toc_messageblock").html(systemSettings['toc_borrower']);
 			}
 		}
 	 }); 
@@ -112,12 +112,12 @@ $(document).ready(function (){
             messages: {
                 'username': {
                     required: 'Please enter an Username',
-                    remote: usernameExistsMess
+                    remote: systemMessages['register_username_present']
                 },
                 'EmailAddress': {
                     required: 'Please enter an email',
                     email: 'Email is not valid',
-                    remote: emailExistsMess
+                    remote: systemMessages['register_email_present']
                 },
                 'firstname': {
                     required: 'Please enter firstname',                    
@@ -127,7 +127,7 @@ $(document).ready(function (){
                 },
                 'password': {
                     required: 'Please provide a password',
-                    custompasswordstrength: weakpasswordExistsMess
+                    custompasswordstrength: systemMessages['register_weak_password']
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',

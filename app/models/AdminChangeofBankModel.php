@@ -166,13 +166,18 @@ class AdminChangeofBankModel extends TranWrapper {
 				$moneymatchSettings = 	$this->getMailSettingsDetail();
 				$borrUserInfo		=	$this->getBorrowerIdByUserInfo($bor_id);
 				$borrInfo			=	$this->getBorrowerInfoById($bor_id);
+				$emaillogo			=	$this->getEmailLogo();
+				
+				//echo "<pre>",print_r($emaillogo),"</pre>"; die;
 				$fields				=	array(
 												'[borrower_contact_person]',											
-												'[application_name]');	
+												'[application_name]',
+												'[LOGO]');	
 				$replace_array 		= 	array();
-				$replace_array 		= 	array( 
+				$replace_array 		= 	array(  
 											$borrInfo->contact_person,											
-											$moneymatchSettings[0]->application_name);		
+											$moneymatchSettings[0]->application_name,
+											$emaillogo);		
 				$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 				if($result)
 				{

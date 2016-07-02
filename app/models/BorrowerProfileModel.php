@@ -33,7 +33,7 @@ class BorrowerProfileModel extends TranWrapper {
 	public 	$company_image  				=  	"";
 	public 	$company_image_thumbnail		=  	"";
 	public 	$company_video_url  			=  	"";
-	public 	$borrower_bankid  				=  	"";
+	public 	$borrower_bankid  				=  	0;
 	public 	$bank_name  					=  	"";
 	public 	$branch_code  					=  	"";
 	public 	$bank_account_number  			=  	"";
@@ -652,8 +652,8 @@ class BorrowerProfileModel extends TranWrapper {
 	
 	public function updateBorrowerBankInfo($postArray,$borrowerId,$transType) {
 		
-		if(isset($postArray['bank_statement'])) {
-			$bank_statement				= 	$postArray['bank_statement'];
+		if(isset($postArray['bank_statement']) || $postArray['bank_statement_hidden'] !="" ) {
+				
 			$destinationPath 			= 	Config::get('moneymatch_settings.upload_bor');
 			$fileUploadObj				=	new FileUpload();
 			
@@ -665,7 +665,7 @@ class BorrowerProfileModel extends TranWrapper {
 																					?$postArray['bank_account_number']:NULL,
 								'active_status' 		=> 1);
 								
-			if ($transType != "edit") {
+			if ( $postArray['borrower_bankid']	==	0) {
 				$borrowerBankId =  $this->dbInsert('borrower_banks', $dataArray, true);
 				if ($borrowerBankId < 0) {
 					return -1;
@@ -677,7 +677,7 @@ class BorrowerProfileModel extends TranWrapper {
 				$this->dbUpdate('borrower_banks', $dataArray, $whereArry);
 			}
 			$updateAttachment		=	false;
-			if(isset($bank_statement)){
+			if(isset($postArray['bank_statement'])){
 				if(isset($postArray['bank_statement_hidden'])){
 					$filePath		=	$postArray['bank_statement_hidden'];
 					$fileUploadObj->deleteFile($filePath);
@@ -688,7 +688,7 @@ class BorrowerProfileModel extends TranWrapper {
 				unset($newfilename);
 				unset($file);
 				
-				$file				=	$bank_statement;
+				$file				=	$postArray['bank_statement'];
 				$filePath			=	$destinationPath."/".$borrowerId;
 				$prefix				=	"bank_stat_{$borrowerBankId}_";
 				$fileUploadObj->storeFile($filePath ,$file,$prefix);
