@@ -125,8 +125,8 @@ class AdminManageBidsModel extends TranWrapper {
 		
 		$this->dbUpdate($tableName, $dataArray, $where);
 		
-		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrowerId);
-		$borrInfo			=	$this->getBorrowerInfoById($this->borrowerId);
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrower_id);
+		$borrInfo			=	$this->getBorrowerInfoById($this->borrower_id);
 		$moneymatchSettings = 	$this->getMailSettingsDetail();
 		
 		$fields 			= array('[borrower_contact_person]','[application_name]',
@@ -229,7 +229,7 @@ class AdminManageBidsModel extends TranWrapper {
 			$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
 											'[loan_number]',
 											'[bid_amount]',
-											'[bid_accepted_amount	]',
+											'[bid_accepted_amount]',
 											'[application_name]',
 											);
 			$replace_array 		= 	array( 		$invUserInfo->firstname,
@@ -242,7 +242,7 @@ class AdminManageBidsModel extends TranWrapper {
 			else
 				$slug_name			=	"loan_bids_rejected";		
 											
-			$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
+			$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);
 		}
 	
 		$tableName		=	"loans";

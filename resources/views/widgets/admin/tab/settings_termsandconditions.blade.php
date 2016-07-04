@@ -17,10 +17,16 @@
 					@section ('bortermspopup-box_panel_body')
 
 					@endsection
+					@section ('bortermspopup-box_panel_footer')
+						<button type="button" class="btn btn-default itrack-modal-close" data-dismiss="modal">
+							Close
+						</button>
+					@endsection
 					@include('widgets.modal_box.panel', array(	'id'=>'borTermsPopup',
 																'aria_labelledby'=>'borTermsPopup',
 																'as'=>'bortermspopup-box',
 																'class'=>'',
+																'footerExists'=>'yes'
 														))
 													
 					<div id="borTermsPopup"></div>
@@ -40,10 +46,16 @@
 					@section ('invtermspopup-box_panel_body')
 
 					@endsection
+					@section ('invtermspopup-box_panel_footer')
+						<button type="button" class="btn btn-default itrack-modal-close" data-dismiss="modal">
+							Close
+						</button>
+					@endsection
 					@include('widgets.modal_box.panel', array(	'id'=>'invTermsPopup',
 																'aria_labelledby'=>'invTermsPopup',
 																'as'=>'invtermspopup-box',
 																'class'=>'',
+																'footerExists'=>'yes'
 														))
 													
 					<div id="invTermsPopup"></div>

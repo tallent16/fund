@@ -85,9 +85,18 @@ class TranWrapper extends MoneyMatchModel {
 				$mailSubject		= $emailSettings[0]->email_subject;
 				
 				$new_content 		= str_replace($fieldArray, $replaceArray, $mailContents);
-				$new_subject 		= str_replace($fieldArray, $replaceArray, $mailSubject);
+				$new_subject 		= str_replace($fieldArray, $replaceArray, $mailSubject);				
+					
+				if( strpos($new_content, '[LOGO]') !== false ) {
+					$logo	=	$this->getEmailLogo();	
+					$msgarray = array(
+									"content" =>str_replace('[LOGO]', $logo, $new_content ) 
+								);											
+				}else{											
+					$msgarray = array(
+								"content" => $new_content);
+				}
 				
-				$msgarray = array("content" => $new_content);			
 				$msgData = array(	"subject" => $new_subject, 
 									"from" => $moneymatchSettings[0]->admin_email,
 									"from_name" => $moneymatchSettings[0]->application_name,
@@ -98,6 +107,7 @@ class TranWrapper extends MoneyMatchModel {
 									
 				$mailArry	=	array(	"msgarray"=>$msgarray,
 										"msgData"=>$msgData);
+										
 				$this->sendMail($mailArry);
 			}
 		}
@@ -669,9 +679,9 @@ class TranWrapper extends MoneyMatchModel {
 				
 		$logo_rs 		= $this->dbFetchOne($logo_sql);
 		
-		$logo_url		= base_path()."/".$logo_rs;
+		$logo_url		= url()."/".$logo_rs;
 		
-		return '<img src="'.$logo_url.'">';
+		return '<img src="'.$logo_url.'"><br>';
 	}
 	
 	public function getRoleNameById($role_id)	{

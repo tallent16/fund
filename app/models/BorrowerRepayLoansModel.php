@@ -179,6 +179,8 @@ class BorrowerRepayLoansModel extends TranWrapper {
 													installment_number,
 													principal_component,
 													interest_component,
+													repayment_penalty_interest,
+													repayment_penalty_charges,
 													repayment_schedule_id,
 													loans.borrower_id,
 													IFNULL(borrower_repayment_schedule.payment_id,0) payment_id,
@@ -213,6 +215,8 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$this->installmentNumber	=	$repaySched_rs[0]->installment_number;		
 			$this->principalAmount		=	$repaySched_rs[0]->principal_component;
 			$this->interestAmount		=	$repaySched_rs[0]->interest_component;
+			$this->penaltyInt			=	$repaySched_rs[0]->repayment_penalty_interest;
+			$this->penaltyFee			=	$repaySched_rs[0]->repayment_penalty_charges;
 			$this->repaymentSchdId		=	$repaySched_rs[0]->repayment_schedule_id;		
 			$this->transreference_no	=	$repaySched_rs[0]->trans_reference_number;		
 			$this->remarks				=	$repaySched_rs[0]->remarks;		
@@ -231,32 +235,39 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			// This is an error condition. Can't be true
 			return -1;
 		}
-		//~ echo 			$this->isOverdue;
-		if ($this->isOverdue == 'Overdue') {
-			// Calculate the penalty amount
-			$dbFormattedschedDate	=	$this->getDbDateFormat($this->schedDate);
-			$dbFormattedcurDate		=	$this->getDbDateFormat($this->repaymentDate);
-			
-			$penaltyComp_sql		=	"SELECT	penalty_fee_percent,
-												penalty_fee_minimum,
-												penalty_interest
-										FROM	system_settings";
-										
-			$penaltyComp_rs			=	$this->dbFetchAll($penaltyComp_sql);
-			
-			$datetime1 = new \DateTime($dbFormattedschedDate);
-			$datetime2 = new \DateTime($dbFormattedcurDate);
-			$interval = $datetime1->diff($datetime2);
-			$delay_days	= $interval->format('%a');
-			
-			if (count($penaltyComp_rs) > 0) {
-				if(strtotime($dbFormattedcurDate) > strtotime($dbFormattedschedDate)) {
-					
-					$this->penaltyAmt		=	round(($this->schedAmount*(1+
-												$penaltyComp_rs[0]->penalty_interest/36500)**$delay_days)-(
-													$this->schedAmount),2);
-					$this->penaltyCompShare	=	round(max(($this->schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/
-																		100)),$penaltyComp_rs[0]->penalty_fee_minimum),2);
+		
+		if ($this->penaltyInt > 0 || $this->penaltyFee) {
+			// The admin has already fixed the penalty amount. You don't have to calculate the penalty amount
+			$this->penaltyAmt = $this->penaltyInt + $this->penaltyFee;
+			$this->penaltyCompShare = $this->penaltyFee;
+		} else {
+			//~ echo 			$this->isOverdue;
+			if ($this->isOverdue == 'Overdue') {
+				// Calculate the penalty amount
+				$dbFormattedschedDate	=	$this->getDbDateFormat($this->schedDate);
+				$dbFormattedcurDate		=	$this->getDbDateFormat($this->repaymentDate);
+				
+				$penaltyComp_sql		=	"SELECT	penalty_fee_percent,
+													penalty_fee_minimum,
+													penalty_interest
+											FROM	system_settings";
+											
+				$penaltyComp_rs			=	$this->dbFetchAll($penaltyComp_sql);
+				
+				$datetime1 = new \DateTime($dbFormattedschedDate);
+				$datetime2 = new \DateTime($dbFormattedcurDate);
+				$interval = $datetime1->diff($datetime2);
+				$delay_days	= $interval->format('%a');
+				
+				if (count($penaltyComp_rs) > 0) {
+					if(strtotime($dbFormattedcurDate) > strtotime($dbFormattedschedDate)) {
+						
+						$this->penaltyAmt		=	round(($this->schedAmount*(1+
+													$penaltyComp_rs[0]->penalty_interest/36500)**$delay_days)-(
+														$this->schedAmount),2);
+						$this->penaltyCompShare	=	round(max(($this->schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/
+																			100)),$penaltyComp_rs[0]->penalty_fee_minimum),2);
+					}
 				}
 			}
 		}

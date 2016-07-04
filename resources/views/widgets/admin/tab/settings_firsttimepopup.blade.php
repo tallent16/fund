@@ -17,10 +17,16 @@
 					@section ('borfirstpopup-box_panel_body')
 
 					@endsection
+					@section ('borfirstpopup-box_panel_footer')
+							<button type="button" class="btn btn-default itrack-modal-close" data-dismiss="modal">
+									Close
+								</button>
+					@endsection
 					@include('widgets.modal_box.panel', array(	'id'=>'borFirstPopup',
 																'aria_labelledby'=>'borFirstPopup',
 																'as'=>'borfirstpopup-box',
 																'class'=>'',
+																'footerExists'=>'yes'
 														))
 													
 					<div id="borFirstPopup"></div>
@@ -40,10 +46,16 @@
 					@section ('invfirstpopup-box_panel_body')
 
 					@endsection
+					@section ('invfirstpopup-box_panel_footer')
+						<button type="button" class="btn btn-default itrack-modal-close" data-dismiss="modal">
+							Close
+						</button>
+					@endsection
 					@include('widgets.modal_box.panel', array(	'id'=>'invFirstPopup',
 																'aria_labelledby'=>'invFirstPopup',
 																'as'=>'invfirstpopup-box',
 																'class'=>'',
+																'footerExists'=>'yes'
 														))
 													
 					<div id="invFirstPopup"></div>

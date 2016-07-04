@@ -21,13 +21,11 @@
 			<div class="modal-body">
 				@yield ($as . '_panel_body')
 			</div>
-<!--
+		@if(isset($footerExists))
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default itrack-modal-close" data-dismiss="{{$id}}">
-						Close
-				</button>
+				@yield ($as .'_panel_footer')					
 			</div>
--->
+		@endif
 		</div>
 	</div>
 </div>

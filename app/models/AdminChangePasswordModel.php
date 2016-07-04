@@ -68,13 +68,11 @@ class AdminChangePasswordModel extends TranWrapper {
 		$fields 			= array(
 									'[investor_firstname]',
 									'[investor_lastname]',
-									'[changed_password]',
 									'[application_name]');
 		$replace_array 		= array();
 		$replace_array 		= 	array( 
 										$invUserInfo->firstname, 
 										$invUserInfo->lastname, 
-										$password,
 										$moneymatchSettings[0]->application_name);
 										
 		$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);
@@ -91,12 +89,10 @@ class AdminChangePasswordModel extends TranWrapper {
 		
 			$fields 			= array(
 											'[borrower_contact_person]',
-											'[changed_password]',
 											'[application_name]');
 			$replace_array 		= array();
 			$replace_array 		= 	array( 
 											$borrInfo->contact_person,
-											$password,
 											$moneymatchSettings[0]->application_name);
 			$this->sendMailByModule($slug_name,$borUserInfo->email,$fields,$replace_array);
 		}
@@ -110,7 +106,6 @@ class AdminChangePasswordModel extends TranWrapper {
 		$slug_name			=	"change_password_admin";
 		$fields 			= array(
 									'[username]',
-									'[changed_password]',
 									'[application_name]');
 		$replace_array 		= array();
 		$replace_array 		= 	array( 
@@ -130,13 +125,11 @@ class AdminChangePasswordModel extends TranWrapper {
 		$fields 			= array(
 									'[admin_email_label]',
 									'[username]',
-									'[changed_password]',
 									'[application_name]');
 		$replace_array 		= array();
 		$replace_array 		= 	array( 
 										$moneymatchSettings[0]->admin_email_label, 
 										$userInfo->username, 
-										$password,
 										$moneymatchSettings[0]->application_name);
 		$this->sendMailByModule($slug_name,$moneymatchSettings[0]->admin_email,$fields,$replace_array);
 	

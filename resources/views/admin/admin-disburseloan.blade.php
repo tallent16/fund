@@ -745,6 +745,7 @@ function computeInvTotal(instNumb, invId) {
 	
 	instTotal = instPrinAmt + instIntAmt + instPenInt + instPenFee
 	$("#total" + instNumb).val(numeral(instTotal).format("0,000.00"))
+	$("#principal_component" + instNumb).val(numeral(instPrinAmt).format("0,000.00"))
 	$("#penalty_interest" + instNumb).val(numeral(instPenInt).format("0,000.00"))
 	$("#interest_component" + instNumb).val(numeral(instIntAmt).format("0,000.00"))
 	$("#penalty_interest" + instNumb).val(numeral(instPenInt).format("0,000.00"))

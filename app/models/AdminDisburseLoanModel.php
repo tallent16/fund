@@ -4,6 +4,8 @@ use File;
 use Config;
 use DateTime;
 use DateInterval;
+use Log;
+
 	  
 class AdminDisburseLoanModel extends TranWrapper {
 	public	$loan_reference_number = "";
@@ -405,6 +407,33 @@ class AdminDisburseLoanModel extends TranWrapper {
 
 		$this->dbInsert("disbursements", $disbData, false);
 		
+		$borrower_rep_schHeader	=	'<table id="bidsummary" class="table table-bordered table-striped">	
+										<tbody><tr>	
+											<th class="tab-head col-sm-1 text-left">
+													Inst-No
+											</th>
+						
+											<th class="tab-head col-sm-2 text-left">
+												Schd / Actual Date
+											</th>
+						
+											<th class="tab-head col-sm-1 text-right">
+												Principal
+											</th>
+											
+											<th class="tab-head col-sm-1 text-right">
+												Interest
+											</th>
+											
+											<th class="tab-head col-sm-1 text-right">
+												Total
+											</th>
+											
+										</tr>';
+	
+	
+		
+		$borrower_rep_schBody	=	"";
 		// Insert new rows in borrower_repayment_schedule
 		foreach ($this->repayment_schedule as $instNum => $repaySchd) {
 			$date	=	$this->getDbDateFormat($repaySchd["payment_scheduled_date"]);
@@ -413,29 +442,130 @@ class AdminDisburseLoanModel extends TranWrapper {
 								"borrower_id"					=>	$this->borrower_id,
 								"installment_number"			=>	$instNum+1,
 								"repayment_schedule_date"		=>	$date,
-								"repayment_scheduled_amount"	=>	$repaySchd["payment_schedule_amount"],
-								"principal_component"			=>	$repaySchd["principal_amount"],
-								"interest_component"			=>	$repaySchd["interest_amount"],
+								"repayment_scheduled_amount"	=>	$this->makeFloat($repaySchd["payment_schedule_amount"]),
+								"principal_component"			=>	$this->makeFloat($repaySchd["principal_amount"]),
+								"interest_component"			=>	$this->makeFloat($repaySchd["interest_amount"]),
 								"repayment_status"				=>	BORROWER_REPAYMENT_STATUS_UNPAID];
-								
+								$rowTot	=	$this->makeFloat($repaySchd["principal_amount"]);
+								$rowTot	=	$rowTot	+	$this->makeFloat($repaySchd["interest_amount"]);
+												
+			$borrower_rep_schBody	.=	'<tr><td>'.($instNum+1).'</td>';
+			$borrower_rep_schBody	.=	'<td>'.$date.'</td>';
+			$borrower_rep_schBody	.=	'<td>'.$repaySchd["payment_schedule_amount"].'</td>';
+			$borrower_rep_schBody	.=	'<td>'.$repaySchd["interest_amount"].'</td>';
+			$borrower_rep_schBody	.=	'<td>'.$rowTot.'</td></tr>';
+			
 			$this->dbInsert("borrower_repayment_schedule", $borrSchdData, false);
 			
 		}
-
+		
+		$borrower_rep_schFooter	=	'</tbody></table>';
+		// Send email notification for borrower starts here
+		
+		$borrower_rep_schedule	=	$borrower_rep_schHeader.$borrower_rep_schBody.$borrower_rep_schFooter;
+		$borrUserInfo			=	$this->getBorrowerIdByUserInfo($this->borrower_id);
+		$borrInfo				=	$this->getBorrowerInfoById($this->borrower_id);
+		$moneymatchSettings 	= 	$this->getMailSettingsDetail();
+		
+		$fields 				= 	array(	'[borrower_contact_person]',
+										'[loan_number]',
+										'[loan_sanctioned_amount]',
+										'[borrower_loan_repayment_schedule]',
+										'[application_name]');
+		$replace_array 		= 		array( 	$borrInfo->contact_person, 
+											$this->loan_reference_number,
+											$this->loan_sanctioned_amount,
+											$borrower_rep_schedule,
+											$moneymatchSettings[0]->application_name);
+										
+		
+		$this->sendMailByModule("loan_disbursed",$borrUserInfo->email,$fields,$replace_array);
+			
+		// Send email notification for borrower ends here	
+		
+		
+		$inv_rep_schHeader	=	'<table  class="table table-bordered table-striped">	
+										<tbody><tr>	
+											<th class="tab-head col-sm-1 text-left">
+													Inst-No
+											</th>
+						
+											<th class="tab-head col-sm-2 text-left">
+												Schd / Actual Date
+											</th>
+						
+											<th class="tab-head col-sm-1 text-right">
+												Principal
+											</th>
+											
+											<th class="tab-head col-sm-1 text-right">
+												Interest
+											</th>
+											
+											<th class="tab-head col-sm-1 text-right">
+												Total
+											</th>
+												
+										</tr>';
+										
 		foreach ($this->investor_repayment as $investorId => $invRepaySch) {
+			
+			unset($rowTot);
+			unset($inv_rep_schBody);
+			unset($inv_rep_schFooter);
+			unset($inv_rep_schedule);
+			unset($fields);
+			unset($replace_array);
+			$inv_rep_schBody	=	"";
 			foreach ($invRepaySch as $instlNum => $instlDtls ) {
+				$date	=	$this->getDbDateFormat($instlDtls["payment_scheduled_date"]);
+
 				$invSchdData	=	[	"loan_id"					=>	$loan_id,
 									"investor_id"				=>	$investorId,
 									"installment_number"		=>	$instlNum+1,
-									"payment_scheduled_date"	=>	$instlDtls["payment_scheduled_date"],
-									"principal_amount"			=>	$instlDtls["principal_amount"],
-									"interest_amount"			=>	$instlDtls["interest_amount"],
-									"payment_schedule_amount"	=>	$instlDtls["payment_schedule_amount"],
+									"payment_scheduled_date"	=>	$date,
+									"principal_amount"			=>	$this->makeFloat($instlDtls["principal_amount"]),
+									"interest_amount"			=>	$this->makeFloat($instlDtls["interest_amount"]),
+									"payment_schedule_amount"	=>	$this->makeFloat($instlDtls["payment_schedule_amount"]),
 									"status"					=>	BORROWER_REPAYMENT_STATUS_UNPAID ];
+				$rowTot	=	$this->makeFloat($instlDtls["principal_amount"]);
+				$rowTot	=	$rowTot	+	$this->makeFloat($instlDtls["interest_amount"]);				
+				
+				$inv_rep_schBody	.=	'<tr><td>'.($instlNum+1).'</td>';
+				$inv_rep_schBody	.=	'<td>'.$date.'</td>';
+				$inv_rep_schBody	.=	'<td>'.$instlDtls["principal_amount"].'</td>';
+				$inv_rep_schBody	.=	'<td>'.$instlDtls["interest_amount"].'</td>';
+				$inv_rep_schBody	.=	'<td>'.$rowTot.'</td></tr>';
 				
 				$this->dbInsert("investor_repayment_schedule", $invSchdData, false);
+				
+				$inv_rep_schFooter	=	'</tbody></table>';
+
 			}
+							
+				// Send email notification for borrower starts here
 		
+					$inv_rep_schedule		=	$inv_rep_schHeader.$inv_rep_schBody.$inv_rep_schFooter;
+					
+					$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
+					$invInfo			=	$this->getInvestorInfoById($investorId);
+					$moneymatchSettings = 	$this->getMailSettingsDetail();
+					$fields 			= 	array(	'[investor_firstname]', 
+													'[investor_lastname]',
+													'[loan_number]',
+													'[investor_loan_repayment_schedule]',
+													'[application_name]');
+					
+					$replace_array 		= 	array( 	$invUserInfo->firstname,
+													$invUserInfo->lastname, 
+													$this->loan_reference_number,
+													$inv_rep_schedule,
+													$moneymatchSettings[0]->application_name);
+									
+					
+					$this->sendMailByModule("loan_disbursed_investor",$invUserInfo->email,$fields,$replace_array);
+						
+				// Send email notification for borrower ends here	
 		}
 		
 		return 1;
@@ -769,6 +899,14 @@ class AdminDisburseLoanModel extends TranWrapper {
 								'repayment_penalty_charges' => $this->makeFloat($postArray['borrSchd'][$instNum]['penalty_fee']),
 								'repayment_scheduled_amount' => $this->makeFloat($postArray['borrSchd'][$instNum]['total'])];
 								
+			if ($this->makeFloat($postArray['borrSchd'][$instNum]['total']) == 0) {
+				$dataArray['repayment_status'] = BORROWER_REPAYMENT_STATUS_CANCELLED;
+			}
+			
+			Log::error("borrower - Installment Number {$instNum}");
+			Log::error($dataArray);
+			
+								
 			$whereArray	=	[ 'loan_id' => $loanId,
 							  'installment_number' => $instNum ];
 							  
@@ -799,7 +937,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 								'old_schd_amt' => $row->payment_schedule_amount,
 								'new_schd_amt' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['total'])];
 								
-			$this->dbInsert("borrower_rescheduled_details", $dataArray, false);
+			$this->dbInsert("investor_rescheduled_details", $dataArray, false);
 			
 			unset($dataArray);
 			
@@ -808,7 +946,11 @@ class AdminDisburseLoanModel extends TranWrapper {
 								'interest_amount' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['interest_component']),
 								'penalty_amount' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['penalty_interest']),
 								'payment_schedule_amount' => $this->makeFloat($postArray['invSchd'][$invId][$instNum]['total'])];
-								
+			
+			if ($this->makeFloat($postArray['invSchd'][$invId][$instNum]['total']) == 0) {
+				$dataArray['status'] = BORROWER_REPAYMENT_STATUS_CANCELLED;
+			}
+			
 			$whereArray	=	[ 'loan_id' => $loanId,
 							  'installment_number' => $instNum,
 							  'investor_id' => $invId ];

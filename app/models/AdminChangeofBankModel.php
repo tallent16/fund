@@ -4,6 +4,8 @@ class AdminChangeofBankModel extends TranWrapper {
 	
 	public 	$bank_lists 	= array();	
 	public 	$successTxt		=	"";
+	public	$accountproof	= 	"";
+	public 	$full_path		= 	"";
 	/*---------------------------List the borrower/investor bank Entries-----------------------------------------------*/
 	public function getborrowerinvestorbanks(){
 		
@@ -165,19 +167,17 @@ class AdminChangeofBankModel extends TranWrapper {
 				$this->successTxt	=	$this->getSystemMessageBySlug($slug_name);	//success message from DB
 				$moneymatchSettings = 	$this->getMailSettingsDetail();
 				$borrUserInfo		=	$this->getBorrowerIdByUserInfo($bor_id);
-				$borrInfo			=	$this->getBorrowerInfoById($bor_id);
-				$emaillogo			=	$this->getEmailLogo();
+				$borrInfo			=	$this->getBorrowerInfoById($bor_id);							
 				
-				//echo "<pre>",print_r($emaillogo),"</pre>"; die;
 				$fields				=	array(
 												'[borrower_contact_person]',											
-												'[application_name]',
-												'[LOGO]');	
+												'[application_name]'
+												);	
 				$replace_array 		= 	array();
 				$replace_array 		= 	array(  
 											$borrInfo->contact_person,											
-											$moneymatchSettings[0]->application_name,
-											$emaillogo);		
+											$moneymatchSettings[0]->application_name
+											);		
 				$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 				if($result)
 				{
@@ -233,12 +233,13 @@ class AdminChangeofBankModel extends TranWrapper {
 			$bor_id		= $postArray['bor_id'];
 			$inv_bankid	= $postArray['inv_bankid'];
 			$inv_id		= $postArray['inv_id'];
-			$usertype	= $postArray['usertype'];	
+			$usertype	= $postArray['usertype'];			
 			
-			if($postArray['bank_statement_url']){				
-				$accountproof	= $postArray['bank_statement_url'];	
-			}
-			$full_path	=	base_path().'/'.$accountproof;		//basepath for uploaded doc url
+			if($postArray['bank_statement_url']){
+					$full_path	= base_path().'/'.$postArray['bank_statement_url'];		//basepath for uploaded doc url
+			}else{
+					$full_path	= "";
+			}		
 			
 			if($usertype == "Borrower"){				
 				$where	 = array('borrower_bankid' =>"{$bor_bankid}",
@@ -267,7 +268,7 @@ class AdminChangeofBankModel extends TranWrapper {
 			}else{
 				$where	= array('investor_bankid' =>"{$inv_bankid}",
 									'investor_id' =>"{$inv_id}");	
-								
+							
 				if(file_exists($full_path)){										
 					File::delete($full_path);				//uploaded file has been deleted when record deletes in db
 				}								
@@ -279,11 +280,14 @@ class AdminChangeofBankModel extends TranWrapper {
 				$moneymatchSettings = 	$this->getMailSettingsDetail();
 				$invUserInfo		=	$this->getInvestorIdByUserInfo($inv_id);
 				$invInfo			=	$this->getInvestorInfoById($inv_id);
-				$fields				=	array('[investor_firstname]', '[investor_lastname]','[application_name]');
+				$fields				=	array('[investor_firstname]', 
+												'[investor_lastname]',
+												'[application_name]');
 				$replace_array 		= 	array();
 				$replace_array 		= 	array( 	$invUserInfo->firstname,
 												$invUserInfo->lastname, 
 												$moneymatchSettings[0]->application_name);	
+											
 				$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);			
 				return 1;					
 			}					
