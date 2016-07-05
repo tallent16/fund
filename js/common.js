@@ -391,20 +391,24 @@ function modalBodyScrollable() {
 	
 	console.log(window.innerWidth/2);
 		$customWidth	=	window.innerWidth/2;
-		$customHeight	=	parseInt(window.innerHeight)-125;
-	
+		$customHeight	=	parseInt(window.innerHeight)-170;	
 		
 		//~ $('.modal-content').css({maxHeight:($customHeight+'px') });
-		$contentHeight	=	$('.modal-content').innerHeight();
-		$headerHeight	=	$('.modal-header').innerHeight();
-		console.log("$contentHeight"+$contentHeight);
-		console.log("$headerHeight"+$headerHeight);
+		$contentHeight	=	$('.modal-content').height();
+		$headerHeight	=	$('.modal-header').height();
+		$footerHeight	=	$('.modal-footer').height();
 		
-		$bodyHeight		=	parseInt($contentHeight) - parseInt($headerHeight);
-		console.log("$contentHeight"+$bodyHeight);
+		console.log("$contentHeight"+parseInt($contentHeight));
+		console.log("$headerHeight"+parseInt($headerHeight));
+		console.log("$footerHeight"+parseInt($footerHeight));		
+		console.log("$customHeight"+parseInt(window.innerHeight));
+		
+		//$bodyHeight		=	parseInt($contentHeight) - parseInt($headerHeight);
+		$bodyHeight		=	parseInt(window.innerHeight) - (-parseInt($headerHeight)+(-parseInt($footerHeight))+30);
+		console.log("$finalbody"+$bodyHeight);
 		//~ $('.modal-body').css({maxHeight:(parseInt($bodyHeight) +'px'),
 								//~ 'overflow-y':'scroll'
-						 //~ });
+						 //~ }); 
 		$('.modal-body').css({maxHeight:($customHeight +'px'),
 								'overflow-y':'scroll'
 						 });

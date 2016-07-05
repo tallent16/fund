@@ -43,19 +43,19 @@ class ManagePasswordModel extends TranWrapper {
 	
 	public function saveChangedPassword($passwordtype, $userId, $newpass, $confirmpass, $oldPassword,$secretanswer){
 			
-		if ($passwordtype == "Change Password") {
-				return $this->changePassword($userId, $oldPassword,$confirmpass);
-		}else{ 
-				return $this->forgotPassword($userId,$secretanswer,$confirmpass);
+		if ($passwordtype == "Change Password") {					
+				return $this->changePassword($userId, $oldPassword,$confirmpass,$passwordtype);
+		}else{ 				
+				return $this->forgotPassword($userId,$secretanswer,$confirmpass,$passwordtype);
 			
 		}
 	}
 	
-	public function changePassword($userId, $oldPassword,$confirmpass){
+	public function changePassword($userId, $oldPassword,$confirmpass,$passwordtype){
 		$retval = $this->checkOldPassword($userId, $oldPassword);
 			if ($retval < 0){				
 				/****Mail Functionality************/
-				$this->sendMailToAdmin($userId);
+				$this->sendMailToAdmin($userId,$passwordtype);
 				/****Mail Functionality************/
 			}
 			else{
@@ -87,7 +87,7 @@ class ManagePasswordModel extends TranWrapper {
 		}			
 	}
 	
-	public function forgotPassword($userId,$secretanswer,$confirmpass){
+	public function forgotPassword($userId,$secretanswer,$confirmpass,$passwordtype){
 		
 		$returnquestion		   =  $this->checkSecretAnswer($userId,$secretanswer);
 		
@@ -104,7 +104,7 @@ class ManagePasswordModel extends TranWrapper {
 				
 			}else{
 				/****Mail Functionality************/
-				$this->sendMailToAdmin($userId);
+				$this->sendMailToAdmin($userId,$passwordtype);
 				/****Mail Functionality************/						
 			}
 			
@@ -133,7 +133,7 @@ class ManagePasswordModel extends TranWrapper {
 		}
 	}
 	
-	public function sendMailToAdmin($userId){
+	public function sendMailToAdmin($userId,$passwordtype){
 
 		$username_sql				= "SELECT username 
 									   FROM users 
@@ -141,26 +141,50 @@ class ManagePasswordModel extends TranWrapper {
 									   
 		$this->username				=	$this->dbFetchOne($username_sql);
 		
+		$sql				=	"SELECT usertype 
+									FROM	users
+									WHERE	user_id = {$userId}";
+			
+		$checkuser_type		=	$this->dbFetchOne($sql);		
+		
+		if($checkuser_type == 1){
+			if($passwordtype == "Change Password"){
+				$slug	="password_wrong_borrower";
+			}else{
+				$slug 	="answer_wrong_borrower";
+			}
+		}else{			
+			if($passwordtype == "Change Password"){
+				$slug	= "password_wrong_investor";
+			}else{
+				$slug	= "answer_wrong_investor";
+			}		
+		}
+		
+		
+		//$mailContents		= 	$moneymatchSettings[0]->change_password_mail_alert;
+	
+		//$mailContents		= 	"Dear Admin, <br>[username] have entered 3 times wrong passwords<br> sincerely,					[application_name]";
+		$moneymatchSettings = $this->getMailSettingsDetail();
+		
+		//$mailContents		= 	$mailcontent;
+		
+		//$mailSubject		= 	"Warning - Unsuccessful attempts to access account";
 		$fields 			= array('[username]','[application_name]');
 		$replace_array 		= array();
 		
-		$moneymatchSettings = $this->getMailSettingsDetail();
-		
-		$mailContents		= 	$moneymatchSettings[0]->change_password_mail_alert;
-		
-		$mailSubject		= 	"Warning - Unsuccessful attempts to access account";
-
 		$replace_array 		= 	array( $this->username, $moneymatchSettings[0]->application_name);
 							
 		$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
 		
-		$template			=	"emails.wrongPasswordAttemptTemplate";
+		
+		//$template			=	"emails.wrongPasswordAttemptTemplate";
 
 		$count = 0;
 		$count = session::set('crud_count', session::get('crud_count', 0) + 1);
 		if(session::get('crud_count') >= 3){
 			
-			$msgarray 	=	array(	"content" => $new_content);			
+		/*	$msgarray 	=	array(	"content" => $new_content);			
 			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$mailSubject, 
 							"from" => $moneymatchSettings[0]->mail_default_from,
 							"from_name" => $moneymatchSettings[0]->application_name,
@@ -171,9 +195,9 @@ class ManagePasswordModel extends TranWrapper {
 	
 			$mailArry	=	array(	"msgarray"=>$msgarray,
 									"msgData"=>$msgData);
-			$this->sendMail($mailArry);
+			$this->sendMail($mailArry);*/
+			$this->sendMailByModule($slug,$borrUserInfo->email,$fields,$replace_array);
 			
 		}	
 	}	
 }
-
