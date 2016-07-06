@@ -66,10 +66,11 @@ class ManagePasswordController extends MoneyMatchController {
 		$confirmpass		= 	$postArray['ConfirmPassword'];		
 		$oldPassword		=	$postArray['oldpassword'];		
 		$result				=	$this->managePasswordModel->saveChangedPassword($passwordtype, $userId, $newpass, $confirmpass, $oldPassword,'');
+		$successTxt	=	$this->managePasswordModel->successTxt;
 		if($result != 1 )	{			
 				session()->put('sess_email',$postArray['EmailAddress']);
 				session()->put('sess_type',$postArray['passwordtype']);
-				return redirect()->route("get.change")->with("failure","You have entered, Wrong! Old Password");
+				return redirect()->route("get.change")->with("failure",$successTxt);
 		}
 		else{				
 				session()->put('submit', 'New Password changed Successfully');
@@ -86,16 +87,15 @@ class ManagePasswordController extends MoneyMatchController {
 		$confirmpass		= 	$postArray['ConfirmPassword'];		
 		$secretanswer		=	$postArray['secretanswer'];	
 		$result				=	$this->managePasswordModel->saveChangedPassword($passwordtype, $userId, $newpass, $confirmpass, '',$secretanswer);
+		$successTxt	=	$this->managePasswordModel->successTxt;
 		if($result != 1 )	{			
 			session()->put('sess_email',$postArray['EmailAddress']);
 			session()->put('sess_type',$postArray['passwordtype']);			
-			return redirect()->route("get.forgot")->with("failure","You have entered, Wrong! Security Answer");
+			return redirect()->route("get.forgot")->with("failure",$successTxt);
 		}
 		else{				
 			session()->put('submit', 'New Password Changed Successfully');
 			return redirect('/auth/login');
 		}		
-	}
-	
-	
+	}	
 }

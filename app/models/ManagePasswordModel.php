@@ -6,6 +6,7 @@ class ManagePasswordModel extends TranWrapper {
 	
 	public $userId			= "";	
 	public $challengeid		= "";
+	public $successTxt		= "";
 	
 	public function getSecretQuestion($email,$passwordtype){
 		
@@ -134,70 +135,52 @@ class ManagePasswordModel extends TranWrapper {
 	}
 	
 	public function sendMailToAdmin($userId,$passwordtype){
-
-		$username_sql				= "SELECT username 
+		
+		$username_sql		= "SELECT username 
 									   FROM users 
 									   WHERE user_id = '".$userId."' ";
 									   
-		$this->username				=	$this->dbFetchOne($username_sql);
+		$this->username		=	$this->dbFetchOne($username_sql);
 		
 		$sql				=	"SELECT usertype 
 									FROM	users
 									WHERE	user_id = {$userId}";
 			
-		$checkuser_type		=	$this->dbFetchOne($sql);		
+		$checkuser_type		=	$this->dbFetchOne($sql);	
+		
+		$sql				=	"SELECT email 
+									FROM	users
+									WHERE	user_id = {$userId}";
+			
+		$useremail			=	$this->dbFetchOne($sql);	
 		
 		if($checkuser_type == 1){
 			if($passwordtype == "Change Password"){
 				$slug	="password_wrong_borrower";
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug);
 			}else{
 				$slug 	="answer_wrong_borrower";
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug);
 			}
 		}else{			
 			if($passwordtype == "Change Password"){
 				$slug	= "password_wrong_investor";
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug);
 			}else{
 				$slug	= "answer_wrong_investor";
+				$this->successTxt	=	$this->getSystemMessageBySlug($slug);
 			}		
 		}
 		
-		
-		//$mailContents		= 	$moneymatchSettings[0]->change_password_mail_alert;
-	
-		//$mailContents		= 	"Dear Admin, <br>[username] have entered 3 times wrong passwords<br> sincerely,					[application_name]";
 		$moneymatchSettings = $this->getMailSettingsDetail();
-		
-		//$mailContents		= 	$mailcontent;
-		
-		//$mailSubject		= 	"Warning - Unsuccessful attempts to access account";
 		$fields 			= array('[username]','[application_name]');
-		$replace_array 		= array();
-		
-		$replace_array 		= 	array( $this->username, $moneymatchSettings[0]->application_name);
-							
-		$new_content 		= 	str_replace($fields, $replace_array, $mailContents);
-		
-		
-		//$template			=	"emails.wrongPasswordAttemptTemplate";
+		$replace_array 		= array();				
+		$replace_array 		= array( $this->username, $moneymatchSettings[0]->application_name);
 
 		$count = 0;
 		$count = session::set('crud_count', session::get('crud_count', 0) + 1);
-		if(session::get('crud_count') >= 3){
-			
-		/*	$msgarray 	=	array(	"content" => $new_content);			
-			$msgData 	= 	array(	"subject" => $moneymatchSettings[0]->application_name." - ".$mailSubject, 
-							"from" => $moneymatchSettings[0]->mail_default_from,
-							"from_name" => $moneymatchSettings[0]->application_name,
-							"to" => $moneymatchSettings[0]->admin_email,
-							"cc" => $moneymatchSettings[0]->admin_email,
-							"live_mail" => $moneymatchSettings[0]->send_live_mails,
-							"template"=>$template);
-	
-			$mailArry	=	array(	"msgarray"=>$msgarray,
-									"msgData"=>$msgData);
-			$this->sendMail($mailArry);*/
-			$this->sendMailByModule($slug,$borrUserInfo->email,$fields,$replace_array);
-			
+		if(session::get('crud_count') >= 3){						
+			$this->sendMailByModule($slug,$useremail,$fields,$replace_array);			
 		}	
 	}	
 }
