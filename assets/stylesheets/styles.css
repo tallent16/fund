@@ -9501,17 +9501,25 @@ tr.shown td.details-control {
     padding: 40px;
 }
 /*********************Investor Dashboard********************************/
+#nested .panel-default > .panel-heading{
+	background-color: #ccc;
+	color: #222;
+}	
 #accordion .panel-body{
 	padding:0;
 }
-#accordion .panel-default > .panel-heading{
+.panel-group .panel-default > .panel-heading{
 	background-color:#222;
 	color:#fff;
-}
-#accordion .panel-title > a{
+}/*
+#accordion .panel-title > a,
+#nested .panel-title > a
+*/
+.panel-group .panel-title > a{
 	text-decoration:none;
 }
-#accordion .panel-body, #account-summary td{
+#accordion .panel-body, 
+#account-summary td{
 	border:none;
 } 
 table#account-summary{
