@@ -2,7 +2,7 @@
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+use Illuminate\Session\TokenMismatchException;
 class Handler extends ExceptionHandler {
 
 	/**
@@ -36,6 +36,19 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
+		if($this->isHttpException($e))	{
+            if (view()->exists('errors.'.$e->getStatusCode()))	{
+                return response()->view('errors.'.$e->getStatusCode(), [], $e->getStatusCode());
+            }else{
+				return response()->view('errors.custom', ['message'=>$e->getMessage()], $e->getStatusCode());
+            }
+        }
+		 if ($e instanceof TokenMismatchException){
+            //redirect to a form. Here is an example of how I handle mine
+            
+			return response()->view('errors.custom', ['message'=>'Oops TokenMismatch Error found']);
+        }
+
 		
 		return parent::render($request, $e);
 	}

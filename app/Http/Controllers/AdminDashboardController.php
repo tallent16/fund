@@ -62,7 +62,8 @@ class AdminDashboardController extends MoneyMatchController {
 													);
 		$withArry	=	array(	
 									"classname"=>"fa fa-reply fa-fw user-icon",
-									"periodic_snapshot"=>$periodic_snapshot
+									"periodic_snapshot"=>$periodic_snapshot,
+									"dashMod"=>$this->adminDashboardModel
 								);	
 		return view('admin.admin-dashboard')
 				->with($withArry);

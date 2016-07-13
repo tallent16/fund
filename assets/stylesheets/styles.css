@@ -8970,9 +8970,9 @@ canvas.round {
 /*# sourceMappingURL=styles.css.map */
 /*---------------------------CUSTOM CSS STARTS HERE-------------------**/
 /****************************Common css*********************************/
-.row .btn-group.bootstrap-select{
+/*.row .btn-group.bootstrap-select{
 	margin-bottom:0;
-}
+}*/
 .hyperlink,.hyperlink:hover{
 	color:#4B4949;
 	text-decoration:none;
@@ -9501,22 +9501,25 @@ tr.shown td.details-control {
     padding: 40px;
 }
 /*********************Investor Dashboard********************************/
-#nested .panel-default > .panel-heading{
-	background-color: #ccc;
-	color: #222;
-}	
-#accordion .panel-body{
+.panel-group .panel-body{
 	padding:0;
 }
 .panel-group .panel-default > .panel-heading{
 	background-color:#222;
 	color:#fff;
+}
+.panel-group table a{
+	color:#333;
+	text-decoration:none;
+}
+.panel-group .panel-default > .panel-heading + .panel-collapse > .panel-body{
+	border-top:none;
 }/*
 #accordion .panel-title > a,
 #nested .panel-title > a
 */
 .panel-group .panel-title > a{
-	text-decoration:none;
+	text-decoration:none;	
 }
 #accordion .panel-body, 
 #account-summary td{
