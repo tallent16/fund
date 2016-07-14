@@ -55,7 +55,10 @@
 						value="{{$adminInvWithDrawListMod->trans_id}}"/>	
 				<input  type="hidden" 
 						name="payment_id" 	
-						value="{{$adminInvWithDrawListMod->payment_id}}"	/>	
+						value="{{$adminInvWithDrawListMod->payment_id}}"	/>			
+				<input  type="hidden" 
+						name="avail_bal" 	
+						value="{{$adminInvWithDrawListMod->avail_bal}}"	/>			
 				<input  type="hidden" 
 						name="isSaveButton" 
 						id="isSaveButton" 

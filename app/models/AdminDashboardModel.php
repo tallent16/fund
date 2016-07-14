@@ -148,13 +148,14 @@ class AdminDashboardModel extends TranWrapper {
 		$recentlyApprovedBorSql		=	"	SELECT 	borrower_id,
 													business_name borrower_name,
 													DATE_FORMAT(approval_datetime,'%d-%m-%Y') approve_date,
-													(	
-														SELECT GROUP_CONCAT(CONCAT_WS('|',
-																	loan_reference_number,status)) 
-														FROM	loans
-														WHERE	borrower_id	=	borrowers.borrower_id
-														AND		status IN (:approved, :closed,:disbursed,:repaid)
-													) loan_list
+													IFNULL(
+														(	
+															SELECT GROUP_CONCAT(CONCAT_WS('|',
+																		loan_reference_number,loan_id,status)) 
+															FROM	loans
+															WHERE	borrower_id	=	borrowers.borrower_id
+															AND		status IN (:approved, :closed,:disbursed,:repaid)
+														),'') loan_list
 											FROM 	borrowers
 											WHERE	approval_datetime
 													BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()";
@@ -179,9 +180,9 @@ class AdminDashboardModel extends TranWrapper {
 	public function getToBeApprovedBorrowers() {
 		
 		$toBeApprovedBorSql		=	"	SELECT 	borrower_id,
-												business_name,
+												business_name borrower_name,
 												status,
-												register_datetime
+												DATE_FORMAT(register_datetime,'%d-%m-%Y') register_datetime
 										FROM 	borrowers
 										WHERE	status IN (:new_param,:sub_appr_param,:corr_req_param)";
 		

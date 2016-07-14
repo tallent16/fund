@@ -73,13 +73,12 @@
 										))
 
 				<!-----------2 accordion---------------------->
-				@var $panel_body_content1 = "";
-				@var $panelBody		=	$panel_body_content1.'Table content2';
+				@var $panelBody		=	$dashMod->toBeApprovedBor;
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"accordion",
 										"panel_id"			=>	"collapseTwo",
 										"panel_title"		=> 	"TO BE APPROVED BORROWERS",
-										"panel_body_widget"	=>	"widgets.admin.accordion.to_be_approved",
+										"panel_body_widget"	=>	"widgets.admin.accordion.to_be_approved_bor",
 										"panel_body_content"=>	$panelBody,
 										"panel_collapse_class"=> ""
 										
@@ -92,7 +91,8 @@
 											"panel_group_id"	=>	"accordion",
 											"panel_id"			=>	"collapseThree",
 											"panel_title"		=> 	"RECENT ACTIVITIES OF ALL BORROWERS",
-											"panel_body_widget"	=>	"widgets.admin.accordion.recent_activities",
+											"panel_body_widget"	=>	
+																"widgets.admin.accordion.recent_activities_bor",
 											"panel_body_content"=>	$panelBody,
 											"panel_collapse_class"=> ""
 											
@@ -112,7 +112,7 @@
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseOne",
 										"panel_title"		=> 	"RECENTLY APPROVED INVESTORS",
-										"panel_body_widget"	=>	"widgets.admin.accordion.recently_approved_bor",
+										"panel_body_widget"	=>	"widgets.admin.accordion.recently_approved_inv",
 										"panel_body_content" =>	$panelBody,
 										"panel_collapse_class" => "in"
 										
@@ -125,7 +125,7 @@
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseTwo",
 										"panel_title"		=> 	"TO BE APPROVED INVESTORS",
-										"panel_body_widget"	=>	"widgets.admin.accordion.to_be_approved",
+										"panel_body_widget"	=>	"widgets.admin.accordion.to_be_approved_inv",
 										"panel_body_content" =>	$panelBody,
 										"panel_collapse_class" => "panel-collapse"
 										
@@ -138,7 +138,7 @@
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseThree",
 										"panel_title"		=> 	"RECENT ACTIVITIES OF ALL INVESTORS",
-										"panel_body_widget"	 =>	"widgets.admin.accordion.recent_activities",
+										"panel_body_widget"	 =>	"widgets.admin.accordion.recent_activities_inv",
 										"panel_body_content" =>	$panelBody,
 										"panel_collapse_class" => "panel-collapse"
 										))
