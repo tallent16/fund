@@ -211,11 +211,10 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 					$this->status				=	$viewRecordRs[0]->status;
 					$this->payment_id			=	$paymentId;
 					$this->trans_id				=	$viewRecordRs[0]->trans_id;
-			}
+			}			
 	}	
 	
-	public function saveInvestorWithDraws($postArray) {
-		
+	public function saveInvestorWithDraws($postArray) {		
 		$tranType					=	$postArray['tranType'];
 		$trans_id					=	$postArray['trans_id'];
 		$paymentId					=	$postArray['payment_id'];
@@ -488,7 +487,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		}
 		//~ echo $filter_status.$filterStatus;
 		//~ die;
-		$lnListSql				=	"	SELECT	investors.investor_id,
+		$lnListSql				=	"	SELECT	investors.investor_id,												
 												investor_bank_transactions.payment_id,
 											date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
 																						trans_date,
@@ -528,56 +527,61 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		}
 		
 		$this->withdrawListInfo	=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-	
+		
 		return ;		
 		
 	}
 	
 	public function getCurrentInvestorWithDrawInfo($processtype,$paymentId){
-			
-			$current_investor_id		=	$this->getCurrentInvestorID();
-			$this->processbuttontype 	= 	$processtype;
-			$this->investorId			=	$current_investor_id;
-			
-			$this->settlement_date		=	date("d-m-Y");
-			$this->request_date			=	date("d-m-Y");
-			
-			$viewRecordSql		= "SELECT 
-										ROUND(payments.trans_amount,2) withdrawal_amount,
-										date_format(payments.trans_datetime,'%d-%m-%Y') settlement_date,
-										payments.trans_reference_number,
-										payments.remarks,
-										investor_bank_transactions.trans_id,
-										investor_bank_transactions.status,
-										date_format(IFNULL(investor_bank_transactions.entry_date,
-													{$this->settlement_date}),'%d-%m-%Y') entry_date,
-										( 	SELECT	available_balance
-											FROM	investors
-											WHERE	investor_id = {$current_investor_id}
-										) avail_bal
-									FROM 
-										payments,investor_bank_transactions
-									WHERE 
-										investor_bank_transactions.payment_id = payments.payment_id 
-									AND investor_bank_transactions.investor_id = {$current_investor_id}
-									AND investor_bank_transactions.trans_type = :trans_type_codeparam
-									AND payments.payment_id = {$paymentId} ";
-			
-			$paramArray			=	["trans_type_codeparam"	=>	INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL];
-			$viewRecordRs		= 	$this->dbFetchWithParam($viewRecordSql,$paramArray);
-			if (count($viewRecordRs) > 0) {
-			
-					$this->settlement_date		=	$viewRecordRs[0]->settlement_date;
-					$this->request_date			=	$viewRecordRs[0]->entry_date;
-					$this->withdrawal_amount	=	$viewRecordRs[0]->withdrawal_amount;
-					$this->trans_ref_no			=	$viewRecordRs[0]->trans_reference_number;
-					$this->remarks				=	$viewRecordRs[0]->remarks;
-					$this->avail_bal			=	$viewRecordRs[0]->avail_bal;
-					$this->status				=	$viewRecordRs[0]->status;
-					$this->payment_id			=	$paymentId;
-					$this->trans_id				=	$viewRecordRs[0]->trans_id;
+		
+		$current_investor_id		=	$this->getCurrentInvestorID();
+		$this->processbuttontype 	= 	$processtype;
+		$this->investorId			=	$current_investor_id;
+		
+		$this->settlement_date		=	date("d-m-Y");
+		$this->request_date			=	date("d-m-Y");
+		if(empty($paymentId)){
+			$viewRecordSql		= "SELECT	available_balance avail_bal
+										FROM	investors
+										WHERE	investor_id = {$current_investor_id}";
+			$this->avail_bal	= $this->dbFetchOne($viewRecordSql);
+		}else{
+		$viewRecordSql		= "SELECT 
+									ROUND(payments.trans_amount,2) withdrawal_amount,
+									date_format(payments.trans_datetime,'%d-%m-%Y') settlement_date,
+									payments.trans_reference_number,
+									payments.remarks,
+									investor_bank_transactions.trans_id,
+									investor_bank_transactions.status,
+									date_format(IFNULL(investor_bank_transactions.entry_date,
+												{$this->settlement_date}),'%d-%m-%Y') entry_date,
+									( 	SELECT	available_balance
+										FROM	investors
+										WHERE	investor_id = {$current_investor_id}
+									) avail_bal
+								FROM 
+									payments,investor_bank_transactions
+								WHERE 
+									investor_bank_transactions.payment_id = payments.payment_id 
+								AND investor_bank_transactions.investor_id = {$current_investor_id}
+								AND investor_bank_transactions.trans_type = :trans_type_codeparam
+								AND payments.payment_id = {$paymentId} ";
+		
+		$paramArray			=	["trans_type_codeparam"	=>	INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL];
+		$viewRecordRs		= 	$this->dbFetchWithParam($viewRecordSql,$paramArray);
+		if (count($viewRecordRs) > 0) {
+		
+				$this->settlement_date		=	$viewRecordRs[0]->settlement_date;
+				$this->request_date			=	$viewRecordRs[0]->entry_date;
+				$this->withdrawal_amount	=	$viewRecordRs[0]->withdrawal_amount;
+				$this->trans_ref_no			=	$viewRecordRs[0]->trans_reference_number;
+				$this->remarks				=	$viewRecordRs[0]->remarks;
+				$this->avail_bal			=	$viewRecordRs[0]->avail_bal;
+				$this->status				=	$viewRecordRs[0]->status;
+				$this->payment_id			=	$paymentId;
+				$this->trans_id				=	$viewRecordRs[0]->trans_id;
 			}
-			
+		}				
 	}	
 		
 }

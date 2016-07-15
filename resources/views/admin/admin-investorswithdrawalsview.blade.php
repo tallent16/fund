@@ -57,8 +57,9 @@
 						name="payment_id" 	
 						value="{{$adminInvWithDrawListMod->payment_id}}"	/>			
 				<input  type="hidden" 
-						name="avail_bal" 	
-						value="{{$adminInvWithDrawListMod->avail_bal}}"	/>			
+						name="avail_bal" 
+						id="avail_bal" 	
+						value="{{number_format($adminInvWithDrawListMod->avail_bal,2,'.',',')}}"	/>			
 				<input  type="hidden" 
 						name="isSaveButton" 
 						id="isSaveButton" 

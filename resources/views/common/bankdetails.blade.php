@@ -135,7 +135,7 @@
 															<label>{{ Lang::get('Active Status') }}</label>												
 														</div>
 																			
-														<div class="col-xs-12 col-sm-7 col-lg-3">													
+														<div class="col-xs-12 col-sm-7 col-lg-3">										
 															@if ($bankdetailRow->active_status == BANK_DETAILS_ACTIVE)
 															<div class="table-border-custom form-control">  Active </div>
 															@else
@@ -150,7 +150,7 @@
 														</div>
 																			
 														<div class="col-xs-12 col-sm-7 col-lg-3">													
-															@if ($bankdetailRow->verified_status == BANK_DETAILS_VERIFIED)
+															@if ($bankdetailRow->verified_status == NEWBANK_DETAIL_VERIFIED)
 															<div class="table-border-custom form-control">   Verified </div>
 															@else
 															<div class="table-border-custom form-control">    Unverified </div>

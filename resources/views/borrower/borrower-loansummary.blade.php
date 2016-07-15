@@ -100,7 +100,7 @@
 						$loan_id		= 	$loanRow->loan_id;
 						$loanTrans	 	=	$tranModel->tranList[$loan_id];
 						?>
-						@if (count($loanTrans) > 0)
+						
 							<tr id="tran_row_{{$loan_id}}" style="display:none;">
 								<td colspan="11">										
 									<div class="col-sm-2"></div>
@@ -112,21 +112,29 @@
 													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_date') }}</th>
 													<th class="text-right">{{ Lang::get('borrower-transcationhistory.trans_amt') }}</th>
 													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_details') }}</th>
-												</tr>							
-												@foreach ($loanTrans as $loanTransRow)
-												<tr>
-													<td>{{ Lang::get($loanTransRow->tran_type)}}</td>
-													<td>{{$loanTransRow->tran_date}}</td>
-													<td class="text-right">{{$loanTransRow->tran_amt}}</td>
-													<td>{{ Lang::get($loanTransRow->transdetail)}}</td>
-												</tr>
-												@endforeach
+												</tr>	
+												@if (count($loanTrans) > 0)						
+													@foreach ($loanTrans as $loanTransRow)
+													<tr>
+														<td>{{ Lang::get($loanTransRow->tran_type)}}</td>
+														<td>{{$loanTransRow->tran_date}}</td>
+														<td class="text-right">{{$loanTransRow->tran_amt}}</td>
+														<td>{{ Lang::get($loanTransRow->transdetail)}}</td>
+													</tr>
+													@endforeach
+												@else
+													<tr>
+														<td colspan="4" class="text-center">
+														 No records
+														</td>
+													</tr>
+												@endif
 											</table>
 										</div>
 									</div>
 								</td>
-							</tr>
-						@endif
+							</tr>											
+						
 					@endforeach
 				</tbody>
 			</table>

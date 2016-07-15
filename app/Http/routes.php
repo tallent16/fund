@@ -125,6 +125,9 @@ Route::group(['prefix' => ''], function() {
     define('BANK_DETAILS_VERIFIED', '2');
     define('BANK_DETAILS_UNVERIFIED', '1');
     
+    define('NEWBANK_DETAIL_VERIFIED', '1');
+    define('NEWBANK_DETAIL_UNVERIFIED', '0');
+    
     define('BANK_DETAILS_ACTIVE', '1');
     define('BANK_DETAILS_INACTIVE', '0');
     

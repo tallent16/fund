@@ -59,12 +59,14 @@ class	InvestorsWithdrawalsListingController extends MoneyMatchController {
 		$submitted		=	false;
 		if (Request::isMethod('post')) {
 			$postArray	=	Request::all();
+			
 			$this->investorWithdrawalList->saveInvestorWithDraws($postArray);
 			$submitted		=	true;
 			if($processtype	==	"add") {
 				return redirect()->to('investor/withdrawallist');
 			}
 		}
+		
 		$this->investorWithdrawalList->getCurrentInvestorWithDrawInfo($processtype,$paymentId);
 		
 		$withArry	=	array(	"adminInvWithDrawListMod" => $this->investorWithdrawalList, 								

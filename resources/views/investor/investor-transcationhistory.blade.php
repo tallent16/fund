@@ -19,12 +19,12 @@
 					<table class="table tab-fontsize table-striped table-border-custom text-left">
 						<thead>
 							<tr>
-								<th class="tab-head text-left">{{Lang::get('TRANSCATION REFERENCE')}}</th>
-								<th class="tab-head text-left">{{Lang::get('TRANSCATION DATE')}}</th>
-								<th class="tab-head text-left">{{Lang::get('TRANSCATION TYPE')}}</th>
-								<th class="tab-head text-right">{{Lang::get('AMOUNT')}}</th>
-								<th class="tab-head text-left">{{Lang::get('REMARKS')}}</th>
-								<th class="tab-head text-right">{{Lang::get('CLOSING BALANCE')}}</th>																
+								<th class="tab-head text-left">{{Lang::get('Transcation Reference')}}</th>
+								<th class="tab-head text-left">{{Lang::get('Transcation Date')}}</th>
+								<th class="tab-head text-left">{{Lang::get('Transcation Type')}}</th>
+								<th class="tab-head text-right">{{Lang::get('Amount')}}</th>
+								<th class="tab-head text-left">{{Lang::get('Remarks')}}</th>
+								<th class="tab-head text-right">{{Lang::get('Closing Balance')}}</th>																
 							</tr>
 						</thead>
 						<tbody>
