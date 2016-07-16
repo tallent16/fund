@@ -42,7 +42,7 @@ class BankProcessModel extends TranWrapper {
 										bank_statement_url,
 										verified_status,
 										active_status,
-										{$this->typePrefix}_id,
+										{$this->typePrefix}_id inv_or_bor_id,
 										concat(if (verified_status = 0, 1, if (active_status = 0, 2, 3)), 
 												{$this->typePrefix}_bankid) orderby
 								FROM	{$this->typePrefix}_banks
@@ -85,7 +85,7 @@ class BankProcessModel extends TranWrapper {
 	}
 	
 	function addBankDetails($postArray) {
-	
+		
 		$bankcode		=	$postArray['bankcode'];
 		$bankname		=	$postArray['bankname'];
 		$branchcode		=	$postArray['branchcode'];
@@ -100,15 +100,15 @@ class BankProcessModel extends TranWrapper {
 								//~ '".$bankcode."','".$bankname."',
 								//~ '".$branchcode."','".$bankaccnumber."',
 								//~ 1, 0)";
-		$dataArray = array(	'investor_id' 			=> $this->inv_or_borr_id,
+		$dataArray = array(	$this->typePrefix.'_id' => $this->inv_or_borr_id,
 							'bank_code' 			=> $bankcode,
 							'bank_name' 			=> $bankname,
 							'branch_code' 			=> $branchcode,
 							'bank_account_number'	=> $bankaccnumber,
-							'verified_status' 		=> 1,
-							'active_status' 		=> 0,
+							'verified_status' 		=> 0,
+							'active_status' 		=> 1,
 							);
-							
+		//echo "<pre>",print_r($dataArray),"</pre>"; die;					
 		$bankId =  $this->dbInsert("{$this->typePrefix}_banks", $dataArray, true);
 		return $bankId ;
 		//~ $this->dbExecuteSql($insertSql);

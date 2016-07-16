@@ -29,11 +29,17 @@
 					
 						@var $bankdetails = $modelbankdet->bankListRs;
 						<div class="panel-body applyloan"><!---table start-->
-								 <div class="divs">
-										
-									@var	$i	=	1
+								 <div class="divs">									
+									
+									@var 	$demo = "";
+									@var	$i	  =	1;
 									@foreach($bankdetails as $bankdetailRow)
-								
+										
+										<!------only if unverified status avail, hide add button--->	
+										@if($bankdetailRow->verified_status != NEWBANK_DETAIL_VERIFIED) 
+												@var $demo	= "style='display:none'"
+										@endif	
+										
 										<!--Disable the edit record table when click add button-->
 										@var $bankListRow	=	"" 							  
 										@if($i	!=1)
@@ -42,7 +48,7 @@
 										<!---->
 										
 										<!--Input fields disabled when status is verified-->
-											@if ($bankdetailRow->verified_status == BANK_DETAILS_VERIFIED)
+											@if ($bankdetailRow->verified_status == NEWBANK_DETAIL_VERIFIED)
 											   @var $disablestatus = "disabled"
 											@else
 											   @var $disablestatus = ""
@@ -51,7 +57,7 @@
 										
 										<div class="bank-list" id="{{$bankdetailRow->bankid}}"
 											{{$bankListRow}}>
-											@if($bankdetailRow->verified_status	==	BANK_DETAILS_UNVERIFIED)
+											@if($bankdetailRow->verified_status	==	NEWBANK_DETAIL_UNVERIFIED)
 												<form method="post" id="update_form-{{$bankdetailRow->bankid}}" 
 													 enctype="multipart/form-data">
 													<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -183,7 +189,7 @@
 																		/>	
 															@if($bankdetailRow->bank_statement_url!="")
 																@var	$bankUrl	=	url('download/investor/bank/attachment');	
-																@var	$bankUrl	=	$bankUrl."/".$bankdetailRow->investor_id."_".rand(10,100);	
+																@var	$bankUrl	=	$bankUrl."/".$bankdetailRow->inv_or_bor_id."_".rand(10,100);	
 																@var	$bankUrl	=	$bankUrl."/".$bankdetailRow->bankid;	
 																<a 	href="{{$bankUrl}}"  
 																	class="hyperlink">
@@ -224,8 +230,8 @@
 						
 				<div class="col-sm-6">	
 					<div class="pull-right">	
-						<button type="button" id="update_button" class="btn button-orange">{{ Lang::get('UPDATE') }}</button>					
-						<button type="button" id="add_button" class="btn button-orange">{{ Lang::get('ADD') }}</button>	
+						<button type="button" id="update_button" class="btn button-orange">{{ Lang::get('UPDATE') }}</button>										
+						<button type="button" {{$demo}} id="add_button" class="btn button-orange">{{ Lang::get('ADD') }}</button>	
 					</div>				
 				</div>
 			
@@ -311,7 +317,7 @@
 							</div>
 												
 							<div class="col-xs-12 col-sm-7 col-lg-3">													
-							<div class="table-border-custom form-control"> <label>{{ Lang::get('InActive') }}</label>	</div>
+							<div class="table-border-custom form-control"> <label>{{ Lang::get('Active') }}</label>	</div>
 							</div>
 						</div> 
 						

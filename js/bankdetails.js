@@ -106,12 +106,12 @@ function showhidebuttons(cur_id){
 	
 	var full_ID = $('#verified_status_' + cur_id).val();
 	if(full_ID == 1){
-		$('#add_button').hide();
-		$('#update_button').show();
+		//$('#add_button').show();
+		$('#update_button').hide();
 	}
 	else {
-		$('#add_button').show();
-		$('#update_button').hide();
+		//$('#add_button').hide();
+		$('#update_button').show();
 	}
 	
 }

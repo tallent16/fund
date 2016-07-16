@@ -1077,6 +1077,10 @@ class BorrowerProfileModel extends TranWrapper {
 		
 		$this->dbUpdate('borrowers', $dataArray, $whereArry);
 		
+		$bordataArray			=	array("verified_status" =>1);
+		$borwhereArry			=	array("borrower_id" =>"{$borrowerId}");
+		$this->dbUpdate('borrower_banks', $bordataArray, $borwhereArry);
+		
 		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
 		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
 		$moneymatchSettings = $this->getMailSettingsDetail();
