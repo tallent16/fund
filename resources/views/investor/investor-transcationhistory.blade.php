@@ -16,7 +16,7 @@
 			<div class="col-sm-12 space-around"> 
 				
 				<div class="table-responsive applyloan"> 
-					<table class="table tab-fontsize table-striped table-border-custom text-left">
+					<table class="table table-striped table-border-custom text-left">
 						<thead>
 							<tr>
 								<th class="tab-head text-left">{{Lang::get('Transcation Reference')}}</th>

@@ -16,13 +16,13 @@
 					<div class="col-md-12">
 						
 						<div class="table-responsive"><!---table start-->
-							<table class="table table-loan">		
+							<table class="table table-loan text-left">		
 								<tbody>
 									<tr>
-										<th class="tab-head">{{ Lang::get('Date') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('Date') }}</th>
 										<th class="tab-head text-right">{{ Lang::get('Amount') }}</th>	
-										<th class="tab-head">{{ Lang::get('Status') }}</th>				
-										<th class="tab-head">{{ Lang::get('Date Paid') }}</th>				
+										<th class="tab-head text-left">{{ Lang::get('Status') }}</th>				
+										<th class="tab-head text-left">{{ Lang::get('Date Paid') }}</th>				
 										<th class="tab-head text-right">{{ Lang::get('Penalty') }}</th>				
 									</tr>									
 										@if($paymentInfoCnt	>	0)										
@@ -33,7 +33,7 @@
 														{{$paymentRow['schd_date']}}
 													</td>
 													<td class="text-right">
-														{{$paymentRow['schd_amt']}}
+														{{number_format($paymentRow['schd_amt'],2,'.',',')}}
 													</td>
 													<td>
 														{{$paymentRow['status']}}

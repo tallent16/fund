@@ -66,7 +66,7 @@
 <div class="row">
 	<div class="col-sm-12"> 
 		<div class="table-responsive applyloan" > 
-			<table class="table tab-fontsize text-left table-striped table-border-custom">
+			<table class="table text-left table-striped table-border-custom">
 				<thead>
 					<tr>
 						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>

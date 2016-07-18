@@ -134,7 +134,7 @@
 								<li id="financial_ratio_parent">
 									<a 	data-toggle="tab"
 										href="#financial_ratio">
-										{{ Lang::get('FINACIAL RATIO') }}
+										{{ Lang::get('FINANCIAL RATIO') }}
 									</a>
 								</li>	
 							@endif
@@ -312,7 +312,9 @@
 				</tr>
 				<tr>
 					<td class="col-md-3">
+						<label class="input-required">
 						{{ Lang::get('borrower-profile.age') }}
+						</label>
 					</td>
 					<td class="col-md-3" id="age_XXX_parent" >
 						<input 	type="text" 
@@ -322,7 +324,9 @@
 								/>
 					</td>	
 					<td class="col-md-3">
+						<label class="input-required">
 						{{ Lang::get('borrower-profile.overall_exp') }}
+						</label>
 					</td>
 					<td class="col-md-3" id="overall_experience_XXX_parent"  colspan="3">
 						<input 	type="text" 

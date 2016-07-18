@@ -29,21 +29,21 @@
 					{{ Lang::get('borrower-myloans.rich_snapshot')}}
 				</div>
 				<div class="row">
-					<div class="col-md-2">{{ Lang::get('borrower-myloans.industry')}}:</div>
+					<div class="col-md-2"><p>{{ Lang::get('borrower-myloans.industry')}}:</p></div>
 					<div class="col-md-10">
-						{{$LoanDetMod->risk_industry}}
+						<p>{{$LoanDetMod->risk_industry}}</p>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-2">{{ Lang::get('borrower-myloans.strength')}}:</div>
+					<div class="col-md-2"><p>{{ Lang::get('borrower-myloans.strength')}}:</p></div>
 					<div class="col-md-10">
-						{{$LoanDetMod->risk_strength}}
+						<p>{{$LoanDetMod->risk_strength}}</p>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-2">{{ Lang::get('borrower-myloans.weakness')}}:</div>
+					<div class="col-md-2"><p>{{ Lang::get('borrower-myloans.weakness')}}:</p></div>
 					<div class="col-md-10">
-						{{$LoanDetMod->risk_weakness}}
+						<p>{{$LoanDetMod->risk_weakness}}</p>
 					</div>
 				</div>
 			</div>
@@ -96,6 +96,11 @@
 											<td class="text-right">{{$finacialRow['indicator_value']}}</td>										
 										</tr>		
 									@endforeach
+								@else
+									<tr>
+											<td class="tab-left-head text-center" colspan="2">No Financial info</td>
+																					
+									</tr>	
 								@endif			
 							</tbody>
 						</table>	

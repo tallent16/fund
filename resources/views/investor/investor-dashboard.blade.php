@@ -213,19 +213,19 @@
 						 <div class="panel panel-primary panel-container">
 								
 					<div class="table-responsive">
-						<table class="table tab-fontsize text-left">
+						<table class="table text-left">
 							<thead>
 								<tr>
-									<th class="tab-head text-left">{{Lang::get('BORROWER\'S NAME')}}</th>
-									<th class="tab-head text-left">{{Lang::get('GRADE')}}</th>
-									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
-									<th class="tab-head text-right">{{Lang::get('AMOUNT INVESTED')}}</th>
-									<th class="tab-head text-left">{{Lang::get('DATE OF INVESTMENT')}}</th>
-									<th class="tab-head text-right">{{Lang::get('TENURE OF LOAN')}}</th>
-									<th class="tab-head text-left">{{Lang::get('TYPE OF LOAN')}}</th>
-									<th class="tab-head text-right">{{Lang::get('RATE OF INTEREST')}}</th>
-									<th class="tab-head text-right">{{Lang::get('INTEREST PAID')}}</th>
-									<th class="tab-head text-right">{{Lang::get('PRINCIPAL PAID')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Borrower\'s Name')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Grade')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Total Amount of Loan')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Amount Invested')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Date of Investment')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Tenure of Loan')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Type of Loan')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Rate of Interest')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Interest Paid')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Principal Paid')}}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -266,17 +266,17 @@
          <div class="panel panel-primary panel-container">
 							
 					<div class="table-responsive">
-						<table class="table tab-fontsize text-left">
+						<table class="table text-left">
 							<thead>
 								<tr>
-									<th class="tab-head text-left">{{Lang::get('BORROWER\'S NAME')}}</th>
-									<th class="tab-head text-left">{{Lang::get('GRADE')}}</th>
-									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
-									<th class="tab-head text-right">{{Lang::get('AMOUNT INVESTED')}}</th>
-									<th class="tab-head text-left">{{Lang::get('DATE OF INVESTMENT')}}</th>
-									<th class="tab-head text-left">{{Lang::get('BID CLOSE DATE')}}</th>
-									<th class="tab-head text-right">{{Lang::get('TENURE OF LOAN')}}</th>
-									<th class="tab-head text-left">{{Lang::get('TYPE OF LOAN')}}</th>	
+									<th class="tab-head text-left">{{Lang::get('Borrower\'s Name')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Grade')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Total Amount of Loan')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Amount Invested')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Date of Investment')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Bid Close Date')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Tenure of Loan')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Type of Loan')}}</th>	
 									<th class="tab-head text-left"></th>	
 									<th class="tab-head text-left"></th>									
 								</tr>
@@ -318,14 +318,14 @@
         
 				 <div class="panel panel-primary panel-container">
 					<div class="table-responsive"><!---table start-->	
-					<table class="table tab-fontsize text-left">
+					<table class="table text-left">
 							<thead>
 								<tr>
-									<th class="tab-head text-left">{{Lang::get('BORROWER\'S NAME')}}</th>
-									<th class="tab-head text-left">{{Lang::get('GRADE')}}</th>
-									<th class="tab-head text-right">{{Lang::get('TOTAL AMOUNT OF LOAN')}}</th>
-									<th class="tab-head text-right">{{Lang::get('AMOUNT OVERDUE')}}</th>
-									<th class="tab-head text-right">{{Lang::get('OVERDUE SINCE')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Borrower\'s Name')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Grade')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Total Amount of Loan')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Amount Overdue')}}</th>
+									<th class="tab-head text-right">{{Lang::get('Overdue Since')}}</th>
 									<th class="tab-head" colspan="5"></th>																																	
 								</tr>
 							</thead>

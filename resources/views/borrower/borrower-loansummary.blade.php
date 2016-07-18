@@ -66,14 +66,14 @@
 <div class="row">
 	<div class="col-sm-12"> 
 		<div class="table-responsive applyloan" id="transhistory-container"> 
-			<table class="table tab-fontsize">
+			<table class="table">
 				<thead>
 					<tr>
-						<th class="tab-head"></th>
-						<th class="tab-head"></th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.apply_date') }}</th>
-						<th class="tab-head">{{ Lang::get('borrower-transcationhistory.bid_closedate') }}</th>
+						<th class="tab-head text-left"></th>
+						<th class="tab-head text-left"></th>
+						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.apply_date') }}</th>
+						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.bid_closedate') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.apply_amt') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.amt_realized') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.target_interest') }}%</th>
@@ -85,11 +85,11 @@
 				<tbody>
 					@foreach ($tranModel->loanList as $loanRow)
 						<tr id="{{$loanRow->loan_id}}" role="row">
-							<td></td>
+							<td class="text-left"></td>
 							<td class="details-control"></td>
-							<td>{{$loanRow->loan_reference_number}}</td>
-							<td>{{$loanRow->apply_date}}</td>
-							<td>{{$loanRow->bid_close_date}}</td>
+							<td class="text-left">{{$loanRow->loan_reference_number}}</td>
+							<td class="text-left">{{$loanRow->apply_date}}</td>
+							<td class="text-left">{{$loanRow->bid_close_date}}</td>
 							<td class="text-right">{{$loanRow->apply_amount}}</td>
 							<td class="text-right">{{$loanRow->bid_sanctioned_amount}}</td>
 							<td class="text-right">{{$loanRow->target_interest}}</td>

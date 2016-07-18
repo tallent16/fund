@@ -133,7 +133,7 @@
 						</div>                           
 					</div>				
 					<div class="table-responsive">
-						<table class="table tab-fontsize text-left">
+						<table class="table text-left">
 							<thead>
 								<tr>
 									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.loan_refer') }}</th>

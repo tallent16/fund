@@ -337,26 +337,26 @@ class LoanDetailsModel extends TranWrapper {
 		
 		if ($this->userType == USER_TYPE_BORROWER) {
 			
-			$paymentschedule_sql			= "	SELECT 	ifnull(DATE_FORMAT(loanrepsch.repayment_schedule_date,'%d/%m/%Y'),'') 
+			$paymentschedule_sql			= "	SELECT 	ifnull(DATE_FORMAT(loanrepsch.repayment_schedule_date,'%d-%m-%Y'),'') 
 																	schd_date,
 														ROUND(loanrepsch.repayment_scheduled_amount,2) schd_amt,
 														case loanrepsch.repayment_status 
 															   when 1 then 'Unpaid' 
 															   when 2 then 'Paid'
 														end as status,
-														ifnull(DATE_FORMAT(loanrepsch.repayment_actual_date,'%d/%m/%Y'),'') 							payment_date ,
+														ifnull(DATE_FORMAT(loanrepsch.repayment_actual_date,'%d-%m-%Y'),'') 							payment_date ,
 														ROUND(if (repayment_status != 1, repayment_scheduled_amount + ifnull(repayment_penalty_interest, 0) + ifnull(repayment_penalty_charges, 0), 0),2) amt_paid,
 														ROUND(ifnull(repayment_penalty_interest, 0) + ifnull(repayment_penalty_charges, 0),2) penal_paid
 												FROM 	borrower_repayment_schedule loanrepsch
 												WHERE	loanrepsch.borrower_id		=	{$this->inv_or_borr_id}
 												AND		loanrepsch.loan_id			=	{$loan_id}";
 		} else {
-			$paymentschedule_sql	= 	"SELECT	payment_date,
+			$paymentschedule_sql	= 	"SELECT	DATE_FORMAT(payment_date,'%d-%m-%Y') payment_date,
 												interest_amount int_paid,
 												payment_schedule_amount + ifnull(penalty_amount,0) amt_paid,
 												penalty_amount penal_paid,
 												principal_amount princ_paid,
-												payment_scheduled_date schd_date,
+												DATE_FORMAT(payment_scheduled_date,'%d-%m-%Y') schd_date,
 												payment_schedule_amount schd_amt,
 												CASE status 
 													WHEN 1 THEN 'Unpaid'

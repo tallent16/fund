@@ -9,7 +9,7 @@
 				<input 	type='checkbox' 
 						name='show_welcome_message' 
 						id='show_welcome_message' 
-						value='1' >Show this everytime I login
+						value='1' > Show this everytime I login
 			</div>
 			<div class='col-sm-4'></div>
 			<div class='col-sm-2 text-right'>

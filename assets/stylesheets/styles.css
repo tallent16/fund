@@ -9117,6 +9117,9 @@ label.input-group-addon.btn {
 	background-color:#fff;
 	margin-top:25px;
 }
+.form-group .radio-inline{
+	margin:0;
+}
 /******************************Register page****************************/
 .register-button{
 	background-color:#EF4F1F;

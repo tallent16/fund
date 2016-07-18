@@ -23,11 +23,11 @@ class BorrowerDashboardModel extends TranWrapper {
 		$current_borrower_id	=	 $this->getCurrentBorrowerID();
 									
 		$loandetails_sql	=	"	SELECT	loans.loan_reference_number,
-											(	SELECT	min(repayment_schedule_date)
+											(	SELECT	min(date_format(repayment_schedule_date, '%d-%m-%Y'))
 													FROM	borrower_repayment_schedule
 													WHERE	repayment_status != 3
 												AND	loan_id = loans.loan_id) next_payment,
-											(	SELECT	max(repayment_schedule_date)
+											(	SELECT	max(date_format(repayment_schedule_date, '%d-%m-%Y'))
 													FROM	borrower_repayment_schedule
 												WHERE	repayment_status = 3
 												AND		loan_id = loans.loan_id) last_payment,

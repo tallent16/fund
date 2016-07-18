@@ -82,7 +82,9 @@
 														 {{$modelBorPrf->viewStatus}} />
 											</td>	
 											<td class="col-md-3">
+												<label class="input-required">
 												{{ Lang::get('borrower-profile.overall_exp') }}
+												</label>
 											</td>
 											<td class="col-md-3" id="overall_experience_{{$i}}_parent">
 												<input 	type="text" 

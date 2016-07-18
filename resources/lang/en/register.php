@@ -19,7 +19,7 @@ return [
 	'borrower'  	 	 => 'Borrower',
 	'confirmpass'  	 	 => 'Confirm Password',	
 	'secuirtyquestion'   => 'Security Question and Answer ?',
-	'secuirtyanswer'   	 => 'Security Question Answer',
+	'secuirtyanswer'   	 => 'Security Answer',
 	'select'   			 => 'Select',
 	'cityborn'   		 => 'Which city were you born in?',
 	'petname'			 => 'What is your pet&#39;s name?',

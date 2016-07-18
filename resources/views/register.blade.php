@@ -64,7 +64,7 @@
 						<div class="row">
 							<div class="col-xs-6 form-group">
 								<div class="form-material form-material-success">
-									<label 	for="register-username"> {{ Lang::get('User Name') }}</label>
+									<label 	for="register-username" class="input-required"> {{ Lang::get('User Name') }}</label>
 									<input 	class="form-control" 
 											id="username"
 											name="username" 
@@ -79,7 +79,7 @@
 						
 							<div class="col-xs-6 form-group">									
 								<div class="form-material form-material-success">
-									<label 	for="register-email"> {{ Lang::get('login.email') }}</label>
+									<label 	for="register-email" class="input-required"> {{ Lang::get('login.email') }}</label>
 									<input 	class="form-control" 
 											data-val="true" data-val-regex="* Please enter a valid e-mail adress" 
 											data-val-regex-pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" 
@@ -90,7 +90,7 @@
 											data-val-required="* E-mail Id is required" 
 											id="EmailAddress" 
 											name="EmailAddress" 
-											placeholder="Email" 
+											placeholder="Email Id" 
 											type="text" value="" />
 								</div>									
 							</div>
@@ -99,7 +99,7 @@
 					<div class="row">
 						<div class="col-xs-6 form-group">
 							<div class="form-material form-material-success">					
-								<label 	for="register-firstname"> {{ Lang::get('First Name') }}</label>
+								<label 	for="register-firstname" class="input-required"> {{ Lang::get('First Name') }}</label>
 									<input 	class="form-control" 
 										id="firstname"
 										name="firstname" 
@@ -111,7 +111,7 @@
 							
 						<div class="col-xs-6 form-group">
 							<div class="form-material form-material-success">	
-								<label 	for="register-lastname"> {{ Lang::get('Last Name') }}</label>
+								<label 	for="register-lastname" class="input-required"> {{ Lang::get('Last Name') }}</label>
 								<input 	class="form-control" 
 										id="lastname"
 										name="lastname" 
@@ -125,7 +125,7 @@
 					<div class="row">
 						<div class="col-xs-6 form-group">						
 							<div class="form-material form-material-success">
-								<label for="register-password">{{ Lang::get('login.password') }}</label>
+								<label for="register-password" class="input-required">{{ Lang::get('login.password') }}</label>
 								<input 	class="form-control" 
 										data-val="true"
 										data-val-remote="* Email and Password must not be same" 
@@ -143,7 +143,7 @@
 						</div>	
 						<div class="col-xs-6 form-group">
 							<div class="form-material form-material-success">
-								<label for="register-password2">{{ Lang::get('register.confirmpass') }}</label>
+								<label for="register-password2" class="input-required">{{ Lang::get('register.confirmpass') }}</label>
 								<input 	class="form-control" 
 										data-val="true" 
 										data-val-equalto="* The password and confirmation password do not match." 
@@ -172,8 +172,8 @@
 					<div class="row">
 						<div class="col-xs-6 form-group">	
 							<div class="form-material">
-								<label for="example-select">{{ Lang::get('register.secuirtyquestion') }}</label>
-								<select class="form-control" 
+								<label for="example-select" class="input-required">{{ Lang::get('register.secuirtyquestion') }}</label>
+								<select class="selectpicker" 
 										data-val="true" 
 										data-val-number="The field SecurityQuestion1 must be a number." 
 										data-val-required="The SecurityQuestion1 field is required." 
@@ -269,7 +269,7 @@
 				<input 	type='checkbox' 
 						name='read_toc_message' 
 						id='read_toc_message' 
-						value='1' >I have read the terms and conditions and agree to abide by it.
+						value='1' > I have read the terms and conditions and agree to abide by it.
 			</div>
 			<div class='col-sm-2  text-right'>
 				<input 	type='button' 

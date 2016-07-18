@@ -16,15 +16,15 @@
 			</div><!-------------end of---panel heading---------------------->	
 					
 			<div class="table-responsive">
-				<table class="table tab-fontsize table-striped text-left">
+				<table class="table table-striped text-left">
 					<thead>
 						<tr>
-							<th class="tab-head text-right">{{ Lang::get('INSTALLMENT NUMBER')}}</th>
-							<th class="tab-head text-left">{{ Lang::get('LOAN REFERENCE NUMBER')}}</th>
-							<th class="tab-head text-left">{{ Lang::get('SCHDELUED DATE')}}</th>
-							<th class="tab-head text-left">{{ Lang::get('LOAN PERIOD')}}</th>
-							<th class="tab-head text-right">{{ Lang::get('SCHDELUED AMOUNT')}}</th>
-							<th class="tab-head text-right">{{ Lang::get('PENALTY')}}</th>							
+							<th class="tab-head text-right">{{ Lang::get('Installment No')}}</th>
+							<th class="tab-head text-left">{{ Lang::get('Loan Reference N0')}}</th>
+							<th class="tab-head text-left">{{ Lang::get('Scheduled date')}}</th>
+							<th class="tab-head text-left">{{ Lang::get('Loan Period')}}</th>
+							<th class="tab-head text-right">{{ Lang::get('Scheduled Amount')}}</th>
+							<th class="tab-head text-right">{{ Lang::get('Penalty')}}</th>							
 							<th class="tab-head"></th>								
 						</tr>
 					</thead>
