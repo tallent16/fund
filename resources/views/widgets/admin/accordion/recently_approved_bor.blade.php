@@ -14,13 +14,17 @@
 		<tbody>
 			@if( is_array($panelBody) && count($panelBody)	>	0	)
 				@foreach($panelBody as $tableRow) 
-					
+					@var	$borUrl	=	url("admin/borrower/profile")."/".base64_encode($tableRow->borrower_id)
 					<tr>
 						<td>
-							{{$tableRow->borrower_name}}
+							<a href="{{$borUrl}}">
+								{{$tableRow->borrower_name}}
+							</a>
 						</td>
 						<td>
-							{{$tableRow->approve_date}}
+							<a href="{{$borUrl}}">
+								{{$tableRow->approve_date}}
+							</a>
 						</td>
 						<td>
 							@if($tableRow->loan_list	!=	"")

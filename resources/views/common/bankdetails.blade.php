@@ -317,7 +317,7 @@
 							</div>
 												
 							<div class="col-xs-12 col-sm-7 col-lg-3">													
-							<div class="table-border-custom form-control"> <label>{{ Lang::get('Active') }}</label>	</div>
+							<div class="table-border-custom form-control"> <label>{{ Lang::get('InActive') }}</label>	</div>
 							</div>
 						</div> 
 						

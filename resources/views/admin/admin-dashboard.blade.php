@@ -85,8 +85,8 @@
 										))
 
 				<!-----------3 accordion---------------------->									
-				@var $panel_body_content2 = "";
-				@var $panelBody		=	$panel_body_content2.'Table content3';
+				
+				@var $panelBody		=	$dashMod->recentActivitiesBor;
 				@include('widgets.accordion_widget', array(
 											"panel_group_id"	=>	"accordion",
 											"panel_id"			=>	"collapseThree",
@@ -106,8 +106,8 @@
 			<h4>INVESTOR</h4>			
 			<div class="panel-group" id="invaccordion">
 				<!-----------1 accordion---------------------->
-				@var $panel_body_contentinv = "";
-				@var $panelBody		=	$panel_body_contentinv.'Table content';
+				
+				@var $panelBody		=	$dashMod->recentlyApprovedInv;
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseOne",
@@ -119,8 +119,8 @@
 										))
 
 				<!-----------2 accordion---------------------->
-				@var $panel_body_content1inv = "";
-				@var $panelBody		=	$panel_body_content1inv.'Table content2';
+				
+				@var $panelBody		=	$dashMod->toBeApprovedInv;
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseTwo",

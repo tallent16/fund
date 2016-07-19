@@ -106,23 +106,23 @@ class BankProcessModel extends TranWrapper {
 							'branch_code' 			=> $branchcode,
 							'bank_account_number'	=> $bankaccnumber,
 							'verified_status' 		=> 0,
-							'active_status' 		=> 1,
+							'active_status' 		=> 0,
 							);
 						
 		$bankId =  $this->dbInsert("{$this->typePrefix}_banks", $dataArray, true);
 		
-		$updatesql = "UPDATE {$this->typePrefix}_banks
-							 SET active_status=0 
-							 WHERE {$this->typePrefix}_bankid NOT IN 
-								( SELECT {$this->typePrefix}_bankid 
-										FROM 
-											(SELECT max({$this->typePrefix}_bankid) {$this->typePrefix}_bankid 
-												    FROM {$this->typePrefix}_banks 
-												    WHERE {$this->typePrefix}_id = {$this->inv_or_borr_id}) 
-											xx ) 
-							AND {$this->typePrefix}_id = {$this->inv_or_borr_id} ";
+		//~ $updatesql = "UPDATE {$this->typePrefix}_banks
+							 //~ SET active_status=0 
+							 //~ WHERE {$this->typePrefix}_bankid NOT IN 
+								//~ ( SELECT {$this->typePrefix}_bankid 
+										//~ FROM 
+											//~ (SELECT max({$this->typePrefix}_bankid) {$this->typePrefix}_bankid 
+												    //~ FROM {$this->typePrefix}_banks 
+												    //~ WHERE {$this->typePrefix}_id = {$this->inv_or_borr_id}) 
+											//~ xx ) 
+							//~ AND {$this->typePrefix}_id = {$this->inv_or_borr_id} ";
 							
-		$this->dbExecuteSql($updatesql);		
+		//~ $this->dbExecuteSql($updatesql);		
 		
 		return $bankId ;
 		

@@ -121,6 +121,7 @@ Route::group(['prefix' => ''], function() {
     define('BORROWER_REPAYMENT_STATUS_UNVERIFIED', '2');
     define('BORROWER_REPAYMENT_STATUS_PAID', '3');
     define('BORROWER_REPAYMENT_STATUS_CANCELLED', '4');
+    define('BORROWER_REPAYMENT_STATUS_OVERDUE', '5');
 
     define('BANK_DETAILS_VERIFIED', '2');
     define('BANK_DETAILS_UNVERIFIED', '1');

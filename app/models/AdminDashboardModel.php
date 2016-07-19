@@ -15,6 +15,10 @@ class AdminDashboardModel extends TranWrapper {
 	public 	$penaltiesLevies			= 	array();
 	public 	$recentlyApprovedBor		= 	array();
 	public 	$toBeApprovedBor			= 	array();
+	public 	$recentActivitiesBor		= 	array();
+	public 	$recentlyApprovedInv		= 	array();
+	public 	$toBeApprovedInv			= 	array();
+	public 	$recentActivitiesInv		= 	array();
 	
 	public function getDashboardDetails() {
 		
@@ -24,7 +28,10 @@ class AdminDashboardModel extends TranWrapper {
 		$this->getPenaltiesLevies();
 		$this->getRecentlyApprovedBorrowers();
 		$this->getToBeApprovedBorrowers();
-
+		$this->getRecentActivitiesBorrowers();
+		$this->getRecentlyApprovedInvestors();
+		$this->getToBeApprovedInvestors();
+		$this->getRecentActivitiesInvestors();
 	}
 	
 	public function getLoanNotFullySubscribed() {
@@ -158,13 +165,15 @@ class AdminDashboardModel extends TranWrapper {
 														),'') loan_list
 											FROM 	borrowers
 											WHERE	approval_datetime
-													BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()";
+													BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+											AND		status	=	:approved_bor_param";
 		
 		$dataArrayBor		=	[
-									"approved"	=> LOAN_STATUS_APPROVED,
-									"closed"	=> LOAN_STATUS_CLOSED_FOR_BIDS,
-									"disbursed"	=> LOAN_STATUS_DISBURSED,
-									"repaid" 	=> LOAN_STATUS_LOAN_REPAID
+									"approved"				=> LOAN_STATUS_APPROVED,
+									"closed"				=> LOAN_STATUS_CLOSED_FOR_BIDS,
+									"disbursed"				=> LOAN_STATUS_DISBURSED,
+									"repaid" 				=> LOAN_STATUS_LOAN_REPAID,
+									"approved_bor_param" 	=> BORROWER_STATUS_APPROVED
 								];
 									
 		$recentlyApprovedBor_rs		=	$this->dbFetchWithParam($recentlyApprovedBorSql, $dataArrayBor);
@@ -202,5 +211,261 @@ class AdminDashboardModel extends TranWrapper {
 
 	}
 	
-						
+	public function getRecentActivitiesBorrowers() {
+		
+		$recentActivitiesBorSql		=	"	SELECT 	borrowers.borrower_id,
+													borrowers.business_name borrower_name,
+													activity,
+													loan_reference_number,
+													DATE_FORMAT(act_date,'%d-%m-%Y') act_date,
+													codelist_details.codelist_value statusTxt
+												
+											FROM(
+													SELECT 	loans.borrower_id borrower_id,
+															'' borrower_name,
+															'Loan' activity,
+															loan_reference_number,
+															apply_date	act_date,
+															loans.status statusTxt
+													FROM	loans 
+													WHERE	loans.status IN ( :loan_new_param, :loan_subapprov_param)
+													UNION
+													SELECT 	loans.borrower_id borrower_id,
+															'' borrower_name,
+															'Loan' activity,
+															loan_reference_number,
+															bid_close_date	act_date,
+															loans.status statusTxt
+													FROM	loans 
+													WHERE	loans.status = :loan_verify_param
+													UNION
+													SELECT 	loans.borrower_id borrower_id,
+															'' borrower_name,
+															'Loan' activity,
+															loan_reference_number,
+															(	SELECT	MAX(repayment_actual_date)
+																FROM	borrower_repayment_schedule
+																WHERE	borrower_id = 	loans.borrower_id
+																AND		loan_id		=	loans.loan_id)	act_date,
+															loans.status statusTxt
+													FROM	loans 
+													WHERE	loans.status =:loan_repcom_param
+													UNION
+													SELECT 	bor_sch.borrower_id borrower_id,
+															'' borrower_name,
+															'Repayment' activity,
+															loans.loan_reference_number,
+															repayment_schedule_date act_date,
+															bor_sch.repayment_status statusTxt
+													FROM	borrower_repayment_schedule bor_sch
+															LEFT JOIN loans
+															ON loans.loan_id	=	bor_sch.loan_id
+													WHERE	DATEDIFF(CURDATE(), bor_sch.repayment_actual_date) > -10
+													AND		bor_sch.repayment_status = :repay_unpaid_param
+													UNION
+													SELECT 	bor_sch1.borrower_id borrower_id,
+															'' borrower_name,
+															'Repayment' activity,
+															loans.loan_reference_number,
+															repayment_actual_date act_date,
+															bor_sch1.repayment_status statusTxt
+													FROM	borrower_repayment_schedule bor_sch1
+															LEFT JOIN loans
+															ON loans.loan_id	=	bor_sch1.loan_id
+													WHERE	DATEDIFF(CURDATE(), bor_sch1.repayment_actual_date) > -10
+													AND		bor_sch1.repayment_status = :repay_paid_param  
+													UNION
+													SELECT 	bor_sch2.borrower_id borrower_id,
+															'' borrower_name,
+															'Repayment' activity,
+															loans.loan_reference_number,
+															repayment_schedule_date act_date,
+															bor_sch2.repayment_status statusTxt
+													FROM	borrower_repayment_schedule bor_sch2
+															LEFT JOIN loans
+															ON loans.loan_id	=	bor_sch2.loan_id
+													WHERE	bor_sch2.repayment_schedule_date < curdate()
+													AND		bor_sch2.repayment_status = :repay_overdue_param
+											) xx
+												LEFT JOIN borrowers
+													ON borrowers.borrower_id = xx.borrower_id
+												LEFT JOIN codelist_details
+													ON ( (codelist_details.codelist_code = xx.statusTxt) 
+															AND (codelist_details.codelist_id = IF(xx.activity = 'Loan',7,25)  )  )
+											ORDER BY act_date";
+		
+		$dataArrayBor		=	[
+									"loan_new_param"			=> LOAN_STATUS_NEW,
+									"loan_subapprov_param"		=> LOAN_STATUS_SUBMITTED_FOR_APPROVAL,
+									"loan_verify_param"			=> LOAN_STATUS_APPROVED,
+									"loan_repcom_param"			=> LOAN_STATUS_LOAN_REPAID,
+									"repay_unpaid_param"		=> BORROWER_REPAYMENT_STATUS_UNPAID,
+									"repay_paid_param"			=> BORROWER_REPAYMENT_STATUS_PAID,
+									"repay_overdue_param"		=> BORROWER_REPAYMENT_STATUS_OVERDUE
+								];
+									
+		$recentActivitiesBor_rs		=	$this->dbFetchWithParam($recentActivitiesBorSql, $dataArrayBor);
+		
+	
+		if (!$recentActivitiesBor_rs) {
+			return -1;
+		}
+		$this->recentActivitiesBor	=	$recentActivitiesBor_rs;
+
+	}
+	
+	
+	public function getRecentlyApprovedInvestors() {
+		
+		$recentlyApprovedInvSql		=	"	SELECT 	investor_id,
+													CONCAT(users.firstname,' ',users.lastname) investor_name,
+													DATE_FORMAT(approval_datetime,'%d-%m-%Y') approve_date
+											FROM 	investors
+												LEFT JOIN users
+													ON	users.user_id	=	investors.user_id
+											WHERE	approval_datetime
+													BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+											AND		investors.status = :approved_inv_param";
+		
+		$dataArrayInv		=	[
+									"approved_inv_param"	=> INVESTOR_STATUS_APPROVED
+								];
+									
+		$recentlyApprovedInv_rs		=	$this->dbFetchWithParam($recentlyApprovedInvSql, $dataArrayInv);
+		
+	
+		if (!$recentlyApprovedInv_rs) {
+			return -1;
+		}
+		$this->recentlyApprovedInv	=	$recentlyApprovedInv_rs;
+
+	}
+	
+	public function getToBeApprovedInvestors() {
+		
+		$toBeApprovedInvSql		=	"	SELECT 	investor_id,
+												CONCAT(users.firstname,' ',users.lastname) investor_name,
+												status,
+												DATE_FORMAT(register_datetime,'%d-%m-%Y') register_datetime
+										FROM 	borrowers
+										WHERE	status IN (:new_param,:sub_appr_param,:corr_req_param)";
+		
+		$dataArrayInv		=	[
+									"new_param"			=> INVESTOR_STATUS_NEW,
+									"sub_appr_param"	=> INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL,
+									"corr_req_param"	=> INVESTOR_STATUS_COMMENTS_ON_ADMIN
+								];
+									
+		$toBeApprovedInv_rs		=	$this->dbFetchWithParam($toBeApprovedInvSql, $dataArrayInv);
+		
+	
+		if (!$toBeApprovedInv_rs) {
+			return -1;
+		}
+		$this->toBeApprovedInv	=	$toBeApprovedInv_rs;
+
+	}		
+	
+	public function getRecentActivitiesInvestors() {
+		
+		$recentActivitiesBorSql		=	"	SELECT 	borrowers.borrower_id,
+													borrowers.business_name borrower_name,
+													activity,
+													loan_reference_number,
+													DATE_FORMAT(act_date,'%d-%m-%Y') act_date,
+													codelist_details.codelist_value statusTxt
+												
+											FROM(
+													SELECT 	loans.borrower_id borrower_id,
+															'' borrower_name,
+															'Loan' activity,
+															loan_reference_number,
+															apply_date	act_date,
+															loans.status statusTxt
+													FROM	loans 
+													WHERE	loans.status IN ( :loan_new_param, :loan_subapprov_param)
+													UNION
+													SELECT 	loans.borrower_id borrower_id,
+															'' borrower_name,
+															'Loan' activity,
+															loan_reference_number,
+															bid_close_date	act_date,
+															loans.status statusTxt
+													FROM	loans 
+													WHERE	loans.status = :loan_verify_param
+													UNION
+													SELECT 	loans.borrower_id borrower_id,
+															'' borrower_name,
+															'Loan' activity,
+															loan_reference_number,
+															(	SELECT	MAX(repayment_actual_date)
+																FROM	borrower_repayment_schedule
+																WHERE	borrower_id = 	loans.borrower_id
+																AND		loan_id		=	loans.loan_id)	act_date,
+															loans.status statusTxt
+													FROM	loans 
+													WHERE	loans.status =:loan_repcom_param
+													UNION
+													SELECT 	bor_sch.borrower_id borrower_id,
+															'' borrower_name,
+															'Repayment' activity,
+															loans.loan_reference_number,
+															repayment_schedule_date act_date,
+															bor_sch.repayment_status statusTxt
+													FROM	borrower_repayment_schedule bor_sch
+															LEFT JOIN loans
+															ON loans.loan_id	=	bor_sch.loan_id
+													WHERE	DATEDIFF(CURDATE(), bor_sch.repayment_actual_date) > -10
+													AND		bor_sch.repayment_status = :repay_unpaid_param
+													UNION
+													SELECT 	bor_sch1.borrower_id borrower_id,
+															'' borrower_name,
+															'Repayment' activity,
+															loans.loan_reference_number,
+															repayment_actual_date act_date,
+															bor_sch1.repayment_status statusTxt
+													FROM	borrower_repayment_schedule bor_sch1
+															LEFT JOIN loans
+															ON loans.loan_id	=	bor_sch1.loan_id
+													WHERE	DATEDIFF(CURDATE(), bor_sch1.repayment_actual_date) > -10
+													AND		bor_sch1.repayment_status = :repay_paid_param  
+													UNION
+													SELECT 	bor_sch2.borrower_id borrower_id,
+															'' borrower_name,
+															'Repayment' activity,
+															loans.loan_reference_number,
+															repayment_schedule_date act_date,
+															bor_sch2.repayment_status statusTxt
+													FROM	borrower_repayment_schedule bor_sch2
+															LEFT JOIN loans
+															ON loans.loan_id	=	bor_sch2.loan_id
+													WHERE	bor_sch2.repayment_schedule_date < curdate()
+													AND		bor_sch2.repayment_status = :repay_overdue_param
+											) xx
+												LEFT JOIN borrowers
+													ON borrowers.borrower_id = xx.borrower_id
+												LEFT JOIN codelist_details
+													ON ( (codelist_details.codelist_code = xx.statusTxt) 
+															AND (codelist_details.codelist_id = IF(xx.activity = 'Loan',7,25)  )  )
+											ORDER BY act_date";
+		
+		$dataArrayBor		=	[
+									"loan_new_param"			=> LOAN_STATUS_NEW,
+									"loan_subapprov_param"		=> LOAN_STATUS_SUBMITTED_FOR_APPROVAL,
+									"loan_verify_param"			=> LOAN_STATUS_APPROVED,
+									"loan_repcom_param"			=> LOAN_STATUS_LOAN_REPAID,
+									"repay_unpaid_param"		=> BORROWER_REPAYMENT_STATUS_UNPAID,
+									"repay_paid_param"			=> BORROWER_REPAYMENT_STATUS_PAID,
+									"repay_overdue_param"		=> BORROWER_REPAYMENT_STATUS_OVERDUE
+								];
+									
+		$recentActivitiesBor_rs		=	$this->dbFetchWithParam($recentActivitiesBorSql, $dataArrayBor);
+		
+	
+		if (!$recentActivitiesBor_rs) {
+			return -1;
+		}
+		$this->recentActivitiesBor	=	$recentActivitiesBor_rs;
+
+	}
 }
