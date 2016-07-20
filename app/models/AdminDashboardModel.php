@@ -345,10 +345,12 @@ class AdminDashboardModel extends TranWrapper {
 		
 		$toBeApprovedInvSql		=	"	SELECT 	investor_id,
 												CONCAT(users.firstname,' ',users.lastname) investor_name,
-												status,
+												investors.status,
 												DATE_FORMAT(register_datetime,'%d-%m-%Y') register_datetime
-										FROM 	borrowers
-										WHERE	status IN (:new_param,:sub_appr_param,:corr_req_param)";
+										FROM 	investors
+												LEFT JOIN users
+													ON	users.user_id	=	investors.user_id
+										WHERE	investors.status IN (:new_param,:sub_appr_param,:corr_req_param)";
 		
 		$dataArrayInv		=	[
 									"new_param"			=> INVESTOR_STATUS_NEW,
@@ -368,104 +370,103 @@ class AdminDashboardModel extends TranWrapper {
 	
 	public function getRecentActivitiesInvestors() {
 		
-		$recentActivitiesBorSql		=	"	SELECT 	borrowers.borrower_id,
-													borrowers.business_name borrower_name,
+		$recentActivitiesInvSql		=	"	SELECT 	investors.investor_id,
+													loan_id,
+													( 	SELECT CONCAT(users.firstname,' ',users.lastname)
+														FROM	investors subInv
+																LEFT JOIN users
+																ON users.user_id = subInv.user_id
+														WHERE	subInv.investor_id = investors.investor_id
+														) investor_name,
 													activity,
-													loan_reference_number,
+													ref_no,
 													DATE_FORMAT(act_date,'%d-%m-%Y') act_date,
-													codelist_details.codelist_value statusTxt
+													cdlst.codelist_value statusTxt
 												
 											FROM(
-													SELECT 	loans.borrower_id borrower_id,
-															'' borrower_name,
-															'Loan' activity,
-															loan_reference_number,
-															apply_date	act_date,
-															loans.status statusTxt
-													FROM	loans 
-													WHERE	loans.status IN ( :loan_new_param, :loan_subapprov_param)
-													UNION
-													SELECT 	loans.borrower_id borrower_id,
-															'' borrower_name,
-															'Loan' activity,
-															loan_reference_number,
-															bid_close_date	act_date,
-															loans.status statusTxt
-													FROM	loans 
-													WHERE	loans.status = :loan_verify_param
-													UNION
-													SELECT 	loans.borrower_id borrower_id,
-															'' borrower_name,
-															'Loan' activity,
-															loan_reference_number,
-															(	SELECT	MAX(repayment_actual_date)
-																FROM	borrower_repayment_schedule
-																WHERE	borrower_id = 	loans.borrower_id
-																AND		loan_id		=	loans.loan_id)	act_date,
-															loans.status statusTxt
-													FROM	loans 
-													WHERE	loans.status =:loan_repcom_param
-													UNION
-													SELECT 	bor_sch.borrower_id borrower_id,
-															'' borrower_name,
-															'Repayment' activity,
-															loans.loan_reference_number,
-															repayment_schedule_date act_date,
-															bor_sch.repayment_status statusTxt
-													FROM	borrower_repayment_schedule bor_sch
+													SELECT 	loan_bids.investor_id investor_id,
+															loan_bids.loan_id,
+															'' investor_name,
+															'Investments' activity,
+															loans.loan_reference_number ref_no,
+															DATE(bid_datetime)	act_date,
+															loan_bids.bid_status statusTxt
+													FROM	loan_bids
 															LEFT JOIN loans
-															ON loans.loan_id	=	bor_sch.loan_id
-													WHERE	DATEDIFF(CURDATE(), bor_sch.repayment_actual_date) > -10
-													AND		bor_sch.repayment_status = :repay_unpaid_param
+															ON	loans.loan_id	=	loan_bids.loan_id
+													WHERE	loan_bids.bid_status IN ( 	:bids_open_param, 	
+																					:bids_accpt_param
+																				)
+													AND		DATEDIFF(NOW(), loan_bids.bid_datetime) > -10
 													UNION
-													SELECT 	bor_sch1.borrower_id borrower_id,
-															'' borrower_name,
-															'Repayment' activity,
-															loans.loan_reference_number,
-															repayment_actual_date act_date,
-															bor_sch1.repayment_status statusTxt
-													FROM	borrower_repayment_schedule bor_sch1
-															LEFT JOIN loans
-															ON loans.loan_id	=	bor_sch1.loan_id
-													WHERE	DATEDIFF(CURDATE(), bor_sch1.repayment_actual_date) > -10
-													AND		bor_sch1.repayment_status = :repay_paid_param  
+													SELECT 	inv_tran.investor_id investor_id,
+															''	loan_id,
+															'' investor_name,
+															'Withdrawals' activity,
+															payments.trans_reference_number ref_no,
+															trans_date	act_date,
+															inv_tran.status statusTxt
+													FROM	investor_bank_transactions inv_tran
+															LEFT JOIN payments
+																ON	payments.payment_id =	inv_tran.trans_id
+													WHERE	inv_tran.trans_type = 2
+													AND		inv_tran.status	=	:witdraw_ver_param
+													AND		DATEDIFF(CURDATE(), inv_tran.trans_date) > -10
 													UNION
-													SELECT 	bor_sch2.borrower_id borrower_id,
-															'' borrower_name,
-															'Repayment' activity,
-															loans.loan_reference_number,
-															repayment_schedule_date act_date,
-															bor_sch2.repayment_status statusTxt
-													FROM	borrower_repayment_schedule bor_sch2
-															LEFT JOIN loans
-															ON loans.loan_id	=	bor_sch2.loan_id
-													WHERE	bor_sch2.repayment_schedule_date < curdate()
-													AND		bor_sch2.repayment_status = :repay_overdue_param
+													SELECT 	inv_tran.investor_id investor_id,
+															'' loan_id,
+															'' investor_name,
+															'Deposits' activity,
+															payments.trans_reference_number ref_no,
+															trans_date	act_date,
+															inv_tran.status statusTxt
+													FROM	investor_bank_transactions inv_tran
+															LEFT JOIN payments
+																ON	payments.payment_id =	inv_tran.trans_id
+													WHERE	inv_tran.trans_type = 1
+													AND		DATEDIFF(CURDATE(), inv_tran.trans_date) > -10
+													UNION
+													SELECT 	inv_tran.investor_id investor_id,
+															'' loan_id,
+															'' investor_name,
+															'Withdrawal Requests' activity,
+															payments.trans_reference_number ref_no,
+															trans_date	act_date,
+															inv_tran.status statusTxt
+													FROM	investor_bank_transactions inv_tran
+															LEFT JOIN payments
+																ON	payments.payment_id =	inv_tran.trans_id
+													WHERE	inv_tran.trans_type = 2
+													AND		inv_tran.status	=	:witdraw_unver_param
+													AND		DATEDIFF(CURDATE(), inv_tran.trans_date) > -10
+													
 											) xx
-												LEFT JOIN borrowers
-													ON borrowers.borrower_id = xx.borrower_id
-												LEFT JOIN codelist_details
-													ON ( (codelist_details.codelist_code = xx.statusTxt) 
-															AND (codelist_details.codelist_id = IF(xx.activity = 'Loan',7,25)  )  )
+												LEFT JOIN investors
+													ON investors.investor_id = xx.investor_id
+												LEFT JOIN codelist_details cdlst
+													ON ( (cdlst.codelist_code = xx.statusTxt) 
+															AND  ( 
+																	CASE 
+																		WHEN xx.activity = 'Investments'
+																				THEN  cdlst.codelist_id = 21
+																		ELSE cdlst.codelist_id = 31  
+																	END
+																) )
 											ORDER BY act_date";
 		
-		$dataArrayBor		=	[
-									"loan_new_param"			=> LOAN_STATUS_NEW,
-									"loan_subapprov_param"		=> LOAN_STATUS_SUBMITTED_FOR_APPROVAL,
-									"loan_verify_param"			=> LOAN_STATUS_APPROVED,
-									"loan_repcom_param"			=> LOAN_STATUS_LOAN_REPAID,
-									"repay_unpaid_param"		=> BORROWER_REPAYMENT_STATUS_UNPAID,
-									"repay_paid_param"			=> BORROWER_REPAYMENT_STATUS_PAID,
-									"repay_overdue_param"		=> BORROWER_REPAYMENT_STATUS_OVERDUE
+		$dataArrayInv		=	[
+									"bids_open_param"			=> LOAN_BIDS_STATUS_OPEN,
+									"bids_accpt_param"			=> LOAN_BIDS_STATUS_ACCEPTED,
+									"witdraw_ver_param"			=> LOAN_STATUS_APPROVED,
+									"witdraw_unver_param"		=> INVESTOR_BANK_TRANS_STATUS_UNVERIFIED
 								];
 									
-		$recentActivitiesBor_rs		=	$this->dbFetchWithParam($recentActivitiesBorSql, $dataArrayBor);
+		$recentActivitiesInv_rs		=	$this->dbFetchWithParam($recentActivitiesInvSql, $dataArrayInv);
 		
-	
-		if (!$recentActivitiesBor_rs) {
+		if (!$recentActivitiesInv_rs) {
 			return -1;
 		}
-		$this->recentActivitiesBor	=	$recentActivitiesBor_rs;
+		$this->recentActivitiesInv	=	$recentActivitiesInv_rs;
 
 	}
 }

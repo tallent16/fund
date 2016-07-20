@@ -266,8 +266,8 @@ function callSubmitReplyActionFunc() {
 }
 function onFocusNumberField($thisField) {
 	if ($($thisField).attr("decimal") !== undefined) {
-		console.log($($thisField).val());
-		console.log($thisField);
+	//	console.log($($thisField).val());
+	//	console.log($thisField);
 		$valueofNumber = numeral($($thisField).val()).value();
 		$($thisField).attr("placeholder", "0");
 		$($thisField).val($valueofNumber);
@@ -389,7 +389,7 @@ $.fn.exists = function(callback) {
 
 function modalBodyScrollable() {
 	
-	console.log(window.innerWidth/2);
+	//console.log(window.innerWidth/2);
 		$customWidth	=	window.innerWidth/2;
 		$customHeight	=	parseInt(window.innerHeight)-170;	
 		
@@ -398,14 +398,14 @@ function modalBodyScrollable() {
 		$headerHeight	=	$('.modal-header').height();
 		$footerHeight	=	$('.modal-footer').height();
 		
-		console.log("$contentHeight"+parseInt($contentHeight));
-		console.log("$headerHeight"+parseInt($headerHeight));
-		console.log("$footerHeight"+parseInt($footerHeight));		
-		console.log("$customHeight"+parseInt(window.innerHeight));
+		//console.log("$contentHeight"+parseInt($contentHeight));
+		//console.log("$headerHeight"+parseInt($headerHeight));
+		//console.log("$footerHeight"+parseInt($footerHeight));		
+		//console.log("$customHeight"+parseInt(window.innerHeight));
 		
 		//$bodyHeight		=	parseInt($contentHeight) - parseInt($headerHeight);
 		$bodyHeight		=	parseInt(window.innerHeight) - (-parseInt($headerHeight)+(-parseInt($footerHeight))+30);
-		console.log("$finalbody"+$bodyHeight);
+		//console.log("$finalbody"+$bodyHeight);
 		//~ $('.modal-body').css({maxHeight:(parseInt($bodyHeight) +'px'),
 								//~ 'overflow-y':'scroll'
 						 //~ }); 

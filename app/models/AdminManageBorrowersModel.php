@@ -65,17 +65,28 @@ class AdminManageBorrowersModel extends TranWrapper {
 		}
 							
 		$borlist_rs		= 	$this->dbFetchWithParam($borlist_sql,$argArray);
-		
+		$row			=	array();
 		if ($borlist_rs) {
 			foreach ($borlist_rs as $borRow) {
-				$newrow = count($this->borrowerListInfo);
-				$newrow ++;
-				foreach ($borRow as $colname => $colvalue) {
-					$this->borrowerListInfo[$newrow][$colname] = $colvalue;
-				}
+				//$newrow = count($this->borrowerListInfo);
+				//	$newrow ++;
+				$row[] 	= array(
+									"DT_RowId"=>"row_".$borRow->user_id,
+									"email"=>$borRow->email,									
+									"business_name"=>$borRow->business_name,
+									"industry"=>$borRow->industry,									
+									"active_loan"=>$borRow->active_loan,									
+									"tot_bal_outstanding"=>$borRow->tot_bal_outstanding,		
+									"status"=>$borRow->statusText									
+								);	
+				//	foreach ($borRow as $colname => $colvalue) {
+						//$this->borrowerListInfo[$newrow][$colname] = $colvalue;	
+								              
+				//	}
 			}
 		}
-		return	$borlist_rs;
+		//return	$borlist_rs;
+		return	$row;
 	}
 	
 	public function processDropDowns() {

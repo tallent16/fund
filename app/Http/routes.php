@@ -1119,6 +1119,9 @@ Route::post('admin/approvechangeofbank/reject',
 		Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
 		Route::post('admin/ajax/editmessage',  'AdminSettingsController@ajaxEditAction');
 		Route::post('admin/ajax/editmailcontent',  'AdminSettingsController@ajaxEmailEditAction');
+		
+		Route::get('admin/ajax/adminborrower', 'AdminManageBorrowersController@ajaxBorrowerList');
+		Route::post('admin/ajax/adminborrower', 'AdminManageBorrowersController@ajaxBorrowerList');
 
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
 	 

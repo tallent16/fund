@@ -1,5 +1,12 @@
 <?php 
 namespace App\Http\Controllers;
+include( app_path()."/libraries/php/DataTables.php" );
+use
+	DataTables\Editor,
+	DataTables\Editor\Field,
+	DataTables\Editor\Format,
+	DataTables\Editor\Join,
+	DataTables\Editor\Validate;
 use Request;
 use	\App\models\AdminManageBorrowersModel;
 use	\App\models\BorrowerProfileModel;
@@ -19,16 +26,32 @@ class AdminManageBorrowersController extends MoneyMatchController {
 	public function indexAction(){
 		
 		$filterBorrowerStatus_filter 	= 'all';
-		
 		if (isset($_REQUEST["borrowerstatus_filter"])) 
-			$filterBorrowerStatus_filter 	= $_REQUEST["borrowerstatus_filter"];
-		$this->adminborModel->getManageBorrowerDetails($filterBorrowerStatus_filter);				
+			$filterBorrowerStatus_filter 	= $_REQUEST["borrowerstatus_filter"];	
+			
+		//$this->adminborModel->getManageBorrowerDetails($filterBorrowerStatus_filter);	
+		$this->adminborModel->processDropDowns();
+				
 		$withArry	=	array(		"adminbormodel"=>$this->adminborModel,
 									"classname"=>"fa fa-reply fa-fw user-icon"
-								);	
+							);	
+		
 		return view('admin.admin-manageborrowers')
 				->with($withArry);
 		
+	}
+	
+	public function ajaxBorrowerList(){
+		 
+		$filterBorrowerStatus_filter 	= 'all';
+		if (isset($_REQUEST["borrowerstatus_filter"])) 
+			$filterBorrowerStatus_filter 	= $_REQUEST["borrowerstatus_filter"];
+		
+			
+		$row = $this->adminborModel->getBorrowerListInfo($filterBorrowerStatus_filter);
+		//~ echo "<pre>",print_r($row),"</pre>";
+		//$options	=	array();
+		return json_encode(array("data"=>$row));
 	}
 	
 	public function viewProfileAction($bor_id){
@@ -48,6 +71,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 									"user_type"=>"borrower",
 									"activeTab"=>$activeTab
 								);	
+		
 		return view('borrower.borrower-profile')
 				->with($withArry);
 		

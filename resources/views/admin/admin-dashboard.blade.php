@@ -132,8 +132,7 @@
 										))
 
 				<!-----------3 accordion---------------------->									
-				@var $panel_body_content2inv = "";
-				@var $panelBody		=	$panel_body_content2inv.'Table content3';
+				@var $panelBody		=	$dashMod->recentActivitiesInv;
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseThree",
