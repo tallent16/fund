@@ -105,6 +105,8 @@ $(document).ready(function (){
 											+" Do you want to proceed with the rejection", "rejectManageBorrowerFunc");
 	});
    
+   
+   
 });
 
 //=================Delete callback functions=============================================

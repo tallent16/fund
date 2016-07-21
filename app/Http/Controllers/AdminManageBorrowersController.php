@@ -31,27 +31,22 @@ class AdminManageBorrowersController extends MoneyMatchController {
 			
 		//$this->adminborModel->getManageBorrowerDetails($filterBorrowerStatus_filter);	
 		$this->adminborModel->processDropDowns();
-				
+			
 		$withArry	=	array(		"adminbormodel"=>$this->adminborModel,
 									"classname"=>"fa fa-reply fa-fw user-icon"
 							);	
 		
 		return view('admin.admin-manageborrowers')
 				->with($withArry);
-		
+			
 	}
 	
-	public function ajaxBorrowerList(){
-		 
+	public function ajaxBorrowerList(){		
 		$filterBorrowerStatus_filter 	= 'all';
-		if (isset($_REQUEST["borrowerstatus_filter"])) 
-			$filterBorrowerStatus_filter 	= $_REQUEST["borrowerstatus_filter"];
-		
-			
-		$row = $this->adminborModel->getBorrowerListInfo($filterBorrowerStatus_filter);
-		//~ echo "<pre>",print_r($row),"</pre>";
-		//$options	=	array();
-		return json_encode(array("data"=>$row));
+		if (isset($postArray["borrowerstatus_filter"])) 
+			$filterBorrowerStatus_filter 	= $postArray["borrowerstatus_filter"];			
+		$row = $this->adminborModel->getBorrowerListInfo($filterBorrowerStatus_filter);		
+		return json_encode(array("data"=>$row));		
 	}
 	
 	public function viewProfileAction($bor_id){

@@ -8,22 +8,39 @@
 	<style>
 		table.dataTable thead th, table.dataTable thead td {
 			padding: 10px;
-	}
-		table.dataTable thead th, table.dataTable tr td a.user_edit_master  {
-			color: #333333;
-	}
-		table.dataTable thead th, table.dataTable tr td a.user_edit_master:hover  {
+		}
+		table.dataTable thead > th {
+			color: #fff;			
 			text-decoration:none;
-	}
-	#ToolTables_user_0,#ToolTables_user_1 {
-		visibility:hidden;
-	}
+		}		
+		.dataTable td a{
+			color:#333;
+			text-decoration:none;		
+		}
+		.table-responsive{
+			overflow:visible;
+		}
 	</style>
 @stop
 
 @section('page_heading',Lang::get('Manage Borrowers') )
 @section('section')  
 @var	$adminBorModel	=	$adminbormodel->borrowerListInfo
+
+@var	$approveborrower	=	"no"
+@var	$rejectborrower		=	"no"
+@var	$deleteborrower		=	"no"
+
+@permission('approve.admin.manageborrowers')
+	@var	$approveborrower =	"yes"
+@endpermission
+@permission('reject.admin.manageborrowers')
+	@var	$rejectborrower =	"yes"
+@endpermission
+@permission('delete.admin.manageborrowers')
+	@var	$deleteborrower	=	"yes"
+@endpermission
+
 <div class="col-sm-12 space-around">	
 	
 	<div class="row">
@@ -34,12 +51,13 @@
 					{{ 
 						Form::select('borrowerstatus_filter',$adminbormodel->filterBorrowerStatusList, 
 										$adminbormodel->filterBorrowerStatusValue,
-										["class" => "selectpicker"]) 
+										[	"class" => "selectpicker",
+											"id"=>"borrowerstatus_filter"]) 
 					}} 		
 				</div>		
 			</div>
 			<div class="col-sm-12 col-lg-3 space-around">			
-				<button type="submit" class="btn verification-button">
+				<button id="filter_status" type="button" class="btn verification-button">
 					{{ Lang::get('borrower-loanlisting.apply_filter') }}			
 				</button>				
 			</div>	
@@ -234,9 +252,8 @@
 											<th>{{ Lang::get('Active Loans') }}</th>
 											<th>{{ Lang::get('Total Balance Outstanding') }}</th>
 											<th>{{ Lang::get('Status') }}</th>
-<!--
 											<th>{{ Lang::get('Actions') }}</th>
--->
+											<th>{{ Lang::get('Hidden Staus') }}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -251,6 +268,9 @@
 							<input 	type="hidden" 
 									id="default_reject_applicable" 
 									value="{{BORROWER_STATUS_NEW_PROFILE}},{{BORROWER_STATUS_SUBMITTED_FOR_APPROVAL}}">
+							<input id="approveborrower" type="hidden" value="{{$approveborrower}}">
+							<input id="rejectborrower"  type="hidden" value="{{$rejectborrower}}">
+							<input id="deleteborrower"  type="hidden" value="{{$deleteborrower}}">
 						</div>
 					</div>
 				

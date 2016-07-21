@@ -1,6 +1,24 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script>
+		 var loanJsonObj			=	{{$dashMod->loanJsonObj}}		
+		 var investmentJsonObj		=	{{$dashMod->investmentJsonObj}}
+	</script>
+	<script src="{{ url("js/admin-dashboard.js") }}" type="text/javascript"></script>
+@endsection
+@section('styles')
+	<style>
+		.chart-legend li span {
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			margin-right: 5px;
+		}
+		.chart-legend li {
+			list-style:none;
+		}
+	</style>	
 @endsection
 @section('page_heading',Lang::get('borrower-dashboard.page_heading') )
 @section('section')           

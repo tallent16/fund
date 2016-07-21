@@ -38,11 +38,11 @@ class AdminManageBorrowersModel extends TranWrapper {
 												WHERE 	loans.status IN (:approved, :closed,:disbursed,:repaid)
 												AND 	loans.borrower_id = borrowers.borrower_id
 											) active_loan, 
-											(	SELECT 	ROUND(sum(principal_component),2)
+											IFNULL((	SELECT 	ROUND(sum(principal_component),2)
 												FROM 	borrower_repayment_schedule 
 												WHERE 	repayment_status != :repaidStatus 
 												AND 	borrowers.borrower_id = borrower_repayment_schedule.borrower_id 
-											) tot_bal_outstanding, 
+											),'0.00') tot_bal_outstanding, 
 											case borrowers.status 
 												   when 1 then 'New profile' 
 												   when 2 then 'Submitted for verification'
@@ -72,12 +72,15 @@ class AdminManageBorrowersModel extends TranWrapper {
 				//	$newrow ++;
 				$row[] 	= array(
 									"DT_RowId"=>"row_".$borRow->user_id,
+									"user_id"=>$borRow->user_id,
 									"email"=>$borRow->email,									
 									"business_name"=>$borRow->business_name,
 									"industry"=>$borRow->industry,									
 									"active_loan"=>$borRow->active_loan,									
 									"tot_bal_outstanding"=>$borRow->tot_bal_outstanding,		
-									"status"=>$borRow->statusText									
+									"status"=>$borRow->status,									
+									"statusText"=>$borRow->statusText,									
+									"borrower_id"=>$borRow->borrower_id									
 								);	
 				//	foreach ($borRow as $colname => $colvalue) {
 						//$this->borrowerListInfo[$newrow][$colname] = $colvalue;	

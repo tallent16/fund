@@ -19,6 +19,8 @@ class AdminDashboardModel extends TranWrapper {
 	public 	$recentlyApprovedInv		= 	array();
 	public 	$toBeApprovedInv			= 	array();
 	public 	$recentActivitiesInv		= 	array();
+	public	$loanJsonObj				=	"";
+	public	$investmentJsonObj			=	"";
 	
 	public function getDashboardDetails() {
 		
@@ -32,6 +34,8 @@ class AdminDashboardModel extends TranWrapper {
 		$this->getRecentlyApprovedInvestors();
 		$this->getToBeApprovedInvestors();
 		$this->getRecentActivitiesInvestors();
+		$this->getLoanBarChartJson();
+		$this->getInvestmentBarChartJson();
 	}
 	
 	public function getLoanNotFullySubscribed() {
@@ -69,6 +73,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->loanNotFullySubscribed	=	$loanNotSubscribed_rs;
+		return	$loanNotSubscribed_rs;
 
 	}
 	
@@ -100,7 +105,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->defaultingLoans	=	$defaultLoan_rs;
-
+		return	$defaultLoan_rs;
 	}
 	
 	public function getCommissionsEarned() {
@@ -123,7 +128,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->commissionsEarned	=	$commEarned_rs;
-
+		return	$commEarned_rs;
 	}
 						
 	public function getPenaltiesLevies() {
@@ -147,7 +152,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->penaltiesLevies	=	$penaltiesLevies_rs;
-
+		return	$penaltiesLevies_rs;
 	}
 	
 	public function getRecentlyApprovedBorrowers() {
@@ -183,7 +188,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->recentlyApprovedBor	=	$recentlyApprovedBor_rs;
-
+		return	$recentlyApprovedBor_rs;
 	}
 	
 	public function getToBeApprovedBorrowers() {
@@ -208,7 +213,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->toBeApprovedBor	=	$toBeApprovedBor_rs;
-
+		return	$toBeApprovedBor_rs;
 	}
 	
 	public function getRecentActivitiesBorrowers() {
@@ -311,7 +316,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->recentActivitiesBor	=	$recentActivitiesBor_rs;
-
+		return	$recentActivitiesBor_rs;
 	}
 	
 	
@@ -338,7 +343,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->recentlyApprovedInv	=	$recentlyApprovedInv_rs;
-
+		return	$recentlyApprovedInv_rs;
 	}
 	
 	public function getToBeApprovedInvestors() {
@@ -365,7 +370,7 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->toBeApprovedInv	=	$toBeApprovedInv_rs;
-
+		return	$toBeApprovedInv_rs;
 	}		
 	
 	public function getRecentActivitiesInvestors() {
@@ -467,6 +472,54 @@ class AdminDashboardModel extends TranWrapper {
 			return -1;
 		}
 		$this->recentActivitiesInv	=	$recentActivitiesInv_rs;
-
+		return	$recentActivitiesInv_rs;
+	}
+	
+	public function getLoanBarChartJson() {
+		
+		$loanBarChartSql		=	"		SELECT 		CONCAT(DATE_FORMAT(apply_date,'%b'),'/',YEAR(apply_date)) 
+															month_year, 
+														ROUND(SUM(apply_amount),2) tot_loan_amount
+											FROM 		loans 
+											WHERE 		apply_date	>=	DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+											AND			status	=	:loan_new_param
+											GROUP BY	YEAR(apply_date),MONTH(apply_date)";
+		
+		$dataArrayLoan			=	[
+										"loan_new_param" => LOAN_STATUS_NEW
+									];
+									
+		$loanBarChart_rs		=	$this->dbFetchWithParam($loanBarChartSql, $dataArrayLoan);
+		
+		if (!$loanBarChart_rs) {
+			return -1;
+		}
+		$this->loanJsonObj	=	json_encode($loanBarChart_rs);
+		return	json_encode($loanBarChart_rs);
+	}
+	
+	public function getInvestmentBarChartJson() {
+		
+		$investmentBarChartSql		=	"	SELECT 	CONCAT(DATE_FORMAT(bid_datetime,'%b'),'/',
+														YEAR(bid_datetime)) month_year, 
+													ROUND(SUM(bid_amount),2) tot_loan_amount
+											FROM 	loan_bids
+											WHERE 	DATE(bid_datetime)	>=	DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+											AND		bid_status IN (:bids_open_param,:bids_accpt_param)
+											GROUP BY	
+													YEAR(bid_datetime),MONTH(bid_datetime)";
+		
+		$dataArrayInvestment		=	[
+											"bids_open_param"			=> LOAN_BIDS_STATUS_OPEN,
+											"bids_accpt_param"			=> LOAN_BIDS_STATUS_ACCEPTED
+										];
+									
+		$investmentBarChart_rs		=	$this->dbFetchWithParam($investmentBarChartSql, $dataArrayInvestment);
+		
+		if (!$investmentBarChart_rs) {
+			return -1;
+		}
+		$this->investmentJsonObj	=	json_encode($investmentBarChart_rs);
+		return	json_encode($investmentBarChart_rs);
 	}
 }
