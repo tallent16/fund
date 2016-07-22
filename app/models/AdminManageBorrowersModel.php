@@ -38,11 +38,11 @@ class AdminManageBorrowersModel extends TranWrapper {
 												WHERE 	loans.status IN (:approved, :closed,:disbursed,:repaid)
 												AND 	loans.borrower_id = borrowers.borrower_id
 											) active_loan, 
-											IFNULL((	SELECT 	ROUND(sum(principal_component),2)
+											IFNULL(FORMAT((	SELECT 	ROUND(sum(principal_component),2)
 												FROM 	borrower_repayment_schedule 
 												WHERE 	repayment_status != :repaidStatus 
 												AND 	borrowers.borrower_id = borrower_repayment_schedule.borrower_id 
-											),'0.00') tot_bal_outstanding, 
+											),2),'0.00') tot_bal_outstanding, 
 											case borrowers.status 
 												   when 1 then 'New profile' 
 												   when 2 then 'Submitted for verification'

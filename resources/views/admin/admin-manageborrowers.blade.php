@@ -1,18 +1,21 @@
 @extends('layouts.dashboard')
 @section('styles')
-
 	{{ Html::style('css/datatable/jquery.dataTables.css') }}
 	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
-	{{ Html::style('css/datatable/dataTables.editor.css') }}
-		
+	{{ Html::style('css/datatable/dataTables.editor.css') }}		
 	<style>
 		table.dataTable thead th, table.dataTable thead td {
 			padding: 10px;
+			border-bottom:none;
 		}
 		table.dataTable thead > th {
 			color: #fff;			
 			text-decoration:none;
 		}		
+		table.dataTable tr{
+			background-color:#333;
+			color:#fff;
+		}
 		.dataTable td a{
 			color:#333;
 			text-decoration:none;		
@@ -20,9 +23,11 @@
 		.table-responsive{
 			overflow:visible;
 		}
+		table.dataTable.no-footer{
+			border:none;
+		}
 	</style>
 @stop
-
 @section('page_heading',Lang::get('Manage Borrowers') )
 @section('section')  
 @var	$adminBorModel	=	$adminbormodel->borrowerListInfo
@@ -238,7 +243,7 @@
 					<div class="row">		
 						<div class="col-lg-12 col-md-12">
 							<div class="table-responsive">
-								<table class="table table-bordered" id="adminborrower">
+								<table class="table table-striped" id="adminborrower">
 									<thead>
 										<tr>
 											<th>														

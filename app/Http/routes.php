@@ -1122,6 +1122,9 @@ Route::post('admin/approvechangeofbank/reject',
 		
 		Route::get('admin/ajax/adminborrower', 'AdminManageBorrowersController@ajaxBorrowerList');
 		Route::post('admin/ajax/adminborrower', 'AdminManageBorrowersController@ajaxBorrowerList');
+		
+		Route::get('admin/ajax/admininvestor', 'AdminManageInvestorsController@ajaxInvestorList');
+		Route::post('admin/ajax/admininvestor', 'AdminManageInvestorsController@ajaxInvestorList');
 
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
 	 
@@ -1137,6 +1140,18 @@ Route::post('admin/approvechangeofbank/reject',
 								]
 				);
 	 Route::post('admin/changepassword/save', 'AdminChangePasswordController@saveChangePasswordAction');
+	 
+	  // **************************** Admin Report******************************************
+	  		
+	 Route::get('admin/investoractivity/report',
+							[	
+								//'middleware' 	=> 	'permission',
+								//'permission'	=>	'assignrole.admin.manageroles',
+								//'redirect_back'	=>	'admin.roles',
+								//'action_type'	=>	'Assign Roles',
+								'uses' 			=>	'AdminInvestorActivityReportController@indexAction'
+							]
+				);
 });
 
 // The routes (or pages that are applicable for Borrower Users only

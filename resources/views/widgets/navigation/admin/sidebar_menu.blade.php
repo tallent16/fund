@@ -62,7 +62,28 @@
 	@endpermission
 	@permission('view.admin.reports')
 	<li>
-		<a href="{{ url ('admin/reports') }}"><i class="fa fa-line-chart fa-fw"></i>{{ Lang::get('Reports') }} </a> 
+		<a href="{{ url ('admin/reports') }}">
+			<i class="fa fa-line-chart fa-fw"></i>
+			{{ Lang::get('Reports') }} 
+			<span class="fa arrow">
+		</a>
+		<ul class="nav nav-second-level">
+			<li>
+				<a href="{{ url ('admin/investoractivity/report') }}">
+					{{ Lang::get('Investor Activity Report') }}
+				</a>
+			</li> 
+			<li>
+				<a href="{{ url ('admin/borroweractivity/report') }}">
+					{{ Lang::get('Borrower Activity Report') }}
+				</a>
+			</li> 
+			<li>
+				<a href="{{ url ('admin/bankactivity/report') }}">
+					{{ Lang::get('Bank Activity Report') }}
+				</a>
+			</li>
+		</ul>
 	</li>
 	@endpermission
 	@permission('view.admin.manageusers') 

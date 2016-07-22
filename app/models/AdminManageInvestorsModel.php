@@ -46,7 +46,7 @@ class AdminManageInvestorsModel extends TranWrapper {
 												   when 4 then 'Verified'
 											end as statusText,
 											investors.status,
-											available_balance 
+											IFNULL(FORMAT(available_balance,2),'0.00') available_balance
 									FROM 	investors, 
 											users 
 									WHERE 	investors.user_id = users.user_id
@@ -64,14 +64,27 @@ class AdminManageInvestorsModel extends TranWrapper {
 		
 		if ($invlist_rs) {
 			foreach ($invlist_rs as $invRow) {
-				$newrow = count($this->investorListInfo);
-				$newrow ++;
-				foreach ($invRow as $colname => $colvalue) {
-					$this->investorListInfo[$newrow][$colname] = $colvalue;
-				}
+				$row[] 	= array(
+									"DT_RowId"=>"row_".$invRow->user_id,
+									"user_id"=>$invRow->user_id,
+									"email"=>$invRow->email,									
+									"display_name"=>$invRow->display_name,
+									"mobile_number"=>$invRow->mobile_number,									
+									"active_loan"=>$invRow->active_loan,									
+									"available_balance"=>$invRow->available_balance,		
+									"status"=>$invRow->status,									
+									"statusText"=>$invRow->statusText,									
+									"investor_id"=>$invRow->investor_id									
+								);	
+				//~ $newrow = count($this->investorListInfo);
+				//~ $newrow ++;
+				//~ foreach ($invRow as $colname => $colvalue) {
+					//~ $this->investorListInfo[$newrow][$colname] = $colvalue;
+				//~ }
 			}
 		}
-		return	$invlist_rs;
+		//return	$invlist_rs;
+		return	$row;
 	}
 	
 	public function processDropDowns() {

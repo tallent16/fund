@@ -22,7 +22,9 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		
 		if (isset($_REQUEST["investorstatus_filter"])) 
 			$filterInvestorStatus_filter 	= $_REQUEST["investorstatus_filter"];
-		$this->admininvModel->getManageInvestorDetails($filterInvestorStatus_filter);				
+			
+		//$this->admininvModel->getManageInvestorDetails($filterInvestorStatus_filter);	
+		$this->admininvModel->processDropDowns();			
 		$withArry	=	array(		"InvPrfMod"=>$this->investorProfileModel,
 									"admininvModel"=>$this->admininvModel,
 									"classname"=>"fa fa-reply fa-fw user-icon"
@@ -30,6 +32,14 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		return view('admin.admin-manageinvestors')
 				->with($withArry);
 		
+	}
+	
+	public function ajaxInvestorList(){		
+		$filterInvestorStatus_filter 	= 'all';
+		if (isset($postArray["investorstatus_filter"])) 
+			$filterInvestorStatus_filter 	= $postArray["investorstatus_filter"];			
+		$row = $this->admininvModel->getInvestorListInfo($filterInvestorStatus_filter);		
+		return json_encode(array("data"=>$row));		
 	}
 	
 	public function viewProfileAction($inv_id){
