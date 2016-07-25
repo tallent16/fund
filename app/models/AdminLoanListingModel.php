@@ -89,7 +89,7 @@ class AdminLoanListingModel extends TranWrapper {
 						AND		loans.bid_close_date BETWEEN 
 								if (:applyFilter1 = 0, loans.bid_close_date, :fromDate) AND 
 								if (:applyFilter2 = 0, loans.bid_close_date, :toDate)
-						order by loans.bid_close_date";
+						order by loans.loan_id ASC,loans.bid_close_date DESC";
 						
 		$dataArrayLoanList		=	[
 										"bidstatus_codeparam" => LOAN_BID_TYPE,

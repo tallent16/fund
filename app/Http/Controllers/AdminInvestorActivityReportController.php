@@ -18,9 +18,9 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 
 	public function indexAction() { 
 		
-		$filterInv 		= '';
-		$filterFromDate	= '';
-		$filterToDate 	= '';
+		$filterInv			=	"";
+		$filterFromDate		=	"";
+		$filterToDate		=	"";
 		
 		if (isset($_REQUEST["investor_filter"])) 
 			$filterInv 		= 	$_REQUEST["investor_filter"];
@@ -30,10 +30,14 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 
 		if (isset($_REQUEST["toDate_filter"])) 
 			$filterToDate 	= 	$_REQUEST["toDate_filter"];
-
-		//~ $this->adminInvActRepMod->getLoanList($filterInv, $filterFromDate, $filterToDate);
 		
-		$withArry	=	array(	"loanListing" => $this->adminInvActRepMod	,
+		if(	$filterInv!=""	&&	$filterFromDate!=""	&&	$filterToDate!="" ) {
+			
+			$this->adminInvActRepMod->getInvestorActivityReportInfo($filterInv, $filterFromDate, $filterToDate);
+		}
+		
+		$this->adminInvActRepMod->processInvestorDropDowns();
+		$withArry	=	array(	"adminInvActRepMod" => $this->adminInvActRepMod	,
 								"classname"=>"fa fa-list-alt fa-fw"
 							);
 		return view('admin.admin-investoractivity')
