@@ -4,10 +4,11 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 	
 	public  $allactiveinvestList					=	array();
 	public  $investActReport						=	array();
-	public  $openingBalance							= 	0;
+	public  $openingBalance							= 	array();
+	public	$invFilterValue							=	array();
+	public	$fromDateFilterValue					=	"";
+	public	$toDateFilterValue						=	"";
 	
-	public	$totalPenaltyEarned						=	"";
-
 	public function processInvestorDropDowns(){
 	
 		$filterSql						=	"SELECT users.firstname,
@@ -29,7 +30,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 			throw exception ("Not correct");
 			return;
 		}	
-	   
+	   //~ $this->allactiveinvestList['selectAll'] = "All";
 	   foreach($filter_rs as $filter_row) {
 		   $inv_name 					= 	$filter_row->firstname;
 		   $inv_id						=	$filter_row->investor_id;
@@ -39,9 +40,15 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 	}
 	
 	public function getInvestorActivityReportInfo($filterInv, $filterFromDate, $filterToDate) {
-	
-		$this->getOpeningBalanceByInvestorId($filterInv,$filterFromDate);
-		$this->getInvestorActivityReportList($filterInv,$filterFromDate, $filterToDate);
+
+		$this->invFilterValue						=	$filterInv;
+		$this->fromDateFilterValue					=	$filterFromDate;
+		$this->toDateFilterValue					=	$filterToDate;
+		foreach($filterInv as $filterInvRow) {
+			$this->getOpeningBalanceByInvestorId($filterInvRow,$filterFromDate);
+			$this->getInvestorActivityReportList($filterInvRow,$filterFromDate, $filterToDate);
+		}
+		//~ $this->prnt($this->investActReport);
 	}
 	
 	public function getOpeningBalanceByInvestorId($investor_id,$filterFromDate) {
@@ -61,7 +68,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 													]	;
 																			
 		$depositTotRs							=	$this->dbFetchWithParam($depositTotSql, $dataArrayDeposit);					
-		$this->investActReport['totDeposit']	=	$depositTotRs[0]->totDeposit;					
+		$this->investActReport[$investor_id]['totDeposit']	=	$depositTotRs[0]->totDeposit;					
 		
 	//*****************************Total Withdrawals for the investor**********************************************//
 	
@@ -77,7 +84,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 													]	;
 																		
 		$withdrawalTotRs						=	$this->dbFetchWithParam($withdrawalTotSql, $dataArrayWithdrawal);		
-		$this->investActReport['totWithdrawal']	=	$withdrawalTotRs[0]->totWithdrawal;		
+		$this->investActReport[$investor_id]['totWithdrawal']	=	$withdrawalTotRs[0]->totWithdrawal;		
 					
 	//*****************************Total open bids made by the investor**********************************************//
 	
@@ -92,7 +99,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 													]	;
 																			
 		$openBidsRs								=	$this->dbFetchWithParam($openBidsSql, $dataArrayOpenBids);					
-		$this->investActReport['totBidsMade']	=	$openBidsRs[0]->totBidsMade;					
+		$this->investActReport[$investor_id]['totBidsMade']	=	$openBidsRs[0]->totBidsMade;					
 		
 	//*****************************Total cancelled bids by the investor**********************************************//
 	
@@ -107,7 +114,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 														]	;
 																		
 		$cancelledBidsRs							=	$this->dbFetchWithParam($cancelledBidsSql, $dataArrayCancelledBids);			
-		$this->investActReport['totBidsCancelled']	=	$cancelledBidsRs[0]->totBidsCancelled;			
+		$this->investActReport[$investor_id]['totBidsCancelled']	=	$cancelledBidsRs[0]->totBidsCancelled;			
 				
 	//*****************************Total rejected bids for the investor**********************************************//
 		
@@ -122,7 +129,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 														]	;
 																		
 		$rejectedBidsRs								=	$this->dbFetchWithParam($rejectedBidsSql, $dataArrayRejectedBids);			
-		$this->investActReport['totBidsRejected']	=	$rejectedBidsRs[0]->totBidsRejected;			
+		$this->investActReport[$investor_id]['totBidsRejected']	=	$rejectedBidsRs[0]->totBidsRejected;			
 						
 	//*****************************Total interest repaid for the investor**********************************************//
 	
@@ -137,7 +144,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 														]	;
 																			
 		$interestRepaidRs							=	$this->dbFetchWithParam($interestRepaidSql, $dataArrayInterestRepaid);					
-		$this->investActReport['totInterestRepaid']	=	$interestRepaidRs[0]->totInterestRepaid;					
+		$this->investActReport[$investor_id]['totInterestRepaid']	=	$interestRepaidRs[0]->totInterestRepaid;					
 		
 	//*****************************Total principal repaid for the investor**********************************************//
 	
@@ -153,7 +160,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 																			
 		$principalRepaidRs								=	$this->dbFetchWithParam($principalRepaidSql, 
 																						$dataArrayPrincipalRepaid);					
-		$this->investActReport['totPrincipalRepaid']	=	$principalRepaidRs[0]->totPrincipalRepaid;					
+		$this->investActReport[$investor_id]['totPrincipalRepaid']	=	$principalRepaidRs[0]->totPrincipalRepaid;					
 		
 	//*****************************Total Penalty earned**********************************************************//	
 				
@@ -168,10 +175,10 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 														]	;
 																			
 		$interestRepaidRs							=	$this->dbFetchWithParam($penaltyRepaidSql, $dataArrayPenaltyRepaid);					
-		$this->investActReport['totPenaltyEarned']	=	$interestRepaidRs[0]->totPenaltyEarned;					
+		$this->investActReport[$investor_id]['totPenaltyEarned']	=	$interestRepaidRs[0]->totPenaltyEarned;					
 								
-		
-	   foreach($this->investActReport as $key=>$val) {
+		$this->openingBalance[$investor_id]	=	0;
+	   foreach($this->investActReport[$investor_id] as $key=>$val) {
 		   
 		   
 		   if(empty($val)) {
@@ -179,28 +186,28 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 			}
 			switch($key) {
 				case'totDeposit':
-					$this->openingBalance	=	$this->openingBalance	+	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
 					break;
 				case'totWithdrawal':
-					$this->openingBalance	=	$this->openingBalance	-	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	-	$val;
 					break;
 				case'totBidsMade':
-					$this->openingBalance	=	$this->openingBalance	-	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	-	$val;
 					break;
 				case'totBidsCancelled':
-					$this->openingBalance	=	$this->openingBalance	+	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
 					break;
 				case'totBidsRejected':
-					$this->openingBalance	=	$this->openingBalance	+	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
 					break;
 				case'totInterestRepaid':
-					$this->openingBalance	=	$this->openingBalance	+	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
 					break;
 				case'totPrincipalRepaid':
-					$this->openingBalance	=	$this->openingBalance	+	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
 					break;
 				case'totPenaltyEarned':
-					$this->openingBalance	=	$this->openingBalance	+	$val;
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
 					break;
 			}
 		
@@ -232,7 +239,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 															ON	payments.payment_id	=	inv_tran.trans_id	
 														WHERE	investor_id	=	{$investor_id}
 														AND		inv_tran.trans_type	=	:dep_trantype_param
-														AND		inv_tran.status		=	:trans_ver_param
+														AND		inv_tran.status		=	:trans_ver_param1
 														AND		trans_date	>= '".$filterFromDate."'
 														AND		trans_date	<= '".$filterToDate."'
 														UNION
@@ -247,7 +254,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 															ON	payments.payment_id	=	inv_tran.trans_id	
 														WHERE	investor_id	=	{$investor_id}
 														AND		inv_tran.trans_type	=	:with_trantype_param
-														AND		inv_tran.status		=	:trans_ver_param
+														AND		inv_tran.status		=	:trans_ver_param2
 														AND		trans_date	>= '".$filterFromDate."'
 														AND		trans_date	<= '".$filterToDate."'
 														UNION
@@ -261,7 +268,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 															LEFT JOIN	loans
 															ON	loans.loan_id	=	loan_bids.loan_id	
 														WHERE	investor_id	=	{$investor_id}
-														AND		bid_status		=	:open_bids__param
+														AND		bid_status		=	:open_bids_param
 														AND		DATE(bid_datetime)	>= '".$filterFromDate."'
 														AND		DATE(bid_datetime)	<= '".$filterToDate."'
 														UNION
@@ -275,7 +282,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 															LEFT JOIN	loans
 															ON	loans.loan_id	=	loan_bids.loan_id	
 														WHERE	investor_id	=	{$investor_id}
-														AND		bid_status		=	:cancel_bids__param
+														AND		bid_status		=	:cancel_bids_param
 														AND		DATE(bid_datetime)	>= '".$filterFromDate."'
 														AND		DATE(bid_datetime)	<= '".$filterToDate."'
 														UNION
@@ -289,7 +296,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 															LEFT JOIN	loans
 															ON	loans.loan_id	=	loan_bids.loan_id	
 														WHERE	investor_id		=	{$investor_id}
-														AND		bid_status		=	:reject_bids__param
+														AND		bid_status		=	:reject_bids_param
 														AND		DATE(bid_datetime)	>= '".$filterFromDate."'
 														AND		DATE(bid_datetime)	<= '".$filterToDate."'
 														UNION
@@ -324,7 +331,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 																LEFT JOIN	loans
 																ON	loans.loan_id	=	inv_rep_sch.loan_id
 														WHERE	investor_id			=	{$investor_id}
-														AND		inv_rep_sch.status	=	:repaid_ver_param
+														AND		inv_rep_sch.status	=	:repaid_ver_param1
 														AND		inv_rep_sch.payment_date	>= '".$filterFromDate."'
 														AND		inv_rep_sch.payment_date	<= '".$filterToDate."'
 														UNION
@@ -344,7 +351,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 																LEFT JOIN	loans
 																ON	loans.loan_id	=	inv_rep_sch.loan_id
 														WHERE	investor_id			=	{$investor_id}
-														AND		inv_rep_sch.status	=	:repaid_ver_param
+														AND		inv_rep_sch.status	=	:repaid_ver_param2
 														AND		inv_rep_sch.payment_date	>= '".$filterFromDate."'
 														AND		inv_rep_sch.payment_date	<= '".$filterToDate."'
 														UNION
@@ -364,28 +371,40 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 																LEFT JOIN	loans
 																ON	loans.loan_id	=	inv_rep_sch.loan_id
 														WHERE	investor_id			=	{$investor_id}
-														AND		inv_rep_sch.status	=	:repaid_ver_param
+														AND		inv_rep_sch.status	=	:repaid_ver_param3
 														AND		inv_rep_sch.payment_date	>= '".$filterFromDate."'
 														AND		inv_rep_sch.payment_date	<= '".$filterToDate."'
 												) xx;";			
 		$dataArrayInvList				= 	[															
-												"userstatus_codeparam" => "2",
-												"emailverified_codeparam" => "1"
-											]	
+													"dep_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
+													"trans_ver_param1" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
+													"with_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL,
+													"trans_ver_param2" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
+													"open_bids_param" => LOAN_BIDS_STATUS_OPEN,
+													"cancel_bids_param" => LOAN_BIDS_STATUS_CANCELLED,
+													"reject_bids_param" => LOAN_BIDS_STATUS_REJECTED,
+													"accept_bids_param" => LOAN_BIDS_STATUS_ACCEPTED,
+													"repaid_ver_param1" => INVESTOR_REPAYMENT_STATUS_VERIFIED,
+													"repaid_ver_param2" => INVESTOR_REPAYMENT_STATUS_VERIFIED,
+													"repaid_ver_param3" => INVESTOR_REPAYMENT_STATUS_VERIFIED
+													
+											];
 																			
-		$investorActListRs				=	$this->dbFetchWithParam($filterSql, $dataArrayInvList);				
-								
-		if (!$investorActListRs	) {
-			return -1;
-		}	
-	   
-	   foreach($filter_rs as $filter_row) {
-		   
-		   $inv_name 					= 	$filter_row->firstname;
-		   $inv_id						=	$filter_row->investor_id;
-		   
-		   $this->allactiveinvestList[$inv_id] = $inv_name;
+		$this->investActReport[$investor_id]			=	$this->dbFetchWithParam($investorActListSql, $dataArrayInvList);				
 		
+		
+	   $balance	=	$this->openingBalance[$investor_id];
+	   foreach($this->investActReport[$investor_id] as $key=>$row) {
+		   $crAmt	=	$row->credit_amt;
+		   $dbAmt	=	$row->debit_amt;
+		   if(empty($crAmt)) {
+			   $crAmt  =	0;
+			}
+		   if(empty($dbAmt)) {
+			   $dbAmt  =	0;
+			}
+			$balance	=	($balance+$crAmt)	-	$dbAmt;
+			$this->investActReport[$investor_id][$key]->balance	=	$balance;
 	   }
 	}
 	

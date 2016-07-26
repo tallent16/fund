@@ -18,6 +18,19 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 
 	public function indexAction() { 
 		
+
+		$this->adminInvActRepMod->processInvestorDropDowns();
+		$withArry	=	array(	"adminInvActRepMod" => $this->adminInvActRepMod	,
+								"classname"=>"fa fa-list-alt fa-fw"
+							);
+		return view('admin.admin-investoractivity')
+			->with($withArry); 
+			
+					
+	}
+	
+	public function indexPostAction() { 
+		
 		$filterInv			=	"";
 		$filterFromDate		=	"";
 		$filterToDate		=	"";

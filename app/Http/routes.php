@@ -1152,6 +1152,12 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminInvestorActivityReportController@indexAction'
 							]
 				);
+	 Route::post('admin/investoractivity/report',
+							[	
+								
+								'uses' 			=>	'AdminInvestorActivityReportController@indexPostAction'
+							]
+				);
 });
 
 // The routes (or pages that are applicable for Borrower Users only

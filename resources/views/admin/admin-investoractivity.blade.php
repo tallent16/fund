@@ -2,25 +2,39 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-@endsection
+	@endsection
 @section('page_heading',Lang::get('Investor Activty Report') )
 @section('section')  
+	@var	$invFilter	=	$adminInvActRepMod->invFilterValue;
+	@var	$fromDate	=	$adminInvActRepMod->fromDateFilterValue;
+	@var	$toDate		=	$adminInvActRepMod->toDateFilterValue;
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="get">
+<form method="post">
+	<input  type="hidden" 
+		name="_token"
+		id="hidden_token"
+		value="{{ csrf_token() }}" />
 	<div class="row">		
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Investor Name') }}</strong><br>							
-					{{ Form::select('investor_filter',[''=>'']+ $adminInvActRepMod->allactiveinvestList,'',
-												["class" => "selectpicker" ]) }} 
+					{{ Form::select('investor_filter[]', $adminInvActRepMod->allactiveinvestList,$invFilter,
+												[	"class" => "selectpicker",
+													"multiple" => "multiple",
+													"id"=>"investor_filter",
+													"data-size"=>5,
+													"data-selected-text-format"=>"count>3",
+													"data-actions-box"=>"true"]) }} 
 			</div>		
 		</div>		
 				
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
-				<input id="fromdate" name="fromDate_filter" value="" 
+				<input 	id="fromdate" 
+						name="fromDate_filter" 
+						value="{{$fromDate}}" 
 						type="text" class="date-picker form-control" />
 			</div>	
 		</div>
@@ -28,8 +42,11 @@
 		<div class="col-sm-6 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
-				<input id="todate" name="toDate_filter" value=""
-						type="text" class="date-picker form-control" />
+				<input 	id="todate" 
+						name="toDate_filter" 
+						value="{{$toDate}}"
+						type="text" 
+						class="date-picker form-control" />
 			</div>	
 		</div>
 		
@@ -73,7 +90,6 @@
 				</thead>
 				<tbody>	
 				
-					
 				</tbody>
 			</table>
 		</div>
@@ -81,22 +97,7 @@
 </div><!------second row------>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
-<script>	/*
-function hideShowFilter() {
-
-	hideShow = $("#hide_show_filter").html();
-	
-	if (hideShow == "Hide Filter") {
-		$("#apply_filter_div").hide();
-		$("#filter_area").hide();
-		$("#hide_show_filter").html("{{ Lang::get('Show Filter') }}")
-	} else {
-		$("#apply_filter_div").show();
-		$("#filter_area").show();
-		$("#hide_show_filter").html("{{ Lang::get('Hide Filter') }}")
-	}
-
-}	*/
+<script>
 $(document).ready(function(){ 
 	// date picker
 	$('#fromdate').datetimepicker({
@@ -111,6 +112,7 @@ $(document).ready(function(){
 	format: 'dd/mm/yyyy' 
 
 	});         
+	
 }); 
 </script>  
 @endsection  
