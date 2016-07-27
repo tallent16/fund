@@ -1,8 +1,33 @@
 @extends('layouts.dashboard')
-@section('bottomscripts')
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-@endsection
+@section('styles')
+	{{ Html::style('css/datatable/jquery.dataTables.css') }}
+	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
+	{{ Html::style('css/datatable/dataTables.editor.css') }}		
+	<style>
+		table.dataTable thead th, table.dataTable thead td {
+			padding: 10px;
+			border-bottom:none;
+		}
+		table.dataTable thead > th {
+			color: #fff;			
+			text-decoration:none;
+		}		
+		table.dataTable thead > tr{
+			background-color:#333;
+			color:#fff;
+		}
+		.dataTable td a{
+			color:#333;
+			text-decoration:none;		
+		}
+		.table-responsive{
+			overflow:visible;
+		}
+		table.dataTable.no-footer{
+			border:none;
+		}
+	</style>
+@stop
 @section('page_heading',Lang::get('Loan Listing') )
 @section('section')  
 <div class="col-sm-12 space-around">
@@ -12,7 +37,7 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Filter Transcations') }}</strong><br>							
-					{{ Form::select('filter_transcations', $adminLoanListing->allTransList, $adminLoanListing->filter_code, ["class" => "selectpicker"]) }} 
+					{{ Form::select('filter_transcations', $adminLoanListing->allTransList, $adminLoanListing->filter_code, ["class" => "selectpicker","id" => "filter_transcations"]) }} 
 			</div>		
 		</div>		
 				
@@ -38,7 +63,7 @@
 <div class="row">	
 	<div class="col-sm-3 col-lg-2" id="apply_filter_div" >
 		<div class="form-group">	
-			<button type="submit" class="btn verification-button">
+			<button type="button" id="filter_status" class="btn verification-button">
 				{{ Lang::get('Apply Filter')}}
 			</button>
 		</div>
@@ -54,6 +79,7 @@
 	
 </div><!-----First row----->
 
+<!--
 
 <div class="row">
 	<div class="col-sm-12"> 
@@ -108,6 +134,7 @@
 								@var	$actionUrl		=	url('admin/loanapproval/')
 								@var	$actionUrl		=	$actionUrl."/".$loan_id								
 							@endif
+
 									<tr class="odd" id="11" role="row">								
 										<td class="text-left">
 											<a href="{{$actionUrl}}">
@@ -149,6 +176,7 @@
 											</a>
 										</td>
 									</tr>						
+
 						@endforeach
 					@endif				
 							
@@ -157,8 +185,44 @@
 		</div>
 	</div>
 </div><!------second row------>
+
+	<div class="row">		
+		<div class="col-lg-12 col-md-12">
+			<div class="table-responsive">
+				<table class="table table-striped" id="adminloanlisting">
+					<thead>
+						<tr>
+							<th>{{ Lang::get('Loan Reference No') }}</th>
+							<th>{{ Lang::get('Borrower Organisation Name') }}</th>
+							<th>{{ Lang::get('Loan Amt') }}</th>
+							<th>{{ Lang::get('Target Interest') }}</th>
+							<th>{{ Lang::get('Tenure') }}</th>
+							<th>{{ Lang::get('Bid Type') }}</th>
+							<th>{{ Lang::get('Bid Close Date') }}</th>
+							<th>{{ Lang::get('Status') }}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>							
+		</div>
+	</div>
+				
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
+@endsection
+@stop
+@section('bottomscripts')
+<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+<script> var baseUrl	=	"{{url('')}}" </script>
+<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+{{ Html::script('js/datatable/jquery.dataTables.min.js') }}
+{{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
+{{ Html::script('js/datatable/dataTables.editor.js') }}	
+{{ Html::script('js/customdatatable/adminloanlisting.js') }} 
+<!--
+{{ Html::script('js/bootstrap-datetimepicker.js') }}
+-->
 <script>	/*
 function hideShowFilter() {
 
@@ -190,6 +254,11 @@ $(document).ready(function(){
 
 	});         
 }); 
-</script>  
+
+</script> 
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+-->
 @endsection  
-@stop
+
+

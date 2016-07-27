@@ -64,7 +64,7 @@ class AdminLoanListingModel extends TranWrapper {
 		} 
 			
 										
-		$lnListSql	=	"SELECT loans.loan_sanctioned_amount,
+		$lnListSql	=	"SELECT FORMAT(loans.loan_sanctioned_amount,2) loan_sanctioned_amount,
 								loans.loan_reference_number,
 								loans.loan_id,
 								( 	SELECT	codelist_value 
@@ -103,6 +103,25 @@ class AdminLoanListingModel extends TranWrapper {
 									];
 
 		$this->loanListInfo			=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-		return ;		
+		$row			=	array();
+		if ($this->loanListInfo) {
+			foreach ($this->loanListInfo as $Row) {
+				
+				$row[] 	= array(
+									"DT_RowId"=>"row_".$Row->loan_id,
+									"loan_reference_number"=>$Row->loan_reference_number,
+									"business_name"=>$Row->business_name,									
+									"loan_sanctioned_amount"=>$Row->loan_sanctioned_amount,
+									"target_interest"=>$Row->target_interest,									
+									"loan_tenure"=>$Row->loan_tenure,									
+									"bid_type"=>$Row->bid_type,		
+									"status"=>$Row->status,									
+									"bid_close_date"=>$Row->bid_close_date,
+									"loan_status_name"=>$Row->loan_status_name									
+								);	
+			}
+		}		
+		return	$row;
+		//return ;		
 	}		
 }

@@ -8,6 +8,8 @@
 	@var	$invFilter	=	$adminInvActRepMod->invFilterValue;
 	@var	$fromDate	=	$adminInvActRepMod->fromDateFilterValue;
 	@var	$toDate		=	$adminInvActRepMod->toDateFilterValue;
+	@var	$invList	=	$adminInvActRepMod->allactiveinvestList;
+	
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
 <form method="post">
@@ -19,7 +21,7 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Investor Name') }}</strong><br>							
-					{{ Form::select('investor_filter[]', $adminInvActRepMod->allactiveinvestList,$invFilter,
+					{{ Form::select('investor_filter[]', $invList,$invFilter,
 												[	"class" => "selectpicker",
 													"multiple" => "multiple",
 													"id"=>"investor_filter",
@@ -71,30 +73,17 @@
 	</div>	--->
 	
 </div><!-----First row----->
+@var	$showInvestName	=	false
+@if(count($invFilter) > 1)
+	@var	$showInvestName	=	true
+@endif
+@include('widgets.admin.investor-activity', array(	"class"=>"",
+													"invFilter"=>$invFilter,
+													"invList"=>$invList,
+													"showInvestName"=>$showInvestName))
 
 
-<div class="row">
-	<div class="col-sm-12"> 
-		<div class="table-responsive applyloan borrower-admin"> 
-			<table class="table tab-fontsize table-border-custom text-left">
-				<thead>
-					<tr>
-						<th class="tab-head text-left">{{ Lang::get('Date') }}</th>
-						<th class="tab-head text-left">{{ Lang::get('Transaction Type') }}</th>
-						<th class="tab-head text-left">{{ Lang::get('Reference Number') }}</th>
-						<th class="tab-head text-left">{{ Lang::get('Details') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('Dr Amount') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('Cr Amount') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('Balance') }}</th>
-					</tr>
-				</thead>
-				<tbody>	
-				
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div><!------second row------>
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
 <script>
