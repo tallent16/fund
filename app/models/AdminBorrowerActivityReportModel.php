@@ -34,7 +34,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 	   }
 	}
 	
-	public function getInvestorActivityReportInfo($filterBor, $filterFromDate, $filterToDate) {
+	public function getBorrowerActivityReportInfo($filterBor, $filterFromDate, $filterToDate) {
 
 		$this->borFilterValue						=	$filterBor;
 		$this->fromDateFilterValue					=	$filterFromDate;
@@ -98,7 +98,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 																	< '".$this->getDbDateFormat($filterFromDate)."'";			
 			
 																		
-		$repayPenaltyCharRs							=	$this->dbFetchAll($repayPenaltyIntSql);		
+		$repayPenaltyCharRs							=	$this->dbFetchAll($repayPenaltyCharSql);		
 		$this->borrowerActReport[$borrower_id]['totRepayPenCharge']	=	$repayPenaltyCharRs[0]->totRepayPenCharge;		
 				
 	//*****************************Total Repayments – Principal**********************************************//
@@ -114,7 +114,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 														];
 																		
 		$repayPrincipalRs							=	$this->dbFetchWithParam($repayPrincipalSql,$dataArrayRepayPrincipal);		
-		$this->borrowerActReport[$borrower_id]['totPrincipal']	=	$repayPenaltyCharRs[0]->totPrincipal;	
+		$this->borrowerActReport[$borrower_id]['totPrincipal']	=	$repayPrincipalRs[0]->totPrincipal;	
 						
 	//*****************************Total Repayments – Interest**********************************************//
 	
@@ -134,7 +134,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 		
 	//*****************************Total Penalty Interest Payable**********************************************//
 	
-		$penaltyInterestPaySql							=	"	SELECT 	SUM(penalty_interest) totpenaltyIntPay
+		$penaltyInterestPaySql							=	"	SELECT 	SUM(repayment_penalty_interest) totpenaltyIntPay
 																FROM 	borrower_repayment_schedule
 																WHERE	borrower_id	=	{$borrower_id}
 																AND		repayment_status	=	:repay_status_param3
@@ -151,7 +151,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 		
 	//*****************************Total Penalty Charges Payable**********************************************//
 	
-		$penaltyChargePaySql							=	"	SELECT 	SUM(penalty_charges) totpenaltyCharPay
+		$penaltyChargePaySql							=	"	SELECT 	SUM(repayment_penalty_charges) totpenaltyCharPay
 																FROM 	borrower_repayment_schedule
 																WHERE	borrower_id	=	{$borrower_id}
 																AND		repayment_status	=	:repay_status_param4
@@ -212,7 +212,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 		$filterFromDate					=	$this->getDbDateFormat($filterFromDate);
 		$filterToDate					=	$this->getDbDateFormat($filterToDate);
 		
-		$investorActListSql				=	"	SELECT 	DATE_FORMAT(rept_date,'%d-%m-%Y') rept_date,
+		$borrowerActListSql				=	"	SELECT 	DATE_FORMAT(rept_date,'%d-%m-%Y') rept_date,
 														DATE_FORMAT(rept_date,'%Y-%m-%d') rept_date_orderBy,
 														trans_type_orderBy,
 														trans_type,
@@ -231,7 +231,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 														FROM 	loans
 															LEFT JOIN	disbursements
 															ON	disbursements.loan_id	=	loans.loan_id	
-														WHERE	borrower_id	=	{$borrower_id}
+														WHERE	loans.borrower_id	=	{$borrower_id}
 														AND		loans.status	=	:loan_dis_param
 														AND		DATE(loan_process_date)	>= '".$filterFromDate."'
 														AND		DATE(loan_process_date)	<= '".$filterToDate."'
@@ -246,7 +246,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 														FROM 	loans
 															LEFT JOIN	disbursements
 															ON	disbursements.loan_id	=	loans.loan_id	
-														WHERE	borrower_id	=	{$borrower_id}
+														WHERE	loans.borrower_id	=	{$borrower_id}
 														AND		loans.status	=	:loan_repaid_param
 														AND		DATE(loan_process_date)	>= '".$filterFromDate."'
 														AND		DATE(loan_process_date)	<= '".$filterToDate."'
@@ -270,8 +270,8 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 																'CR' trans_type_orderBy,
 																payments.trans_reference_number ref_no,
 																payments.remarks details,
-																bor_sch.interest_component debit_amt,
-																'' credit_amt
+																 '' debit_amt,
+																bor_sch.interest_component credit_amt
 														FROM 	borrower_repayment_schedule bor_sch
 															LEFT JOIN	payments
 															ON	payments.payment_id	=	bor_sch.payment_id	
@@ -285,8 +285,8 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 																'CR' trans_type_orderBy,
 																payments.trans_reference_number ref_no,
 																payments.remarks details,
-																bor_sch.principal_component debit_amt,
-																'' credit_amt
+																 '' debit_amt,
+																bor_sch.principal_component credit_amt
 														FROM 	borrower_repayment_schedule bor_sch
 															LEFT JOIN	payments
 															ON	payments.payment_id	=	bor_sch.payment_id	
@@ -295,42 +295,80 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 														AND		repayment_schedule_date	>= '".$filterFromDate."'
 														AND		repayment_schedule_date	<= '".$filterToDate."'
 														UNION
-														SELECT 	bor_sch.repayment_actual_date rept_date,
-																'Repayments – Principal' trans_type,
-																'CR' trans_type_orderBy,
+														SELECT 	bor_sch.repayment_schedule_date rept_date,
+																'Penalty Interest Payable' trans_type,
+																'DR' trans_type_orderBy,
 																payments.trans_reference_number ref_no,
 																payments.remarks details,
-																bor_sch.principal_component debit_amt,
+																bor_sch.repayment_penalty_interest debit_amt,
 																'' credit_amt
 														FROM 	borrower_repayment_schedule bor_sch
 															LEFT JOIN	payments
 															ON	payments.payment_id	=	bor_sch.payment_id	
 														WHERE	borrower_id	=	{$borrower_id}
-														AND		bor_sch.repayment_status	=	:repay_status_param2
+														AND		repayment_schedule_date	>= '".$filterFromDate."'
+														AND		repayment_schedule_date	<= '".$filterToDate."'
+														UNION
+														SELECT 	bor_sch.repayment_actual_date rept_date,
+																'Repayments – Penalty Interest' trans_type,
+																'CR' trans_type_orderBy,
+																payments.trans_reference_number ref_no,
+																payments.remarks details,
+																'' debit_amt,
+																bor_sch.repayment_penalty_interest credit_amt
+														FROM 	borrower_repayment_schedule bor_sch
+															LEFT JOIN	payments
+															ON	payments.payment_id	=	bor_sch.payment_id	
+														WHERE	borrower_id	=	{$borrower_id}
+														AND		bor_sch.repayment_status	=	:repay_status_param3
+														AND		repayment_schedule_date	>= '".$filterFromDate."'
+														AND		repayment_schedule_date	<= '".$filterToDate."'
+														UNION
+														SELECT 	bor_sch.repayment_schedule_date rept_date,
+																'Penalty Charges Payable' trans_type,
+																'DR' trans_type_orderBy,
+																payments.trans_reference_number ref_no,
+																payments.remarks details,
+																bor_sch.repayment_penalty_charges debit_amt,
+																'' credit_amt
+														FROM 	borrower_repayment_schedule bor_sch
+															LEFT JOIN	payments
+															ON	payments.payment_id	=	bor_sch.payment_id	
+														WHERE	borrower_id	=	{$borrower_id}
+														AND		repayment_schedule_date	>= '".$filterFromDate."'
+														AND		repayment_schedule_date	<= '".$filterToDate."'
+														UNION
+														SELECT 	bor_sch.repayment_actual_date rept_date,
+																'Repayments – Penalty Charges' trans_type,
+																'CR' trans_type_orderBy,
+																payments.trans_reference_number ref_no,
+																payments.remarks details,
+																'' debit_amt,
+																bor_sch.repayment_penalty_charges credit_amt
+														FROM 	borrower_repayment_schedule bor_sch
+															LEFT JOIN	payments
+															ON	payments.payment_id	=	bor_sch.payment_id	
+														WHERE	borrower_id	=	{$borrower_id}
+														AND		bor_sch.repayment_status	=	:repay_status_param4
 														AND		repayment_schedule_date	>= '".$filterFromDate."'
 														AND		repayment_schedule_date	<= '".$filterToDate."'
 												) xx
-												ORDER BY  rept_date_orderBy, if(trans_type_orderBy='DR', 1, 0)";			
-		$dataArrayInvList				= 	[															
-													"dep_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
-													"trans_ver_param1" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
-													"with_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL,
-													"trans_ver_param2" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
-													"open_bids_param" => LOAN_BIDS_STATUS_OPEN,
-													"cancel_bids_param" => LOAN_BIDS_STATUS_CANCELLED,
-													"reject_bids_param" => LOAN_BIDS_STATUS_REJECTED,
-													"accept_bids_param" => LOAN_BIDS_STATUS_ACCEPTED,
-													"repaid_ver_param1" => INVESTOR_REPAYMENT_STATUS_VERIFIED,
-													"repaid_ver_param2" => INVESTOR_REPAYMENT_STATUS_VERIFIED,
-													"repaid_ver_param3" => INVESTOR_REPAYMENT_STATUS_VERIFIED
+												ORDER BY  rept_date_orderBy, if(trans_type_orderBy='DR', 0, 1)";			
+		$dataArrayBorList				= 	[															
+													"loan_dis_param" => LOAN_STATUS_DISBURSED,
+													"loan_repaid_param" =>LOAN_STATUS_LOAN_REPAID,
+													"repay_status_param1" => BORROWER_REPAYMENT_STATUS_PAID,
+													"repay_status_param2" =>BORROWER_REPAYMENT_STATUS_PAID,
+													"repay_status_param3" => BORROWER_REPAYMENT_STATUS_PAID,
+													"repay_status_param4" => BORROWER_REPAYMENT_STATUS_PAID
 													
 											];
 																			
-		$this->investActReport[$investor_id]			=	$this->dbFetchWithParam($investorActListSql, $dataArrayInvList);				
+		$this->borrowerActReport[$borrower_id]			=	$this->dbFetchWithParam($borrowerActListSql, $dataArrayBorList);				
 		
 		
-	   $balance	=	$this->openingBalance[$investor_id];
-	   foreach($this->investActReport[$investor_id] as $key=>$row) {
+	   $balance	=	$this->openingBalance[$borrower_id];
+	   foreach($this->borrowerActReport[$borrower_id] as $key=>$row) {
 		   $crAmt	=	$row->credit_amt;
 		   $dbAmt	=	$row->debit_amt;
 		   if(empty($crAmt)) {
@@ -340,7 +378,7 @@ class AdminBorrowerActivityReportModel extends TranWrapper {
 			   $dbAmt  =	0;
 			}
 			$balance	=	($balance+$crAmt)	-	$dbAmt;
-			$this->investActReport[$investor_id][$key]->balance	=	$balance;
+			$this->borrowerActReport[$borrower_id][$key]->balance	=	$balance;
 	   }
 	}
 	

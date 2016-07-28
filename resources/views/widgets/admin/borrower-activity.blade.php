@@ -4,13 +4,13 @@
 							
 			<table class="table tab-fontsize table-border-custom text-left">
 				<tbody>	
-					@foreach($invFilter as $invListRow)
-						@var	$openBal	=	$adminInvActRepMod->openingBalance[$invListRow]
-								@if($showInvestName)
+					@foreach($borFilter as $borListRow)
+						@var	$openBal	=	$adminBorActRepMod->openingBalance[$borListRow]
+								@if($showBorrowerName)
 									<tr>
 										<td colspan="7" class="text-center">
-											{{ "<strong>".Lang::get('Transaction Detail Report for Investor:').
-												"</strong>".$invList[$invListRow]}}
+											{{ "<strong>".Lang::get('Transaction Detail Report for Borrower:').
+												"</strong>".$borList[$borListRow]}}
 										 </td>
 									</tr>	
 								@endif
@@ -21,11 +21,11 @@
 									<td class="tab-head text-left">{{ Lang::get('Details') }}</td>
 									<td class="tab-head text-right">{{ Lang::get('Dr Amount') }}</td>
 									<td class="tab-head text-right">{{ Lang::get('Cr Amount') }}</td>
-									<td class="tab-head text-right">{{ Lang::get('Balance') }}</td>
+									<td class="tab-head text-right">{{ Lang::get('Balance OS') }}</td>
 								</tr>
 								<tr>
 									<td class="text-left">&nbsp;</td>
-									<td class="text-left">{{ Lang::get('Opening Balance') }}</td>
+									<td class="text-left">{{ Lang::get('Opening Balance – Principal OS') }}</td>
 									<td class="text-left">&nbsp;</td>
 									<td class="text-left">&nbsp;</td>
 									<td class="text-right">&nbsp;</td>
@@ -33,16 +33,16 @@
 									<td class="text-right">{{number_format($openBal,2,'.',',')}}</td>
 								</tr>
 
-							@if (count($adminInvActRepMod->investActReport[$invListRow]) > 0)			
-								@foreach($adminInvActRepMod->investActReport[$invListRow] as $investActReportRow)
-									@var	$crAmt	=	$investActReportRow->credit_amt;
-									@var	$dbAmt	=	$investActReportRow->debit_amt;
-									@var	$bal	=	$investActReportRow->balance;
+							@if (count($adminBorActRepMod->borrowerActReport[$borListRow]) > 0)			
+								@foreach($adminBorActRepMod->borrowerActReport[$borListRow] as $borrowerActReportRow)
+									@var	$crAmt	=	$borrowerActReportRow->credit_amt;
+									@var	$dbAmt	=	$borrowerActReportRow->debit_amt;
+									@var	$bal	=	$borrowerActReportRow->balance;
 									<tr>
-										<td class="text-left">{{$investActReportRow->rept_date}}</td>
-										<td class="text-left">{{$investActReportRow->trans_type}}</td>
-										<td class="text-left">{{$investActReportRow->ref_no}}</td>
-										<td class="text-left">{{$investActReportRow->details}}</td>
+										<td class="text-left">{{$borrowerActReportRow->rept_date}}</td>
+										<td class="text-left">{{$borrowerActReportRow->trans_type}}</td>
+										<td class="text-left">{{$borrowerActReportRow->ref_no}}</td>
+										<td class="text-left">{{$borrowerActReportRow->details}}</td>
 										<td class="text-right">
 											@if(!empty($dbAmt))
 												{{number_format($dbAmt,2,'.',',')}}

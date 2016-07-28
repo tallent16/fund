@@ -36,7 +36,7 @@ class AdminBorrowerActivityReportController extends MoneyMatchController {
 		$filterToDate		=	"";
 		
 		if (isset($_REQUEST["borrower_filter"])) 
-			$filterBor 		= 	$_REQUEST["investor_filter"];
+			$filterBor 		= 	$_REQUEST["borrower_filter"];
 		
 		if (isset($_REQUEST["fromDate_filter"])) 
 			$filterFromDate	= 	$_REQUEST["fromDate_filter"];
@@ -44,9 +44,9 @@ class AdminBorrowerActivityReportController extends MoneyMatchController {
 		if (isset($_REQUEST["toDate_filter"])) 
 			$filterToDate 	= 	$_REQUEST["toDate_filter"];
 		
-		if(	$filterInv!=""	&&	$filterFromDate!=""	&&	$filterToDate!="" ) {
+		if(	$filterBor!=""	&&	$filterFromDate!=""	&&	$filterToDate!="" ) {
 			
-			$this->adminBorActRepMod->getBorrowerActivityReportInfo($filterInv, $filterFromDate, $filterToDate);
+			$this->adminBorActRepMod->getBorrowerActivityReportInfo($filterBor, $filterFromDate, $filterToDate);
 		}
 		
 		$this->adminBorActRepMod->processBorrowerDropDowns();

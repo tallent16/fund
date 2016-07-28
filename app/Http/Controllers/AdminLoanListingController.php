@@ -34,7 +34,7 @@ class AdminLoanListingController extends MoneyMatchController {
 		}
 		
 		$this->adminLoanListing->processDropDowns();
-		
+		 
 		//$this->adminLoanListing->viewTransList($fromDate, $toDate, $all_Trans);	
 
 		$withArry	=	array(	"adminLoanListing" => $this->adminLoanListing, 
@@ -50,7 +50,7 @@ class AdminLoanListingController extends MoneyMatchController {
 		$all_Trans 	=	'All';
 		$fromDate	=	date("d-m-Y", strtotime("-12 Months"));
 		$toDate		=	date("d-m-Y", strtotime("now"));
-		
+		//echo "<pre>",print_r($fromDate),"</pre>";
 		if (isset($_REQUEST["fromdate"])) {
 			$fromDate	=	$_REQUEST["fromdate"];
 		}

@@ -121,7 +121,6 @@ class AdminLoanListingModel extends TranWrapper {
 								);	
 			}
 		}		
-		return	$row;
-		//return ;		
+		return	$row;			
 	}		
 }

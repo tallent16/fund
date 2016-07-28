@@ -1163,6 +1163,22 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminInvestorActivityReportController@indexPostAction'
 							]
 				);
+	 
+	 Route::get('admin/borroweractivity/report',
+							[	
+								//'middleware' 	=> 	'permission',
+								//'permission'	=>	'assignrole.admin.manageroles',
+								//'redirect_back'	=>	'admin.roles',
+								//'action_type'	=>	'Assign Roles',
+								'uses' 			=>	'AdminBorrowerActivityReportController@indexAction'
+							]
+				);
+	 Route::post('admin/borroweractivity/report',
+							[	
+								
+								'uses' 			=>	'AdminBorrowerActivityReportController@indexPostAction'
+							]
+				);
 });
 
 // The routes (or pages that are applicable for Borrower Users only
