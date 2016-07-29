@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use	\App\models\AdminInvestorActivityReportModel;
 use Response;
+use	Excel;
 
 class AdminInvestorActivityReportController extends MoneyMatchController {
 
@@ -17,8 +18,33 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 	}
 
 	public function indexAction() { 
-		
+		$uploadedFile	=	"reportExcelTemplate/sample.xls";
+		 Excel::load( $uploadedFile, function ( $excelSheetReader )
+        {
 
+            // Select the right sheet
+            $excelSheetReader->sheet('Sheet1', function($sheet) {
+
+                // Select the right cell (or range of cells)
+                $sheet->cells('A1:B1', function($cell) {
+                    $cell->setBackground('#000000');
+                    $cell->setFontColor('#ffffff');
+                    $cell->setFontSize(16);
+
+                });
+            });
+            $excelSheetReader->createsheet('Sheet2', function($sheet) {
+
+                // Select the right cell (or range of cells)
+                $sheet->cells('A1:B1', function($cell) {
+                    $cell->setBackground('#000000');
+                    $cell->setFontColor('#ffffff');
+                    $cell->setFontSize(16);
+
+                });
+            });
+
+        } )->download('xls');
 		$this->adminInvActRepMod->processInvestorDropDowns();
 		$withArry	=	array(	"adminInvActRepMod" => $this->adminInvActRepMod	,
 								"classname"=>"fa fa-list-alt fa-fw"

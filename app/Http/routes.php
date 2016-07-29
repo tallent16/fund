@@ -1129,6 +1129,9 @@ Route::post('admin/approvechangeofbank/reject',
 		Route::get('admin/ajax/adminloanlisting', 'AdminLoanListingController@ajaxLoanList');
 		Route::post('admin/ajax/adminloanlisting', 'AdminLoanListingController@ajaxLoanList');
 		
+		Route::get('admin/ajax/adminrepaylist', 'AdminBorrowersRepaymentListingController@ajaxRepayList');
+		Route::post('admin/ajax/adminrepaylist', 'AdminBorrowersRepaymentListingController@ajaxRepayList');
+		
 		
 
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
@@ -1150,11 +1153,10 @@ Route::post('admin/approvechangeofbank/reject',
 	  		
 	 Route::get('admin/investoractivity/report',
 							[	
-								//'middleware' 	=> 	'permission',
-								//'permission'	=>	'assignrole.admin.manageroles',
-								//'redirect_back'	=>	'admin.roles',
-								//'action_type'	=>	'Assign Roles',
-								'uses' 			=>	'AdminInvestorActivityReportController@indexAction'
+								'middleware' 		=> 	'permission',
+								'permission'		=>	'viewinvestor.admin.reportactivity',
+								'action_type'		=>	'Investor Activity Report',
+								'uses' 				=>	'AdminInvestorActivityReportController@indexAction'
 							]
 				);
 	 Route::post('admin/investoractivity/report',
@@ -1166,10 +1168,9 @@ Route::post('admin/approvechangeofbank/reject',
 	 
 	 Route::get('admin/borroweractivity/report',
 							[	
-								//'middleware' 	=> 	'permission',
-								//'permission'	=>	'assignrole.admin.manageroles',
-								//'redirect_back'	=>	'admin.roles',
-								//'action_type'	=>	'Assign Roles',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewborrower.admin.reportactivity',
+								'action_type'	=>	'Borrower Activity',
 								'uses' 			=>	'AdminBorrowerActivityReportController@indexAction'
 							]
 				);
@@ -1177,6 +1178,21 @@ Route::post('admin/approvechangeofbank/reject',
 							[	
 								
 								'uses' 			=>	'AdminBorrowerActivityReportController@indexPostAction'
+							]
+				);
+	 
+	 Route::get('admin/bankactivity/report',
+							[	
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewbank.admin.reportactivity',
+								'action_type'	=>	'Bank Activity Report',
+								'uses' 			=>	'AdminBankActivityReportController@indexAction'
+							]
+				);
+	 Route::post('admin/bankactivity/report',
+							[	
+								
+								'uses' 			=>	'AdminBankActivityReportController@indexPostAction'
 							]
 				);
 });

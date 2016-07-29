@@ -149,6 +149,7 @@ return [
 		'App\Providers\GoogleCloudStorageServiceProvider',
 		'Unisharp\Ckeditor\ServiceProvider',
 		'Bican\Roles\RolesServiceProvider',
+		'Maatwebsite\Excel\ExcelServiceProvider'
 	],
 
 	/*
@@ -201,6 +202,7 @@ return [
 		'InvBal'=> 'MoneyMatch\Helpers\InvestorHelper',
 		'BorProfile'=> 'MoneyMatch\Helpers\BorrowerHelper',
 		'AdminAccess'=> 'MoneyMatch\Helpers\AdminHelper',
+		'Excel' => 'Maatwebsite\Excel\Facades\Excel'
 
 	],
 

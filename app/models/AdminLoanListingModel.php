@@ -71,9 +71,9 @@ class AdminLoanListingModel extends TranWrapper {
 									FROM	codelist_details
 									WHERE	codelist_id = :bidstatus_codeparam
 									AND		codelist_code = loans.bid_type) bid_type_name,
-                                loans.bid_type,								
+                                IFNULL(loans.bid_type,'') bid_type,								
 								DATE_FORMAT(loans.bid_close_date, '%d-%m-%Y') bid_close_date,	
-								loans.target_interest,
+								IFNULL(loans.target_interest,'0.00') target_interest,
                                 loans.loan_tenure,										
 								( 	SELECT	codelist_value 
 									FROM	codelist_details
@@ -109,6 +109,7 @@ class AdminLoanListingModel extends TranWrapper {
 				
 				$row[] 	= array(
 									"DT_RowId"=>"row_".$Row->loan_id,
+									"loan_id"=>$Row->loan_id,
 									"loan_reference_number"=>$Row->loan_reference_number,
 									"business_name"=>$Row->business_name,									
 									"loan_sanctioned_amount"=>$Row->loan_sanctioned_amount,

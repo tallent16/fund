@@ -7,6 +7,7 @@
 		table.dataTable thead th, table.dataTable thead td {
 			padding: 10px;
 			border-bottom:none;
+			font-size:12px;
 		}
 		table.dataTable thead > th {
 			color: #fff;			

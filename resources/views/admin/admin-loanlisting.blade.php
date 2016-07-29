@@ -7,10 +7,11 @@
 		table.dataTable thead th, table.dataTable thead td {
 			padding: 10px;
 			border-bottom:none;
+			font-size:12px;
 		}
 		table.dataTable thead > th {
 			color: #fff;			
-			text-decoration:none;
+			text-decoration:none;			
 		}		
 		table.dataTable thead > tr{
 			background-color:#333;
@@ -220,9 +221,6 @@
 {{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
 {{ Html::script('js/datatable/dataTables.editor.js') }}	
 {{ Html::script('js/customdatatable/adminloanlisting.js') }} 
-<!--
-{{ Html::script('js/bootstrap-datetimepicker.js') }}
--->
 <script>	/*
 function hideShowFilter() {
 
@@ -254,11 +252,7 @@ $(document).ready(function(){
 
 	});         
 }); 
-
-</script> 
-<!--
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
--->
+</script>
 @endsection  
 
 

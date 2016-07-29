@@ -18,13 +18,18 @@ class AdminBorrowersRepaymentListingController extends MoneyMatchController {
 		
 	public function indexAction(){		
 
-		$this->adminBorrowerRepaymentList->getAllBorrowerRepaymentLoans();
+		//$this->adminBorrowerRepaymentList->getAllBorrowerRepaymentLoans();
 		$withArry	=	array(	"adminBorRepayListMod" => $this->adminBorrowerRepaymentList, 								
 								"classname"=>"fa fa-cc fa-fw"); 
 								
 		return view('admin.admin-borrowersrepaymentlisting')
 				->with($withArry); 
 	
+	}
+	public function ajaxRepayList(){	
+				
+		$row = $this->adminBorrowerRepaymentList->getAllBorrowerRepaymentLoans();		
+		return json_encode(array("data"=>$row));		
 	}
 		
 	public function approveRepaymentAction($repayment_schedule_id){		

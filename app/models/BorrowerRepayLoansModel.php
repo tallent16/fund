@@ -707,8 +707,25 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									WHERE	loans.loan_id = loan_repayment.loan_id";
 					
 		$this->repaymentLoanList	=	$this->dbFetchAll($repaymentloan_sql);	
-		
-		return;
+		$row			=	array();
+		if ($this->repaymentLoanList) {
+			foreach ($this->repaymentLoanList as $Row) {
+				
+				$row[] 	= array(
+									"DT_RowId"=>"row_".$Row->loan_id,
+									"loan_id"=>$Row->loan_id,
+									"loan_reference_number"=>$Row->loan_reference_number,
+									"repayment_schedule_date"=>$Row->schd_date,									
+									"repayment_actual_date"=>$Row->act_date,
+									"repayment_scheduled_amount	"=>$Row->schd_amount,									
+									"penalty_fixed_amount"=>$Row->penalty,								
+									"status"=>$Row->status,	
+									"loan_status_name"=>$Row->dataStatus									
+								);	
+			}
+		}		
+		return	$row;	
+		//return;
 
 	}
 	public function recalculatePenality($postArray) {

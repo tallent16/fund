@@ -68,21 +68,27 @@
 			<span class="fa arrow">
 		</a>
 		<ul class="nav nav-second-level">
+			@permission('viewinvestor.admin.reportactivity')
 			<li>
 				<a href="{{ url ('admin/investoractivity/report') }}">
 					{{ Lang::get('Investor Activity Report') }}
 				</a>
 			</li> 
+			@endpermission
+			@permission('viewborrower.admin.reportactivity')
 			<li>
 				<a href="{{ url ('admin/borroweractivity/report') }}">
 					{{ Lang::get('Borrower Activity Report') }}
 				</a>
 			</li> 
+			@endpermission
+			@permission('viewbank.admin.reportactivity')
 			<li>
 				<a href="{{ url ('admin/bankactivity/report') }}">
 					{{ Lang::get('Bank Activity Report') }}
 				</a>
 			</li>
+			@endpermission
 		</ul>
 	</li>
 	@endpermission

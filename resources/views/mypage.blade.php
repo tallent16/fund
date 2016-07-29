@@ -84,11 +84,27 @@
 				<a href="{{ url ('admin/changeofbank') }}">{{ Lang::get('Bank Change Request') }}</a>
 			</li>	
 		@endpermission
-		@permission('view.admin.reports')
-		<li>
-			<a href="{{ url ('admin/reports') }}">{{ Lang::get('Reports') }} </a> 
-		</li>
-		@endpermission
+		@permission('viewinvestor.admin.reportactivity')
+			<li>
+				<a href="{{ url ('admin/investoractivity/report') }}">
+					{{ Lang::get('Investor Activity Report') }}
+				</a>
+			</li> 
+			@endpermission
+			@permission('viewborrower.admin.reportactivity')
+			<li>
+				<a href="{{ url ('admin/borroweractivity/report') }}">
+					{{ Lang::get('Borrower Activity Report') }}
+				</a>
+			</li> 
+			@endpermission
+			@permission('viewbank.admin.reportactivity')
+			<li>
+				<a href="{{ url ('admin/bankactivity/report') }}">
+					{{ Lang::get('Bank Activity Report') }}
+				</a>
+			</li>
+			@endpermission
 		@permission('view.admin.manageusers') 
 			<li>
 				<a href="{{ url ('admin/user') }}">{{ Lang::get('Manage Users') }} </a> 

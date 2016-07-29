@@ -377,16 +377,15 @@ class AwsS3Adapter extends AbstractAdapter
      */
     public function copy($path, $newpath)
     {
-        $visibility = $this->getRawVisibility($path);
-
         $command = $this->s3Client->getCommand(
             'copyObject',
             [
                 'Bucket' => $this->bucket,
                 'Key' => $this->applyPathPrefix($newpath),
                 'CopySource' => urlencode($this->bucket . '/' . $this->applyPathPrefix($path)),
-                'ACL' => $visibility === AdapterInterface::VISIBILITY_PUBLIC ? 'public-read' : 'private',
-            ]
+                'ACL' => $this->getRawVisibility($path) === AdapterInterface::VISIBILITY_PUBLIC
+                    ? 'public-read' : 'private',
+            ] + $this->options
         );
 
         try {
@@ -411,7 +410,6 @@ class AwsS3Adapter extends AbstractAdapter
 
         if ($response !== false) {
             $response['stream'] = $response['contents']->detach();
-            rewind($response['stream']);
             unset($response['contents']);
         }
 
@@ -432,6 +430,9 @@ class AwsS3Adapter extends AbstractAdapter
             [
                 'Bucket' => $this->bucket,
                 'Key' => $this->applyPathPrefix($path),
+                '@http' => [
+                    'stream' => true,
+                ],
             ]
         );
 
@@ -558,6 +559,10 @@ class AwsS3Adapter extends AbstractAdapter
 
         if ( ! isset($options['ContentLength'])) {
             $options['ContentLength'] = is_string($body) ? Util::contentSize($body) : Util::getStreamSize($body);
+        }
+
+        if ($options['ContentLength'] === null) {
+            unset($options['ContentLength']);
         }
 
         $this->s3Client->upload($this->bucket, $key, $body, $acl, ['params' => $options]);
