@@ -216,7 +216,12 @@
 @section('bottomscripts')
 <script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 <script> var baseUrl	=	"{{url('')}}" </script>
+<!--
+ <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
+rel="Stylesheet"type="text/css"/>
+-->
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+
 {{ Html::script('js/datatable/jquery.dataTables.min.js') }}
 {{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
 {{ Html::script('js/datatable/dataTables.editor.js') }}	

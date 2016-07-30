@@ -676,12 +676,12 @@ class BorrowerRepayLoansModel extends TranWrapper {
 										repayment_status,
 										loan_reference_number ref, 
 										date_format(repayment_schedule_date,'%d-%m-%Y') schd_date,
-										date_format(ifnull(repayment_actual_date ,''),'%d-%m-%Y') act_date,										
+										date_format(ifnull(repayment_actual_date ,'00-00-0000'),'%d-%m-%Y') act_date,										
 										date_format(repayment_schedule_date ,'%Y-%m') inst_period,
 										ROUND(if ( date(repayment_schedule_date) < date(now()) && repayment_status = 1,
 											repayment_scheduled_amount * (penalty_fee_percent/100) / 365 * datediff(now(), repayment_schedule_date) + 
 											greatest(repayment_scheduled_amount * (penalty_fee_percent / 100), penalty_fee_minimum), 0),2) penalty,
-										ROUND(repayment_scheduled_amount,2) schd_amount,
+										FORMAT(ROUND(repayment_scheduled_amount,2),2) schd_amount,
 										CASE repayment_status
 											   when '1' and (datediff(now(), repayment_schedule_date) > 0)
 														then	'Overdue'
@@ -714,19 +714,19 @@ class BorrowerRepayLoansModel extends TranWrapper {
 				$row[] 	= array(
 									"DT_RowId"=>"row_".$Row->loan_id,
 									"loan_id"=>$Row->loan_id,
-									"loan_reference_number"=>$Row->loan_reference_number,
+									"loan_reference_number"=>$Row->ref,
+									"repayment_schedule_id"=>$Row->repayment_schedule_id,
 									"repayment_schedule_date"=>$Row->schd_date,									
 									"repayment_actual_date"=>$Row->act_date,
-									"repayment_scheduled_amount	"=>$Row->schd_amount,									
+									"repayment_scheduled_amount"=>$Row->schd_amount,									
+									"trans_reference_number"=>$Row->trans_reference_number,									
 									"penalty_fixed_amount"=>$Row->penalty,								
-									"status"=>$Row->status,	
-									"loan_status_name"=>$Row->dataStatus									
+									"status"=>$Row->repayment_status,	
+									"loan_status_name"=>$Row->repayment_status									
 								);	
 			}
 		}		
-		return	$row;	
-		//return;
-
+		return	$row;
 	}
 	public function recalculatePenality($postArray) {
 		

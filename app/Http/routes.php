@@ -1165,6 +1165,9 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminInvestorActivityReportController@indexPostAction'
 							]
 				);
+	 Route::post('admin/investor-activity-report/download','AdminInvestorActivityReportController@DownloadInvestorAction'
+							
+				);
 	 
 	 Route::get('admin/borroweractivity/report',
 							[	

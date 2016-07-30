@@ -2,6 +2,20 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+	<script src="{{ url('js/jquery.tabletojson.js') }}" type="text/javascript"></script>
+	<script>
+		function convert2json() {
+			var reportJson 	= $('.table').tableToJSON(); // Convert the table into a javascript object
+			$obj				=	JSON.stringify(reportJson);
+			$fromDate			=	$("#fromdate").val();
+			$toDate				=	$("#todate").val();
+			
+			$("#hidden_from_date").val($fromDate);
+			$("#hidden_to_date").val($toDate);
+			$("#report_json").val($obj);
+			$("#excel_export").submit();
+		}
+	</script>
 	@endsection
 @section('page_heading',Lang::get('Investor Activty Report') )
 @section('section')  
@@ -64,13 +78,28 @@
 		</div>
 	</div>
 </form>	
-	<!---<div class="col-sm-4 col-lg-2">
-		<div class="form-group">	
-			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
-				{{ Lang::get('Show Filter')}}
-			</button>
-		</div>
-	</div>	--->
+<form 	class="form-horizontal" 
+		id="excel_export" 
+		method="post"
+		action="{{url('admin/investor-activity-report/download')}}">
+		<input  type="hidden" 
+				name="_token"
+				id="hidden_token"
+				value="{{ csrf_token() }}" />
+		<input type="hidden" id="report_json" name="report_json" />
+		<input type="hidden" id="hidden_from_date" name="from_date" />
+		<input type="hidden" id="hidden_to_date" name="to_date" />
+		<div class="col-sm-4 col-lg-2">
+			<div class="form-group">	
+				<button  id="export_all"
+						class="btn verification-button" 
+						type="button"
+						onclick="convert2json()">
+					{{ Lang::get('Export')}}
+				</button>
+			</div>
+		</div>	
+</form>
 	
 </div><!-----First row----->
 @var	$showInvestName	=	false

@@ -12,179 +12,166 @@ $(document).ready(function() {
 $('#select_all_list').on('click', function (e) {
 		checkall_list(this,"adminrepaymentlisting");
 });
-    
+function variabledec(data){	
+	var	SchUrl			=	baseUrl+'/admin/borrowersrepayview';
+	var	repSchUrl		=	SchUrl+"/edit/"+btoa(data.repayment_schedule_id);
+	var	repSchUrl		=	repSchUrl+"/"+btoa(data.loan_id);
+	return 	repSchUrl;
+}
 function callDataTableFunc(){	
 	
 	$repaylisting =$('#adminrepaymentlisting').DataTable( {
-			dom: "Tfrtip",
-			ajax: baseUrl+"/admin/ajax/adminrepaylist",			
-			columns: [
-						{ 
-							data: null,														
-							render: function(data, type, full, meta){                				
-								var str ="";  
-								str=str+'<input type="checkbox"';
-								str=str+' name="borrower_ids[]" class="select_borrower_id" ';
-								str=str+' data-status="'+data.status+'" class="select_borrower_id" ';
-								str=str+' data-email="'+data.email+'" data-active-loan="'+data.active_loan+'" ';
-								str=str+' value="'+data.borrower_id+'"  />';								
-								return str;
-        					},
-        					orderable: false
-						},
-						{ 
-							data: null,		
-							className: "text-left",											
-							render: function(data, type, full, meta){                				
-								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
-								str=str+'>'+data.email+'</a>';						
-								return str;
-        					}        					
-						},
-						{ 
-							data: null,
-							className: "text-left",													
-							render: function(data, type, full, meta){                				
-								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
-								str=str+'>'+data.business_name+'</a>';						
-								return str;
-        					}        					
-						},	
-						{ 
-							data: null,		
-							className: "text-left",											
-							render: function(data, type, full, meta){                				
-								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
-								str=str+'>'+data.industry+'</a>';						
-								return str;
-        					}        					
-						},
-						{ 
-							data: null,		
-							className: "text-right",											
-							render: function(data, type, full, meta){                				
-								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
-								str=str+'>'+data.active_loan+'</a>';						
-								return str;
-        					}        					
-						},
-						{   
-							data: null,		
-							className: "text-right",																
-							render: function(data, type, full, meta){                				
-								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
-								str=str+'>'+data.tot_bal_outstanding+'</a>';						
-								return str;
-        					}        					
-						},
-						{ 
-							data: null,	
-							className: "text-left",																					
-							render: function(data, type, full, meta){                				
-								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
-								str=str+'>'+data.statusText+'</a>';						
-								return str;
-        					}        					
-						},
-						{ 
-							data: null,		
-							className: "text-center",													
-							render: function(data, type, full, meta){
-									
-								var str ="";             					    
-								var	encode_bor_id	=	btoa(data.borrower_id);
-								var	enuser_id		=	btoa(data.user_id);
-								var	appClass		=	"disable-indication disabled";
-								var	appUrl			=	"javascript:void(0);";
-													
-								var	rejClass		=	"disable-indication disabled";
-								var	rejUrl			=	"javascript:void(0);";
-													
-								var	delClass		=	"disable-indication disabled";
-								var	delUrl			=	"javascript:void(0);";
-								
-								var submittedForApproval	= 2;
-								var submittedNewProfile		= 1;
-								var approveborrower = $('#approveborrower').val();	
-								var rejectborrower	= $('#rejectborrower').val();
-								var deleteborrower  = $('#deleteborrower').val();	
-										
-								if(data.status	==	submittedForApproval){
-									if(approveborrower == "yes"){
-										var	appClass	=	"";
-										var	appUrl		=	baseUrl+'/admin/manageborrowers/approve';
-										var	appUrl		=	appUrl+"/"+encode_bor_id;
-									}
-								}
-								if((data.status	==	submittedNewProfile)
-									|| (data.status	==	submittedForApproval)){
-									if(rejectborrower == "yes"){
-										var	rejClass	=	"manageborrowers_reject";
-										var	rejUrl		=	baseUrl+'/admin/manageborrowers/reject';
-										var	rejUrl		=	rejUrl+"/"+encode_bor_id;
-									}
-								}
-								if(data.active_loan == 0){
-									if(deleteborrower == "yes"){
-										var	delClass	=	"manageborrowers_delete";
-										var	delUrl		=	baseUrl+'/admin/manageborrowers/delete';
-										var	delUrl		=	delUrl+"/"+encode_bor_id;
-									}
-								}
-								var	changePasswordUrl	=	baseUrl+'/admin/changepassword';
-								var	changePasswordUrl	=	changePasswordUrl+'/'+enuser_id;
-													
-								str=str+'<ul class="list-unstyled">'
-								str=str+'	<li class="dropdown">'
-								str=str+'		<a class="dropdown-toggle" '
-								str=str+'				data-toggle="dropdown" href="#">'
-								str=str+'					<i class="fa fa-caret-down fa-fw action-style"></i> '
-								str=str+'						</a>'
-								str=str+'							<ul class="dropdown-menu dropdown-user dropdown-menu-right">'
-								str=str+'								<li>'
-								str=str+'								<a href="'+appUrl+'" class="'+appClass+'">'
-								str=str+'										<i class="fa fa-user fa-fw"></i>'
-								str=str+'										Approve'
-								str=str+'									</a>'
-								str=str+'								</li> ' 
-								str=str+'								<li>'	
-								str=str+'									<a href="'+rejUrl+'"   class="'+rejClass+'">'
-								str=str+'										<i class="fa fa-user fa-fw"></i>'
-								str=str+'										Reject'
-								str=str+'									</a>'
-								str=str+'								</li>'
-								str=str+'								<li>'
-								str=str+'									<a href="'+delUrl+'"  class="'+delClass+'">'
-								str=str+'										<i class="fa fa-user fa-fw"></i>'
-								str=str+'										Delete'
-								str=str+'									</a>'
-								str=str+'								</li>'
-								str=str+'								<li>'
-								str=str+'									<a href="'+changePasswordUrl+'" >'
-								str=str+'										<i class="fa fa-user fa-fw"></i>'
-								str=str+'										Change Password'
-								str=str+'									</a>'
-								str=str+'								</li>'
-								str=str+'							</ul>'	
-								str=str+'						</li>'
-								str=str+'					</ul>'	
-																
-								return str;				    
-							}
-						},
-						{ data: "status","visible": false },			
+		dom: "Tfrtip",
+		ajax: baseUrl+"/admin/ajax/adminrepaylist",			
+		columns: [
+				{ 
+					data: null,														
+					render: function(data, type, full, meta){                				
+						var str ="";  
+						str=str+'<input type="checkbox"';
+						str=str+' name="repayment_schedule[]" class="select_repayment" ';
+						str=str+' data-status="'+data.status+'" data-penality="'+data.penalty_fixed_amount+'" ';
+						str=str+' data-loan-ref="'+data.loan_reference_number+'" data-schdDate="'+data.repayment_schedule_date+'" ';
+						str=str+'data-tran-ref="'+data.trans_reference_number+'" value="'+data.repayment_schedule_id+'"  />';								
+						return str;
+					},
+					orderable: false
+				},
+				{ 
+					data: null,		
+					className: "text-left",											
+					render: function(data, type, full, meta){  
+						var repSchUrl = variabledec(data);												              				
+						var str ="";  								
+						str=str+'<a href="'+repSchUrl+'"';
+						str=str+'>'+data.loan_reference_number+'</a>';						
+						return str;
+					}        					
+				},
+				{ 
+					data: null,
+					className: "text-left",													
+					render: function(data, type, full, meta){  
+						var repSchUrl = variabledec(data);              				
+						var str ="";  								
+						str=str+'<a href="'+repSchUrl+'"';
+						str=str+'>'+data.repayment_schedule_date+'</a>';						
+						return str;
+					}        					
+				},	
+				{ 
+					data: null,		
+					className: "text-left",											
+					render: function(data, type, full, meta){  
+						var repSchUrl = variabledec(data);              				
+						var str ="";  								
+						str=str+'<a href="'+repSchUrl+'"';
+						str=str+'>'+data.repayment_actual_date+'</a>';						
+						return str;
+					}        					
+				},
+				{ 
+					data: null,		
+					className: "text-right",											
+					render: function(data, type, full, meta){ 
+						var repSchUrl = variabledec(data);             				
+						var str ="";  								
+						str=str+'<a href="'+repSchUrl+'"';
+						str=str+'>'+data.repayment_scheduled_amount+'</a>';						
+						return str;
+					}        					
+				},
+				{   
+					data: null,		
+					className: "text-right",																
+					render: function(data, type, full, meta){  
+						var repSchUrl = variabledec(data);             				
+						var str ="";  								
+						str=str+'<a href="'+repSchUrl+'"';
+						str=str+'>'+data.penalty_fixed_amount+'</a>';						
+						return str;
+					}        					
+				},
+				{ 
+					data: null,	
+					className: "text-left",																					
+					render: function(data, type, full, meta){  
+						var repSchUrl = variabledec(data);               				
+						var str ="";  								
+						str=str+'<a href="'+repSchUrl+'"';
+						str=str+'>'+data.loan_status_name+'</a>';						
+						return str;
+					}        					
+				},
+				{ 
+					data: null,		
+					className: "text-left",													
+					render: function(data, type, full, meta){
+						var	SchUrl			=	baseUrl+'/admin/borrowersrepayview';
+						var	repEditSchUrl	=	SchUrl+"/edit/"+btoa(data.repayment_schedule_id);
+						var	repEditSchUrl	=	repEditSchUrl+"/"+btoa(data.loan_id);
+						
+						var	repViewSchUrl	=	SchUrl+"/view/"+btoa(data.repayment_schedule_id);   
+						var	repViewSchUrl	=	repViewSchUrl+"/"+btoa(data.loan_id);
+						
+						if(data.loan_status_name	==	"Not Approved"){							
+							var	apprUrl		=	baseUrl+'/admin/borrowersrepaylist/approve';
+							var	apprUrl		=	apprUrl+"/"+data.repayment_schedule_id;
+							var	classname	=	"";		
+						}
+						else{
+							var	apprUrl		=	"javascript:void(0);";
+							var	classname	=	"disable-indication disabled";		
+						}
+						if(data.loan_status_name	!=	"Approved"){
+							var	classrepaySch		=	"";		
+						}else{
+							var	classrepaySch		=	"disable-indication disabled";									
+						}
+											
+						var str =""; 					
+						str=str+'<ul class="list-unstyled">'
+						str=str+'	<li class="dropdown">'
+						str=str+'		<a class="dropdown-toggle" '
+						str=str+'				data-toggle="dropdown" href="#">'
+						str=str+'					<i class="fa fa-caret-down fa-fw action-style"></i> '
+						str=str+'						</a>'
+						str=str+'							<ul class="dropdown-menu dropdown-user dropdown-menu-right">'
+						str=str+'								<li>'
+						str=str+'									<a href="'+repEditSchUrl+'" class="'+classrepaySch+'">'
+						str=str+'										<i class="fa fa-user fa-fw"></i>'
+						str=str+'											Edit/Approve'
+						str=str+'									</a>'
+						str=str+'								</li> ' 
+						str=str+'								<li>'	
+						str=str+'									<a href="'+repViewSchUrl+'" >'
+						str=str+'										<i class="fa fa-user fa-fw"></i>'
+						str=str+'											View'
+						str=str+'									</a>'
+						str=str+'								</li>'
+						str=str+'								<li>'
+						str=str+'									<a href="'+apprUrl+'" '
+						str=str+'										data-tranf-no="'+data.trans_reference_number+'" '
+						str=str+'										class="approveRepayment '+classname+' " >'
+						str=str+'											<i class="fa fa-user fa-fw"></i>'
+						str=str+'												Approve Selected'
+						str=str+'									</a>'
+						str=str+'								</li>'						
+						str=str+'							</ul>'	
+						str=str+'						</li>'
+						str=str+'					</ul>'	
+														
+						return str;				    
+					},
+					orderable: false
+				},
+				{ data: "status","visible": false },			
 			],
-		order: [ 1, 'asc' ],
-		tableTools: {			
-			aButtons: [		
-				
-			]
-		}
-    });		
+	order: [ 1, 'asc' ],
+	tableTools: {			
+		aButtons: [		
+			
+		]
+	}
+	});		
 }

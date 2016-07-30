@@ -17,8 +17,7 @@ class AdminBorrowersRepaymentListingController extends MoneyMatchController {
 	}
 		
 	public function indexAction(){		
-
-		//$this->adminBorrowerRepaymentList->getAllBorrowerRepaymentLoans();
+		
 		$withArry	=	array(	"adminBorRepayListMod" => $this->adminBorrowerRepaymentList, 								
 								"classname"=>"fa fa-cc fa-fw"); 
 								

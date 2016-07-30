@@ -239,7 +239,7 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	
 	<script src="{{ url("js/admin-borrower-repaylisting.js") }}" type="text/javascript"></script>	
-		
+	<script> var baseUrl	=	"{{url('')}}" </script>
 	{{ Html::script('js/datatable/jquery.dataTables.min.js') }}
 	{{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
 	{{ Html::script('js/datatable/dataTables.editor.js') }}

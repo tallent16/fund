@@ -1,24 +1,5 @@
 var $loanlisting;
-/**Default date initalize**/
-var p = new Date();
-var n = new Date();
 
-p.setMonth(p.getMonth() - 1); //subtract month - prev
-n.setMonth(n.getMonth() + 1); //adding month - next
-//adding zero for month
-if((p.getMonth()+1) < 10){	
-	var prevDate = (p.getDate() + '/' +("0"+(p.getMonth() + 1) ) + '/' +  p.getFullYear());
-}else{
-	var prevDate = (p.getDate() + '/' +(p.getMonth() + 1)  + '/' +  p.getFullYear());
-}
-if((n.getMonth()+1) < 10){	
-	var nextDate = (n.getDate() + '/' +("0"+(n.getMonth() + 1) ) + '/' +  n.getFullYear());
-}else{
-	var nextDate = (n.getDate() + '/' +(n.getMonth() + 1)  + '/' +  n.getFullYear());
-}
-//set in the datepicker
-$("#fromdate").val(prevDate);
-$("#todate").val(nextDate);
 //From date and To date filtering
 $.fn.dataTableExt.afnFiltering.push(
 	function( oSettings, aData, iDataIndex ) {
@@ -63,8 +44,50 @@ $(document).ready(function() {
 	$("#filter_status").click(function(event){   //filter the status
 		var	transcation_filter	=	$("#filter_transcations").find("option:selected").val();
 		transcation_filter		=	(transcation_filter	==	"11")?"":transcation_filter;		
-		$loanlisting.columns(8).search(transcation_filter).draw();		
+		$loanlisting.columns(8).search(transcation_filter).draw();	
 	});	
+	
+		
+	var p = new Date();
+	var n = new Date();
+
+	p.setMonth(p.getMonth() - 1); //subtract month - prev
+	n.setMonth(n.getMonth() + 1); //adding month - next
+
+	//adding zero for month
+	if((p.getMonth()+1) < 10){	
+		var prevDate = (p.getDate() + '/' +("0"+(p.getMonth() + 1) ) + '/' +  p.getFullYear());
+	}else{
+		var prevDate = (p.getDate() + '/' +(p.getMonth() + 1)  + '/' +  p.getFullYear());
+	}
+	if((n.getMonth()+1) < 10){	
+		var nextDate = (n.getDate() + '/' +("0"+(n.getMonth() + 1) ) + '/' +  n.getFullYear());
+	}else{
+		var nextDate = (n.getDate() + '/' +(n.getMonth() + 1)  + '/' +  n.getFullYear());
+	}
+
+	//set in the datepicker
+	$("#fromdate").val(prevDate);
+	$("#todate").val(nextDate);
+  //~ $("#fromdate").datetimepicker({
+				//~ autoclose: true, 
+				//~ minView: 2,
+				//~ format: 'dd/mm/yyyy' ,
+				//~ onChangeDateTime: function(){
+						   //~ startDate = $("#fromdate").val();
+													   //~ }
+													   //~ });
+	//~ $("#todate").datetimepicker({
+				//~ autoclose: true, 
+				//~ minView: 2,
+				//~ format: 'dd/mm/yyyy' ,
+				//~ onClose: function(){
+						//~ var endDate = $("#todate").val();
+						//~ if(startDate>endDate){
+							   //~ alert('Please select correct date');
+						 //~ }
+		 //~ }
+		  //~ });
 });
 //values setup based on status before use
 function inheritvarvalues(data){

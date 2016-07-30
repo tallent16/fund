@@ -2,18 +2,27 @@
 	<div class="col-sm-12"> 
 		<div class="table-responsive applyloan borrower-admin"> 
 							
-			<table class="table tab-fontsize table-border-custom text-left">
+			<table class="table tab-fontsize table-border-custom text-left" id="investor_activity"> 
+				<thead style="display:none">
+						<tr>
+							<td class="tab-head text-left">{{ Lang::get('Date') }}</td>
+							<td class="tab-head text-left">{{ Lang::get('Transaction Type') }}</td>
+							<td class="tab-head text-left">{{ Lang::get('Reference Number') }}</td>
+							<td class="tab-head text-left">{{ Lang::get('Details') }}</td>
+							<td class="tab-head text-right">{{ Lang::get('Dr Amount') }}</td>
+							<td class="tab-head text-right">{{ Lang::get('Cr Amount') }}</td>
+							<td class="tab-head text-right">{{ Lang::get('Balance') }}</td>
+						</tr>
+				</thead>
 				<tbody>	
 					@foreach($invFilter as $invListRow)
 						@var	$openBal	=	$adminInvActRepMod->openingBalance[$invListRow]
-								@if($showInvestName)
-									<tr>
+								<tr>
 										<td colspan="7" class="text-center">
 											{{ "<strong>".Lang::get('Transaction Detail Report for Investor:').
 												"</strong>".$invList[$invListRow]}}
 										 </td>
 									</tr>	
-								@endif
 								<tr>
 									<td class="tab-head text-left">{{ Lang::get('Date') }}</td>
 									<td class="tab-head text-left">{{ Lang::get('Transaction Type') }}</td>
