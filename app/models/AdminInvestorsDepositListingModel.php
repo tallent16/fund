@@ -29,7 +29,8 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 										codelist_value,
 										expression
 								FROM	codelist_details
-								WHERE	codelist_id in (31)"												
+								WHERE	codelist_id in (31) 
+								ORDER BY codelist_code DESC"												
 								;
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);			
@@ -60,22 +61,26 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		
 	public function viewDepositList($fromDate, $toDate, $filter_status) {
 		
-		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
-		$this->toDate				= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));		
-		$this->filter_status 		= 	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED;
+		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -2 month"));
+		$this->toDate				= 	date('d-m-Y', strtotime(date('Y-m')." +2 month"));		
+		$this->filter_status 		= 	3;
+		$applyFilter				=	0;
 		
-		if (isset($_REQUEST['filter_status'])) {
-		 	$this->filter_status 	= $_REQUEST['filter_status'];
+		if (isset($_REQUEST['filter_transcations'])) {
+		 	$this->filter_status 	= $_REQUEST['filter_transcations'];
 			$this->fromDate			= $_REQUEST['fromdate'];
 			$this->toDate			= $_REQUEST['todate'];
+			$applyFilter			=	1;	
 		} 
-		
+		 //~ print_r($this->fromDate); 
+		 //~ print_r($this->toDate); 
+		 //~ print_r($this->filter_status); die;
 		$lnListSql				=	"SELECT users.firstname,
 											investors.investor_id,
 											investor_bank_transactions.payment_id,
 											date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
 																						trans_date,
-											ROUND(investor_bank_transactions.trans_amount,2) trans_amount,
+											format(ROUND(investor_bank_transactions.trans_amount,2),2) trans_amount,
 											( SELECT	expression
 													FROM	codelist_details
 													WHERE	codelist_id = :bankstatus_codeparam4
@@ -88,17 +93,26 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 											investor_bank_transactions 
 									 WHERE  investors.user_id   	= users.user_id 
 									 AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
-									 AND 	investor_bank_transactions.status = if(:filter_codeparam = :unapprove_codeparam3, :unapproved_codeparam1, :approved_codeparam2)
-									 AND	investor_bank_transactions.trans_date
-											BETWEEN :fromDate AND :toDate 
+									 AND 	investor_bank_transactions.status = if(:filter_codeparam = 3, investor_bank_transactions.status, :filter_codeparam2)
+									AND		investor_bank_transactions.trans_date BETWEEN 
+											if (:filter_codeparam3 = 0, investor_bank_transactions.trans_date, :fromDate) AND 
+											if (:filter_codeparam4 = 0, investor_bank_transactions.trans_date, :toDate)
+											
 									AND		investor_bank_transactions.trans_type	=	:trans_type_codeparam5
 									 ORDER BY investor_bank_transactions.trans_date";
-						 
+						
 		$dataArrayLoanList		=	[															
 										"filter_codeparam" 		=>	$this->filter_status,
-										"unapproved_codeparam1" => 	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,										
-										"approved_codeparam2" 	=> 	INVESTOR_BANK_TRANS_STATUS_VERIFIED,										
-										"unapprove_codeparam3" 	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,
+										
+										"filter_codeparam2" 	=>	$this->filter_status,
+										
+										"filter_codeparam3" 	=>	$applyFilter,
+										
+										"filter_codeparam4" 	=>	$applyFilter,
+										
+										//~ "unapproved_codeparam1" => 	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,										
+										//~ "approved_codeparam2" 	=> 	INVESTOR_BANK_TRANS_STATUS_VERIFIED,										
+										//~ "unapprove_codeparam3" 	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,
 										"bankstatus_codeparam4" =>	INVESTOR_BANK_TRANS_STATUS,																				
 										"fromDate" 				=>	$this->getDbDateFormat($this->fromDate),
 										"toDate" 				=>	$this->getDbDateFormat($this->toDate),
@@ -107,9 +121,26 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 									];
 
 		$this->depositListInfo	=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-	
-		return ;		
-		
+		//~ echo "<pre>",print_r($lnListSql),"</pre>";  die; 
+		$row			=	array();
+		if ($this->depositListInfo) {
+			foreach ($this->depositListInfo as $Row) {
+				
+				$row[] 	= array(
+									"DT_RowId"=>"row_".$Row->investor_id,
+									"investor_id"=>$Row->investor_id,
+									"payment_id"=>$Row->payment_id,
+									"trans_id"=>$Row->trans_id,
+									"firstname"=>$Row->firstname,
+									"trans_date"=>$Row->trans_date,
+									"trans_amount"=>$Row->trans_amount,									
+									"status"=>$Row->status,
+									"trans_status_name"=>$Row->trans_status_name									
+								);	
+			}
+		}
+		//~ echo "<pre>",print_r($row),"</pre>";  die;		
+		return $row;			
 	}
 	
 	

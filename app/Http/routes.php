@@ -1132,6 +1132,9 @@ Route::post('admin/approvechangeofbank/reject',
 		Route::get('admin/ajax/adminrepaylist', 'AdminBorrowersRepaymentListingController@ajaxRepayList');
 		Route::post('admin/ajax/adminrepaylist', 'AdminBorrowersRepaymentListingController@ajaxRepayList');
 		
+		Route::get('admin/ajax/admininvdepositlist', 'AdminInvestorsDepositListingController@ajaxInvDepositList');
+		Route::post('admin/ajax/admininvdepositlist', 'AdminInvestorsDepositListingController@ajaxInvDepositList');
+		
 		
 
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
@@ -1184,6 +1187,11 @@ Route::post('admin/approvechangeofbank/reject',
 							]
 				);
 	 
+	 Route::post('admin/borrower-activity-report/download',
+											'AdminBorrowerActivityReportController@DownloadBorrowerAction'
+							
+				);
+	 
 	 Route::get('admin/bankactivity/report',
 							[	
 								'middleware' 	=> 	'permission',
@@ -1198,6 +1206,11 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminBankActivityReportController@indexPostAction'
 							]
 				);
+	Route::post('admin/bank-activity-report/download',
+											'AdminBankActivityReportController@DownloadBankAction'
+							
+				);
+	 
 });
 
 // The routes (or pages that are applicable for Borrower Users only

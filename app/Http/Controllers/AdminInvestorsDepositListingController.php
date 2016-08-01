@@ -31,23 +31,45 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 			$toDate 	=	$_REQUEST["todate"];
 		}
 		
-		if (isset($_REQUEST["filter_status"])) {
-			$filter_status = $_REQUEST["filter_status"];
-		}	
+		if (isset($_REQUEST["filter_transcations"])) {
+			$filter_status = $_REQUEST["filter_transcations"];
+		}	 
 
 		$this->adminInvestorsDeposit->processDropDowns();
 		
-		$this->adminInvestorsDeposit->viewDepositList($fromDate, $toDate, $filter_status);	
+		//~ $this->adminInvestorsDeposit->viewDepositList($fromDate, $toDate, $filter_status);	
 		
 		$withArry	=	array(	"adminInvDepListMod" => $this->adminInvestorsDeposit, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
-								"all_Trans" => $filter_status,								
+								//~ "all_Trans" => $filter_status,								
 								"classname"=>"fa fa-cc fa-fw"); 
 								
 		return view('admin.admin-investorsdepositlisting')
 				->with($withArry); 
 	
+	}
+	public function ajaxInvDepositList(){	
+		
+		$filter_status 	=	'All';
+		$fromDate	=	date("d-m-Y", strtotime("-12 Months"));
+		$toDate		=	date("d-m-Y", strtotime("now"));
+		
+		if (isset($_REQUEST["fromdate"])) {
+			$fromDate	=	$_REQUEST["fromdate"];
+		}
+		
+		if (isset($_REQUEST["todate"])) {
+			$toDate 	=	$_REQUEST["todate"];
+		}
+		
+		if (isset($_REQUEST["filter_transcations"])) {
+			$filter_status = $_REQUEST["filter_transcations"];
+		}	
+		$row = $this->adminInvestorsDeposit->viewDepositList($fromDate, $toDate, $filter_status);	
+		
+		 //~ echo "<pre>",print_r($row),"</pre>"; die;
+		return json_encode(array("data"=>$row));	
 	}
 	
 	public function viewDepositAction($payment_id,$investor_id){

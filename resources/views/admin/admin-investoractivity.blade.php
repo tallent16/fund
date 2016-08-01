@@ -13,7 +13,12 @@
 			$("#hidden_from_date").val($fromDate);
 			$("#hidden_to_date").val($toDate);
 			$("#report_json").val($obj);
-			$("#excel_export").submit();
+			if(reportJson.length > 0) {
+				$("#excel_export").submit();
+			}else{
+				showDialog("","No Data avilable to Export");
+			}
+			
 		}
 	</script>
 	@endsection

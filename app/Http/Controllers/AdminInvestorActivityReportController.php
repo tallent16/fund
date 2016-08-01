@@ -128,18 +128,18 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 		$headers	=	[
 							0=>"Investor Activity Report",
 							1=>"for the period {$postArray['from_date']} to {$postArray['to_date']}",
-							2=>[	"Date",
-									"Transaction Type",
-									"Reference Number",
-									"Details",
-									"Dr Amount",
-									"Cr Amount",
-									"Balance"
-								]
+							//~ 2=>[	"Date",
+									//~ "Transaction Type",
+									//~ "Reference Number",
+									//~ "Details",
+									//~ "Dr Amount",
+									//~ "Cr Amount",
+									//~ "Balance"
+								//~ ]
 								
 						];
 		$headStart	=	1;
-		$startRow	=	4;
+		$startRow	=	3;
 		$breakColumn=	"Date";			
 		Excel::create('InvestorActivityReport', function($excel) 
 			use ($allInvestorArry,$headers,$headStart,$startRow,$breakColumn)
@@ -176,7 +176,7 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 						$needle = 'Transaction Detail Report for Investor:';
 						foreach ($jsonRow as $jsonCol => $jsonVal) {
 							if ( (strlen(strstr($jsonVal['Date'],$needle))	==	0 )
-								&& (strlen(strstr($jsonVal['Date'],"Date"))	==	0)) {
+								) {
 								$sheet->setCellValue('A'.$currExcelRow,$jsonVal['Date']);
 								$sheet->setCellValue('B'.$currExcelRow, $jsonVal['Transaction Type']);
 								$sheet->setCellValue('C'.$currExcelRow, $jsonVal['Reference Number']);
@@ -184,6 +184,9 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 								$sheet->setCellValue('E'.$currExcelRow, $jsonVal['Dr Amount']);
 								$sheet->setCellValue('F'.$currExcelRow, $jsonVal['Cr Amount']);
 								$sheet->setCellValue('G'.$currExcelRow, $jsonVal['Balance']);
+								$currExcelRow++;
+							}else{
+								$sheet->setCellValue('A'.$currExcelRow,$jsonVal['Date']);
 								$currExcelRow++;
 							}
 							

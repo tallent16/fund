@@ -1,11 +1,34 @@
 @extends('layouts.dashboard')
-@section('bottomscripts')
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	<script>var baseUrl	=	"{{url('')}}"</script>
-	<script src="{{ url("js/admin-investor-listing.js") }}" type="text/javascript"></script>
-	
-@endsection
+@section('styles')
+	{{ Html::style('css/datatable/jquery.dataTables.css') }}
+	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
+	{{ Html::style('css/datatable/dataTables.editor.css') }}		
+	<style>
+		table.dataTable thead th, table.dataTable thead td {
+			padding: 10px;
+			border-bottom:none;
+			font-size:12px;
+		}
+		table.dataTable thead > th {
+			color: #fff;			
+			text-decoration:none;			
+		}		
+		table.dataTable thead > tr{
+			background-color:#333;
+			color:#fff;
+		}
+		.dataTable td a{
+			color:#333;
+			text-decoration:none;		
+		}
+		.table-responsive{
+			overflow:visible;
+		}
+		table.dataTable.no-footer{
+			border:none;
+		}
+	</style>
+@stop
 @section('page_heading',Lang::get('Investor Deposit') )
 @section('section')  
 <div class="col-sm-12 space-around">
@@ -15,9 +38,10 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 				<strong>{{ Lang::get('Filter Status')}}</strong><br>								
-					{{ Form::select('filter_status', $adminInvDepListMod->allTransList, 
+					{{ Form::select('filter_transcations', $adminInvDepListMod->allTransList, 
 													$adminInvDepListMod->filter_status, 
-													["class" => "selectpicker"]) 
+													["class" => "selectpicker",
+													"id" => "filter_transcations"]) 
 					}} 
 			</div>	
 		</div>
@@ -40,7 +64,7 @@
 
 		<div class="col-sm-4 col-lg-3"> 
 			<div class="form-group space-around">
-				<button class="btn verification-button">
+				<button type="button" class="btn verification-button" id="filter_status">
 							{{ Lang::get('Apply Filter')}}
 				</button>
 			</div>
@@ -83,6 +107,7 @@
 				</div>
 			</div>
 			
+<!--
 			<div class="panel panel-primary panel-container borrower-admin">					
 					
 				<form method="post" id="form-investor-listing" action="{{url('admin/investordepositlist/bulkaction')}}">
@@ -201,7 +226,58 @@
 				</div>		
 				</form>			
 			</div>	<!---panel-->
+			
+	<!-----datatable starts---->
+	
+		<div class="row">		
+			<div class="col-lg-12 col-md-12">
+				<div class="table-responsive">
+					<table class="table table-striped" id="admininvdepositlisting">
+						<thead>
+							<tr>
+								<th>														
+									<label>
+										<input type="checkbox" id="select_all_list" value="Select All">
+									</label>											
+								</th>
+								<th>{{ Lang::get('Investor Name') }}</th>
+								<th>{{ Lang::get('Deposit Date') }}</th>
+								<th>{{ Lang::get('Deposit Amount') }}</th>								
+								<th>{{ Lang::get('Status') }}</th>
+								<th>{{ Lang::get('Actions') }}</th>
+								<th>{{ Lang::get('Hidden Status') }}</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+						
+				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="processType" id="processType" value="">				
+				<input 	type="hidden" 
+						name="default_verified_applicable" 
+						id="default_verified_applicable" 
+						value="{{INVESTOR_BANK_TRANS_STATUS_VERIFIED}}">				
+				<input 	type="hidden" 
+						name="default_unverified_applicable" 
+						id="default_unverified_applicable" 
+						value="{{INVESTOR_BANK_TRANS_STATUS_UNVERIFIED}}">	
+			</div>
+		</div>	
+
+	<!-----datatable ends---->
 
 </div>
 	@endsection  
 @stop
+@section('bottomscripts')
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+	<script>var baseUrl	=	"{{url('')}}"</script>
+	<script src="{{ url("js/admin-investor-listing.js") }}" type="text/javascript"></script>	
+	{{ Html::script('js/datatable/jquery.dataTables.min.js') }}
+	{{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
+	{{ Html::script('js/datatable/dataTables.editor.js') }}	
+	{{ Html::script('js/customdatatable/admininvdepositlisting.js') }}
+@endsection

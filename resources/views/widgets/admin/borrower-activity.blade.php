@@ -3,6 +3,17 @@
 		<div class="table-responsive applyloan borrower-admin"> 
 							
 			<table class="table tab-fontsize table-border-custom text-left">
+				<thead style="display:none">
+						<tr>
+							<td class="tab-head text-left">{{ Lang::get('Date') }}</td>
+							<td class="tab-head text-left">{{ Lang::get('Transaction Type') }}</td>
+							<td class="tab-head text-left">{{ Lang::get('Reference Number') }}</td>
+							<td class="tab-head text-left">{{ Lang::get('Details') }}</td>
+							<td class="tab-head text-right">{{ Lang::get('Dr Amount') }}</td>
+							<td class="tab-head text-right">{{ Lang::get('Cr Amount') }}</td>
+							<td class="tab-head text-right">{{ Lang::get('Balance') }}</td>
+						</tr>
+				</thead>
 				<tbody>	
 					@foreach($borFilter as $borListRow)
 						@var	$openBal	=	$adminBorActRepMod->openingBalance[$borListRow]

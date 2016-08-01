@@ -3,8 +3,20 @@
 		<div class="table-responsive applyloan borrower-admin"> 
 							
 			<table class="table tab-fontsize table-border-custom text-left">
+				<thead style="display:none">
+					<tr>
+						<td class="tab-head text-left">{{ Lang::get('Date') }}</td>
+						<td class="tab-head text-left">{{ Lang::get('Transaction Type') }}</td>
+						<td class="tab-head text-left">{{ Lang::get('Reference Number') }}</td>
+						<td class="tab-head text-left">{{ Lang::get('Details') }}</td>
+						<td class="tab-head text-right">{{ Lang::get('Dr Amount') }}</td>
+						<td class="tab-head text-right">{{ Lang::get('Cr Amount') }}</td>
+						<td class="tab-head text-right">{{ Lang::get('Balance') }}</td>
+					</tr>
+				</thead>
 				<tbody>	
-					@var	$openBal	=	$adminBankActRepMod->openingBalance
+					@if (count($bankActList) > 0)			
+						@var	$openBal	=	$adminBankActRepMod->openingBalance
 					
 						<tr>
 							<td class="tab-head text-left">{{ Lang::get('Date') }}</td>
@@ -25,7 +37,6 @@
 							<td class="text-right">{{number_format($openBal,2,'.',',')}}</td>
 						</tr>
 
-						@if (count($bankActList) > 0)			
 							@foreach($bankActList as $bankActReportRow)
 								@var	$crAmt	=	$bankActReportRow->credit_amt;
 								@var	$dbAmt	=	$bankActReportRow->debit_amt;

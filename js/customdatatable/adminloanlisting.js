@@ -1,38 +1,5 @@
 var $loanlisting;
 
-//From date and To date filtering
-$.fn.dataTableExt.afnFiltering.push(
-	function( oSettings, aData, iDataIndex ) {
-		var iFini = document.getElementById('fromdate').value;
-		var iFfin = document.getElementById('todate').value;
-		var iStartDateCol = 6;
-		var iEndDateCol = 6;
-
-		iFini=iFini.substring(6,10) + iFini.substring(3,5)+ iFini.substring(0,2);
-		iFfin=iFfin.substring(6,10) + iFfin.substring(3,5)+ iFfin.substring(0,2);
-
-		var datofini=aData[iStartDateCol].substring(6,10) + aData[iStartDateCol].substring(3,5)+ aData[iStartDateCol].substring(0,2);
-		var datoffin=aData[iEndDateCol].substring(6,10) + aData[iEndDateCol].substring(3,5)+ aData[iEndDateCol].substring(0,2);
-
-		if ( iFini === "" && iFfin === "" )
-		{
-			return true;
-		}
-		else if ( iFini <= datofini && iFfin === "")
-		{
-			return true;
-		}
-		else if ( iFfin >= datoffin && iFini === "")
-		{
-			return true;
-		}
-		else if (iFini <= datofini && iFfin >= datoffin)
-		{
-			return true;
-		}
-		return false;
-	}
-);
 //calling AJAX 
 $(document).ready(function() {
 	callDataTableFunc();
@@ -45,25 +12,71 @@ $(document).ready(function() {
 		var	transcation_filter	=	$("#filter_transcations").find("option:selected").val();
 		transcation_filter		=	(transcation_filter	==	"11")?"":transcation_filter;		
 		$loanlisting.columns(8).search(transcation_filter).draw();	
+		
+				//From date and To date filtering
+		$.fn.dataTableExt.afnFiltering.push(
+			function( oSettings, aData, iDataIndex ) {
+				var iFini = document.getElementById('fromdate').value;
+				var iFfin = document.getElementById('todate').value;
+				var iStartDateCol = 6;
+				var iEndDateCol = 6;
+
+				iFini=iFini.substring(6,10) + iFini.substring(3,5)+ iFini.substring(0,2);
+				iFfin=iFfin.substring(6,10) + iFfin.substring(3,5)+ iFfin.substring(0,2);
+
+				var datofini=aData[iStartDateCol].substring(6,10) + aData[iStartDateCol].substring(3,5)+ aData[iStartDateCol].substring(0,2);
+				var datoffin=aData[iEndDateCol].substring(6,10) + aData[iEndDateCol].substring(3,5)+ aData[iEndDateCol].substring(0,2);
+
+				if ( iFini === "" && iFfin === "" )
+				{
+					return true;
+				}
+				else if ( iFini <= datofini && iFfin === "")
+				{
+					return true;
+				}
+				else if ( iFfin >= datoffin && iFini === "")
+				{
+					return true;
+				}
+				else if (iFini <= datofini && iFfin >= datoffin)
+				{
+					return true;
+				}
+				return false;
+			}
+		);
+		
 	});	
 	
 		
 	var p = new Date();
 	var n = new Date();
 
-	p.setMonth(p.getMonth() - 1); //subtract month - prev
-	n.setMonth(n.getMonth() + 1); //adding month - next
-
+	p.setMonth(p.getMonth() - 2); //subtract month - prev
+	n.setMonth(n.getMonth() + 2); //adding month - next
+	
+	if((p.getDate()) < 10){	
+		var pdate = ("0"+p.getDate());
+	}else{
+		var pdate = (p.getDate());
+	}
+	if((n.getDate()) < 10){	
+		var ndate = ("0"+n.getDate());
+	}else{
+		var ndate = (n.getDate());
+	}	
+	
 	//adding zero for month
 	if((p.getMonth()+1) < 10){	
-		var prevDate = (p.getDate() + '/' +("0"+(p.getMonth() + 1) ) + '/' +  p.getFullYear());
+		var prevDate = (pdate + '-' +("0"+(p.getMonth() + 1) ) + '-' +  p.getFullYear());
 	}else{
-		var prevDate = (p.getDate() + '/' +(p.getMonth() + 1)  + '/' +  p.getFullYear());
+		var prevDate = (pdate + '-' +(p.getMonth() + 1)  + '-' +  p.getFullYear());
 	}
 	if((n.getMonth()+1) < 10){	
-		var nextDate = (n.getDate() + '/' +("0"+(n.getMonth() + 1) ) + '/' +  n.getFullYear());
+		var nextDate = (ndate + '-' +("0"+(n.getMonth() + 1) ) + '-' +  n.getFullYear());
 	}else{
-		var nextDate = (n.getDate() + '/' +(n.getMonth() + 1)  + '/' +  n.getFullYear());
+		var nextDate = (ndate + '-' +(n.getMonth() + 1)  + '-' +  n.getFullYear());
 	}
 
 	//set in the datepicker
