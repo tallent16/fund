@@ -17,8 +17,39 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 		$this->adminInvestorWithdrawalList = new AdminInvestorsWithdrawalsListingModel();
 	}
 		
-	public function indexAction(){			
+	public function indexAction(){		
 		
+		//~ $filter_status 	=	'All';
+		//~ $fromDate	=	date("d-m-Y", strtotime("-12 Months"));
+		//~ $toDate		=	date("d-m-Y", strtotime("now"));
+		
+		//~ if (isset($_REQUEST["fromdate"])) {
+			//~ $fromDate	=	$_REQUEST["fromdate"];
+		//~ }
+		
+		//~ if (isset($_REQUEST["todate"])) {
+			//~ $toDate 	=	$_REQUEST["todate"];
+		//~ }
+		
+		//~ if (isset($_REQUEST["filter_transcations"])) {
+			//~ $filter_status = $_REQUEST["filter_transcations"];
+		//~ }	
+
+		$this->adminInvestorWithdrawalList->processDropDowns();
+		
+		//~ $this->adminInvestorWithdrawalList->viewWithDrawalList($fromDate, $toDate, $filter_status);
+			
+		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 
+								//~ "fromDate" => $fromDate, 
+								//~ "toDate" => $toDate,
+								//~ "all_Trans" => $filter_status,
+								"classname"=>"fa fa-cc fa-fw"); 
+								
+		return view('admin.admin-investorswithdrawalslisting')
+				->with($withArry); 
+	
+	}
+	public function ajaxInvWithdrawList(){	
 		
 		$filter_status 	=	'All';
 		$fromDate	=	date("d-m-Y", strtotime("-12 Months"));
@@ -32,31 +63,20 @@ class AdminInvestorsWithdrawalsListingController extends MoneyMatchController {
 			$toDate 	=	$_REQUEST["todate"];
 		}
 		
-		if (isset($_REQUEST["filter_status"])) {
-			$filter_status = $_REQUEST["filter_status"];
+		if (isset($_REQUEST["filter_transcations"])) {
+			$filter_status = $_REQUEST["filter_transcations"];
 		}	
-
-		$this->adminInvestorWithdrawalList->processDropDowns();
 		
-		$this->adminInvestorWithdrawalList->viewWithDrawalList($fromDate, $toDate, $filter_status);
-			
-		$withArry	=	array(	"adminInvWithDrawListMod" => $this->adminInvestorWithdrawalList, 
-								"fromDate" => $fromDate, 
-								"toDate" => $toDate,
-								"all_Trans" => $filter_status,
-								"classname"=>"fa fa-cc fa-fw"); 
-								
-		return view('admin.admin-investorswithdrawalslisting')
-				->with($withArry); 
-	
+		$row = $this->adminInvestorWithdrawalList->viewWithDrawalList($fromDate, $toDate, $filter_status);
+		
+		return json_encode(array("data"=>$row));	
 	}
-	
-	public function viewWithdrawalAction($type,$payment_id,$investor_id){
+	public function viewWithdrawalAction($payment_id,$investor_id){
 		
 		$investorId 	= base64_decode($investor_id);
 		$investorId 	= ($investorId=="")?0:$investorId;
 		
-		$processtype 	= $type;		
+		$processtype 	= "view";	
 		
 		$paymentId 		= base64_decode($payment_id);
 		$paymentId 		= ($paymentId=="")?0:$paymentId;

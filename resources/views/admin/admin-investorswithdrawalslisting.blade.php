@@ -1,10 +1,35 @@
 @extends('layouts.dashboard')
-@section('bottomscripts')
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	<script>var baseUrl	=	"{{url('')}}"</script>
-	<script src="{{ url("js/admin-investor-withdrawallisting.js") }}" type="text/javascript"></script>
-@endsection
+@section('styles')
+	{{ Html::style('css/datatable/jquery.dataTables.css') }}
+	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
+	{{ Html::style('css/datatable/dataTables.editor.css') }}		
+	<style>
+		table.dataTable thead th, table.dataTable thead td {
+			padding: 10px;
+			border-bottom:none;
+			font-size:12px;
+		}
+		table.dataTable thead > th {
+			color: #fff;			
+			text-decoration:none;			
+		}		
+		table.dataTable thead > tr{
+			background-color:#333;
+			color:#fff;
+		}
+		.dataTable td a{
+			color:#333;
+			text-decoration:none;		
+		}
+		.table-responsive{
+			overflow:visible;
+		}
+		table.dataTable.no-footer{
+			border:none;
+		}
+	</style>
+@stop
+
 @section('page_heading',Lang::get('Investor Withdrawals') )
 @section('section')  
 <div class="col-sm-12 space-around">
@@ -14,9 +39,10 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 				<strong>{{ Lang::get('Filter Status')}}</strong><br>								
-					{{ Form::select('filter_status', $adminInvWithDrawListMod->allTransList, 
+					{{ Form::select('filter_transcations', $adminInvWithDrawListMod->allTransList, 
 								$adminInvWithDrawListMod->filter_status, 
-								["class" => "selectpicker"]) 
+								["class" => "selectpicker",
+								"id" => "filter_transcations"]) 
 					}} 
 			</div>	
 		</div>
@@ -39,7 +65,7 @@
 
 		<div class="col-sm-4 col-lg-3"> 
 			<div class="form-group space-around">
-				<button class="btn verification-button">
+				<button type="button" class="btn verification-button" id="filter_status">
 					{{ Lang::get('Apply Filter')}}
 				</button>
 			</div>
@@ -80,10 +106,33 @@
 			</div>
 		</div>
 	</div>		
+	<!-----datatable starts---->
 	
-	<div class="panel panel-primary panel-container borrower-admin">						
-	
-		<form method="post" id="form-investor-listing" action="{{url('admin/investorwithdrawallist/bulkaction')}}">
+		<div class="row">		
+			<div class="col-lg-12 col-md-12">
+				<div class="table-responsive">
+					<table class="table table-striped" id="admininvwithdrawlisting">
+						<thead>
+							<tr>
+								<th>														
+									<label>
+										<input type="checkbox" id="select_all_list" value="Select All">
+									</label>											
+								</th>
+								<th>{{ Lang::get('Investor Name') }}</th>
+								<th>{{ Lang::get('Request Date') }}</th>
+								<th>{{ Lang::get('Settlement Date') }}</th>								
+								<th>{{ Lang::get('Amount') }}</th>
+								<th>{{ Lang::get('Status') }}</th>
+								<th>{{ Lang::get('Actions') }}</th>
+								<th>{{ Lang::get('Hidden Status') }}</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+						
 			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 			<input type="hidden" name="processType" id="processType" value="">				
 			<input 	type="hidden" 
@@ -94,125 +143,20 @@
 					name="default_unverified_applicable" 
 					id="default_unverified_applicable" 
 					value="{{INVESTOR_BANK_TRANS_STATUS_UNVERIFIED}}">	
-					
-			<div class="table-responsive">
-				<table class="table tab-fontsize text-left">
-					<thead>
-						<tr>
-							<th class="tab-head text-center">									
-									<label>
-										<input 	type="checkbox" 
-												id="select_all_list"
-												class="select"											
-												value="">
-									</label>										
-							</th>
-							<th class="tab-head text-left">
-								{{Lang::get('Investor Name')}}</th>
-							<th class="tab-head text-left">
-								{{Lang::get('Request Date')}}</th>
-							<th class="tab-head text-left">
-								{{Lang::get('Settlement Date')}}</th>
-							<th class="tab-head text-right">
-								{{Lang::get('Amount')}}</th>							
-							<th class="tab-head text-left">
-								{{Lang::get('Status')}}</th>
-							<th class="tab-head text-left">
-								{{Lang::get('Actions')}}</th>
-						</tr>
-					</thead>
-					<tbody>
-						@if (count($adminInvWithDrawListMod->withdrawListInfo) > 0)			
-							@foreach($adminInvWithDrawListMod->withdrawListInfo as $withdrawListRow)
-								@var	$invUrl	=	url('admin/investorwithdrawalview/')
-								@var	$invaddUrl	=	$invUrl."/add/0/".base64_encode($withdrawListRow->investor_id)
-							
-								@var	$inveditUrl	=	$invUrl."/edit/".base64_encode($withdrawListRow->payment_id)."/"
-								@var	$inveditUrl	=	$inveditUrl.base64_encode($withdrawListRow->investor_id)
-								
-								@var	$invviewUrl	=	$invUrl."/view/".base64_encode($withdrawListRow->payment_id)."/"
-								
-								@var	$invviewUrl	=	$invviewUrl.base64_encode($withdrawListRow->investor_id)
-								<tr>
-									<td class="text-center">									
-										<label>
-											<input 	type="checkbox" 
-												name="transaction_id[]"
-												class="select_investor_withdraw"
-												data-investor-name="{{$withdrawListRow->username}}"
-												data-settlementDate="{{$withdrawListRow->trans_date}}"
-												data-requestDate="{{$withdrawListRow->entry_date}}"
-												data-withdrawAmt="{{$withdrawListRow->trans_amount}}"
-												data-availAmt="{{$withdrawListRow->avail_bal}}"
-												data-status="{{$withdrawListRow->status}}"
-												value="{{$withdrawListRow->trans_id}}" />
-										</label>									
-									</td>
-									<td>
-										<a href="{{$inveditUrl}}">
-											{{$withdrawListRow->username}}
-											
-										</a>
-									</td>
-									<td>
-										<a href="{{$inveditUrl}}">
-											{{$withdrawListRow->entry_date}}
-										</a>
-									</td>
-									<td>
-										<a href="{{$inveditUrl}}">
-											{{$withdrawListRow->trans_date}}
-										</a>
-									</td>
-									<td class="text-right">
-										<a href="{{$inveditUrl}}">
-											{{number_format($withdrawListRow->trans_amount,2,'.',',')}}
-										</a>
-									</td>
-									<td>
-										<a href="{{$inveditUrl}}">
-											{{$withdrawListRow->trans_status_name}}
-										</a>
-									</td>								
-									<td>
-										<ul class="list-unstyled">
-											<li class="dropdown">
-												<a class="dropdown-toggle" 
-													data-toggle="dropdown" href="#">
-													<i class="fa fa-caret-down fa-fw action-style"></i> 
-												</a>
-												<ul class="dropdown-menu dropdown-user">
-													<li>													
-														<a href="{{$invaddUrl}}">
-															<i class="fa fa-user fa-fw"></i>
-															{{ Lang::get('Add Withdrawals') }}
-														</a>
-													</li> 
-													<li>													
-														<a href="{{$inveditUrl}}">
-															<i class="fa fa-user fa-fw"></i>
-															{{ Lang::get('Edit Withdrawals') }}
-														</a>
-													</li> 
-													<li>													
-														<a href="{{$invviewUrl}}">
-															<i class="fa fa-user fa-fw"></i>
-															{{ Lang::get('View Withdrawals') }}
-														</a>
-													</li> 
-												</ul>
-											</li>
-										</ul>
-									</td>
-								</tr>
-							@endforeach
-						@endif	
-					</tbody>
-				</table>					
-			</div>	
-		</form>							
-	</div>	<!---panel-->
+			</div>
+		</div>	
 
+	<!-----datatable ends---->
 </div>
 	@endsection  
 @stop
+@section('bottomscripts')
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+	<script>var baseUrl	=	"{{url('')}}"</script>
+	<script src="{{ url("js/admin-investor-withdrawallisting.js") }}" type="text/javascript"></script>
+	{{ Html::script('js/datatable/jquery.dataTables.min.js') }}
+	{{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
+	{{ Html::script('js/datatable/dataTables.editor.js') }}	
+	{{ Html::script('js/customdatatable/admininvwithdrawlisting.js') }}
+@endsection

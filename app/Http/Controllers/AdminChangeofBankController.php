@@ -16,8 +16,6 @@ class AdminChangeofBankController extends MoneyMatchController {
 		
 	public function indexAction(){
 		
-		$this->adminChangeBankModel->getborrowerinvestorbanks();
-		
 		$withArry		=	array(	"adminbanklistModel" => $this->adminChangeBankModel,
 									"classname"=>"fa fa-cc fa-fw");
 		
@@ -25,8 +23,14 @@ class AdminChangeofBankController extends MoneyMatchController {
 							->with($withArry);
 	}
 	
+	public function ajaxChangeBank(){	
+				
+		$row = $this->adminChangeBankModel->getborrowerinvestorbanks();		
+		return json_encode(array("data"=>$row));		
+	}
+	
 	public function editApproveAction($usertype,$borrower_id,$borbankid){
-		
+		 
 		$usertype 		= base64_decode($usertype);
 		$borrower_id 	= base64_decode($borrower_id);
 		$borbankid 		= base64_decode($borbankid);

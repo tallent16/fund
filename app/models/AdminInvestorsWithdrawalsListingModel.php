@@ -29,7 +29,8 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 										codelist_value,
 										expression
 								FROM	codelist_details
-								WHERE	codelist_id in (31)"												
+								WHERE	codelist_id in (31)
+								ORDER BY codelist_code DESC"												
 								;
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);			
@@ -62,14 +63,15 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		
 		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
 		$this->toDate				= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));		
-		$this->filter_status 		= 	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED;
+		$this->filter_status 		= 	3;
+		$applyFilter				=	0;
 		
-		if (isset($_REQUEST['filter_status'])) {
-		 	$this->filter_status 	= $_REQUEST['filter_status'];
+		if (isset($_REQUEST['filter_transcations'])) {
+		 	$this->filter_status 	= $_REQUEST['filter_transcations'];
 			$this->fromDate			= $_REQUEST['fromdate'];
 			$this->toDate			= $_REQUEST['todate'];
 		} 
-		
+		$applyFilter			=	1;	
 		$lnListSql				=	"SELECT users.username,
 											investors.investor_id,
 											investor_bank_transactions.payment_id,
@@ -77,7 +79,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 																						trans_date,
 											date_format(investor_bank_transactions.entry_date,'%d-%m-%Y') 	
 																						entry_date,
-											ROUND(investor_bank_transactions.trans_amount,2) trans_amount,
+											format(ROUND(investor_bank_transactions.trans_amount,2),2) trans_amount,
 											( SELECT	expression
 													FROM	codelist_details
 													WHERE	codelist_id = :bankstatus_codeparam4
@@ -96,18 +98,26 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 											investor_bank_transactions 
 									WHERE  investors.user_id   	= users.user_id 
 									AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
-									AND 	investor_bank_transactions.status =
-																if(:filter_codeparam = :unapprove_codeparam3, 	:unapproved_codeparam1, :approved_codeparam2)
-									AND	investor_bank_transactions.trans_date 
-											BETWEEN :fromDate AND :toDate 
+									AND 	investor_bank_transactions.status = if(:filter_codeparam = 3, investor_bank_transactions.status, :filter_codeparam2)
+									AND		investor_bank_transactions.trans_date BETWEEN 
+											if (:filter_codeparam3 = 0, investor_bank_transactions.trans_date, :fromDate) AND 
+											if (:filter_codeparam4 = 0, investor_bank_transactions.trans_date, :toDate)
+											
 									AND		investor_bank_transactions.trans_type	=	:trans_type_codeparam5
 									ORDER BY investor_bank_transactions.trans_date ";
 						 
 		$dataArrayLoanList		=	[															
 										"filter_codeparam" 		=>	$this->filter_status,
-										"unapproved_codeparam1" => 	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,										
-										"approved_codeparam2" 	=> 	INVESTOR_BANK_TRANS_STATUS_VERIFIED,										
-										"unapprove_codeparam3" 	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,
+										
+										"filter_codeparam2" 	=>	$this->filter_status,
+										
+										"filter_codeparam3" 	=>	$applyFilter,
+										
+										"filter_codeparam4" 	=>	$applyFilter,
+										
+										//~ "unapproved_codeparam1" => 	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,										
+										//~ "approved_codeparam2" 	=> 	INVESTOR_BANK_TRANS_STATUS_VERIFIED,										
+										//~ "unapprove_codeparam3" 	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,
 										"bankstatus_codeparam4" =>	INVESTOR_BANK_TRANS_STATUS,																				
 										"fromDate" 				=>	$this->getDbDateFormat($this->fromDate),
 										"toDate" 				=>	$this->getDbDateFormat($this->toDate),
@@ -116,9 +126,26 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 									];
 
 		$this->withdrawListInfo	=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
+		$row			=	array();
+		if ($this->withdrawListInfo) {
+			foreach ($this->withdrawListInfo as $Row) {
 				
-		return ;		
-		
+				$row[] 	= array(
+									"DT_RowId"=>"row_".$Row->investor_id,
+									"investor_id"=>$Row->investor_id,
+									"payment_id"=>$Row->payment_id,
+									"request_date"=>$Row->entry_date,
+									"trans_id"=>$Row->trans_id,
+									"firstname"=>$Row->username,
+									"settlement_date"=>$Row->trans_date,
+									"trans_amount"=>$Row->trans_amount,									
+									"avail_bal"=>$Row->avail_bal,									
+									"status"=>$Row->status,
+									"trans_status_name"=>$Row->trans_status_name									
+								);	
+			}
+		}			
+		return $row;		
 	}
 		
 	public function processInvestorDropDowns($processtype,$investorId){

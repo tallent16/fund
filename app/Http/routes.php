@@ -1135,6 +1135,11 @@ Route::post('admin/approvechangeofbank/reject',
 		Route::get('admin/ajax/admininvdepositlist', 'AdminInvestorsDepositListingController@ajaxInvDepositList');
 		Route::post('admin/ajax/admininvdepositlist', 'AdminInvestorsDepositListingController@ajaxInvDepositList');
 		
+		Route::get('admin/ajax/admininvwithdrawlist', 'AdminInvestorsWithdrawalsListingController@ajaxInvWithdrawList');
+		Route::post('admin/ajax/admininvwithdrawlist', 'AdminInvestorsWithdrawalsListingController@ajaxInvWithdrawList');
+		
+		Route::get('admin/ajax/adminchangebank', 'AdminChangeofBankController@ajaxChangeBank');
+		Route::post('admin/ajax/adminchangebank', 'AdminChangeofBankController@ajaxChangeBank');		
 		
 
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************

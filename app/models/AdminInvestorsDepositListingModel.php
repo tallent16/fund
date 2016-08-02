@@ -72,9 +72,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			$this->toDate			= $_REQUEST['todate'];
 			$applyFilter			=	1;	
 		} 
-		 //~ print_r($this->fromDate); 
-		 //~ print_r($this->toDate); 
-		 //~ print_r($this->filter_status); die;
+		
 		$lnListSql				=	"SELECT users.firstname,
 											investors.investor_id,
 											investor_bank_transactions.payment_id,
@@ -121,7 +119,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 									];
 
 		$this->depositListInfo	=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-		//~ echo "<pre>",print_r($lnListSql),"</pre>";  die; 
+		
 		$row			=	array();
 		if ($this->depositListInfo) {
 			foreach ($this->depositListInfo as $Row) {
@@ -139,7 +137,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 								);	
 			}
 		}
-		//~ echo "<pre>",print_r($row),"</pre>";  die;		
+			
 		return $row;			
 	}
 	

@@ -17,7 +17,7 @@ class AdminChangeofBankModel extends TranWrapper {
 							borrower_banks.bank_name,
 							borrower_banks.branch_code	,
 							borrower_banks.bank_account_number,
-                            borrowers.business_name,                           
+                            borrowers.business_name as business_name,                           
                             CONCAT(users.firstname,users.lastname) as name,
 							users.usertype,
 								CASE users.usertype
@@ -38,7 +38,7 @@ class AdminChangeofBankModel extends TranWrapper {
 							investor_banks.branch_code,
 							investor_banks.bank_account_number,							
 							CONCAT(users.firstname,users.lastname) as name,
-                            NULL as business_name,
+                            CONCAT(users.firstname,users.lastname) as business_name,
 							users.usertype,
 								CASE users.usertype
 									 when 1 then 'Borrower'
@@ -51,7 +51,25 @@ class AdminChangeofBankModel extends TranWrapper {
 			
 		$res = 	$this->dbFetchAll($boin_sql);
 		$this->bank_lists = $res;
-		
+		$row			=	array();
+		if ($this->bank_lists) {
+			foreach ($this->bank_lists as $Row) {
+				
+				$row[] 	= array(
+									"DT_RowId"=>"row_".$Row->borrower_bankid,
+									"usertype"=>$Row->user_type,									
+									"borrower_id"=>$Row->borrower_id,									
+									"borrower_bankid"=>$Row->borrower_bankid,									
+									"name"=>$Row->business_name,									
+									"bank_name"=>$Row->bank_name,
+									"bank_code"=>$Row->bank_code,
+									"branch_code"=>$Row->branch_code,
+									"bank_account_number"=>$Row->bank_account_number,
+									"bank_statement_url"=>$Row->bank_statement_url
+								);	
+							}
+		}		
+		return	$row;
 	}
 	/*---------------------------------Edit Approve Screen------------------------------------------------------------*/
 	public function getborrowerinvestorbankinfo($usertype,$borinv_id,$borinvbankid){

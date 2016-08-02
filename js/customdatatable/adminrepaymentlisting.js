@@ -9,9 +9,6 @@ $(document).ready(function() {
 	} );	
 });
 
-$('#select_all_list').on('click', function (e) {
-		checkall_list(this,"adminrepaymentlisting");
-});
 function variabledec(data){	
 	var	SchUrl			=	baseUrl+'/admin/borrowersrepayview';
 	var	repSchUrl		=	SchUrl+"/edit/"+btoa(data.repayment_schedule_id);
