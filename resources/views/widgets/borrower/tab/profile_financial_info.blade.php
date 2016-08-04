@@ -48,7 +48,7 @@
 														id="indicator_value_{{$i}}" 
 														name="finacial_row[indicator_value][]"
 														value="{{$finacialRow['indicator_value']}}"
-														class="form-control  amount-align  required finacial_row"
+														class="form-control  text-right amount-align  required finacial_row"
 														decimal=2
 														{{$readOnly}}
 														data-expression = "{{$finacialRow['expression']}}"

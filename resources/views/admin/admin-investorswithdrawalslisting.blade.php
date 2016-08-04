@@ -107,7 +107,7 @@
 		</div>
 	</div>		
 	<!-----datatable starts---->
-	
+	<form method="post" id="form-investor-listing" action="{{url('admin/investorwithdrawallist/bulkaction')}}">
 		<div class="row">		
 			<div class="col-lg-12 col-md-12">
 				<div class="table-responsive">
@@ -145,7 +145,7 @@
 					value="{{INVESTOR_BANK_TRANS_STATUS_UNVERIFIED}}">	
 			</div>
 		</div>	
-
+	</form>
 	<!-----datatable ends---->
 </div>
 	@endsection  

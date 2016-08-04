@@ -235,7 +235,7 @@ class BorrowerProfileModel extends TranWrapper {
 
 		$this->updateBorrowerDirectorInfo($postArray,$borrowerId);
 		
-		$this->updateBorrowerProfileInfo($postArray,$borrowerId);
+		$this->updateBorrowerProfileInfo($postArray,$borrowerId);		
 		
 		if (isset($postArray['finacial_row'])) {
 			$finacialRows = $postArray['finacial_row'];
@@ -305,6 +305,7 @@ class BorrowerProfileModel extends TranWrapper {
 		$status 						= 	$status;
 		$current_user_id				=	$this->getCurrentuserID();
 		
+		
 		//~ if(isset($postArray['company_video'])){
 			//~ $file			=	$postArray['company_video'];
 			//~ $videoPath		=	$destinationPath."/".$borrowerId."/profile/video";
@@ -345,6 +346,10 @@ class BorrowerProfileModel extends TranWrapper {
 			if ($borrowerId < 0) {
 				return -1;
 			}
+			$register_datetime	=	date("Y-m-d H:i:s");
+			$dataArray 			= 	array('register_datetime'=> ($register_datetime!="")?$register_datetime:null);
+			$whereArry			=	array("borrower_id" =>"{$borrowerId}");
+			$this->dbUpdate('borrowers', $dataArray, $whereArry);
 		}else{
 			$whereArry	=	array("borrower_id" =>"{$borrowerId}");
 			 $this->dbUpdate('borrowers', $dataArray, $whereArry);
@@ -1074,7 +1079,11 @@ class BorrowerProfileModel extends TranWrapper {
 		
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"business_name", $this->business_name);
-		
+								
+		$this->dbUpdate('borrowers', $dataArray, $whereArry);		
+						
+		$approval_datatime	= 	date("Y-m-d H:i:s");					
+		$dataArray			=	array("approval_datetime"=>$approval_datatime);		
 		$this->dbUpdate('borrowers', $dataArray, $whereArry);
 		
 		$bordataArray			=	array("verified_status" =>1);
@@ -1083,9 +1092,9 @@ class BorrowerProfileModel extends TranWrapper {
 		
 		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
 		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
-		$moneymatchSettings = $this->getMailSettingsDetail();
-		$fields 			= array('[borrower_contact_person]','[application_name]');
-		$replace_array 		= array();
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
+		$fields 			= 	array('[borrower_contact_person]','[application_name]');
+		$replace_array 		= 	array();
 		$replace_array 		= 	array( $borrInfo->contact_person, $moneymatchSettings[0]->application_name);
 		$this->sendMailByModule($slug_name,$borrUserInfo->email,$fields,$replace_array);
 		return $borrowerId;

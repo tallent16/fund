@@ -37,8 +37,6 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 
 		$this->adminInvestorsDeposit->processDropDowns();
 		
-		//~ $this->adminInvestorsDeposit->viewDepositList($fromDate, $toDate, $filter_status);	
-		
 		$withArry	=	array(	"adminInvDepListMod" => $this->adminInvestorsDeposit, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
@@ -66,9 +64,8 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		if (isset($_REQUEST["filter_transcations"])) {
 			$filter_status = $_REQUEST["filter_transcations"];
 		}	
-		$row = $this->adminInvestorsDeposit->viewDepositList($fromDate, $toDate, $filter_status);	
+		$row = $this->adminInvestorsDeposit->viewDepositList($fromDate, $toDate, $filter_status);			
 		
-		 //~ echo "<pre>",print_r($row),"</pre>"; die;
 		return json_encode(array("data"=>$row));	
 	}
 	

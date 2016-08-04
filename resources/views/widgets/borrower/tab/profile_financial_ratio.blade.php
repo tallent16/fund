@@ -43,7 +43,7 @@
 														id="previous_ratio_{{$i}}" 
 														name="finacialRatio_row[previous_ratio][]"
 														value="{{$finRatioRow['previous_ratio']}}"
-														class="form-control  amount-align required"
+														class="form-control  text-right amount-align required"
 														decimal="2"
 														{{ $modelBorPrf->viewStatus }} />
 											</td>	
@@ -52,7 +52,7 @@
 														id="current_ratio_{{$i}}" 
 														name="finacialRatio_row[current_ratio][]"
 														value="{{$finRatioRow['current_ratio']}}"
-														class="form-control  amount-align  required"
+														class="form-control  text-right amount-align  required"
 														decimal="2"
 														{{ $modelBorPrf->viewStatus }} />
 											</td>	

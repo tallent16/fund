@@ -260,12 +260,18 @@ class InvestorProfileModel extends TranWrapper {
 		if ($transType != "edit") {
 			
 			//Insert the investor table
-			$investorId =  $this->dbInsert('investors', $dataArray, true);
-			
+			$investorId =  $this->dbInsert('investors', $dataArray, true);			
 			$this->uploadInvestorProfileAttachments($postArray,$investorId);
 			if ($investorId < 0) {
 				return -1;
-			}
+			}	
+			//updating register time	
+			$register_datetime	= 	date("Y-m-d H:i:s");					
+			$dataArray			=	array("register_datetime"=>$register_datetime);	
+			$whereArry			=	array("investor_id" =>"{$investorId}");			
+			$this->dbUpdate('investors', $dataArray, $whereArry);
+						
+			
 			if(Auth::user()->usertype	==	USER_TYPE_ADMIN) {
 				$user_info			=	$this->getUseridByInvestorID($investorId);
 				$current_user_id	=	$user_info;
@@ -656,6 +662,14 @@ class InvestorProfileModel extends TranWrapper {
 								"username", $this->displayname);		
 
 		$this->dbUpdate('investors', $dataArray, $whereArry);
+		//updating approval time
+		$approval_datatime	= 	date("Y-m-d H:i:s");					
+		$dataArray			=	array("approval_datetime"=>$approval_datatime);	
+		$this->dbUpdate('investors', $dataArray, $whereArry);
+		
+		$invdataArray			=	array("verified_status" =>1);
+		$invwhereArry			=	array("investor_id" =>"{$investorId}");
+		$this->dbUpdate('investor_banks', $invdataArray, $invwhereArry);
 		
 		$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);
 		return $investorId;

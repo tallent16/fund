@@ -195,7 +195,7 @@
 							</div><!---row--->
 						@else
 							<p style="padding:10px">
-								{{ Lang::get('No Loan Founded') }}
+								{{ Lang::get('No Loans Found') }}
 							</p>
 						@endif
 						

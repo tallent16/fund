@@ -72,7 +72,7 @@
 
 				<!-----datatable starts---->
 
-				
+				<form method="post" id="form-manage-borrower" action="{{url('admin/borrower/updateprofile')}}">
 					<div class="row">		
 						<div class="col-lg-12 col-md-12">
 							<div class="table-responsive">
@@ -111,7 +111,7 @@
 							<input id="deleteborrower"  type="hidden" value="{{$deleteborrower}}">
 						</div>
 					</div>
-				
+				</form>	
 
 				<!-----datatable ends---->
 				

@@ -75,7 +75,7 @@
 							id="investor_id" 
 							value="{{$adminInvWithDrawListMod->investorId}}"/>
 				@endif
-			<fieldset {{$viewclass}} {{$editclass}}>
+			<fieldset {{$viewclass}} {{$editclass}} >
 				@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 					<div class="row"><!-- Row 1 -->					
 						<div class="col-xs-12 col-sm-5 col-lg-3">

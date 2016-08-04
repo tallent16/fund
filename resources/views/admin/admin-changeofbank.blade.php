@@ -32,61 +32,11 @@
 
 @section('page_heading',Lang::get('Change of Bank Requests'))
 @section('section')  
-<!--
-@var $bank_list = $adminbanklistModel->bank_lists;
--->
+
 <div class="col-sm-12 space-around">	
-<!--
-	<div class="panel panel-primary panel-container borrower-admin">						
-		<form 	method="post" 
-				action=""
-				id="form-changeofbank">
-			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">			
-			
-			<div class="table-responsive">
-				<table class="table tab-fontsize text-left">
-					<thead>
-						<tr>
-							<th class="tab-head text-left col-sm-2">									
-								{{Lang::get('User Type')}}</th>	
-							<th class="tab-head text-left col-sm-2">
-								{{Lang::get('Name')}}</th>
-							<th class="tab-head text-left col-sm-2">
-								{{Lang::get('Bank Name')}}</th>
-							<th class="tab-head text-left col-sm-2">
-								{{Lang::get('Bank Code')}}</th>
-							<th class="tab-head text-left col-sm-2">
-								{{Lang::get('Branch Code')}}</th>
-							<th class="tab-head text-left col-sm-2">
-								{{Lang::get('Account Number')}}</th>
-						</tr>
-					</thead>
-					<tbody>
-						@if (count($bank_list) > 0)
-							@foreach($bank_list as $row)
-							@var	$editUrl	=	url('admin/approvechangeofbank').'/'.base64_encode($row->user_type).'/'.base64_encode($row->borrower_id).'/'.base64_encode($row->borrower_bankid)
-							<tr>
-								<td><a href="{{$editUrl}}">{{$row->user_type}}</a></td>
-								<td><a href="{{$editUrl}}">{{$row->business_name}}</a></td>
-								<td><a href="{{$editUrl}}">{{$row->bank_code}}</a></td>
-								<td><a href="{{$editUrl}}">{{$row->bank_name}}</a></td>
-								<td><a href="{{$editUrl}}">{{$row->branch_code}}</a></td>
-								<td><a href="{{$editUrl}}">{{$row->bank_account_number}}</a></td>
-								<input type="hidden" name="bank_statement_url" id="bank_statement_url" 
-								value="{{$row->bank_statement_url}}">
-							</tr>
-							@endforeach
-						@endif	
-					</tbody>
-				</table>
-			</div>
-		</form>
-	
-	</div>
--->
 
 <!-----datatable starts---->
-	
+	<form 	method="post" action="" id="form-changeofbank">
 		<div class="row">		
 			<div class="col-lg-12 col-md-12">
 				<div class="table-responsive">
@@ -104,11 +54,11 @@
 						<tbody>
 						</tbody>
 					</table>
-				</div>
-				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">					
+				</div>								
 			</div>
 		</div>	
-
+		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">	
+	</form>
 	<!-----datatable ends---->
 </div>
 	@endsection  

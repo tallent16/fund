@@ -81,6 +81,7 @@ $(document).ready(function() {
 	$("#todate").val(nextDate);
  
 });
+
 //values setup based on status before use
 function inheritvarvalues(data){
 	var invUrl		=	baseUrl+'/admin/investordepositview';

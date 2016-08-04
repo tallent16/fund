@@ -582,7 +582,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	
 	
 	public function updateLoanApplyStatus($dataArray,$loanId,$borrowerId,$status=null) {
-		
+			
 		$whereArry			=	array("loan_id" =>"{$loanId}");
 		$this->dbUpdate('loans', $dataArray, $whereArry);
 		$borrName	= $this->getBorrowOrgName($borrowerId);
@@ -611,6 +611,10 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			
 		}
 		$this->getBorrowerLoanInfo($loanId);
+		
+		$loan_approval_date	=	date("Y-m-d H:i:s");
+		$dataArray 			= 	array('loan_approval_date'=> ($loan_approval_date!="")?$loan_approval_date:null);
+		$this->dbUpdate('loans', $dataArray, $whereArry);
 		
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
 
