@@ -169,14 +169,14 @@
 		@foreach($loanDocuments as $documentRow)
 			@var	$documentRowIndex	=	$documentRow['loan_doc_id']
 				<div class="row">
-					<div class="col-sm-9">
+					<div class="col-sm-8">
 						{{ $i.". ".$documentRow['short_name']}}
 						<a 	href="#" 
 							data-toggle="tooltip" data-placement="top" 
 							title="{{$documentRow['doc_name']}}">
 							<i class="fa fa-question"></i></a>
 					</div>
-					<div class="col-sm-2 text-right" id="documents_parent">
+					<div class="col-sm-3 text-right break-word" id="documents_parent">
 						@var	$isDocumentAvailable	=	"no"					
 						@if(isset($adminLoanApprMod->submitted_document_details[$documentRowIndex]))
 							@var	$loan_url	=	$adminLoanApprMod->submitted_document_details[$documentRowIndex]

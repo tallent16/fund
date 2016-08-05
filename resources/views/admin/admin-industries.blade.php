@@ -76,7 +76,7 @@
 						id="new_industry"
 						class="btn verification-button"	>
 						<i class="fa pull-right"></i>
-						{{ Lang::get('New Questions')}}
+						{{ Lang::get('New Industry Type')}}
 				</button>
 				<button type="button"
 						id="delete_industry"

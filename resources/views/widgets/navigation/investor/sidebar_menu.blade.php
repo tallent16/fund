@@ -52,16 +52,9 @@
 					<a href="{{ url ('investor/withdrawallist') }}">{{ Lang::get('borrower-leftmenu.withdraw') }}</a>
 				</li>                                                                              
 			</ul>
-		</li>                         
-	</ul>
-	<ul class="nav settings-menu" id="side-menu">	                 
-		<li>
-			<a href="{{ url ('investor/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
-		</li>  
-		<li>
-			<a href="#"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.pinnacle') }} </a>
-		</li>                      
+		</li>    
 		<li>
 			<a href="{{ url ('auth/logout') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('borrower-leftmenu.logout') }}</a>
-		</li>
+		</li>                     
 	</ul>
+	

@@ -26,7 +26,7 @@ class AdminManageInvestorsModel extends TranWrapper {
 													" IN(:new,:approval,:verified,:pending_comments) ":
 												"=	{$filterInvestorStatus}"." ");
 		$invlist_sql			= "	SELECT 	users.email, 
-											users.username display_name,
+											users.firstname display_name,
 											users.mobile mobile_number,
 											investors.investor_id,
 											investors.user_id,

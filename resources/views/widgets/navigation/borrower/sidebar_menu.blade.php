@@ -90,16 +90,9 @@
 				</li>                                                             
 			</ul>
 		<!-- /.nav-second-level -->
-		</li>                             
-	</ul>
-	<ul class="nav settings-menu" id="side-menu">	                
-		<li>
-			<a href="javascript:void(0)"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
-		</li>  
-		<li>
-			<a href="javascript:void(0)"><i class="fa fa-gear fa-fw"></i>{{ Lang::get('borrower-leftmenu.pinnacle') }} </a>
-		</li>                      
+		</li>   
 		<li>
 			<a href="{{ url ('auth/logout') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('borrower-leftmenu.logout') }}</a>
-		</li>
+		</li>                          
 	</ul>
+	

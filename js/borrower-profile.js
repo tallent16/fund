@@ -1,5 +1,16 @@
 var formValid	=	false;
-$(document).ready(function (){ 
+
+//~ function codeAddress() {            
+	//~ var v = document.getElementsByName("textarea[name='director_row[accomplishments][]").value;
+	//~ if(v!=""){
+		//~ alert();
+		 //~ document.getElementsByName("textarea[name='director_row[accomplishments][]").removeAttribute("title");
+		 //~ document.getElementsByName("textarea[name='director_row[accomplishments][]").removeAttribute("data-toggle");
+	//~ }
+//~ }
+//~ window.onload = codeAddress;
+
+$(document).ready(function (){
 	//file extension check
 	/* $('#submit_button').click(function(e) {
       var file = $('input[type="file"]').val();

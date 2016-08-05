@@ -92,12 +92,13 @@
 		<tr id="borrRow_XXX">
 			<td>
 				<input id="inst_number" 
-					type="text" 
+					type="hidden" 
 					style="width:50px;text-align:right;" 
 					value="xxx_inst_number" 
 					disabled 
 					readonly
 					class="form-control "> 
+					xxx_inst_number
 			</td>
 			<td>
 				<input id="orig_date" 
@@ -129,7 +130,7 @@
 			<td>
 				<input id="principal_component_XXX" 
 					type="text" 
-					style="width:90px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="borrSchd[_XXX][principal_component]" 
 					readonly
 					value="xxx_principal_component" 
@@ -139,7 +140,7 @@
 			<td>
 				<input id="interest_component_XXX" 
 					type="text" 
-					style="width:90px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="borrSchd[_XXX][interest_component]" 
 					value="xxx_interest_component" 
 					readonly
@@ -150,7 +151,7 @@
 			<td>
 				<input id="penalty_fee_XXX" 
 					type="text" 
-					style="width:80px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="borrSchd[_XXX][penalty_fee]" 
 					class="edit_toggle_XXX borr_penalty_fee"
 					value="xxx_repayment_penalty_charges" 
@@ -162,7 +163,7 @@
 			<td>
 				<input id="penalty_interest_XXX" 
 					type="text" 
-					style="width:80px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="borrSchd[_XXX][penalty_interest]" 
 					value="xxx_repayment_penalty_interest" 
 					disabled 
@@ -171,7 +172,7 @@
 			<td>
 				<input id="total_XXX" 
 					type="text" 
-					style="width:90px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="borrSchd[_XXX][total]" 
 					value="xxx_total" 
 					readonly
@@ -180,12 +181,13 @@
 			</td>
 			<td>
 				<input id="status_XXX" 
-					type="text" 
-					style="width:70px; text-align:left;" 
+					type="hidden" 
+					style="width:125px; text-align:left;" 
 					value="xxx_repayment_status" 
 					disabled 
 					readonly
-					class="form-control "> 
+					class="form-control "> 					
+			xxx_repayment_status
 			</td>
 			<td>
 				<i id="fa_edit_XXX" class="fa fa-edit" onclick="editInst(_XXX)" )=""></i>
@@ -205,7 +207,7 @@
 			<td>
 				<input id="total_prinamt"
 					type="text" 
-					style="width:90px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="total_prinamt"
 					readonly
 					value="" 
@@ -215,7 +217,7 @@
 			<td>
 				<input id="total_intamt" 
 					type="text" 
-					style="width:90px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="total_intamt"
 					value="" 
 					readonly
@@ -226,7 +228,7 @@
 			<td>
 				<input id="total_penfee" 
 					type="text" 
-					style="width:80px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="total_penfee"
 					value="" 
 					decimal="2"
@@ -236,7 +238,7 @@
 			<td>
 				<input id="total_penint" 
 					type="text" 
-					style="width:80px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="total_penint"
 					value="" 
 					readonly
@@ -246,7 +248,7 @@
 			<td>
 				<input id="total_repayment" 
 					type="text" 
-					style="width:90px; text-align:right;" 
+					style="width:125px; text-align:right;" 
 					name="total_repayment"
 					value="" 
 					readonly
@@ -355,6 +357,7 @@
 			<td class="text-right"> xxx_payment_schedule_amount</td>
 		</tr>
 	</table>
+	
 </div>
 @endsection  
 @section('bottomscripts')

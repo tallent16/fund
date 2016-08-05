@@ -41,6 +41,18 @@
 								</div>
 							</div>
 						</div>
+						@if(count($commentsInfo) == 0)							
+							<div class="col-sm-12 table-border-custom">
+								<div>&nbsp;</div>
+								<div>&nbsp;</div>
+								<div>&nbsp;</div>
+								<div class="text-center">No Comments to Display</div> 
+								<div>&nbsp;</div>
+								<div>&nbsp;</div>
+								<div>&nbsp;</div>
+								<div>&nbsp;</div>
+							</div>
+						@endif
 					</div>
 					<div id="commentBoxContainer">
 						@if(count($commentsInfo) > 0)

@@ -9628,6 +9628,12 @@ a.settings-cursor{
 .pull-bottom{
 	margin-top:6em;
 }
+.break-word{
+	word-wrap: break-word;
+}
+.fa-edit{
+	cursor:pointer;
+}
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   
