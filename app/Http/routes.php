@@ -225,6 +225,7 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 										'uses' 			=>	'AdminSettingsController@indexAction'
 									]
 				);
+	
 	Route::post('admin/system/settings/save',  	
 									[	
 										
@@ -1117,6 +1118,7 @@ Route::post('admin/approvechangeofbank/reject',
 		Route::post('admin/ajax/CheckRoleNameavailability', 'AdminRolesController@CheckRoleNameavailability');
 		
 		Route::post('admin/ajax/systemmessagetable',  'AdminSettingsController@ajaxAction');
+		
 		Route::post('admin/ajax/editmessage',  'AdminSettingsController@ajaxEditAction');
 		Route::post('admin/ajax/editmailcontent',  'AdminSettingsController@ajaxEmailEditAction');
 		

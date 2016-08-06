@@ -1,7 +1,7 @@
 @var $borrowerDirectors = $modelBorPrf->director_details;
 
-<div id="director_info" class="tab-pane fade">
-	<div class="panel panel-default directorinfo applyloan"> 						
+<div id="director_info" class="tab-pane fade" >
+	<div class="panel panel-default directorinfo applyloan" onload="rem();"> 						
 		<div class="panel-body">	
 			<div class="col-sm-12 col-lg-4">	
 			
@@ -104,10 +104,11 @@
 											</td>
 											<td colspan="3" class="col-md-3"  id="directors_profile_{{$i}}_parent">
 												<textarea	id="directors_profile_{{$i}}" 
+															onload="rem();"
 															name="director_row[directors_profile][]"
 															class="form-control required"
 															rows="6"
-														 {{$modelBorPrf->viewStatus}}
+														 {{$modelBorPrf->viewStatus}} 
 														 >{{ $directorRow['directors_profile'] }}</textarea>
 											</td>		
 										</tr>
