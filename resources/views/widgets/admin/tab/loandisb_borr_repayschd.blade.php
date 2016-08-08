@@ -29,11 +29,11 @@
 							Inst-No
 						</th>
 						
-						<th class="tab-head col-sm-2 text-left">
+						<th class="tab-head col-sm-1 text-left">
 							Schd / Actual Date
 						</th>
 						
-						<th class="tab-head col-sm-2 text-left">
+						<th class="tab-head col-sm-1 text-left">
 							New Schd Date
 						</th>
 						
@@ -49,7 +49,7 @@
 							Penalty
 						</th>
 						
-						<th class="tab-head col-sm-2 text-right">
+						<th class="tab-head col-sm-1 text-right">
 							Penalty Int
 						</th>
 						
@@ -60,7 +60,7 @@
 						<th class="tab-head col-sm-1 text-left">
 							Status
 						</th>
-						<th class="tab-head text-left">
+						<th class="tab-head col-sm-1 text-left">
 							
 						</th>
 					@endif

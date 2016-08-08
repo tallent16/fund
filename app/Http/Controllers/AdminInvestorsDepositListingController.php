@@ -40,7 +40,7 @@ class AdminInvestorsDepositListingController extends MoneyMatchController {
 		$withArry	=	array(	"adminInvDepListMod" => $this->adminInvestorsDeposit, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,
-								//~ "all_Trans" => $filter_status,								
+								 "all_Trans" => $filter_status,								
 								"classname"=>"fa fa-cc fa-fw"); 
 								
 		return view('admin.admin-investorsdepositlisting')

@@ -20,10 +20,7 @@
 		.dataTable td a{
 			color:#333;
 			text-decoration:none;		
-		}
-		.table-responsive{
-			overflow:visible;
-		}
+		}		
 		table.dataTable.no-footer{
 			border:none;
 		}
@@ -51,7 +48,7 @@
 	
 	<div class="row">
 		<form action="" method="get">
-			<div class="col-sm-12 col-lg-3">	
+			<div class="col-sm-6 col-lg-3">	
 				<div class="form-group">			
 					<strong>{{ Lang::get('Borrower Status') }}</strong>							
 					{{ 
@@ -62,7 +59,7 @@
 					}} 		
 				</div>		
 			</div>
-			<div class="col-sm-12 col-lg-3 space-around">			
+			<div class="col-sm-6 col-lg-3 space-around">			
 				<button id="filter_status" type="button" class="btn verification-button">
 					{{ Lang::get('borrower-loanlisting.apply_filter') }}			
 				</button>				
@@ -152,7 +149,15 @@
 @stop
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script>var baseUrl	=	"{{url('')}}"</script>
+	<script>var baseUrl	=	"{{url('')}}"	
+	$('.table-responsive').on('show.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "inherit" );
+	});
+
+	$('.table-responsive').on('hide.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "auto" );
+	})
+	</script>
 	<script src="{{ url("js/admin-manage-borrower.js") }}" type="text/javascript"></script>
 	
 	{{ Html::script('js/datatable/jquery.dataTables.min.js') }}

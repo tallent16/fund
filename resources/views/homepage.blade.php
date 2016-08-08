@@ -2,7 +2,7 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 @endsection
-@section('page_heading',Lang::get('MoneyMatch'))
+@section('page_heading',Lang::get('FundYourselves'))
 @section('body')	   
 <div class="container-fluid">     
 	<div class="row">
@@ -38,11 +38,14 @@
 									<a>{{Auth::user()->username}}</a>
 								</li>  
 							@endif
+							@if(Auth::user()->usertype	!=	3)
 							<li>
 								<a href="{{ url($userProfile)}}">
 									<i class="fa fa-user"></i>
 									{{ Lang::get('borrower-leftmenu.user_profile') }}
 								</a>
+							</li>
+							@endif
 							<li>
 								<a href="{{ url ('auth/logout') }}">
 									<i class="fa fa-sign-out"></i>

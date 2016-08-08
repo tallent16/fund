@@ -16,6 +16,13 @@
 				format: 'dd-mm-yyyy' 
 				}); 
 		}); 
+		$('.table-responsive').on('show.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "inherit" );
+	});
+
+	$('.table-responsive').on('hide.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "auto" );
+	})
 	</script>
 @endsection
 @section('page_heading',Lang::get('Investor Deposit') )
@@ -24,7 +31,7 @@
 	<form method="get">
 	<div class="row">	
 		
-		<div class="col-sm-12 col-lg-3"> 														
+		<div class="col-sm-3 col-lg-3"> 														
 			<div class="form-group">	
 				<strong>{{ Lang::get('Filter Status')}}</strong><br>								
 					{{ Form::select('filter_status', ['all' => 'All'] +$InvDepListMod->allTransList, 
@@ -34,7 +41,7 @@
 			</div>	
 		</div>
 				
-		<div class="col-sm-4 col-lg-3"> 														
+		<div class="col-sm-3 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date') }}</strong><br>							
 				<input id="fromdate" name="fromdate" value="{{$InvDepListMod->fromDate}}" 
@@ -42,7 +49,7 @@
 			</div>	
 		</div>
 
-		<div class="col-sm-4 col-lg-3"> 
+		<div class="col-sm-3 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date') }}</strong><br>							
 				<input id="todate" name="todate" value="{{$InvDepListMod->toDate}}"
@@ -50,7 +57,7 @@
 			</div>	
 		</div>
 
-		<div class="col-sm-4 col-lg-3"> 
+		<div class="col-sm-3 col-lg-3"> 
 			<div class="form-group space-around">
 				<button class="btn verification-button">
 							{{ Lang::get('Apply Filter')}}
@@ -74,7 +81,7 @@
 			
 			<div class="panel panel-primary panel-container borrower-admin space-around">					
 					
-				<form method="post" id="form-investor-listing"
+				<form method="post" id="form-investor-listing">
 
 				<div class="table-responsive">
 					<table class="table tab-fontsize text-left">

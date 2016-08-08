@@ -103,7 +103,7 @@
 			<td>
 				<input id="orig_date" 
 					type="text" 
-					style="width:130px;text-align:left;" 
+					style="width:99px;text-align:left;" 
 					value="xxx_repayment_schedule_date" 
 					disabled 
 					readonly
@@ -111,7 +111,7 @@
 			</td>
 			<td>
 				<div class="controls">
-					<div class="input-group" style="width:150px;">
+					<div class="input-group" style="width:138px;">
 						<input id="repayment_schedule_date_XXX" 
 							type="text" 
 							style="text-align:left;" 
@@ -130,7 +130,7 @@
 			<td>
 				<input id="principal_component_XXX" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:97px; text-align:right;" 
 					name="borrSchd[_XXX][principal_component]" 
 					readonly
 					value="xxx_principal_component" 
@@ -140,7 +140,7 @@
 			<td>
 				<input id="interest_component_XXX" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:81px; text-align:right;" 
 					name="borrSchd[_XXX][interest_component]" 
 					value="xxx_interest_component" 
 					readonly
@@ -151,19 +151,18 @@
 			<td>
 				<input id="penalty_fee_XXX" 
 					type="text" 
-					style="width:125px; text-align:right;" 
-					name="borrSchd[_XXX][penalty_fee]" 
-					class="edit_toggle_XXX borr_penalty_fee"
+					style="width:81px; text-align:right;" 
+					name="borrSchd[_XXX][penalty_fee]" 					
 					value="xxx_repayment_penalty_charges" 
 					onchange="computeBorrTotal(_XXX)"
-					decimal="2"
+					decimal="2"					
 					disabled 
-					class="form-control borr_penalty_fee"> 
+					class="form-control edit_toggle_XXX borr_penalty_fee"> 
 			</td>
 			<td>
 				<input id="penalty_interest_XXX" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:81px; text-align:right;" 
 					name="borrSchd[_XXX][penalty_interest]" 
 					value="xxx_repayment_penalty_interest" 
 					disabled 
@@ -172,7 +171,7 @@
 			<td>
 				<input id="total_XXX" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:97px; text-align:right;" 
 					name="borrSchd[_XXX][total]" 
 					value="xxx_total" 
 					readonly
@@ -207,7 +206,7 @@
 			<td>
 				<input id="total_prinamt"
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:97px; text-align:right;" 
 					name="total_prinamt"
 					readonly
 					value="" 
@@ -217,7 +216,7 @@
 			<td>
 				<input id="total_intamt" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:81px; text-align:right;" 
 					name="total_intamt"
 					value="" 
 					readonly
@@ -228,7 +227,7 @@
 			<td>
 				<input id="total_penfee" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:81px; text-align:right;" 
 					name="total_penfee"
 					value="" 
 					decimal="2"
@@ -238,7 +237,7 @@
 			<td>
 				<input id="total_penint" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:81px; text-align:right;" 
 					name="total_penint"
 					value="" 
 					readonly
@@ -248,7 +247,7 @@
 			<td>
 				<input id="total_repayment" 
 					type="text" 
-					style="width:125px; text-align:right;" 
+					style="width:97px; text-align:right;" 
 					name="total_repayment"
 					value="" 
 					readonly

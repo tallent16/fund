@@ -20,10 +20,7 @@
 		.dataTable td a{
 			color:#333;
 			text-decoration:none;		
-		}
-		.table-responsive{
-			overflow:visible;
-		}
+		}		
 		table.dataTable.no-footer{
 			border:none;
 		}
@@ -152,7 +149,15 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	<script>var baseUrl	=	"{{url('')}}"</script>
+	<script>var baseUrl	=	"{{url('')}}"
+	$('.table-responsive').on('show.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "inherit" );
+	});
+
+	$('.table-responsive').on('hide.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "auto" );
+	})
+	</script>
 	<script src="{{ url("js/admin-investor-listing.js") }}" type="text/javascript"></script>	
 	{{ Html::script('js/datatable/jquery.dataTables.min.js') }}
 	{{ Html::script('js/datatable/dataTables.tableTools.min.js') }}

@@ -170,7 +170,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 												"emailverified_codeparam" => USER_EMAIL_VERIFIED
 											];
 												
-		$invfilter_rs					=	$this->dbFetchWithParam($invfilterSql, $dataArrayInvList);			
+		//~ $invfilter_rs					=	$this->dbFetchWithParam($invfilterSql, $dataArrayInvList);			
 								
 		//~ $invfilter_rs						= 	$this->dbFetchAll($invfilterSql);
 		

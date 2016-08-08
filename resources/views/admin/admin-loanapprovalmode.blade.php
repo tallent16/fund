@@ -1,7 +1,14 @@
 @extends('layouts.dashboard')
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script>var baseUrl	=	"{{url('')}}"</script>
+	<script>var baseUrl	=	"{{url('')}}"
+	$('.table-responsive').on('show.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "inherit" );
+	});
+
+	$('.table-responsive').on('hide.bs.dropdown', function () {
+	 $('.table-responsive').css( "overflow", "auto" );
+	})</script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 	<script src="{{ url('js/admin-loan-apply.js') }}" type="text/javascript"></script>		 
 @endsection

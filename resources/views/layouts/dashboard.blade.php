@@ -30,9 +30,11 @@
                          @if(Auth::user()->usertype == USER_TYPE_BORROWER)
 						<li><a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ 			Lang::get('borrower-leftmenu.user_profile') }}</a>
                         </li>
-						@else
+						@elseif(Auth::user()->usertype == USER_TYPE_INVESTOR)
 						<li><a href="{{ url ('investor/profile') }}"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
+                        @else
+                        
 						@endif
                         <li><a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
                         </li>

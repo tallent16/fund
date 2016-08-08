@@ -1,3 +1,23 @@
+//~ $(document).on('click','#disbLoan',function(){ 
+
+	//~ var tabs=$('.tab-pane input');
+	//~ $('.nav.nav-tabs li,.tab-pane').removeClass('active');
+
+	//~ var bool=false;
+	//~ $.each(tabs,function(index,value){ 
+
+		//~ if($(this).val().length<=0){ 
+			
+			//~ $('ul.nav li:eq('+index+')').addClass('active');
+			//~ $('.tab-content .tab-pane:eq('+index+')').addClass('active');
+			//~ $(this).focus();
+				//~ return false;
+		//~ }
+
+	//~ });
+	//~ return false;
+//~ });
+
 $(document).ready(function(){ 
 	// date picker
 	$('.disbursement_date').datetimepicker({
