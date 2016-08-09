@@ -208,9 +208,9 @@
 					</label>
 				</div>	
 
-				<div class="col-xs-12 col-sm-7 col-lg-3">									
+				<div class="col-xs-12 col-sm-7 col-lg-3" id="payment_ref_parent">									
 					<input 	type="text" 
-							class="form-control"
+							class="form-control required"
 							name="payment_ref"												
 							id="payment_ref"
 							required

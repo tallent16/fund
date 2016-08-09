@@ -33,11 +33,17 @@
 		
 		<div class="col-sm-3 col-lg-3"> 														
 			<div class="form-group">	
-				<strong>{{ Lang::get('Filter Status')}}</strong><br>								
+				<strong>{{ Lang::get('Filter Status')}}</strong><br>		
+				{{ Form::select('filter_status',$InvDepListMod->allTransList, 
+													$InvDepListMod->filter_status, 
+													["class" => "selectpicker"]) 
+					}}						
+<!--
 					{{ Form::select('filter_status', ['all' => 'All'] +$InvDepListMod->allTransList, 
 													$InvDepListMod->filter_status, 
 													["class" => "selectpicker"]) 
 					}} 
+-->
 			</div>	
 		</div>
 				

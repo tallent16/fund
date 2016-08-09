@@ -1,23 +1,51 @@
-//~ $(document).on('click','#disbLoan',function(){ 
-
-	//~ var tabs=$('.tab-pane input');
-	//~ $('.nav.nav-tabs li,.tab-pane').removeClass('active');
-
-	//~ var bool=false;
-	//~ $.each(tabs,function(index,value){ 
-
-		//~ if($(this).val().length<=0){ 
-			
-			//~ $('ul.nav li:eq('+index+')').addClass('active');
-			//~ $('.tab-content .tab-pane:eq('+index+')').addClass('active');
-			//~ $(this).focus();
-				//~ return false;
-		//~ }
-
-	//~ });
-	//~ return false;
-//~ });
-
+$("#disbLoan").click(function( event ) {	       
+	if(callTabValidateFunc())
+		event.preventDefault();								
+});
+function callTabValidateFunc() {	
+	$('span.error').remove();
+	$('.has-error').removeClass("has-error");
+	var active = $("ul.nav-tabs li.active a");
+	var	cur_tab		=	active.attr("href");
+	cur_tab			=	cur_tab.replace("#","");	
+	$("#disbLoan").show();	
+	if(validateTab('loan_detail_main')) {
+		
+		$('.nav-tabs a[href="#loan_detail_main"]').tab('show');
+		return true;
+	}
+	if(cur_tab	==	"borr_repay_schd") {
+		$('.nav-tabs a[href="#borr_repay_schd"]').tab('show');				
+		
+	}	
+	if(cur_tab	==	"inv_repay_schd") {
+		$('.nav-tabs a[href="#inv_repay_schd"]').tab('show');		
+	}
+	return false;
+}
+function validateTab(cur_tab) {
+	
+	$("#"+cur_tab+" :input.required").each(function(){
+		
+		var	input_id	=	$(this).attr("id");
+		var inputVal 	= 	$(this).val();
+		
+		var $parentTag = $("#"+input_id+"_parent");
+		if(inputVal == ''){			
+				if($("#"+input_id+"_hidden").val() == ''){
+					$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+				}
+			else{
+				$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
+			}
+		}
+	});
+	
+	if ($("#"+cur_tab).has('.has-error').length > 0)
+		return true;
+	else
+		return false;
+}
 $(document).ready(function(){ 
 	// date picker
 	$('.disbursement_date').datetimepicker({

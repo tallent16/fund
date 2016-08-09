@@ -130,7 +130,7 @@
 			<td>
 				<input id="principal_component_XXX" 
 					type="text" 
-					style="width:97px; text-align:right;" 
+					style="width:109px; text-align:right;" 
 					name="borrSchd[_XXX][principal_component]" 
 					readonly
 					value="xxx_principal_component" 
@@ -140,7 +140,7 @@
 			<td>
 				<input id="interest_component_XXX" 
 					type="text" 
-					style="width:81px; text-align:right;" 
+					style="width:97px; text-align:right;" 
 					name="borrSchd[_XXX][interest_component]" 
 					value="xxx_interest_component" 
 					readonly
@@ -151,7 +151,7 @@
 			<td>
 				<input id="penalty_fee_XXX" 
 					type="text" 
-					style="width:81px; text-align:right;" 
+					style="width:87px; text-align:right;" 
 					name="borrSchd[_XXX][penalty_fee]" 					
 					value="xxx_repayment_penalty_charges" 
 					onchange="computeBorrTotal(_XXX)"
@@ -162,7 +162,7 @@
 			<td>
 				<input id="penalty_interest_XXX" 
 					type="text" 
-					style="width:81px; text-align:right;" 
+					style="width:87px; text-align:right;" 
 					name="borrSchd[_XXX][penalty_interest]" 
 					value="xxx_repayment_penalty_interest" 
 					disabled 
@@ -171,7 +171,7 @@
 			<td>
 				<input id="total_XXX" 
 					type="text" 
-					style="width:97px; text-align:right;" 
+					style="width:109px; text-align:right;" 
 					name="borrSchd[_XXX][total]" 
 					value="xxx_total" 
 					readonly
@@ -206,7 +206,7 @@
 			<td>
 				<input id="total_prinamt"
 					type="text" 
-					style="width:97px; text-align:right;" 
+					style="width:109px; text-align:right;" 
 					name="total_prinamt"
 					readonly
 					value="" 
@@ -216,7 +216,7 @@
 			<td>
 				<input id="total_intamt" 
 					type="text" 
-					style="width:81px; text-align:right;" 
+					style="width:97px; text-align:right;" 
 					name="total_intamt"
 					value="" 
 					readonly
@@ -227,7 +227,7 @@
 			<td>
 				<input id="total_penfee" 
 					type="text" 
-					style="width:81px; text-align:right;" 
+					style="width:87px; text-align:right;" 
 					name="total_penfee"
 					value="" 
 					decimal="2"
@@ -237,7 +237,7 @@
 			<td>
 				<input id="total_penint" 
 					type="text" 
-					style="width:81px; text-align:right;" 
+					style="width:87px; text-align:right;" 
 					name="total_penint"
 					value="" 
 					readonly
@@ -247,7 +247,7 @@
 			<td>
 				<input id="total_repayment" 
 					type="text" 
-					style="width:97px; text-align:right;" 
+					style="width:109px; text-align:right;" 
 					name="total_repayment"
 					value="" 
 					readonly
@@ -803,6 +803,8 @@ function computeGrandTotal() {
 }
 
 </script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script src="{{ url('js/admin-disburseloan.js') }}" type="text/javascript"></script>
+
 @endsection
 @stop

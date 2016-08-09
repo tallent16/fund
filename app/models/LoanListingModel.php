@@ -141,6 +141,11 @@ class LoanListingModel extends TranWrapper {
 											featured.loan_id = loans.loan_id,
 											borrowers
 									WHERE	borrowers.borrower_id = loans.borrower_id
+									AND 	CASE 
+											WHEN datediff(bid_close_date, now()) > 0
+												THEN bid_close_date
+											ELSE ''
+												END
 									AND		loans.status = 3
 											{$intWhere}
 											{$loanAmtWhere}

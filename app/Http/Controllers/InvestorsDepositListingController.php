@@ -18,7 +18,7 @@ class InvestorsDepositListingController extends MoneyMatchController {
 		
 	public function indexAction(){	
 		
-		$filter_status 	=	'all';
+		$filter_status 	=	'3';
 		$fromDate	=	date("d-m-Y", strtotime("-12 Months"));
 		$toDate		=	date("d-m-Y", strtotime("now"));
 		

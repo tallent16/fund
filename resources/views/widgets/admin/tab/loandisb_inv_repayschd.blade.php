@@ -56,7 +56,7 @@
 				</table>
 			</div>			
 			<div class="table-responsive">
-				<table class="table table-bordered table-striped" id="invInst">		
+				<table class="table table-bordered table-striped" id="invInst" style="background-color:rgb(221, 222, 218)">		
 					<tbody>
 						@if ($bidsModel->loan_status == LOAN_STATUS_BIDS_ACCEPTED) 
 						<th class="tab-head col-sm-1 text-left">

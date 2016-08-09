@@ -23,12 +23,16 @@
 						
 						<div class="panel-heading panel-headsection"><!--panel head-->
 							<div class="row">
-								<div class="col-xs-10 col-lg-11">
+								<div class="col-xs-10 col-lg-10">
 									<span class="pull-left">{{ Lang::get('borrower-dashboard.current_loan') }} </span> 
 								</div>
+								
+								<div class="col-xs-2 col-lg-1">
+									<i class="fa fa-caret-left cursor-pointer"></i>
+								</div>			
 								<div class="col-xs-2 col-lg-1">
 									<i class="fa fa-caret-right cursor-pointer"></i>
-								</div>								
+								</div>						
 							</div>							
 						</div>	<!--end panel head-->
 						

@@ -11,6 +11,19 @@
 				$("#current_loan_index").val(changeCurLoanInd);
 			}
 		});
+		$('.fa-caret-left').on("click", function() { 
+				var curLoanLen	=	current_loansJson.length;				
+				var curLoanInd	=	$("#current_loan_index").val();
+				
+				if( curLoanLen > 0) {
+					changeCurLoanInd	=	parseInt(curLoanInd)-1;
+					if(	parseInt(curLoanLen-1) <  changeCurLoanInd) {
+						changeCurLoanInd	=	0;
+					}
+					setCurrentLoanFunc(changeCurLoanInd);
+					$("#current_loan_index").val(changeCurLoanInd);
+				}
+			});
 		repaymentBarChartFunc();
 		setwidth();
 		

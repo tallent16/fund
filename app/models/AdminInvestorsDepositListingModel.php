@@ -170,9 +170,9 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 												"emailverified_codeparam" => USER_EMAIL_VERIFIED
 											];
 												
-		//~ $invfilter_rs					=	$this->dbFetchWithParam($invfilterSql, $dataArrayInvList);			
+		$invfilter_rs					=	$this->dbFetchWithParam($invfilterSql, $dataArrayInvList);			
 								
-		//~ $invfilter_rs						= 	$this->dbFetchAll($invfilterSql);
+		//~ $invfilter_rs				= 	$this->dbFetchAll($invfilterSql);
 		
 		if (!$invfilter_rs	) {
 			throw exception ("Not correct");
@@ -459,7 +459,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		
 		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
 		$this->toDate				= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));		
-		$this->filter_status 		= 	$filter_status;
+		$this->filter_status 		= 	3;
 		$current_investor_id		=	$this->getCurrentInvestorID();
 		$filterStatus				=	"";
 		
@@ -470,13 +470,12 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		} 
 		
 		
-		if($filter_status	!=	"all"){
+		if($filter_status	!=	"3"){
 			$filterStatus	="	AND 	investor_bank_transactions.status = 
 										if(:filter_codeparam = :unapprove_codeparam3, 
 												:unapproved_codeparam1, :approved_codeparam2)";
 		}
-		//~ echo $filter_status.$filterStatus;
-		//~ die;
+		
 		$lnListSql				=	"	SELECT	investors.investor_id,
 												investor_bank_transactions.payment_id,
 												date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
@@ -505,7 +504,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 										"trans_type_codeparam5"	=>	INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT
 									];
 		
-		if($filter_status	!=	"all"){
+		if($filter_status	!=	"3"){
 			$dataArrayLoanListAdditional	=	[	"filter_codeparam" 			=>	$this->filter_status,
 													"unapproved_codeparam1" 	=>	INVESTOR_BANK_TRANS_STATUS_UNVERIFIED,
 													"approved_codeparam2" 		=>	INVESTOR_BANK_TRANS_STATUS_VERIFIED,

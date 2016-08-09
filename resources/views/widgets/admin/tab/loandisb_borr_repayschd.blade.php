@@ -2,7 +2,7 @@
 	<div class="panel panel-default borr_repay_schd"> 						
 		<div class="panel-body">
 			<div class="table-responsive">
-				<table class="table table-bordered table-striped" id="bidsummary">	
+				<table class="table table-bordered table-striped" id="bidsummary" style="background-color:rgb(221, 222, 218)">	
 					<tr>	
 					@if ($bidsModel->loan_status == LOAN_STATUS_BIDS_ACCEPTED) 
 						<th class="tab-head col-sm-1 text-left">
