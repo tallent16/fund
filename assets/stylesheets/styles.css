@@ -9697,8 +9697,11 @@ a.settings-cursor{
 }
 @media(min-width:801px) and (max-width:980px) {
 	.nav-tabs > li{
-		width:9em;
+		width:auto;
 	}
+	.nav-tabs > li{
+		float:none;
+	} 
 }
 @media(max-width:800px) {
 	.verification-button{

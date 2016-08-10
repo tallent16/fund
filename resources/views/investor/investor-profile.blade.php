@@ -2,20 +2,7 @@
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
 @endsection
-@section('bottomscripts')
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
-	<script>
-		var baseUrl	=	"{{url('')}}"
-		$(document).ready(function(){ 	
-			$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
-		}); 
-	</script>
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
-	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
-	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
-	<script src="{{ url('js/investor-profile.js') }}" type="text/javascript"></script>
-	
-@endsection
+
 @section('page_heading',Lang::get('Profile') )
 @section('status_button')						
 		<!--------Status Button Section----> 
@@ -274,3 +261,18 @@
 </div>
   @endsection  
 @stop
+@section('bottomscripts')
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
+	<script>
+		var baseUrl	=	"{{url('')}}"
+		$(document).ready(function(){ 	
+			$(":file").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
+		}); 
+	</script>
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script> 
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
+	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
+	<script src="{{ url('js/investor-profile.js') }}" type="text/javascript"></script>
+	<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>
+		
+@endsection

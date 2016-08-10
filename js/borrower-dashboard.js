@@ -15,14 +15,26 @@
 				var curLoanLen	=	current_loansJson.length;				
 				var curLoanInd	=	$("#current_loan_index").val();
 				
-				if( curLoanLen > 0) {
+				if( curLoanLen >0) {
+					
 					changeCurLoanInd	=	parseInt(curLoanInd)-1;
+					
 					if(	parseInt(curLoanLen-1) <  changeCurLoanInd) {
-						changeCurLoanInd	=	0;
+						changeCurLoanInd	=	curLoanLen;
+						
 					}
+					//~ else{						
+						//~ changeCurLoanInd	=	changeCurLoanInd;
+						//~ if(changeCurLoanInd == 0){
+						//~ changeCurLoanInd	=	curLoanLen-1;
+						//~ }	
+						//~ changeCurLoanInd	=	changeCurLoanInd;					
+					//~ }
+					
 					setCurrentLoanFunc(changeCurLoanInd);
 					$("#current_loan_index").val(changeCurLoanInd);
 				}
+				
 			});
 		repaymentBarChartFunc();
 		setwidth();

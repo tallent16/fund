@@ -519,7 +519,7 @@ class InvestorProfileModel extends TranWrapper {
 		return 1;
 	}
 	public function saveCommentsByAdmin($commentRows,$investorId) {
-		
+		echo "admincomments";
 		$numRows = count($commentRows['comment_status_hidden']);
 		$rowIndex = 0;
 		$userID		=	$this->getUseridByInvestorID($investorId);

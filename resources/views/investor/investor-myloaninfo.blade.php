@@ -128,19 +128,49 @@
 												<table class="table applyloan loan-list-table">		
 													<tbody>												
 														<tr>
-															<td>{{$loanRow->loan_reference_number}}</td>																										
+															<td>
+																@if($loanRow->loan_reference_number	!=""	)
+																	{{$loanRow->loan_reference_number}}
+																@else
+																	--
+																@endif
+															</td>				
 														</tr>
 														<tr>
-															<td>{{$loanRow->borrower_name}}</td>														
+															<td>
+																@if($loanRow->borrower_name	!=""	)
+																	{{$loanRow->borrower_name}}
+																@else
+																	--
+																@endif
+															</td>														
 														</tr>
 														<tr>
-															<td>{{$loanRow->borrower_risk_grade}}</td>														
+															<td>
+																@if($loanRow->borrower_risk_grade	!=""	)
+																	{{$loanRow->borrower_risk_grade}}
+																@else
+																	--
+																@endif
+															</td>														
 														</tr>
 														<tr>
-															<td>{{$loanRow->target_interest}}%</td>												
+															<td>
+																@if($loanRow->target_interest	!=""	)
+																	{{$loanRow->target_interest}}
+																@else
+																	--
+																@endif																
+															</td>												
 														</tr>
 														<tr>
-															<td>{{$loanRow->amount_applied}}</td>												
+															<td>
+																@if($loanRow->amount_applied	!=""	)
+																	{{$loanRow->amount_applied}}
+																@else
+																	--
+																@endif
+															</td>												
 														</tr>
 														<tr>
 															<td>

@@ -117,6 +117,11 @@
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.principal_outstanding') }}</td>												
 											</tr>
+											<tr>
+												<td>
+													
+												</td>
+											</tr>		
 										</tbody>
 									</table>	
 								</div>							
@@ -153,17 +158,29 @@
 												<tbody>												
 													<tr>
 														<td>
-															{{$loanRow->loan_reference_number}}
+															@if($loanRow->loan_reference_number	!=	"")
+																{{$loanRow->loan_reference_number}}
+															@else
+																--
+															@endif	
 														</td>						
 													</tr>
 													<tr>
 														<td>
-															{{$loanRow->apply_date}}
+															@if($loanRow->apply_date	!=	"")
+																{{$loanRow->apply_date}}
+															@else
+																--
+															@endif																
 														</td>														
 													</tr>
 													<tr>
 														<td>
-															{{$loanRow->statusText}}
+															@if($loanRow->statusText	!=	"")
+																{{$loanRow->statusText}}
+															@else
+																--
+															@endif															
 														</td>															
 													</tr>
 													<tr>
@@ -244,6 +261,10 @@
 																--
 															@endif	
 														</td>												
+													</tr>
+													<tr>
+														<td>
+														</td>
 													</tr>
 												</tbody>
 											</table>	

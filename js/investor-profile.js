@@ -94,6 +94,40 @@ $(document).ready(function (){
 		}
 		$("#active_tab").val($(".nav-tabs li.active a").attr("href"));
 		
+
+	//File extension validation	
+	if($('input.imagefilevalid[type="file"]') != ''){
+		$('input.imagefilevalid[type="file"]').each(function(){
+			var ext = $(this).val().split('.').pop().toLowerCase();
+			if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+				var	input_id	= $(this).attr("id");		
+				var $parentTag 	= $("#"+input_id+"_parent");
+				$parentTag.addClass('has-error').append('<span class="control-label error">Allowed Ext : gif,png,jpg,jpeg</span>');
+				return false;
+			}
+		});
+		
+		var ext = $('.filedocvalid').val().split('.').pop().toLowerCase();
+		if($.inArray(ext, ['doc','docx','pdf','xls']) == -1) {
+			var	input_id	= $(".filedocvalid").attr("id");		
+			var $parentTag 	= $("#"+input_id+"_parent");
+			$parentTag.addClass('has-error').append('<span class="control-label error">Allowed Ext : doc,docx,pdf,xls</span>');
+			return false;
+		}
+	}
+		//~ $('#submit_button,#save_button').click(function(event) {
+			//~ $('input.imagefilevalid[type="file"]').each(function(){
+				//~ var ext = $(this).val().split('.').pop().toLowerCase();
+				//~ if(ext != ''){
+					//~ if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+						//~ $(this).addClass('has-error').append('<span class="control-label error">Invalid Extension</span>');				
+						//~ false;
+						//~ event.preventDefault();
+					//~ }
+				//~ }
+			//~ });
+		//~ });	
+		 		
 	});
 	$("#next_button").click(function(){
 		
@@ -136,8 +170,9 @@ $(document).ready(function (){
 		}
     });
 	
-	$("#save_comment_button").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/admin/investor/profile/save_comments");
+	$("#save_comment_button").click(function(){		
+		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/save_comments");    
+		formValid	=	true;
     });
     
 	$("#update_mobile_button").click(function(){
@@ -263,4 +298,3 @@ function writeReply(replyId) {
 	$("#"+replyId).show();
 	$("#"+replyId).focus();
 }
-

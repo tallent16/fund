@@ -14,7 +14,7 @@ $(document).ready(function (){
 	
 	var newHeight5 = $(".loaninfo-table-label tr:nth-child(11)").innerHeight();
 	$(".loan-list-table tr:nth-child(11)").css("height", newHeight5+"px");       //Principal outstanding data based on left side label when screen size 1280px
-	
+		
 	/*************************** Pagination Starts Prev & Next *********************************/
 	function check_navigation_display(el) {
 		//accepts a jQuery object of the containing div as a parameter

@@ -186,10 +186,11 @@
 						</div>									
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="identity_card_image_front_parent">									
 							<input 	type="file" 
-										class="jfilestyle  required" 
+										class="jfilestyle  required imagefilevalid" 
 										data-buttonBefore="true" 
 										name="identity_card_image_front"
-										id="identity_card_image_front"										
+										id="identity_card_image_front"	
+										accept="image/*" 									
 										>									
 							<input 	type="hidden" 
 								id="identity_card_image_front_hidden"
@@ -211,10 +212,11 @@
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="identity_card_image_back_parent">									
 							<input 	type="file" 
-										class="jfilestyle  required" 
+										class="jfilestyle  required imagefilevalid" 
 										data-buttonBefore="true" 
 										name="identity_card_image_back"
-										id="identity_card_image_back"										
+										id="identity_card_image_back"	
+										accept="image/*" 									
 										>									
 							<input 	type="hidden" 
 								id="identity_card_image_back_hidden"
@@ -240,10 +242,11 @@
 						</div>									
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="address_proof_image_parent"	>									
 							<input 	type="file" 
-										class="jfilestyle  required" 
+										class="jfilestyle  required imagefilevalid" 
 										data-buttonBefore="true" 
 										name="address_proof_image"
-										id="address_proof_image"										
+										id="address_proof_image"	
+										accept="image/*" 									
 										>									
 							<input 	type="hidden" 
 								id="address_proof_image_hidden"
@@ -311,7 +314,7 @@
 								id="bank_account_number"
 								name="bank_account_number" 
 								value="{{$InvPrfMod->bank_account_number}}" 
-								class="form-control text-right required" 
+								class="form-control required" 
 								>
 						</div>
 					</div>
@@ -323,7 +326,7 @@
 						</div>											
 						<div class="col-xs-12 col-sm-7 col-lg-3" 	id="bank_statement_parent">												
 							<input 	type="file" 
-										class="jfilestyle  required" 
+										class="jfilestyle  required filedocvalid" 
 										data-buttonBefore="true" 
 										name="bank_statement"
 										id="bank_statement"

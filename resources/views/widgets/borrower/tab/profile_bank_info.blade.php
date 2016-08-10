@@ -52,7 +52,7 @@
 											id="branch_code" 
 											name="branch_code"
 											value="{{ $modelBorPrf->branch_code }}"
-											class="form-control text-right required"
+											class="form-control required"
 											/>
 						</div>
 					</div>
@@ -70,7 +70,7 @@
 										id="bank_account_number" 
 										name="bank_account_number"
 										value="{{ $modelBorPrf->bank_account_number }}"
-										class="form-control text-right required numeric"
+										class="form-control required numeric"
 										/>
 						</div>
 					</div>			

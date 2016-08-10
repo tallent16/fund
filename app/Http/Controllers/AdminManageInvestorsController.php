@@ -65,7 +65,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 	public function saveCommentProfileAction(){
 		
 		$postArray	=	Request::all();
-		echo "<pre>",print_r($postArray),"</pre>";
+		echo "<pre>",print_r($postArray),"</pre>"; 
 		
 		$inv_id		=	$postArray['investor_id'];
 		
@@ -237,7 +237,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		return $availableBalance;
 	}
 	
-		public function saveInvestorProfileAction(){
+	public function saveInvestorProfileAction(){
 		
 		$postArray	=	Request::all();
 		$inv_id		=	$postArray['investor_id'];
