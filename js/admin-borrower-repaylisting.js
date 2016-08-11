@@ -8,7 +8,7 @@ $(document).ready(function (){
 	});
 	
 	$("#bulk_approve_button").click(function(){
-		var	appr_applicable	=	$("#default_unverified_applicable").val();
+		var	appr_applicable	=	$("#default_unverified_applicable").val();		
 		var	errMessage		=	"";
 		if ($(".select_repayment:checked").length > 0){
 			$(".select_repayment:checked").each(function(key) {
@@ -16,6 +16,7 @@ $(document).ready(function (){
 				var schdDate	=	$(this).attr("data-schdDate");
 				var penality	=	$(this).attr("data-penality");
 				var status		=	$(this).attr("data-status");
+				
 				if(status	!=	appr_applicable){
 					errMessage	=	errMessage+"Not Applicable for this Loan Loan Ref:"+loan_ref+",Schedule Date:";
 					errMessage	=	errMessage+schdDate+",Penality:"+penality+"<br>";

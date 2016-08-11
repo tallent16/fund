@@ -37,7 +37,7 @@
 							
 						</div>
 						@if(count($commentsInfo) == 0)							
-							<div class="col-sm-12 table-border-custom">
+							<div class="col-sm-12 table-border-custom hide-comments">
 								<div>&nbsp;</div>
 								<div>&nbsp;</div>
 								<div>&nbsp;</div>

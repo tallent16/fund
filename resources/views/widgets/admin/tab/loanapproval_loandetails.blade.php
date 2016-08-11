@@ -142,8 +142,8 @@
 					<td>{{ $adminLoanApprMod->statusText}}</td>					
 				</tr>	
 				<tr>
-					<td class="tab-left-head">{{ Lang::get('Credit Grade')}}</td>								
-					<td class="col-sm-3" id="grade_parent">
+					<td class="tab-left-head input-required">{{ Lang::get('Credit Grade')}}</td>								
+					<td class="col-sm-3 " id="grade_parent">
 						@var	$gradeInfo	=	[''=>'none']+$adminLoanApprMod->gradeInfo
 					{{ Form::select('grade',$gradeInfo, 
 													$adminLoanApprMod->grade, 

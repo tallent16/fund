@@ -83,7 +83,7 @@
 							{{ Lang::get('borrower-applyloan.loan_info') }}
 						</a>
 					</li>
-					<li class="disabled">
+					<li class="">
 						<a 	data-toggle="tab"
 							href="#documents_submitted">
 							{{ Lang::get('borrower-applyloan.document_submit') }}

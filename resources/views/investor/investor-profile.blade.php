@@ -274,5 +274,6 @@
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/investor-profile.js') }}" type="text/javascript"></script>
 	<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>
+	
 		
 @endsection

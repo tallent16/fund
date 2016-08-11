@@ -1,7 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 use Request;
-use	\App\models\AdminLoanApprovalModel;
+//~ use	\App\models\AdminLoanApprovalModel;
 use	\App\models\BorrowerApplyLoanModel;
 use Lang;
 use ZipArchive;
@@ -14,7 +14,7 @@ class AdminLoanApprovalController extends MoneyMatchController {
 	}	
 	
 	public function littleMoreInit() {
-		$this->adminloanApprovalModel	=	new AdminLoanApprovalModel;
+		//~ $this->adminloanApprovalModel	=	new AdminLoanApprovalModel;
 		$this->borrowerApplyLoanModel	=	new BorrowerApplyLoanModel;
 	}
 		
@@ -94,10 +94,15 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$postArray	=	Request::all();
 		$loan_id	=	$postArray['loan_id'];
 		$bor_id		=	$postArray['borrower_id'];
+		$command	=   $postArray['comment_row'];
 		
+		$saveresult		=	$this->borrowerApplyLoanModel->saveLoanApplyComments($postArray['comment_row'],$loan_id);
+		if($saveresult){
 		$dataArray 	= 	array(	'status' 	=>	LOAN_STATUS_PENDING_COMMENTS );
+		
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
-																				$bor_id,"return_borrower");
+																	$bor_id,"return_borrower");
+		}	
 		if($result) {
 			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("loan_return_to_borrower");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))

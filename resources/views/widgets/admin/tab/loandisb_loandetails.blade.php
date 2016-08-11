@@ -202,7 +202,7 @@
 				
 			<div class="row">  <!-- Row 7-->			
 				@if(Route::currentRouteName()	!=	"admin.loanview")
-				<div class="col-xs-12 col-sm-5 col-lg-3">
+				<div class="col-xs-12 col-sm-5 col-lg-3 input-required">
 					<label for="payment_ref">
 						{{ Lang::get('Payment Reference') }}
 					</label>

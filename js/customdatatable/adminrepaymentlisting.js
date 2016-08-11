@@ -27,7 +27,7 @@ function callDataTableFunc(){
 						var str ="";  
 						str=str+'<input type="checkbox"';
 						str=str+' name="repayment_schedule[]" class="select_repayment" ';
-						str=str+' data-status="'+data.status+'" data-penality="'+data.penalty_fixed_amount+'" ';
+						str=str+' data-status="'+data.status+'" data-borrowerid="'+data.borrower_id +'" data-penality="'+data.penalty_fixed_amount+'" ';
 						str=str+' data-loan-ref="'+data.loan_reference_number+'" data-schdDate="'+data.repayment_schedule_date+'" ';
 						str=str+'data-tran-ref="'+data.trans_reference_number+'" value="'+data.repayment_schedule_id+'"  />';								
 						return str;

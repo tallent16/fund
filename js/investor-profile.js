@@ -1,5 +1,18 @@
 var formValid	=	false;
 $(document).ready(function (){ 
+	  //Only accept numbers    
+	$(".numeric").keydown(function(event) { 
+		// Allow only backspace and delete
+		if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 ) {
+			// let it happen, don't do anything
+		}
+		else {
+			// Ensure that it is a number and stop the keypress
+			if (event.keyCode < 48 || event.keyCode > 57 ) {
+				event.preventDefault();	
+			}	
+		}
+	});	
 
 	 $("#mobile").keypress(function (e) {
      //if the letter is not digit then display error and don't type anything
@@ -93,20 +106,22 @@ $(document).ready(function (){
 				e.preventDefault();
 		}
 		$("#active_tab").val($(".nav-tabs li.active a").attr("href"));
-		
 
 	//File extension validation	
-	if($('input.imagefilevalid[type="file"]') != ''){
+	 //~ if($('input.imagefilevalid[type="file"]').val() != ''){
 		$('input.imagefilevalid[type="file"]').each(function(){
-			var ext = $(this).val().split('.').pop().toLowerCase();
-			if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
-				var	input_id	= $(this).attr("id");		
-				var $parentTag 	= $("#"+input_id+"_parent");
-				$parentTag.addClass('has-error').append('<span class="control-label error">Allowed Ext : gif,png,jpg,jpeg</span>');
-				return false;
+			if($('input.imagefilevalid[type="file"]').val() != ''){
+				var ext = $(this).val().split('.').pop().toLowerCase();
+				if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+					var	input_id	= $(this).attr("id");		
+					var $parentTag 	= $("#"+input_id+"_parent");
+					$parentTag.addClass('has-error').append('<span class="control-label error">Allowed Ext : gif,png,jpg,jpeg</span>');		
+					return false;			
+				}
 			}
 		});
-		
+	 //~ }
+	if($('input.filedocvalid[type="file"]').val() != ''){	
 		var ext = $('.filedocvalid').val().split('.').pop().toLowerCase();
 		if($.inArray(ext, ['doc','docx','pdf','xls']) == -1) {
 			var	input_id	= $(".filedocvalid").attr("id");		
@@ -114,19 +129,7 @@ $(document).ready(function (){
 			$parentTag.addClass('has-error').append('<span class="control-label error">Allowed Ext : doc,docx,pdf,xls</span>');
 			return false;
 		}
-	}
-		//~ $('#submit_button,#save_button').click(function(event) {
-			//~ $('input.imagefilevalid[type="file"]').each(function(){
-				//~ var ext = $(this).val().split('.').pop().toLowerCase();
-				//~ if(ext != ''){
-					//~ if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
-						//~ $(this).addClass('has-error').append('<span class="control-label error">Invalid Extension</span>');				
-						//~ false;
-						//~ event.preventDefault();
-					//~ }
-				//~ }
-			//~ });
-		//~ });	
+	}		
 		 		
 	});
 	$("#next_button").click(function(){
@@ -139,11 +142,13 @@ $(document).ready(function (){
 	$(".nav-tabs > li").click(function(){
 		$("#next_button").show();
 		$("#submit_button").hide();
+		$("#admin_save_button").show();	
 		if($(this).find("a").attr("href")	==	"#comments_info") {
 			$("#next_button").hide();
 			$("#submit_button").show();
 			$("#returnback_button").show();
-		}
+			$("#admin_save_button").hide();			
+		}		
 	});
 	
 	$("#save_button").click(function(){
@@ -180,6 +185,9 @@ $(document).ready(function (){
 		$("#form-profile").submit();
     });
     checkAllTabCompleteStatus();
+    $("#add_comment_button").click(function(){
+		$(".hide-comments").css("display", "none"); 
+	});
 });
 function checkDisplayName(value) {
 	if((value!='')) {
@@ -258,11 +266,12 @@ function checkAllTabCompleteStatus() {
 	var	active_tab				=	$("#active_tab").val();
 	switch(active_tab){
 		case "#inv_profile_info":
-			$('.nav-tabs a[href="#inv_profile_info"]').tab('show');
+			$('.nav-tabs a[href="#inv_profile_info"]').tab('show');			
 			break;
-		case "#comments_info":
+		case "#comments_info":			
 			$('.nav-tabs a[href="#comments_info"]').tab('show');
 			$("#submit_button").show();
+			$("#admin_save_button").show();			
 			$("#returnback_button").show();
 			$("#approve_profile_button").show();
 			break;

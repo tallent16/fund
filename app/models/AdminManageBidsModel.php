@@ -223,6 +223,16 @@ class AdminManageBidsModel extends TranWrapper {
 			$tableName		=	"loan_bids";
 			$this->dbUpdate($tableName, $dataArray, $where);
 			
+			// Update the Investor Balance
+			$invId			=	$investorArray[$bidId];
+			$invOldBal		=	$this->getInvestorAvailableBalanceById($invId);
+			$invNewBal		=	$invOldBal + $bidAmtArray[$bidId] - $acceptAmtArray[$bidId];
+			
+			$whereArray		=	array("investor_id"	=>	$invId);
+			$dataArray		=	array("available_balance"	=>	$invNewBal);
+			$this->dbUpdate('investors', $dataArray, $whereArray);
+			
+			// Send mail to investors
 			$investorId			=	$investorArray[$bidId];
 			$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
 			

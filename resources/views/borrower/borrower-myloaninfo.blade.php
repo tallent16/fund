@@ -148,10 +148,19 @@
 												@var	$bid_url	=	'borrower/myloans/'
 												@var	$bid_url	=	$bid_url.base64_encode($loanRow->loan_id."_bids")
 											@endif
-											<a href="{{ url ($loan_url) }}"
-												class="btn btn-lg loan-detail-button">
-												{{$loanRow->viewStatus}}
-											</a>				
+											@if($loanRow->viewStatus	!=	"Cancelled Loan")
+												<a href="{{ url ($loan_url) }}"
+													class="btn btn-lg loan-detail-button">
+													{{$loanRow->viewStatus}}
+												</a>
+											@else
+												<a href="javascript:void(0);"
+													class="btn btn-lg loan-detail-button">
+													{{$loanRow->viewStatus}}
+												</a>
+											@endif	
+											
+															
 																	
 										<div class="table-responsive"><!---table start-->
 											<table class="table applyloan loan-list-table">		

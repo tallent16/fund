@@ -8,7 +8,8 @@ $(document).ready(function (){
 	});
 	$("#add_loanapply_comment_button").click(function(){
 		screenType	=	$(this).attr("data-screen-type");
-		addNewLoanApplyCommentRow(screenType);
+		addNewLoanApplyCommentRow(screenType);	
+		$(".hide-comments").css("display", "none"); 
     });
 	$("#returnback_loanapply_button").click(function(){
 		

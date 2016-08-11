@@ -104,10 +104,12 @@
 											id="cancel_loanapply_button">						
 										{{ Lang::get('Cancel')}}</button>
 								@endpermission
+<!--
 								@permission('admin.savecomment')
 									<button type="button" class="btn verification-button" id="save_comment_button">						
 										{{ Lang::get('Save Comments')}}</button>
 								@endpermission
+-->
 								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 										@if( $adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
 											@permission('returnborrower.admin.loanapproval')

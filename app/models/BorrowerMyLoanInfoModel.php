@@ -38,7 +38,7 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 	} // End process_dropdown
 	
 	public function getBorrowerLoanList($filterLoanStatus) {
-		
+		$loan_cancelled	=	LOAN_STATUS_CANCELLED;
 		$this->filterloanStatusValue	= 	$filterLoanStatus;
 		$loanStatusWhere				=	" loans.status " . ($filterLoanStatus == "11"? "= loans.status  ":
 												"=	{$filterLoanStatus}"."");
@@ -75,6 +75,7 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 												   when 5 then 'Loan Details'
 												   when 6 then 'Loan Details'
 												   when 7 then 'Loan Details'
+												   when 8 then 'Cancelled Loan'
 												   when 9 then 'Loan Details'
 												   when 10 then 'Loan Details'
 											end as viewStatus,
@@ -96,7 +97,8 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 											borrowers 
 									WHERE	borrowers.borrower_id		=	{$current_borrower_id}
 									AND		borrowers.borrower_id		=	loans.borrower_id									
-									AND 	{$loanStatusWhere}";
+									AND 	{$loanStatusWhere}
+									AND     loans.status != {$loan_cancelled}";
 		
 		$loanlist_rs		= 	$this->dbFetchAll($loanlist_sql);
 		$rowIndex			=	0;

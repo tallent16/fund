@@ -314,7 +314,7 @@
 								id="bank_account_number"
 								name="bank_account_number" 
 								value="{{$InvPrfMod->bank_account_number}}" 
-								class="form-control required" 
+								class="form-control required numeric" 
 								>
 						</div>
 					</div>

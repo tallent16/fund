@@ -277,7 +277,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	}	
 	
 	public function approvePayments($loanId, $instNum) {
-
+		
+		
+		
 		// Approve the payment in the Payment Table
 		$payId_sql		=	"	SELECT 	payment_id
 								FROM	borrower_repayment_schedule
@@ -313,7 +315,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		
 		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrowerId);
 		$borrInfo			=	$this->getBorrowerInfoById($this->borrowerId);
-		$moneymatchSettings = $this->getMailSettingsDetail();
+		$moneymatchSettings = 	$this->getMailSettingsDetail();
 		$slug_name			=	"repayment_approved";
 		$fields 			= array(
 									'[borrower_contact_person]',
@@ -321,7 +323,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									'[loan_number]',
 									'[application_name]');
 		$replace_array 		= array();
-		$replace_array 		= 	array( 
+		$replace_array 		= array( 
 										$borrInfo->contact_person, 
 										$instNum,
 										$this->loanRefNumber,
@@ -672,6 +674,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	
 		$repaymentloan_sql	=	"SELECT loans.loan_id,
 										installment_number,
+										loans.borrower_id,
 										repayment_schedule_id,										
 										repayment_status,
 										loan_reference_number ref, 
@@ -714,6 +717,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 				$row[] 	= array(
 									"DT_RowId"=>"row_".$Row->loan_id,
 									"loan_id"=>$Row->loan_id,
+									"borrower_id"=>$Row->borrower_id ,
 									"loan_reference_number"=>$Row->ref,
 									"repayment_schedule_id"=>$Row->repayment_schedule_id,
 									"repayment_schedule_date"=>$Row->schd_date,									
@@ -721,7 +725,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									"repayment_scheduled_amount"=>$Row->schd_amount,									
 									"trans_reference_number"=>$Row->trans_reference_number,									
 									"penalty_fixed_amount"=>$Row->penalty,								
-									"status"=>$Row->repayment_status,	
+									"status"=>$Row->dataStatus,	
 									"loan_status_name"=>$Row->repayment_status									
 								);	
 			}
