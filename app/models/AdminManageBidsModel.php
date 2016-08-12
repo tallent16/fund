@@ -2,6 +2,8 @@
 use fileupload\FileUpload;
 use File;
 use Config;
+use Log;
+
 class AdminManageBidsModel extends TranWrapper {
 	
 	public $loan_reference_number = "";
@@ -224,9 +226,12 @@ class AdminManageBidsModel extends TranWrapper {
 			$this->dbUpdate($tableName, $dataArray, $where);
 			
 			// Update the Investor Balance
+
 			$invId			=	$investorArray[$bidId];
 			$invOldBal		=	$this->getInvestorAvailableBalanceById($invId);
-			$invNewBal		=	$invOldBal + $bidAmtArray[$bidId] - $acceptAmtArray[$bidId];
+			$bidAmount		=	$this->makeFloat($bidAmtArray[$bidId]);
+			$accAmount		=	$this->makeFloat($acceptAmtArray[$bidId]);
+			$invNewBal		=	$invOldBal + $bidAmount - $accAmount;
 			
 			$whereArray		=	array("investor_id"	=>	$invId);
 			$dataArray		=	array("available_balance"	=>	$invNewBal);

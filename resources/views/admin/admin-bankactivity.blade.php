@@ -44,6 +44,7 @@
 				<input 	id="fromdate" 
 						name="fromDate_filter" 
 						value="{{$fromDate}}" 
+						filter_field="Yes"
 						type="text" class="date-picker form-control" />
 			</div>	
 		</div>
@@ -55,6 +56,7 @@
 						name="toDate_filter" 
 						value="{{$toDate}}"
 						type="text" 
+						filter_field="Yes"
 						class="date-picker form-control" />
 			</div>	
 		</div>

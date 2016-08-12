@@ -44,6 +44,18 @@ $(document).ready(function(){
 	$("#next_button").click(function(){
 		
 		callTabValidateFunc();
+		var $min_for_partial_sub = $('#min_for_partial_sub').val();
+		var $loan_amount = $('#loan_amount').val();
+	
+		if($min_for_partial_sub != ''){
+			if($loan_amount < $min_for_partial_sub)
+			{ 	alert($loan_amount);
+				var $parentTag = $('#min_for_partial_sub_parent');
+				$parentTag.addClass('has-error').append('<span class="control-label error"> Subscription Amount should not be greater than Loan Amount</span>');
+			} else{
+				
+			}
+		}
 	});
 	$(".amount-align").on("focus", function() {
 		onFocusNumberField(this);

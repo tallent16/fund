@@ -278,7 +278,15 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	
 	public function approvePayments($loanId, $instNum) {
 		
+		$borsql			= "SELECT borrower_id 
+							FROM loans 
+							WHERE loan_id = :loan_id ";
+							
+		$whereborArray	=	Array( 	"loan_id"	=> $loanId);
 		
+		$borId_rs		=	$this->dbFetchWithParam($borsql, $whereborArray); 
+		
+		$borrowerId		=	$borId_rs[0]->borrower_id;
 		
 		// Approve the payment in the Payment Table
 		$payId_sql		=	"	SELECT 	payment_id
@@ -313,8 +321,8 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		
 		//=================== Send mail to borrower repayment approved starts =====================================
 		
-		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($this->borrowerId);
-		$borrInfo			=	$this->getBorrowerInfoById($this->borrowerId);
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);
+		$borrInfo			=	$this->getBorrowerInfoById($borrowerId);
 		$moneymatchSettings = 	$this->getMailSettingsDetail();
 		$slug_name			=	"repayment_approved";
 		$fields 			= array(

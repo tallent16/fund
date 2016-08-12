@@ -1,8 +1,12 @@
 $(document).ready(function (){  
 	
+	 $('div.ui-button').on('dialogclose', function(event) {
+		alert('closed');SS
+	});
+		
 	$(".approveRepayment").click(function(e) {
 			if($(this).attr("data-tranf-no") ==	"") {
-				showDialog("","Cannot Approve the Repayment due to empty transantion reference number");	
+				showDialog("","Cannot Approve the Repayment due to empty transcation reference number");	
 				e.preventDefault();
 			}
 	});

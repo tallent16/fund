@@ -55,7 +55,8 @@
 						Form::select('borrowerstatus_filter',$adminbormodel->filterBorrowerStatusList, 
 										$adminbormodel->filterBorrowerStatusValue,
 										[	"class" => "selectpicker",
-											"id"=>"borrowerstatus_filter"]) 
+											"id"=>"borrowerstatus_filter",
+											"filter_field" => "Yes"])  
 					}} 		
 				</div>		
 			</div>

@@ -663,6 +663,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	
 	
 	public function updateLoanGradeRiskFactor($postArray,$loanId) {
+		$boid				=	$postArray['borrower_id'];
 		
 		$loan_risk_grade	=	($postArray['grade']	!=	"")?$postArray['grade']:NULL;
 		$risk_industry		=	($postArray['risk_industry']	!=	"")?$postArray['risk_industry']:NULL;
@@ -676,7 +677,16 @@ class BorrowerApplyLoanModel extends TranWrapper {
 										);
 		$whereArry			=	array("loan_id" =>"{$loanId}");
 		
+		//~ $databorArray		=	array(	"borrower_risk_grade"=>$loan_risk_grade,
+										//~ "risk_industry"=>$risk_industry,	
+										//~ "risk_strength"=>$risk_strength,	
+										//~ "risk_weakness"=>$risk_weakness
+										//~ );
+		
+		//~ $whereborArry		=	array("borrower_id" =>"{$boid}");
+		
 		$this->dbUpdate('loans', $dataArray, $whereArry);
+		//~ $this->dbUpdate('borrowers', $databorArray, $whereArry);
 				
 		return $loanId;
 	}

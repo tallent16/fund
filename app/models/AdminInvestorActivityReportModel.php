@@ -239,7 +239,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 																inv_tran.trans_amount credit_amt
 														FROM 	investor_bank_transactions inv_tran
 															LEFT JOIN	payments
-															ON	payments.payment_id	=	inv_tran.trans_id	
+															ON	payments.payment_id	=	inv_tran.payment_id	
 														WHERE	investor_id	=	{$investor_id}
 														AND		inv_tran.trans_type	=	:dep_trantype_param
 														AND		inv_tran.status		=	:trans_ver_param1
@@ -255,7 +255,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 																'' credit_amt
 														FROM 	investor_bank_transactions inv_tran
 															LEFT JOIN	payments
-															ON	payments.payment_id	=	inv_tran.trans_id	
+															ON	payments.payment_id	=	inv_tran.payment_id	
 														WHERE	investor_id	=	{$investor_id}
 														AND		inv_tran.trans_type	=	:with_trantype_param
 														AND		inv_tran.status		=	:trans_ver_param2
@@ -273,7 +273,6 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 															LEFT JOIN	loans
 															ON	loans.loan_id	=	loan_bids.loan_id	
 														WHERE	investor_id	=	{$investor_id}
-														AND		bid_status		=	:open_bids_param
 														AND		DATE(bid_datetime)	>= '".$filterFromDate."'
 														AND		DATE(bid_datetime)	<= '".$filterToDate."'
 														UNION
@@ -309,7 +308,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 														UNION
 														SELECT 	bid_datetime rept_date,
 																'Investments – Investment Accepted' trans_type,
-																'CR' trans_type_orderBy,
+																'XX' trans_type_orderBy,
 																loans.loan_reference_number ref_no,
 																loan_bids.remarks details,
 																loan_bids.accepted_amount debit_amt,
@@ -386,13 +385,12 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 														AND		inv_rep_sch.payment_date	>= '".$filterFromDate."'
 														AND		inv_rep_sch.payment_date	<= '".$filterToDate."'
 												) xx
-												ORDER BY  rept_date_orderBy, if(trans_type_orderBy='DR', 1, 0)";			
+												ORDER BY  rept_date_orderBy, trans_type_orderBy, ref_no";			
 		$dataArrayInvList				= 	[															
 													"dep_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
 													"trans_ver_param1" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
 													"with_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL,
 													"trans_ver_param2" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
-													"open_bids_param" => LOAN_BIDS_STATUS_OPEN,
 													"cancel_bids_param" => LOAN_BIDS_STATUS_CANCELLED,
 													"reject_bids_param" => LOAN_BIDS_STATUS_REJECTED,
 													"accept_bids_param" => LOAN_BIDS_STATUS_ACCEPTED,

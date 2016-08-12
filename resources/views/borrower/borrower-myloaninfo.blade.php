@@ -53,7 +53,8 @@
 												Form::select('loanstatus_filter', 
 																$BorModMyLoanInfo->filterloanStatusList, 
 																$BorModMyLoanInfo->filterloanStatusValue,
-																["class" => "selectpicker"]) 
+																["class" => "selectpicker",
+																"filter_field" => "Yes"]) 
 											}} 
 										</div>
 									</div>

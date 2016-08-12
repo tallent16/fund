@@ -22,28 +22,32 @@
 			<div class="col-sm-12 col-lg-3"> 														
 				<div class="form-group">	
 					<strong>{{ Lang::get('borrower-loanlisting.interest_rate') }}</strong><br>							
-					{{ Form::select('intrate_filter', $loanListing->filterIntRateList, $loanListing->filterIntRateValue, ["class" => "selectpicker"]) }} 
+					{{ Form::select('intrate_filter', $loanListing->filterIntRateList, $loanListing->filterIntRateValue,
+						 ["class" => "selectpicker","filter_field" => "Yes"]) }} 
 				</div>	
 			</div>
 					
 			<div class="col-sm-12 col-lg-3"> 
 				<div class="form-group">								
 					<strong>{{ Lang::get('borrower-loanlisting.loan_amount') }}</strong><br>							
-					{{ Form::select('loanamt_filter', $loanListing->filterLoanAmtList, $loanListing->filterLoanAmtValue, ["class" => "selectpicker"]) }} 
+					{{ Form::select('loanamt_filter', $loanListing->filterLoanAmtList, $loanListing->filterLoanAmtValue,
+						 ["class" => "selectpicker","filter_field" => "Yes"]) }} 
 				</div>	
 			</div>
 
 			<div class="col-sm-12 col-lg-3"> 														
 				<div class="form-group">							
 					<strong>{{ Lang::get('borrower-loanlisting.tenure') }}</strong><br>							
-					{{ Form::select('tenure_filter', $loanListing->filterTenureList, $loanListing->filterTenureValue, ["class" => "selectpicker"]) }} 
+					{{ Form::select('tenure_filter', $loanListing->filterTenureList, $loanListing->filterTenureValue,
+						 ["class" => "selectpicker","filter_field" => "Yes"]) }} 
 				</div>	
 			</div>
 
 			<div class="col-sm-12 col-lg-3"> 
 				<div class="form-group">								
 					<strong>{{ Lang::get('borrower-loanlisting.grade') }}</strong><br>							
-					{{ Form::select('grade_filter', $loanListing->filterGradeList, $loanListing->filterGradeValue, ["class" => "selectpicker"]) }} 
+					{{ Form::select('grade_filter', $loanListing->filterGradeList, $loanListing->filterGradeValue,
+						 ["class" => "selectpicker","filter_field" => "Yes"]) }} 
 
 				</div>	
 			</div>

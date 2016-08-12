@@ -8,7 +8,9 @@
 						<label>Module</label>
 					</div>
 					<div class="col-sm-3">
-						{{ Form::select('modulelist', $adminsettingModel->moduleList, '$adminsettingModel->defaultmoduleval', ["class" => "selectpicker","id" => "type"]) }} 
+						{{ Form::select('modulelist', $adminsettingModel->moduleList, '$adminsettingModel->defaultmoduleval', ["class" => "selectpicker",
+							"id" => "type",
+							"filter_field" => "Yes"]) }} 
 					</div>
 				</div>
 				

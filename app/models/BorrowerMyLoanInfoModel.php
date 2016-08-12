@@ -19,7 +19,16 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 								FROM	codelist_details
 								WHERE	codelist_id =	7
 								AND		codelist_code not in (8,9)
-								ORDER BY expression DESC";
+								ORDER BY CASE WHEN codelist_value = 'All' THEN '1'
+								  WHEN codelist_value = 'New' THEN '2'
+								  WHEN codelist_value = 'Submitted for Approval' THEN '3' 
+								  WHEN codelist_value = 'Pending Comments' THEN '4'
+								  WHEN codelist_value = 'Open for Bids' THEN '5'
+								  WHEN codelist_value = 'Closed for Bids' THEN '6'
+								  WHEN codelist_value = 'Bids Accepted' THEN '7'
+								  WHEN codelist_value = 'Loans Disbursed' THEN '8'
+								  WHEN codelist_value = 'Repayments Complete' THEN '9'
+								  ELSE codelist_value END ASC";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);
 

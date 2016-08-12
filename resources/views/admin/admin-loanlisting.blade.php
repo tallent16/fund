@@ -38,7 +38,12 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Filter Transcations') }}</strong><br>							
-					{{ Form::select('filter_transcations', $adminLoanListing->allTransList, $adminLoanListing->filter_code, ["class" => "selectpicker","id" => "filter_transcations"]) }} 
+					{{ Form::select('filter_transcations', 
+							$adminLoanListing->allTransList, 
+							$adminLoanListing->filter_code, 
+							["class" => "selectpicker",
+							"id" => "filter_transcations",
+							"filter_field" => "Yes"]) }} 
 			</div>		
 		</div>		
 				
@@ -46,7 +51,7 @@
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
 				<input id="fromdate" name="fromdate" value="{{$adminLoanListing->fromDate}}" 
-						type="text" class="date-picker form-control" />
+						type="text" filter_field="Yes" class="date-picker form-control" />
 			</div>	
 		</div>
 
@@ -54,7 +59,8 @@
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
 				<input id="todate" name="todate" value="{{$adminLoanListing->toDate}}"
-						type="text" class="date-picker form-control" />
+						type="text" filter_field="Yes"
+						class="date-picker form-control" />
 			</div>	
 		</div>
 		
@@ -79,113 +85,6 @@
 	</div>	--->
 	
 </div><!-----First row----->
-
-<!--
-
-<div class="row">
-	<div class="col-sm-12"> 
-		<div class="table-responsive applyloan borrower-admin"> 
-			<table class="table tab-fontsize table-border-custom text-left">
-				<thead>
-					<tr>
-						<th class="tab-head text-left">{{ Lang::get('Loan Reference Number') }}</th>
-						<th class="tab-head text-left">{{ Lang::get('Borrower Organisation Name') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('Loan Amount') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('Target Interest') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('Tenure') }}</th>
-						<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
-						<th class="tab-head text-left">{{ Lang::get('Bid Close Date') }}</th>
-						<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
-					</tr>
-				</thead>
-				<tbody>	
-				
-					@if (count($adminLoanListing->loanListInfo) > 0)			
-						@foreach($adminLoanListing->loanListInfo as $loanlistRow)
-							
-							@var	$loan_id	=	base64_encode($loanlistRow->loan_id);
-							@if  ($loanlistRow->status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
-										@var	$actionUrl		=	url('admin/loanapproval/')
-										@var	$actionUrl		=	$actionUrl."/".$loan_id							
-							@elseif ($loanlistRow->status	==	LOAN_STATUS_APPROVED)																	
-										@var	$actionUrl		=	url('admin/managebids/')
-										@var	$actionUrl		=	$actionUrl."/".base64_decode($loan_id)					
-							@elseif ($loanlistRow->status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
-										@var	$actionUrl		=	url('admin/managebids/')
-										@var	$actionUrl		=	$actionUrl."/".base64_decode($loan_id)		
-							@elseif	($loanlistRow->status == LOAN_STATUS_BIDS_ACCEPTED)													
-										@var	$actionUrl		=	url('admin/disburseloan/')
-										@var	$actionUrl		=	$actionUrl."/".$loan_id									
-							@else
-										@var	$actionUrl		=	"javascript:void(0);"									
-							@endif
-							@if  ($loanlistRow->status	==	LOAN_STATUS_NEW)
-									@var	$actionUrl		=	url('admin/loanapproval/')
-									@var	$actionUrl		=	$actionUrl."/".$loan_id		
-							@endif
-							@if  ($loanlistRow->status	==	LOAN_STATUS_DISBURSED)
-									@var	$actionUrl		=	url('admin/loanview/')
-									@var	$actionUrl		=	$actionUrl."/".$loan_id		
-							@endif
-							@if  ($loanlistRow->status	==	LOAN_STATUS_LOAN_REPAID)
-									@var	$actionUrl		=	url('admin/loanview/')
-									@var	$actionUrl		=	$actionUrl."/".$loan_id		
-							@endif
-							@if  ($loanlistRow->status	==	LOAN_STATUS_PENDING_COMMENTS)
-								@var	$actionUrl		=	url('admin/loanapproval/')
-								@var	$actionUrl		=	$actionUrl."/".$loan_id								
-							@endif
-
-									<tr class="odd" id="11" role="row">								
-										<td class="text-left">
-											<a href="{{$actionUrl}}">
-												{{$loanlistRow->loan_reference_number}}
-											</a>
-										</td>
-										<td class="text-left">
-											<a href="{{$actionUrl}}">
-												{{$loanlistRow->business_name}}
-											</a>
-										</td>
-										<td class="text-right">
-											<a href="{{$actionUrl}}">
-												{{number_format($loanlistRow->loan_sanctioned_amount,2,'.',',')}}
-											</a>
-										</td>
-										<td class="text-right">
-											<a href="{{$actionUrl}}">
-												{{$loanlistRow->target_interest}}
-											</td>
-										<td class="text-right">
-											<a href="{{$actionUrl}}">
-												{{$loanlistRow->loan_tenure}}
-											</a>
-										</td>
-										<td class="text-left">
-											<a href="{{$actionUrl}}">
-												{{$loanlistRow->bid_type_name}}
-											</a>
-										</td>
-										<td class="text-left">
-											<a href="{{$actionUrl}}">
-												{{$loanlistRow->bid_close_date}}
-											</a>
-											</td>
-										<td class="text-left">
-											<a href="{{$actionUrl}}">
-												{{$loanlistRow->loan_status_name}}
-											</a>
-										</td>
-									</tr>						
-
-						@endforeach
-					@endif				
-							
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div><!------second row------>
 
 	<div class="row">		
 		<div class="col-lg-12 col-md-12">

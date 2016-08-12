@@ -55,7 +55,9 @@
 						Form::select('investorstatus_filter',$admininvModel->filterInvestorStatusList, 
 										$admininvModel->filterInvestorStatusValue,
 											[	"class" => "selectpicker",
-											    "id"=>"investorstatus_filter"]) 
+											    "id"=>"investorstatus_filter",
+											    "filter_field" => "Yes",
+											    "data-live-search"=>true]) 
 					}} 
 				</div>	
 			</div>

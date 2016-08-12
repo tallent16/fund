@@ -20,7 +20,7 @@ function callDataTableFunc(){
 	$repaylisting =$('#adminrepaymentlisting').DataTable( {
 		dom: "Tfrtip",
 		ajax: baseUrl+"/admin/ajax/adminrepaylist",			
-		columns: [
+		columns: [				
 				{ 
 					data: null,														
 					render: function(data, type, full, meta){                				

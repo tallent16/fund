@@ -46,7 +46,8 @@
 													"id"=>"investor_filter",
 													"data-size"=>5,
 													"data-selected-text-format"=>"count>3",
-													"data-actions-box"=>"true"]) }} 
+													"data-actions-box"=>"true",
+													"filter_field" => "Yes"]) }} 
 			</div>		
 		</div>		
 				
@@ -56,6 +57,7 @@
 				<input 	id="fromdate" 
 						name="fromDate_filter" 
 						value="{{$fromDate}}" 
+						filter_field="Yes"
 						type="text" class="date-picker form-control" />
 			</div>	
 		</div>
@@ -67,6 +69,7 @@
 						name="toDate_filter" 
 						value="{{$toDate}}"
 						type="text" 
+						filter_field="Yes"
 						class="date-picker form-control" />
 			</div>	
 		</div>

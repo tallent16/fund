@@ -103,7 +103,7 @@ class LoanDetailsModel extends TranWrapper {
 											borrowers.company_aboutus,
 											borrowers.company_image,
 											borrowers.status,
-											borrowers.borrower_risk_grade,
+											loans.loan_risk_grade,
 											loans.loan_id,
 											loans.loan_reference_number,
 											loans.loan_tenure,
@@ -273,7 +273,9 @@ class LoanDetailsModel extends TranWrapper {
 			foreach ($bid_rs as $bidRow) {
 				$tot_average	=	$tot_average	+	$bidRow->average_int;
 			}
-			$this->avg_int_bid	=	ROUND($tot_average,2);
+			$this->avg_int_bid	=	ROUND($tot_average,2) + '%';
+		}else{
+			$this->avg_int_bid = "- - -";
 		}
 		
 		

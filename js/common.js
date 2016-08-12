@@ -21,7 +21,10 @@ $(document).ready(function (){
    });
    
    $('form').on('change', 'input:not(:button,:submit,:checkbox), select, textarea', function(){
-		formElementsChanged	=	1;
+		if ($(this).attr("filter_field") != "Yes") {
+			formElementsChanged	=	1;
+		}
+			
 	});
 	window.onbeforeunload = confirmExit;
     function confirmExit() {

@@ -17,7 +17,9 @@
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
 				<strong>{{ Lang::get('borrower-transcationhistory.filter_transcations')}}</strong><br>	
-				{{ Form::select('transtype', $tranModel->tranTypeFilter, $tranModel->tranType, ["class" => "selectpicker"]) }} 
+				{{ Form::select('transtype', $tranModel->tranTypeFilter, $tranModel->tranType, 
+					["class" => "selectpicker",
+					"filter_field" => "Yes"]) }} 
 			</div>	
 		</div>
 				
@@ -25,7 +27,7 @@
 			<div class="form-group">							
 				<strong>{{ Lang::get('borrower-transcationhistory.from_date') }}</strong><br>							
 				<input id="fromdate" name="fromdate" value="{{$tranModel->fromDate}}" 
-						type="text" class="date-picker form-control" />
+						type="text" filter_field="Yes" class="date-picker form-control" />
 			</div>	
 		</div>
 
@@ -33,7 +35,7 @@
 			<div class="form-group">								
 				<strong>{{ Lang::get('borrower-transcationhistory.to_date') }}</strong><br>							
 				<input id="todate" name="todate" value="{{$tranModel->toDate}}"
-						type="text" class="date-picker form-control" />
+						type="text" filter_field = "Yes" class="date-picker form-control" />
 			</div>	
 		</div>
 

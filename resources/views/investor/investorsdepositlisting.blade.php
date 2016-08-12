@@ -36,7 +36,8 @@
 				<strong>{{ Lang::get('Filter Status')}}</strong><br>		
 				{{ Form::select('filter_status',$InvDepListMod->allTransList, 
 													$InvDepListMod->filter_status, 
-													["class" => "selectpicker"]) 
+													["class" => "selectpicker",
+													"filter_field" => "Yes"]) 
 					}}						
 <!--
 					{{ Form::select('filter_status', ['all' => 'All'] +$InvDepListMod->allTransList, 
@@ -51,7 +52,7 @@
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date') }}</strong><br>							
 				<input id="fromdate" name="fromdate" value="{{$InvDepListMod->fromDate}}" 
-						type="text" class="fromdate form-control" />
+						type="text" filter_field = "Yes" class="fromdate form-control" />
 			</div>	
 		</div>
 
@@ -59,7 +60,7 @@
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date') }}</strong><br>							
 				<input id="todate" name="todate" value="{{$InvDepListMod->toDate}}"
-						type="text" class="todate form-control" />
+						type="text" filter_field ="Yes" class="todate form-control" />
 			</div>	
 		</div>
 

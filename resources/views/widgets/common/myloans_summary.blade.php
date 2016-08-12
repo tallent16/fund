@@ -43,7 +43,7 @@
 			<div class="col-md-7 col-xs-7"> 									
 				<i class="fa fa-file-text"></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.grade_borrower') }}:</span>
 			</div>
-			<div class="col-md-5 col-xs-5">{{$LoanDetMod->borrower_risk_grade}}</div>
+			<div class="col-md-5 col-xs-5">{{$LoanDetMod->loan_risk_grade}}</div>
 		</div>
 		
 		<div class="row">													
@@ -72,7 +72,7 @@
 				<div class="col-md-7 col-xs-7"> 
 					<i class="fa fa-bar-chart-o "></i><span class="bid-now-section">{{ Lang::get('borrower-myloans.avg_interest_bid') }}:</span>
 				</div>
-				<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}} %</div>
+				<div class="col-md-5 col-xs-5">{{$LoanDetMod->avg_int_bid}}</div>
 			</div>
 		@endif
 		

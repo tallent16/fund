@@ -34,7 +34,8 @@
 												Form::select('loanstatus_filter', 
 																$InvModMyLoanInfo->filterloanStatusList, 
 																$InvModMyLoanInfo->filterloanStatusValue,
-																["class" => "selectpicker"]) 
+																["class" => "selectpicker",
+																"filter_field" => "Yes"]) 
 											}} 
 										</div>
 									</div>

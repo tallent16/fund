@@ -33,14 +33,30 @@ class AdminBorrowersRepaymentListingController extends MoneyMatchController {
 		
 	public function approveRepaymentAction($repayment_schedule_id){		
 
-		$this->adminBorrowerRepaymentList->approveBorrowerRepayment($repayment_schedule_id);
-		return redirect()->to('admin/borrowersrepaylist');
+		$result = $this->adminBorrowerRepaymentList->approveBorrowerRepayment($repayment_schedule_id);
+		//~ return redirect()->to('admin/borrowersrepaylist');
+		$successTxt	=	$this->adminchallengequestionModel->getSystemMessageBySlug("repayment_approved");
+		if($result) {
+			return redirect()->route('admin.borrowersrepaylist')
+						->with('success',$successTxt);
+		}else{
+			return redirect()->route('admin.borrowersrepaylist')
+						->with('failure','Something went wrong!');	
+		}
 	}
 		
 	public function bulkApproveRepaymentAction(){		
 		
 		$postArray	=	Request::all();
-		$this->adminBorrowerRepaymentList->bulkApproveBorrowerRepayment($postArray);
-		return redirect()->to('admin/borrowersrepaylist');
+		$result = $this->adminBorrowerRepaymentList->bulkApproveBorrowerRepayment($postArray);
+		//~ return redirect()->to('admin/borrowersrepaylist');
+		$successTxt	=	$this->adminchallengequestionModel->getSystemMessageBySlug("repayment_approved");
+		if($result) {
+			return redirect()->route('admin.borrowersrepaylist')
+						->with('success',$successTxt);
+		}else{
+			return redirect()->route('admin.borrowersrepaylist')
+						->with('failure','Something went wrong!');	
+		}
 	}
 }
