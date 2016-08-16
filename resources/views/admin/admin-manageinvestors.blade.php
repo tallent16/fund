@@ -56,8 +56,8 @@
 										$admininvModel->filterInvestorStatusValue,
 											[	"class" => "selectpicker",
 											    "id"=>"investorstatus_filter",
-											    "filter_field" => "Yes",
-											    "data-live-search"=>true]) 
+											    "filter_field" => "Yes"
+											  ]) 
 					}} 
 				</div>	
 			</div>

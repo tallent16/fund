@@ -34,6 +34,10 @@ class AdminManageBidsController extends MoneyMatchController {
 
 	}
 	
+	public function bidAutoCloseAction() {
+		$this->bidsModel->autoCloseBid();
+		die;
+	}
 	public function acceptBidsAction() {
 		$loan_id = $_REQUEST['loan_id'];
 

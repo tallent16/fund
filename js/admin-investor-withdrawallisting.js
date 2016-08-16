@@ -28,7 +28,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$(".select_investor_withdraw:checked").each(function(key) {
@@ -46,7 +46,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$(".select_investor_withdraw:checked").each(function(key) {
@@ -70,7 +70,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$("#processType").val("approve");
@@ -93,7 +93,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$("#processType").val("unapprove");
@@ -116,7 +116,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$("#processType").val("delete");
@@ -133,3 +133,22 @@ $(document).ready(function (){
 	   window.location	=	url;
 	});
 });
+function showCusDialog($title, $message) {
+	
+	$title = "Fund Yourselves Now";
+	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
+						
+	$('body').append(htmlelement);
+	
+	$( "#dialog-message" ).dialog({
+		modal: true,
+		buttons: {
+			Ok: function() {			
+				$('.select_investor_withdraw').prop('checked', false); 
+				$( this ).dialog( "close" );
+				$( this ).dialog( "destroy" );
+				$( this ).remove();
+			}
+		}
+    });
+}

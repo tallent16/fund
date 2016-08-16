@@ -13,6 +13,10 @@ class MoneyMatchModel extends Model {
 	public $systemAllMessage 		=	array();
 	public $emailAllNotification 	= 	array();
 	
+	// Use this date wherever you want to use System date
+	public $systemDate_str;
+	public $systemDate_DT;
+	
 	public function constructSelectOption($options, $displayColumn, $valueColumn, $currentValue, $defaultOption) {
 		// To construct the options required for HTML Select 
 
@@ -341,14 +345,6 @@ class MoneyMatchModel extends Model {
 		}
 		return $result;
 	}
-	//~ public function getAllSystemMessages() {
-		
-		//~ $sql= "	SELECT *
-				//~ FROM 	system_messages";
-		
-		//~ $result		= $this->dbFetchAll($sql);
-		//~ $emailNotification
-		//~ return $result;
-	//~ }
+
 }
 

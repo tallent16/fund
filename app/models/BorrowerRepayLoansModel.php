@@ -161,6 +161,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$this->penaltyCompShare		=	$repaySched_rs[0]->repayment_penalty_charges;	
 			$this->amountPaid			=	$repaySched_rs[0]->trans_amount;	
 			$this->borrower_name		=	$repaySched_rs[0]->borrower_name;	
+			 
 		} else {
 			// This is an error condition. Can't be true
 			return -1;
@@ -223,7 +224,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$this->repaymentStatus		=	$repaySched_rs[0]->repayment_status;		
 			$this->paymentId			=	$repaySched_rs[0]->payment_id;	
 			$this->borrower_name		=	$repaySched_rs[0]->borrower_name;
-			
+						
 			if($repaySched_rs[0]->payment_id	!=	0) {
 				$payment_sql				=	"	SELECT trans_reference_number
 													FROM	payments

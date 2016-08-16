@@ -86,10 +86,12 @@
 						<div class="col-xs-12 col-sm-7 col-lg-3">
 							@if($editclass || $viewclass)
 								{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue,  ["class" => "selectpicker disabled",
-															"id"=>"investor_id"] )  }} 
+															"id"=>"investor_id" ,
+															"data-live-search"=>true ] )  }} 
 							@else
 								{{ Form::select('investor_id', $adminInvWithDrawListMod->allactiveinvestList, $adminInvWithDrawListMod->allactiveinvestvalue, ["class" => "selectpicker",
-																				"id"=>"investor_id"]) }} 
+																				"id"=>"investor_id",
+																				"data-live-search"=>true ]) }} 
 							@endif
 						</div>							
 					</div> <!-- Row 1 -->

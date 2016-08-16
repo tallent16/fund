@@ -4,7 +4,6 @@ var manInvBulkDeleteConfirm	=	false;
 var manInvBulkRejectConfirm	=	false;
 $(document).ready(function (){  
 	
-
 	$("#bulk_approve_button").click(function(){
 		var	appr_applicable	=	$("#default_approve_applicable").val();
 		var	errMessage		=	"";
@@ -17,7 +16,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$("#processType").val("approve");
@@ -43,7 +42,7 @@ $(document).ready(function (){
 					}
 				});
 				if(errMessage!=""){
-					showDialog("",errMessage);
+					showCusDialog("",errMessage);	
 					return false;
 				}
 				retval = showDialogWithOkCancel("", "Warning!! Once Rejected you cannot undo this action."
@@ -68,7 +67,7 @@ $(document).ready(function (){
 					}
 				});
 				if(errMessage!=""){
-					alert(errMessage);
+					showCusDialog("",errMessage);	
 					return false;
 				}
 				retval = showDialogWithOkCancel("", "Warning!! Once Deleted you cannot undo this action."
@@ -145,4 +144,23 @@ function bulkRejectManageInvestorFunc(retval) {
 	} else {
 		manInvBulkRejectConfirm	=	false;
 	}
+}
+function showCusDialog($title, $message) {
+	
+	$title = "Fund Yourselves Now";
+	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
+						
+	$('body').append(htmlelement);
+	
+	$( "#dialog-message" ).dialog({
+		modal: true,
+		buttons: {
+			Ok: function() {			
+				$('.select_investor_id').prop('checked', false); 
+				$( this ).dialog( "close" );
+				$( this ).dialog( "destroy" );
+				$( this ).remove();
+			}
+		}
+    });
 }

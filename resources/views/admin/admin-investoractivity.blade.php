@@ -47,7 +47,8 @@
 													"data-size"=>5,
 													"data-selected-text-format"=>"count>3",
 													"data-actions-box"=>"true",
-													"filter_field" => "Yes"]) }} 
+													"filter_field" => "Yes" ,
+													"data-live-search"=>true ]) }} 
 			</div>		
 		</div>		
 				

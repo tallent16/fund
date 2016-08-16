@@ -78,9 +78,9 @@
 						</div>								
 						<div class="col-xs-12 col-sm-7 col-lg-3">
 							@if($editclass || $viewclass)
-									{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker disabled" ] )  }} 
+									{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker disabled"  , "data-live-search"=>true ] )  }} 
 							@else
-									{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" ]) }} 
+									{{ Form::select('investor_id', $adminInvDepViewMod->allactiveinvestList, $adminInvDepViewMod->allactiveinvestvalue, ["class" => "selectpicker" , "data-live-search"=>true ]) }} 
 					
 							@endif				
 						</div>

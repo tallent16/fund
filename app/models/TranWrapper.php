@@ -86,7 +86,9 @@ class TranWrapper extends MoneyMatchModel {
 				
 				$new_content 		= str_replace($fieldArray, $replaceArray, $mailContents);
 				$new_subject 		= str_replace($fieldArray, $replaceArray, $mailSubject);				
-					
+				$new_content		= str_replace('[application_name]', $moneymatchSettings[0]->application_name, $new_content);
+				$new_subject		= str_replace('[application_name]', $moneymatchSettings[0]->application_name, $new_subject);
+				
 				if( strpos($new_content, '[LOGO]') !== false ) {
 					$logo	=	$this->getEmailLogo();	
 					$msgarray = array(
@@ -96,6 +98,8 @@ class TranWrapper extends MoneyMatchModel {
 					$msgarray = array(
 								"content" => $new_content);
 				}
+				
+				
 				
 				$msgData = array(	"subject" => $new_subject, 
 									"from" => $moneymatchSettings[0]->admin_email,
@@ -218,13 +222,15 @@ class TranWrapper extends MoneyMatchModel {
 	
 	public function getCurrentInvestorID() {
 		
-		$user_id	=	Auth::user()->user_id;
-		
-		$sql= "	SELECT 	investor_id
-				FROM 	investors 
-				WHERE 	user_id = '".$user_id."'";
-		
-		$result 	= $this->dbFetchAll($sql);
+		if (isset(Auth::user()->user_id)) {
+			$user_id	=	Auth::user()->user_id;
+			
+			$sql= "	SELECT 	investor_id
+					FROM 	investors 
+					WHERE 	user_id = '".$user_id."'";
+			
+			$result 	= $this->dbFetchAll($sql);
+		}
 		
 		if(isset($result[0])) {
 			$investor_id = $result[0]->investor_id;

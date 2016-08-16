@@ -1,10 +1,4 @@
 @extends('layouts.dashboard')
-@section('bottomscripts')
-	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-	<script src="{{ url("js/admin-roles-listing.js") }}" type="text/javascript"></script>
-	
-@endsection
 @section('page_heading',Lang::get('User with Role ')."'".$adminRolesModel->roleName."'")
 @section('section')  
 <div class="col-sm-12 space-around">
@@ -61,3 +55,8 @@
 </div>
 	@endsection  
 @stop
+@section('bottomscripts')
+	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+	<script src="{{ url("js/admin-roles-listing.js") }}" type="text/javascript"></script>		
+@endsection

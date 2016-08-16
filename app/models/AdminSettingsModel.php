@@ -19,6 +19,10 @@ class AdminSettingsModel extends TranWrapper {
 									backend_email_label,
 									mail_cc_to,
 									send_live_mails,
+									auto_bids_close,
+									auto_bids_close_cronjob_time,
+									send_reminder_mails_to_borrower,
+									reminder_mails_days_before_due_date,
 									mail_driver,
 									mail_host,
 									mail_port,
@@ -176,6 +180,10 @@ class AdminSettingsModel extends TranWrapper {
 			$backendTeamEmailName	= $postArray['backend_team_mailname'];
 			$mailCC					= $postArray['mail_cc'];
 			$sendLiveMail			= isset($postArray['livemails'])?$postArray['livemails']:0;
+			$autobidclose			= isset($postArray['autobidclose'])?$postArray['autobidclose']:0;
+			$auto_bids_closetime	= $postArray['auto_close_time'];
+			$remindmail_borrower	= isset($postArray['remindmail_borrower'])?$postArray['remindmail_borrower']:0;
+			$daysbefore_duedate		= $postArray['daysbefore_duedate'];
 			/*Second Tab*/
 			$mailDriver 			= $postArray['mail_driver'];	
 			$mailHost				= $postArray['mail_host'];	
@@ -199,33 +207,37 @@ class AdminSettingsModel extends TranWrapper {
 			$investor_firstpopup	= $postArray['inv_popup'];	
 		}
 		// Construct the data array
-		$dataArray = array(	'application_name'				=> $application_Name,								
-							'admin_email' 					=> $mailFromAddress,
-							'admin_email_label'				=> $mailFromName,
-							'backend_email'					=> $backendTeamEmailAdd,
-							'backend_email_label'			=> $backendTeamEmailName,
-							'mail_cc_to'					=> $mailCC,
-							'send_live_mails'				=> $sendLiveMail,
+		$dataArray = array(	'application_name'						=> $application_Name,								
+							'admin_email' 							=> $mailFromAddress,
+							'admin_email_label'						=> $mailFromName,
+							'backend_email'							=> $backendTeamEmailAdd,
+							'backend_email_label'					=> $backendTeamEmailName,
+							'mail_cc_to'							=> $mailCC,
+							'send_live_mails'						=> $sendLiveMail,
+							'auto_bids_close'						=> $autobidclose,
+							'auto_bids_close_cronjob_time'			=> $auto_bids_closetime,
+							'send_reminder_mails_to_borrower'		=> $remindmail_borrower,
+							'reminder_mails_days_before_due_date'	=> $daysbefore_duedate,
 							
-							'mail_driver'					=> $mailDriver,
-							'mail_host'						=> $mailHost,
-							'mail_port'						=> $mailPort,
-							'mail_encryption'				=> $mailEncrypt,
-							'mail_username'					=> $mailUsername,
-							'mail_password'					=> $mailPassword,
+							'mail_driver'							=> $mailDriver,
+							'mail_host'								=> $mailHost,
+							'mail_port'								=> $mailPort,
+							'mail_encryption'						=> $mailEncrypt,
+							'mail_username'							=> $mailUsername,
+							'mail_password'							=> $mailPassword,
 														
-							'monthly_pay_by_date'			=> $loanMonthly,
-							'loan_fixed_fees'				=> $processFixedFees,
-							'loan_fees_percent'				=> $processFeePercent,
-							'loan_fees_minimum_applicable'	=> $processFeeMinimum,
-							'penalty_fee_minimum'			=> $penaltyProcessFee,
-							'penalty_fee_percent'			=> $penaltyProcessPercent,
-							'penalty_interest'				=> $penaltyInterest,
+							'monthly_pay_by_date'					=> $loanMonthly,
+							'loan_fixed_fees'						=> $processFixedFees,
+							'loan_fees_percent'						=> $processFeePercent,
+							'loan_fees_minimum_applicable'			=> $processFeeMinimum,
+							'penalty_fee_minimum'					=> $penaltyProcessFee,
+							'penalty_fee_percent'					=> $penaltyProcessPercent,
+							'penalty_interest'						=> $penaltyInterest,
 							
-							'toc_borrower'					=> $borrower_terms,						
-							'toc_investor'					=> $investor_terms,					
-							'firsttime_borrower_popup'		=> $borrower_firstpopup,					
-							'firsttime_investor_popup'		=> $investor_firstpopup						
+							'toc_borrower'							=> $borrower_terms,						
+							'toc_investor'							=> $investor_terms,					
+							'firsttime_borrower_popup'				=> $borrower_firstpopup,					
+							'firsttime_investor_popup'				=> $investor_firstpopup						
 						);			
 		
 		$whereArray	=	[ "application_name"	=> $application_Name];

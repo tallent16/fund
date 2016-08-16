@@ -217,6 +217,9 @@ Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function()
 	 Route::get('admin/dashboard',array('middleware' => 'auth', 
 													'uses' => 'AdminDashboardController@indexAction'));
 	 
+	 Route::get('admin/bidAutoClose',array('middleware' => 'auth', 
+													'uses' => 'AdminManageBidsController@bidAutoCloseAction'));
+	 
 //****************************Settings - General & Messages Starts********************************************
 
 	Route::get('admin/settings',  	[	'as' 			=> 	'admin.settings', 

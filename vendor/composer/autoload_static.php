@@ -86,6 +86,10 @@ class ComposerStaticInit64faa3126089bca3f530c4743b9b7695
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -196,6 +200,10 @@ class ComposerStaticInit64faa3126089bca3f530c4743b9b7695
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -438,7 +446,7 @@ class ComposerStaticInit64faa3126089bca3f530c4743b9b7695
         'App\\models\\AdminInvestorsDepositViewModel' => __DIR__ . '/../..' . '/app/models/AdminInvestorsDepositViewModel.php',
         'App\\models\\AdminInvestorsWithdrawalsListingModel' => __DIR__ . '/../..' . '/app/models/AdminInvestorsWithdrawalsListingModel.php',
         'App\\models\\AdminInvestorsWithdrawalsViewModel' => __DIR__ . '/../..' . '/app/models/AdminInvestorsWithdrawalsViewModel.php',
-        'App\\models\\AdminLoanApprovalModel' => __DIR__ . '/../..' . '/app/models/AdminLoanApprovalModel.php',
+        'App\\models\\AdminLoanApprovalModel' => __DIR__ . '/../..' . '/app/models/notused/AdminLoanApprovalModel.php',
         'App\\models\\AdminLoanDocumentsModel' => __DIR__ . '/../..' . '/app/models/AdminLoanDocumentsModel.php',
         'App\\models\\AdminLoanListingModel' => __DIR__ . '/../..' . '/app/models/AdminLoanListingModel.php',
         'App\\models\\AdminManageBidsModel' => __DIR__ . '/../..' . '/app/models/AdminManageBidsModel.php',
@@ -806,6 +814,10 @@ class ComposerStaticInit64faa3126089bca3f530c4743b9b7695
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
+        'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
+        'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
+        'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
         'GuzzleHttp\\Client' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Client.php',
         'GuzzleHttp\\ClientInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/ClientInterface.php',
         'GuzzleHttp\\Cookie\\CookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php',

@@ -19,6 +19,10 @@
 	#ToolTables_user_0,#ToolTables_user_1 {
 		visibility:hidden;
 	}
+	div.DTED_Lightbox_Wrapper{
+		z-index:9999;
+	}
+	
 	</style>
 @stop
 @section('scripts')
@@ -74,3 +78,9 @@
 </div>
  @endsection  
 @stop
+<!--
+<script>
+$( "div" ).hasClass( "DTED_Lightbox_Wrapper" )
+$('div.DTED_Lightbox_Wrapper').css({"z-index":"9999"});
+</script>
+-->

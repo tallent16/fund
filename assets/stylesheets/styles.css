@@ -271,7 +271,9 @@ th {
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
-.glyphicon {
+.glyphicon,
+.icon-chevron-up,
+.icon-chevron-down {
   position: relative;
   top: 1px;
   display: inline-block;
@@ -626,10 +628,12 @@ th {
 .glyphicon-magnet:before {
   content: "\e112";
 }
-.glyphicon-chevron-up:before {
+.glyphicon-chevron-up:before, 
+.icon-chevron-up:before{
   content: "\e113";
 }
-.glyphicon-chevron-down:before {
+.glyphicon-chevron-down:before,
+.icon-chevron-down:before {
   content: "\e114";
 }
 .glyphicon-retweet:before {

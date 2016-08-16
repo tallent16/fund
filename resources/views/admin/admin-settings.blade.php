@@ -1,4 +1,10 @@
 @extends('layouts.dashboard')
+@section('styles')
+	{{ Html::style('css/bootstrap-timepicker.css') }}
+<!--
+	{{ Html::style('css/bootstrap-timepicker.min.css') }}
+-->
+@endsection  
 @section('page_heading',Lang::get('Settings') )
 @section('section')  
 <div id="alert-module-update"></div>	
@@ -77,5 +83,11 @@
 var baseurl = "{{url('')}}"  
 </script>
 <script src="{{ url('js/admin-settings.js')}}" type="text/javascript"></script>		
-@endsection
+<script src="{{ url('js/bootstrap-timepicker.js')}}" type="text/javascript"></script>		
+<!--
+<script src="{{ url('js/bootstrap-timepicker.min.js')}}" type="text/javascript"></script>	
+-->
+<script>
+$('.timepicker').timepicker();
+</script>	
 @stop

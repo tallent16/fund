@@ -10,7 +10,8 @@
 					<div class="col-sm-3">
 						{{ Form::select('modulelist', $adminsettingModel->moduleList, '$adminsettingModel->defaultmoduleval', ["class" => "selectpicker",
 							"id" => "type",
-							"filter_field" => "Yes"]) }} 
+							"filter_field" => "Yes" ,
+							"data-live-search"=>true ]) }} 
 					</div>
 				</div>
 				

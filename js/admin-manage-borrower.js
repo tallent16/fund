@@ -4,8 +4,7 @@ var manBorBulkDeleteConfirm	=	false;
 var manBorBulkRejectConfirm	=	false;
 $(document).ready(function (){  
 	
-
-	$("#bulk_approve_button").click(function(){
+	$("#bulk_approve_button").click(function(e){
 		var	appr_applicable	=	$("#default_approve_applicable").val();
 		var	errMessage		=	"";
 		if ($(".select_borrower_id:checked").length > 0){
@@ -13,13 +12,16 @@ $(document).ready(function (){
 				var status	=	$(this).attr("data-status");
 				var email	=	$(this).attr("data-email");
 				if(status	!=	appr_applicable){
-					errMessage	=	errMessage+"not applicable for this borrower "+email+" \n\n";
-				}
-			});
+					errMessage	=	errMessage+"not applicable for this borrower "+email+" \n\n";									
+				}					
+				       
+			});	
+				
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);							
 				return false;
 			}
+			
 			$("#processType").val("approve");
 			$("#form-manage-borrower").attr("action",baseUrl+"/admin/manageborrowers/bulkapprove");
 			$("#form-manage-borrower").submit();
@@ -46,7 +48,7 @@ $(document).ready(function (){
 					}
 				});
 				if(errMessage!=""){
-					showDialog("",errMessage);
+					showCusDialog("",errMessage);
 					return false;
 				}
 				retval = showDialogWithOkCancel("", "Warning!! Once Rejected you cannot undo this action."
@@ -72,7 +74,7 @@ $(document).ready(function (){
 					}
 				});
 				if(errMessage!=""){
-					showDialog("",errMessage);
+					showCusDialog("",errMessage);
 					return false;
 				}
 				retval = showDialogWithOkCancel("", "Warning!! Once Deleted you cannot undo this action."
@@ -150,4 +152,23 @@ function bulkRejectManageBorrowerFunc(retval) {
 	} else {
 		manBorBulkRejectConfirm	=	false;
 	}
+}
+function showCusDialog($title, $message) {
+	
+	$title = "Fund Yourselves Now";
+	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
+						
+	$('body').append(htmlelement);
+	
+	$( "#dialog-message" ).dialog({
+		modal: true,
+		buttons: {
+			Ok: function() {			
+				$('.select_borrower_id').prop('checked', false); 
+				$( this ).dialog( "close" );
+				$( this ).dialog( "destroy" );
+				$( this ).remove();
+			}
+		}
+    });
 }

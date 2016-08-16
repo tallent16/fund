@@ -27,7 +27,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$(".select_repayment:checked").each(function(key) {
@@ -41,7 +41,7 @@ $(document).ready(function (){
 				}
 			});
 			if(errMessage!=""){
-				showDialog("",errMessage);
+				showCusDialog("",errMessage);	
 				return false;
 			}
 			$("#form-borrower-repayment").submit();
@@ -53,3 +53,22 @@ $(document).ready(function (){
 	});
    
 });
+function showCusDialog($title, $message) {
+	
+	$title = "Fund Yourselves Now";
+	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
+						
+	$('body').append(htmlelement);
+	
+	$( "#dialog-message" ).dialog({
+		modal: true,
+		buttons: {
+			Ok: function() {			
+				$('.select_repayment').prop('checked', false); 
+				$( this ).dialog( "close" );
+				$( this ).dialog( "destroy" );
+				$( this ).remove();
+			}
+		}
+    });
+}

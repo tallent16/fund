@@ -1,4 +1,27 @@
 $(document).ready(function(){
+	  //Only accept numbers    
+	$(".numeric").keydown(function(event) { 
+		// Allow only backspace and delete
+		if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 ) {
+			// let it happen, don't do anything
+		}
+		else {
+			// Ensure that it is a number and stop the keypress
+			if (event.keyCode < 48 || event.keyCode > 57 ) {
+				event.preventDefault();	
+			}	
+		}
+	});		
+			
+	$("#autobidclose").change(function() {			
+		if($("#autobidclose").prop('checked') == true){
+			$('#auto_close_time').prop('disabled',false );
+		}else{
+			$('#auto_close_time').prop('disabled', true);
+		}
+		change();
+	});
+	
 	//after submit same tab to be active
 	$('#current-tab  a').click(function(e) {
 	  e.preventDefault();
@@ -232,4 +255,8 @@ function previewInvFirsttimePopup(){
 	var displaycontentformat = "<div class='row'><div class='col-sm-12'>"+invfirstcontent+"</div></div>";
 	$('#invFirstPopup .modal-body').html(displaycontentformat);
 	$('#invFirstPopup').modal("show");
+}
+function handleChange(input) {
+    if (input.value < 0) input.value = 0;
+    if (input.value > 20) input.value = 20;
 }

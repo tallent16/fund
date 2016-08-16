@@ -78,9 +78,67 @@
 						<br>					
 					</div>
 				</div>	
+				<hr>
+				<div class="row">
+					<div class="col-sm-3">
+					{{Lang::get('Auto Close of Bids')}}
+					</div>
+					<div class="col-sm-4">						
+						{{ Form::checkbox('autobidclose', 1, $row->auto_bids_close ,['id' => 'autobidclose']) }}
+						<br>					
+					</div>
+				</div>	
+				@if($row->auto_bids_close_cronjob_time == 1)
+					@var $status = ""
+				
+				@else
+					@var $status = "disabled"
+				
+				@endif
+				<div class="row">
+					<div class="col-sm-3">
+					{{Lang::get('Auto Close Time (daily)')}}
+					</div>
+					<div class="col-sm-4">						
+							<input type="text" class="form-control timepicker" 
+								name="auto_close_time"												
+								id="auto_close_time"
+								placeholder="HH::MM"
+								value="{{$row->auto_bids_close_cronjob_time}}"
+								{{$status}}>	
+				
+					</div>
+				</div>	
+				<hr>
+				<div class="row">
+					<div class="col-sm-3">
+					{{Lang::get('Reminder Mails to Borrower')}}
+					</div>
+					<div class="col-sm-4">						
+						{{ Form::checkbox('remindmail_borrower', 1, '$row->send_reminder_mails_to_borrower') }}
+						<br>					
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-sm-3">
+					{{Lang::get('Days Before Due Date')}}
+					</div>
+					<div class="col-sm-4">						
+							<input type="text" class="form-control numeric" 
+								name="daysbefore_duedate"												
+								id="daysbefore_duedate"
+								placeholder="No of Days"
+								value="{{$row->reminder_mails_days_before_due_date}}"
+								onchange="handleChange(this);">	
+						<br>					
+					</div>
+				</div>
 				@endforeach	
 			</div>
 			
 		</div>
 	</div>
 </div>
+<script>
+  
+</script>

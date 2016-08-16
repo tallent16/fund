@@ -107,16 +107,115 @@ class AdminManageBidsModel extends TranWrapper {
 				}
 				
 				$runningTotal += $this->loanBids[$index]->accepted_amount;
-			}
+			} 
 		}
 										
 	}
 	
-	public function closeBids($loanId) {
+	public function autoCloseBid() {
+		// This is called from the auto scheduler
 		
+		$dateCheck	=	date('Y-m-d');
+		
+	
+		$sql	=	"	SELECT	loan_id
+						FROM	loans
+						WHERE	bid_close_date <= '{$dateCheck}'
+						AND		status = :loan_open_for_bids ";
+						
+						
+		$rs		=	$this->dbFetchWithParam($sql, ["loan_open_for_bids" => LOAN_STATUS_APPROVED]);
+		
+	
+		if (count($rs) > 0) {
+			foreach ($rs as $row) {
+				$loanId		=	$row->loan_id;
+				$this->closeBids($loanId, false);
+			}
+		}
+		
+	}
+	
+	public function checkBidPastCloseDate($loanId) {
+		
+		$dateCheck	=	$this->systemDate_DT->format("Y-m-d");
+		
+		$sql	=	"	SELECT	loan_id
+						FROM	loans
+						WHERE	bid_close_date <= {$dateCheck}
+						AND		status = :loan_open_for_bids 
+						AND		loan_id = :loan_id";
+						
+						
+		$rs		=	$this->dbFetchWithParam($sql,
+							["loan_open_for_bids" => LOAN_STATUS_APPROVED,
+							 "loan_id" => $loanId]);
+		
+		
+		if (count($rs) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public function closeBids($loanId, $manual=true) {
+		// Manual closure of Bids when the admin or the borrower requests for the bids to be 
+		// closed
 		$moduleName	=	"Loan Process";
 		$actionSumm =	"Bids Closed";
 		$actionDet  =	"Bids Closed";
+		// Validate the closure of the bid
+		$loanApplyAmt_sql	=	"	SELECT	loans.apply_amount,
+											if(partial_sub_allowed = 1, min_for_partial_sub, apply_amount) min_loan_amount
+									FROM	loans
+									WHERE	loan_id = :loan_id ";
+		$loanApplyAmt_rs	=	$this->dbFetchWithParam($loanApplyAmt_sql, ["loan_id" => $loanId]);
+		if (count($loanApplyAmt_rs) == 0) {
+			// The unspeakable has happened. Return error
+			$this->failureText = "A Database error has occured. Please contact the system administrator";
+			return -1;
+		}
+		
+		$loanApplyAmt		=	$loanApplyAmt_rs[0]->apply_amount;
+		$loanMinAmt			=	$loanApplyAmt_rs[0]->min_loan_amount;
+		
+		$loanBidAmt_sql		=	"	SELECT sum(bid_amount) total_bids
+									FROM	loan_bids
+									WHERE	bid_status != :bid_cancelled_status 
+									AND		loan_id = :loan_id";
+									
+		$loanBidAmt_rs		=	$this->dbFetchWithParam($loanBidAmt_sql, 
+									["bid_cancelled_status" => LOAN_BIDS_STATUS_CANCELLED,
+									 "loan_id" => $loanId]);
+		
+		if (!$manual) {
+			$rejectAllowed = true;
+		} else {
+			if ($this->checkBidPastCloseDate($loanId)) {
+				$rejectAllowed = true;
+			} else {
+				$rejectAllowed = false;
+			}
+		}
+		 
+		if (count($loanBidAmt_rs) == 0) {
+			$loanBidAmt = 0;
+		} else {
+			$loanBidAmt	=	$loanBidAmt_rs[0]->total_bids;
+		}
+		
+		if ($loanBidAmt < $loanMinAmt) {
+			if (!$rejectAllowed) {
+				// Validation failed. 
+				$this->failureText = "Loan cannot be closed since insufficient bids received. <br>
+									Inconsistent data encountered. Please contact the system administrator";
+				return -1;
+			} 
+			return $this->closeRejectLoan($loanId);
+		}
+		
 		$this->getLoanBids($loanId);
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"Loan Reference Nu",$this->loan_reference_number);
@@ -142,7 +241,80 @@ class AdminManageBidsModel extends TranWrapper {
 		$this->successTxt	=	$this->getSystemMessageBySlug("loan_bid_closed");
 		return;	
 		
+	}
+	
+	public function closeRejectLoan($loanId) {
+		// Called when the loan is past its Bids Close DAte and has not received 
+		// sufficient bids, then it is rejected 
+		$tableName		=	"loans";
+		$dataArray		=	["status" 	=>	LOAN_STATUS_UNSUCCESSFUL_LOAN];
+		$where			=	["loan_id"	=>	$loanId];
 		
+		$this->dbUpdate($tableName, $dataArray, $where);
+		
+		$sql			=	"	SELECT	loan_reference_number,
+										borrower_id
+								FROM	loans
+								WHERE	loan_id = :loan_id ";
+		echo $sql;
+		
+		$rs				=	$this->dbFetchWithParam($sql, ["loan_id" => $loanId]);
+		
+		$borrId			=	$rs[0]->borrower_id;
+		$loanRefNo		=	$rs[0]->loan_reference_number;
+		
+		
+		$sql			=	" 	SELECT 	investor_id,
+										bid_amount
+								FROM	loan_bids
+								WHERE	loan_id = :loan_id
+								AND		bid_status = :open_bid_status ";
+		
+		$rs				=	$this->dbFetchWithParam($sql, 
+								["loan_id" => $loanId,
+								 "open_bid_status" => LOAN_BIDS_STATUS_OPEN]);
+		
+		if (count($rs) > 0) {
+			foreach ($rs as $row) {
+				$invId	=	$row->investor_id;
+				$bidAmt =	$row->bid_amount;
+
+				$invOldBal		=	$this->getInvestorAvailableBalanceById($invId);
+				$invNewBal		=	$invOldBal + $bidAmt;
+				$whereArray		=	array("investor_id"	=>	$invId);
+				$dataArray		=	array("available_balance"	=>	$invNewBal);
+				$this->dbUpdate('investors', $dataArray, $whereArray);
+			
+				$fields 			= 	array(	'[investor_firstname]',
+												'[investor_lastname]',
+												'[loan_number]',
+												'[investor_current_balance]'
+											);
+				$replace_array 		= 	array( 	$invUserInfo->firstname,
+												$invUserInfo->lastname,
+												$loanRefNo,
+												$invNewBal);
+													
+				$invUserInfo		=	$this->getInvestorIdByUserInfo($invId);
+				$slug_name			=	"loan_unsuccessful_investor";		
+												
+				$this->sendMailByModule($slug_name,$invUserInfo->email,$fields,$replace_array);				
+				
+			}
+			
+		}
+		
+		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrId);
+		$borrInfo			=	$this->getBorrowerInfoById($borrId);
+
+		
+		$fields 			= array('[borrower_contact_person]',
+									'[loan_number]');
+
+		$replace_array 		= array( 	$borrInfo->contact_person, 
+										$loanRefNo );
+		$slug_name			=	"loan_unsuccessful_borrower";									
+		$this->sendMailByModule($slug_name, $borrUserInfo->email, $fields, $replace_array);
 	}
 	
 	public function acceptBids($loanId) {
@@ -174,6 +346,7 @@ class AdminManageBidsModel extends TranWrapper {
 
 		if (count($loanApplyAmt_rs) == 0) {
 			// The unspeakable has happened. Return error
+			$this->failureText = "A Database error has occured. Please contact the system administrator";
 			return -1;
 		}
 		
@@ -187,6 +360,7 @@ class AdminManageBidsModel extends TranWrapper {
 		if ($totAcceptedAmt < $loanMinAmt) {
 			// This validation should be done at the Frontend itself. But this is being done 
 			// here to make sure that the validations have not been bypassed
+			$this->failureText = "Inconsistent data error encountered. Please contact the system administrator";
 			return -1;
 		}
 
@@ -241,17 +415,17 @@ class AdminManageBidsModel extends TranWrapper {
 			$investorId			=	$investorArray[$bidId];
 			$invUserInfo		=	$this->getInvestorIdByUserInfo($investorId);
 			
-			$fields 			= 	array(	'[investor_firstname]', '[investor_lastname]',
+			$fields 			= 	array(	'[investor_firstname]', 
+											'[investor_lastname]',
 											'[loan_number]',
 											'[bid_amount]',
-											'[bid_accepted_amount]',
-											'[application_name]',
+											'[bid_accepted_amount]'
 											);
 			$replace_array 		= 	array( 		$invUserInfo->firstname,
 												$invUserInfo->lastname,
+												$this->loan_reference_number,
 												$bidAmtArray[$bidId],
-												$acceptAmount,
-												$this->loan_reference_number );
+												$acceptAmount);
 			if($bidStatus	==		LOAN_BIDS_STATUS_ACCEPTED)							
 				$slug_name			=	"loan_bids_accepted";									
 			else
