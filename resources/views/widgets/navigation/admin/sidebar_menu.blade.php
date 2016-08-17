@@ -19,17 +19,11 @@
 			<a href="{{ url ('admin/manageloans') }}"><i class="fa fa-signal fa-fw"></i>{{ Lang::get('Manage Loans') }} <span class="fa arrow"></span></a> 
 				<ul class="nav nav-second-level">
 					<li>
-						<a href="{{ url ('admin/loanlisting') }}">{{ Lang::get('Loan Listing') }}</a>
+						<a href="{{ url ('admin/loanlisting') }}">{{ Lang::get('All Loans') }}</a>
 					</li> 
-				<!--	<li>
-						<a href="{{ url ('admin/loanapproval') }}">{{ Lang::get('Loan Approval') }}</a>
-					</li> 
-					<li>
-						<a href="{{ url ('admin/managebids') }}">{{ Lang::get('Manage Bids') }}</a>
-					</li>
-					<li>
-						<a href="{{ url ('admin/disburseloan') }}">{{ Lang::get('Loan Disbursal') }}</a>
-					</li>-->
+				<li>
+						<a href="{{ url ('admin/loandisplayorder') }}">{{ Lang::get('Loan Display Ordering') }}</a>
+					</li> 					
 				</ul>
 		</li>
 	@endpermission

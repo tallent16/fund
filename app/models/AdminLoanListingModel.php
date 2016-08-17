@@ -2,6 +2,20 @@
 use fileupload\FileUpload;
 use File;
 use Config;
+include( app_path()."/libraries/php/DataTables.php" );
+use
+	DataTables\Editor,
+	DataTables\Editor\Field,
+	DataTables\Editor\Format,
+	DataTables\Editor\Join,
+	DataTables\Editor\Validate;
+	use DataTables\Database;
+	
+use Auth;  
+
+use Request;
+
+use DB;
 class AdminLoanListingModel extends TranWrapper {
 	
 	public  $allTransList					= array();
@@ -134,4 +148,127 @@ class AdminLoanListingModel extends TranWrapper {
 		}		
 		return	$row;			
 	}		
+	
+	public function viewLoanDisplayOrderList(){
+	
+		$displayListSql	=	"SELECT FORMAT(loans.loan_sanctioned_amount,2) loan_sanctioned_amount,
+									loans.loan_reference_number,
+									loans.featured_loan,
+									loans.loan_display_order,
+									loans.loan_id,
+									( 	SELECT	codelist_value 
+										FROM	codelist_details
+										WHERE	codelist_id = :bidstatus_codeparam
+										AND		codelist_code = loans.bid_type) bid_type_name,
+									IFNULL(loans.bid_type,'') bid_type,								
+									DATE_FORMAT(loans.bid_close_date, '%d-%m-%Y') bid_close_date,	
+									IFNULL(loans.target_interest,'0.00') target_interest,
+									loans.loan_tenure,										
+									( 	SELECT	codelist_value 
+										FROM	codelist_details
+										WHERE	codelist_id = :loanstatus_codeparam
+										AND		codelist_code = loans.status) loan_status_name,
+									loans.status,
+									borrowers.business_name
+							FROM	loans 
+									LEFT OUTER JOIN
+									borrowers
+									ON  loans.borrower_id = borrowers.borrower_id
+							WHERE  	loans.status = :filter_codeparam						
+							order by loans.loan_id ASC";
+							
+			$dataArrayLoanList		=	[
+											"bidstatus_codeparam" => LOAN_BID_TYPE,
+											"loanstatus_codeparam" => LOAN_STATUS,						
+											"filter_codeparam" => LOAN_STATUS_APPROVED											
+										];
+
+			$this->loanListInfo			=	$this->dbFetchWithParam($displayListSql, $dataArrayLoanList);			
+			$row			=	array();
+			if ($this->loanListInfo) {
+				foreach ($this->loanListInfo as $Row) {
+					
+					$row[] 	= array(
+										"DT_RowId"=>"row_".$Row->loan_id,
+										"loan_id"=>$Row->loan_id,
+										"loan_reference_number"=>$Row->loan_reference_number,
+										"featured_loan"=>$Row->featured_loan,
+										"loan_display_order"=>$Row->loan_display_order,
+										"business_name"=>$Row->business_name,									
+										"loan_sanctioned_amount"=>$Row->loan_sanctioned_amount,										
+										"bid_type"=>$Row->bid_type_name,		
+										"status"=>$Row->status,									
+										"bid_close_date"=>$Row->bid_close_date,
+										"loan_status_name"=>$Row->loan_status_name									
+									);	
+				}
+			}		
+			return	$row;
+	}
+	public function EditLoanDisplayOrderList($postArray){
+		
+		$loanid		   = $postArray['id'];
+		$featured	   = isset($postArray['data']['featured_loan'][0])?$postArray['data']['featured_loan'][0]:0;
+		$loandisplay   = $postArray['data']['loan_display_order'];
+		$dataArray 	   = array( 'featured_loan'	=> $featured,'loan_display_order'=>$loandisplay);
+		$whereArry	   = array("loan_id"=>str_replace("row_","",$loanid));
+		$this->dbUpdate('loans', $dataArray, $whereArry );		
+		return	$this->getUpdatedRowByLoanId(str_replace("row_","",$loanid));
+	}
+	
+	public function getUpdatedRowByLoanId($loan_id) {
+		
+		$displayListSql	=	"SELECT FORMAT(loans.loan_sanctioned_amount,2) loan_sanctioned_amount,
+									loans.loan_reference_number,
+									loans.featured_loan,
+									loans.loan_display_order,
+									loans.loan_id,
+									( 	SELECT	codelist_value 
+										FROM	codelist_details
+										WHERE	codelist_id = :bidstatus_codeparam
+										AND		codelist_code = loans.bid_type) bid_type_name,
+									IFNULL(loans.bid_type,'') bid_type,								
+									DATE_FORMAT(loans.bid_close_date, '%d-%m-%Y') bid_close_date,	
+									IFNULL(loans.target_interest,'0.00') target_interest,
+									loans.loan_tenure,										
+									( 	SELECT	codelist_value 
+										FROM	codelist_details
+										WHERE	codelist_id = :loanstatus_codeparam
+										AND		codelist_code = loans.status) loan_status_name,
+									loans.status,
+									borrowers.business_name
+							FROM	loans 
+									LEFT OUTER JOIN
+									borrowers
+									ON  loans.borrower_id = borrowers.borrower_id
+							WHERE  	loans.loan_id	=	{$loan_id}
+							order by loans.loan_id ASC";
+							
+		$dataArrayLoanList		=	[
+										"bidstatus_codeparam" => LOAN_BID_TYPE,
+										"loanstatus_codeparam" => LOAN_STATUS
+										
+									];
+
+		$this->loanListInfo			=	$this->dbFetchWithParam($displayListSql, $dataArrayLoanList);			
+		$row			=	array();
+		if ($this->loanListInfo) {
+			$row	= array(
+							"DT_RowId"=>"row_".$this->loanListInfo[0]->loan_id,
+							"loan_id"=>$this->loanListInfo[0]->loan_id,
+							"loan_reference_number"=>$this->loanListInfo[0]->loan_reference_number,
+							"featured_loan"=>$this->loanListInfo[0]->featured_loan,
+							"loan_display_order"=>$this->loanListInfo[0]->loan_display_order,
+							"business_name"=>$this->loanListInfo[0]->business_name,									
+							"loan_sanctioned_amount"=>$this->loanListInfo[0]->loan_sanctioned_amount,
+							"bid_type"=>$this->loanListInfo[0]->bid_type_name,		
+							"status"=>$this->loanListInfo[0]->status,									
+							"bid_close_date"=>$this->loanListInfo[0]->bid_close_date,
+							"loan_status_name"=>$this->loanListInfo[0]->loan_status_name									
+						);	
+		}	
+		
+		return	$row;
+		
+	}
 }

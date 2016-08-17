@@ -623,6 +623,12 @@ Route::post('admin/approvechangeofbank/reject',
 										'uses' 			=>	'AdminLoanListingController@indexAction'
 									]
 			);
+			
+    Route::get('admin/loandisplayorder', [	'as' 			=> 	'admin.loandisplayorder', 
+											'uses' 			=>	'AdminLoanDisplayController@indexAction'
+										]
+			);
+			
 	Route::get('admin/managebids/{loan_id}', 
 									[	
 										'middleware' 	=> 	'permission',
@@ -1133,6 +1139,9 @@ Route::post('admin/approvechangeofbank/reject',
 		
 		Route::get('admin/ajax/adminloanlisting', 'AdminLoanListingController@ajaxLoanList');
 		Route::post('admin/ajax/adminloanlisting', 'AdminLoanListingController@ajaxLoanList');
+		
+		Route::get('admin/ajax/adminloandisplay', 'AdminLoanDisplayController@ajaxEditLoanDisplayOrderList');
+		Route::post('admin/ajax/adminloandisplay', 'AdminLoanDisplayController@ajaxEditLoanDisplayOrderList');
 		
 		Route::get('admin/ajax/adminrepaylist', 'AdminBorrowersRepaymentListingController@ajaxRepayList');
 		Route::post('admin/ajax/adminrepaylist', 'AdminBorrowersRepaymentListingController@ajaxRepayList');

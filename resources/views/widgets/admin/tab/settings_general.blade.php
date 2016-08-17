@@ -88,13 +88,14 @@
 						<br>					
 					</div>
 				</div>	
-				@if($row->auto_bids_close_cronjob_time == 1)
-					@var $status = ""
-				
-				@else
+				@if($row->auto_bids_close_cronjob_time == "00:00:00")
 					@var $status = "disabled"
 				
+				@else
+					@var $status = ""
+				
 				@endif
+			
 				<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Auto Close Time (daily)')}}

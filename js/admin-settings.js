@@ -12,7 +12,7 @@ $(document).ready(function(){
 			}	
 		}
 	});		
-			
+	//if Checkbox is marked, then Auto close time textbox will be editable otherwise disabled 		
 	$("#autobidclose").change(function() {			
 		if($("#autobidclose").prop('checked') == true){
 			$('#auto_close_time').prop('disabled',false );

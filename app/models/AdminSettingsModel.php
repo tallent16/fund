@@ -181,7 +181,7 @@ class AdminSettingsModel extends TranWrapper {
 			$mailCC					= $postArray['mail_cc'];
 			$sendLiveMail			= isset($postArray['livemails'])?$postArray['livemails']:0;
 			$autobidclose			= isset($postArray['autobidclose'])?$postArray['autobidclose']:0;
-			$auto_bids_closetime	= $postArray['auto_close_time'];
+			$auto_bids_closetime	= isset($postArray['auto_close_time'])?$postArray['auto_close_time']:"00:00";
 			$remindmail_borrower	= isset($postArray['remindmail_borrower'])?$postArray['remindmail_borrower']:0;
 			$daysbefore_duedate		= $postArray['daysbefore_duedate'];
 			/*Second Tab*/
