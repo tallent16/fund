@@ -107,6 +107,7 @@ class LoanDetailsModel extends TranWrapper {
 											loans.loan_id,
 											loans.loan_reference_number,
 											loans.loan_tenure,
+											loans.featured_loan,
 											round(ifnull(total_bid * 100 / apply_amount,0),2) perc_funded,
 											loans.target_interest,
 											loans.bid_type,

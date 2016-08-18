@@ -9,7 +9,7 @@ $(document).ready(function() {
 			}
 	} );	
 	
-	 $('#admindisplayorder').on( 'change', 'input.editor-active', function () {
+	$('#admindisplayorder').on( 'change', 'input.editor-active', function () {
         editor
             .edit( $(this).closest('tr'), false )
             .set( 'featured_loan', $(this).prop( 'checked' ) ? 1 : 0 )
@@ -69,24 +69,89 @@ function callDataTableFunc(){
 								str=str+data.loan_reference_number+'</a>';							
 							return str;
 						}
-					},					
-					{ data: "business_name","className":"text-left"},	
-					{ data: "loan_sanctioned_amount","className":"text-right"},	
-					{ data: "bid_type","className":"text-left"},	
-					{ data: "bid_close_date","className":"text-left"},	
-					{ data: "loan_status_name","className":"text-left"},	
+					},			
+					{ 
+						data: null,
+						className: "text-left",
+						render: function(data, type, full, meta){
+							
+							var str ="";							      					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit" >';
+								str=str+data.business_name+'</a>';							
+							return str;
+						}
+					},	
+					{ 
+						data: null,
+						className: "text-right",
+						render: function(data, type, full, meta){
+							
+							var str ="";							      					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit" >';
+								str=str+data.loan_sanctioned_amount+'</a>';							
+							return str;
+						}
+					},	
+					{ 
+						data: null,
+						className: "text-left",
+						render: function(data, type, full, meta){
+							
+							var str ="";							      					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit" >';
+								str=str+data.bid_type+'</a>';							
+							return str;
+						}
+					},
+					{ 
+						data: null,
+						className: "text-left",
+						render: function(data, type, full, meta){
+							
+							var str ="";							      					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit" >';
+								str=str+data.bid_close_date+'</a>';							
+							return str;
+						}
+					},
+					{ 
+						data: null,
+						className: "text-left",
+						render: function(data, type, full, meta){
+							
+							var str ="";							      					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit" >';
+								str=str+data.loan_status_name+'</a>';							
+							return str;
+						}
+					},
 					{
 						data:   "featured_loan",
+						className: "text-center",
 						render: function ( data, type, row ) {
 							if ( type === 'display' ) {
 								return '<input type="checkbox" class="editor-active">';
 							}
 							return data;
-						},
-						className: "dt-body-center"
+						},						
+					},					
+					{ 
+						data: null,
+						className: "text-center",
+						render: function(data, type, full, meta){
+							
+							var str ="";							      					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit" >';
+								str=str+data.loan_display_order+'</a>';							
+							return str;
+						}
 					},
-					{ data: "loan_display_order","className":"text-left"},	
-					
 				],
 		order: [ 0, 'asc' ],
 		

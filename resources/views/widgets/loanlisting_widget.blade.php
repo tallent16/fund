@@ -2,7 +2,7 @@
 @var $loanurl = url($loanurl)
 <div class="row loan-list-container" onclick="redirecturl('{{ $loanurl }}')">
 	<div class="col-sm-12 col-lg-4 tab-head loan-list-image"> 	
-		@if ($loanRow->isfeatured == 1)
+		@if ($loanRow->featured_loan == 1)
 			<div class="imageoverlap">
 				{{ Html::image('img/featured.png', '', array('class' => 'img-responsive')) }}
 			</div>
@@ -62,7 +62,7 @@
 		</div>	<!--row- panel white-->
 		<div class="row panel-footer">
 			<div class="text-center">{{ Lang::get('borrower-loanlisting.repayment_type') }}: 
-				<span class="panel-subhead">{{ Lang::get('borrower-loanlisting.monthly_install') }}</span>
+				<span class="panel-subhead">{{ $loanRow->repayment_type_name }}</span>
 			</div>									
 		</div><!--row-->																							
 	</div><!--col-8-->

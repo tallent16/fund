@@ -117,13 +117,19 @@ class LoanListingModel extends TranWrapper {
 											business_organisation,
 											borrowers.industry,
 											purpose_singleline,
+											featured_loan,
 											loan_tenure,
 											round(ifnull(total_bid * 100 / apply_amount,0),2) perc_funded,
 											round(apply_amount,2) apply_amount,
 											target_interest,
 											datediff(bid_close_date, now()) days_to_go,
 											IFNULL(loan_risk_grade,'') borrower_risk_grade,
-											repayment_type,
+											repayment_type,											
+											 CASE  repayment_type 
+												WHEN 1 THEN 'Bullet'   
+												WHEN 2 THEN 'Monthly Interest'   
+												WHEN 3 THEN 'EMI'
+											END as repayment_type_name,
 											company_image_thumbnail,
                                             if (ifnull(featured.loan_id,-1) = -1, 0, 1) isfeatured
 									FROM	loans 
@@ -151,7 +157,7 @@ class LoanListingModel extends TranWrapper {
 											{$loanAmtWhere}
 											{$tenureWhere}
 											{$gradeWhere}
-									order by isfeatured desc, loan_display_order asc
+									order by featured_loan desc, loan_display_order asc
 ";
 	
 		$this->loanList	=	$this->dbFetchWithParam($loanlist_sql, 
