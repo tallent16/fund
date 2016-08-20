@@ -343,7 +343,7 @@ class MoneyMatchModel extends Model {
 			
 			$this->systemAllMessage[$mod_id][$slug]	=	$messageText;
 		}
-		return $result;
+		return $messageText;
 	}
 
 }

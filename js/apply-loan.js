@@ -15,7 +15,7 @@ $(document).ready(function(){
 		$("#isSaveButton").val("yes");
 	});
 	$("#form-applyloan").submit(function( event ) {
-
+       
 		var	isSaveButtonClicked		=	$("#isSaveButton").val();
 		if(isSaveButtonClicked	!=	"yes") {
 			

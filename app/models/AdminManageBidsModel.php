@@ -138,7 +138,8 @@ class AdminManageBidsModel extends TranWrapper {
 	
 	public function checkBidPastCloseDate($loanId) {
 		
-		$dateCheck	=	$this->systemDate_DT->format("Y-m-d");
+		//~ $dateCheck	=	$this->systemDate_DT->format("Y-m-d");
+		$dateCheck	=	date("Y-m-d");
 		
 		$sql	=	"	SELECT	loan_id
 						FROM	loans
