@@ -61,7 +61,7 @@ $(document).ready(function (){
 	
    $.ajaxSetup({
 		headers: {
-			'X-CSRF-TOKEN': $('#hidden_token').val()
+			'X-CSRF-TOKEN': $('#hidden_tokenz').val()
 		}
 	});
 	

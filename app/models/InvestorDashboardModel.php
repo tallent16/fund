@@ -128,7 +128,7 @@ class InvestorDashboardModel extends TranWrapper {
 													borrowers.borrower_risk_grade,
 													loan_sanctioned_amount,
 													bid_amount,
-													date_format(bid_datetime, '%d-%m-%y') date_of_investment
+													date_format(bid_datetime, '%d-%m-%y') date_of_investment,
 													loan_tenure,
 													case loans.bid_type 
 														   when 1 then 'Open Bid' 
@@ -209,7 +209,7 @@ class InvestorDashboardModel extends TranWrapper {
 													borrowers.borrower_risk_grade,
 													accepted_amount,
 													payment_schedule_amount,
-													datediff(now(),payment_scheduled_date)  overdue_since
+													datediff(now(),payment_scheduled_date)  overdue_since,
 													installment_number
 											FROM	borrowers,
 													loans,

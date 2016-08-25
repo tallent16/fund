@@ -228,7 +228,7 @@
 					<div class="col-xs-12 col-sm-7 col-lg-5" id="trans_ref_parent">					
 							<input 	id="trans_ref" 
 									type="text" 
-									class="trans_ref_no form-control" 
+									class="trans_ref_no form-control required" 
 									name="trans_ref"									
 									value="{{$adminBorRepayViewMod->transreference_no}}" 
 									 />						

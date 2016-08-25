@@ -20,7 +20,7 @@
 					<thead>
 						<tr>
 							<th class="tab-head text-right">{{ Lang::get('Installment No')}}</th>
-							<th class="tab-head text-left">{{ Lang::get('Loan Reference N0')}}</th>
+							<th class="tab-head text-left">{{ Lang::get('Loan Reference No')}}</th>
 							<th class="tab-head text-left">{{ Lang::get('Scheduled date')}}</th>
 							<th class="tab-head text-left">{{ Lang::get('Loan Period')}}</th>
 							<th class="tab-head text-right">{{ Lang::get('Scheduled Amount')}}</th>

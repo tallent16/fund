@@ -31,7 +31,7 @@
 				$('.has-error').removeClass("has-error");
 				var $parentTag = $("#trans_ref_parent");
 				
-				if($("#isSaveButton").val()	!=	"yes") {
+				if($("#isSaveButton").val()	==	"yes") {					
 					if($("#trans_ref").val()	==	"") {
 						$parentTag.addClass('has-error').append('<span class="control-label error">Required field</span>');
 						e.preventDefault();
