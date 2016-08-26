@@ -307,7 +307,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 	}
 	
 	public function approveDeposit($trans_id) {
-		\Log::error("approve Deposit:".$trans_id);
+		//~ \Log::error("approve Deposit:".$trans_id);
 		$investorBankTranInfo	=	$this->getInvesorBankTransInfoById($trans_id);
 		$paymentId				=	$investorBankTranInfo[0]->payment_id;
 		$investorId				=	$investorBankTranInfo[0]->investor_id;

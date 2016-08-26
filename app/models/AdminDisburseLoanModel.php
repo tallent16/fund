@@ -136,7 +136,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 			$this->repayment_schedule[$index]["repayment_penalty_charges"] 	= number_format($row->repayment_penalty_charges, 2, ".", ",");
 			$this->repayment_schedule[$index]["repayment_penalty_interest"] = number_format($row->repayment_penalty_interest, 2, ".", ",");
 			$this->repayment_schedule[$index]["total"] = number_format($row->total, 2, ".", ",");
-			
+				
 			switch ($row->repayment_status) {
 				
 				case BORROWER_REPAYMENT_STATUS_UNPAID:
@@ -150,8 +150,16 @@ class AdminDisburseLoanModel extends TranWrapper {
 				case BORROWER_REPAYMENT_STATUS_PAID:
 					$status = 'Paid';
 					break;
-			}
 					
+				case BORROWER_REPAYMENT_STATUS_CANCELLED:
+					$status = 'Cancelled';
+					break;
+				
+				case BORROWER_REPAYMENT_STATUS_OVERDUE:
+					$status = 'Overdue';
+					break;
+			}
+			
 			$this->repayment_schedule[$index]["repayment_status"] = $status;
 			$this->jsonBorrRepay = json_encode($this->repayment_schedule);
 			
@@ -784,6 +792,14 @@ class AdminDisburseLoanModel extends TranWrapper {
 				case BORROWER_REPAYMENT_STATUS_PAID:
 					$status = 'Paid';
 					break;
+				
+				case BORROWER_REPAYMENT_STATUS_CANCELLED:
+					$status = 'Cancelled';
+					break;
+				
+				case BORROWER_REPAYMENT_STATUS_OVERDUE:
+					$status = 'Overdue';
+					break;
 			
 			}
 			$instNum = $instNum - 1;
@@ -903,8 +919,8 @@ class AdminDisburseLoanModel extends TranWrapper {
 				$dataArray['repayment_status'] = BORROWER_REPAYMENT_STATUS_CANCELLED;
 			}
 			
-			Log::error("borrower - Installment Number {$instNum}");
-			Log::error($dataArray);
+			//~ Log::error("borrower - Installment Number {$instNum}");
+			//~ Log::error($dataArray);
 			
 								
 			$whereArray	=	[ 'loan_id' => $loanId,
