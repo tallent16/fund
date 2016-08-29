@@ -126,13 +126,16 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 		$current_borrower_id	=	 $this->getCurrentBorrowerID();
 		
 		$loanlist_sql			= "	SELECT 	ifnull(DATE_FORMAT(loanrepsch.repayment_schedule_date,'%d/%m/%Y'),'') repayment_schedule_date,
-											ROUND(loanrepsch.repayment_scheduled_amount,2) repayment_scheduled_amount,
+											FORMAT(loanrepsch.repayment_scheduled_amount,2) repayment_scheduled_amount,
 											case loanrepsch.repayment_status 
 												   when 1 then 'Unpaid' 
-												   when 2 then 'Paid'
+												   when 2 then 'Not Approved'
+												   when 3 then 'Paid'
+												   when 4 then 'Cancelled'
+												   when 5 then 'Overdue'
 											end as repayment_status,
 											ifnull(DATE_FORMAT(loanrepsch.repayment_actual_date,'%d/%m/%Y'),'') repayment_actual_date ,
-											if (repayment_status != 1, repayment_scheduled_amount + ifnull(repayment_penalty_interest, 0) + ifnull(repayment_penalty_charges, 0), 0) repayment_actual_amount
+											FORMAT(if (repayment_status != 1, repayment_scheduled_amount + ifnull(repayment_penalty_interest, 0) + ifnull(repayment_penalty_charges, 0), 0.00),2) repayment_actual_amount
 									FROM 	borrower_repayment_schedule loanrepsch
 									WHERE	loanrepsch.borrower_id		=	{$current_borrower_id}
 									AND		loanrepsch.loan_id			=	{$loan_id}";
