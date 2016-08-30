@@ -33,8 +33,8 @@ return [
 	'interest_rate'			=> 'Interest Rate',
 	'installments'			=> 'No of Installments',
 	'repayment_amount'		=> 'Total Repayment Amount',
-	'principal_amount'		=> 'Total Princicpal Amount',
-	'lastest_status'		=> 'Lastest Status',
+	'principal_amount'		=> 'Total Principal Amount',
+	'lastest_status'		=> 'Latest Status',
 	'nov'					=> 'Nov',
 	'paid'					=> 'Paid',
 ];
