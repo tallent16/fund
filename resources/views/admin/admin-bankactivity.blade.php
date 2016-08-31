@@ -22,7 +22,7 @@
 		}
 	</script>
 	@endsection
-@section('page_heading',Lang::get('Bank Activty Report') )
+@section('page_heading',Lang::get('Bank Activity Report') )
 @section('section')  
 	@var	$bankActList	=	$adminBankActRepMod->bankActList;
 	@var	$fromDate		=	$adminBankActRepMod->fromDateFilterValue;

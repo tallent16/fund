@@ -7,7 +7,7 @@
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
 @endsection
-@section('page_heading',Lang::get('Transcation History'))
+@section('page_heading',Lang::get('Transaction History'))
 @section('section')    
 	@var	$tranList	=	$tranModel->tranList;
 	<div class="col-sm-12 space-around">	
@@ -19,9 +19,9 @@
 					<table class="table table-striped table-border-custom text-left">
 						<thead>
 							<tr>
-								<th class="tab-head text-left">{{Lang::get('Transcation Reference')}}</th>
-								<th class="tab-head text-left">{{Lang::get('Transcation Date')}}</th>
-								<th class="tab-head text-left">{{Lang::get('Transcation Type')}}</th>
+								<th class="tab-head text-left">{{Lang::get('Transaction Reference')}}</th>
+								<th class="tab-head text-left">{{Lang::get('Transaction Date')}}</th>
+								<th class="tab-head text-left">{{Lang::get('Transaction Type')}}</th>
 								<th class="tab-head text-right">{{Lang::get('Amount')}}</th>
 								<th class="tab-head text-left">{{Lang::get('Remarks')}}</th>
 								<th class="tab-head text-right">{{Lang::get('Closing Balance')}}</th>																

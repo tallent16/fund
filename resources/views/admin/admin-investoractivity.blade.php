@@ -22,7 +22,7 @@
 		}
 	</script>
 	@endsection
-@section('page_heading',Lang::get('Investor Activty Report') )
+@section('page_heading',Lang::get('Investor Activity Report') )
 @section('section')  
 	@var	$invFilter	=	$adminInvActRepMod->invFilterValue;
 	@var	$fromDate	=	$adminInvActRepMod->fromDateFilterValue;

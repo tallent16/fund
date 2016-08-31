@@ -90,7 +90,7 @@
 								</td>
 								<td>{{$loanRow->tran_date}}</td>
 								<td>{{ Lang::get($loanRow->tran_type)}}</td>
-								<td class="text-right">{{$loanRow->tran_amt}}</td>
+								<td class="text-right">{{number_format($loanRow->tran_amt,2,'.',',')}}</td>
 								<td>{{ Lang::get($loanRow->transdetail)}}</td>
 							</tr>
 						@endforeach		

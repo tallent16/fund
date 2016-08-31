@@ -13,7 +13,7 @@ return [
 	|
 	*/
 	
-	'page_heading'					=> 'Transcation History',
+	'page_heading'					=> 'Transaction History',
 	'filter_transcations'			=> 'Filter Transactions',
 	'from_date'						=> 'From Date',
 	'to_date'						=> 'To Date',
@@ -26,10 +26,10 @@ return [
 	'target_interest'				=> 'Target Interest',
 	'realized_interest'				=> 'Realized Interest',
 	'balance_outstanding'			=> 'Balance Outstanding',
-	'trans_type'					=> 'Transcation Type',
-	'trans_date'					=> 'Transcation Date',
-	'trans_amt'						=> 'Transcation Amount',
-	'trans_details'					=> 'Transcation Details',
+	'trans_type'					=> 'Transaction Type',
+	'trans_date'					=> 'Transaction Date',
+	'trans_amt'						=> 'Transaction Amount',
+	'trans_details'					=> 'Transaction Details',
 	
 	
 ];

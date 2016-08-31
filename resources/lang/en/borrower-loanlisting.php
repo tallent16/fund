@@ -14,7 +14,7 @@ return [
 	*/
 	
 	'page_heading'					=> 'Loan Listing',
-	'alert_msg_text'				=> 'We are here to help you find the best loans to find.',
+	'alert_msg_text'				=> 'We are here to help you find the best loan to find.',
 	'interest_rate'					=> 'Interest Rate',
 	'loan_amount'					=> 'Loan Amount',
 	'tenure'						=> 'Tenure',

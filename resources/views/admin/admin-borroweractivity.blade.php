@@ -22,7 +22,7 @@
 		}
 	</script>
 	@endsection
-@section('page_heading',Lang::get('Borrower Activty Report') )
+@section('page_heading',Lang::get('Borrower Activity Report') )
 @section('section')  
 	@var	$borFilter	=	$adminBorActRepMod->borFilterValue;
 	@var	$fromDate	=	$adminBorActRepMod->fromDateFilterValue;
