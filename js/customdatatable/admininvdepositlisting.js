@@ -130,6 +130,42 @@ function callDataTableFunc(){
 								var inveditUrl = inheritvarvalues(data);	           				
 								var str ="";  								
 								str=str+'<a href="'+inveditUrl+'"';
+								str=str+'>'+data.lastname+'</a>';						
+								return str;
+        					 
+        					}
+						},
+						{ 													
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){ 								
+								var inveditUrl = inheritvarvalues(data);	           				
+								var str ="";  								
+								str=str+'<a href="'+inveditUrl+'"';
+								str=str+'>'+data.email+'</a>';						
+								return str;
+        					 
+        					}
+						},
+						{ 													
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){ 								
+								var inveditUrl = inheritvarvalues(data);	           				
+								var str ="";  								
+								str=str+'<a href="'+inveditUrl+'"';
+								str=str+'>'+data.mobile+'</a>';						
+								return str;
+        					 
+        					}
+						},
+						{ 													
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){ 								
+								var inveditUrl = inheritvarvalues(data);	           				
+								var str ="";  								
+								str=str+'<a href="'+inveditUrl+'"';
 								str=str+'>'+data.trans_date+'</a>';						
 								return str;
         					 

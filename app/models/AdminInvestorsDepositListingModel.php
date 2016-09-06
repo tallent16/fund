@@ -74,6 +74,9 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		} 
 		
 		$lnListSql				=	"SELECT users.firstname,
+											users.lastname,
+											users.email,
+											users.mobile,
 											investors.investor_id,
 											investor_bank_transactions.payment_id,
 											date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
@@ -119,7 +122,7 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 									];
 
 		$this->depositListInfo	=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-		
+		//~ echo "<pre>",print_r($dataArrayLoanList),"</pre>";
 		$row			=	array();
 		if ($this->depositListInfo) {
 			foreach ($this->depositListInfo as $Row) {
@@ -130,6 +133,9 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 									"payment_id"=>$Row->payment_id,
 									"trans_id"=>$Row->trans_id,
 									"firstname"=>$Row->firstname,
+									"lastname"=>$Row->lastname,
+									"email"=>$Row->email,
+									"mobile"=>$Row->mobile,									
 									"trans_date"=>$Row->trans_date,
 									"trans_amount"=>$Row->trans_amount,									
 									"status"=>$Row->status,

@@ -83,6 +83,37 @@
 				</a>
 			</li>
 			@endpermission
+			
+			<li>
+				<a href="{{ url ('admin/loan-listing/report') }}">
+					{{ Lang::get('Loan Listing Report') }}
+				</a>
+			</li>
+			<li>
+				<a href="{{ url ('admin/investor-profiles/report') }}">
+					{{ Lang::get('Investor Profiles Report') }}
+				</a>
+			</li>
+			<li>
+				<a href="{{ url ('admin/borrower-profiles/report') }}">
+					{{ Lang::get('Borrower Profiles Report') }}
+				</a>
+			</li>
+			<li>
+				<a href="{{ url ('admin/loan-perform/report') }}">
+					{{ Lang::get('Loan Performance Report') }}
+				</a>
+			</li>
+			<li>
+				<a href="{{ url ('admin/commission-fees-ledger/report') }}">
+					{{ Lang::get('Commissions & Fees Ledger Report') }}
+				</a>
+			</li>
+			<li>
+				<a href="{{ url ('admin/penalties-levies/report') }}">
+					{{ Lang::get('Penalties & Levies Ledger Report') }}
+				</a>
+			</li>
 		</ul>
 	</li>
 	@endpermission

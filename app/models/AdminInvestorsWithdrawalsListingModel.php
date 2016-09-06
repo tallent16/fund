@@ -73,6 +73,9 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		} 
 		$applyFilter			=	1;	
 		$lnListSql				=	"SELECT users.username,
+											users.lastname,
+											users.email,
+											users.mobile,
 											investors.investor_id,
 											investor_bank_transactions.payment_id,
 											date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
@@ -137,6 +140,9 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 									"request_date"=>$Row->entry_date,
 									"trans_id"=>$Row->trans_id,
 									"firstname"=>$Row->username,
+									"lastname"=>$Row->lastname,
+									"email"=>$Row->email,
+									"mobile"=>$Row->mobile,	
 									"settlement_date"=>$Row->trans_date,
 									"trans_amount"=>$Row->trans_amount,									
 									"avail_bal"=>$Row->avail_bal,									

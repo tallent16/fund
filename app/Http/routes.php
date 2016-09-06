@@ -1229,7 +1229,26 @@ Route::post('admin/approvechangeofbank/reject',
 											'AdminBankActivityReportController@DownloadBankAction'
 							
 				);
-	 
+	//Loan listing report starts 
+	 Route::get('admin/loan-listing/report',
+							[	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewbank.admin.reportactivity',
+								//~ 'action_type'	=>	'Bank Activity Report',
+								'uses' 			=>	'AdminLoanListingReportController@indexAction'
+							]
+				);
+	 Route::post('admin/loan-listing/report',
+							[	
+								
+								'uses' 			=>	'AdminLoanListingReportController@indexPostAction'
+							]
+				);
+	Route::post('admin/loan-listing-report/download',
+											'AdminLoanListingReportController@DownloadLoanListingAction'
+							
+				);
+	 //Loan listing report ends
 });
 
 // The routes (or pages that are applicable for Borrower Users only
