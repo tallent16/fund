@@ -210,6 +210,9 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 //Route::get('admin/changeofbank',  'AdminChangeofBankController@indexAction');
 //Route::get('admin/approvechangeofbank/{usertype}/{borid}/{borbankid}',  'AdminChangeofBankController@editApproveAction'); 
 
+
+//audit trail
+Route::get('admin/audit_trial',  'AdminAuditTrailController@indexAction');
 		
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
@@ -615,7 +618,7 @@ Route::post('admin/approvechangeofbank/reject',
     
 	//****************************Manage Profiles for Investors ends*****************************************************
 	
-	//****************************Manage Loans, Approvals Starts ***************************************************************
+	//****************************Manage Loans, Approvals Starts *********************************************************
 	
     Route::get('admin/loanlisting', [	'as' 			=> 	'admin.loanlisting', 
 										'middleware' 	=> 	'permission',
@@ -1229,7 +1232,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'AdminBankActivityReportController@DownloadBankAction'
 							
 				);
-	//Loan listing report starts 
+	//****************************Loan listing report starts ********************************************************
 	 Route::get('admin/loan-listing/report',
 							[	
 								//~ 'middleware' 	=> 	'permission',
@@ -1248,7 +1251,112 @@ Route::post('admin/approvechangeofbank/reject',
 											'AdminLoanListingReportController@DownloadLoanListingAction'
 							
 				);
-	 //Loan listing report ends
+	 //****************************Loan listing report ends********************************************************
+	 
+	//****************************Investors Profile report starts ******************************************************
+	 Route::get('admin/investor-profiles/report',
+							[	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewbank.admin.reportactivity',
+								//~ 'action_type'	=>	'Bank Activity Report',
+								'uses' 			=>	'AdminInvestorsProfileReportController@indexAction'
+							]
+				);
+	 Route::post('admin/investor-profiles/report',
+							[	
+								
+								'uses' 			=>	'AdminInvestorsProfileReportController@indexPostAction'
+							]
+				);
+	Route::post('admin/loan-listing-report/download',
+											'AdminInvestorsProfileReportController@DownloadLoanListingAction'
+							
+				);
+	 //****************************Investors Profile report ends********************************************************
+	 
+	//****************************Borrowers Profile report starts ********************************************************
+	 Route::get('admin/borrower-profiles/report',
+							[	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewbank.admin.reportactivity',
+								//~ 'action_type'	=>	'Bank Activity Report',
+								'uses' 			=>	'AdminBorrowersProfileReportController@indexAction'
+							]
+				);
+	 Route::post('admin/borrower-profiles/report',
+							[	
+								
+								'uses' 			=>	'AdminBorrowersProfileReportController@indexPostAction'
+							]
+				);
+	Route::post('admin/borrower-profiles-report/download',
+											'AdminBorrowersProfileReportController@DownloadLoanListingAction'
+							
+				);
+	 //****************************Borrowers Profile report ends********************************************************
+	 
+	 //****************************Loan Performance report starts ********************************************************
+	 Route::get('admin/loan-perform/report',
+							[	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewbank.admin.reportactivity',
+								//~ 'action_type'	=>	'Bank Activity Report',
+								'uses' 			=>	'AdminLoanPerformanceReportController@indexAction'
+							]
+				);
+	 Route::post('admin/loan-perform/report',
+							[	
+								
+								'uses' 			=>	'AdminLoanPerformanceReportController@indexPostAction'
+							]
+				);
+	Route::post('admin/loan-listing-report/download',
+											'AdminLoanListingReportController@DownloadLoanListingAction'
+							
+				);
+	 //****************************Loan Performance report ends********************************************************
+	 
+	 //****************************commission Fee ledger report starts *************************************************
+	 Route::get('admin/commission-fees-ledger/report',
+							[	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewbank.admin.reportactivity',
+								//~ 'action_type'	=>	'Bank Activity Report',
+								'uses' 			=>	'AdminCommFeeLedgerReportController@indexAction'
+							]
+				);
+	 Route::post('admin/loan-listing/report',
+							[	
+								
+								'uses' 			=>	'AdminLoanListingReportController@indexPostAction'
+							]
+				);
+	Route::post('admin/loan-listing-report/download',
+											'AdminLoanListingReportController@DownloadLoanListingAction'
+							
+				);
+	 //****************************commission Fee ledger report ends********************************************************
+	 
+	 //****************************Penalties Levies Ledger report starts *************************************************
+	 Route::get('admin/penalties-levies/report',
+							[	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewbank.admin.reportactivity',
+								//~ 'action_type'	=>	'Bank Activity Report',
+								'uses' 			=>	'AdminPenaltiesLeviesReportController@indexAction'
+							]
+				);
+	 Route::post('admin/loan-listing/report',
+							[	
+								
+								'uses' 			=>	'AdminLoanListingReportController@indexPostAction'
+							]
+				);
+	Route::post('admin/loan-listing-report/download',
+											'AdminLoanListingReportController@DownloadLoanListingAction'
+							
+				);
+	 //****************************Penalties Levies ledger report ends********************************************************
 });
 
 // The routes (or pages that are applicable for Borrower Users only

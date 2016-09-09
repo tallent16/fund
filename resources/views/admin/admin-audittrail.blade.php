@@ -6,7 +6,7 @@
 @section('page_heading',Lang::get('Audit Trail') )
 @section('section')  
 <div class="col-sm-12 space-around">
-	
+	<form >
 	<div class="row">	
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group controls">							
@@ -14,7 +14,7 @@
 					<strong>{{ Lang::get('From Date')}}</strong>
 				</label><br>
 				<div class="input-group">						
-					<input id="fromdate" name="fromdate" value="" 
+					<input id="fromdate" name="fromdate" value="{{$adminAuditTrailMod->fromDate}}" 
 							type="text" class="date-picker form-control" />
 							<label class="input-group-addon btn" for="fromdate">
 								<span class="glyphicon glyphicon-calendar"></span>
@@ -29,7 +29,7 @@
 					<strong>{{ Lang::get('To Date')}}</strong>
 				</label><br>
 				<div class="input-group">						
-					<input id="todate" name="todate" value="" 
+					<input id="todate" name="todate" value="{{$adminAuditTrailMod->toDate}}" 
 							type="text" class="date-picker form-control" />
 							<label class="input-group-addon btn" for="todate">
 								<span class="glyphicon glyphicon-calendar"></span>
@@ -43,32 +43,36 @@
 				<strong>{{ Lang::get('Actions')}}</strong>
 			</label>
 			<div class="form-group">
-				<select name="actions" class="selectpicker">
-					<option value="Insert">Insert</option>
-					<option value="Update">Update</option>
-					<option value="delete">Delete</option>
-					<option value="All">All</option>
-				</select>
+				{{ 
+					Form::select('action_list', 
+								$adminAuditTrailMod->actionlist, 
+								$adminAuditTrailMod->actiondefaultval,
+								["class" => "selectpicker",
+								]) 
+					}}
 			</div>
 		</div>
-		
+
 		<div class="col-sm-6 col-lg-3"> 
 			<label>
 				<strong>{{ Lang::get('Modules')}}</strong>
 			</label>
 			<div class="form-group">
-				<select name="actions" class="selectpicker">
-					<option value="Borrower">Borrower</option>
-					<option value="Investor">Investor</option>
-					<option value="Loans">Loans</option>
-					<option value="System">System</option>
-					<option value="All">All</option>
-				</select>
+				{{ 
+					Form::select('module_list', 
+								$adminAuditTrailMod->modlist, 
+								$adminAuditTrailMod->moddefaultval,
+								["class" => "selectpicker",
+								]) 
+					}} 
 			</div>
-		</div>		
-		
+		</div>	
+		<div class="col-sm-12 col-lg-12 text-right" >
+			<input type="submit" value="Apply Filter" class="btn verification-button">
+		</div>	
+		<div>&nbsp;</div>
+		</form>
 	</div>
-	
 	
 	<div class="table-responsive applyloan " id="transhistory-container"> 
 		<table class="table tab-fontsize text-left">
@@ -84,13 +88,14 @@
 				</tr>
 			</thead>				
 			<tbody>
+				@foreach($adminAuditTrailMod->header_rs as $row)
 				<tr id="12" role="row">
-						<td>25-05-2016</td>
-						<td>Borrower-Sign Up</td>
-						<td>Add</td>
-						<td>XXXXX</td>
-						<td>Borrower Name</td>
-						<td>borrower@example.com</td>
+						<td>{{ $row->action_datetime}}</td>
+						<td>{{ $row->module_name}}</td>
+						<td>{{ $row->action_summary}}</td>
+						<td>{{ $row->action_datetime}}</td>
+						<td>{{ $row->key_displayfieldname}}</td>
+						<td>{{ $row->key_displayfieldvalue}}</td>
 						<td class="details-control"></td>
 				</tr>
 				<tr id="tran_row_12" style="display:none;">	
@@ -113,32 +118,7 @@
 							</div>						
 					</td>				
 				</tr>
-				<tr id="13" role="row">
-						<td>25-05-2016</td>
-						<td>Borrower-Sign Up</td>
-						<td>Add</td>
-						<td>XXXXX</td>
-						<td>Borrower Name</td>
-						<td>borrower@example.com</td>
-						<td class="details-control"></td>
-				</tr>
-				
-				<tr id="tran_row_13" style="display:none;">	
-					<td colspan="7">	
-							<div class="table-responsive" id="audit-trail">
-								<table class="table text-left">
-									<tr>	
-										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>	
-									</tr>
-									<tr>
-										<td class=""><a href="{{ url ('admin/auditsdetails') }}">Link</a></td>			
-									</tr>
-								</table>
-							</div>
-						</div>
-					</td>				
-				</tr>
-				
+				@endforeach
 			</tbody>
 		</table>
 	</div>	

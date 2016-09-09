@@ -7,8 +7,16 @@ class AuditTrailModel extends TranWrapper {
  * Used for getting the details of the audit trail records
  * 
  ------------------------------------------------------------------------*/
- 
-	public	$tableData 	=	array();
+    public  $modlist 			= array();
+    public  $actionlist 		= array();
+    public  $moddefaultval 		= '2';
+    public  $actiondefaultval 	= '2';
+    public  $fromDate 			= "";
+    public  $toDate 			= "";
+    public  $filtermodule 		= "";
+    public  $actionmodule 		= "";
+    public  $header_rs 			= array();
+	public	$tableData 			= array();
 	public  $tableNiceNames = [	'audit_borrower_banks ' => 'Borrower Bank Info',
 								'audit_borrower_directors' => 'Borrower Directors Info',
 								'audit_borrower_financial_info ' => 'Financial Info',
@@ -27,27 +35,86 @@ class AuditTrailModel extends TranWrapper {
 								'audit_payments' => 'Payment Information',
 								'audit_users' => 'User Information'];
 
+	public function getModuleDropdown(){
+			$modulesql	 	=   "SELECT distinct module_name 
+										FROM audit_master";
+			$auditDb		=	DB::connection('auditDb');
+			$modulelist		=	$auditDb->select($modulesql);
+		
+			foreach($modulelist as $list){
+					$this->modlist[] = $list->module_name;
+			}		
+			return $this->modlist;			
+	}
 	
-	public function getAuditHeaderInfo($fromDate, $toDate, $filterModule) {
+	public function getActionDropdown(){
+			$actionsql	 	=   "SELECT distinct action_summary 
+										FROM audit_master";
+			$auditDb		=	DB::connection('auditDb');
+			$actionlist		=	$auditDb->select($actionsql);
+		   
+			foreach($actionlist as $list){
+					$this->actionlist[] = $list->action_summary;
+			}		
+			return $this->actionlist;			
+	}
+	
+	public function getAuditHeaderInfo($fromDate, $toDate, $filterModule, $filteraction) {
+		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -5 month"));
+		$this->toDate				= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));		
+		
+		
+		if (isset($_REQUEST['action_list'])) {
+		 	$this->filtermodule		= $_REQUEST['module_list'];
+		 	$this->actionmodule		= $_REQUEST['action_list'];
+			$this->fromDate			= $_REQUEST['fromdate'];
+			$this->toDate			= $_REQUEST['todate'];
+		} 
+		//~ print_r($_REQUEST['action_list']);	 die;
 		$auditSql	=	"	SELECT 	audit_key,
 									user_id,
 									module_name,
 									action_summary,
 									action_detail,
-									action_datetime,
+									DATE_FORMAT(action_datetime, '%d-%m-%Y') AS action_datetime,
 									key_displayfieldname,
 									key_displayfieldvalue
 							FROM	audit_master
 							WHERE	action_datetime between :from_date and :to_date
-							AND		module_name = if (:module1 = 'ALL', module_name, :module2) ";
+							AND		module_name = CASE if (:module1 = 'ALL', module_name, :module2)
+														WHEN 'ALL' then module_name
+														WHEN 1 then 'Borrower Profile'
+														WHEN 2 then 'Investor Profile'
+														WHEN 3 then 'Investor Deposits'
+														WHEN 4 then 'Loan Repayment'
+														WHEN 5 then 'Investor Withdrawal'
+														WHEN 6 then 'Investor Withdrawals'
+														WHEN 7 then 'Loan Process'
+														WHEN 8 then 'Loans'
+													END
+							AND 	action_summary = CASE if (:filteraction1 = 'ALL', action_summary, :filteraction2) 
+														WHEN 'ALL' then module_name
+														WHEN 1 then 'Update'
+														WHEN 2 then 'Profile return to Borrower'
+														WHEN 3 then 'Borrower Profile Approval'
+														WHEN 4 then 'Comments by Admin'
+														WHEN 5 then 'Investor Profile for approval'
+														WHEN 6 then 'Approval'
+														WHEN 7 then 'Add'
+														WHEN 8 then 'Unapproval'
+													END";
 
 		$auditDb	=	DB::connection('auditDb');
-		$whereArray	=	array("from_date"	=>	$fromDate, "to_date" => $toDate, 
-							  "module1"		=>	$filterModule, "module2" => $filterModule);
+		$whereArray	=	array("from_date"		=>	$this->getDbDateFormat($this->fromDate)	,
+							  "to_date" 		=>  $this->getDbDateFormat($this->toDate), 
+							  "module1"			=>	$this->filtermodule	, "module2" => $this->filtermodule	,
+							  "filteraction1" 	=>  $this->actionmodule	,"filteraction2" => $this->actionmodule	);
 		
-		$header_rs	=	$auditDb::select($auditSql, $whereArray);
+		$this->header_rs	=	$auditDb->select($auditSql, $whereArray);
 		
-		return $header_rs;
+		//~ echo "<pre>",print_r($header_rs),"</pre>"; die;
+		return $this->header_rs;
+		
 	}
 	
 	public function getAuditDetails($audit_key) {

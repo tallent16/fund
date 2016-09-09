@@ -116,6 +116,12 @@
 			</li>
 		</ul>
 	</li>
+	<li>
+	<a href="{{ url ('admin/audit_trial') }}">
+		<i class="fa fa fa-key fa-fw"></i>
+					{{ Lang::get('Audit trail') }}
+				</a>
+	</li>
 	@endpermission
 	@permission('view.admin.manageusers') 
 		<li>

@@ -1,11 +1,11 @@
 <?php 
 namespace App\Http\Controllers;
-use	\App\models\AdminLoanListingReportModel;
+use	\App\models\AdminLoanPerformanceReportModel;
 use Response;
 use Request;
 use Excel;
 
-class AdminLoanListingReportController extends MoneyMatchController {
+class AdminLoanPerformanceReportController extends MoneyMatchController {
 
 	
 	public function __construct() {	
@@ -15,17 +15,16 @@ class AdminLoanListingReportController extends MoneyMatchController {
 	}
 	
 	public function littleMoreInit() {
-		$this->adminLoanListRepModel = new AdminLoanListingReportModel();
+		$this->adminLoanPerRepMod = new AdminLoanPerformanceReportModel();
 	}
 
 	public function indexAction() { 
 		
-		//~ die("dfdfd");
-		$this->adminLoanListRepModel->processDropDowns();
-		$withArry	=	array(	"adminLoanListRepModel" => $this->adminLoanListRepModel	,
+		
+		$withArry	=	array(	"adminLoanPerRepMod" => $this->adminLoanPerRepMod	,
 								"classname"=>"fa fa-list-alt fa-fw"
 							);
-		return view('admin.admin-loanlistingreport')
+		return view('admin.admin-loanPerformanceReport')
 			->with($withArry); 
 			
 					
@@ -35,34 +34,22 @@ class AdminLoanListingReportController extends MoneyMatchController {
 		
 		$filterFromDate		=	"";
 		$filterToDate		=	"";
-		$filterStatus		=	"";
-		$filterGrade		=	"";
 		
 		if (isset($_REQUEST["fromdate"])) 
 			$filterFromDate	= 	$_REQUEST["fromdate"];
 
 		if (isset($_REQUEST["todate"])) 
 			$filterToDate 	= 	$_REQUEST["todate"];
-			
-		if (isset($_REQUEST["loan_status"])) 
-			$filterStatus	= 	$_REQUEST["loan_status"];
-
-		if (isset($_REQUEST["grade"])) 
-			$filterGrade 	= 	$_REQUEST["grade"];
 		
-		if(	$filterFromDate!=""	&&	$filterToDate!=""&& $filterStatus!=""	&&	$filterGrade!="") {
-			
-			$this->adminLoanListRepModel->getLoanListingReportInfo($filterFromDate, $filterToDate,
-																		$filterStatus,$filterGrade);
+		if(	$filterFromDate!=""	&&	$filterToDate!="" ) {
+			//~ die("dsdsd");
+			$this->adminLoanPerRepMod->getLoanPerformanceReportInfo( $filterFromDate, $filterToDate);
 		}
-		$this->adminLoanListRepModel->processDropDowns();
-		$withArry	=	array(	"adminLoanListRepModel" => $this->adminLoanListRepModel	,
-								"classname"=>"fa fa-list-alt fa-fw"
-							);
-		return view('admin.admin-loanlistingreport')
+		$withArry	=	array(	"adminLoanPerRepMod" => $this->adminLoanPerRepMod	,
+						"classname"=>"fa fa-list-alt fa-fw"
+					);
+		return view('admin.admin-loanPerformanceReport')
 			->with($withArry); 
-			
-					
 	}
 	
 	

@@ -42,15 +42,11 @@
 
 	</style>
 @stop
-@section('page_heading',Lang::get('Loan Listing Report') )
+@section('page_heading',Lang::get('Penalties Levies Ledger Report') )
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="POST" class='form-validate' action="{{url('admin/loan-listing/report')}}" >
-	<input  type="hidden" 
-			name="_token"
-			id="hidden_token"
-			value="{{ csrf_token() }}" />
+<form method="get">
 	<div class="row">		
 		<div class="col-sm-12 col-lg-6"> 														
 			<div class="form-group">
@@ -80,25 +76,16 @@
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
-				<input 	id="fromdate" 
-						name="fromdate" 
-						value="" 
-						required
-						type="text" 
-						filter_field="Yes" 
-						class="date-picker form-control" />
+				<input id="fromdate" name="fromdate" value="" 
+						type="text" filter_field="Yes" class="date-picker form-control" />
 			</div>	
 		</div>
 
 		<div class="col-sm-6 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
-				<input 	id="todate" 
-						name="todate" 
-						value=""
-						type="text" 
-						required
-						filter_field="Yes"
+				<input id="todate" name="todate" value=""
+						type="text" filter_field="Yes"
 						class="date-picker form-control" />
 			</div>	
 		</div>
@@ -106,34 +93,22 @@
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Status') }}</strong><br>							
-					{{ Form::select('loan_status[]', 
-							$adminLoanListRepModel->allLoanStatus, 
+					{{ Form::select('loan_status', 
+							[], 
 							'', 
 							["class" => "selectpicker",
-							"id" => "loan_status",
-							"data-live-search"=>"1",
-							"data-actions-box"=>"true",
-							"data-selected-text-format"=>"count>3",
-							"data-size"=>"5",
-							"multiple"=>"multiple",
-							"required"]) }} 
+							"id" => "loan_status"]) }} 
 			</div>		
 		</div>	
 		
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">	
 					<strong>{{ Lang::get('Grade') }}</strong><br>							
-					{{ Form::select('grade[]', 
-							$adminLoanListRepModel->allBorGrade, 
+					{{ Form::select('grade', 
+							[], 
 							'', 
 							["class" => "selectpicker",
-							"id" => "grade",
-							"data-live-search"=>"1",
-							"data-actions-box"=>"true",
-							"data-selected-text-format"=>"count>3",
-							"data-size"=>"5",
-							"multiple"=>"multiple",
-							"required"]) }} 
+							"id" => "grade"]) }} 
 			</div>		
 		</div>	
 		
@@ -143,7 +118,7 @@
 <div class="row">	
 	<div class="col-sm-3 col-lg-2" id="apply_filter_div" >
 		<div class="form-group">	
-			<button type="submit" id="filter_status" class="btn verification-button">
+			<button type="button" id="filter_status" class="btn verification-button">
 				{{ Lang::get('Apply Filter')}}
 			</button>
 		</div>
@@ -158,35 +133,35 @@
 	</div>	--->
 	
 </div><!-----First row----->
-	@if(!empty($adminLoanListRepModel->loanListInfo))
-		<div class="row">		
-			<div class="col-lg-12 col-md-12">
-				<div class="table-responsive">
-					<table class="table tab-fontsize table-border-custom text-left" id="adminloanlisting">
-						<thead>
-							<tr>
-								<th class="tab-head text-left">{{ Lang::get('Loan Ref No') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Borrower Name') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Borrower Grade') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Applied Amount') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Apply Date') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Approval Date') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Disburse Date') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Tenure') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Interest') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Repayment Type') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Partial Subscription Amount') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>							
-			</div>
+
+	<div class="row">		
+		<div class="col-lg-12 col-md-12">
+			<div class="table-responsive">
+				<table class="table tab-fontsize table-border-custom text-left" id="adminloanlisting">
+					<thead>
+						<tr>
+							<th class="tab-head text-left">{{ Lang::get('Loan Ref No') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Borrower Name') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Borrower Grade') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Applied Amount') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Apply Date') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Approval Date') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Disburse Date') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Tenure') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Interest') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Repayment Type') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Partial Subscription Amount') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>							
 		</div>
-	@endif
+	</div>
+				
 </div>
 @endsection
 @stop
