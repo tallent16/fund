@@ -46,23 +46,34 @@
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="get">
+<form method="post" action="{{url('admin/commission-fees-ledger/report')}}">
+	<input  type="hidden" 
+			name="_token"
+			id="hidden_token"
+			value="{{ csrf_token() }}" />
 	
 	<div class="row">		
 				
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
-				<input id="fromdate" name="fromdate" value="" 
-						type="text" filter_field="Yes" class="date-picker form-control" />
+				<input 	id="fromdate" 
+						name="fromdate" 
+						
+						type="text" 
+						filter_field="Yes" 
+						class="date-picker form-control" />
 			</div>	
 		</div>
 
 		<div class="col-sm-6 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
-				<input id="todate" name="todate" value=""
-						type="text" filter_field="Yes"
+				<input 	id="todate" 
+						name="todate" 
+						
+						type="text" 
+						filter_field="Yes"
 						class="date-picker form-control" />
 			</div>	
 		</div>
@@ -72,7 +83,7 @@
 <div class="row">	
 	<div class="col-sm-3 col-lg-2" id="apply_filter_div" >
 		<div class="form-group">	
-			<button type="button" id="filter_status" class="btn verification-button">
+			<button type="submit" id="filter_status" class="btn verification-button">
 				{{ Lang::get('Apply Filter')}}
 			</button>
 		</div>

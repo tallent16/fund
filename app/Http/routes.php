@@ -212,7 +212,23 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function(){
 
 
 //audit trail
-Route::get('admin/audit_trial',  'AdminAuditTrailController@indexAction');
+//~ Route::get('admin/audit_trial',  'AdminAuditTrailController@indexAction');
+//~ Route::get('admin/audit_trial/{module_name}',  'AdminAuditTrailController@getTableListAction');
+
+Route::get('admin/audit_trial',  	[	'as' 			=> 	'admin.audit_trial', 
+										'middleware' 	=> 	'permission',										
+										'uses' 			=>	'AdminAuditTrailController@indexAction'
+									]
+				);
+Route::get('admin/audit_trial/{module_name}',  	
+									[	
+										
+										'middleware' 	=> 	'permission',										
+										'redirect_back'	=>	'admin.audit_trial',
+										'uses' 			=>	'AdminAuditTrailController@getTableListAction'
+												
+									]
+			);				
 		
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
@@ -1268,8 +1284,8 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminInvestorsProfileReportController@indexPostAction'
 							]
 				);
-	Route::post('admin/loan-listing-report/download',
-											'AdminInvestorsProfileReportController@DownloadLoanListingAction'
+	Route::post('admin/investor-profiles-report/download',
+											'AdminInvestorsProfileReportController@DownloadInvestorProfileAction'
 							
 				);
 	 //****************************Investors Profile report ends********************************************************
@@ -1325,10 +1341,10 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminCommFeeLedgerReportController@indexAction'
 							]
 				);
-	 Route::post('admin/loan-listing/report',
+	 Route::post('admin/commission-fees-ledger/report',
 							[	
 								
-								'uses' 			=>	'AdminLoanListingReportController@indexPostAction'
+								'uses' 			=>	'AdminCommFeeLedgerReportController@indexPostAction'
 							]
 				);
 	Route::post('admin/loan-listing-report/download',
@@ -1346,10 +1362,10 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminPenaltiesLeviesReportController@indexAction'
 							]
 				);
-	 Route::post('admin/loan-listing/report',
+	 Route::post('admin/penalties-levies/report',
 							[	
 								
-								'uses' 			=>	'AdminLoanListingReportController@indexPostAction'
+								'uses' 			=>	'AdminPenaltiesLeviesReportController@indexPostAction'
 							]
 				);
 	Route::post('admin/loan-listing-report/download',

@@ -36,23 +36,22 @@ class AdminCommFeeLedgerReportController extends MoneyMatchController {
 		$filterFromDate		=	"";
 		$filterToDate		=	"";
 		
-		if (isset($_REQUEST["fromDate_filter"])) 
-			$filterFromDate	= 	$_REQUEST["fromDate_filter"];
+		if (isset($_REQUEST["fromdate"])) 
+			$filterFromDate	= 	$_REQUEST["fromdate"];
 
-		if (isset($_REQUEST["toDate_filter"])) 
-			$filterToDate 	= 	$_REQUEST["toDate_filter"];
+		if (isset($_REQUEST["todate"])) 
+			$filterToDate 	= 	$_REQUEST["todate"];
 		
 		if(	$filterFromDate!=""	&&	$filterToDate!="" ) {
 			
-			$this->adminBankActRepMod->getBankActivityReportInfo( $filterFromDate, $filterToDate);
+			$this->adminCommFeeLedRepMod->getCommFeeLedgerReportInfo( $filterFromDate, $filterToDate);
 		}
 	
-		$withArry	=	array(	"adminBankActRepMod" => $this->adminBankActRepMod	,
+		$withArry	=	array(	"adminCommFeeLedRepMod" => $this->adminCommFeeLedRepMod	,
 								"classname"=>"fa fa-list-alt fa-fw"
 							);
-		return view('admin.admin-bankactivity')
+		return view('admin.admin-commFeeLedgerReport')
 			->with($withArry); 
-			
 					
 	}
 	

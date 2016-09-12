@@ -46,79 +46,43 @@
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="get">
-	<div class="row">		
-		<div class="col-sm-12 col-lg-6"> 														
-			<div class="form-group">
-				<fieldset class="radiogroup">
-					<legend>Select Date Type</legend>
-					  <ul class="radio">
-						<li>
-							<input 	type="radio" 
-									name="date_type" 
-									id="app_date_type" 
-									value="apply"
-									checked />
-							<label for="app_date_type">By Apply Date</label>
-						</li>
-						<li>
-							<input type="radio" name="date_type" id="san_date_type" value="sanctioned" />
-							<label for="san_date_type">By Sanctioned Date </label>
-						</li>
-					  </ul>
-				</fieldset>
-
-			</div>	
-		</div>
-	</div>
+<form method="post" action="{{url('admin/penalties-levies/report')}}">
+	<input  type="hidden" 
+			name="_token"
+			id="hidden_token"
+			value="{{ csrf_token() }}" />
 	<div class="row">		
 				
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group">							
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
-				<input id="fromdate" name="fromdate" value="" 
-						type="text" filter_field="Yes" class="date-picker form-control" />
+				<input 	id="fromdate" 
+						name="fromdate" 
+						value="{{$adminPenLevRepMod->fromDate}}" 
+						type="text" 
+						filter_field="Yes" 
+						class="date-picker form-control" />
 			</div>	
 		</div>
 
 		<div class="col-sm-6 col-lg-3"> 
 			<div class="form-group">								
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
-				<input id="todate" name="todate" value=""
-						type="text" filter_field="Yes"
+				<input 	id="todate" 
+						name="todate" 
+						value="{{$adminPenLevRepMod->toDate}}" 
+						type="text" 
+						filter_field="Yes"
 						class="date-picker form-control" />
 			</div>	
 		</div>
-		
-		<div class="col-sm-6 col-lg-3"> 														
-			<div class="form-group">	
-					<strong>{{ Lang::get('Status') }}</strong><br>							
-					{{ Form::select('loan_status', 
-							[], 
-							'', 
-							["class" => "selectpicker",
-							"id" => "loan_status"]) }} 
-			</div>		
-		</div>	
-		
-		<div class="col-sm-6 col-lg-3"> 														
-			<div class="form-group">	
-					<strong>{{ Lang::get('Grade') }}</strong><br>							
-					{{ Form::select('grade', 
-							[], 
-							'', 
-							["class" => "selectpicker",
-							"id" => "grade"]) }} 
-			</div>		
-		</div>	
-		
-	</div>
+		</div>
 </div>
 
 <div class="row">	
 	<div class="col-sm-3 col-lg-2" id="apply_filter_div" >
 		<div class="form-group">	
-			<button type="button" id="filter_status" class="btn verification-button">
+			<button type="submit" id="filter_status" class="btn verification-button">
 				{{ Lang::get('Apply Filter')}}
 			</button>
 		</div>
@@ -141,18 +105,12 @@
 					<thead>
 						<tr>
 							<th class="tab-head text-left">{{ Lang::get('Loan Ref No') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Borrower Name') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Borrower Grade') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Applied Amount') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Apply Date') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Approval Date') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Disburse Date') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Tenure') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Interest') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Repayment Type') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Partial Subscription Amount') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Organisation Name') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Installment Number') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Inst Schd Pay Date') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Inst Actual Pay Date') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Penalty Interest') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Penalty Charges') }}</th>
 						</tr>
 					</thead>
 					<tbody>

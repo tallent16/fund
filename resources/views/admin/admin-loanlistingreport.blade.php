@@ -39,14 +39,25 @@
 			display: inline-block;
 			margin-right: 25px;
 		}
-
+		label.error{
+			 color: #a94442;	
+		}
 	</style>
 @stop
 @section('page_heading',Lang::get('Loan Listing Report') )
 @section('section')  
+@var	$apply_date			=	"checked"
+@var	$sanctioned_date	=	""
+@if($adminLoanListRepModel->date_type	==	"sanctioned" )
+	@var	$apply_date			=	""
+	@var	$sanctioned_date	=	"checked"
+
+@endif
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="POST" class='form-validate' action="{{url('admin/loan-listing/report')}}" >
+<form 	method="POST" 
+		class='form-validate' 
+		action="{{url('admin/loan-listing/report')}}" >
 	<input  type="hidden" 
 			name="_token"
 			id="hidden_token"
@@ -62,11 +73,15 @@
 									name="date_type" 
 									id="app_date_type" 
 									value="apply"
-									checked />
+									{{$apply_date}} />
 							<label for="app_date_type">By Apply Date</label>
 						</li>
 						<li>
-							<input type="radio" name="date_type" id="san_date_type" value="sanctioned" />
+							<input	type="radio" 
+									name="date_type" 
+									id="san_date_type" 
+									value="sanctioned" 
+									{{$sanctioned_date}} />
 							<label for="san_date_type">By Sanctioned Date </label>
 						</li>
 					  </ul>
@@ -82,8 +97,8 @@
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
 				<input 	id="fromdate" 
 						name="fromdate" 
-						value="" 
-						required
+						value="{{$adminLoanListRepModel->fromDate}}" 
+						data-rule-required="true"
 						type="text" 
 						filter_field="Yes" 
 						class="date-picker form-control" />
@@ -95,9 +110,9 @@
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
 				<input 	id="todate" 
 						name="todate" 
-						value=""
+						value="{{$adminLoanListRepModel->toDate}}"
 						type="text" 
-						required
+						data-rule-required="true"
 						filter_field="Yes"
 						class="date-picker form-control" />
 			</div>	
@@ -108,7 +123,7 @@
 					<strong>{{ Lang::get('Status') }}</strong><br>							
 					{{ Form::select('loan_status[]', 
 							$adminLoanListRepModel->allLoanStatus, 
-							'', 
+							$adminLoanListRepModel->loanStatusVal,
 							["class" => "selectpicker",
 							"id" => "loan_status",
 							"data-live-search"=>"1",
@@ -116,7 +131,7 @@
 							"data-selected-text-format"=>"count>3",
 							"data-size"=>"5",
 							"multiple"=>"multiple",
-							"required"]) }} 
+							"data-rule-required"=>"true"]) }} 
 			</div>		
 		</div>	
 		
@@ -125,7 +140,7 @@
 					<strong>{{ Lang::get('Grade') }}</strong><br>							
 					{{ Form::select('grade[]', 
 							$adminLoanListRepModel->allBorGrade, 
-							'', 
+							$adminLoanListRepModel->borGradeVal, 
 							["class" => "selectpicker",
 							"id" => "grade",
 							"data-live-search"=>"1",
@@ -133,7 +148,7 @@
 							"data-selected-text-format"=>"count>3",
 							"data-size"=>"5",
 							"multiple"=>"multiple",
-							"required"]) }} 
+							"data-rule-required"=>"true"]) }} 
 			</div>		
 		</div>	
 		
@@ -149,6 +164,28 @@
 		</div>
 	</div>
 </form>	
+<form 	class="form-horizontal" 
+		id="excel_export" 
+		method="post"
+		action="{{url('admin/loan-listing-report/download')}}">
+		<input  type="hidden" 
+				name="_token"
+				id="hidden_token"
+				value="{{ csrf_token() }}" />
+		<input type="hidden" id="report_json" name="report_json" />
+		<input type="hidden" id="hidden_from_date" name="from_date" />
+		<input type="hidden" id="hidden_to_date" name="to_date" />
+		<div class="col-sm-4 col-lg-2">
+			<div class="form-group">	
+				<button  id="export_all"
+						class="btn verification-button" 
+						type="button"
+						onclick="convert2json()">
+					{{ Lang::get('Export')}}
+				</button>
+			</div>
+		</div>	
+</form>
 	<!---<div class="col-sm-4 col-lg-2">
 		<div class="form-group">	
 			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
@@ -166,21 +203,38 @@
 						<thead>
 							<tr>
 								<th class="tab-head text-left">{{ Lang::get('Loan Ref No') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Borrower Name') }}</th>
+								<th class="tab-head text-left">{{ Lang::get('Organasition Name') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Borrower Grade') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Applied Amount') }}</th>
+								<th class="tab-head text-right">{{ Lang::get('Applied Amount') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Apply Date') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Approval Date') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Disburse Date') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Tenure') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Interest') }}</th>
+								<th class="tab-head text-right">{{ Lang::get('Interest') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Repayment Type') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Partial Subscription Amount') }}</th>
+								<th class="tab-head text-right">{{ Lang::get('Partial Subscription Amount') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
 							</tr>
 						</thead>
 						<tbody>
+							@foreach($adminLoanListRepModel->loanListInfo as $listRow)
+								<tr>
+									<td class="text-left">{{$listRow->loan_reference_number}}</td>
+									<td class="text-left">{{$listRow->business_name}}</td>
+									<td class="text-left">{{$listRow->bor_grade}}</td>
+									<td class="text-right">{{number_format($listRow->apply_amount,2,'.',',')}}</td>
+									<td class="text-left">{{$listRow->apply_date}}</td>
+									<td class="text-left">{{$listRow->loan_approval_date}}</td>
+									<td class="text-left">{{$listRow->disbursement_date}}</td>
+									<td class="text-left">{{$listRow->loan_tenure}}</td>
+									<td class="text-left">{{$listRow->bid_type}}</td>
+									<td class="text-left">{{$listRow->target_interest}}</td>
+									<td class="text-left">{{$listRow->repayment_type}}</td>
+									<td class="text-left">{{number_format($listRow->par_sub_amt,2,'.',',')}}</td>
+									<td class="text-left">{{$listRow->loan_status_name}}</td>
+								</tr>
+							@endforeach
 						</tbody>
 					</table>
 				</div>							
@@ -195,7 +249,26 @@
 <script> var baseUrl	=	"{{url('')}}" </script>
 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-
+<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>
+<script src="{{ url('js/jquery.tabletojson.js') }}" type="text/javascript"></script>
+<script>
+	function convert2json() {
+		var reportJson 	= $('.table').tableToJSON(); // Convert the table into a javascript object
+		$obj				=	JSON.stringify(reportJson);
+		$fromDate			=	$("#fromdate").val();
+		$toDate				=	$("#todate").val();
+		
+		$("#hidden_from_date").val($fromDate);
+		$("#hidden_to_date").val($toDate);
+		$("#report_json").val($obj);
+		if(reportJson.length > 0) {
+			$("#excel_export").submit();
+		}else{
+			showDialog("","No Data avilable to Export");
+		}
+		
+	}
+</script>
 <script>	/*
 function hideShowFilter() {
 
@@ -214,6 +287,8 @@ function hideShowFilter() {
 }	*/
 $(document).ready(function(){ 
 	// date picker
+	$('form').validate().settings.ignore = ':not(select:hidden, input:visible, textarea:visible)';
+	$('form').validate();
 	$('#fromdate').datetimepicker({
 	autoclose: true, 
 	minView: 2,

@@ -1,0 +1,22 @@
+[2016-09-10 00:00:01] production.ERROR: exception 'ErrorException' with message 'Trying to get property of non-object' in /var/www/html/app/models/TranWrapper.php:176
+Stack trace:
+#0 /var/www/html/app/models/TranWrapper.php(176): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Trying to get p...', '/var/www/html/a...', 176, Array)
+#1 /var/www/html/app/models/MoneyMatchModel.php(263): App\models\TranWrapper->getCurrentuserID()
+#2 /var/www/html/app/models/AdminManageBidsModel.php(222): App\models\MoneyMatchModel->setAuditOn('Loan Process', 'Bids Closed', 'Bids Closed', 'Loan Reference ...', 'L-201606-67')
+#3 /var/www/html/app/models/AdminManageBidsModel.php(133): App\models\AdminManageBidsModel->closeBids(67, false)
+#4 /var/www/html/app/Console/Kernel.php(30): App\models\AdminManageBidsModel->autoCloseBid()
+#5 [internal function]: App\Console\Kernel->App\Console\{closure}()
+#6 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(526): call_user_func_array(Object(Closure), Array)
+#7 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Scheduling/CallbackEvent.php(57): Illuminate\Container\Container->call(Object(Closure), Array)
+#8 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(54): Illuminate\Console\Scheduling\CallbackEvent->run(Object(Illuminate\Foundation\Application))
+#9 [internal function]: Illuminate\Console\Scheduling\ScheduleRunCommand->fire()
+#10 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(526): call_user_func_array(Array, Array)
+#11 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(115): Illuminate\Container\Container->call(Array)
+#12 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(257): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#13 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(101): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#14 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Application.php(874): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#15 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Application.php(195): Symfony\Component\Console\Application->doRunCommand(Object(Illuminate\Console\Scheduling\ScheduleRunCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#16 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Application.php(126): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#17 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(94): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#18 /var/www/html/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#19 {main}  

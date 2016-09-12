@@ -10,12 +10,15 @@ use Request;
 use DB;
 class AdminLoanListingReportModel extends TranWrapper {
 	
+	public  $loanStatusVal					=	array();
+	public  $borGradeVal					= 	array();
 	public  $allLoanStatus					=	array();
 	public  $allBorGrade					= 	array();
 	public  $loanListInfo					= 	array();
 	public  $filter_code					= 	"";
 	public  $fromDate						= 	"";
 	public  $toDate							= 	"";	
+	public  $date_type						= 	"";	
 	
 	public function processDropDowns() {
 				
@@ -77,15 +80,29 @@ class AdminLoanListingReportModel extends TranWrapper {
 		
 	} // End process_dropdown
 
-	public function getLoanListingReportInfo($fromDate,$toDate,$loanStatus,$borGrade){
+	public function getLoanListingReportInfo($fromDate,$toDate,$loanStatus,$borGrade,$date_type){
 	
-			$fromDate		=	date("Y-m-d",strtotime($fromDate));
-			$toDate			=	date("Y-m-d",strtotime($toDate));
+			$this->loanStatusVal	=	$loanStatus;	
+			$this->borGradeVal		=	$borGrade;	
+			$this->fromDate			=	$fromDate;	
+			$this->toDate			=	$toDate;	
+			$this->date_type		=	$date_type;	
+			
+			$fromDate				=	date("Y-m-d",strtotime($fromDate));
+			$toDate					=	date("Y-m-d",strtotime($toDate));
+			
+			if($date_type	==	"apply" ) {
+				$whereDateType	="	AND		loans.apply_date	>=	'{$fromDate}'
+									AND		loans.apply_date	<=	'{$toDate}'";
+			}else{
+				$whereDateType	="	AND		loans.loan_process_date	>=	'{$fromDate}'
+									AND		loans.loan_process_date	<=	'{$toDate}'";
+			}
 			$displayListSql	="SELECT 	loans.loan_reference_number,
 										loans.loan_id,
 										borrowers.business_name,
 										loans.loan_risk_grade bor_grade,
-										loans.apply_amount,
+										ROUND(loans.apply_amount,2) apply_amount,
 										DATE_FORMAT(loans.apply_date,'%d-%m-%Y') apply_date,
 										IFNULL(DATE_FORMAT(loans.loan_approval_date,'%d-%m-%Y'),'') loan_approval_date,
 										IFNULL(DATE_FORMAT(dis.disbursement_date,'%d-%m-%Y'),'') disbursement_date,
@@ -109,8 +126,7 @@ class AdminLoanListingReportModel extends TranWrapper {
 							
 							WHERE  	loans.status IN (".implode(',',$loanStatus).")						
 							AND		loans.loan_risk_grade	IN	('".implode("','",$borGrade)."')
-							AND		loans.apply_date	>=	'{$fromDate}'
-							AND		loans.apply_date	<=	'{$toDate}'
+							{$whereDateType}
 							order by loans.loan_id ASC";
 		
 			$this->loanListInfo			=	$this->dbFetchAll($displayListSql);			

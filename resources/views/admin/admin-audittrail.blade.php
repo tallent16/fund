@@ -46,7 +46,7 @@
 				{{ 
 					Form::select('action_list', 
 								$adminAuditTrailMod->actionlist, 
-								$adminAuditTrailMod->actiondefaultval,
+								$adminAuditTrailMod->actionmodule,
 								["class" => "selectpicker",
 								]) 
 					}}
@@ -61,7 +61,7 @@
 				{{ 
 					Form::select('module_list', 
 								$adminAuditTrailMod->modlist, 
-								$adminAuditTrailMod->moddefaultval,
+								$adminAuditTrailMod->filtermodule,
 								["class" => "selectpicker",
 								]) 
 					}} 
@@ -89,33 +89,24 @@
 			</thead>				
 			<tbody>
 				@foreach($adminAuditTrailMod->header_rs as $row)
-				<tr id="12" role="row">
+				<tr id="{{ $row->audit_key}}" role="row">
 						<td>{{ $row->action_datetime}}</td>
 						<td>{{ $row->module_name}}</td>
 						<td>{{ $row->action_summary}}</td>
 						<td>{{ $row->action_datetime}}</td>
 						<td>{{ $row->key_displayfieldname}}</td>
 						<td>{{ $row->key_displayfieldvalue}}</td>
-						<td class="details-control"></td>
+						<td class="details-control"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
 				</tr>
-				<tr id="tran_row_12" style="display:none;">	
+				<tr id="tran_row_{{ $row->audit_key}}" style="display:none;">	
 					<td colspan="7">	
-							<div class="table-responsive" id="audit-trail">
-								<table class="table text-left">
-									<tr>	
-										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>		
-									</tr>
-									<tr>
-										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>	
-									</tr>
-									<tr>	
-										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>		
-									</tr>
-									<tr>
-										<td class=""><a href="javascript:void(0);" id="audit-popup">Link</a></td>	
-									</tr>
-								</table>
-							</div>						
+						<div class="table-responsive" id="audit-trail">
+							<table class="table text-left">
+								<tr>	
+									<td class="module_list"><a href="javascript:void(0);" id="audit-popup">Link</a></td>		
+								</tr>									
+							</table>
+						</div>						
 					</td>				
 				</tr>
 				@endforeach
@@ -139,7 +130,7 @@
 											
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
 <script>
-$(document).ready(function(){ 
+$(document).ready(function(){ 	
 	// date picker
 	$('#fromdate').datetimepicker({
 	autoclose: true, 
@@ -186,7 +177,53 @@ $(document).ready(function(){
 		}); 
 	});
 	
+	$(".details-control").on('click',function(){
+		var modulename = $(this).find('input').val();
+		modulename = modulename.toLowerCase();      
+		var ret = modulename.split(" ");
+		var str1 = ret[0];	
+			
+		$.ajax({ 
+            type        : 'GET', 								// define the type of HTTP verb we want to use (POST for our form)
+            url         : baseUrl+"/admin/audit_trial/"+str1, 	// the url where we want to POST
+            data        : {TABLE_NAME:''},
+            dataType    : 'json'
+        }) // using the done promise callback
+		.done(function(data) {			
+			showTablesList(data);
+		}); 
+	});
+	
 }); 
+
+function showTablesList(data){
+	var	str = 	"";
+	str		=	"<table class='table table-bordered .tab-fontsize text-left'>";
+	str		=	str+"<thead><tr>";
+	if(data.rows.length > 0){
+		$.each( data.rows, function( key ) {
+			str	=	str+"<td>";
+			str	=	str+data.rows[key].TABLE_NAME+"</td>";
+			str	=	str+"<td>";			
+			str	=	str+"</tr>";
+		});
+		str	=	str+"</tbody></table>";
+		$('.module_list').html(str);
+	}
+}
+
+
+
+//~ $('.details-control').on('click', function(e) {
+    //~ var modulename = $(this).find('input').val();
+    //~ modulename = modulename.toLowerCase();      
+    //~ var ret = modulename.split(" ");
+	//~ var str1 = ret[0];
+	//~ var baseUrl	=	"{{url('')}}"
+    //~ window.location.href = baseUrl + "/admin/audit_trial/"+str1;
+//~ });
+
+
 function showAuditPopupFunc(data){
 	var	str;
 	str		=	"<div class='table-responsive'><table class='table text-left'>";

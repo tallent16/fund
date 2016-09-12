@@ -30,9 +30,8 @@ class AdminAuditTrailController extends MoneyMatchController {
 			
 		$this->audittrailModel->getModuleDropdown();
 		$this->audittrailModel->getActionDropdown();	
-		//~ print_r($toDate);	 die;
-		
 		$this->audittrailModel->getAuditHeaderInfo($action_list,$module_list,$fromDate,$toDate);
+		
 		$withArry	=	array(	"adminAuditTrailMod" => $this->audittrailModel, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,								
@@ -42,10 +41,12 @@ class AdminAuditTrailController extends MoneyMatchController {
 				->with($withArry); 
 	}
 	
-	//~ public function auditInfoAction(){
-		
-		
-		
-	//~ }	
+	public function getTableListAction($modulename){
+		//~ print_r($modulename); die;
+		$returnval = $this->audittrailModel->getTableList($modulename);	
+		return json_encode(array("rows"=>$returnval));	
+				
+		//~ return redirect()->route('admin.audit_trial');
+	}
 	
 }

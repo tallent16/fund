@@ -75,6 +75,26 @@
 		</div>
 	</div>
 </form>	
+<form 	class="form-horizontal" 
+		id="excel_export" 
+		method="post"
+		action="{{url('admin/investor-profiles-report/download')}}">
+		<input  type="hidden" 
+				name="_token"
+				id="hidden_token"
+				value="{{ csrf_token() }}" />
+		<input type="hidden" id="report_json" name="report_json" />
+		<div class="col-sm-4 col-lg-2">
+			<div class="form-group">	
+				<button  id="export_all"
+						class="btn verification-button" 
+						type="button"
+						onclick="convert2json()">
+					{{ Lang::get('Export')}}
+				</button>
+			</div>
+		</div>	
+</form>
 	<!---<div class="col-sm-4 col-lg-2">
 		<div class="form-group">	
 			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
@@ -84,7 +104,7 @@
 	</div>	--->
 	
 </div><!-----First row----->
-
+@if(!empty($adminInvProRepMod->invListInfo))
 	<div class="row">		
 		<div class="col-lg-12 col-md-12">
 			<div class="table-responsive">
@@ -110,12 +130,32 @@
 						</tr>
 					</thead>
 					<tbody>
+						@foreach($adminInvProRepMod->invListInfo as $listRow)
+							<tr>
+								<td class="text-left">{{$listRow->investor_id}}</td>
+								<td class="text-left">{{$listRow->username}}</td>
+								<td class="text-left">{{$listRow->firstname}}</td>
+								<td class="text-left">{{$listRow->lastname}}</td>
+								<td class="text-left">{{$listRow->email}}</td>
+								<td class="text-left">{{$listRow->mobile_number}}</td>
+								<td class="text-left">{{$listRow->dob}}</td>
+								<td class="text-left">{{$listRow->nric_number}}</td>
+								<td class="text-left">{{$listRow->nationality}}</td>
+								<td class="text-left">{{number_format($listRow->estimated_yearly_income,2,'.',',')}}</td>
+								<td class="text-left">{{number_format($listRow->available_balance,2,'.',',')}}</td>
+								<td class="text-left">{{$listRow->no_loan_applied}}</td>
+								<td class="text-left">{{$listRow->no_loan_invested}}</td>
+								<td class="text-left">{{number_format($listRow->tot_invest_amt,2,'.',',')}}</td>
+								<td class="text-left">{{number_format($listRow->tot_returns,2,'.',',')}}</td>
+								<td class="text-left">{{number_format($listRow->roi,2,'.',',')}}</td>
+							</tr>
+						@endforeach
 					</tbody>
 				</table>
 			</div>							
 		</div>
 	</div>
-				
+@endif	
 </div>
 @endsection
 @stop
@@ -124,8 +164,24 @@
 <script> var baseUrl	=	"{{url('')}}" </script>
 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+<script src="{{ url('js/jquery.tabletojson.js') }}" type="text/javascript"></script>
+<script>
+	function convert2json() {
+		var reportJson 	= $('.table').tableToJSON(); // Convert the table into a javascript object
+		$obj				=	JSON.stringify(reportJson);
+	
+		$("#report_json").val($obj);
+		if(reportJson.length > 0) {
+			$("#excel_export").submit();
+		}else{
+			showDialog("","No Data avilable to Export");
+		}
+		
+	}
+</script>	
+<script>	
 
-<script>	/*
+/*
 function hideShowFilter() {
 
 	hideShow = $("#hide_show_filter").html();
