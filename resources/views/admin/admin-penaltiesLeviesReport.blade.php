@@ -21,9 +21,7 @@
 			color:#333;
 			text-decoration:none;		
 		}
-		.table-responsive{
-			overflow:visible;
-		}
+		
 		table.dataTable.no-footer{
 			border:none;
 		}
@@ -88,6 +86,26 @@
 		</div>
 	</div>
 </form>	
+<form 	class="form-horizontal" 
+		id="excel_export" 
+		method="post"
+		action="{{url('admin/penalties-levies-report/download1')}}">
+		<input  type="hidden" 
+				name="_token"
+				id="hidden_token"
+				value="{{ csrf_token() }}" />
+		<input type="hidden" id="report_json" name="report_json" />
+		<div class="col-sm-4 col-lg-2">
+			<div class="form-group">	
+				<button  id="export_all"
+						class="btn verification-button" 
+						type="button"
+						onclick="convert2json()">
+					{{ Lang::get('Export')}}
+				</button>
+			</div>
+		</div>	
+</form>
 	<!---<div class="col-sm-4 col-lg-2">
 		<div class="form-group">	
 			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
@@ -97,7 +115,7 @@
 	</div>	--->
 	
 </div><!-----First row----->
-
+@if(!empty($adminPenLevRepMod->loanListInfo))
 	<div class="row">		
 		<div class="col-lg-12 col-md-12">
 			<div class="table-responsive">
@@ -106,7 +124,7 @@
 						<tr>
 							<th class="tab-head text-left">{{ Lang::get('Loan Ref No') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Organisation Name') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Installment Number') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Installment Number') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Inst Schd Pay Date') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Inst Actual Pay Date') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Penalty Interest') }}</th>
@@ -114,12 +132,46 @@
 						</tr>
 					</thead>
 					<tbody>
+						@var	$tot_pen_int	=	0
+						@var	$tot_pen_char	=	0
+						@foreach($adminPenLevRepMod->loanListInfo as $listRow)
+							<tr>
+								<td class="text-left">{{$listRow->loan_reference_number}}</td>
+								<td class="text-left">{{$listRow->business_name}}</td>
+								<td class="text-right">{{$listRow->installment_number}}</td>
+								<td class="text-left">{{$listRow->repayment_schedule_date}}</td>
+								<td class="text-left">{{$listRow->repayment_actual_date}}</td>
+								<td class="text-right">
+									{{number_format($listRow->repayment_penalty_interest,2,'.',',')}}
+								</td>
+								<td class="text-right">
+									{{number_format($listRow->repayment_penalty_charges,2,'.',',')}}
+								</td>
+							</tr>
+							@var	$tot_pen_int	=	$tot_pen_int	+	$listRow->repayment_penalty_interest
+							@var	$tot_pen_char	=	$tot_pen_char	+	$listRow->repayment_penalty_charges
+						@endforeach
+							<tr>
+								<td class="text-left"></td>
+								<td class="text-left"></td>
+								<td class="text-left"></td>
+								<td class="text-right"></td>
+								<td class="text-left">
+									Total:
+								</td>
+								<td class="text-right">
+									{{number_format($tot_pen_int,2,'.',',')}}
+								</td>
+								<td class="text-right">
+									{{number_format($tot_pen_char,2,'.',',')}}
+								</td>
+							</tr>
 					</tbody>
 				</table>
 			</div>							
 		</div>
 	</div>
-				
+@endif
 </div>
 @endsection
 @stop
@@ -128,6 +180,23 @@
 <script> var baseUrl	=	"{{url('')}}" </script>
 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+<script src="{{ url('js/jquery.tabletojson.js') }}" type="text/javascript"></script>
+<script>
+	function convert2json() {
+		var reportJson 	= $('.table').tableToJSON(); // Convert the table into a javascript object
+		$obj				=	JSON.stringify(reportJson);
+	
+		$("#report_json").val($obj);
+		if(reportJson.length > 0) {
+			$("#excel_export").submit();
+		}else{
+			showDialog("","No Data avilable to Export");
+		}
+		
+	}
+</script>	
+
+
 
 <script>	/*
 function hideShowFilter() {

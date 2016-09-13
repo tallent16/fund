@@ -9,6 +9,7 @@ class AuditTrailModel extends TranWrapper {
  ------------------------------------------------------------------------*/
     public  $modlist 			= array();
     public  $actionlist 		= array();
+    public  $tablelist 			= array();
    
     public  $fromDate 			= "";
     public  $toDate 			= "";
@@ -70,9 +71,10 @@ class AuditTrailModel extends TranWrapper {
 			$this->fromDate			= $_REQUEST['fromdate'];
 			$this->toDate			= $_REQUEST['todate'];
 		} 
-			 
+			 //(select username from moneymatch_new.users a where a.user_id = user_id) username,
 		$auditSql	=	"	SELECT 	audit_key,
 									user_id,
+									
 									module_name,
 									action_summary,
 									action_detail,
@@ -102,7 +104,7 @@ class AuditTrailModel extends TranWrapper {
 														WHEN 5 then 'Approval'
 														WHEN 6 then 'Add'
 														WHEN 7 then 'Unapproval'
-													END";
+													END LIMIT 20";
 
 		$auditDb	=	DB::connection('auditDb');
 		$whereArray	=	array("from_date"		=>	$this->getDbDateFormat($this->fromDate)	,
@@ -117,17 +119,67 @@ class AuditTrailModel extends TranWrapper {
 		
 	}
 	
-	public function getTableList($module_name){
+	public function getTableList($module_name,$modulenames){
 		
-		$tablesql		=  "SELECT DISTINCT TABLE_NAME
-									FROM INFORMATION_SCHEMA.COLUMNS
-									WHERE TABLE_NAME LIKE '%{$module_name}%'  
-									AND TABLE_SCHEMA = 'mm_audit' ";
+		$moduleName = $module_name.' '.$modulenames;
 		$auditDb		=	DB::connection('auditDb');
-		$tablelist		=	$auditDb->select($tablesql);
+		$moduleTables	=	["Borrower Profile"		=>	["audit_borrower_banks", "audit_borrower_directors",
+														 "audit_borrower_financial_info", "audit_borrowers",
+														 "audit_borrower_financial_ratios"],
+							 "Investor Profile"		=>	["audit_investor_banks", "audit_investors", "audit_users"],
+							 "Investor Deposit" 	=>	["audit_investor_bank_transactions", "audit_payments"],
+							 "Investor Withdrawals" => 	["audit_investor_bank_transactions", "audit_payments"],						
+							 "Loans"				=>  ["audit_loans",  "audit_loan_docs_submitted"],							 
+							 "Loan Process" 		=> 	["audit_loans", "audit_borrower_repayment_schedule", "audit_disbursements",
+														 "audit_investor_repayment_schedule", "audit_payments"],
+							 "Loan Repayment" 		=>	["audit_loans", "audit_borrower_repayment_schedule", "audit_disbursements",
+														 "audit_investor_repayment_schedule", "audit_payments", "audit_investors"]];
 		
-		return $tablelist;	
+		$tables		=	$moduleTables[$moduleName];		
+						
+		return $tables;	
 	}
+	
+	public function getAuditInfo($tablename,$auditkey){
+				
+		$sql			=	"SELECT audit_columns('{$tablename}') columns";		
+		$auditDb		=	DB::connection('auditDb');
+		$auditdata		=	$auditDb->select($sql);
+		
+		$sql1			=	"SELECT ".trim($auditdata[0]->columns,',')." 
+									FROM {$tablename}
+									WHERE audit_key = {$auditkey} limit 2";
+		
+		$auditdata1		=	$auditDb->select($sql1);
+					
+		return $auditdata1;
+		
+		//~ $sql		=	"	SELECT	*	FROM	audit_tablecolumns
+							//~ WHERE	tab_name = :tab_name
+							//~ ORDER BY col_disp_order ";		
+		
+		//~ switch($tablename){
+			//~ case 	'audit_borrowers' :		
+					//~ $auditsql   = "SELECT * 
+									//~ FROM {$tablename} 
+									//~ WHERE audit_key = {$auditkey} limit 2" ;
+					//~ break;
+			//~ case 	'audit_borrower_banks' :	
+			
+			
+		//~ }
+		//~ $auditDb		=	DB::connection('auditDb');
+		//~ $auditdata		=	$auditDb->select($sql);
+				
+		//~ echo $auditdata;
+		//~ die;
+		
+	}
+	
+	
+	
+	
+	
 	
 	public function getAuditDetails($audit_key) {
 		// Get the object referring to the Audit DB

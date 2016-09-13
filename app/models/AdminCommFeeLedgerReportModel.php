@@ -44,10 +44,10 @@ class AdminCommFeeLedgerReportModel extends TranWrapper {
 										"fromDate" => $this->getDbDateFormat($this->fromDate),
 										"toDate" => $this->getDbDateFormat($this->toDate)
 									];
-		echo $lnListSql;
+		//~ echo $lnListSql;
 		//~ die;
 		$this->loanListInfo			=	$this->dbFetchWithParam($lnListSql, $dataArrayLoanList);
-		$this->prnt($this->loanListInfo);
+		//~ $this->prnt($this->loanListInfo);
 	}		
 	
 }

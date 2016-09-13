@@ -220,12 +220,21 @@ Route::get('admin/audit_trial',  	[	'as' 			=> 	'admin.audit_trial',
 										'uses' 			=>	'AdminAuditTrailController@indexAction'
 									]
 				);
-Route::get('admin/audit_trial/{module_name}',  	
+Route::get('admin/audit_trial/module/{module_name}/{module_names}',  	
 									[	
 										
 										'middleware' 	=> 	'permission',										
 										'redirect_back'	=>	'admin.audit_trial',
 										'uses' 			=>	'AdminAuditTrailController@getTableListAction'
+												
+									]
+			);	
+Route::get('admin/audit_trial/{tablename}/{auditkey}',  	
+									[	
+										
+										'middleware' 	=> 	'permission',										
+										'redirect_back'	=>	'admin.audit_trial',
+										'uses' 			=>	'AdminAuditTrailController@getAuditDetailsAction'
 												
 									]
 			);				

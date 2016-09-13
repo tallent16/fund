@@ -99,11 +99,11 @@
 						<td class="details-control"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
 				</tr>
 				<tr id="tran_row_{{ $row->audit_key}}" style="display:none;">	
-					<td colspan="7">	
+					<td colspan="7">
 						<div class="table-responsive" id="audit-trail">
 							<table class="table text-left">
 								<tr>	
-									<td class="module_list"><a href="javascript:void(0);" id="audit-popup">Link</a></td>		
+									<td class="module_list" id="{{ $row->audit_key}}"></td>	
 								</tr>									
 							</table>
 						</div>						
@@ -163,31 +163,32 @@ $(document).ready(function(){
 			'X-CSRF-TOKEN': $('#hidden_token').val()
 		}
 	});
-	
-    $("#audit-popup").on('click',function(){
+	    
+    $('.module_list').on('click', 'li', function () {
+		var str1 	= $(this).html();
+		var str2	= $(this).closest("td").attr("id");
 		
 		 $.ajax({ 
-            type        : 'GET', 						// define the type of HTTP verb we want to use (POST for our form)
-            url         : baseUrl+'', 	// the url where we want to POST
-            data        : 'name',
+            type        : 'GET', 								// define the type of HTTP verb we want to use (POST for our form)
+            url         : baseUrl+"/admin/audit_trial/"+str1+"/"+str2, 	// the url where we want to POST          
             dataType    : 'json'
         }) // using the done promise callback
-		.done(function() {  
+		.done(function(data) {  
 			showAuditPopupFunc(data);
 		}); 
 	});
 	
 	$(".details-control").on('click',function(){
-		var modulename = $(this).find('input').val();
-		modulename = modulename.toLowerCase();      
+		var modulename = $(this).find('input').val();		     
 		var ret = modulename.split(" ");
 		var str1 = ret[0];	
+		var str2 = ret[1];	
 			
 		$.ajax({ 
-            type        : 'GET', 								// define the type of HTTP verb we want to use (POST for our form)
-            url         : baseUrl+"/admin/audit_trial/"+str1, 	// the url where we want to POST
-            data        : {TABLE_NAME:''},
-            dataType    : 'json'
+            type        : 'GET', 				// define the type of HTTP verb we want to use (POST for our form)
+            url         : baseUrl+"/admin/audit_trial/module/"+str1+"/"+str2, 	// the url where we want to POST           
+            dataType    : 'json',
+            async		: false,
         }) // using the done promise callback
 		.done(function(data) {			
 			showTablesList(data);
@@ -197,39 +198,35 @@ $(document).ready(function(){
 }); 
 
 function showTablesList(data){
-	var	str = 	"";
-	str		=	"<table class='table table-bordered .tab-fontsize text-left'>";
-	str		=	str+"<thead><tr>";
+	var	str = 	"";	
+	str		=	str+"<ul style='list-style-type:none;'>";
 	if(data.rows.length > 0){
-		$.each( data.rows, function( key ) {
-			str	=	str+"<td>";
-			str	=	str+data.rows[key].TABLE_NAME+"</td>";
-			str	=	str+"<td>";			
-			str	=	str+"</tr>";
+		$.each( data.rows, function(key) {
+			str	=	str+"<li id='mod_id' >";
+			str	=	str+data.rows[key]+"\n";	
+			str	=	str+"</li>";		
 		});
-		str	=	str+"</tbody></table>";
+		str	=	str+"</ul>";
 		$('.module_list').html(str);
 	}
 }
-
-
-
-//~ $('.details-control').on('click', function(e) {
-    //~ var modulename = $(this).find('input').val();
-    //~ modulename = modulename.toLowerCase();      
-    //~ var ret = modulename.split(" ");
-	//~ var str1 = ret[0];
-	//~ var baseUrl	=	"{{url('')}}"
-    //~ window.location.href = baseUrl + "/admin/audit_trial/"+str1;
-//~ });
-
 
 function showAuditPopupFunc(data){
 	var	str;
 	str		=	"<div class='table-responsive'><table class='table text-left'>";
 	str		=	str+"<thead><tr><th class='text-left'>Col1</th>";	
 	str		=	str+"<th class='text-right'>Col2</th></thead>";
-	str		=	str+"<tbody><tr><td>test data</td></tr>";
+	str		=	str+"<tbody><tr><td>";
+	str		=	str+"<ul style='list-style-type:none;'>";
+	if(data.rows.length > 0){
+		$.each( data.rows, function(key) {
+			str	=	str+"<li id='mod_id' >";
+			str	=	str+data.rows[key]+"\n";	
+			str	=	str+"</li>";		
+		});
+		str	=	str+"</ul>";
+	}
+	str 	=	str+"</td></tr>";
 	str		=	str+"</tbody></table></div>";
 	$("#audit_info .modal-body").html(str);
 	$("#audit_info").modal("show");

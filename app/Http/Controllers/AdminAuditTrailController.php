@@ -35,18 +35,22 @@ class AdminAuditTrailController extends MoneyMatchController {
 		$withArry	=	array(	"adminAuditTrailMod" => $this->audittrailModel, 
 								"fromDate" => $fromDate, 
 								"toDate" => $toDate,								
-								"classname"=>"fa fa-key fa-fw"); 
-								
+								"classname"=>"fa fa-key fa-fw"); 								
+			
 		return view('admin.admin-audittrail')
 				->with($withArry); 
 	}
 	
-	public function getTableListAction($modulename){
-		//~ print_r($modulename); die;
-		$returnval = $this->audittrailModel->getTableList($modulename);	
-		return json_encode(array("rows"=>$returnval));	
-				
-		//~ return redirect()->route('admin.audit_trial');
+	public function getTableListAction($modulename,$modulenames){
+		
+		$returnval = $this->audittrailModel->getTableList($modulename,$modulenames);	
+		return json_encode(array("rows"=>$returnval));			
+	}
+	
+	public function getAuditDetailsAction($tablename,$auditkey){
+		
+		$returnval = $this->audittrailModel->getAuditInfo($tablename,$auditkey);	
+		return json_encode(array("rows"=>$returnval));			
 	}
 	
 }

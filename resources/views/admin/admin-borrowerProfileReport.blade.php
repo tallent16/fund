@@ -76,6 +76,26 @@
 		</div>
 	</div>
 </form>	
+<form 	class="form-horizontal" 
+		id="excel_export" 
+		method="post"
+		action="{{url('admin/borrower-profiles-report/download')}}">
+		<input  type="hidden" 
+				name="_token"
+				id="hidden_token"
+				value="{{ csrf_token() }}" />
+		<input type="hidden" id="report_json" name="report_json" />
+		<div class="col-sm-4 col-lg-2">
+			<div class="form-group">	
+				<button  id="export_all"
+						class="btn verification-button" 
+						type="button"
+						onclick="convert2json()">
+					{{ Lang::get('Export')}}
+				</button>
+			</div>
+		</div>	
+</form>
 	<!---<div class="col-sm-4 col-lg-2">
 		<div class="form-group">	
 			<button  id="hide_show_filter" class="btn verification-button" onclick="hideShowFilter()">
@@ -85,7 +105,7 @@
 	</div>	--->
 	
 </div><!-----First row----->
-
+@if(!empty($adminBorProRepMod->borListInfo))
 	<div class="row">		
 		<div class="col-lg-12 col-md-12">
 			<div class="table-responsive">
@@ -99,25 +119,60 @@
 							<th class="tab-head text-left">{{ Lang::get('CP Mobile') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Paid up Capital') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Operation Since') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Loans Applied') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Loans Sanctioned') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Average Interest Rate') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Principal OS') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Interest OS') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Principal Paid') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Interest Paid') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Penalty Paid') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Overdue Amount') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Loans Applied') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Loans Sanctioned') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Average Interest Rate') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Principal OS') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Interest OS') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Principal Paid') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Interest Paid') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Penalty Paid') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Overdue Amount') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Overdue since') }}</th>
 						</tr>
 					</thead>
 					<tbody>
+						@foreach($adminBorProRepMod->borListInfo as $listRow)
+							<tr>
+								<td class="text-left">{{$listRow->borrower_id}}</td>
+								<td class="text-left">{{$listRow->business_name}}</td>
+								<td class="text-left">{{$listRow->contact_person}}</td>
+								<td class="text-left">{{$listRow->contact_person_email}}</td>
+								<td class="text-left">{{$listRow->contact_person_mobile}}</td>
+								<td class="text-left">{{$listRow->paid_up_capital}}</td>
+								<td class="text-left">{{$listRow->operation_since}}</td>
+								<td class="text-right">{{$listRow->tot_loan_applied}}</td>
+								<td class="text-right">{{$listRow->tot_loan_sanctioned}}</td>
+								<td class="text-right">{{$listRow->avg_int_rate}}</td>
+								<td class="text-right">
+									{{number_format($listRow->tot_principal_os,2,'.',',')}}
+								</td>
+								<td class="text-right">
+									{{number_format($listRow->tot_int_os,2,'.',',')}}
+								</td>
+								<td class="text-right">
+									{{number_format($listRow->tot_principal_paid,2,'.',',')}}
+								</td>
+								<td class="text-right">
+									{{number_format($listRow->tot_int_paid,2,'.',',')}}
+								</td>
+								<td class="text-right">
+									{{number_format($listRow->tot_penalty_paid,2,'.',',')}}
+								</td>
+								<td>
+									{{number_format($listRow->overdue_amt,2,'.',',')}}
+								</td>
+								<td class="text-left">
+									{{$listRow->overdue_since}}
+								</td>
+							</tr>
+						@endforeach
 					</tbody>
 				</table>
 			</div>							
 		</div>
 	</div>
-				
+@endif		
 </div>
 @endsection
 @stop
@@ -126,6 +181,21 @@
 <script> var baseUrl	=	"{{url('')}}" </script>
 
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+<script src="{{ url('js/jquery.tabletojson.js') }}" type="text/javascript"></script>
+<script>
+	function convert2json() {
+		var reportJson 	= $('.table').tableToJSON(); // Convert the table into a javascript object
+		$obj				=	JSON.stringify(reportJson);
+	
+		$("#report_json").val($obj);
+		if(reportJson.length > 0) {
+			$("#excel_export").submit();
+		}else{
+			showDialog("","No Data avilable to Export");
+		}
+		
+	}
+</script>	
 
 <script>	/*
 function hideShowFilter() {

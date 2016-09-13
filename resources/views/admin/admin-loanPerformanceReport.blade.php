@@ -3,44 +3,7 @@
 	{{ Html::style('css/datatable/jquery.dataTables.css') }}
 	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
 	{{ Html::style('css/datatable/dataTables.editor.css') }}		
-	<style>
-		table.dataTable thead th, table.dataTable thead td {
-			padding: 10px;
-			border-bottom:none;
-			font-size:12px;
-		}
-		table.dataTable thead > th {
-			color: #fff;			
-			text-decoration:none;			
-		}		
-		table.dataTable thead > tr{
-			background-color:#333;
-			color:#fff;
-		}
-		.dataTable td a{
-			color:#333;
-			text-decoration:none;		
-		}
-		.table-responsive{
-			overflow:visible;
-		}
-		table.dataTable.no-footer{
-			border:none;
-		}
-		ul.radio  {
-		  margin: 0;
-		  padding: 0;
-		  margin-left: 20px;
-		  list-style: none;
-		}
-
-		ul.radio li {
-			border: 1px transparent solid;
-			display: inline-block;
-			margin-right: 25px;
-		}
-
-	</style>
+	
 @stop
 @section('page_heading',Lang::get('Loan Performance Report') )
 @section('section')  
@@ -107,7 +70,7 @@
 							<th class="tab-head text-left">{{ Lang::get('Loan Applied Amount') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Total Bids Received Number') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Total Bids Received Amount') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Sanctioned Amount') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Loan Sanctioned Amount') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Total Prinicipal O/s') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Total Interest O/s') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Total Penalty Interest') }}</th>

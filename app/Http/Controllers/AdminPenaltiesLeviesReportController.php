@@ -55,30 +55,32 @@ class AdminPenaltiesLeviesReportController extends MoneyMatchController {
 					
 	}
 	
-	
-	public function DownloadBankAction() { 
+	public function DownloadPenaltyLeviesAction() { 
 		
 		$postArray	=	Request::all();
 		$jsonObj	=	json_decode($postArray['report_json'],true);
-		
+		//~ $this->adminInvProRepMod->prnt($jsonObj);
 		$headers	=	[
-							0=>"Bank Activity Report",
-							1=>"for the period {$postArray['from_date']} to {$postArray['to_date']}",
-								
+							0=> [	'Loan Ref No','Organisation Name','Installment Number','Inst Schd Pay Date',
+									'Inst Actual Pay Date','Penalty Interest','Penalty Charges'
+								]
 						];
 		$headStart	=	1;
-		$startRow	=	3;
+		$startRow	=	2;
 		$breakColumn=	"Date";			
-		
-		Excel::create('BankActivityReport', function($excel) 
-			use ($jsonObj,$headers,$headStart,$startRow,$breakColumn)
+		$colKeyNameArry		=	array(	0=>'A',1=>'B',2=>'c',3=>'D',4=>'E',5=>'F',6=>'G',7=>'H',8=>'I',
+								9=>'J',10=>'K',11=>'L',12=>'M',13=>'N',14=>'O',15=>'P',16=>'Q',17=>'R',	
+								18=>'S',19=>'T',20=>'U',21=>'V',22=>'W',23=>'X',24=>'Y',25=>'Z',26=>'AA',
+								27=>'AB',28=>'AC',29=>'AD',30=>'AE',31=>'AF',32=>'AG',33=>'AH',34=>'AI',35=>'AJ',
+								36=>'AK',37=>'AL',38=>'AM',39=>'AN',40=>'AO',41=>'AP',42=>'AQ',43=>'AR',44=>'AS'	
+							);
+		Excel::create('PenaltyLeviesLedgerReport', function($excel) 
+			use ($jsonObj,$headers,$headStart,$startRow,$breakColumn,$colKeyNameArry)
 		 {
-				$excel->sheet('BankSheet', function($sheet)
-					use ($headers,$headStart,$startRow,$breakColumn,$jsonObj)
+				$excel->sheet('Penalties', function($sheet)
+					use ($headers,$headStart,$startRow,$breakColumn,$jsonObj,$colKeyNameArry)
 				 {
-						$sheet->getStyle('E')->getAlignment()->applyFromArray(
-							array('horizontal' => 'right')
-						);
+					
 						$sheet->getStyle('F')->getAlignment()->applyFromArray(
 							array('horizontal' => 'right')
 						);
@@ -88,13 +90,13 @@ class AdminPenaltiesLeviesReportController extends MoneyMatchController {
 						$headerRow = $headStart;
 						foreach ($headers as $headerInfo) {
 							if(is_array($headerInfo)) {
-								$sheet->setCellValue('A'.$headerRow,$headerInfo[0]);
-								$sheet->setCellValue('B'.$headerRow, $headerInfo[1]);
-								$sheet->setCellValue('C'.$headerRow, $headerInfo[2]);
-								$sheet->setCellValue('D'.$headerRow, $headerInfo[3]);
-								$sheet->setCellValue('E'.$headerRow, $headerInfo[4]);
-								$sheet->setCellValue('F'.$headerRow, $headerInfo[5]);
-								$sheet->setCellValue('G'.$headerRow, $headerInfo[6]);
+								$colkey	=	0;
+								foreach($headerInfo as $bodyRow) {
+									$curColKeyName	=	$colKeyNameArry[$colkey].$headerRow;
+									$curColKeyvalue	=	$bodyRow;
+									$sheet->setCellValue($curColKeyName, $curColKeyvalue);	
+									$colkey++;
+								}
 							}else{
 								$sheet->setCellValue('A'.$headerRow,$headerInfo);
 							}
@@ -102,20 +104,20 @@ class AdminPenaltiesLeviesReportController extends MoneyMatchController {
 						}
 						$currExcelRow = $startRow;
 						foreach ($jsonObj as $jsonCol => $jsonVal) {
-						
-								$sheet->setCellValue('A'.$currExcelRow,$jsonVal['Date']);
-								$sheet->setCellValue('B'.$currExcelRow, $jsonVal['Transaction Type']);
-								$sheet->setCellValue('C'.$currExcelRow, $jsonVal['Reference Number']);
-								$sheet->setCellValue('D'.$currExcelRow, $jsonVal['Details']);
-								$sheet->setCellValue('E'.$currExcelRow, $jsonVal['Dr Amount']);
-								$sheet->setCellValue('F'.$currExcelRow, $jsonVal['Cr Amount']);
-								$sheet->setCellValue('G'.$currExcelRow, $jsonVal['Balance']);
-								$currExcelRow++;
+								
+							$colkey	=	0;
+							foreach($jsonVal as $bodyRow) {
+								$curColKeyName	=	$colKeyNameArry[$colkey].$currExcelRow;
+								$curColKeyvalue	=	$bodyRow;
+								$sheet->setCellValue($curColKeyName, $curColKeyvalue);	
+								$colkey++;
+							}
+							$currExcelRow++;
 						}					
 					});
 							
 		})->download('xls');
 		
-	}
+	}	
 	
 }
