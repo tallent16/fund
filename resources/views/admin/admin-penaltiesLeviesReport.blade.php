@@ -127,8 +127,8 @@
 							<th class="tab-head text-right">{{ Lang::get('Installment Number') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Inst Schd Pay Date') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Inst Actual Pay Date') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Penalty Interest') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Penalty Charges') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Penalty Interest') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Penalty Charges') }}</th>
 						</tr>
 					</thead>
 					<tbody>

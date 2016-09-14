@@ -3,44 +3,7 @@
 	{{ Html::style('css/datatable/jquery.dataTables.css') }}
 	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
 	{{ Html::style('css/datatable/dataTables.editor.css') }}		
-	<style>
-		table.dataTable thead th, table.dataTable thead td {
-			padding: 10px;
-			border-bottom:none;
-			font-size:12px;
-		}
-		table.dataTable thead > th {
-			color: #fff;			
-			text-decoration:none;			
-		}		
-		table.dataTable thead > tr{
-			background-color:#333;
-			color:#fff;
-		}
-		.dataTable td a{
-			color:#333;
-			text-decoration:none;		
-		}
-		.table-responsive{
-			overflow:visible;
-		}
-		table.dataTable.no-footer{
-			border:none;
-		}
-		ul.radio  {
-		  margin: 0;
-		  padding: 0;
-		  margin-left: 20px;
-		  list-style: none;
-		}
-
-		ul.radio li {
-			border: 1px transparent solid;
-			display: inline-block;
-			margin-right: 25px;
-		}
-
-	</style>
+	
 @stop
 @section('page_heading',Lang::get('Investor Profile Report') )
 @section('section')  
@@ -120,13 +83,13 @@
 							<th class="tab-head text-left">{{ Lang::get('Date of Birth') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('NRIC Number') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Nationality') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Estimated Yearly Income') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Balance on Hand') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('No of Loans Applied') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('No of Loans Invested') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Invested Amount') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Total Returns') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('ROI') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Estimated Yearly Income') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Balance on Hand') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('No of Loans Applied') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('No of Loans Invested') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Invested Amount') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Returns') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('ROI') }}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -141,13 +104,13 @@
 								<td class="text-left">{{$listRow->dob}}</td>
 								<td class="text-left">{{$listRow->nric_number}}</td>
 								<td class="text-left">{{$listRow->nationality}}</td>
-								<td class="text-left">{{number_format($listRow->estimated_yearly_income,2,'.',',')}}</td>
-								<td class="text-left">{{number_format($listRow->available_balance,2,'.',',')}}</td>
-								<td class="text-left">{{$listRow->no_loan_applied}}</td>
-								<td class="text-left">{{$listRow->no_loan_invested}}</td>
-								<td class="text-left">{{number_format($listRow->tot_invest_amt,2,'.',',')}}</td>
-								<td class="text-left">{{number_format($listRow->tot_returns,2,'.',',')}}</td>
-								<td class="text-left">{{number_format($listRow->roi,2,'.',',')}}</td>
+								<td class="text-right">{{number_format($listRow->estimated_yearly_income,2,'.',',')}}</td>
+								<td class="text-right">{{number_format($listRow->available_balance,2,'.',',')}}</td>
+								<td class="text-right">{{$listRow->no_loan_applied}}</td>
+								<td class="text-right">{{$listRow->no_loan_invested}}</td>
+								<td class="text-right">{{number_format($listRow->tot_invest_amt,2,'.',',')}}</td>
+								<td class="text-right">{{number_format($listRow->tot_returns,2,'.',',')}}</td>
+								<td class="text-right">{{number_format($listRow->roi,2,'.',',')}}</td>
 							</tr>
 						@endforeach
 					</tbody>

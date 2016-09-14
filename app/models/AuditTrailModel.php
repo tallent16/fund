@@ -10,6 +10,7 @@ class AuditTrailModel extends TranWrapper {
     public  $modlist 			= array();
     public  $actionlist 		= array();
     public  $tablelist 			= array();
+    public  $userlist 			= array();
    
     public  $fromDate 			= "";
     public  $toDate 			= "";
@@ -71,10 +72,18 @@ class AuditTrailModel extends TranWrapper {
 			$this->fromDate			= $_REQUEST['fromdate'];
 			$this->toDate			= $_REQUEST['todate'];
 		} 
-			 //(select username from moneymatch_new.users a where a.user_id = user_id) username,
+		$auditDb	=	DB::connection('auditDb');
+		$usersql 	= 	"select username from moneymatch_new.users a where a.user_id = user_id";
+		$userlist	=	$auditDb->select($usersql);
+		foreach($userlist as $list){
+					$this->userlist[] = $list->username;
+			}	
+		//~ echo "<pre>",print_r($this->userlist),"</pre>"; die;
+		////~ (select {$this->userlist} from moneymatch_new.users a where a.user_id = user_id)
+		
 		$auditSql	=	"	SELECT 	audit_key,
-									user_id,
-									
+									user_id,	
+																	
 									module_name,
 									action_summary,
 									action_detail,
@@ -106,7 +115,7 @@ class AuditTrailModel extends TranWrapper {
 														WHEN 7 then 'Unapproval'
 													END LIMIT 20";
 
-		$auditDb	=	DB::connection('auditDb');
+		
 		$whereArray	=	array("from_date"		=>	$this->getDbDateFormat($this->fromDate)	,
 							  "to_date" 		=>  $this->getDbDateFormat($this->toDate), 
 							  "module1"			=>	$this->filtermodule	, "module2" => $this->filtermodule	,

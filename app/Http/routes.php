@@ -1335,8 +1335,8 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminLoanPerformanceReportController@indexPostAction'
 							]
 				);
-	Route::post('admin/loan-listing-report/download',
-											'AdminLoanListingReportController@DownloadLoanListingAction'
+	Route::post('admin/loan-perform-report/download',
+											'AdminLoanPerformanceReportController@DownloadLoanPerformanceAction'
 							
 				);
 	 //****************************Loan Performance report ends********************************************************

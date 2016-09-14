@@ -13,10 +13,14 @@ class AdminLoanPerformanceReportModel extends TranWrapper {
 	public  $loanListInfo					= array();
 	public  $fromDate						= "";
 	public  $toDate							= "";	
-	
+	public	$repayment_schedule 			= array();
+	public	$jsonBorrRepay 					= "";
 	
 	public function getLoanPerformanceReportInfo($fromDate,$toDate){
 	
+			$this->fromDate	=	$fromDate;
+			$this->toDate	=	$toDate;
+			
 			$fromDate		=	date("Y-m-d",strtotime($fromDate));
 			$toDate			=	date("Y-m-d",strtotime($toDate));
 			
@@ -27,7 +31,7 @@ class AdminLoanPerformanceReportModel extends TranWrapper {
 										cl1.codelist_value bid_type,
 										cl2.codelist_value repayment_type,
 										loans.loan_tenure,
-										loans.apply_amount,
+										ROUND(loans.apply_amount,2) apply_amount,
 										IFNULL(ROUND(loan_bids.cnt,2),0) tot_bids_received,
 										IFNULL(ROUND(loan_bids.accpt_amt,2),'0.00') tot_bids_received_amt,
 										IFNULL(ROUND(loans.loan_sanctioned_amount,2),0) loan_sanctioned_amount,
@@ -97,7 +101,8 @@ class AdminLoanPerformanceReportModel extends TranWrapper {
 													loan_id
 										) overdue2
 										ON	overdue2.loan_id	=	loans.loan_id
-							WHERE  	loans.loan_approval_date	>=	'{$fromDate}'
+							WHERE	loans.status	IN	(:disb_param,:repay_param)  	
+							AND		loans.loan_approval_date	>=	'{$fromDate}'
 							AND		loans.loan_approval_date	<=	'{$toDate}'
 							
 							order by loans.loan_id ASC";
@@ -109,7 +114,126 @@ class AdminLoanPerformanceReportModel extends TranWrapper {
 			$argArray['verf_rep_param2']		=	BORROWER_REPAYMENT_STATUS_PAID;							
 			$argArray['verf_rep_param3']		=	BORROWER_REPAYMENT_STATUS_PAID;	
 			
+			$argArray['disb_param']				=	LOAN_STATUS_DISBURSED;							
+			$argArray['repay_param']			=	LOAN_STATUS_LOAN_REPAID;	
+			
 			$this->loanListInfo					=	$this->dbFetchWithParam($displayListSql,$argArray);	
-			$this->prnt($this->loanListInfo);
+			//~ $this->prnt($this->loanListInfo);
 	}
+	
+	function getBorrRepaySchd() {
+		
+		$sql	=	"	SELECT 	installment_number,
+								loan_id,
+								date_format(repayment_schedule_date, '%d-%m-%Y') repayment_schedule_date,
+								repayment_scheduled_amount,
+								principal_component,
+								interest_component,
+								repayment_status,
+								ifnull(date_format(repayment_actual_date, '%d-%m-%Y'),'') repayment_actual_date,
+								ifnull(repayment_penalty_interest,0) repayment_penalty_interest,
+								ifnull(repayment_penalty_charges,0) repayment_penalty_charges,
+								ifnull(repayment_penalty_interest,0) + ifnull(repayment_penalty_charges,0) penalty,
+								ifnull(principal_component,0) + ifnull(interest_component,0) + 
+								ifnull(repayment_penalty_interest,0) + ifnull(repayment_penalty_charges,0) total
+						FROM	borrower_repayment_schedule
+						ORDER BY loan_id,installment_number";
+		
+		$rs		=	$this->dbFetchAll($sql);
+		$i	=	0;
+		foreach($rs	as $row) {
+			$loan_id	=	$row->loan_id;
+			$this->repayment_schedule[$loan_id][$i]	=	$row;
+			
+			switch ($row->repayment_status) {
+				
+				case BORROWER_REPAYMENT_STATUS_UNPAID:
+					$status = 'Unpaid';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_UNVERIFIED:
+					$status = 'Not Approved';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_PAID:
+					$status = 'Paid';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_CANCELLED:
+					$status = 'Cancelled';
+					break;
+				
+				case BORROWER_REPAYMENT_STATUS_OVERDUE:
+					$status = 'Overdue';
+					break;
+			}
+			$obj		=	$this->repayment_schedule[$loan_id][$i];	
+			$schdAmt	=	$obj->repayment_scheduled_amount;
+			$princAmt	=	$obj->principal_component;
+			$IntsAmt	=	$obj->interest_component;
+			$penaltyAmt	=	$obj->penalty;
+			
+			$obj->repayment_status = $status;
+			$obj->repayment_scheduled_amount =  number_format($schdAmt, 2, ".", ",");;
+			$obj->principal_component =  number_format($princAmt, 2, ".", ",");
+			$obj->interest_component =  number_format($IntsAmt, 2, ".", ",");;
+			$obj->penalty =  number_format($penaltyAmt, 2, ".", ",");;
+			$i++;
+		}
+		//~ $this->prnt($this->repayment_schedule);
+		$this->jsonBorrRepay = json_encode($this->repayment_schedule);
+	}
+	
+	function getExcelBorrRepaySchd() {
+		
+		$sql	=	"	SELECT 	installment_number,
+								loan_id,
+								date_format(repayment_schedule_date, '%d-%m-%Y') repayment_schedule_date,
+								ifnull(date_format(repayment_actual_date, '%d-%m-%Y'),'') repayment_actual_date,
+								repayment_scheduled_amount,
+								ROUND(principal_component,2) principal_component,
+								ROUND(interest_component,2) interest_component,
+								ROUND(ifnull(repayment_penalty_interest,0) + ifnull(repayment_penalty_charges,0),2)
+																										penalty,
+								repayment_status
+						FROM	borrower_repayment_schedule
+						ORDER BY loan_id,installment_number";
+		
+		$rs		=	$this->dbFetchAll($sql);
+		
+		$i	=	0;
+		foreach($rs	as $row) {
+			$loan_id	=	$row->loan_id;
+			$this->repayment_schedule[$loan_id][$i]	=	$row;
+			
+			switch ($row->repayment_status) {
+				
+				case BORROWER_REPAYMENT_STATUS_UNPAID:
+					$status = 'Unpaid';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_UNVERIFIED:
+					$status = 'Not Approved';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_PAID:
+					$status = 'Paid';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_CANCELLED:
+					$status = 'Cancelled';
+					break;
+				
+				case BORROWER_REPAYMENT_STATUS_OVERDUE:
+					$status = 'Overdue';
+					break;
+			}
+			$obj	=	$this->repayment_schedule[$loan_id][$i];
+			$obj->repayment_status = $status;
+			unset($obj->loan_id);
+			$i++;
+		}
+		
+	}
+	
 }

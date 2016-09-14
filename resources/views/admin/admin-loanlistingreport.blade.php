@@ -209,7 +209,7 @@
 								<th class="tab-head text-left">{{ Lang::get('Apply Date') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Approval Date') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Disburse Date') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Tenure') }}</th>
+								<th class="tab-head text-right">{{ Lang::get('Tenure') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
 								<th class="tab-head text-right">{{ Lang::get('Interest') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Repayment Type') }}</th>
@@ -227,11 +227,11 @@
 									<td class="text-left">{{$listRow->apply_date}}</td>
 									<td class="text-left">{{$listRow->loan_approval_date}}</td>
 									<td class="text-left">{{$listRow->disbursement_date}}</td>
-									<td class="text-left">{{$listRow->loan_tenure}}</td>
+									<td class="text-right">{{$listRow->loan_tenure}}</td>
 									<td class="text-left">{{$listRow->bid_type}}</td>
 									<td class="text-left">{{$listRow->target_interest}}</td>
 									<td class="text-left">{{$listRow->repayment_type}}</td>
-									<td class="text-left">{{number_format($listRow->par_sub_amt,2,'.',',')}}</td>
+									<td class="text-right">{{number_format($listRow->par_sub_amt,2,'.',',')}}</td>
 									<td class="text-left">{{$listRow->loan_status_name}}</td>
 								</tr>
 							@endforeach

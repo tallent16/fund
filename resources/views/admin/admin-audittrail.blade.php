@@ -171,11 +171,32 @@ $(document).ready(function(){
 		 $.ajax({ 
             type        : 'GET', 								// define the type of HTTP verb we want to use (POST for our form)
             url         : baseUrl+"/admin/audit_trial/"+str1+"/"+str2, 	// the url where we want to POST          
-            dataType    : 'json'
+            dataType    : 'json',
+            async: false,
+           
         }) // using the done promise callback
 		.done(function(data) {  
+			//~ alert(data.length);
+			
 			showAuditPopupFunc(data);
 		}); 
+		
+		$("tr td.after").each(function(i, el){  
+			var beforeval = [];	
+			var beforeval = $(this).html();	
+			//~ alert(beforeval);		
+			
+		 //~ $('tr').each(function (i, el) {
+			//~ var $tds = $(this).find('td.after');
+			//~ alert($tds.html());
+			$("#popup_table td.before").each(function(j,ele){
+				
+				//~ $(this).after('<td>'+beforeval+'</td>');
+				
+			});			
+		});
+		
+		//~ $("td.after").parent().remove();
 	});
 	
 	$(".details-control").on('click',function(){
@@ -190,7 +211,8 @@ $(document).ready(function(){
             dataType    : 'json',
             async		: false,
         }) // using the done promise callback
-		.done(function(data) {			
+		.done(function(data) {		
+				//~ alert(JSON.parse(data));
 			showTablesList(data);
 		}); 
 	});
@@ -212,21 +234,43 @@ function showTablesList(data){
 }
 
 function showAuditPopupFunc(data){
-	var	str;
-	str		=	"<div class='table-responsive'><table class='table text-left'>";
-	str		=	str+"<thead><tr><th class='text-left'>Col1</th>";	
-	str		=	str+"<th class='text-right'>Col2</th></thead>";
-	str		=	str+"<tbody><tr><td>";
-	str		=	str+"<ul style='list-style-type:none;'>";
-	if(data.rows.length > 0){
-		$.each( data.rows, function(key) {
-			str	=	str+"<li id='mod_id' >";
-			str	=	str+data.rows[key]+"\n";	
-			str	=	str+"</li>";		
-		});
-		str	=	str+"</ul>";
-	}
-	str 	=	str+"</td></tr>";
+	var	str 		= 	"";
+	var	afterRow	=	data.rows.rowAfter;
+	str		=	"<div class='table-responsive'><table class='table text-left' id='popup_table'>";
+	str		=	str+"<thead><tr><th class='text-left'>Field</th><th class='text-left'>Before</th>";	
+	str		=	str+"<th class='text-left'>After</th></tr></thead>";
+	str		=	str+"<tbody>";
+	
+		
+	//~ if(data.rows.length > 0){
+			//~ alert("comes");	
+		console.log(data.rows.rowBefore);
+		//~ $.each( data.rows, function(key,val) {	
+			$.each( data.rows.rowBefore, function(key1,val1) {	
+				console.log(key1+":"+val1);
+				str =	str +"<tr><td>";					
+				str	=	str+key1;
+				str =	str +"</td>";	
+				str = str +"<td class='before'>";					
+				str	= str+val1;
+				str = str +"</td>";
+				str = str +"<td class='after'>";					
+				str	= str+afterRow[key1];
+				str = str +"</td></tr>";
+			});
+				//~ str =	str +"<tr><td>";					
+				//~ str	=	str+key;
+				//~ str =	str +"</td>";	
+				//~ str = str +"<td class='before'>";					
+				//~ str	= str+data.rows.rowBefore[key];
+				//~ str = str +"</td>";
+				//~ str = str +"<td class='after'>";					
+				//~ str	= str+"After:";
+				//~ str = str +"</td></tr>";
+				//~ alert(str);						
+		//~ });
+	//~ }
+	
 	str		=	str+"</tbody></table></div>";
 	$("#audit_info .modal-body").html(str);
 	$("#audit_info").modal("show");
