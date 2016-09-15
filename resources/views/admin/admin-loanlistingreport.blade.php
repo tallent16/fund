@@ -229,7 +229,7 @@
 									<td class="text-left">{{$listRow->disbursement_date}}</td>
 									<td class="text-right">{{$listRow->loan_tenure}}</td>
 									<td class="text-left">{{$listRow->bid_type}}</td>
-									<td class="text-left">{{$listRow->target_interest}}</td>
+									<td class="text-right">{{$listRow->target_interest}}</td>
 									<td class="text-left">{{$listRow->repayment_type}}</td>
 									<td class="text-right">{{number_format($listRow->par_sub_amt,2,'.',',')}}</td>
 									<td class="text-left">{{$listRow->loan_status_name}}</td>

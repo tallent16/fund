@@ -1260,9 +1260,9 @@ Route::post('admin/approvechangeofbank/reject',
 	//****************************Loan listing report starts ********************************************************
 	 Route::get('admin/loan-listing/report',
 							[	
-								//~ 'middleware' 	=> 	'permission',
-								//~ 'permission'	=>	'viewbank.admin.reportactivity',
-								//~ 'action_type'	=>	'Bank Activity Report',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewloan.admin.reportlisting',
+								'action_type'	=>	'Loan Listing Report',
 								'uses' 			=>	'AdminLoanListingReportController@indexAction'
 							]
 				);
@@ -1281,9 +1281,9 @@ Route::post('admin/approvechangeofbank/reject',
 	//****************************Investors Profile report starts ******************************************************
 	 Route::get('admin/investor-profiles/report',
 							[	
-								//~ 'middleware' 	=> 	'permission',
-								//~ 'permission'	=>	'viewbank.admin.reportactivity',
-								//~ 'action_type'	=>	'Bank Activity Report',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewinvestor.admin.reportprofile',
+								'action_type'	=>	'Investor Profile  Report',
 								'uses' 			=>	'AdminInvestorsProfileReportController@indexAction'
 							]
 				);
@@ -1302,9 +1302,9 @@ Route::post('admin/approvechangeofbank/reject',
 	//****************************Borrowers Profile report starts ********************************************************
 	 Route::get('admin/borrower-profiles/report',
 							[	
-								//~ 'middleware' 	=> 	'permission',
-								//~ 'permission'	=>	'viewbank.admin.reportactivity',
-								//~ 'action_type'	=>	'Bank Activity Report',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewborrower.admin.reportprofile',
+								'action_type'	=>	'Borrower Profile Report',
 								'uses' 			=>	'AdminBorrowersProfileReportController@indexAction'
 							]
 				);
@@ -1323,9 +1323,9 @@ Route::post('admin/approvechangeofbank/reject',
 	 //****************************Loan Performance report starts ********************************************************
 	 Route::get('admin/loan-perform/report',
 							[	
-								//~ 'middleware' 	=> 	'permission',
-								//~ 'permission'	=>	'viewbank.admin.reportactivity',
-								//~ 'action_type'	=>	'Bank Activity Report',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewloan.admin.reportperformance',
+								'action_type'	=>	'Loan Performance Report',
 								'uses' 			=>	'AdminLoanPerformanceReportController@indexAction'
 							]
 				);
@@ -1344,9 +1344,9 @@ Route::post('admin/approvechangeofbank/reject',
 	 //****************************commission Fee ledger report starts *************************************************
 	 Route::get('admin/commission-fees-ledger/report',
 							[	
-								//~ 'middleware' 	=> 	'permission',
-								//~ 'permission'	=>	'viewbank.admin.reportactivity',
-								//~ 'action_type'	=>	'Bank Activity Report',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewcommfees.admin.reportledger',
+								'action_type'	=>	'Commission Fees Ledger Report',
 								'uses' 			=>	'AdminCommFeeLedgerReportController@indexAction'
 							]
 				);
@@ -1365,9 +1365,9 @@ Route::post('admin/approvechangeofbank/reject',
 	 //****************************Penalties Levies Ledger report starts *************************************************
 	 Route::get('admin/penalties-levies/report',
 							[	
-								//~ 'middleware' 	=> 	'permission',
-								//~ 'permission'	=>	'viewbank.admin.reportactivity',
-								//~ 'action_type'	=>	'Bank Activity Report',
+								'middleware' 	=> 	'permission',
+								'permission'	=>	'viewpenlev.admin.reportledger',
+								'action_type'	=>	'Penalty levies Ledger Report',
 								'uses' 			=>	'AdminPenaltiesLeviesReportController@indexAction'
 							]
 				);

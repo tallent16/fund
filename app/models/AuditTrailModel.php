@@ -11,6 +11,8 @@ class AuditTrailModel extends TranWrapper {
     public  $actionlist 		= array();
     public  $tablelist 			= array();
     public  $userlist 			= array();
+    public  $auditkeylist		= array();
+    public  $newlist			= array();
    
     public  $fromDate 			= "";
     public  $toDate 			= "";
@@ -121,9 +123,8 @@ class AuditTrailModel extends TranWrapper {
 							  "module1"			=>	$this->filtermodule	, "module2" => $this->filtermodule	,
 							  "filteraction1" 	=>  $this->actionmodule	,"filteraction2" => $this->actionmodule	);
 		
-		$this->header_rs	=	$auditDb->select($auditSql, $whereArray);
+		$this->header_rs	=	$auditDb->select($auditSql, $whereArray);		
 		
-		//~ echo "<pre>",print_r($auditSql),"</pre>"; die;
 		return $this->header_rs;
 		
 	}
@@ -158,37 +159,28 @@ class AuditTrailModel extends TranWrapper {
 		$sql1			=	"SELECT ".trim($auditdata[0]->columns,',')." 
 									FROM {$tablename}
 									WHERE audit_key = {$auditkey} limit 2";
-		
-		$auditdata1		=	$auditDb->select($sql1);
-					
-		return $auditdata1;
-		
-		//~ $sql		=	"	SELECT	*	FROM	audit_tablecolumns
-							//~ WHERE	tab_name = :tab_name
-							//~ ORDER BY col_disp_order ";		
-		
-		//~ switch($tablename){
-			//~ case 	'audit_borrowers' :		
-					//~ $auditsql   = "SELECT * 
-									//~ FROM {$tablename} 
-									//~ WHERE audit_key = {$auditkey} limit 2" ;
-					//~ break;
-			//~ case 	'audit_borrower_banks' :	
+									
 			
-			
-		//~ }
-		//~ $auditDb		=	DB::connection('auditDb');
-		//~ $auditdata		=	$auditDb->select($sql);
-				
-		//~ echo $auditdata;
+		//~ $tablecolsql 	=	"SELECT col_dispname 
+							//~ from audit_tablecolumns 
+							//~ where tab_name = '{$tablename}'";
+							
+		//~ $auditdatacol	=	$auditDb->select($tablecolsql);	
+		//~ foreach($auditdatacol as $list){
+				//~ $this->newlist[] = $list->col_dispname;
+		//~ }			
+		//~ echo "<pre>",print_r($this->newlist),"</pre>"; 
 		//~ die;
 		
+		$auditdata1		=	$auditDb->select($sql1);		
+		
+		//~ $newarray = array_merge($auditdata1,$this->newlist);
+		//~ echo "<pre>",print_r($newarray),"</pre>"; 
+		//~ }
+		
+		return $auditdata1;				
+		
 	}
-	
-	
-	
-	
-	
 	
 	public function getAuditDetails($audit_key) {
 		// Get the object referring to the Audit DB
@@ -313,12 +305,6 @@ class AuditTrailModel extends TranWrapper {
 								AND		a.audit_key = :audit_key ";
 				//~ $tmpRs	=	
 				break;
-				
-			
-			
-		}
-		
-		
-		
+		}		
 	}
 }

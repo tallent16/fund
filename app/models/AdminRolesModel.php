@@ -78,7 +78,7 @@ class AdminRolesModel extends TranWrapper {
 																WHERE	role_id	=	{$role_id}
 															) rolePermission
 												ON	rolePermission.permission_id = permissions.id
-											order by id";
+											order by module_id";
 	
 		
 		$this->allPermissionList		=	$this->dbFetchAll($allpermissionlist_sql);

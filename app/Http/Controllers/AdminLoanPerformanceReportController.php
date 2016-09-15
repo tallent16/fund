@@ -161,4 +161,29 @@ class AdminLoanPerformanceReportController extends MoneyMatchController {
 		
 	}	
 	
+	public function DownloadLoanPerformanceTestAction() { 
+		
+		$postArray	=	Request::all();
+		$jsonObj	=	json_decode($postArray['report_json'],true);
+		
+		foreach($jsonObj as $k=>$v) {
+			foreach($v as $key=>$val) {
+				if($key == 'Action' || $key == 'LoanID' ) {
+					unset($jsonObj[$k][$key]);
+				}
+			}
+		}
+		Excel::create('LoanPerformanceLedgerReport', function($excel) 
+			use ($jsonObj)
+		 {
+				$excel->sheet('Loans', function($sheet)
+					use ($jsonObj)
+				 {		
+					 $sheet->fromArray($jsonObj);
+					});
+							
+		})->download('xls');
+		
+	}	
+	
 }

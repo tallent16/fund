@@ -99,7 +99,7 @@
 						<td class="details-control"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
 				</tr>
 				<tr id="tran_row_{{ $row->audit_key}}" style="display:none;">	
-					<td colspan="7">
+					<td colspan="">
 						<div class="table-responsive" id="audit-trail">
 							<table class="table text-left">
 								<tr>	
@@ -118,7 +118,7 @@
 </div>
 
 <input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
- @section ('popup-box_panel_title',Lang::get('Audit Trail'))
+ @section ('popup-box_panel_title',Lang::get('Audit Trail Info'))
 	@section ('popup-box_panel_body')
 		
 	@endsection
@@ -149,7 +149,7 @@ $(document).ready(function(){
 		var loan_id = $(this).parent().attr("id");		
 		if($(this).parent().hasClass("shown")){
 			$("#"+loan_id).removeClass("shown");
-			$("#tran_row_"+loan_id).hide();
+			$("#tran_row_"+loan_id).hide();			
 		}
 		else{
 			$("#"+loan_id).addClass("shown");
@@ -175,31 +175,19 @@ $(document).ready(function(){
             async: false,
            
         }) // using the done promise callback
-		.done(function(data) {  
-			//~ alert(data.length);
-			
+		.done(function(data) {  						
 			showAuditPopupFunc(data);
-		}); 
-		
-		$("tr td.after").each(function(i, el){  
-			var beforeval = [];	
-			var beforeval = $(this).html();	
-			//~ alert(beforeval);		
-			
-		 //~ $('tr').each(function (i, el) {
-			//~ var $tds = $(this).find('td.after');
-			//~ alert($tds.html());
-			$("#popup_table td.before").each(function(j,ele){
-				
-				//~ $(this).after('<td>'+beforeval+'</td>');
-				
-			});			
-		});
-		
-		//~ $("td.after").parent().remove();
+		}); 		
 	});
 	
 	$(".details-control").on('click',function(){
+		var a= $(this).closest('tr').attr('id');
+		$(this).parent().siblings('tr.shown').removeClass("shown");
+		
+		var b = '#tran_row_'+a;		
+		$("tr:not('"+b+"')").siblings('[id^="tran_row_"]').hide();
+		$(b).show();
+		
 		var modulename = $(this).find('input').val();		     
 		var ret = modulename.split(" ");
 		var str1 = ret[0];	
@@ -211,12 +199,10 @@ $(document).ready(function(){
             dataType    : 'json',
             async		: false,
         }) // using the done promise callback
-		.done(function(data) {		
-				//~ alert(JSON.parse(data));
+		.done(function(data) {				
 			showTablesList(data);
 		}); 
-	});
-	
+	});	
 }); 
 
 function showTablesList(data){
@@ -224,9 +210,9 @@ function showTablesList(data){
 	str		=	str+"<ul style='list-style-type:none;'>";
 	if(data.rows.length > 0){
 		$.each( data.rows, function(key) {
-			str	=	str+"<li id='mod_id' >";
+			str	=	str+"<li id='mod_id' style='cursor:pointer;' >";
 			str	=	str+data.rows[key]+"\n";	
-			str	=	str+"</li>";		
+			str	=	str+"</li></br>";		
 		});
 		str	=	str+"</ul>";
 		$('.module_list').html(str);
@@ -236,40 +222,22 @@ function showTablesList(data){
 function showAuditPopupFunc(data){
 	var	str 		= 	"";
 	var	afterRow	=	data.rows.rowAfter;
-	str		=	"<div class='table-responsive'><table class='table text-left' id='popup_table'>";
-	str		=	str+"<thead><tr><th class='text-left'>Field</th><th class='text-left'>Before</th>";	
-	str		=	str+"<th class='text-left'>After</th></tr></thead>";
-	str		=	str+"<tbody>";
+	str				=	"<div class='table-responsive'><table class='table text-left' id='popup_table'>";
+	str				=	str+"<thead><tr><th class='text-left'>Columns</th><th class='text-left'>Before</th>";	
+	str				=	str+"<th class='text-left'>After</th></tr></thead>";
+	str				=	str+"<tbody>";	
 	
-		
-	//~ if(data.rows.length > 0){
-			//~ alert("comes");	
-		console.log(data.rows.rowBefore);
-		//~ $.each( data.rows, function(key,val) {	
-			$.each( data.rows.rowBefore, function(key1,val1) {	
-				console.log(key1+":"+val1);
-				str =	str +"<tr><td>";					
-				str	=	str+key1;
-				str =	str +"</td>";	
-				str = str +"<td class='before'>";					
-				str	= str+val1;
-				str = str +"</td>";
-				str = str +"<td class='after'>";					
-				str	= str+afterRow[key1];
-				str = str +"</td></tr>";
-			});
-				//~ str =	str +"<tr><td>";					
-				//~ str	=	str+key;
-				//~ str =	str +"</td>";	
-				//~ str = str +"<td class='before'>";					
-				//~ str	= str+data.rows.rowBefore[key];
-				//~ str = str +"</td>";
-				//~ str = str +"<td class='after'>";					
-				//~ str	= str+"After:";
-				//~ str = str +"</td></tr>";
-				//~ alert(str);						
-		//~ });
-	//~ }
+	$.each( data.rows.rowBefore, function(key1,val1) {					
+			str =	str +"<tr><td>";					
+			str	=	str+key1;
+			str =	str +"</td>";	
+			str = 	str +"<td class='before'>";					
+			str	= 	str+val1;
+			str = 	str +"</td>";
+			str = 	str +"<td class='after'>";					
+			str	= 	str+afterRow[key1];
+			str = 	str +"</td></tr>";
+	});				
 	
 	str		=	str+"</tbody></table></div>";
 	$("#audit_info .modal-body").html(str);

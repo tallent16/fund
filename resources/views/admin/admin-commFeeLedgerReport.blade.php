@@ -3,44 +3,7 @@
 	{{ Html::style('css/datatable/jquery.dataTables.css') }}
 	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
 	{{ Html::style('css/datatable/dataTables.editor.css') }}		
-	<style>
-		table.dataTable thead th, table.dataTable thead td {
-			padding: 10px;
-			border-bottom:none;
-			font-size:12px;
-		}
-		table.dataTable thead > th {
-			color: #fff;			
-			text-decoration:none;			
-		}		
-		table.dataTable thead > tr{
-			background-color:#333;
-			color:#fff;
-		}
-		.dataTable td a{
-			color:#333;
-			text-decoration:none;		
-		}
-		.table-responsive{
-			overflow:visible;
-		}
-		table.dataTable.no-footer{
-			border:none;
-		}
-		ul.radio  {
-		  margin: 0;
-		  padding: 0;
-		  margin-left: 20px;
-		  list-style: none;
-		}
 
-		ul.radio li {
-			border: 1px transparent solid;
-			display: inline-block;
-			margin-right: 25px;
-		}
-
-	</style>
 @stop
 @section('page_heading',Lang::get('Commission Fees Ledger Report') )
 @section('section')  

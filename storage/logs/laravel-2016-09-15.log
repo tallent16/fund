@@ -1,4 +1,4 @@
-[2016-09-10 00:00:01] production.ERROR: exception 'ErrorException' with message 'Trying to get property of non-object' in /var/www/html/app/models/TranWrapper.php:176
+[2016-09-15 00:00:01] production.ERROR: exception 'ErrorException' with message 'Trying to get property of non-object' in /var/www/html/app/models/TranWrapper.php:176
 Stack trace:
 #0 /var/www/html/app/models/TranWrapper.php(176): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Trying to get p...', '/var/www/html/a...', 176, Array)
 #1 /var/www/html/app/models/MoneyMatchModel.php(263): App\models\TranWrapper->getCurrentuserID()

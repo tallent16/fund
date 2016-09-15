@@ -80,7 +80,7 @@
 							<th class="tab-head text-left">{{ Lang::get('Key Contact Person') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('CP Email') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('CP Mobile') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Paid up Capital') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Paid up Capital') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Operation Since') }}</th>
 							<th class="tab-head text-right">{{ Lang::get('Total Loans Applied') }}</th>
 							<th class="tab-head text-right">{{ Lang::get('Total Loans Sanctioned') }}</th>
@@ -102,7 +102,7 @@
 								<td class="text-left">{{$listRow->contact_person}}</td>
 								<td class="text-left">{{$listRow->contact_person_email}}</td>
 								<td class="text-left">{{$listRow->contact_person_mobile}}</td>
-								<td class="text-left">{{$listRow->paid_up_capital}}</td>
+								<td class="text-right">{{$listRow->paid_up_capital}}</td>
 								<td class="text-left">{{$listRow->operation_since}}</td>
 								<td class="text-right">{{$listRow->tot_loan_applied}}</td>
 								<td class="text-right">{{$listRow->tot_loan_sanctioned}}</td>
