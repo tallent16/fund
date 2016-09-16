@@ -266,7 +266,7 @@ class MoneyMatchModel extends Model {
 							'action_detail' => $actionDetail,
 							'key_displayfieldname' => $keyDisplayFieldName,
 							'key_displayfieldvalue' =>	$keyDisplayFieldValue];
-		
+		//~ echo "<pre>",print_r($dataArray),"</pre>";
 		$auditDb	=	DB::connection('auditDb');
 		$this->auditKey = $auditDb->table('audit_master')->insertGetId($dataArray);	
 		$this->auditFlag = true;

@@ -121,7 +121,7 @@ class AdminLoanPerformanceReportModel extends TranWrapper {
 			//~ $this->prnt($this->loanListInfo);
 	}
 	
-	function getBorrRepaySchd() {
+	public function getBorrRepaySchd() {
 		
 		$sql	=	"	SELECT 	installment_number,
 								loan_id,
@@ -184,9 +184,10 @@ class AdminLoanPerformanceReportModel extends TranWrapper {
 		$this->jsonBorrRepay = json_encode($this->repayment_schedule);
 	}
 	
-	function getExcelBorrRepaySchd() {
+	public function getExcelBorrRepaySchd() {
 		
-		$sql	=	"	SELECT 	installment_number,
+		$sql	=	"	SELECT 	
+								installment_number,
 								loan_id,
 								date_format(repayment_schedule_date, '%d-%m-%Y') repayment_schedule_date,
 								ifnull(date_format(repayment_actual_date, '%d-%m-%Y'),'') repayment_actual_date,
@@ -236,4 +237,110 @@ class AdminLoanPerformanceReportModel extends TranWrapper {
 		
 	}
 	
+	public function getExcelBorrRepaySchdTest() {
+		
+		$sql	=	"	SELECT '' dcol1,
+								installment_number,
+								loan_id,
+								date_format(repayment_schedule_date, '%d-%m-%Y') repayment_schedule_date,
+								ifnull(date_format(repayment_actual_date, '%d-%m-%Y'),'') repayment_actual_date,
+								repayment_scheduled_amount,
+								ROUND(principal_component,2) principal_component,
+								ROUND(interest_component,2) interest_component,
+								ROUND(ifnull(repayment_penalty_interest,0) + ifnull(repayment_penalty_charges,0),2)
+																										penalty,
+								
+								repayment_status,
+								'' dcol2,
+								'' dcol3,
+								'' dcol4,
+								'' dcol5,
+								'' dcol6,
+								'' dcol7
+								
+						FROM	borrower_repayment_schedule
+						ORDER BY loan_id,installment_number";
+		\DB::setFetchMode(\PDO::FETCH_ASSOC);
+		$rs		=	$this->dbFetchAll($sql);
+		\DB::setFetchMode(\PDO::FETCH_CLASS);
+		//~ $this->prnt($rs);
+		$i	=	0;
+		foreach($rs	as $row) {
+			$loan_id	=	$row['loan_id'];
+			$this->repayment_schedule[$loan_id][$i]	=	$row;
+			
+			switch ($row['repayment_status']) {
+				
+				case BORROWER_REPAYMENT_STATUS_UNPAID:
+					$status = 'Unpaid';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_UNVERIFIED:
+					$status = 'Not Approved';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_PAID:
+					$status = 'Paid';
+					break;
+					
+				case BORROWER_REPAYMENT_STATUS_CANCELLED:
+					$status = 'Cancelled';
+					break;
+				
+				case BORROWER_REPAYMENT_STATUS_OVERDUE:
+					$status = 'Overdue';
+					break;
+			}
+			$obj	=	$this->repayment_schedule[$loan_id][$i];
+			$obj['repayment_status'] = $status;
+			unset($obj['loan_id']);
+			$i++;
+		}
+		
+	}
+	
+	public function mergeBorRepSchd($jsonObj) {
+		
+		$newjsonObj			=	array();
+		$setBoldRowArry		=	array();
+		$setBoldRowArry[]	=	1;
+		
+		$this->getExcelBorrRepaySchdTest();
+		$borRepschd	=	$this->repayment_schedule;
+		//~ $this->prnt($borRepschd);
+		$headersRepSch	=	 [	1=>'',2=>'Inst-No',3=>'Inst Due Date',4=>'Inst Act Pay Date',5=>'Schd Inst Amount',
+								6=>'Principal',7=>'Interest',8=>'Penalty',9=>'Status',
+								10=>'',11=>'',12=>'',13=>'',14=>'',15=>'',16=>''
+							];
+		$i	=	3;
+		foreach($jsonObj as $key=>$row) {
+			$newjsonObj[]	=	$row;
+			
+			$loanID			=	$row['LoanID'];
+			
+			if(isset($borRepschd[$loanID])) {
+			
+				$setBoldRowArry[]	=	$i;
+				
+				$newjsonObj[]	=	$headersRepSch	;
+				++$i;
+				foreach($borRepschd[$loanID] as $innRow) {
+					 $newjsonObj[]	=	$innRow;
+					++$i;
+				}
+			}
+			++$i;
+		}
+		
+		foreach($newjsonObj as $k=>$v) {
+			foreach($v as $key=>$val) {
+				if($key == 'Action' || $key == 'LoanID' || $key == 'loan_id' ) {
+					unset($newjsonObj[$k][$key]);
+					if(is_numeric($val))
+						echo "newjsonObj[$k][$key]"."<br>";
+				}
+			}
+		}
+		return	array("newJsonArry"=>$newjsonObj,"setBoldRowArry"=>$setBoldRowArry);
+	}
 }

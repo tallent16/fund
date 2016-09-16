@@ -137,32 +137,32 @@
 								<td class="text-right">
 									{{ $listRow->loan_tenure }}
 								</td>
-								<td class="text-right">
-									{{ $listRow->apply_amount }}
+								<td class="text-right num_format">
+									{{ number_format($listRow->apply_amount,2,'.',',') }}
 								</td>
-								<td class="text-right">
+								<td class="text-right num_format">
 									{{ $listRow->tot_bids_received }}
 								</td>
-								<td class="text-right">
-									{{ $listRow->tot_bids_received_amt }}
+								<td class="text-right num_format">
+									{{ number_format($listRow->tot_bids_received_amt,2,'.',',') }}
 								</td>
-								<td class="text-right">
-									{{ $listRow->loan_sanctioned_amount }}
+								<td class="text-right num_format">
+									{{ number_format($listRow->loan_sanctioned_amount,2,'.',',') }}
 								</td>
-								<td class="text-right">
-									{{ $listRow->tot_principal_os }}
+								<td class="text-right num_format">
+									{{number_format($listRow->tot_principal_os,2,'.',',') }}
 								</td>
-								<td class="text-right">
-									{{ $listRow->tot_interest_os}}
+								<td class="text-right num_format">
+									{{ number_format($listRow->tot_interest_os,2,'.',',')}}
 								</td>
-								<td class="text-right">
-									{{ $listRow->tot_penalty_interest }}
+								<td class="text-right num_format">
+									{{ number_format($listRow->overdue_amt,2,'.',',') }}
 								</td>
-								<td class="text-right">
+								<td class="text-right num_format">
 									{{ $listRow->tot_penalty_charges}}
 								</td>
-								<td class="text-right">
-									{{ $listRow->overdue_amt }}
+								<td class="text-right num_format">
+									{{ number_format($listRow->overdue_amt,2,'.',',') }}
 								</td>
 								<td class="text-left">
 									{{ $listRow->overdue_since }}
@@ -203,7 +203,8 @@
 	function convert2json() {
 		
 		$(".bor_repay_schd").remove();
-		
+		//~ jQuery('.num_format').html().replace(',', '');
+		$('.num_format').html().replace(/,/g, '');
 		var reportJson 		= 	$('.table').tableToJSON(); // Convert the table into a javascript object
 		$obj				=	JSON.stringify(reportJson);
 		$fromDate			=	$("#fromdate").val();

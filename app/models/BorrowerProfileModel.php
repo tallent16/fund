@@ -72,7 +72,7 @@ class BorrowerProfileModel extends TranWrapper {
 	}
 		
 	public function getBorrowerCompanyInfo($bor_id) {
-		
+		 
 		if($bor_id	==	null){
 			$current_user_id	=	$this->getCurrentuserID();
 		}else{

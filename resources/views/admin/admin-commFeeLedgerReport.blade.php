@@ -22,7 +22,7 @@
 				<strong>{{ Lang::get('From Date')}}</strong><br>							
 				<input 	id="fromdate" 
 						name="fromdate" 
-						
+						value="{{$adminCommFeeLedRepMod->fromDate}}"
 						type="text" 
 						filter_field="Yes" 
 						class="date-picker form-control" />
@@ -34,7 +34,7 @@
 				<strong>{{ Lang::get('To Date')}}</strong><br>							
 				<input 	id="todate" 
 						name="todate" 
-						
+						value="{{$adminCommFeeLedRepMod->toDate}}"
 						type="text" 
 						filter_field="Yes"
 						class="date-picker form-control" />

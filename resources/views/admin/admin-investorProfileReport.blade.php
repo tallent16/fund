@@ -21,7 +21,7 @@
 					<strong>{{ Lang::get('Status') }}</strong><br>							
 					{{ Form::select('approval_status', 
 							$adminInvProRepMod->allAprovalStatus, 
-							'', 
+							$adminInvProRepMod->filterStatusValue, 
 							["class" => "selectpicker",
 							"id" => "loan_status"]) }} 
 			</div>		

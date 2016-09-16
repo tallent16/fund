@@ -173,7 +173,7 @@ class TranWrapper extends MoneyMatchModel {
 	}
 	
 	public function getCurrentuserID() {
-		$retval = Auth::user()->user_id;
+		$retval = Auth::user()->user_id;		
 		return $retval;
 	}
 	

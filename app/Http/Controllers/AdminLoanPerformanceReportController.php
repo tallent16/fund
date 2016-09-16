@@ -165,22 +165,24 @@ class AdminLoanPerformanceReportController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$jsonObj	=	json_decode($postArray['report_json'],true);
+		$result	=	$this->adminLoanPerRepMod->mergeBorRepSchd($jsonObj);
+		$newJsonArry	=	$result['newJsonArry'];
+		$setBoldRowArry	=	$result['setBoldRowArry'];
 		
-		foreach($jsonObj as $k=>$v) {
-			foreach($v as $key=>$val) {
-				if($key == 'Action' || $key == 'LoanID' ) {
-					unset($jsonObj[$k][$key]);
-				}
-			}
-		}
 		Excel::create('LoanPerformanceLedgerReport', function($excel) 
-			use ($jsonObj)
+			use ($newJsonArry,$setBoldRowArry)
 		 {
 				$excel->sheet('Loans', function($sheet)
-					use ($jsonObj)
+					use ($newJsonArry,$setBoldRowArry)
 				 {		
-					 $sheet->fromArray($jsonObj);
-					});
+					 $sheet->fromArray($newJsonArry);
+					 foreach($setBoldRowArry	as $boldRow) {
+							
+							$sheet->row($boldRow, function ($row) {
+								$row->setFontWeight('bold');
+							});
+						}		
+				});
 							
 		})->download('xls');
 		

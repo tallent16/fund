@@ -1315,7 +1315,7 @@ Route::post('admin/approvechangeofbank/reject',
 							]
 				);
 	Route::post('admin/borrower-profiles-report/download',
-											'AdminBorrowersProfileReportController@DownloadLoanListingAction'
+											'AdminBorrowersProfileReportController@DownloadBorrowerProfileAction'
 							
 				);
 	 //****************************Borrowers Profile report ends********************************************************
@@ -1336,6 +1336,7 @@ Route::post('admin/approvechangeofbank/reject',
 							]
 				);
 	Route::post('admin/loan-perform-report/download',
+											//~ 'AdminLoanPerformanceReportController@DownloadLoanPerformanceTestAction'
 											'AdminLoanPerformanceReportController@DownloadLoanPerformanceAction'
 							
 				);
@@ -1356,8 +1357,8 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminCommFeeLedgerReportController@indexPostAction'
 							]
 				);
-	Route::post('admin/loan-listing-report/download',
-											'AdminLoanListingReportController@DownloadLoanListingAction'
+	Route::post('admin/commission-fees-ledger-report/download',
+											'AdminCommFeeLedgerReportController@DownloadCommissionFeesLedgerAction'
 							
 				);
 	 //****************************commission Fee ledger report ends********************************************************
@@ -1377,8 +1378,8 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminPenaltiesLeviesReportController@indexPostAction'
 							]
 				);
-	Route::post('admin/loan-listing-report/download',
-											'AdminLoanListingReportController@DownloadLoanListingAction'
+	Route::post('admin/penalties-levies-report/download',
+											'AdminPenaltiesLeviesReportController@DownloadPenaltyLeviesAction'
 							
 				);
 	 //****************************Penalties Levies ledger report ends********************************************************

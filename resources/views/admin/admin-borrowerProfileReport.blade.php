@@ -22,7 +22,7 @@
 					<strong>{{ Lang::get('Status') }}</strong><br>							
 					{{ Form::select('approval_status', 
 							$adminBorProRepMod->allAprovalStatus, 
-							'', 
+							$adminBorProRepMod->filterStatusValue, 
 							["class" => "selectpicker",
 							"id" => "approval_status"]) }} 
 			</div>		

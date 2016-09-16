@@ -89,7 +89,7 @@
 <form 	class="form-horizontal" 
 		id="excel_export" 
 		method="post"
-		action="{{url('admin/penalties-levies-report/download1')}}">
+		action="{{url('admin/penalties-levies-report/download')}}">
 		<input  type="hidden" 
 				name="_token"
 				id="hidden_token"

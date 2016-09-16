@@ -157,6 +157,9 @@ class UserModel extends TranWrapper implements AuthenticatableContract, CanReset
 											'user_id'=>$id
 										);
 				$this->dbInsert('user_challenges', $dataArray1, true);
+				//~ echo "<pre>",print_r($id ),"</pre>"; die;
+				//~ $this->setAuditOn('users', 'update', 'update status',
+								//~ "status",  '1');
 				
 				$whereArry	=	array("user_id" =>$id);
 				$dataArry	=	array('status' => USER_STATUS_UNVERIFIED,'email_verified'=>USER_EMAIL_UNVERIFIED);
