@@ -247,19 +247,19 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$currency				=	'SGD'; // Hardcoded value
 
 		$this->username			=	$this->getUserName('Investor', $this->investorId);
-		$moduleName		=	"Investor Deposits";
+		$moduleName		=	"Investor Deposit";
 
 		// Audit Trail related Settings
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes") {
 			$actionSumm =	"Approval";
-			$actionDet  =	"Approval of Investor Deposits";
+			$actionDet  =	"Approval of Investor Deposit";
 		} else {
 			if ($tranType != "add") {
 				$actionSumm =	"Update";
-				$actionDet  =	"Update Investor Deposits";
+				$actionDet  =	"Update Investor Deposit";
 			} else {
 				$actionSumm =	"Add";
-				$actionDet	=	"Add New Investor Deposits";
+				$actionDet	=	"Add New Investor Deposit";
 			}
 		}
 
@@ -321,11 +321,11 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		
 		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
 
-		$moduleName		=	"Investor Deposits";
+		$moduleName		=	"Investor Deposit";
 
 		// Audit Trail related Settings
 		$actionSumm =	"Approval";
-		$actionDet  =	"Approval of Investor Deposits";
+		$actionDet  =	"Approval of Investor Deposit";
 
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"username", $this->username);
@@ -370,11 +370,11 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
 
 		$this->username			=	$this->getUserName('Investor', $investorId);
-		$moduleName		=	"Investor Deposits";
+		$moduleName		=	"Investor Deposit";
 
 		// Audit Trail related Settings
 		$actionSumm =	"Unapproval";
-		$actionDet  =	"Unapproval of Investor Deposits";
+		$actionDet  =	"Unapproval of Investor Deposit";
 
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"username", $this->username);
@@ -421,11 +421,11 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$depositAmt				=	$investorBankTranInfo[0]->trans_amount;
 
 		$this->username			=	$this->getUserName('Investor', $investorId);
-		$moduleName		=	"Investor Deposits";
+		$moduleName		=	"Investor Deposit";
 
 		// Audit Trail related Settings
 		$actionSumm =	"Delete";
-		$actionDet  =	"Delete Investor Deposits";
+		$actionDet  =	"Delete Investor Deposit";
 
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"username", $this->username);

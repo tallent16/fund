@@ -214,8 +214,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 
 		// Audit Trail related Settings
 		if(isset($postArray["isSaveButton"]) && $postArray["isSaveButton"]	!=	"yes") {
-			$actionSumm =	"Approval";
-			$actionDet  =	"Approval of Loans";
+			$actionSumm =	"For Approval";
+			$actionDet  =	"Loan for Approval";
 		} else {
 			if ($transType != "add") {
 				$actionSumm =	"Update";
@@ -226,7 +226,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			}
 		}
 
-		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
+		 $this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
 										
 		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType,$borrowerId);
 		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {

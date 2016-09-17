@@ -216,7 +216,7 @@ class BorrowerProfileModel extends TranWrapper {
 			$whereArry		=	array("borrower_id" => $borrowerId);
 
 			if($postArray['isSaveButton']	!=	"yes") {
-				$actionSumm =	"Borrower Profile for approval";
+				$actionSumm =	"For Approval";
 				$actionDet  =	"Borrower Profile Submit for Approval";
 			} else {
 				// Audit Trail related Settings

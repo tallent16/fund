@@ -45,7 +45,7 @@ class AuditTrailModel extends TranWrapper {
 			$modulelist		=	$auditDb->select($modulesql);
 			$this->modlist['all'] 	=	'All';
 			foreach($modulelist as $list){
-					$this->modlist[] = $list->module_name;
+					$this->modlist[$list->module_name] = $list->module_name;
 			}		
 			return $this->modlist;			
 	}
@@ -57,7 +57,7 @@ class AuditTrailModel extends TranWrapper {
 			$actionlist		=	$auditDb->select($actionsql);
 		    $this->actionlist['all'] 	=	'All';
 			foreach($actionlist as $list){
-					$this->actionlist[] = $list->action_summary;
+					$this->actionlist[$list->action_summary] = $list->action_summary;
 			}		
 			return $this->actionlist;			
 	}
@@ -93,36 +93,41 @@ class AuditTrailModel extends TranWrapper {
 									key_displayfieldname,
 									key_displayfieldvalue
 							FROM	audit_master
-							WHERE	action_datetime between :from_date and :to_date
-							AND		module_name = CASE if (:module1 = 'all', 'all', :module2)
+							WHERE	action_datetime between :from_date and :to_date  
+							AND		module_name = if (:module1 = 'all', module_name, :module2)
+							AND 	action_summary = if (:filteraction1 = 'all', action_summary, :filteraction2) 							
+							";
+							
+					/*		AND		module_name = CASE if (:module1 = 'all', 'all', :module2)
 														WHEN 'all' then module_name
-														WHEN 0 then 'Borrower Profile'
-														WHEN 1 then 'Investor Profile'
-														WHEN 2 then 'Investor Deposits'
-														WHEN 3 then 'Loan Repayment'
-														WHEN 4 then 'Investor Withdrawal'
-														WHEN 5 then 'Investor Withdrawals'
-														WHEN 6 then 'Loan Process'
-														WHEN 7 then 'Loans'
+														WHEN 'Borrower Profile' then 'Borrower Profile'
+														WHEN 'Loans' then 'Loans'
+														WHEN 'Investor Profile' then 'Investor Profile'
+														WHEN 'Investor Deposit' then 'Investor Deposit'
+														WHEN 'Loan Process' then 'Loan Process'
+														WHEN 'Investor Withdrawal' then 'Investor Withdrawal'
+														WHEN 'Loan Repayment' then 'Loan Repayment'
+														
 													END
 							AND 	action_summary = CASE if (:filteraction1 = 'all', 'all', :filteraction2) 
 														WHEN 'all' then action_summary
-														WHEN 0 then 'Update'
-														WHEN 1 then 'Profile return to Borrower'
-														WHEN 2 then 'Borrower Profile Approval'
-														WHEN 3 then 'Comments by Admin'
-														WHEN 4 then 'Investor Profile for approval'
-														WHEN 5 then 'Approval'
-														WHEN 6 then 'Add'
-														WHEN 7 then 'Unapproval'
-													END LIMIT 20";
-
+														WHEN 'Add' then 'Add'
+														WHEN 'Approval' then 'Approval'
+														WHEN 'For Approval' then 'For Approval'
+														WHEN 'Update' then 'Update'
+														WHEN 'Comments by Admin' then 'Comments by Admin'
+														WHEN 'Bids Closed' then 'Bids Closed'
+														WHEN 'Accept Loan Bids' then 'Accept Loan Bids'
+														WHEN 'Loan Disbursal' then 'Loan Disbursal'
+														
+													END ;*/
+			
 		
 		$whereArray	=	array("from_date"		=>	$this->getDbDateFormat($this->fromDate)	,
 							  "to_date" 		=>  $this->getDbDateFormat($this->toDate), 
 							  "module1"			=>	$this->filtermodule	, "module2" => $this->filtermodule	,
 							  "filteraction1" 	=>  $this->actionmodule	,"filteraction2" => $this->actionmodule	);
-		
+		//~ echo "<pre>",print_r($whereArray),"</pre>"; die;
 		$this->header_rs	=	$auditDb->select($auditSql, $whereArray);		
 		
 		return $this->header_rs;
@@ -138,8 +143,8 @@ class AuditTrailModel extends TranWrapper {
 														 "audit_borrower_financial_ratios"],
 							 "Investor Profile"		=>	["audit_investor_banks", "audit_investors", "audit_users"],
 							 "Investor Deposit" 	=>	["audit_investor_bank_transactions", "audit_payments"],
-							 "Investor Withdrawals" => 	["audit_investor_bank_transactions", "audit_payments"],						
-							 "Loans"				=>  ["audit_loans",  "audit_loan_docs_submitted"],							 
+							 "Investor Withdrawal" => 	["audit_investor_bank_transactions", "audit_payments"],						
+							 "Loans Info"			=>  ["audit_loans",  "audit_loan_docs_submitted"],							 
 							 "Loan Process" 		=> 	["audit_loans", "audit_borrower_repayment_schedule", "audit_disbursements",
 														 "audit_investor_repayment_schedule", "audit_payments"],
 							 "Loan Repayment" 		=>	["audit_loans", "audit_borrower_repayment_schedule", "audit_disbursements",
@@ -158,9 +163,9 @@ class AuditTrailModel extends TranWrapper {
 		
 		$sql1			=	"SELECT ".trim($auditdata[0]->columns,',')." 
 									FROM {$tablename}
-									WHERE audit_key = {$auditkey} limit 2";
+									WHERE audit_key = {$auditkey} order by audit_subkey desc LIMIT 0 , 2";
 									
-			
+		//~ echo "<pre>",print_r($sql1),"</pre>"; 	
 		//~ $tablecolsql 	=	"SELECT col_dispname 
 							//~ from audit_tablecolumns 
 							//~ where tab_name = '{$tablename}'";
@@ -195,6 +200,7 @@ class AuditTrailModel extends TranWrapper {
 							 "Investor Deposit" 	=>	["audit_investor_bank_transactions", "audit_payments"],
 							 "Investor Withdrawals" => 	["audit_investor_bank_transactions", "audit_payments"],
 							 "Loan Updates"			=> 	["audit_loan_approval_comments", "audit_loan_docs_submitted", "audit_loans"],
+							 "Loans"				=> 	["audit_loans","audit_loan_docs_submitted"],
 							 "Loan Bids" 			=> 	["audit_loan_bids", "audit_investors"],
 							 "Loan Process" 		=> 	["audit_loans", "audit_borrower_repayment_schedule", "audit_disbursements",
 														 "audit_investor_repayment_schedule", "audit_payments"],

@@ -99,7 +99,7 @@
 						<td class="details-control"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
 				</tr>
 				<tr id="tran_row_{{ $row->audit_key}}" style="display:none;">	
-					<td colspan="">
+					<td colspan="7">
 						<div class="table-responsive" id="audit-trail">
 							<table class="table text-left">
 								<tr>	
@@ -192,6 +192,9 @@ $(document).ready(function(){
 		var ret = modulename.split(" ");
 		var str1 = ret[0];	
 		var str2 = ret[1];	
+		if(str1 == 'Loans'){
+			str2 = 'Info';			
+		}
 			
 		$.ajax({ 
             type        : 'GET', 				// define the type of HTTP verb we want to use (POST for our form)
@@ -232,10 +235,10 @@ function showAuditPopupFunc(data){
 			str	=	str+key1;
 			str =	str +"</td>";	
 			str = 	str +"<td class='before'>";					
-			str	= 	str+val1;
-			str = 	str +"</td>";
-			str = 	str +"<td class='after'>";					
 			str	= 	str+afterRow[key1];
+			str = 	str +"</td>";
+			str = 	str +"<td class='after'>";				
+			str	= 	str+val1;
 			str = 	str +"</td></tr>";
 	});				
 	

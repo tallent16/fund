@@ -360,7 +360,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		}
 		
 		$this->username			=	$this->getUserName('Investor', $investorId);
-		$moduleName		=	"Investor Withdrawals";
+		$moduleName		=	"Investor Withdrawal";
 		$actionSumm =	"Approval";
 		$actionDet  =	"Approval of Investor Withdrawal";
 
@@ -409,7 +409,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$withdrawAmt			=	$investorBankTranInfo[0]->trans_amount;
 
 		$this->username			=	$this->getUserName('Investor', $investorId);
-		$moduleName		=	"Investor Withdrawals";
+		$moduleName		=	"Investor Withdrawal";
 		$actionSumm =	"Unapproval";
 		$actionDet  =	"Unapproval of Investor Withdrawal";
 
@@ -458,7 +458,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$withdrawAmt			=	$investorBankTranInfo[0]->trans_amount;
 
 		$this->username			=	$this->getUserName('Investor', $investorId);
-		$moduleName		=	"Investor Withdrawals";
+		$moduleName		=	"Investor Withdrawal";
 		$actionSumm =	"Delete";
 		$actionDet  =	"Delete of Investor Withdrawal";
 

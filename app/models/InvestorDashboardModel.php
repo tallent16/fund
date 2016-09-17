@@ -136,13 +136,13 @@ class InvestorDashboardModel extends TranWrapper {
 														   when 3 then 'Fixed Interest'
 													end as bid_type,
 													bid_interest_rate,
-														(	SELECT	sum(principal_amount) principal_amount_paid
-														FROM	investor_repayment_schedule
-															WHERE	loan_id = loans.loan_id
+														(	SELECT	sum(a.principal_amount) principal_amount_paid
+														FROM	investor_repayment_schedule a,loans
+															WHERE	a.loan_id = loans.loan_id
 														AND	status =  3),
-													(	SELECT	sum(interest_amount)
-														FROM	investor_repayment_schedule
-														WHERE	loan_id = loans.loan_id
+													(	SELECT	sum(a.interest_amount) interest_amount
+														FROM	investor_repayment_schedule a,loans
+														WHERE	a.loan_id = loans.loan_id
 														AND	status =  3) interest_paid
 											FROM	borrowers,
 													loans,

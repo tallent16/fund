@@ -121,7 +121,7 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$transtype	=	$postArray['trantype'];
 		
 		$dataArray 	=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
-		$result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
+		//~ $result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
 		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
 		
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,

@@ -162,7 +162,7 @@ class InvestorProfileModel extends TranWrapper {
 			$whereArry		=	array("investor_id" => $investorId);
 
 			if($postArray['isSaveButton']	!=	"yes") {
-				$actionSumm =	"Investor Profile for approval";
+				$actionSumm =	"For Approval";
 				$actionDet  =	"Investor Profile Submit for Approval";
 			} else {
 				// Audit Trail related Settings

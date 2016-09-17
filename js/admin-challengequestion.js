@@ -23,7 +23,7 @@ function addNewRow(){
 
 /*Delete Question*/
 $("#delete_question").click(function(event){
-	alert();
+	
 	$('table#admin_table tr').each(function (i) {
 		if ($(this).find('input.select_question_id').is(':checked')) {
 			$(this).closest('tr').remove();			
