@@ -20,6 +20,8 @@ class AuditTrailModel extends TranWrapper {
     public  $actionmodule 		= "";
     public  $header_rs 			= array();
 	public	$tableData 			= array();
+	public 	$actionListValue	=	"all";
+	
 	public  $tableNiceNames = [	'audit_borrower_banks ' => 'Borrower Bank Info',
 								'audit_borrower_directors' => 'Borrower Directors Info',
 								'audit_borrower_financial_info ' => 'Financial Info',
@@ -47,12 +49,12 @@ class AuditTrailModel extends TranWrapper {
 			foreach($modulelist as $list){
 					$this->modlist[$list->module_name] = $list->module_name;
 			}		
-			return $this->modlist;			
+			return $this->modlist;					
 	}
 	
-	public function getActionDropdown(){
+	public function getActionDropdown($module){
 			$actionsql	 	=   "SELECT distinct action_summary 
-										FROM audit_master";
+										FROM audit_master  where module_name = '{$module}' ";
 			$auditDb		=	DB::connection('auditDb');
 			$actionlist		=	$auditDb->select($actionsql);
 		    $this->actionlist['all'] 	=	'All';
@@ -85,7 +87,7 @@ class AuditTrailModel extends TranWrapper {
 		
 		$auditSql	=	"	SELECT 	audit_key,
 									user_id,	
-																	
+																
 									module_name,
 									action_summary,
 									action_detail,
@@ -127,7 +129,7 @@ class AuditTrailModel extends TranWrapper {
 							  "to_date" 		=>  $this->getDbDateFormat($this->toDate), 
 							  "module1"			=>	$this->filtermodule	, "module2" => $this->filtermodule	,
 							  "filteraction1" 	=>  $this->actionmodule	,"filteraction2" => $this->actionmodule	);
-		//~ echo "<pre>",print_r($whereArray),"</pre>"; die;
+		//~ echo "<pre>",print_r($auditSql),"</pre>"; die;
 		$this->header_rs	=	$auditDb->select($auditSql, $whereArray);		
 		
 		return $this->header_rs;
@@ -157,35 +159,38 @@ class AuditTrailModel extends TranWrapper {
 	
 	public function getAuditInfo($tablename,$auditkey){
 				
-		$sql			=	"SELECT audit_columns('{$tablename}') columns";		
+		$sql			=	"SELECT audit_columns('$tablename') columns";		
 		$auditDb		=	DB::connection('auditDb');
 		$auditdata		=	$auditDb->select($sql);
 		
-		$sql1			=	"SELECT ".trim($auditdata[0]->columns,',')." 
-									FROM {$tablename}
-									WHERE audit_key = {$auditkey} order by audit_subkey desc LIMIT 0 , 2";
-									
-		//~ echo "<pre>",print_r($sql1),"</pre>"; 	
-		//~ $tablecolsql 	=	"SELECT col_dispname 
-							//~ from audit_tablecolumns 
-							//~ where tab_name = '{$tablename}'";
-							
-		//~ $auditdatacol	=	$auditDb->select($tablecolsql);	
-		//~ foreach($auditdatacol as $list){
-				//~ $this->newlist[] = $list->col_dispname;
-		//~ }			
-		//~ echo "<pre>",print_r($this->newlist),"</pre>"; 
-		//~ die;
+		$sql1			=	"SELECT ".$auditdata[0]->columns.",audit_when FROM (SELECT ".$auditdata[0]->columns.",audit_when
+									FROM {$tablename} as old
+									WHERE audit_key = {$auditkey}
+									order by audit_subkey desc LIMIT 0 , 2) as newrec group by audit_when";
+		//~ echo "<pre>",print_r($sql1),"</pre>"; 		
+		$auditdata1		=	$auditDb->select($sql1);
 		
-		$auditdata1		=	$auditDb->select($sql1);		
+		foreach ($auditdata1 as $index => $data) {
+			if (isset($data->audit_when)){
+				unset($auditdata1[$index]->audit_when);
+			}
+		}
 		
-		//~ $newarray = array_merge($auditdata1,$this->newlist);
-		//~ echo "<pre>",print_r($newarray),"</pre>"; 
-		//~ }
 		
-		return $auditdata1;				
+		
+		if($auditdata1){				
+			return $auditdata1;	
+		}else{
+			return -1;			
+		}
+		
+		
 		
 	}
+	
+	
+	
+	//below are done by venkat sir...
 	
 	public function getAuditDetails($audit_key) {
 		// Get the object referring to the Audit DB

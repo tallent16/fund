@@ -40,9 +40,23 @@
 		
 		<div class="col-sm-6 col-lg-3"> 
 			<label>
-				<strong>{{ Lang::get('Actions')}}</strong>
+				<strong>{{ Lang::get('Modules')}}</strong>
 			</label>
 			<div class="form-group">
+				{{ 
+					Form::select('module_list', 
+								$adminAuditTrailMod->modlist, 
+								$adminAuditTrailMod->filtermodule,
+								["class" => "selectpicker","id" => "modulelist"
+								]) 
+					}} 
+			</div>
+		</div>	
+		<div class="col-sm-6 col-lg-3"> 
+			<label>
+				<strong>{{ Lang::get('Actions')}}</strong>
+			</label>
+			<div class="form-group" id="actiondropdown">
 				{{ 
 					Form::select('action_list', 
 								$adminAuditTrailMod->actionlist, 
@@ -52,23 +66,8 @@
 					}}
 			</div>
 		</div>
-
-		<div class="col-sm-6 col-lg-3"> 
-			<label>
-				<strong>{{ Lang::get('Modules')}}</strong>
-			</label>
-			<div class="form-group">
-				{{ 
-					Form::select('module_list', 
-								$adminAuditTrailMod->modlist, 
-								$adminAuditTrailMod->filtermodule,
-								["class" => "selectpicker",
-								]) 
-					}} 
-			</div>
-		</div>	
 		<div class="col-sm-12 col-lg-12 text-right" >
-			<input type="submit" value="Apply Filter" class="btn verification-button">
+			<input type="submit" value="Apply Filter" id="applyfilter" class="btn verification-button">
 		</div>	
 		<div>&nbsp;</div>
 		</form>
@@ -177,7 +176,9 @@ $(document).ready(function(){
         }) // using the done promise callback
 		.done(function(data) {  						
 			showAuditPopupFunc(data);
-		}); 		
+		}).	fail(function (data){
+					
+		});			
 	});
 	
 	$(".details-control").on('click',function(){
@@ -206,7 +207,42 @@ $(document).ready(function(){
 			showTablesList(data);
 		}); 
 	});	
+	
+	$("#modulelist").change(function() {	
+				
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/admin/audit_trial/optionfilter",
+			data: {module_list: $(this).find(":selected").text()},			                  
+			dataType    : 'json'
+		})
+		.done(function(data) {				
+			showdropdown(data);
+		});
+	});
+	$("#modulelist").trigger("change");
+	
 }); 
+
+function showdropdown(data){
+	var	str = 	"";	
+	str		=	str+"<select name='action_list' id='action_list' class='selectpicker form-control'> ";
+	//~ str		=	str+"	<div class='dropdown dropdown-select'>";
+	//~ str = str + "<button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown' aria-expanded='true'>";
+	//~ str = str +"<span class='caret'></span>";
+   //~ str = str + " </button>";
+   //~ str = str +" <ul class='dropdown-menu' role='menu'> ";
+	$.each(data.rows, function(value, key) {
+		
+		str		=	str+"<option value='"+value.toString()+"' > "+key+" ";
+		//~ str = str +" <li><a href='#'>"+key+"</a></li>";
+	
+	});
+	//~ str = str +  " </ul></div>";
+	str		=	str+"</select>";
+	$('#actiondropdown').html(str);
+	$("#action_list").val("{{$adminAuditTrailMod->actionListValue}}");
+}
 
 function showTablesList(data){
 	var	str = 	"";	
@@ -229,19 +265,25 @@ function showAuditPopupFunc(data){
 	str				=	str+"<thead><tr><th class='text-left'>Columns</th><th class='text-left'>Before</th>";	
 	str				=	str+"<th class='text-left'>After</th></tr></thead>";
 	str				=	str+"<tbody>";	
-	
-	$.each( data.rows.rowBefore, function(key1,val1) {					
-			str =	str +"<tr><td>";					
-			str	=	str+key1;
-			str =	str +"</td>";	
-			str = 	str +"<td class='before'>";					
-			str	= 	str+afterRow[key1];
-			str = 	str +"</td>";
-			str = 	str +"<td class='after'>";				
-			str	= 	str+val1;
-			str = 	str +"</td></tr>";
-	});				
-	
+
+	if(data.rows.rowBefore != null){	
+		$.each( data.rows.rowBefore, function(key1,val1) {					
+				str =	str +"<tr><td>";					
+				str	=	str+key1;
+				str =	str +"</td>";	
+				str = 	str +"<td class='before'>";	
+				if(afterRow[key1])		{		
+					str	= 	str+afterRow[key1];
+				}
+				str = 	str +"</td>";
+				str = 	str +"<td class='after'>";				
+				str	= 	str+val1;
+				str = 	str +"</td></tr>";
+		});				
+	}
+	else{		
+		str =	str +"<tr class='text-center'><td colspan='3'>No Records Found</td></tr>";
+	}
 	str		=	str+"</tbody></table></div>";
 	$("#audit_info .modal-body").html(str);
 	$("#audit_info").modal("show");

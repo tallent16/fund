@@ -168,8 +168,7 @@ Route::group(['prefix' => ''], function() {
 	
 	define('INVESTOR_BANK_TRANS_STATUS_UNVERIFIED', '1');
 	define('INVESTOR_BANK_TRANS_STATUS_VERIFIED', '2');
-	
-    
+	    
 });
 Route::get('lang/{lang}', 'TranslationController@languagetranslation'); 
 
@@ -237,7 +236,9 @@ Route::get('admin/audit_trial/{tablename}/{auditkey}',
 										'uses' 			=>	'AdminAuditTrailController@getAuditDetailsAction'
 												
 									]
-			);				
+			);	
+					
+Route::post('admin/audit_trial/optionfilter',  'AdminAuditTrailController@getselectedmoduleAction');	
 		
 // The routes (or pages that are applicable for admin users only
 Route::group(['middleware' => 'App\Http\Middleware\AdminMiddleWare'], function() {
