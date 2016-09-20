@@ -87,7 +87,7 @@ class AuditTrailModel extends TranWrapper {
 		
 		$auditSql	=	"	SELECT 	audit_key,
 									user_id,	
-																
+									(select moneymatch_new.users.username  from moneymatch_new.users where mm_audit.audit_master.user_id =moneymatch_new.users.user_id )	as username,								
 									module_name,
 									action_summary,
 									action_detail,
@@ -99,31 +99,6 @@ class AuditTrailModel extends TranWrapper {
 							AND		module_name = if (:module1 = 'all', module_name, :module2)
 							AND 	action_summary = if (:filteraction1 = 'all', action_summary, :filteraction2) 							
 							";
-							
-					/*		AND		module_name = CASE if (:module1 = 'all', 'all', :module2)
-														WHEN 'all' then module_name
-														WHEN 'Borrower Profile' then 'Borrower Profile'
-														WHEN 'Loans' then 'Loans'
-														WHEN 'Investor Profile' then 'Investor Profile'
-														WHEN 'Investor Deposit' then 'Investor Deposit'
-														WHEN 'Loan Process' then 'Loan Process'
-														WHEN 'Investor Withdrawal' then 'Investor Withdrawal'
-														WHEN 'Loan Repayment' then 'Loan Repayment'
-														
-													END
-							AND 	action_summary = CASE if (:filteraction1 = 'all', 'all', :filteraction2) 
-														WHEN 'all' then action_summary
-														WHEN 'Add' then 'Add'
-														WHEN 'Approval' then 'Approval'
-														WHEN 'For Approval' then 'For Approval'
-														WHEN 'Update' then 'Update'
-														WHEN 'Comments by Admin' then 'Comments by Admin'
-														WHEN 'Bids Closed' then 'Bids Closed'
-														WHEN 'Accept Loan Bids' then 'Accept Loan Bids'
-														WHEN 'Loan Disbursal' then 'Loan Disbursal'
-														
-													END ;*/
-			
 		
 		$whereArray	=	array("from_date"		=>	$this->getDbDateFormat($this->fromDate)	,
 							  "to_date" 		=>  $this->getDbDateFormat($this->toDate), 
@@ -140,55 +115,125 @@ class AuditTrailModel extends TranWrapper {
 		
 		$moduleName = $module_name.' '.$modulenames;
 		$auditDb		=	DB::connection('auditDb');
-		$moduleTables	=	["Borrower Profile"		=>	["audit_borrower_banks", "audit_borrower_directors",
-														 "audit_borrower_financial_info", "audit_borrowers",
-														 "audit_borrower_financial_ratios"],
-							 "Investor Profile"		=>	["audit_investor_banks", "audit_investors", "audit_users"],
-							 "Investor Deposit" 	=>	["audit_investor_bank_transactions", "audit_payments"],
-							 "Investor Withdrawal" => 	["audit_investor_bank_transactions", "audit_payments"],						
-							 "Loans Info"			=>  ["audit_loans",  "audit_loan_docs_submitted"],							 
-							 "Loan Process" 		=> 	["audit_loans", "audit_borrower_repayment_schedule", "audit_disbursements",
-														 "audit_investor_repayment_schedule", "audit_payments"],
-							 "Loan Repayment" 		=>	["audit_loans", "audit_borrower_repayment_schedule", "audit_disbursements",
-														 "audit_investor_repayment_schedule", "audit_payments", "audit_investors"]];
+		$moduleTables	=	["Borrower Profile"		=>	["audit_borrower_banks"=>"Borrower Bank Info",
+														 "audit_borrower_directors"=>"Borrower Directors Info",
+														 "audit_borrower_financial_info"=>"Financial Information of Borrower",
+														 "audit_borrowers"=>"Borrower Main Info",
+														 "audit_borrower_financial_ratios"=>"Financial Ratios of Borrower"
+														 ],
+							 "Investor Profile"		=>	["audit_investor_banks"=>"Investor Bank Info", "audit_investors"=>"Borrower Main Info", "audit_users"=>"Users"],
+							 "Investor Deposit" 	=>	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],
+							 "Investor Withdrawal" => 	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],						
+							 "Loans Info"			=>  ["audit_loans"=>"Loans Info",  "audit_loan_docs_submitted"=>"Loan Documents Submitted"],							 
+							 "Loan Process" 		=> 	["audit_loans"=>"Loans Info", "audit_borrower_repayment_schedule"=>"Borrower Loan Repayment Schedule", "audit_disbursements"=>"Disbursements Info",
+														 "audit_investor_repayment_schedule"=>"Investor Loan Repayment Schedule", "audit_payments"=>"Payments"],
+							 "Loan Repayment" 		=>	["audit_loans"=>"Loans Info", "audit_borrower_repayment_schedule"=>"Borrower Loan Repayment Schedule", "audit_disbursements"=>"Disbursements Info",
+														 "audit_investor_repayment_schedule"=>"Investor Loan Repayment Schedule", "audit_payments"=>"Payments", "audit_investors"=>"Investors"]];
 		
-		$tables		=	$moduleTables[$moduleName];		
-						
-		return $tables;	
+		$tables		=	$moduleTables[$moduleName];	
+		
+		foreach($tables as $key=>$value){
+			$out[$key]	=	$value;
+		}
+					
+		return $out;
 	}
 	
 	public function getAuditInfo($tablename,$auditkey){
-				
-		$sql			=	"SELECT audit_columns('$tablename') columns";		
-		$auditDb		=	DB::connection('auditDb');
+		$auditDb		=	DB::connection('auditDb');		
+		
+		$sql			=	"SELECT audit_columns('$tablename') columns";				
+
 		$auditdata		=	$auditDb->select($sql);
+			
+		$displaysql		=	"SELECT col_name, col_dispname
+									from    audit_tablecolumns 
+									WHERE tab_name = '{$tablename}'
+									";
+									
+		$displaydata	=	$auditDb->select($displaysql);
+	
+		foreach ($displaydata as $value) {
+			$array1[$value->col_name] = $value->col_dispname;
+		}
 		
 		$sql1			=	"SELECT ".$auditdata[0]->columns.",audit_when FROM (SELECT ".$auditdata[0]->columns.",audit_when
 									FROM {$tablename} as old
 									WHERE audit_key = {$auditkey}
 									order by audit_subkey desc LIMIT 0 , 2) as newrec group by audit_when";
-		//~ echo "<pre>",print_r($sql1),"</pre>"; 		
+
 		$auditdata1		=	$auditDb->select($sql1);
-		
-		foreach ($auditdata1 as $index => $data) {
-			if (isset($data->audit_when)){
-				unset($auditdata1[$index]->audit_when);
+		$finalArray		= array();
+		foreach ($auditdata1 as $row) {
+			$finalArrayRow = array();
+			foreach ($row as $key => $value) {
+				if ($key == 'audit_when') 
+					continue;
+				$finalArrayRow[$array1[$key]] = $value;
 			}
+			$finalArray[] = $finalArrayRow;
 		}
 		
-		
-		
-		if($auditdata1){				
-			return $auditdata1;	
+		if($finalArray){
+							
+			return $finalArray;	
 		}else{
+			
 			return -1;			
-		}
+		}	
 		
+		//~ echo "<pre>", print_r($finalArray), "</pre>";
+		//~ die;	
 		
+		//~ foreach ($columndata as $value) {
+			//~ $array3[] = $value;
+		//~ }
 		
-	}
-	
-	
+		//~ echo "<pre>",print_r(array($array3)),"</pre>";
+		//~ echo "<pre>",print_r($auditdata1),"</pre>";
+		//~ $aaa = array_combine($auditdata1,$displaydata);
+		//~ echo "<pre>",print_r($aaa),"</pre>";
+		
+		//~ echo "<pre>",print_r(array_values($obj_merged)),"</pre>";
+		//~ echo "<pre>",print_r($auditdata1),"</pre>";
+		//~ echo "<pre>",print_r($obj_merged),"</pre>";
+		//~ $ckey 	= array_keys($obj_merged);
+		//~ $cvalue = array_values($obj_merged);
+		//~ $newAuditData	=	"";
+		//~ $newAuditData	=	$auditdata1;
+		//~ foreach ($auditdata1 as $index => $data) {
+			//~ if (isset($data->audit_when)){
+				//~ unset($auditdata1[$index]->audit_when);				
+			//~ }
+			//~ foreach($data as $k=>$v) {
+				//~ $tmpval	=	$obj_merged[$k];
+				//~ $rowval	=	$v;	
+				//~ $newAuditData[$index]->$tmpval	=	$rowval;	
+				
+			//~ }		
+			
+				//~ echo "<pre>",print_r($auditdata1),"</pre>";	
+				
+			//~ $b = $auditdata1[$index];
+			//~ $obj = (object) $b;
+			//~ $arr = (array) $obj;
+			
+			//~ echo "<pre>",print_r($arr),"</pre>";
+			//~ $aaa = array_merge($obj_merged,$auditdata1);
+			//~ echo "<pre>",print_r($aaa),"</pre>";
+			//~ foreach ($columndata as $value) {
+					//~ $array3[] = $value;
+			//~ }
+			//~ echo "<pre>",print_r($array3),"</pre>";
+			//~ foreach ($aaa as $index => $data){
+				    //~ $aaa[$index] =$data; 
+				    //~ echo "<pre>",print_r($aaa),"</pre>";
+			//~ }
+		//~ }	
+		 		
+		
+			
+	}	
 	
 	//below are done by venkat sir...
 	

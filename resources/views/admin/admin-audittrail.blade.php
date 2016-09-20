@@ -92,7 +92,7 @@
 						<td>{{ $row->action_datetime}}</td>
 						<td>{{ $row->module_name}}</td>
 						<td>{{ $row->action_summary}}</td>
-						<td>{{ $row->action_datetime}}</td>
+						<td>{{ $row->username}}</td>
 						<td>{{ $row->key_displayfieldname}}</td>
 						<td>{{ $row->key_displayfieldvalue}}</td>
 						<td class="details-control"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
@@ -164,7 +164,8 @@ $(document).ready(function(){
 	});
 	    
     $('.module_list').on('click', 'li', function () {
-		var str1 	= $(this).html();
+		//~ var str1 	= $(this).html();
+		var str1 	= $(this).find('input').val();
 		var str2	= $(this).closest("td").attr("id");
 		
 		 $.ajax({ 
@@ -247,15 +248,16 @@ function showdropdown(data){
 function showTablesList(data){
 	var	str = 	"";	
 	str		=	str+"<ul style='list-style-type:none;'>";
-	if(data.rows.length > 0){
-		$.each( data.rows, function(key) {
+	
+		$.each( data.rows, function(key,val) {
 			str	=	str+"<li id='mod_id' style='cursor:pointer;' >";
-			str	=	str+data.rows[key]+"\n";	
+			str	=	str+val+"\n";	
+			str	=	str+"<input type ='hidden' value="+key+">\n";	
 			str	=	str+"</li></br>";		
 		});
 		str	=	str+"</ul>";
 		$('.module_list').html(str);
-	}
+	
 }
 
 function showAuditPopupFunc(data){
@@ -266,7 +268,7 @@ function showAuditPopupFunc(data){
 	str				=	str+"<th class='text-left'>After</th></tr></thead>";
 	str				=	str+"<tbody>";	
 
-	if(data.rows.rowBefore != null){	
+	if(data.rows.rowBefore != null){		
 		$.each( data.rows.rowBefore, function(key1,val1) {					
 				str =	str +"<tr><td>";					
 				str	=	str+key1;
