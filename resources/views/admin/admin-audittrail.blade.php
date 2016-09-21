@@ -2,6 +2,7 @@
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
+	
 @endsection
 @section('page_heading',Lang::get('Audit Trail') )
 @section('section')  
@@ -74,13 +75,13 @@
 	</div>
 	
 	<div class="table-responsive applyloan " id="transhistory-container"> 
-		<table class="table tab-fontsize text-left">
+		<table class="table tab-fontsize text-left ">
 			<thead>
 				<tr>					
 					<th class="tab-head text-left">{{ Lang::get('Date') }}</th>
-					<th class="tab-head text-left">{{ Lang::get('Module') }}</th>
-					<th class="tab-head text-left">{{ Lang::get('Action') }}</th>
 					<th class="tab-head text-left">{{ Lang::get('UserName') }}</th>
+					<th class="tab-head text-left">{{ Lang::get('Module') }}</th>
+					<th class="tab-head text-left">{{ Lang::get('Action') }}</th>					
 					<th class="tab-head text-left">{{ Lang::get('Key Field') }}</th>
 					<th class="tab-head text-left">{{ Lang::get('Key Value') }}</th>
 					<th class="tab-head"></th>
@@ -88,11 +89,11 @@
 			</thead>				
 			<tbody>
 				@foreach($adminAuditTrailMod->header_rs as $row)
-				<tr id="{{ $row->audit_key}}" role="row">
+				<tr id="{{ $row->audit_key}}" role="row" class="tablesrow">
 						<td>{{ $row->action_datetime}}</td>
-						<td>{{ $row->module_name}}</td>
-						<td>{{ $row->action_summary}}</td>
 						<td>{{ $row->username}}</td>
+						<td>{{ $row->module_name}}</td>
+						<td>{{ $row->action_summary}}</td>						
 						<td>{{ $row->key_displayfieldname}}</td>
 						<td>{{ $row->key_displayfieldvalue}}</td>
 						<td class="details-control"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
@@ -101,7 +102,7 @@
 					<td colspan="7">
 						<div class="table-responsive" id="audit-trail">
 							<table class="table text-left">
-								<tr>	
+								<tr class="" style="background-color:none;">	
 									<td class="module_list" id="{{ $row->audit_key}}"></td>	
 								</tr>									
 							</table>
@@ -129,7 +130,12 @@
 											
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
 <script>
+	
+
+	
 $(document).ready(function(){ 	
+	 $("tr.tablesrow:odd").css("background-color", "rgb(225, 225, 225)");
+	
 	// date picker
 	$('#fromdate').datetimepicker({
 	autoclose: true, 
@@ -145,6 +151,7 @@ $(document).ready(function(){
 	
 	// Add event listener for opening and closing transcation details
 	$(".details-control").click(function() {
+		
 		var loan_id = $(this).parent().attr("id");		
 		if($(this).parent().hasClass("shown")){
 			$("#"+loan_id).removeClass("shown");
@@ -183,6 +190,7 @@ $(document).ready(function(){
 	});
 	
 	$(".details-control").on('click',function(){
+		
 		var a= $(this).closest('tr').attr('id');
 		$(this).parent().siblings('tr.shown').removeClass("shown");
 		
@@ -223,20 +231,22 @@ $(document).ready(function(){
 	});
 	$("#modulelist").trigger("change");
 	
+	
+	
 }); 
 
 function showdropdown(data){
 	var	str = 	"";	
 	str		=	str+"<select name='action_list' id='action_list' class='selectpicker form-control'> ";
-	//~ str		=	str+"	<div class='dropdown dropdown-select'>";
-	//~ str = str + "<button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown' aria-expanded='true'>";
-	//~ str = str +"<span class='caret'></span>";
+	//~ str		=	str+"	<div class='btn-group bootstrap-select'>";
+	//~ str = str + "<button class='btn dropdown-toggle btn-default ' type='button' id='action_list' data-toggle='dropdown' aria-expanded='true'>";
+	//~ str = str +" <span data-bind='label'>Select One</span><span class='caret'></span>";
    //~ str = str + " </button>";
-   //~ str = str +" <ul class='dropdown-menu' role='menu'> ";
+   //~ str = str +" <select class='dropdown-menu' name='action_list' role='menu'> ";
 	$.each(data.rows, function(value, key) {
 		
-		str		=	str+"<option value='"+value.toString()+"' > "+key+" ";
-		//~ str = str +" <li><a href='#'>"+key+"</a></li>";
+		str		=	str+"<option value='"+value.toString()+"' >"+key+" ";
+		//~ str = str +" <li>"+key+"</li>";
 	
 	});
 	//~ str = str +  " </ul></div>";
@@ -251,8 +261,8 @@ function showTablesList(data){
 	
 		$.each( data.rows, function(key,val) {
 			str	=	str+"<li id='mod_id' style='cursor:pointer;' >";
-			str	=	str+val+"\n";	
-			str	=	str+"<input type ='hidden' value="+key+">\n";	
+			str	=	str+"<span class='fa fa-check-square'></span>"+" "+val+"\n";	
+			str	=	str+"<input type ='hidden' value="+ key+">\n";	
 			str	=	str+"</li></br>";		
 		});
 		str	=	str+"</ul>";
@@ -264,8 +274,8 @@ function showAuditPopupFunc(data){
 	var	str 		= 	"";
 	var	afterRow	=	data.rows.rowAfter;
 	str				=	"<div class='table-responsive'><table class='table text-left' id='popup_table'>";
-	str				=	str+"<thead><tr><th class='text-left'>Columns</th><th class='text-left'>Before</th>";	
-	str				=	str+"<th class='text-left'>After</th></tr></thead>";
+	str				=	str+"<thead><tr style='background-color:#222;color:#fff'><th class='text-left col-sm-4'>Columns</th><th class='text-left col-sm-4'>Before</th>";	
+	str				=	str+"<th class='text-left col-sm-4'>After</th></tr></thead>";
 	str				=	str+"<tbody>";	
 
 	if(data.rows.rowBefore != null){		

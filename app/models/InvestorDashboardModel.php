@@ -139,11 +139,11 @@ class InvestorDashboardModel extends TranWrapper {
 														(	SELECT	sum(a.principal_amount) principal_amount_paid
 														FROM	investor_repayment_schedule a,loans
 															WHERE	a.loan_id = loans.loan_id
-														AND	status =  3),
+														AND	a.status =  3) principal_amount_paid,
 													(	SELECT	sum(a.interest_amount) interest_amount
 														FROM	investor_repayment_schedule a,loans
 														WHERE	a.loan_id = loans.loan_id
-														AND	status =  3) interest_paid
+														AND	a.status =  3) interest_paid
 											FROM	borrowers,
 													loans,
 													loan_bids
