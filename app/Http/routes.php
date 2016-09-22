@@ -1499,3 +1499,9 @@ Route::post('update/show_welcome/popup','UserController@uploadShowWelcomeMessage
 Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";
 });*/
+
+//broadcast routes
+Route::get('admin/broadcast/notifications','AdminNotificationsController@indexAction'); 
+Route::post('admin/broadcast/notifications','AdminNotificationsController@indexAction'); 
+Route::post('admin/broadcast-receipients','AdminNotificationsController@getReceipientsAction');
+

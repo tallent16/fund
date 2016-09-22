@@ -84,8 +84,9 @@
 													<input type="checkbox" id="select_all_list" value="Select All">
 												</label>											
 											</th>
-											<th>{{ Lang::get('Email-Id') }}</th>
+											<th>{{ Lang::get('NRIC No') }}</th>
 											<th>{{ Lang::get('Name') }}</th>
+											<th>{{ Lang::get('Email-Id') }}</th>
 											<th>{{ Lang::get('Mobile No') }}</th>
 											<th>{{ Lang::get('Active Loans') }}</th>
 											<th>{{ Lang::get('Available Balance') }}</th>

@@ -26,9 +26,10 @@ class AdminManageInvestorsModel extends TranWrapper {
 													" IN(:new,:approval,:verified,:pending_comments) ":
 												"=	{$filterInvestorStatus}"." ");
 		$invlist_sql			= "	SELECT 	users.email, 
-											users.firstname display_name,
+											concat(users.firstname,' ',users.lastname) display_name,
 											users.mobile mobile_number,
 											investors.investor_id,
+											IFNULL(investors.nric_number,'0') nric_number,
 											investors.user_id,
 											(	SELECT 	COUNT(*)
 												FROM 	loan_bids,
@@ -74,7 +75,8 @@ class AdminManageInvestorsModel extends TranWrapper {
 									"available_balance"=>$invRow->available_balance,		
 									"status"=>$invRow->status,									
 									"statusText"=>$invRow->statusText,									
-									"investor_id"=>$invRow->investor_id									
+									"investor_id"=>$invRow->investor_id,								
+									"nricno"=>$invRow->nric_number									
 								);	
 				//~ $newrow = count($this->investorListInfo);
 				//~ $newrow ++;

@@ -152,6 +152,11 @@
 						<a href="{{ url ('admin/settings') }}">{{ Lang::get('General & Messages') }}</a>
 					</li>	
 				@endpermission	
+				@permission('view_general_message.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/broadcast/notifications') }}">{{ Lang::get('Broadcast Notifications') }}</a>
+					</li>
+				@endpermission
 				@permission('view_challenge_question.admin.settings') 
 					<li>
 						<a href="{{ url ('admin/challengequestions') }}">{{ Lang::get('Challenge Questions') }}</a>
@@ -171,7 +176,7 @@
 					<li>
 						<a href="{{ url ('admin/loandocrequired') }}">{{ Lang::get('Loan Documents Required') }}</a>
 					</li>
-				@endpermission	
+				@endpermission
 			</ul>
 	</li>	  
 </ul>

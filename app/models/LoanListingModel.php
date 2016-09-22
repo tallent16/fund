@@ -148,7 +148,7 @@ class LoanListingModel extends TranWrapper {
 											borrowers
 									WHERE	borrowers.borrower_id = loans.borrower_id
 									AND 	CASE 
-											WHEN datediff(bid_close_date, now()) > 0
+											WHEN datediff(bid_close_date, now()) >= 0
 												THEN bid_close_date
 											ELSE ''
 												END

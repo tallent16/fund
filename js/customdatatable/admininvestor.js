@@ -43,10 +43,10 @@ function callDataTableFunc(){
 							render: function(data, type, full, meta){                				
 								var str ="";  								
 								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
-								str=str+'>'+data.email+'</a>';						
+								str=str+'>'+data.nricno+'</a>';						
 								return str;
         					}        					
-						},
+						},						
 						{ 
 							data: null,		
 							className: "text-left",												
@@ -57,6 +57,16 @@ function callDataTableFunc(){
 								return str;
         					}        					
 						},	
+						{ 
+							data: null,	
+							className: "text-left",													
+							render: function(data, type, full, meta){                				
+								var str ="";  								
+								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
+								str=str+'>'+data.email+'</a>';						
+								return str;
+        					}        					
+						},
 						{ 
 							data: null,	
 							className: "text-left",												
@@ -183,7 +193,7 @@ function callDataTableFunc(){
 								return str;				    
 							}
 						},
-						{ data: "status","visible": false },			
+						{ data: "status","visible": false,orderable: false },			
 			],
 		order: [ 1, 'asc' ],
 		tableTools: {			

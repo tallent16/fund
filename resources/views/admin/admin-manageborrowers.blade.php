@@ -82,9 +82,11 @@
 													<input type="checkbox" id="select_all_list" value="Select All">
 												</label>											
 											</th>
-											<th>{{ Lang::get('Email Id') }}</th>
+											<th>{{ Lang::get('Reg No') }}</th>
 											<th>{{ Lang::get('Business Name') }}</th>
 											<th>{{ Lang::get('Industry') }}</th>
+											<th>{{ Lang::get('Email Id') }}</th>										
+											<th>{{ Lang::get('Mobile No') }}</th>											
 											<th>{{ Lang::get('Active Loans') }}</th>
 											<th>{{ Lang::get('Total Balance Outstanding') }}</th>
 											<th>{{ Lang::get('Status') }}</th>

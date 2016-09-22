@@ -65,7 +65,7 @@ class AuditTrailModel extends TranWrapper {
 	}
 	
 	public function getAuditHeaderInfo($fromDate, $toDate, $filterModule, $filteraction) {
-		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -5 month"));
+		$this->fromDate				= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
 		$this->toDate				= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));		
 		$this->filtermodule			=   "all";
 		$this->actionmodule			=   "all";
@@ -77,14 +77,7 @@ class AuditTrailModel extends TranWrapper {
 			$this->toDate			= $_REQUEST['todate'];
 		} 
 		$auditDb	=	DB::connection('auditDb');
-		$usersql 	= 	"select username from moneymatch_new.users a where a.user_id = user_id";
-		$userlist	=	$auditDb->select($usersql);
-		foreach($userlist as $list){
-					$this->userlist[] = $list->username;
-			}	
-		//~ echo "<pre>",print_r($this->userlist),"</pre>"; die;
-		////~ (select {$this->userlist} from moneymatch_new.users a where a.user_id = user_id)
-		
+				
 		$auditSql	=	"	SELECT 	audit_key,
 									user_id,	
 									(select moneymatch_new.users.username  from moneymatch_new.users where mm_audit.audit_master.user_id =moneymatch_new.users.user_id )	as username,								
@@ -104,7 +97,7 @@ class AuditTrailModel extends TranWrapper {
 							  "to_date" 		=>  $this->getDbDateFormat($this->toDate), 
 							  "module1"			=>	$this->filtermodule	, "module2" => $this->filtermodule	,
 							  "filteraction1" 	=>  $this->actionmodule	,"filteraction2" => $this->actionmodule	);
-		//~ echo "<pre>",print_r($auditSql),"</pre>"; die;
+		
 		$this->header_rs	=	$auditDb->select($auditSql, $whereArray);		
 		
 		return $this->header_rs;
@@ -147,7 +140,7 @@ class AuditTrailModel extends TranWrapper {
 		$auditdata		=	$auditDb->select($sql);
 			
 		$displaysql		=	"SELECT col_name, col_dispname
-									from    audit_tablecolumns 
+									FROM  audit_tablecolumns 
 									WHERE tab_name = '{$tablename}'
 									";
 									
@@ -163,6 +156,7 @@ class AuditTrailModel extends TranWrapper {
 									order by audit_subkey desc LIMIT 0 , 2) as newrec group by audit_when";
 
 		$auditdata1		=	$auditDb->select($sql1);
+		
 		$finalArray		= array();
 		foreach ($auditdata1 as $row) {
 			$finalArrayRow = array();
@@ -174,65 +168,11 @@ class AuditTrailModel extends TranWrapper {
 			$finalArray[] = $finalArrayRow;
 		}
 		
-		if($finalArray){
-							
+		if($finalArray){							
 			return $finalArray;	
-		}else{
-			
+		}else{			
 			return -1;			
-		}	
-		
-		//~ echo "<pre>", print_r($finalArray), "</pre>";
-		//~ die;	
-		
-		//~ foreach ($columndata as $value) {
-			//~ $array3[] = $value;
-		//~ }
-		
-		//~ echo "<pre>",print_r(array($array3)),"</pre>";
-		//~ echo "<pre>",print_r($auditdata1),"</pre>";
-		//~ $aaa = array_combine($auditdata1,$displaydata);
-		//~ echo "<pre>",print_r($aaa),"</pre>";
-		
-		//~ echo "<pre>",print_r(array_values($obj_merged)),"</pre>";
-		//~ echo "<pre>",print_r($auditdata1),"</pre>";
-		//~ echo "<pre>",print_r($obj_merged),"</pre>";
-		//~ $ckey 	= array_keys($obj_merged);
-		//~ $cvalue = array_values($obj_merged);
-		//~ $newAuditData	=	"";
-		//~ $newAuditData	=	$auditdata1;
-		//~ foreach ($auditdata1 as $index => $data) {
-			//~ if (isset($data->audit_when)){
-				//~ unset($auditdata1[$index]->audit_when);				
-			//~ }
-			//~ foreach($data as $k=>$v) {
-				//~ $tmpval	=	$obj_merged[$k];
-				//~ $rowval	=	$v;	
-				//~ $newAuditData[$index]->$tmpval	=	$rowval;	
-				
-			//~ }		
-			
-				//~ echo "<pre>",print_r($auditdata1),"</pre>";	
-				
-			//~ $b = $auditdata1[$index];
-			//~ $obj = (object) $b;
-			//~ $arr = (array) $obj;
-			
-			//~ echo "<pre>",print_r($arr),"</pre>";
-			//~ $aaa = array_merge($obj_merged,$auditdata1);
-			//~ echo "<pre>",print_r($aaa),"</pre>";
-			//~ foreach ($columndata as $value) {
-					//~ $array3[] = $value;
-			//~ }
-			//~ echo "<pre>",print_r($array3),"</pre>";
-			//~ foreach ($aaa as $index => $data){
-				    //~ $aaa[$index] =$data; 
-				    //~ echo "<pre>",print_r($aaa),"</pre>";
-			//~ }
-		//~ }	
-		 		
-		
-			
+		}				
 	}	
 	
 	//below are done by venkat sir...

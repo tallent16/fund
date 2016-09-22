@@ -43,10 +43,11 @@ function callDataTableFunc(){
 							render: function(data, type, full, meta){                				
 								var str ="";  								
 								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
-								str=str+'>'+data.email+'</a>';						
+								str=str+'>'+data.regno+'</a>';						
 								return str;
         					}        					
 						},
+						
 						{ 
 							data: null,
 							className: "text-left",													
@@ -67,6 +68,27 @@ function callDataTableFunc(){
 								return str;
         					}        					
 						},
+						{ 
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){                				
+								var str ="";  								
+								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
+								str=str+'>'+data.email+'</a>';						
+								return str;
+        					}        					
+						},
+						{ 
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){                				
+								var str ="";  								
+								str=str+'<a href="'+baseUrl+'/admin/borrower/profile/'+btoa(data.borrower_id)+'"';
+								str=str+'>'+data.mobile+'</a>';						
+								return str;
+        					}        					
+						},
+						
 						{ 
 							data: null,		
 							className: "text-right",											
@@ -183,7 +205,7 @@ function callDataTableFunc(){
 								return str;				    
 							}
 						},
-						{ data: "status","visible": false },			
+						{ data: "status","visible": false,orderable: false },			
 			],
 		order: [ 1, 'asc' ],
 		tableTools: {			

@@ -30,6 +30,8 @@ class AdminManageBorrowersModel extends TranWrapper {
 		$borlist_sql			= "	SELECT 	users.email, 
 											borrowers.business_name, 
 											borrowers.borrower_id, 
+											borrowers.contact_person_mobile,
+											borrowers.business_registration_number,
 											borrowers.user_id, 
 											borrowers.contact_person, 
 											borrowers.industry, 
@@ -80,7 +82,9 @@ class AdminManageBorrowersModel extends TranWrapper {
 									"tot_bal_outstanding"=>$borRow->tot_bal_outstanding,		
 									"status"=>$borRow->status,									
 									"statusText"=>$borRow->statusText,									
-									"borrower_id"=>$borRow->borrower_id									
+									"borrower_id"=>$borRow->borrower_id	,								
+									"mobile"=>$borRow->contact_person_mobile,									
+									"regno"=>$borRow->business_registration_number									
 								);	
 				//	foreach ($borRow as $colname => $colvalue) {
 						//$this->borrowerListInfo[$newrow][$colname] = $colvalue;	
