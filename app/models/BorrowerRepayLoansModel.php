@@ -735,7 +735,8 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									"trans_reference_number"=>$Row->trans_reference_number,									
 									"penalty_fixed_amount"=>$Row->penalty,								
 									"status"=>$Row->dataStatus,	
-									"loan_status_name"=>$Row->repayment_status									
+									"loan_status_name"=>$Row->repayment_status,									
+									"install_no"=>$Row->installment_number									
 								);	
 			}
 		}		

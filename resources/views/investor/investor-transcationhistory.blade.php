@@ -19,7 +19,7 @@
 					<table class="table table-striped table-border-custom text-left">
 						<thead>
 							<tr>
-								<th class="tab-head text-left">{{Lang::get('Transaction Reference')}}</th>
+								<th class="tab-head text-left">{{Lang::get('Reference for Clarity')}}</th>
 								<th class="tab-head text-left">{{Lang::get('Transaction Date')}}</th>
 								<th class="tab-head text-left">{{Lang::get('Transaction Type')}}</th>
 								<th class="tab-head text-right">{{Lang::get('Amount')}}</th>

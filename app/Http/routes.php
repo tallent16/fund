@@ -1500,8 +1500,19 @@ Route::get('verification', function() {
 	echo "<h3>Registration successful, please activate email.</h3>";
 });*/
 
-//broadcast routes
-Route::get('admin/broadcast/notifications','AdminNotificationsController@indexAction'); 
-Route::post('admin/broadcast/notifications','AdminNotificationsController@indexAction'); 
-Route::post('admin/broadcast-receipients','AdminNotificationsController@getReceipientsAction');
+//broadcast notification routes
+Route::get('admin/broadcast/notifications','AdminNotificationsController@createAddNotifications'); 
+Route::post('admin/broadcast/notifications','AdminNotificationsController@createAddNotifications'); 
+Route::post('admin/broadcast-receipients','AdminNotificationsController@getReceipients');
+Route::get('admin/broadcast/notificationsList','AdminNotificationsController@notificationsList'); 
+//Notification list & row action
+Route::get('admin/ajax/getNotifications','AdminNotificationsController@getNotifications'); 
+Route::post('admin/notifications/action/viewReceipients/{Id}','AdminNotificationsController@getNotificationRecipients'); 
+Route::get('admin/notifications/action/edit/{Id}','AdminNotificationsController@editNotification');
+Route::post('admin/notifications/action/edit/{Id}','AdminNotificationsController@createAddNotifications'); 
+Route::get('admin/notifications/action/delete/{Id}','AdminNotificationsController@deleteNotification'); 
+Route::get('admin/notifications/action/process/{Id}','AdminNotificationsController@processNotification'); 
+
+//send mail routes
+Route::get('admin/bulkMailer/mailList','AdminBulkMailersController@sendBulkMails'); 
 

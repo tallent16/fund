@@ -21,18 +21,25 @@
 				<tr>
 					<td class="tab-left-head col-sm-3">{{ Lang::get('Borrower\'s Name')}}</td>
 					<td class="col-sm-3">{{$adminLoanApprMod->firstname}}</td>
-					<td class="tab-left-head col-sm-3">{{ Lang::get('Loan Amount')}}</td>
-					<td class="col-sm-3">
-						<input 	type="text" 
+					<td class="tab-left-head col-sm-3">{{ Lang::get('Borrower\'s Email')}}</td>
+					<td class="col-sm-3">{{$adminLoanApprMod->email}}</td>
+				</tr>
+				
+				<tr>
+				<td class="tab-left-head col-sm-3">{{ Lang::get('Contact No')}}</td>	
+				<td class="col-sm-3">{{$adminLoanApprMod->contact_person_mobile}}</td>
+				<td class="tab-left-head col-sm-3">{{ Lang::get('Loan Amount ')}}</td>
+				<td class="col-sm-3">
+					<input 	type="text" 
 								class="form-control select-width text-right required amount-align"
 								name="loan_amount"												
 								id="loan_amount" 
 								decimal="2"
 								{{$commentButtonsVisibe}}
 								value="{{number_format($adminLoanApprMod->apply_amount,2,'.',',')}}"
-						>	
-					</td>
+						></td>			
 				</tr>
+				
 				<tr>
 					<td class="tab-left-head">{{ Lang::get('Purpose of Loan')}}</td>					
 					<td>

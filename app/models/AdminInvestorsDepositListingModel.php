@@ -73,12 +73,12 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 			$applyFilter			=	1;	
 		} 
 		
-		$lnListSql				=	"SELECT users.firstname,
-											users.lastname,
+		$lnListSql				=	"SELECT 
+											concat(users.firstname,' ',users.lastname) fname,											
 											users.email,
-											users.mobile,
-											investors.investor_id,
+											users.mobile,											investors.investor_id,																
 											investor_bank_transactions.payment_id,
+											CONCAT('INV-DEP-',investor_banks.investor_bankid) cust_trans_id,
 											date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
 																						trans_date,
 											format(ROUND(investor_bank_transactions.trans_amount,2),2) trans_amount,
@@ -89,18 +89,19 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 											) trans_status_name,
 											 investor_bank_transactions.status,
 											 investor_bank_transactions.trans_id
-									 FROM 	investors,
+									FROM 	investors,
 											users,
-											investor_bank_transactions 
-									 WHERE  investors.user_id   	= users.user_id 
-									 AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
-									 AND 	investor_bank_transactions.status = if(:filter_codeparam = 3, investor_bank_transactions.status, :filter_codeparam2)
+											investor_bank_transactions,
+											investor_banks
+									WHERE   investors.user_id   	= users.user_id 
+									AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
+									AND 	investor_bank_transactions.status = if(:filter_codeparam = 3, investor_bank_transactions.status, :filter_codeparam2)
 									AND		investor_bank_transactions.trans_date BETWEEN 
 											if (:filter_codeparam3 = 0, investor_bank_transactions.trans_date, :fromDate) AND 
-											if (:filter_codeparam4 = 0, investor_bank_transactions.trans_date, :toDate)
-											
+											if (:filter_codeparam4 = 0, investor_bank_transactions.trans_date, :toDate)	
+									AND 	investor_banks.investor_id = investor_bank_transactions.investor_id													
 									AND		investor_bank_transactions.trans_type	=	:trans_type_codeparam5
-									 ORDER BY investor_bank_transactions.trans_date";
+									ORDER BY investor_bank_transactions.trans_date";
 						
 		$dataArrayLoanList		=	[															
 										"filter_codeparam" 		=>	$this->filter_status,
@@ -131,15 +132,14 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 									"DT_RowId"=>"row_".$Row->investor_id,
 									"investor_id"=>$Row->investor_id,
 									"payment_id"=>$Row->payment_id,
-									"trans_id"=>$Row->trans_id,
-									"firstname"=>$Row->firstname,
-									"lastname"=>$Row->lastname,
+									"trans_id"=>$Row->cust_trans_id,
+									"name"=>$Row->fname,									
 									"email"=>$Row->email,
 									"mobile"=>$Row->mobile,									
 									"trans_date"=>$Row->trans_date,
 									"trans_amount"=>$Row->trans_amount,									
 									"status"=>$Row->status,
-									"trans_status_name"=>$Row->trans_status_name									
+									"trans_status_name"=>$Row->trans_status_name										
 								);	
 			}
 		}

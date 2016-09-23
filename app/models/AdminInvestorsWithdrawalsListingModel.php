@@ -72,12 +72,12 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 			$this->toDate			= $_REQUEST['todate'];
 		} 
 		$applyFilter			=	1;	
-		$lnListSql				=	"SELECT users.username,
-											users.lastname,
+		$lnListSql				=	"SELECT concat(users.firstname,' ',users.lastname) fname,		
 											users.email,
 											users.mobile,
 											investors.investor_id,
 											investor_bank_transactions.payment_id,
+											CONCAT('INV-WD-',investor_banks.investor_bankid) cust_trans_id,
 											date_format(investor_bank_transactions.trans_date,'%d-%m-%Y') 	
 																						trans_date,
 											date_format(investor_bank_transactions.entry_date,'%d-%m-%Y') 	
@@ -98,14 +98,15 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 											 
 									FROM 	investors,
 											users,
-											investor_bank_transactions 
+											investor_bank_transactions,
+											investor_banks
 									WHERE  investors.user_id   	= users.user_id 
 									AND 	investors.investor_id 	= investor_bank_transactions.investor_id 
 									AND 	investor_bank_transactions.status = if(:filter_codeparam = 3, investor_bank_transactions.status, :filter_codeparam2)
 									AND		investor_bank_transactions.trans_date BETWEEN 
 											if (:filter_codeparam3 = 0, investor_bank_transactions.trans_date, :fromDate) AND 
 											if (:filter_codeparam4 = 0, investor_bank_transactions.trans_date, :toDate)
-											
+									AND 	investor_banks.investor_id = investor_bank_transactions.investor_id			
 									AND		investor_bank_transactions.trans_type	=	:trans_type_codeparam5
 									ORDER BY investor_bank_transactions.trans_date ";
 						 
@@ -138,9 +139,8 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 									"investor_id"=>$Row->investor_id,
 									"payment_id"=>$Row->payment_id,
 									"request_date"=>$Row->entry_date,
-									"trans_id"=>$Row->trans_id,
-									"firstname"=>$Row->username,
-									"lastname"=>$Row->lastname,
+									"trans_id"=>$Row->cust_trans_id,
+									"name"=>$Row->fname,									
 									"email"=>$Row->email,
 									"mobile"=>$Row->mobile,	
 									"settlement_date"=>$Row->trans_date,

@@ -122,6 +122,7 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		
 		$dataArray 	=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
 		//~ $result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
+		$this->borrowerApplyLoanModel->updateLoanGradeRiskFactor($postArray,$loan_id);
 		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
 		
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,

@@ -103,7 +103,7 @@ class LoanDetailsModel extends TranWrapper {
 											borrowers.company_aboutus,
 											borrowers.company_image,
 											borrowers.status,
-											loans.loan_risk_grade,
+											ifnull(loans.loan_risk_grade,'- - -') loan_risk_grade,
 											loans.loan_id,
 											loans.loan_reference_number,
 											loans.loan_tenure,

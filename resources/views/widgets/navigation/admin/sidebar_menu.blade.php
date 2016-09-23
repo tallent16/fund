@@ -143,7 +143,22 @@
 		<li>
 			<a href="{{ url ('admin/roles') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('Manage Roles') }} </a> 
 		</li>
-	@endpermission	
+	@endpermission
+	<li>
+		<a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('Marketing') }} <span class="fa arrow"></span></a> 
+			<ul class="nav nav-second-level">	 
+				@permission('view_general_message.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/broadcast/notificationsList') }}">{{ Lang::get('Notifications List') }}</a>
+					</li>
+				@endpermission 
+				@permission('view_general_message.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/bulkMailer/mailList') }}">{{ Lang::get('Mailers List') }}</a>
+					</li>
+				@endpermission 
+			</ul>
+	</li>
 	<li>
 		<a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('Settings') }} <span class="fa arrow"></span></a> 
 			<ul class="nav nav-second-level">	
@@ -151,11 +166,6 @@
 					<li>
 						<a href="{{ url ('admin/settings') }}">{{ Lang::get('General & Messages') }}</a>
 					</li>	
-				@endpermission	
-				@permission('view_general_message.admin.settings') 
-					<li>
-						<a href="{{ url ('admin/broadcast/notifications') }}">{{ Lang::get('Broadcast Notifications') }}</a>
-					</li>
 				@endpermission
 				@permission('view_challenge_question.admin.settings') 
 					<li>

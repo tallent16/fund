@@ -117,10 +117,10 @@
 										<input type="checkbox" id="select_all_list" value="Select All">
 									</label>											
 								</th>
-								<th>{{ Lang::get('First Name') }}</th>
-								<th>{{ Lang::get('Last Name') }}</th>
+								<th>{{ Lang::get('Name') }}</th>
 								<th>{{ Lang::get('Email-ID') }}</th>
 								<th>{{ Lang::get('Mobile No') }}</th>
+								<th>{{ Lang::get('Ref-No') }}</th>
 								<th>{{ Lang::get('Request Date') }}</th>
 								<th>{{ Lang::get('Settlement Date') }}</th>								
 								<th>{{ Lang::get('Amt') }}</th>

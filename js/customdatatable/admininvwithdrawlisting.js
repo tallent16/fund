@@ -117,23 +117,11 @@ function callDataTableFunc(){
 								var inveditUrl = inheritvarvalues(data);	           				
 								var str ="";  								
 								str=str+'<a href="'+inveditUrl+'"';
-								str=str+'>'+data.firstname+'</a>';						
+								str=str+'>'+data.name+'</a>';						
 								return str;
         					 
         					}
-						},
-						{ 													
-							data: null,		
-							className: "text-left",											
-							render: function(data, type, full, meta){ 								
-								var inveditUrl = inheritvarvalues(data);	           				
-								var str ="";  								
-								str=str+'<a href="'+inveditUrl+'"';
-								str=str+'>'+data.lastname+'</a>';						
-								return str;
-        					 
-        					}
-						},
+						},						
 						{ 													
 							data: null,		
 							className: "text-left",											
@@ -154,6 +142,18 @@ function callDataTableFunc(){
 								var str ="";  								
 								str=str+'<a href="'+inveditUrl+'"';
 								str=str+'>'+data.mobile+'</a>';						
+								return str;
+        					 
+        					}
+						},
+						{ 													
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){ 								
+								var inveditUrl = inheritvarvalues(data);	           				
+								var str ="";  								
+								str=str+'<a href="'+inveditUrl+'"';
+								str=str+'>'+data.trans_id+'</a>';						
 								return str;
         					 
         					}

@@ -136,7 +136,9 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.risk_industry,
 											loans.risk_strength,
 											loans.risk_weakness,
-											users.firstname
+											users.firstname,
+											borrowers.contact_person_mobile ,
+											users.email
 									FROM 	loans,borrowers,users
 									WHERE	loans.loan_id		=	{$loan_id} 
 									AND 	loans.borrower_id 	= 	borrowers.borrower_id
@@ -663,6 +665,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	
 	
 	public function updateLoanGradeRiskFactor($postArray,$loanId) {
+		
 		$boid				=	$postArray['borrower_id'];
 		
 		$loan_risk_grade	=	($postArray['grade']	!=	"")?$postArray['grade']:NULL;
