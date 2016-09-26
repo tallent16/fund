@@ -138,7 +138,7 @@ class AuditTrailModel extends TranWrapper {
 		$sql			=	"SELECT audit_columns('$tablename') columns";				
 
 		$auditdata		=	$auditDb->select($sql);
-			
+		
 		$displaysql		=	"SELECT col_name, col_dispname
 									FROM  audit_tablecolumns 
 									WHERE tab_name = '{$tablename}'

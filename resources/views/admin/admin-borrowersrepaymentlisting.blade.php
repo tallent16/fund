@@ -55,10 +55,10 @@
 										<input type="checkbox" id="select_all_list" value="Select All">
 									</label>											
 								</th>
+								<th>{{ Lang::get('Installment No') }}</th>
 								<th>{{ Lang::get('Loan Reference') }}</th>
 								<th>{{ Lang::get('Scheduled Date') }}</th>
-								<th>{{ Lang::get('Actual Date') }}</th>
-								<th>{{ Lang::get('Installment No') }}</th>
+								<th>{{ Lang::get('Actual Date') }}</th>								
 								<th>{{ Lang::get('Installment Amount') }}</th>
 								<th>{{ Lang::get('Penalty') }}</th>
 								<th>{{ Lang::get('Status') }}</th>

@@ -134,8 +134,10 @@ class TranWrapper extends MoneyMatchModel {
 					}
 		
 					$message->from($msgData['from'], $msgData['from_name']);
-					$email_cc_arr = explode(",", $msgData['cc']);
-					$message->cc($email_cc_arr);
+					if(isset($msgData['cc'])){
+						$email_cc_arr = explode(",", $msgData['cc']); 
+						$message->cc($email_cc_arr);
+					}
 					$message->subject($msgData['subject']);
 			});
 			

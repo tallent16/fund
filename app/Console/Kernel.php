@@ -30,6 +30,10 @@ class Kernel extends ConsoleKernel {
 			$manageBids->autoCloseBid();
 		})->daily();
 		
+		$schedule->call(function () {
+			
+			
+		})->everyMinute();
 		
 	}
 

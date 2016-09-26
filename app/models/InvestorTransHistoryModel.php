@@ -61,7 +61,7 @@ class InvestorTransHistoryModel extends TranWrapper {
 									AND	loan_bids.bid_status = :bid_status_open
 									and	loan_bids.investor_id = {$current_inverstor_id}
 									UNION
-									SELECT	loans.loan_reference_number,
+									SELECT	concat('REP-',loans.loan_id,'-',investor_repayment_schedule.installment_number) loan_reference_number,
 											date_format(investor_repayment_schedule.payment_date, '%d-%m-%y'),
 											'Repayment for investments',
 											payment_schedule_amount + 

@@ -17,7 +17,7 @@ class AdminNotificationsController extends MoneyMatchController {
 	}
 
 	//Create add broadcast notification page
-	public function createAddNotifications($Id=null){
+	public function createNotifications($Id=null){
 				if(Request::isMethod('post')){
 							$postCon = Request::all();
 							
@@ -45,7 +45,7 @@ class AdminNotificationsController extends MoneyMatchController {
 							//insert each notifications users to notification_users table
 							foreach($postCon['receipients'] as $receipientID){
 										$checkRecords  = $this->notificationsModel->checkRecipients($notificationID,$receipientID); 	
-										if($checkRecords{0}->flag==0){
+										if(count($checkRecords) && $checkRecords{0}->flag==0){
 													$insertReceipient['notification_id']	=	$notificationID; 
 													$insertReceipient['user_id']				=	$receipientID;
 													$insertReceipient['notification_user_status']	=	1; 
@@ -74,8 +74,8 @@ class AdminNotificationsController extends MoneyMatchController {
 			
 					if(count($groupUsers)>0){
 								$filter				=	$this->getFilterRecipients($groupUsers); 
-								print_R($filter);die;
-								if(isset($filter['user'])){
+								 
+								if(isset($filter['users'])){
 										$userList = $this->notificationsModel->getReceipients(0);
 								}else{
 										$userList = $this->notificationsModel->getReceipients($filter['type']);

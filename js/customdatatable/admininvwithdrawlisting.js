@@ -11,15 +11,15 @@ $(document).ready(function() {
 	$("#filter_status").click(function(event){   //filter the status 		
 		var	transcation_filter	=	$("#filter_transcations").find("option:selected").val();
 		transcation_filter		=	(transcation_filter	==	"3")?"":transcation_filter;		
-		$invwithdrawlisting.columns(7).search(transcation_filter).draw();
+		$invwithdrawlisting.columns(10).search(transcation_filter).draw();
 		
 	//From date and To date filtering
 	$.fn.dataTableExt.afnFiltering.push(
 		function( oSettings, aData, iDataIndex ) {
 			var iFini = document.getElementById('fromdate').value;
 			var iFfin = document.getElementById('todate').value;
-			var iStartDateCol = 3;
-			var iEndDateCol = 3;
+			var iStartDateCol = 6;
+			var iEndDateCol = 6;
 
 			iFini=iFini.substring(6,10) + iFini.substring(3,5)+ iFini.substring(0,2);
 			iFfin=iFfin.substring(6,10) + iFfin.substring(3,5)+ iFfin.substring(0,2);
@@ -117,6 +117,18 @@ function callDataTableFunc(){
 								var inveditUrl = inheritvarvalues(data);	           				
 								var str ="";  								
 								str=str+'<a href="'+inveditUrl+'"';
+								str=str+'>'+data.trans_id+'</a>';						
+								return str;
+        					 
+        					}
+						},
+						{ 													
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){ 								
+								var inveditUrl = inheritvarvalues(data);	           				
+								var str ="";  								
+								str=str+'<a href="'+inveditUrl+'"';
 								str=str+'>'+data.name+'</a>';						
 								return str;
         					 
@@ -146,18 +158,7 @@ function callDataTableFunc(){
         					 
         					}
 						},
-						{ 													
-							data: null,		
-							className: "text-left",											
-							render: function(data, type, full, meta){ 								
-								var inveditUrl = inheritvarvalues(data);	           				
-								var str ="";  								
-								str=str+'<a href="'+inveditUrl+'"';
-								str=str+'>'+data.trans_id+'</a>';						
-								return str;
-        					 
-        					}
-						},
+						
 						{ 													
 							data: null,		
 							className: "text-left",											

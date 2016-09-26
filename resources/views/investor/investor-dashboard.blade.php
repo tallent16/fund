@@ -69,7 +69,7 @@
 								<tbody>
 									<tr>
 										<td  class="tab-left-head col-sm-6">
-										{{Lang::get('Rate%')}}
+										{{Lang::get('Rate')}}
 										</td> 
 										<td  id="cur_loan_rate" class="col-sm-6">
 											 @if(isset($invFeatureLoans[0]))
@@ -239,7 +239,7 @@
 										<td>{{$loanRow['borrower_risk_grade']}}</td>
 										<td class="text-right">{{number_format($loanRow['loan_sanctioned_amount'],2,'.',',')}}</td>
 										<td class="text-right">{{number_format($loanRow['bid_amount'],2,'.',',')}}</td>
-										<td>{{$loanRow['date_of_investment']}}%</td>
+										<td>{{$loanRow['date_of_investment']}}</td>
 										<td class="text-right">{{$loanRow['loan_tenure']}}</td>
 										<td>{{$loanRow['bid_type']}}</td>
 										<td class="text-right">{{$loanRow['bid_interest_rate']}}</td>

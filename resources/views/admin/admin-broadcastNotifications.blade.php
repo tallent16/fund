@@ -34,7 +34,7 @@
 													  <input type="radio" name="selectReceipients"  value="3" {{(isset($filter['system']))?'checked':''}}/>All System Users 
 												</div>
 												<div class="col-sm-2 col-md-2 col-lg-2">
-													 <input type="radio" name="selectReceipients"   value="0" {(isset($filter['users']))?'checked':''}}/>All Users
+													 <input type="radio" name="selectReceipients"   value="0" {{(isset($filter['users']))?'checked':''}}/>All Users
 												</div>
 												<div class="col-sm-2 col-md-2 col-lg-2">
 													 <input type="button" id="filterReceipient" class="btn btn-warning" value="Filter"/> 
@@ -141,6 +141,7 @@
 						
 						$('.datetime-picker').datetimepicker({
 								format: 'dd-mm-yyyy hh:ii	',
+								startDate : new Date(),
 								icons: {
 									time: "fa fa-clock-o",
 									date: "fa fa-calendar",

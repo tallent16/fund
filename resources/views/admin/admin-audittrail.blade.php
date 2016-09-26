@@ -88,28 +88,34 @@
 				</tr>
 			</thead>				
 			<tbody>
-				@foreach($adminAuditTrailMod->header_rs as $row)
-				<tr id="{{ $row->audit_key}}" role="row" class="tablesrow">
-						<td>{{ $row->action_datetime}}</td>
-						<td>{{ $row->username}}</td>
-						<td>{{ $row->module_name}}</td>
-						<td>{{ $row->action_summary}}</td>						
-						<td>{{ $row->key_displayfieldname}}</td>
-						<td>{{ $row->key_displayfieldvalue}}</td>
-						<td class="details-control"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
+				@if($adminAuditTrailMod->header_rs)
+					@foreach($adminAuditTrailMod->header_rs as $row)
+					<tr id="{{ $row->audit_key}}" class="tablesrow">
+							<td>{{ $row->action_datetime}}</td>
+							<td>{{ $row->username}}</td>
+							<td>{{ $row->module_name}}</td>
+							<td>{{ $row->action_summary}}</td>						
+							<td>{{ $row->key_displayfieldname}}</td>
+							<td>{{ $row->key_displayfieldvalue}}</td>
+							<td class="details-control col-sm-1"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
+					</tr>
+					<tr id="tran_row_{{ $row->audit_key}}" style="display:none;">	
+						<td colspan="7">
+							<div class="table-responsive" id="audit-trail">
+								<table class="table text-left">
+									<tr class="" style="background-color:none;">	
+										<td class="module_list" id="{{ $row->audit_key}}"></td>	
+									</tr>									
+								</table>
+							</div>						
+						</td>				
+					</tr>				
+					@endforeach
+				@else
+				<tr class="text-center" >
+					<td colspan="6">No Records Found</td>
 				</tr>
-				<tr id="tran_row_{{ $row->audit_key}}" style="display:none;">	
-					<td colspan="7">
-						<div class="table-responsive" id="audit-trail">
-							<table class="table text-left">
-								<tr class="" style="background-color:none;">	
-									<td class="module_list" id="{{ $row->audit_key}}"></td>	
-								</tr>									
-							</table>
-						</div>						
-					</td>				
-				</tr>
-				@endforeach
+				@endif
 			</tbody>
 		</table>
 	</div>	

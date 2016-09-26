@@ -10,7 +10,7 @@ $(document).ready(function() {
 	 $("#filter_status").click(function(event){
 		var	investorstatus_filter	=	$("#investorstatus_filter").find("option:selected").val();
 		investorstatus_filter		=	(investorstatus_filter	==	"all")?"":investorstatus_filter;		
-		$investor.columns(8).search(investorstatus_filter).draw();
+		$investor.columns(9).search(investorstatus_filter).draw();
 	});
 });
 

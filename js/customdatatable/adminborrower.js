@@ -10,7 +10,7 @@ $(document).ready(function() {
 	 $("#filter_status").click(function(event){
 		var	borrowerstatus_filter	=	$("#borrowerstatus_filter").find("option:selected").val();
 		borrowerstatus_filter		=	(borrowerstatus_filter	==	"all")?"":borrowerstatus_filter;		
-		$borrower.columns(8).search(borrowerstatus_filter).draw();
+		$borrower.columns(10).search(borrowerstatus_filter).draw();
 	});
 });
 

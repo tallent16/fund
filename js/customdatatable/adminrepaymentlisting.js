@@ -38,6 +38,17 @@ function callDataTableFunc(){
 					data: null,		
 					className: "text-left",											
 					render: function(data, type, full, meta){  
+						var repSchUrl = variabledec(data);              				
+						var str ="";  								
+						str=str+'<a href="'+repSchUrl+'"';
+						str=str+'>'+data.install_no+'</a>';						
+						return str;
+					}        					
+				},
+				{ 
+					data: null,		
+					className: "text-left",											
+					render: function(data, type, full, meta){  
 						var repSchUrl = variabledec(data);												              				
 						var str ="";  								
 						str=str+'<a href="'+repSchUrl+'"';
@@ -67,17 +78,7 @@ function callDataTableFunc(){
 						return str;
 					}        					
 				},
-				{ 
-					data: null,		
-					className: "text-left",											
-					render: function(data, type, full, meta){  
-						var repSchUrl = variabledec(data);              				
-						var str ="";  								
-						str=str+'<a href="'+repSchUrl+'"';
-						str=str+'>'+data.install_no+'</a>';						
-						return str;
-					}        					
-				},
+				
 				{ 
 					data: null,		
 					className: "text-right",											
