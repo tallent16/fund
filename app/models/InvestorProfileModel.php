@@ -173,11 +173,11 @@ class InvestorProfileModel extends TranWrapper {
 			$actionSumm =	"Add";
 			$actionDet	=	"Add New Investor Profile";
 		}
-
+		$this->updateInvestorBankInfo($postArray,$investorId,$transType);
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"username", $postArray['displayname']);
 		
-		$this->updateInvestorBankInfo($postArray,$investorId,$transType);
+		
 		
 		if (isset($postArray['hidden_investor_status']) 
 				&& $postArray['hidden_investor_status']	==	"corrections_required" ) {

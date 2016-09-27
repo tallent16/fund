@@ -82,6 +82,7 @@
 												
 													
 													@if($useBlade == "notifications")
+															{{$button = "Process Broadcast"}}
 																<div class="row"> 
 																		<br/>
 																		<div class="col-sm-12 col-md-12 col-lg-12">
@@ -90,6 +91,7 @@
 																		</div>
 																</div>
 													@else
+															{{$button = "Process Bulk Mailer"}}
 															<div class="row"> 
 																		<div class="col-sm-12 col-md-12 col-lg-12">
 																				<br/>
@@ -108,7 +110,7 @@
 													<div class="row"> 
 															<br/>
 															<div class="col-sm-12 col-md-12 col-lg-12">
-																<input type="submit" class="btn btn-warning" value="Process Broadcast"/>
+																<input type="submit" class="btn btn-warning" value="{{$button}}"/>
 															</div>
 													</div> 
 										</div>

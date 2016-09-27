@@ -109,7 +109,7 @@ class AdminNotificationsController extends MoneyMatchController {
 	}
 	
 	//Create add broadcast notification page
-	public function notificationsList(){
+	public function notificationsList(){ 
 				return view('admin.admin-notificationsList')->with(array("classname"=>$this->className));
 	}
 	 
@@ -122,7 +122,7 @@ class AdminNotificationsController extends MoneyMatchController {
 	
 	//Create add broadcast notification page
 	public function processNotification($Id){
-				$notification = $this->notificationsModel->updateStaus($Id); 
+				$notification = $this->notificationsModel->updateStatus($Id); 
 				return redirect('admin/broadcast/notificationsList');
 	}
 	 
@@ -154,6 +154,32 @@ class AdminNotificationsController extends MoneyMatchController {
 										);	 
 					}  
 			return json_encode(array("data"=>$row));
+	}
+	
+	//Get user broadcast notification actions
+	public function getUserNotifications(){
+			$notifications = array();
+			if(Request::isMethod("post")){
+				$postData = Request::all();
+				$userID = $this->notificationsModel->getCurrentuserID();
+				if($postData['action']=="getNotificationsCount"){
+					$userNotifications = $this->notificationsModel->getUserNotifications($userID,1);
+										 
+					return  count($userNotifications);
+				}
+				
+				if($postData['action']=="getNotifications"){
+						$this->notificationsModel->updateUserNotificationStatus('',2,1);
+						$userNotifications = $this->notificationsModel->getUserNotifications($userID,2);
+						 
+						return  $userNotifications;
+				}
+				
+				if($postData['action']=="updateNotification"){
+						$id = $postData['id'];
+						$this->notificationsModel->updateUserNotificationStatus($id,3);  
+				}
+			}
 	}
 	
 	//Get receipients for specific notification

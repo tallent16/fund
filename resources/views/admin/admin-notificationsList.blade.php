@@ -31,7 +31,23 @@
 @section('page_heading',Lang::get('Broadcast Notifications') )
 @section('section') 
 <div class="col-sm-12 space-around">
-
+				<div class="row">
+						<div class="col-sm-12 col-lg-12 col-md-12">
+								<div class="col-sm-3 col-lg-3 col-md-3">
+									<input type="text" id="from" class="form-control datetime-picker" placeholder="From"/>
+								</div>
+								<div class="col-sm-3 col-lg-3 col-md-3">
+									<input type="text" id="to" class="form-control datetime-picker" placeholder="To"/>
+								</div>
+								<div class="col-sm-3 col-lg-3 col-md-3">
+									<select class="form-control" id="status"><option>Select Status</option><option>Sent</option><option>Pending</option></select>
+								</div>
+								<div class="col-sm-3 col-lg-3 col-md-3">
+									<input type="button" id="filter" class="form-control btn btn-warning" value="Filter"/>
+								</div>
+						</div>
+				</div>
+				<br/>
 				<!-----datatable starts----> 
 				<form method="post" id="form-manage-borrower" action="{{url('')}}">
 					<div class="row">

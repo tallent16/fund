@@ -20,7 +20,6 @@ class AdminBulkMailersController extends AdminNotificationsController {
 
 	//List bulk mails
 	public function mailerList(){
-				
 				return view('admin.admin-bulkMalierList')->with(array("classname"=>$this->className));
 	}
 	
@@ -35,7 +34,7 @@ class AdminBulkMailersController extends AdminNotificationsController {
 											"DT_RowId"=>$data->ID,
 											"ID"=>$data->ID,
 											"subject"=>$data->subject,
-											"date"=>date("d-m-Y H:i",strtotime($data->date)),
+											"date"=> $data->date,
 											"status"=>$data->status
 										);	 
 					}  
@@ -140,7 +139,7 @@ class AdminBulkMailersController extends AdminNotificationsController {
 					
 					if(count($mailer)>0){
 								$mailer			 = $mailer{0};
-								$input['later']			=	date("d-m-Y H:i",strtotime($mailer->date));
+								$input['later']			=	(!empty($mailer->date))?date("d-m-Y H:i",strtotime($mailer->date)):'';
 								$input['subject']	=	$mailer->subject;
 								$input['body']		=	$mailer->body;
 					}
@@ -156,16 +155,24 @@ class AdminBulkMailersController extends AdminNotificationsController {
 	public function processMailer($Id){
 			$mailer				 = $this->mailersModel->getAllMailers($Id); 
 			$mailer 				 =	$mailer{0};
-			$receipientsList = $this->mailersModel->getMailerRecipients($Id,2); 
+			$receipientsList = $this->mailersModel->getMailerRecipients($Id); 
 			 
 			if(count($receipientsList)>0){
 				$receipientsList = $receipientsList{0};
-				foreach($receipientsList  as $Id){
-					$this->mailersModel->sendBulkMails($mailer->subject,$mailer->body,$Id);
+				foreach($receipientsList  as $uId){
+					$userId[]=$uId;
+				}
+				
+				if(!empty($userId)){
+					$this->mailersModel->sendBulkMails($mailer->subject,$mailer->body,$userId);
 				}
 			}
-			$mailers 	= $this->mailersModel->updateStatus($Id); 
+			$mailers 	= $this->mailersModel->updateStatus($Id);
 			return redirect('admin/bulkMailer/mailList');
+	} 
+
+	public function copyRecords($Id){
+		  $this->mailersModel->copyExistingMessages($Id); 
 	} 
 
 }

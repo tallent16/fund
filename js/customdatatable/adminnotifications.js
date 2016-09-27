@@ -1,4 +1,4 @@
-var $borrower;
+var $broadcast;
 
 $(document).ready(function() {
 	$.ajaxSetup({
@@ -8,12 +8,45 @@ $(document).ready(function() {
 	} );	
 	callDataTableFunc();
 	
+	$('.datetime-picker').datetimepicker({
+		format:"dd-mm-yyyy",
+		minView:2,
+		autoclose:true
+	});
+	
+	$("#filter").click(function(event){   //filter the status 
+			var	status	=	$("#status").find("option:selected").text(); 
+			$broadcast.columns(3).search(status).draw();
+		
+			$.fn.dataTableExt.afnFiltering.push( function( oSettings, aData, iDataIndex ) {
+				   var iFini = $('#from').val();
+				   var iFfin = $('#to').val();
+				   var col =2;
+			 
+				   iFini=iFini.substring(6,10) + iFini.substring(3,5)+ iFini.substring(0,2);
+				   iFfin=iFfin.substring(6,10) + iFfin.substring(3,5)+ iFfin.substring(0,2);
+			 
+				   var datofini=aData[col].substring(6,10) + aData[col].substring(3,5)+ aData[col].substring(0,2);
+				   var datoffin=aData[col].substring(6,10) + aData[col].substring(3,5)+ aData[col].substring(0,2);
+			 
+				   if ( iFini === "" && iFfin === "" ) {
+					  return true;
+				   } else if ( iFini <= datofini && iFfin === "") {
+					  return true;
+				   } else if ( iFfin >= datoffin && iFini === "") {
+					  return true;
+				   } else if (iFini <= datofini && iFfin >= datoffin) {
+					  return true;
+				   }
+				   return false;
+			});
+		});
 	
 });
       
 function callDataTableFunc(){
 	
-		var brodcast=$('#notifications').DataTable({
+		$broadcast=$('#notifications').DataTable({
 										dom: "Tfrtip",
 										ajax: baseUrl+"/admin/ajax/getNotifications",			
 										columns: [
@@ -79,12 +112,12 @@ function callDataTableFunc(){
 															str=str+'								</li> ' 
 															str=str+'								<li>'	
 															str=str+'									<a href="'+editUrl+'" class="'+activeElement+'">'
-															str=str+'										<i class="fa '+faClass+' fa-fw"></i> Edit Notifications '
+															str=str+'										<i class="fa '+faClass+' fa-fw"></i> Edit Notification '
 															str=str+'									</a>'
 															str=str+'								</li>'
 															str=str+'								<li>'
 															str=str+'									<a href="'+delUrl+'"  class="'+activeElement+'">'
-															str=str+'										<i class="fa '+faClass+' fa-fw"></i> Delete Notifications'
+															str=str+'										<i class="fa '+faClass+' fa-fw"></i> Delete Notification'
 															str=str+'									</a>'
 															str=str+'								</li>'
 															str=str+'								<li>'

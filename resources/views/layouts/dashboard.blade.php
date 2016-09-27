@@ -1,4 +1,5 @@
 @extends('layouts.plane')
+
 @section('body')
  <div id="wrapper">
         <!-- Navigation -->
@@ -10,6 +11,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <input type="hidden" id="hidden_token" value="{{ csrf_token() }}"/>
                   <a class="navbar-brand" href="{{ url ('') }}">{{ Html::image('img/LOGO.jpg') }}</a>
             </div>
             <!-- /.navbar-header --> 
@@ -17,8 +19,13 @@
 			<div class="page-header-title"><i class="{{(isset($classname)?$classname:'')}}"></i>@yield('page_heading')</div>
 			          
             <ul class="nav navbar-top-links navbar-right">
+				<li class="block-title" style="cursor: pointer;" data-toggle="popover">
+						<i class="fa fa-bell"></i>
+						<span class="label"  id="notificationCount" style=" background: red; position:absolute;  top: 0px; left: 14px;  padding: 1px 4px 1px 4px;display:none"></span>
+						<span class="hidden notifyList"></span>
+				 </li>
 				@if(Auth::check())    
-					<li class="block-title">{{Auth::user()->username}}</li>       
+					<li class="block-title">{{Auth::user()->username}}</li> 
 				@endif
                 <!-- /.dropdown -->               
                 <li class="dropdown">
@@ -95,5 +102,7 @@
 		@include('partials/welcome_message', ['message' => session('welcome_message')])
 		{{'';session()->forget("show_welcome_popup");'';}}
 		{{'';session()->forget("welcome_message");'';}}
-	@endif
-@stop
+	@endif 
+	 
+	<script>var baseUrl	=	"{{url('')}}"</script> 
+@stop 

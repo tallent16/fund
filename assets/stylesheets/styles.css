@@ -9143,11 +9143,12 @@ label.input-group-addon.btn {
 .block-title{
 	color:#fff;
 }
-nav .block-title{
-	width: 228px;
+nav .block-title{ 
     text-align: right;
     color:#fff;
     text-transform: capitalize;
+    padding:5px;
+    margin: 3px;
 }
 /************************SIDEBAR NAVIGATION*****************************/
 .active, 
@@ -9763,3 +9764,56 @@ a.settings-cursor{
 		width:auto;
 	}
 }
+
+/********************** popover **********************/
+.popover-content{
+	background-color:#dedede;
+	padding: 4px 7px;
+	height: 250px;
+	width: 270px;
+	overflow: hidden;
+	overflow-y: auto;
+}
+.popover-content .notify{
+	padding: 10px;
+	box-shadow: 2px 1px 5px #888888;
+	background: #fdfeff;
+	width: 257px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-top: 2px;
+}
+.popover-content .notify:hover {
+	background: #cccccc;
+	cursor: pointer;
+} 
+.popover-content .collection {
+	height: 99%;
+	width: 100%; 
+} 
+.popover-content .reader {
+	height: 100%;
+	width: 100%;
+	display:none;
+	background: white; 
+	padding: 10px;
+	box-shadow: 2px 1px 5px #888888; 
+}
+.popover-content #loaderImg {
+	height: 100%;
+	width: 100%;
+	display:none;
+	background: white; 
+	padding: 10px;
+	box-shadow: 2px 1px 5px #888888; 
+}
+#goNotifications{ 
+	cursor: pointer; 
+	border-radius: 10px;
+	 padding:2px 5px 2px 5px;
+}
+#goNotifications:hover{ 
+	background: #c5c5c5;
+}
+/********************** popover **********************/

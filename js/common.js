@@ -1,8 +1,7 @@
 var	formElementsChanged	=	0;
 var	formValid			=	false;
 
-$(document).ready(function (){  
-	
+$(document).ready(function (){
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('#hidden_token').val()
@@ -48,7 +47,20 @@ $(document).ready(function (){
 		//~ $('body').off('wheel.modal mousewheel.modal');
 	//~ });
 	$(window).on('resize', modalBodyScrollable);
+	 
+	 //call ajax user notification 
+	 collectNotificationsCount();
 	
+	 $(document).on("click", "[data-toggle=popover]", function(){
+			collectNotifications(); 
+	}); 
+
+	// $('body').on('click', function (e) {
+		    // if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('.popover.in').length === 0) {
+					// $('[data-toggle="popover"]').popover('hide');
+		    // }
+	// });
+
 });
 
 function cancelNavigation(retval) {
@@ -470,3 +482,98 @@ function modalBodyScrollable() {
     };
   }
 })();
+
+function popoverCreate(){
+		$("[data-toggle=popover]").popover({
+					'title' : '<center>Notifications</center>', 
+					placement : 'bottom',
+					html : true,
+					content: function() { 
+							$('#notificationCount').hide();
+							return $('.notifyList').html();
+					} 
+			});
+}
+
+function readerCreater(){
+	$(".collection").show();
+	$(".reader").hide();
+	$(".notify").click(function(){ 
+			$(".collection").hide("slide", { direction: "left" }, function() {
+					$(".popover-title").html("<span id='goNotifications'><i class='fa fa-arrow-left'></i></span>");
+					$(".reader").show();
+					$("#goNotifications").click(function(){
+							$(".collection").show("slide", { direction: "left" },0);
+							$(".reader").hide();
+							$(".popover-title").html("<center>Notifications</center>");
+							checkNotifications();
+					});
+			 });
+			 updateNotificationsStatus($(this).attr('id'));
+			$(".reader").html($(this).html());
+			$(this).remove();
+	});
+}
+
+
+function collectNotificationsCount(){
+	 $.ajax({
+				type: "POST",  
+				url: baseUrl+"/admin/user/notifications",
+				data: {
+					"action":'getNotificationsCount'
+				},
+				success: function(result){
+							$('#notificationCount').hide();
+							if(result>0){
+								$('#notificationCount').css("display","block").html(result);
+							}
+				}
+			});
+}
+
+function collectNotifications(){
+	 $.ajax({
+				type: "POST",  
+				url: baseUrl+"/admin/user/notifications",
+				data: {
+					"action":'getNotifications'
+				},
+				success: function(result){
+							nHtml = '';
+							$.each(result,function(key,status){
+								nHtml+="<div class='notify' id="+status['notification_user_id']+">"+status['notification_content']+"</div>";
+							});  
+							
+							if(!nHtml){
+								checkNotifications();
+							}
+							$('.notifyList').html("<div class='collection'>"+nHtml+"</div><div class='reader'></div>"); 
+							
+							popoverCreate();
+							readerCreater();
+				}
+			});
+}
+
+function updateNotificationsStatus(id){
+	 $.ajax({
+				type: "POST",  
+				url: baseUrl+"/admin/user/notifications",
+				data: {
+					"action":'updateNotification',
+					'id':id
+				},
+				success: function(result){
+					checkNotifications();
+				}
+			});
+}
+
+function checkNotifications(){
+	
+	if($(".popover-content .notify").length==0){
+		$(".collection").html('<center>All Notifications Caught!</center>');
+	}
+}
+

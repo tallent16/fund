@@ -53,8 +53,14 @@ class AuditTrailModel extends TranWrapper {
 	}
 	
 	public function getActionDropdown($module){
+		if($module == "All"){
+				
+			$actionsql	 	=   "SELECT distinct action_summary 
+										FROM audit_master ";
+		}else{
 			$actionsql	 	=   "SELECT distinct action_summary 
 										FROM audit_master  where module_name = '{$module}' ";
+		}
 			$auditDb		=	DB::connection('auditDb');
 			$actionlist		=	$auditDb->select($actionsql);
 		    $this->actionlist['all'] 	=	'All';
@@ -100,7 +106,25 @@ class AuditTrailModel extends TranWrapper {
 		
 		$this->header_rs	=	$auditDb->select($auditSql, $whereArray);		
 		
-		return $this->header_rs;
+		
+		$row			=	array();
+		if ($this->header_rs) {
+			foreach ($this->header_rs as $Row) {
+				
+				$row[] 	= array(
+									"DT_RowId"=>$Row->audit_key,
+									"user_id"=>$Row->user_id,
+									"username"=>$Row->username,	
+									"module_name"=>$Row->module_name,									
+									"action_summary"=>$Row->action_summary,									
+									"action_date"=>$Row->action_datetime,									
+									"display_key"=>$Row->key_displayfieldname,									
+									"display_value"=>$Row->key_displayfieldvalue									
+								);	
+			}
+		}
+			
+		return $row;	
 		
 	}
 	
@@ -114,7 +138,7 @@ class AuditTrailModel extends TranWrapper {
 														 "audit_borrowers"=>"Borrower Main Info",
 														 "audit_borrower_financial_ratios"=>"Financial Ratios of Borrower"
 														 ],
-							 "Investor Profile"		=>	["audit_investor_banks"=>"Investor Bank Info", "audit_investors"=>"Borrower Main Info", "audit_users"=>"Users"],
+							 "Investor Profile"		=>	["audit_investor_banks"=>"Investor Bank Info", "audit_investors"=>"Borrower Main Info"],
 							 "Investor Deposit" 	=>	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],
 							 "Investor Withdrawal" => 	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],						
 							 "Loans Info"			=>  ["audit_loans"=>"Loans Info",  "audit_loan_docs_submitted"=>"Loan Documents Submitted"],							 

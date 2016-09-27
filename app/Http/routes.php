@@ -1520,8 +1520,11 @@ Route::post('admin/bulkMailer/mailer','AdminBulkMailersController@createBulkMail
 //Notification list & row action
 Route::get('admin/ajax/getMailers','AdminBulkMailersController@getAjaxMailersList');  
 Route::post('admin/mailer/action/viewReceipients/{Id}','AdminBulkMailersController@getMailerRecipients'); 
+Route::get('admin/mailer/action/copy/{Id}','AdminBulkMailersController@copyRecords');
 Route::get('admin/mailer/action/edit/{Id}','AdminBulkMailersController@editMailer');
 Route::post('admin/mailer/action/edit/{Id}','AdminBulkMailersController@createBulkMails'); 
 Route::get('admin/mailer/action/delete/{Id}','AdminBulkMailersController@deleteMailer'); 
 Route::get('admin/mailer/action/process/{Id}','AdminBulkMailersController@processMailer'); 
+//Get user notifications
+Route::post('admin/user/notifications','AdminNotificationsController@getUserNotifications'); 
  

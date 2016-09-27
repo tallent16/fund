@@ -15,9 +15,7 @@ class AdminAuditTrailController extends MoneyMatchController {
 	}
 	
 	public function indexAction() {
-		
-		$returnval = $this->audittrailModel->getAuditInfo("audit_borrower_banks",1);
-	
+			
 		$fromDate		=	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
 		$toDate			=	date('d-m-Y', strtotime(date('Y-m')." +1 month"));	
 		$action_list 	= "all";
@@ -34,8 +32,8 @@ class AdminAuditTrailController extends MoneyMatchController {
 			$todate 	= $_REQUEST["todate"];
 			
 		$selected = $this->audittrailModel->getModuleDropdown();
-		//~ $this->audittrailModel->getActionDropdown();	
-		$this->audittrailModel->getAuditHeaderInfo($action_list,$module_list,$fromDate,$toDate);
+			
+		//~ $this->audittrailModel->getAuditHeaderInfo($action_list,$module_list,$fromDate,$toDate);
 		
 		$withArry	=	array(	"adminAuditTrailMod" => $this->audittrailModel, 
 								"fromDate" => $fromDate, 
@@ -46,10 +44,36 @@ class AdminAuditTrailController extends MoneyMatchController {
 				->with($withArry); 
 	}
 	
+	public function getAuditInfoAction(){	
+		
+		$fromDate		=	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
+		$toDate			=	date('d-m-Y', strtotime(date('Y-m')." +1 month"));	
+		$action_list 	= "all";
+		$module_list 	= "all";
+		
+		if (isset($_REQUEST["action_list"])) {
+			$action_list 	= $_REQUEST["action_list"];
+			$this->audittrailModel->actionListValue	=	$action_list;
+		}
+		if (isset($_REQUEST["module_list"])) 
+			$module_list 	= $_REQUEST["module_list"];
+		if (isset($_REQUEST["fromdate"])) 
+			$fromdate 	= $_REQUEST["fromdate"];
+		if (isset($_REQUEST["todate"])) 
+			$todate 	= $_REQUEST["todate"];
+			
+		$row =  $this->audittrailModel->getAuditHeaderInfo($action_list,$module_list,$fromDate,$toDate);			
+		
+		return json_encode(array("data"=>$row));	
+	}
+	
 	public function getselectedmoduleAction(){
+		
 		if (isset($_REQUEST["module_list"])) 
 			$defaultmodule 	= $_REQUEST["module_list"];
+			
 		$returnval = $this->audittrailModel->getActionDropdown($defaultmodule);
+		
 		return json_encode(array("rows"=>$returnval));		
 	}
 	
@@ -62,6 +86,7 @@ class AdminAuditTrailController extends MoneyMatchController {
 	public function getAuditDetailsAction($tablename,$auditkey){
 		
 		$returnval 	= 	$this->audittrailModel->getAuditInfo($tablename,$auditkey);	
+		
 		if(empty($returnval[1])){
 			$jsonArry	=	array("rowBefore"=>$returnval[0],"rowAfter"=>'');
 		}else{		

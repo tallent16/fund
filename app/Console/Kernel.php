@@ -3,6 +3,8 @@
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use \App\models\AdminManageBidsModel;
+use \App\models\AdminNotificationsModel;
+use \App\models\AdminBulkMailerModel;
 
 class Kernel extends ConsoleKernel {
 
@@ -32,8 +34,16 @@ class Kernel extends ConsoleKernel {
 		
 		$schedule->call(function () {
 			
+			//Call broadcast notification  cron job
+			$notificationsModel = new AdminNotificationsModel();
+			$notificationsModel->cronBroadcastNotifications();
 			
-		})->everyMinute();
+			//Call bulk mailer cron job
+			$mailerModel = new AdminBulkMailerModel();
+			$mailerModel->cronBulkMailer();
+			// $mailerModel->sendBulkMails("Test Every Minute","test","");
+			
+		})->cron('* * * * * *');
 		
 	}
 

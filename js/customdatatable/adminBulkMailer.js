@@ -87,16 +87,19 @@ function callDataTableFunc(){
 					render: function(data, type, full, meta){
 						str='';
 						var	viewClass	=	"showReceipients";
+						var	copyUrl		=	baseUrl+'/admin/mailer/action/copy/'+data.ID;
 						var	editUrl		=	baseUrl+'/admin/mailer/action/edit/'+data.ID;
 						var	delUrl			=	baseUrl+'/admin/mailer/action/delete/'+data.ID;
 						var	processUrl	=	baseUrl+'/admin/mailer/action/process/'+data.ID;
 						faViewClass 		=	"fa-bell";
 						if(data.status	==	"Sent"){
 								activeElement	 = "disable-indication disabled"; 
-									faClass 			=	"fa-bell-slash";  
+								faClass 			=	"fa-bell-slash";  
+								copyClass  		=	 "";
 						}else{
 								activeElement 	= "";
 								faClass 				=	"fa-bell";
+								copyClass            	=	"hidden"; 
 						}
 					
 						str=str+'<ul class="list-unstyled">'
@@ -111,13 +114,18 @@ function callDataTableFunc(){
 						str=str+'					</a>'
 						str=str+'				</li> ' 
 						str=str+'				<li>'	
+						str=str+'					<a href="'+copyUrl+'" class="'+copyClass+'">'
+						str=str+'						<i class="fa '+faViewClass+' fa-fw"></i> Duplicate Message '
+						str=str+'					</a>'
+						str=str+'				</li>'
+						str=str+'				<li>'	
 						str=str+'					<a href="'+editUrl+'" class="'+activeElement+'">'
-						str=str+'						<i class="fa '+faClass+' fa-fw"></i> Edit Notifications '
+						str=str+'						<i class="fa '+faClass+' fa-fw"></i> Edit Message '
 						str=str+'					</a>'
 						str=str+'				</li>'
 						str=str+'				<li>'
 						str=str+'					<a href="'+delUrl+'"  class="'+activeElement+'">'
-						str=str+'						<i class="fa '+faClass+' fa-fw"></i> Delete Notifications'
+						str=str+'						<i class="fa '+faClass+' fa-fw"></i> Delete Message'
 						str=str+'					</a>'
 						str=str+'				</li>'
 						str=str+'				<li>'
