@@ -1182,7 +1182,10 @@ Route::post('admin/approvechangeofbank/reject',
 		Route::post('admin/ajax/admininvwithdrawlist', 'AdminInvestorsWithdrawalsListingController@ajaxInvWithdrawList');
 		
 		Route::get('admin/ajax/adminchangebank', 'AdminChangeofBankController@ajaxChangeBank');
-		Route::post('admin/ajax/adminchangebank', 'AdminChangeofBankController@ajaxChangeBank');		
+		Route::post('admin/ajax/adminchangebank', 'AdminChangeofBankController@ajaxChangeBank');
+		
+		Route::get('admin/ajax/adminauditinfo', 'AdminAuditTrailController@getAuditInfoAction');
+		Route::post('admin/ajax/adminauditinfo', 'AdminAuditTrailController@getAuditInfoAction');		
 		
 
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************

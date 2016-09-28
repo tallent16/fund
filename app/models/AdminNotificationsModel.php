@@ -36,23 +36,43 @@ class AdminNotificationsModel extends TranWrapper {
 	}
 	
 	//  Check if notifiction users exist
-	public function updateStatus($Id) {
-				$dataArray['status']=2;
+	public function updateStatus($Id,$status) {
+				$dataArray['status']=$status;
 				$where['notification_id']=$Id;
 				return $this->dbUpdate('notifications', $dataArray, $where); 
 	}
 	
 	//  Update status user notification status
-	public function updateUserNotificationStatus($Id,$status,$whereStatus='') {
+	public function updateUserNotificationStatus($Id,$userId,$status,$whereCon=array()) {
 				$dataArray['notification_user_status']	=	$status;
 				$dataArray['notification_read_datetime']	=	date("Y-m-d H:i:s");
+				 
 				if(!empty($Id)){
 					$where['notification_user_id']		=	$Id;
 				}
-				if(!empty($whereStatus)){
-					$where['notification_user_status']	=	$whereStatus;
+				if(!empty($userId)){
+					$where['user_id']		=	$userId;
 				} 
-				return $this->dbUpdate('notification_users', $dataArray, $where); 
+				if(isset($whereCon['id'])){
+					$where['notification_id']	=	$whereCon['id'];
+				} 
+				if(isset($whereCon['status'])){
+					$where['notification_user_status']	=	$whereCon['status'];
+				} 
+				return $this->dbUpdate('notification_users', $dataArray, $where);  
+	}
+	
+	//  Update status user notification status based on notification table
+	public function updateUserNotificationsList($userId) {
+				$selectNotifications	 = "SELECT n.notification_id ID FROM notifications n
+														left outer join notification_users un
+														ON un.notification_id = n.notification_id
+														WHERE un.user_id = {$userId} AND n.status = 2";
+				$listNotification		= 	$this->dbFetchAll($selectNotifications);
+			 
+				foreach($listNotification as $notification){
+						$this->updateUserNotificationStatus('',$userId,2,array("id"=>$notification->ID,"status"=>1));
+				} 
 	}
 	
 	//Get notification receipients from users table
@@ -137,7 +157,7 @@ class AdminNotificationsModel extends TranWrapper {
 			$notifications = $this->getAllNotifications('',1,1);
 			if(count($notifications)>0){ 
 				foreach($notifications as $notification){
-					$this->updateStaus( $notification->notification_id);
+					$this->updateStatus( $notification->notification_id,2);
 				}
 			}
 	} 

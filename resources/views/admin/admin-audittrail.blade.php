@@ -29,9 +29,7 @@
 @section('page_heading',Lang::get('Audit Trail') )
 @section('section')  
 <div class="col-sm-12 space-around">
-<!--
-	<form >
--->
+
 	<div class="row">	
 		<div class="col-sm-6 col-lg-3"> 														
 			<div class="form-group controls">							
@@ -81,29 +79,20 @@
 			<label>
 				<strong>{{ Lang::get('Actions')}}</strong>
 			</label>
-			<div class="form-group" id="actiondropdown">
-				{{ 
-					Form::select('action_list', 
-								$adminAuditTrailMod->actionlist, 
-								$adminAuditTrailMod->actionmodule,
-								["class" => "selectpicker",
-								]) 
-					}}
+			<div class="form-group">
+				 <select id="action_list" class="selectpicker" name="action_list">
+    		    	<option></option>
+				</select>
 			</div>
 		</div>
 		<div class="col-sm-12 col-lg-12 text-right" >
 			<input type="submit" value="Apply Filter" id="applyfilter" class="btn verification-button">
 		</div>	
 		<div>&nbsp;</div>
-<!--
-		</form>
--->
 	</div>
 	
-<!--
-	<div class="table-responsive applyloan " id="transhistory-container"> 
--->
-		<table class="table table-striped tab-fontsize text-left" id="adminaudit">
+	<div class="table-responsive">
+		<table class="table table-striped text-left" id="adminaudit">
 			<thead>
 				<tr>					
 					<th class="tab-head text-left">{{ Lang::get('Date') }}</th>
@@ -116,62 +105,23 @@
 				</tr>
 			</thead>				
 			<tbody>
-<!--
-				@if($adminAuditTrailMod->header_rs)
-					@foreach($adminAuditTrailMod->header_rs as $row)
-					<tr id="{{ $row->audit_key}}" class="tablesrow">
-							<td>{{ $row->action_datetime}}</td>
-							<td>{{ $row->username}}</td>
-							<td>{{ $row->module_name}}</td>
-							<td>{{ $row->action_summary}}</td>						
-							<td>{{ $row->key_displayfieldname}}</td>
-							<td>{{ $row->key_displayfieldvalue}}</td>
-							<td class="details-control col-sm-1"><input type="hidden" id="module_name" name="module_name" value="{{ $row->module_name}}"></td>
-					</tr>
-					<tr id="tran_row_{{ $row->audit_key}}" style="display:none;">	
-						<td colspan="7">
-							<div class="table-responsive" id="audit-trail">
-								<table class="table text-left">
-									<tr class="" style="background-color:none;">	
-										<td class="module_list" id="{{ $row->audit_key}}"></td>	
-									</tr>									
-								</table>
-							</div>						
-						</td>				
-					</tr>				
-					@endforeach
-				@else
-				<tr class="text-center" >
-					<td colspan="6">No Records Found</td>
-				</tr>
-				@endif
--->
 			</tbody>
 		</table>
 	</div>	
-	
-	
-<!--
 </div>
--->
 
 <input type="hidden" name="_token" id="hidden_token" value="{{ csrf_token() }}">	
- @section ('popup-box_panel_title',Lang::get('Audit Trail Info'))
-	@section ('popup-box_panel_body')
-		
-	@endsection
-	@include('widgets.modal_box.panel', array(	'id'=>'audit_info',
-												'aria_labelledby'=>'audit_info',
-												'as'=>'popup-box',
-												'class'=>'',
-											))
- 
+@section ('popup-box_panel_title',Lang::get('Audit Trail Info'))
+@section ('popup-box_panel_body')	
+@endsection
+@include('widgets.modal_box.panel', array(	'id'=>'audit_info',
+											'aria_labelledby'=>'audit_info',
+											'as'=>'popup-box',
+											'class'=>'',
+										))
 @stop
 @section('bottomscripts')										
-<!--
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
--->
-<script>var baseUrl	=	"{{url('')}}"</script>
+<script>var baseUrl	="{{url('')}}"</script>
 <script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>
 <script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
 <script src="{{ url('js/audit-trail.js') }}" type="text/javascript"></script>
@@ -179,6 +129,5 @@
 {{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
 {{ Html::script('js/datatable/dataTables.editor.js') }}	
 {{ Html::script('js/customdatatable/adminaudittrail.js') }}
+{{ Html::script('js/fake-select.js') }}
 @endsection 
-	
-

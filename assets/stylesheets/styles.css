@@ -9645,6 +9645,78 @@ a.settings-cursor{
 .overflow-hidden{
 	overflow:hidden;
 }
+
+
+/********************** popover **********************/
+#notificationCount{
+background: red;
+position:absolute;
+top: 0px;
+left: 14px;
+padding: 1px 4px 1px 4px;
+display:none
+}
+#empty{
+    opacity: 0.5;
+    padding-top: 35%;
+    font-size: 120%;
+}
+.popover{
+color:black;
+}
+.popover-content{ 
+	background-color:#dedede;
+	padding: 4px 7px;
+	height: 250px;
+	width: 270px;
+	overflow: hidden;
+	overflow-y: auto;
+}
+.popover-content .notify{
+	padding: 10px;
+	box-shadow: 2px 1px 5px #888888;
+	background: #fdfeff;
+	width: 257px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-top: 2px;
+}
+.popover-content .notify:hover {
+	background: #cccccc;
+	cursor: pointer;
+} 
+.popover-content .collection {
+	height: 99%;
+	width: 100%; 
+} 
+.popover-content .reader {
+	height: 100%;
+	width: 100%;
+	display:none;
+	background: white; 
+	padding: 10px;
+	box-shadow: 2px 1px 5px #888888; 
+}
+.popover-content #loaderImg {
+	height: 100%;
+	width: 100%;
+	display:none;
+	background: white; 
+	padding: 10px;
+	box-shadow: 2px 1px 5px #888888; 
+}
+#goNotifications{ 
+	cursor: pointer; 
+	border-radius: 10px;
+	 padding:2px 5px 2px 5px;
+}
+#goNotifications:hover{ 
+	background: #c5c5c5;
+}
+/********************** popover **********************/
+
+
 /*******************************Custom Responsive css*******************/
 @media(max-width:1920px) {
 	.jfilestyle input{   
@@ -9764,56 +9836,3 @@ a.settings-cursor{
 		width:auto;
 	}
 }
-
-/********************** popover **********************/
-.popover-content{
-	background-color:#dedede;
-	padding: 4px 7px;
-	height: 250px;
-	width: 270px;
-	overflow: hidden;
-	overflow-y: auto;
-}
-.popover-content .notify{
-	padding: 10px;
-	box-shadow: 2px 1px 5px #888888;
-	background: #fdfeff;
-	width: 257px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	margin-top: 2px;
-}
-.popover-content .notify:hover {
-	background: #cccccc;
-	cursor: pointer;
-} 
-.popover-content .collection {
-	height: 99%;
-	width: 100%; 
-} 
-.popover-content .reader {
-	height: 100%;
-	width: 100%;
-	display:none;
-	background: white; 
-	padding: 10px;
-	box-shadow: 2px 1px 5px #888888; 
-}
-.popover-content #loaderImg {
-	height: 100%;
-	width: 100%;
-	display:none;
-	background: white; 
-	padding: 10px;
-	box-shadow: 2px 1px 5px #888888; 
-}
-#goNotifications{ 
-	cursor: pointer; 
-	border-radius: 10px;
-	 padding:2px 5px 2px 5px;
-}
-#goNotifications:hover{ 
-	background: #c5c5c5;
-}
-/********************** popover **********************/

@@ -19,9 +19,9 @@
 			<div class="page-header-title"><i class="{{(isset($classname)?$classname:'')}}"></i>@yield('page_heading')</div>
 			          
             <ul class="nav navbar-top-links navbar-right">
-				<li class="block-title" style="cursor: pointer;" data-toggle="popover">
-						<i class="fa fa-bell"></i>
-						<span class="label"  id="notificationCount" style=" background: red; position:absolute;  top: 0px; left: 14px;  padding: 1px 4px 1px 4px;display:none"></span>
+				<li class="block-title">
+						<i class="fa fa-bell" data-toggle="popover" data-content="" style="cursor: pointer;" ></i>
+						<span class="label"  id="notificationCount" ></span>
 						<span class="hidden notifyList"></span>
 				 </li>
 				@if(Auth::check())    

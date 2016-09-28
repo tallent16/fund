@@ -48,7 +48,7 @@ class AdminNotificationsController extends MoneyMatchController {
 										if(count($checkRecords) && $checkRecords{0}->flag==0){
 													$insertReceipient['notification_id']	=	$notificationID; 
 													$insertReceipient['user_id']				=	$receipientID;
-													$insertReceipient['notification_user_status']	=	1; 
+													$insertReceipient['notification_user_status']	=	1;
 													$this->notificationsModel->addNotificationUsers($insertReceipient);
 										}
 										$userIds[]=$receipientID;
@@ -122,7 +122,7 @@ class AdminNotificationsController extends MoneyMatchController {
 	
 	//Create add broadcast notification page
 	public function processNotification($Id){
-				$notification = $this->notificationsModel->updateStatus($Id); 
+				$notification = $this->notificationsModel->updateStatus($Id,2); 
 				return redirect('admin/broadcast/notificationsList');
 	}
 	 
@@ -140,7 +140,7 @@ class AdminNotificationsController extends MoneyMatchController {
 	
 	//Get all broadcast notifications
 	public function getNotifications(){
-			$notifications = array();
+			$notifications = $row = array();
 		 
 			$notifications = $this->notificationsModel->getAllNotifications();  
 			
@@ -169,7 +169,7 @@ class AdminNotificationsController extends MoneyMatchController {
 				}
 				
 				if($postData['action']=="getNotifications"){
-						$this->notificationsModel->updateUserNotificationStatus('',2,1);
+						$this->notificationsModel->updateUserNotificationsList($userID);
 						$userNotifications = $this->notificationsModel->getUserNotifications($userID,2);
 						 
 						return  $userNotifications;
@@ -177,7 +177,7 @@ class AdminNotificationsController extends MoneyMatchController {
 				
 				if($postData['action']=="updateNotification"){
 						$id = $postData['id'];
-						$this->notificationsModel->updateUserNotificationStatus($id,3);  
+						$this->notificationsModel->updateUserNotificationStatus($id,'',3);  
 				}
 			}
 	}

@@ -29,7 +29,7 @@ class AdminBulkMailerModel extends TranWrapper {
 	public function addMailer($dataArray) {
 				if(isset($dataArray['mailerId'])){
 						$whereArray['bulk_email_id'] = $dataArray['mailerId'];
-						unset($dataArray['mailerId']);
+						unset($dataArray['mailerId']); 
 						$this->dbUpdate('bulk_emails', $dataArray, $whereArray);
 				}else{
 						return 	$this->dbInsert("bulk_emails",$dataArray,1); 
@@ -48,6 +48,13 @@ class AdminBulkMailerModel extends TranWrapper {
 			$this->dbDelete("bulk_emails_users", $where);
 	}
 	
+	//  Check if not matched mailer users to delete from email users table
+	public function deleteNotMatchedReceipients($mId,$userIds) {
+				$mailerSql	=" DELETE FROM bulk_emails_users  WHERE bulk_email_id={$mId} AND user_id NOT IN ({$userIds})"; 
+				$result				= 	$this->dbExecuteSql($mailerSql);
+				return $result;
+	}
+	
 	//  Check if notifiction users exist
 	public function updateStatus($Id) {
 				$dataArray['mail_status']	=	2;
@@ -58,7 +65,8 @@ class AdminBulkMailerModel extends TranWrapper {
 	//  Update user mailer status
 	public function updateUserMailerStatus($Id) {
 				$dataArray['bulk_email_user_status']	=	2;
-				$where['bulk_email_id']		=	$Id; 
+				$dataArray['bulk_email_sent_datetime']	=	date("Y-m-d H:i"); 
+				$where['bulk_email_id']		=	$Id;
 				return $this->dbUpdate('bulk_emails_users', $dataArray, $where); 
 	}
 	
@@ -88,8 +96,8 @@ class AdminBulkMailerModel extends TranWrapper {
 	  
 	//  check mail status if it is sent or not
 	public function checkMailStatus($mailId) {
-				$mailerSql	=" SELECT mail_status status flag FROM bulk_emails_users WHERE  bulk_email_id={$mId}";
-				$result				= 	$this->dbFetchAll($mailerSql);
+				$mailerSql	=" SELECT mail_status status FROM bulk_emails WHERE  bulk_email_id={$mailId}";
+				$result				= 	$this->dbFetchAll($mailerSql); 
 				return $result;
 	}
 	
@@ -130,10 +138,10 @@ class AdminBulkMailerModel extends TranWrapper {
 	// Cron job send mail
 	public function cronBulkMailer() {
 			$mailers = $this->getAllMailers('',1,1);
-			if(count($mailers)>0){ 
+			if(count($mailers)>0){
 				foreach($mailers as $mailer){
 							$receipientsList = $this->getMailerRecipients($mailer->ID);
-							if(count($receipientsList)>0){ 
+							if(count($receipientsList)>0){
 									foreach($receipientsList  as $uId){
 										$userId[]=$uId->email;
 									}

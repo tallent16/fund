@@ -47,20 +47,29 @@ $(document).ready(function (){
 		//~ $('body').off('wheel.modal mousewheel.modal');
 	//~ });
 	$(window).on('resize', modalBodyScrollable);
-	 
+	
+	/************noitfication popover  *********/
+	
 	 //call ajax user notification 
 	 collectNotificationsCount();
 	
 	 $(document).on("click", "[data-toggle=popover]", function(){
 			collectNotifications(); 
 	}); 
-
-	// $('body').on('click', function (e) {
-		    // if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('.popover.in').length === 0) {
-					// $('[data-toggle="popover"]').popover('hide');
-		    // }
-	// });
-
+	
+	popoverCreate();
+	$('body').on('click', function (e) { 
+			 
+		    if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('.popover.in').length === 0 && $(event.target).closest('#goNotifications,.collection,.notify').length === 0) {
+				$('[data-toggle="popover"]').popover('hide');
+		    }
+	});
+	
+	setInterval(function() {
+		collectNotificationsCount();
+	}, 30000);
+	
+	/************noitfication popover  *********/
 });
 
 function cancelNavigation(retval) {
@@ -485,10 +494,10 @@ function modalBodyScrollable() {
 
 function popoverCreate(){
 		$("[data-toggle=popover]").popover({
-					'title' : '<center>Notifications</center>', 
+					title:"<center>Notifications</center>",
 					placement : 'bottom',
 					html : true,
-					content: function() { 
+					content: function() {
 							$('#notificationCount').hide();
 							return $('.notifyList').html();
 					} 
@@ -505,13 +514,13 @@ function readerCreater(){
 					$("#goNotifications").click(function(){
 							$(".collection").show("slide", { direction: "left" },0);
 							$(".reader").hide();
-							$(".popover-title").html("<center>Notifications</center>");
+							$(".popover-title").html("<center>Notifications</center>"); 
 							checkNotifications();
 					});
 			 });
 			 updateNotificationsStatus($(this).attr('id'));
 			$(".reader").html($(this).html());
-			$(this).remove();
+			$(this).remove(); 
 	});
 }
 
@@ -544,13 +553,13 @@ function collectNotifications(){
 							$.each(result,function(key,status){
 								nHtml+="<div class='notify' id="+status['notification_user_id']+">"+status['notification_content']+"</div>";
 							});  
-							
+							 
+							 popoverCreate();
+							$('.notifyList').html("<div class='collection'>"+nHtml+"</div><div class='reader'></div>");  
+							$('.popover-content').html("<div class='collection'>"+nHtml+"</div><div class='reader'></div>"); 
 							if(!nHtml){
 								checkNotifications();
 							}
-							$('.notifyList').html("<div class='collection'>"+nHtml+"</div><div class='reader'></div>"); 
-							
-							popoverCreate();
 							readerCreater();
 				}
 			});
@@ -573,7 +582,7 @@ function updateNotificationsStatus(id){
 function checkNotifications(){
 	
 	if($(".popover-content .notify").length==0){
-		$(".collection").html('<center>All Notifications Caught!</center>');
+		$(".collection").html('<center id="empty">All Notifications Caught!</center>');
 	}
 }
 

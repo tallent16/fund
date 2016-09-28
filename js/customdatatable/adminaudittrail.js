@@ -9,15 +9,7 @@ $(document).ready(function() {
 			}
 	} );
 	
-	$('#adminaudit .dataTables_filter td.details-control').on('click', 'input[name="cmdAddRow"]', function() {
-    var $curRow = $(this).closest('tr'),
-        $newRow = $curRow.clone(true);
-        alert();
-    console.log($newRow);
-    $curRow.after($newRow);
-    console.log('added');
-    });
-    
+	//filter module and action     
 	$("#applyfilter").click(function(event){   //filter the status 		
 		var	transcation_filter	=	$("#modulelist").find("option:selected").val();
 		transcation_filter		=	(transcation_filter	==	"all")?"":transcation_filter;		
@@ -95,20 +87,24 @@ $(document).ready(function() {
 	$("#fromdate").val(prevDate);
 	$("#todate").val(nextDate);
 
-       // Add event listener for opening and closing details
+     // Add event listener for opening and closing details
     $('#adminaudit tbody').on('click', 'td.details-control', function () {
+		var currentid = $(this).closest('tr').attr('id');
+		
+		//~ $("tr:not('"+currentid+"')").siblings('tr.shown').next().toggle();
+		//~ $(this).parent().siblings('tr.shown').removeClass("shown");
+		//~ $(currentid).show();
+				
         var tr = $(this).closest('tr');
         var row = $adminaudit.row( tr );
         var modulename = $(this).find('input').val()
-        
-		//~ alert($(this).find('input').val());
+        		
         if ( row.child.isShown() ) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
         }
         else {
-			//~ var a = 
             // Open this row
 			row.child( format(row.data()) ).show();
             getaudittablesinfo(modulename);
@@ -117,11 +113,10 @@ $(document).ready(function() {
         }
     } );
 
-	$('#adminaudit tbody.module_list').on('click', 'li', function () {
-		//~ var str1 	= $(this).html();
-		//~ alert('bgggh');
+	$('#adminaudit tbody').on('click', '.module_list li', function () {
+		
 		var str1 	= $(this).find('input').val();
-		var str2	= $(this).closest("td").attr("id");
+		var str2	= $(this).closest('ul').closest('tr').prev().attr("id");
 		
 		 $.ajax({ 
 			type        : 'GET', 								// define the type of HTTP verb we want to use (POST for our form)
@@ -135,8 +130,8 @@ $(document).ready(function() {
 		}).	fail(function (data){					
 		});			
 	});
-});
-
+}); //document ready ends
+//popup info
 function showAuditPopupFunc(data){
 	var	str 		= 	"";
 	var	afterRow	=	data.rows.rowAfter;
@@ -167,8 +162,7 @@ function showAuditPopupFunc(data){
 	$("#audit_info .modal-body").html(str);
 	$("#audit_info").modal("show");
 }
-
-
+//main listing audit entries
 function callDataTableFunc(){	
 						
 	$adminaudit =$('#adminaudit').DataTable( {
@@ -254,9 +248,6 @@ function callDataTableFunc(){
         					 
         					}
 						},
-						
-						
-						
 			],
 		order: [ 0, 'asc' ],
 		tableTools: {			
@@ -264,14 +255,14 @@ function callDataTableFunc(){
 				
 			]
 		}
-    });	
-    	
+    });	    	
 }
 
 function format ( d ) {
     // `d` is the original data object for the row
     return '<div class="module_list"></div>';
 }
+//audit table entries
 function getaudittablesinfo(modulename){
 		var a= $(this).closest('tr').attr('id');
 		$(this).parent().siblings('tr.shown').removeClass("shown");
@@ -279,8 +270,7 @@ function getaudittablesinfo(modulename){
 		var b = '#tran_row_'+a;		
 		$("tr:not('"+b+"')").siblings('[id^="tran_row_"]').hide();
 		$(b).show();
-		
-		//~ var modulename = $(this).find('input').val();		     
+					     
 		var ret = modulename.split(" ");
 		var str1 = ret[0];	
 		var str2 = ret[1];	
@@ -298,18 +288,17 @@ function getaudittablesinfo(modulename){
 			showTablesList(data);
 		}); 
 	}
+//list entries 
 function showTablesList(data){
 	var	str = 	"";	
 	str		=	str+"<ul style='list-style-type:none;'>";
 	
 		$.each( data.rows, function(key,val) {
-			str	=	str+"<li id='mod_id' style='cursor:pointer;' >";
+			str	=	str+"<li style='cursor:pointer;' >";
 			str	=	str+"<span class='fa fa-check-square'></span>"+" "+val+"\n";	
 			str	=	str+"<input type ='hidden' value="+ key+">\n";	
-			str	=	str+"</li></br>";	
-			
+			str	=	str+"</li></br>";
 		});
 		str	=	str+"</ul>";
 		$('.module_list').html(str);
-	
 }

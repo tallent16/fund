@@ -52,10 +52,11 @@ class AdminBulkMailersController extends AdminNotificationsController {
 				if(Request::isMethod('post')){
 							$postCon = Request::all();
 							$mailerStatus =1;
-							
+							 
 							if(!empty($Id)){
-										$insertData['mailerId']	 = $Id;
+										$insertData['mailerId']	 = $Id; 
 										$mailerStatus = $this->mailersModel->checkMailStatus($Id); 
+										$mailerStatus = $mailerStatus{0}->status;
 							}
 							
 							$insertData['mail_subject']		= $postCon['subject'];
@@ -67,7 +68,7 @@ class AdminBulkMailersController extends AdminNotificationsController {
 							if(isset($postCon['sendTime']) && !empty($postCon['sendTime'])){
 										$insertData['mail_schd_datetime']	= date("Y-m-d H:i",strtotime($postCon['sendTime'])); 
 										$insertData['mail_status']	= 1;
-							} else{
+							}else{
 								if($mailerStatus == 1){
 										$this->mailersModel->sendBulkMails( $postCon['subject'],$postCon['body'],$postCon['receipients']);
 								}
@@ -87,7 +88,12 @@ class AdminBulkMailersController extends AdminNotificationsController {
 										if($checkRecords{0}->flag==0){
 													$insertReceipient['bulk_email_id']	=	$mailerID; 
 													$insertReceipient['user_id']				=	$receipientID;
-													$insertReceipient['bulk_email_user_status']	=	1; 
+													if(isset($postCon['sendTime']) && !empty($postCon['sendTime'])){
+														$insertReceipient['bulk_email_user_status']	=	1; 
+													}else{
+														$insertReceipient['bulk_email_user_status']	=	2; 
+														$insertReceipient['bulk_email_sent_datetime']	=	date("Y-m-d H:i"); 
+													}
 													$this->mailersModel->addMailerRecipients($insertReceipient);
 										}
 										$userIds[]=$receipientID;
@@ -156,23 +162,25 @@ class AdminBulkMailersController extends AdminNotificationsController {
 			$mailer				 = $this->mailersModel->getAllMailers($Id); 
 			$mailer 				 =	$mailer{0};
 			$receipientsList = $this->mailersModel->getMailerRecipients($Id); 
+			 $userMailId=array(); 
 			 
 			if(count($receipientsList)>0){
-				$receipientsList = $receipientsList{0};
 				foreach($receipientsList  as $uId){
-					$userId[]=$uId;
+					$userMailId[]=$uId->email;
 				}
 				
-				if(!empty($userId)){
-					$this->mailersModel->sendBulkMails($mailer->subject,$mailer->body,$userId);
+				if(!empty($userMailId)){
+					$this->mailersModel->sendBulkMails($mailer->subject,$mailer->body,$userMailId);
 				}
 			}
 			$mailers 	= $this->mailersModel->updateStatus($Id);
+			$this->mailersModel->updateUserMailerStatus($Id); 
 			return redirect('admin/bulkMailer/mailList');
 	} 
 
 	public function copyRecords($Id){
 		  $this->mailersModel->copyExistingMessages($Id); 
+		  return redirect('admin/bulkMailer/mailList');
 	} 
 
 }
