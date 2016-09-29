@@ -129,5 +129,4 @@
 {{ Html::script('js/datatable/dataTables.tableTools.min.js') }}
 {{ Html::script('js/datatable/dataTables.editor.js') }}	
 {{ Html::script('js/customdatatable/adminaudittrail.js') }}
-{{ Html::script('js/fake-select.js') }}
 @endsection 

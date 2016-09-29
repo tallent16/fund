@@ -5,18 +5,47 @@ use DB;
 class AdminNotificationsModel extends TranWrapper { 
 	 
 	// Insert new notification to notifications table on DB
-	public function addNotification($dataArray) {
+	public function addNotification($dataArray,$userID) {
+				$user1 		= explode(',',$userID);
+				//~ echo "<pre>",print_r($explode[0]),"</pre>"; die;				
+				$usernameSql	=	"SELECT username FROM users where user_id ={$user1[0]}"; 
+				$username		= 	$this->dbFetchOne($usernameSql);
+								
+				$moduleName	=	"Bulk Notification";
 				if(isset($dataArray['notificationId'])){
+						$actionSumm =  "Update";
+						$actionDet  =  "Update Notification Content";
+					
 						$whereArray['notification_id'] = $dataArray['notificationId'];
 						unset($dataArray['notificationId']);
+						
+						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $username);
+								
 						$this->dbUpdate('notifications', $dataArray, $whereArray);
 				}else{
+						$actionSumm =  "Add";
+						$actionDet  =  "Add Notification Content";
+						
+						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $username);
+									
 					return 	$this->dbInsert("notifications",$dataArray,1); 
 				}
 	}
 	 
 	 // Insert notification with user in notification users table on DB
 	public function addNotificationUsers($dataArray) {
+						
+						$userID			=   $dataArray['user_id'];
+						$usernameSql	=	"SELECT username FROM users where user_id ={$userID}"; 
+						$username		= 	$this->dbFetchOne($usernameSql);
+						$moduleName		=  "Bulk Notification";
+						$actionSumm 	=  "Add";
+						$actionDet  	=  "Add Notification Users";
+						
+						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $username);
 			return $this->dbInsert("notification_users",$dataArray,2); 
 	} 
 	
@@ -24,6 +53,14 @@ class AdminNotificationsModel extends TranWrapper {
 	 // Insert notification with user in notification users table on DB
 	public function deleteNotification($Id) {
 			$where["notification_id"]=$Id;
+			
+			$moduleName	=  "Bulk Notification";
+			$actionSumm =  "Delete";
+			$actionDet  =  "Delete Notification Content";
+			
+			$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+						"notification_id", $Id);
+						
 			$this->dbDelete("notifications", $where);
 			$this->dbDelete("notification_users", $where);
 	}

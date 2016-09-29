@@ -26,24 +26,61 @@ class AdminBulkMailerModel extends TranWrapper {
 	} 
 	
 	// Insert new mailer to bulk mailers table on DB
-	public function addMailer($dataArray) {
+	public function addMailer($dataArray,$userID) {
+				$user1 		= explode(',',$userID);		
+				$usernameSql	=	"SELECT username FROM users where user_id ={$user1[0]}"; 
+				$username		= 	$this->dbFetchOne($usernameSql);
+				
+				$moduleName	=	"Bulk Emailer";
+				
 				if(isset($dataArray['mailerId'])){
+					
+						$actionSumm =  "Update";
+						$actionDet  =  "Update Email Content";
+						
 						$whereArray['bulk_email_id'] = $dataArray['mailerId'];
 						unset($dataArray['mailerId']); 
+						
+						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								"username", $username);
+								
 						$this->dbUpdate('bulk_emails', $dataArray, $whereArray);
 				}else{
+						$actionSumm =  "Add";
+						$actionDet  =  "Add Email Content";
+						
+						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $username);
+								
 						return 	$this->dbInsert("bulk_emails",$dataArray,1); 
 				}
 	}
 	
 	// Insert new mailer to bulk mailers table on DB
 	public function addMailerRecipients($dataArray) {
+						$userID			=   $dataArray['user_id'];
+						$usernameSql	=	"SELECT username FROM users where user_id ={$userID}"; 
+						$username		= 	$this->dbFetchOne($usernameSql);
+						$moduleName		=  "Bulk Emailer";
+						$actionSumm 	=  "Add";
+						$actionDet  	=  "Add Email Users";
+						
+						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $username);
 					return $this->dbInsert("bulk_emails_users",$dataArray,2);
 	} 
 	 
 	  // Insert notification with user in notification users table on DB
 	public function deleteMailer($Id) {
+			
 			$where["bulk_email_id"]	=	$Id;
+			$moduleName	=  "Bulk Emailer";
+			$actionSumm =  "Delete";
+			$actionDet  =  "Delete Email Content";
+			
+			$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+						"bulk_email_id", $Id);
+			
 			$this->dbDelete("bulk_emails", $where);
 			$this->dbDelete("bulk_emails_users", $where);
 	}

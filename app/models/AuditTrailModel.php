@@ -138,6 +138,8 @@ class AuditTrailModel extends TranWrapper {
 														 "audit_borrowers"=>"Borrower Main Info",
 														 "audit_borrower_financial_ratios"=>"Financial Ratios of Borrower"
 														 ],
+							 "Bulk Emailer"			=> ["audit_bulk_emails"=>"Emailers","audit_bulk_emails_users"=>"Emailers User"],
+							 "Bulk Notification"	=> ["audit_notifications"=>"Notifications","audit_notification_users"=>"Notifications User"],
 							 "Investor Profile"		=>	["audit_investor_banks"=>"Investor Bank Info", "audit_investors"=>"Borrower Main Info"],
 							 "Investor Deposit" 	=>	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],
 							 "Investor Withdrawal" => 	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],						

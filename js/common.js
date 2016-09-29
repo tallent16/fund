@@ -60,7 +60,7 @@ $(document).ready(function (){
 	popoverCreate();
 	$('body').on('click', function (e) { 
 			 
-		    if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('.popover.in').length === 0 && $(event.target).closest('#goNotifications,.collection,.notify').length === 0) {
+		    if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('.popover.in').length === 0 && $(e.target).closest('#goNotifications,.collection,.notify').length === 0) {
 				$('[data-toggle="popover"]').popover('hide');
 		    }
 	});

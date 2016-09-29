@@ -143,6 +143,7 @@
 						
 						$('.datetime-picker').datetimepicker({
 								format: 'dd-mm-yyyy hh:ii	',
+								autoclose: true,
 								startDate : new Date(),
 								icons: {
 									time: "fa fa-clock-o",

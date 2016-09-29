@@ -52,7 +52,7 @@ class AdminBulkMailersController extends AdminNotificationsController {
 				if(Request::isMethod('post')){
 							$postCon = Request::all();
 							$mailerStatus =1;
-							 
+							$userid = implode('',$postCon['receipients']);	
 							if(!empty($Id)){
 										$insertData['mailerId']	 = $Id; 
 										$mailerStatus = $this->mailersModel->checkMailStatus($Id); 
@@ -75,7 +75,7 @@ class AdminBulkMailersController extends AdminNotificationsController {
 							}
 							
 							//insert notifications to  database notifictions table
-							$mailerID = $this->mailersModel->addMailer($insertData); 
+							$mailerID = $this->mailersModel->addMailer($insertData,$userid); 
 							
 							//If edit Mailer to change specific mailer id 
 							if(isset($insertData['mailerId'])){

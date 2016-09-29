@@ -19,25 +19,26 @@ $(document).ready(function(){
 		}
 	});	
 		
-	$("#modulelist").change(function() {				
+	$("#modulelist").change(function() {					
 		$.ajax({
 			type: "POST",
 			url: baseUrl+"/admin/audit_trial/optionfilter",
 			data: {module_list: $(this).find(":selected").text()},			                  
 			dataType    : 'json'
 		})
-		.done(function(data) {							
+		.done(function(data) {										
 			showdropdown(data);
 		});
 	});
 	$("#modulelist").trigger("change");
 }); 	
 
-function showdropdown(data){
+function showdropdown(data){	
 	var	str = 	"";	
-	$.each(data.rows, function(value, key) {		
-		str		=	str+"<option value='"+value.toString()+"' >"+key+" ";		
+	$('#action_list option').remove();
+	$.each(data.rows, function(value, key){
+		$('#action_list').append("<option value='"+value.toString()+"' >"+key+"</option>");	
 	});	
-	$('#action_list').append(str);
 	$("#action_list").val("{{$adminAuditTrailMod->actionListValue}}");
+	$('#action_list').selectpicker("refresh");
 }

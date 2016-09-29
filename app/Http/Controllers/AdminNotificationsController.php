@@ -20,6 +20,7 @@ class AdminNotificationsController extends MoneyMatchController {
 	public function createNotifications($Id=null){
 				if(Request::isMethod('post')){
 							$postCon = Request::all();
+							$userid = implode(',',$postCon['receipients']);						
 							
 							if(!empty($Id)){
 										$insertData['notificationId']	 = $Id;
@@ -36,7 +37,7 @@ class AdminNotificationsController extends MoneyMatchController {
 							}
 							
 							//insert notifications to  database notifictions table
-							$notificationID = $this->notificationsModel->addNotification($insertData); 
+							$notificationID = $this->notificationsModel->addNotification($insertData,$userid); 
 							
 							if(isset($insertData['notificationId'])){
 										$notificationID=$insertData['notificationId'];
