@@ -12,16 +12,16 @@ class AdminNotificationsController extends MoneyMatchController {
 	
 	public function littleMoreInit() {
 		$this->notificationsModel	=	new AdminNotificationsModel;
-		$this->title 							= 	"Broadcast Notifications";
-		$this->className					 =	"fa fa-users fa-fw";
+		$this->title 				= 	"Broadcast Notifications";
+		$this->className			=	"fa fa-users fa-fw";
 	}
 
 	//Create add broadcast notification page
 	public function createNotifications($Id=null){
 				if(Request::isMethod('post')){
 							$postCon = Request::all();
-							$userid = implode(',',$postCon['receipients']);						
-							
+							$userid = implode(',',$postCon['receipients']);	
+													
 							if(!empty($Id)){
 										$insertData['notificationId']	 = $Id;
 							}
@@ -50,7 +50,7 @@ class AdminNotificationsController extends MoneyMatchController {
 													$insertReceipient['notification_id']	=	$notificationID; 
 													$insertReceipient['user_id']				=	$receipientID;
 													$insertReceipient['notification_user_status']	=	1;
-													$this->notificationsModel->addNotificationUsers($insertReceipient);
+													$this->notificationsModel->addNotificationUsers($insertReceipient,$userid);
 										}
 										$userIds[]=$receipientID;
 							}

@@ -3,7 +3,7 @@ use Log;
 use DB;
 
 class AdminBulkMailerModel extends TranWrapper { 
-	 
+	public $usernam = array();
 	// Get all broadcast notifications list from notifiction table
 	public function getAllMailers($id=null,$status='',$dateCheck = '') {
 				$mailerSql	=	"SELECT bulk_email_id ID,mail_subject subject,mail_content body,mail_schd_datetime date,IF(mail_status=1,'Pending','Sent') status FROM bulk_emails"; 
@@ -27,12 +27,18 @@ class AdminBulkMailerModel extends TranWrapper {
 	
 	// Insert new mailer to bulk mailers table on DB
 	public function addMailer($dataArray,$userID) {
-				$user1 		= explode(',',$userID);		
-				$usernameSql	=	"SELECT username FROM users where user_id ={$user1[0]}"; 
-				$username		= 	$this->dbFetchOne($usernameSql);
+				
+				/*************Audit INSERT AND UPDATE****************/					
+				$usernameSql	=	"SELECT username FROM users where user_id IN ({$userID})"; 				
+				$username		= 	$this->dbFetchAll($usernameSql);				
+				
+				foreach($username	as $row){
+					$this->usernam[] = $row->username;
+				}
+				$usernames = implode(',',$this->usernam);	
 				
 				$moduleName	=	"Bulk Emailer";
-				
+				/*************Audit INSERT AND UPDATE****************/	
 				if(isset($dataArray['mailerId'])){
 					
 						$actionSumm =  "Update";
@@ -42,7 +48,7 @@ class AdminBulkMailerModel extends TranWrapper {
 						unset($dataArray['mailerId']); 
 						
 						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-								"username", $username);
+								"username", $usernames);				//audit update
 								
 						$this->dbUpdate('bulk_emails', $dataArray, $whereArray);
 				}else{
@@ -50,23 +56,31 @@ class AdminBulkMailerModel extends TranWrapper {
 						$actionDet  =  "Add Email Content";
 						
 						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-									"username", $username);
+									"username", $usernames);			//audit insert
 								
 						return 	$this->dbInsert("bulk_emails",$dataArray,1); 
 				}
 	}
 	
 	// Insert new mailer to bulk mailers table on DB
-	public function addMailerRecipients($dataArray) {
-						$userID			=   $dataArray['user_id'];
-						$usernameSql	=	"SELECT username FROM users where user_id ={$userID}"; 
-						$username		= 	$this->dbFetchOne($usernameSql);
+	public function addMailerRecipients($dataArray,$userid) {
+						
+						/****************************Audit INSERT********************************/
+						$usernameSql	=	"SELECT username FROM users where user_id IN ({$userid})"; 				
+						$username		= 	$this->dbFetchAll($usernameSql);				
+						
+						foreach($username	as $row){
+							$this->usernam[] = $row->username;
+						}
+						$usernames = implode(',',$this->usernam);
+						
 						$moduleName		=  "Bulk Emailer";
 						$actionSumm 	=  "Add";
 						$actionDet  	=  "Add Email Users";
 						
 						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-									"username", $username);
+									"username", $usernames);              //audit insert
+						/****************************Audit INSERT********************************/
 					return $this->dbInsert("bulk_emails_users",$dataArray,2);
 	} 
 	 
@@ -74,19 +88,52 @@ class AdminBulkMailerModel extends TranWrapper {
 	public function deleteMailer($Id) {
 			
 			$where["bulk_email_id"]	=	$Id;
+			/****************************Audit DELETE********************************/
 			$moduleName	=  "Bulk Emailer";
 			$actionSumm =  "Delete";
-			$actionDet  =  "Delete Email Content";
+			$actionDet  =  "Delete Emailer Content";
 			
+			$useridSql 	= 	"SELECT user_id from bulk_emails_users where bulk_email_id = ({$Id})";			
+			$userid		= 	$this->dbFetchAll($useridSql);				
+			
+			foreach($userid	as $row){
+				$userID[] = $row->user_id;
+			}
+			$userids = implode(',',$userID);	
+			
+			$usernameSql 	= 	"SELECT username from users where user_id IN ({$userids})";
+			$username		= 	$this->dbFetchAll($usernameSql);	
+						
+			foreach($username	as $row){
+				$userName[] = $row->username;
+			}
+			$userNames = implode(',',$userName);
+					
 			$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-						"bulk_email_id", $Id);
-			
+						"user_name", $userNames);					//audit delete
+			/****************************Audit DELETE********************************/
 			$this->dbDelete("bulk_emails", $where);
 			$this->dbDelete("bulk_emails_users", $where);
 	}
 	
 	//  Check if not matched mailer users to delete from email users table
 	public function deleteNotMatchedReceipients($mId,$userIds) {
+		/****************************Audit DELETE********************************/	
+				$moduleName	=  "Bulk Emailer";
+				$actionSumm =  "Delete";
+				$actionDet  =  "Delete Email Recipients";
+				
+				$usernameSql 	= 	"SELECT username from users where user_id IN ({$userIds})";
+				$username		= 	$this->dbFetchAll($usernameSql);	
+							
+				foreach($username	as $row){
+					$userName[] = $row->username;
+				}
+				$userNames = implode(',',$userName);
+						
+				$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+							"username", $userNames);		       // audit delete
+		/****************************Audit DELETE********************************/	
 				$mailerSql	=" DELETE FROM bulk_emails_users  WHERE bulk_email_id={$mId} AND user_id NOT IN ({$userIds})"; 
 				$result				= 	$this->dbExecuteSql($mailerSql);
 				return $result;
@@ -96,6 +143,30 @@ class AdminBulkMailerModel extends TranWrapper {
 	public function updateStatus($Id) {
 				$dataArray['mail_status']	=	2;
 				$where['bulk_email_id']		=	$Id; 
+				/*************Audit UPDATE****************/
+				$moduleName	=  "Bulk Emailer";
+				$actionSumm =  "Update";
+				$actionDet  =  "Update Email Status";
+				
+				$useridSql 	= 	"SELECT user_id from bulk_emails_users where bulk_email_id = ({$Id})";			
+				$userid		= 	$this->dbFetchAll($useridSql);				
+				
+				foreach($userid	as $row){
+					$userID[] = $row->user_id;
+				}
+				$userids = implode(',',$userID);	
+								
+				$usernameSql	=	"SELECT username FROM users where user_id IN ({$userids})"; 				
+				$username		= 	$this->dbFetchAll($usernameSql);				
+				
+				foreach($username	as $row){
+					$usernam[] = $row->username;
+				}
+				$usernames = implode(',',$usernam);	
+				
+				$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $usernames);                 //audit update
+				/*************Audit UPDATE****************/	
 				return $this->dbUpdate('bulk_emails', $dataArray, $where); 
 	}
 	
@@ -104,6 +175,32 @@ class AdminBulkMailerModel extends TranWrapper {
 				$dataArray['bulk_email_user_status']	=	2;
 				$dataArray['bulk_email_sent_datetime']	=	date("Y-m-d H:i"); 
 				$where['bulk_email_id']		=	$Id;
+				
+				/*************Audit UPDATE****************/
+				$moduleName	=  "Bulk Emailer";
+				$actionSumm =  "Update";
+				$actionDet  =  "Update Emailer Status";
+				
+				$useridSql 	= 	"SELECT user_id from bulk_emails_users where bulk_email_id = ({$Id})";			
+				$userid		= 	$this->dbFetchAll($useridSql);				
+				
+				foreach($userid	as $row){
+					$userID[] = $row->user_id;
+				}
+				$userids = implode(',',$userID);	
+				
+				$usernameSql	=	"SELECT username FROM users where user_id IN ({$userids})"; 				
+				$username		= 	$this->dbFetchAll($usernameSql);				
+				
+				foreach($username	as $row){
+					$usernam[] = $row->username;
+				}
+				$usernames = implode(',',$usernam);	
+				
+				$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $usernames);			//audit update
+				/*************Audit UPDATE****************/		
+				
 				return $this->dbUpdate('bulk_emails_users', $dataArray, $where); 
 	}
 	

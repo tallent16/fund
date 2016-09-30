@@ -6,12 +6,17 @@ class AdminNotificationsModel extends TranWrapper {
 	 
 	// Insert new notification to notifications table on DB
 	public function addNotification($dataArray,$userID) {
-				$user1 		= explode(',',$userID);
-				//~ echo "<pre>",print_r($explode[0]),"</pre>"; die;				
-				$usernameSql	=	"SELECT username FROM users where user_id ={$user1[0]}"; 
-				$username		= 	$this->dbFetchOne($usernameSql);
+				/*************Audit INSERT AND UPDATE****************/			
+				$usernameSql	=	"SELECT username FROM users where user_id IN ({$userID})"; 				
+				$username		= 	$this->dbFetchAll($usernameSql);				
+				
+				foreach($username	as $row){
+					$usernam[] = $row->username;
+				}
+				$usernames = implode(',',$usernam);				
 								
 				$moduleName	=	"Bulk Notification";
+				/*************Audit INSERT AND UPDATE****************/
 				if(isset($dataArray['notificationId'])){
 						$actionSumm =  "Update";
 						$actionDet  =  "Update Notification Content";
@@ -20,7 +25,7 @@ class AdminNotificationsModel extends TranWrapper {
 						unset($dataArray['notificationId']);
 						
 						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-									"username", $username);
+									"username", $usernames);                    //audit update
 								
 						$this->dbUpdate('notifications', $dataArray, $whereArray);
 				}else{
@@ -28,24 +33,30 @@ class AdminNotificationsModel extends TranWrapper {
 						$actionDet  =  "Add Notification Content";
 						
 						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-									"username", $username);
+									"username", $usernames);					//audit insert
 									
 					return 	$this->dbInsert("notifications",$dataArray,1); 
 				}
 	}
 	 
 	 // Insert notification with user in notification users table on DB
-	public function addNotificationUsers($dataArray) {
+	public function addNotificationUsers($dataArray,$userid) {
+						/****************************Audit INSERT********************************/
+						$usernameSql	=	"SELECT username FROM users where user_id IN ({$userid})"; 				
+						$username		= 	$this->dbFetchAll($usernameSql);				
 						
-						$userID			=   $dataArray['user_id'];
-						$usernameSql	=	"SELECT username FROM users where user_id ={$userID}"; 
-						$username		= 	$this->dbFetchOne($usernameSql);
+						foreach($username	as $row){
+							$usernam[] = $row->username;
+						}
+						$usernames = implode(',',$usernam);
+						
 						$moduleName		=  "Bulk Notification";
 						$actionSumm 	=  "Add";
 						$actionDet  	=  "Add Notification Users";
 						
 						$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-									"username", $username);
+									"username", $usernames);			//audit insert
+						/****************************Audit INSERT********************************/
 			return $this->dbInsert("notification_users",$dataArray,2); 
 	} 
 	
@@ -53,20 +64,52 @@ class AdminNotificationsModel extends TranWrapper {
 	 // Insert notification with user in notification users table on DB
 	public function deleteNotification($Id) {
 			$where["notification_id"]=$Id;
-			
+			/****************************Audit DELETE********************************/
 			$moduleName	=  "Bulk Notification";
 			$actionSumm =  "Delete";
 			$actionDet  =  "Delete Notification Content";
 			
-			$this->setAuditOn($moduleName, $actionSumm, $actionDet,
-						"notification_id", $Id);
+			$useridSql 	= 	"SELECT user_id from notification_users where notification_id = ({$Id})";			
+			$userid		= 	$this->dbFetchAll($useridSql);				
+			
+			foreach($userid	as $row){
+				$userID[] = $row->user_id;
+			}
+			$userids = implode(',',$userID);	
+			
+			$usernameSql 	= 	"SELECT username from users where user_id IN ({$userids})";
+			$username		= 	$this->dbFetchAll($usernameSql);	
 						
+			foreach($username	as $row){
+				$userName[] = $row->username;
+			}
+			$userNames = implode(',',$userName);
+					
+			$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+						"username", $userNames);				            //audit delete
+			/****************************Audit DELETE********************************/			
 			$this->dbDelete("notifications", $where);
 			$this->dbDelete("notification_users", $where);
 	}
 		
 	//  Check if notifiction users exist
 	public function deleteNotMatchedReceipients($nId,$userIds) {
+		/****************************Audit DELETE********************************/	
+				$moduleName	=  "Bulk Notification";
+				$actionSumm =  "Delete";
+				$actionDet  =  "Delete Notification Recipients";
+				
+				$usernameSql 	= 	"SELECT username from users where user_id IN ({$userIds})";
+				$username		= 	$this->dbFetchAll($usernameSql);	
+							
+				foreach($username	as $row){
+					$userName[] = $row->username;
+				}
+				$userNames = implode(',',$userName);
+						
+				$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+							"username", $userNames);		       // audit delete
+		/****************************Audit DELETE********************************/	
 				$notificationSql	=" DELETE FROM notification_users  WHERE notification_id={$nId} AND user_id NOT IN ({$userIds})"; 
 				$result				= 	$this->dbFetchAll($notificationSql);
 				return $result;
@@ -74,13 +117,39 @@ class AdminNotificationsModel extends TranWrapper {
 	
 	//  Check if notifiction users exist
 	public function updateStatus($Id,$status) {
+		
 				$dataArray['status']=$status;
 				$where['notification_id']=$Id;
+				/*************Audit UPDATE****************/
+				$moduleName	=  "Bulk Notification";
+				$actionSumm =  "Update";
+				$actionDet  =  "Update Notification Status";
+				
+				$useridSql 	= 	"SELECT user_id from notification_users where notification_id = ({$Id})";			
+				$userid		= 	$this->dbFetchAll($useridSql);				
+				
+				foreach($userid	as $row){
+					$userID[] = $row->user_id;
+				}
+				$userids = implode(',',$userID);	
+								
+				$usernameSql	=	"SELECT username FROM users where user_id IN ({$userids})"; 				
+				$username		= 	$this->dbFetchAll($usernameSql);				
+				
+				foreach($username	as $row){
+					$usernam[] = $row->username;
+				}
+				$usernames = implode(',',$usernam);	
+				
+				$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $usernames);                 //audit update
+				/*************Audit UPDATE****************/		
 				return $this->dbUpdate('notifications', $dataArray, $where); 
 	}
 	
 	//  Update status user notification status
 	public function updateUserNotificationStatus($Id,$userId,$status,$whereCon=array()) {
+						
 				$dataArray['notification_user_status']	=	$status;
 				$dataArray['notification_read_datetime']	=	date("Y-m-d H:i:s");
 				 
@@ -96,6 +165,22 @@ class AdminNotificationsModel extends TranWrapper {
 				if(isset($whereCon['status'])){
 					$where['notification_user_status']	=	$whereCon['status'];
 				} 
+				/*************Audit UPDATE****************/
+				$moduleName	=  "Bulk Notification";
+				$actionSumm =  "Update";
+				$actionDet  =  "Update Notification User Status";
+				
+				$usernameSql	=	"SELECT username FROM users where user_id IN ({$userId})"; 				
+				$username		= 	$this->dbFetchAll($usernameSql);				
+				
+				foreach($username	as $row){
+					$usernam[] = $row->username;
+				}
+				$usernames = implode(',',$usernam);	
+				
+				$this->setAuditOn($moduleName, $actionSumm, $actionDet,
+									"username", $usernames);			//audit update
+				/*************Audit UPDATE****************/				
 				return $this->dbUpdate('notification_users', $dataArray, $where);  
 	}
 	

@@ -52,7 +52,7 @@ class AdminBulkMailersController extends AdminNotificationsController {
 				if(Request::isMethod('post')){
 							$postCon = Request::all();
 							$mailerStatus =1;
-							$userid = implode('',$postCon['receipients']);	
+							$userid = implode(',',$postCon['receipients']);	
 							if(!empty($Id)){
 										$insertData['mailerId']	 = $Id; 
 										$mailerStatus = $this->mailersModel->checkMailStatus($Id); 
@@ -94,7 +94,7 @@ class AdminBulkMailersController extends AdminNotificationsController {
 														$insertReceipient['bulk_email_user_status']	=	2; 
 														$insertReceipient['bulk_email_sent_datetime']	=	date("Y-m-d H:i"); 
 													}
-													$this->mailersModel->addMailerRecipients($insertReceipient);
+													$this->mailersModel->addMailerRecipients($insertReceipient,$userid);
 										}
 										$userIds[]=$receipientID;
 							}
