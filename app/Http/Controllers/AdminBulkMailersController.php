@@ -30,11 +30,12 @@ class AdminBulkMailersController extends AdminNotificationsController {
 			$mailers = $this->mailersModel->getAllMailers();
 			
 			foreach ($mailers as $data) {
+						$date = (empty($data->date))?'':date("d-m-Y H:i:s",strtotime($data->date));
 						$row[] 	= array(
 											"DT_RowId"=>$data->ID,
 											"ID"=>$data->ID,
 											"subject"=>$data->subject,
-											"date"=> $data->date,
+											"date"=> $date,
 											"status"=>$data->status
 										);	 
 					}  
@@ -69,8 +70,16 @@ class AdminBulkMailersController extends AdminNotificationsController {
 										$insertData['mail_schd_datetime']	= date("Y-m-d H:i",strtotime($postCon['sendTime'])); 
 										$insertData['mail_status']	= 1;
 							}else{
-								if($mailerStatus == 1){
-										$this->mailersModel->sendBulkMails( $postCon['subject'],$postCon['body'],$postCon['receipients']);
+								$userMails=array();
+								foreach($postCon['receipients'] as $receipientID){
+										$userInfo = $this->mailersModel->getReceipientInfo($receipientID);
+										if(count($userInfo)){
+													$userMails[] = $userInfo{0}->email;
+										}
+								}
+								
+								if(empty($Id)){
+										$this->mailersModel->sendBulkMails( $postCon['subject'],$postCon['body'],$userMails);
 								}
 							}
 							

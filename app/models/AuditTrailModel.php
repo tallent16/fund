@@ -132,22 +132,61 @@ class AuditTrailModel extends TranWrapper {
 		
 		$moduleName = $module_name.' '.$modulenames;
 		$auditDb		=	DB::connection('auditDb');
-		$moduleTables	=	["Borrower Profile"		=>	["audit_borrower_banks"=>"Borrower Bank Info",
-														 "audit_borrower_directors"=>"Borrower Directors Info",
-														 "audit_borrower_financial_info"=>"Financial Information of Borrower",
-														 "audit_borrowers"=>"Borrower Main Info",
-														 "audit_borrower_financial_ratios"=>"Financial Ratios of Borrower"
-														 ],
-							 "Bulk Emailer"			=> ["audit_bulk_emails"=>"Emailers","audit_bulk_emails_users"=>"Emailers User"],
-							 "Bulk Notification"	=> ["audit_notifications"=>"Notifications","audit_notification_users"=>"Notifications User"],
-							 "Investor Profile"		=>	["audit_investor_banks"=>"Investor Bank Info", "audit_investors"=>"Borrower Main Info"],
-							 "Investor Deposit" 	=>	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],
-							 "Investor Withdrawal" => 	["audit_investor_bank_transactions"=>"Investor Bank Transcation", "audit_payments"=>"Payments"],						
-							 "Loans Info"			=>  ["audit_loans"=>"Loans Info",  "audit_loan_docs_submitted"=>"Loan Documents Submitted"],							 
-							 "Loan Process" 		=> 	["audit_loans"=>"Loans Info", "audit_borrower_repayment_schedule"=>"Borrower Loan Repayment Schedule", "audit_disbursements"=>"Disbursements Info",
-														 "audit_investor_repayment_schedule"=>"Investor Loan Repayment Schedule", "audit_payments"=>"Payments"],
-							 "Loan Repayment" 		=>	["audit_loans"=>"Loans Info", "audit_borrower_repayment_schedule"=>"Borrower Loan Repayment Schedule", "audit_disbursements"=>"Disbursements Info",
-														 "audit_investor_repayment_schedule"=>"Investor Loan Repayment Schedule", "audit_payments"=>"Payments", "audit_investors"=>"Investors"]];
+		$moduleTables	=	[
+		
+		"Borrower Profile"		=>	[ 
+									"audit_borrowers"					=>"Borrower Main Info",	
+									"audit_borrower_banks"		  		=>"Borrower Bank Info",
+									"audit_borrower_directors"			=>"Borrower Directors Info",
+									"audit_borrower_financial_info"		=>"Financial Information of Borrower",
+									"audit_borrower_financial_ratios"	=>"Financial Ratios of Borrower",
+									"audit_profile_comments"			=>"Profile Comments"
+									],
+		"Investor Profile"		=>	[
+									"audit_investors"					=>"Investor Main Info",
+									"audit_investor_banks"				=>"Investor Bank Info",
+									"audit_profile_comments"			=>"Profile Comments"
+									],
+		"Bulk Emailer"			=> 	[
+									"audit_bulk_emails"					=>"Emailers",
+									"audit_bulk_emails_users"			=>"Emailers User"
+									],
+		"Bulk Notification"		=> 	[
+									"audit_notifications"				=>"Notifications",
+									"audit_notification_users"			=>"Notifications User"
+									],		
+		"Investor Deposit" 		=>	[
+									"audit_investors"					=>"Investor Main Info",
+									"audit_investor_bank_transactions"	=>"Investor Bank Transcation",
+									"audit_payments"					=>"Payments"
+									],
+		"Investor Withdrawal" 	=> 	[
+									"audit_investors"					=>"Investor Main Info",
+									"audit_investor_bank_transactions"	=>"Investor Bank Transcation",
+									"audit_payments"					=>"Payments"
+									],						
+		"Loans Info"			=>  [
+									"audit_loans"						=>"Loans Info", 
+									"audit_loan_docs_submitted"			=>"Loan Documents Submitted",
+									"audit_loan_approval_comments"		=>"Loan Comments Approval"
+									],							 
+		"Loan Process" 			=> 	[
+									"audit_loans"						=>"Loans Info",
+									"audit_loan_bids"					=>"Loan Bids Info",
+									"audit_disbursements"				=>"Disbursements Info",
+									"audit_payments"					=>"Payments", 
+									
+									],
+		"Loan Repayment" 		=>	[
+									"audit_loans"						=>"Loans Info",
+									"audit_loan_reschedule_info"		=>"Loan Reschedule Info",
+									"audit_investor_rescheduled_details"=>"Investor Rescheduled Details",
+									"audit_borrower_rescheduled_details"=>"Borrower Rescheduled Details",						
+									"audit_borrower_repayment_schedule" =>"Borrower Loan Repayment Schedule", 
+									"audit_investor_repayment_schedule" =>"Investor Loan Repayment Schedule",
+									"audit_payments"					=>"Payments", 
+									]
+							];
 		
 		$tables		=	$moduleTables[$moduleName];	
 		

@@ -41,6 +41,7 @@ class AdminNotificationsModel extends TranWrapper {
 	 
 	 // Insert notification with user in notification users table on DB
 	public function addNotificationUsers($dataArray,$userid) {
+						
 						/****************************Audit INSERT********************************/
 						$usernameSql	=	"SELECT username FROM users where user_id IN ({$userid})"; 				
 						$username		= 	$this->dbFetchAll($usernameSql);				

@@ -142,7 +142,8 @@ class AdminBulkMailerModel extends TranWrapper {
 	//  Check if notifiction users exist
 	public function updateStatus($Id) {
 				$dataArray['mail_status']	=	2;
-				$where['bulk_email_id']		=	$Id; 
+				$dataArray['mail_schd_datetime']	=	date("Y-m-d H:i:s"); 
+				$where['bulk_email_id']		=	$Id;  
 				/*************Audit UPDATE****************/
 				$moduleName	=  "Bulk Emailer";
 				$actionSumm =  "Update";
@@ -292,19 +293,20 @@ class AdminBulkMailerModel extends TranWrapper {
 	 
 	//Send bulk mails to all receipients
 	public function sendBulkMails($subject,$body,$to){
-			$to=array();
-			$to[] = 'muthu.openit@gmail.com';
-			$mailArray['msgarray']	=	array("content"=>$body);
-			 
-			$mailArray['msgData'] ['template']		=	'emails.emailTemplate';
-			$mailArray['msgData'] ['live_mail']		=	1;
-			$mailArray['msgData'] ['from']				=	'muthu.openit@gmail.com';
-			$mailArray['msgData'] ['from_name']	=	'Mail Notification';
-			$mailArray['msgData'] ['subject']			=	$subject;
-			
-			foreach($to as $toMail){
-					$mailArray['msgData'] ['to']	=	$toMail;
-					$this->sendMail($mailArray);
+			// $to=array('muthu.openit@gmail.com');
+			if(count($to)){
+					$mailArray['msgarray']	=	array("content"=>$body);
+					 
+					$mailArray['msgData'] ['template']		=	'emails.emailTemplate';
+					$mailArray['msgData'] ['live_mail']		=	1;
+					$mailArray['msgData'] ['from']				=	'admin@fundyourself.com';
+					$mailArray['msgData'] ['from_name']	=	'Fund Yourself Now';
+					$mailArray['msgData'] ['subject']			=	$subject;
+					
+					foreach($to as $toMail){
+							$mailArray['msgData'] ['to']	=	$toMail;
+							$this->sendMail($mailArray);
+					}
 			} 
 	}
 	

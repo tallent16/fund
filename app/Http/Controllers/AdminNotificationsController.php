@@ -50,7 +50,7 @@ class AdminNotificationsController extends MoneyMatchController {
 													$insertReceipient['notification_id']	=	$notificationID; 
 													$insertReceipient['user_id']				=	$receipientID;
 													$insertReceipient['notification_user_status']	=	1;
-													$this->notificationsModel->addNotificationUsers($insertReceipient,$userid);
+													$this->notificationsModel->addNotificationUsers($insertReceipient,$insertReceipient['user_id']);
 										}
 										$userIds[]=$receipientID;
 							}
