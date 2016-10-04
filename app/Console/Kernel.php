@@ -32,8 +32,7 @@ class Kernel extends ConsoleKernel {
 			$manageBids->autoCloseBid();
 		})->daily();
 		
-		$schedule->call(function () {
-			
+		$schedule->call(function () { 
 			//Call broadcast notification  cron job
 			$notificationsModel = new AdminNotificationsModel();
 			$notificationsModel->cronBroadcastNotifications();
@@ -41,7 +40,7 @@ class Kernel extends ConsoleKernel {
 			//Call bulk mailer cron job
 			$mailerModel = new AdminBulkMailerModel();
 			$mailerModel->cronBulkMailer();
-			// $mailerModel->sendBulkMails("Test Every Minute","test","");
+			// $mailerModel->sendBulkMails("Test Every Minute","test",array("muthu.openit@gmail.com"));
 			
 		})->cron('* * * * * *');
 		

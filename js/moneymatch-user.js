@@ -48,6 +48,14 @@ function callDataTableFunc(){
 		fields: [ {
 				label: "User Name:",
 				name: "username"
+			}, 
+			{
+				label: "First Name:",
+				name: "firstname"
+			},
+			{
+				label: "Last Name:",
+				name: "lastname"
 			}, {
 				label: "Email:",
 				name: "email"
@@ -102,6 +110,30 @@ function callDataTableFunc(){
 							str=str+'<a href="javascript:void(0);"';
 							str=str+' class="editor_edit user_edit_master" >';
 							str=str+data.username+'</a>';
+							return str;
+						}
+					},
+					{ 
+						data: null,
+						className: "center",
+						render: function(data, type, full, meta){
+							
+							var str ="";             					    
+							str=str+'<a href="javascript:void(0);"';
+							str=str+' class="editor_edit user_edit_master" >';
+							str=str+data.firstname+'</a>';
+							return str;
+						}
+					},
+					{ 
+						data: null,
+						className: "center",
+						render: function(data, type, full, meta){
+							
+							var str ="";             					    
+							str=str+'<a href="javascript:void(0);"';
+							str=str+' class="editor_edit user_edit_master" >';
+							str=str+data.lastname+'</a>';
 							return str;
 						}
 					},

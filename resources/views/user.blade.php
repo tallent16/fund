@@ -62,6 +62,8 @@
 					<thead>
 						<th><input type="checkbox" id="select_all_list"></th>
 						<th>User Name</th>
+						<th>First Name</th>
+						<th>Last Name</th>
 						<th>Email</th>
 						<th>Status</th>
 						<th>Action</th>

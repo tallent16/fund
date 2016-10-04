@@ -255,10 +255,10 @@ class MoneyMatchModel extends Model {
 	public function dbDisableQueryLog() {
 		DB::disableQueryLog();
 	}
-
+	 
 	public function setAuditOn($moduleName, $actionSummary, $actionDetail, 
 								$keyDisplayFieldName, $keyDisplayFieldValue) {
-	
+	$this->isCronJobRunning	=	true;
 	// This will initiate the Audit Insert and store the auditKey field's value in $this->auditKey
 		$dataArray	=	[	'user_id' =>	$this->getCurrentuserID(),
 							'module_name' => $moduleName,

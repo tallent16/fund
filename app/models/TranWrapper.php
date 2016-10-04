@@ -5,8 +5,9 @@ use Auth;
 use fileupload\FileUpload;
 use File;
 use Hash;
+use Illuminate\Support\Facades\Log;
 class TranWrapper extends MoneyMatchModel {
-		
+	public  $isCronJobRunning	=	false;	
 	public function __construct() {
 		$this->getAllSystemSettings();
 		$this->getAllSystemMessages();
@@ -173,11 +174,23 @@ class TranWrapper extends MoneyMatchModel {
 		$whereArry	=	array("activation" =>"{$code}");
 		$this->dbUpdate('users', array('status' => USER_STATUS_VERIFIED,'email_verified' => USER_EMAIL_VERIFIED), $whereArry);
 	}
-	
-	public function getCurrentuserID() {
-		$retval = Auth::user()->user_id;		
-		return $retval;
+	 
+	public function getCurrentuserID() { 
+		Log::info($_SERVER);
+		// try{
+			App::runningInConsole();
+			// if (App::runningInConsole()) {
+						// $retval ='214'; 
+			// }else{
+						// $retval = Auth::user()->user_id;   
+			// }
+		// }catch( \Exception  $e )  { 
+			// $retval ='214';
+		// }
+		
+		 // return $retval;
 	}
+	
 	
 	public function getUserType() {
 		if (Auth::check()) {

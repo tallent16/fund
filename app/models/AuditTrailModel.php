@@ -148,12 +148,10 @@ class AuditTrailModel extends TranWrapper {
 									"audit_profile_comments"			=>"Profile Comments"
 									],
 		"Bulk Emailer"			=> 	[
-									"audit_bulk_emails"					=>"Emailers",
-									"audit_bulk_emails_users"			=>"Emailers User"
+									"audit_bulk_emails"					=>"Emailers",									
 									],
 		"Bulk Notification"		=> 	[
-									"audit_notifications"				=>"Notifications",
-									"audit_notification_users"			=>"Notifications User"
+									"audit_notifications"				=>"Notifications",									
 									],		
 		"Investor Deposit" 		=>	[
 									"audit_investors"					=>"Investor Main Info",

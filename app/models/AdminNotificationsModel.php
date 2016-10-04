@@ -3,7 +3,7 @@ use Log;
 use DB;
 
 class AdminNotificationsModel extends TranWrapper { 
-	 
+	 public $usernam = array();
 	// Insert new notification to notifications table on DB
 	public function addNotification($dataArray,$userID) {
 				/*************Audit INSERT AND UPDATE****************/			
@@ -11,9 +11,9 @@ class AdminNotificationsModel extends TranWrapper {
 				$username		= 	$this->dbFetchAll($usernameSql);				
 				
 				foreach($username	as $row){
-					$usernam[] = $row->username;
+					$this->usernam[] = $row->username;
 				}
-				$usernames = implode(',',$usernam);				
+				$usernames = implode(',',$this->usernam);				
 								
 				$moduleName	=	"Bulk Notification";
 				/*************Audit INSERT AND UPDATE****************/
@@ -47,9 +47,10 @@ class AdminNotificationsModel extends TranWrapper {
 						$username		= 	$this->dbFetchAll($usernameSql);				
 						
 						foreach($username	as $row){
-							$usernam[] = $row->username;
+							$this->usernam[] = $row->username;
 						}
-						$usernames = implode(',',$usernam);
+						$this->usernam = array_unique($this->usernam);
+						$usernames = implode(',',$this->usernam);
 						
 						$moduleName		=  "Bulk Notification";
 						$actionSumm 	=  "Add";
@@ -277,6 +278,7 @@ class AdminNotificationsModel extends TranWrapper {
 	 
 	// Cron job send mail
 	public function cronBroadcastNotifications() {
+			$this->isCronJobRunning = true;
 			$notifications = $this->getAllNotifications('',1,1);
 			if(count($notifications)>0){ 
 				foreach($notifications as $notification){

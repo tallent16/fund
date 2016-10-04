@@ -72,6 +72,7 @@ class AdminBulkMailerModel extends TranWrapper {
 						foreach($username	as $row){
 							$this->usernam[] = $row->username;
 						}
+						$this->usernam = array_unique($this->usernam);
 						$usernames = implode(',',$this->usernam);
 						
 						$moduleName		=  "Bulk Emailer";
@@ -143,7 +144,8 @@ class AdminBulkMailerModel extends TranWrapper {
 	public function updateStatus($Id) {
 				$dataArray['mail_status']	=	2;
 				$dataArray['mail_schd_datetime']	=	date("Y-m-d H:i:s"); 
-				$where['bulk_email_id']		=	$Id;  
+				$where['bulk_email_id']		=	$Id;
+				
 				/*************Audit UPDATE****************/
 				$moduleName	=  "Bulk Emailer";
 				$actionSumm =  "Update";
@@ -272,7 +274,9 @@ class AdminBulkMailerModel extends TranWrapper {
 	
 	// Cron job send mail
 	public function cronBulkMailer() {
-			$mailers = $this->getAllMailers('',1,1);
+			 
+			$this->isCronJobRunning = true;
+			$mailers = $this->getAllMailers('',1,1); 
 			if(count($mailers)>0){
 				foreach($mailers as $mailer){
 							$receipientsList = $this->getMailerRecipients($mailer->ID);
