@@ -176,19 +176,19 @@ class TranWrapper extends MoneyMatchModel {
 	}
 	 
 	public function getCurrentuserID() { 
-		Log::info($_SERVER);
-		// try{
-			App::runningInConsole();
-			// if (App::runningInConsole()) {
-						// $retval ='214'; 
-			// }else{
-						// $retval = Auth::user()->user_id;   
-			// }
-		// }catch( \Exception  $e )  { 
-			// $retval ='214';
-		// }
 		
-		 // return $retval;
+		try{
+			
+			if($this->isCronJobRunning) {
+				$retval ='214'; 
+			}else{
+					$retval = Auth::user()->user_id;   
+			}
+		}catch( \Exception  $e )  { 
+			$retval ='214';
+		}
+		
+		 return $retval;
 	}
 	
 	

@@ -118,7 +118,7 @@ function callDataTableFunc(){
 								var inveditUrl = inheritvarvalues(data);	           				
 								var str ="";  								
 								str=str+'<a href="'+inveditUrl+'"';
-								str=str+'>'+data.trans_id+'</a>';						
+								str=str+'>'+data.ctrans_id+'</a>';						
 								return str;
         					 
         					}

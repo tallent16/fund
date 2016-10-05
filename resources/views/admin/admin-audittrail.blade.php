@@ -99,6 +99,7 @@
 					<th class="tab-head text-left">{{ Lang::get('UserName') }}</th>
 					<th class="tab-head text-left">{{ Lang::get('Module') }}</th>
 					<th class="tab-head text-left">{{ Lang::get('Action') }}</th>					
+					<th class="tab-head text-left">{{ Lang::get('Action Detail') }}</th>					
 					<th class="tab-head text-left">{{ Lang::get('Key Field') }}</th>
 					<th class="tab-head text-left">{{ Lang::get('Key Value') }}</th>
 					<th class="tab-head"></th>

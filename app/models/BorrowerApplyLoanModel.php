@@ -614,11 +614,13 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		}
 		$this->getBorrowerLoanInfo($loanId);
 		
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
+		
 		$loan_approval_date	=	date("Y-m-d H:i:s");
 		$dataArray 			= 	array('loan_approval_date'=> ($loan_approval_date!="")?$loan_approval_date:null);
 		$this->dbUpdate('loans', $dataArray, $whereArry);
 		
-		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
+		
 
 		
 		$borrUserInfo		=	$this->getBorrowerIdByUserInfo($borrowerId);

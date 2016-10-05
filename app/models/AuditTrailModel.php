@@ -117,6 +117,7 @@ class AuditTrailModel extends TranWrapper {
 									"username"=>$Row->username,	
 									"module_name"=>$Row->module_name,									
 									"action_summary"=>$Row->action_summary,									
+									"action_detail"=>$Row->action_detail,									
 									"action_date"=>$Row->action_datetime,									
 									"display_key"=>$Row->key_displayfieldname,									
 									"display_value"=>$Row->key_displayfieldvalue									
@@ -148,10 +149,12 @@ class AuditTrailModel extends TranWrapper {
 									"audit_profile_comments"			=>"Profile Comments"
 									],
 		"Bulk Emailer"			=> 	[
-									"audit_bulk_emails"					=>"Emailers",									
+									"audit_bulk_emails"					=>"Emails",									
+									"audit_bulk_emails_users"			=>"Email Users",									
 									],
 		"Bulk Notification"		=> 	[
 									"audit_notifications"				=>"Notifications",									
+									"audit_notification_users"			=>"Notification Users",									
 									],		
 		"Investor Deposit" 		=>	[
 									"audit_investors"					=>"Investor Main Info",
@@ -216,7 +219,7 @@ class AuditTrailModel extends TranWrapper {
 		$sql1			=	"SELECT ".$auditdata[0]->columns.",audit_when FROM (SELECT ".$auditdata[0]->columns.",audit_when
 									FROM {$tablename} as old
 									WHERE audit_key = {$auditkey}
-									order by audit_subkey desc LIMIT 0 , 2) as newrec group by audit_when";
+									order by audit_subkey desc) as newrec group by audit_when LIMIT 2";
 
 		$auditdata1		=	$auditDb->select($sql1);
 		

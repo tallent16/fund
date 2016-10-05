@@ -221,6 +221,17 @@ function callDataTableFunc(){
 							render: function(data, type, full, meta){ 								
 									           				
 								var str ="";  								
+								str=str+data.action_detail;						
+								return str;
+        					 
+        					}
+						},
+						{ 													
+							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){ 								
+									           				
+								var str ="";  								
 								str=str+data.display_key;						
 								return str;
         					 
