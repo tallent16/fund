@@ -62,7 +62,13 @@
 									</td>								
 								</tr>	
 							@endforeach	
-						
+						@else
+							
+							<tr>
+								<td colspan="7" class="text-center">
+									No Data Found
+								</td>
+							</tr>
 						@endif
 								
 					</tbody>

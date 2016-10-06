@@ -18,22 +18,22 @@
 			
 			<div class="page-header-title"><i class="{{(isset($classname)?$classname:'')}}"></i>@yield('page_heading')</div>
 			          
-            <ul class="nav navbar-top-links navbar-right">
-				<li class="block-title">
+            <ul class="nav navbar-top-links navbar-right" >
+				@if(Auth::check()) <li class="block-title" style="color:#eea236;width:200px;">{{Auth::user()->username}}</li>	@endif	
+				<li class="block-title" style="padding:15px;color:#eea236;margin: 0 -3px 0 0;">
+					
 						<i class="fa fa-bell" data-toggle="popover" data-content="" style="cursor: pointer;" ></i>
 						<span class="label"  id="notificationCount" ></span>
 						<span class="hidden notifyList"></span>
 				 </li>
-				@if(Auth::check())    
-					<li class="block-title">{{Auth::user()->username}}</li> 
-				@endif
+				
                 <!-- /.dropdown -->               
-                <li class="dropdown">
+                <li class="dropdown" style="background-color: #353333;">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                         <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
                     </a>
                    
-                    <ul class="dropdown-menu dropdown-user">
+                    <ul class="dropdown-menu dropdown-user" >
                          @if(Auth::user()->usertype == USER_TYPE_BORROWER)
 						<li><a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ 			Lang::get('borrower-leftmenu.user_profile') }}</a>
                         </li>

@@ -62,28 +62,32 @@ function callDataTableFunc(){
 				},  
 				{
 					data: null,		
-					className: "text-left",											
+					className: "text-left",
+					width:"500px",											
 					render: function(data, type, full, meta){
 							return  data.subject ;
 					}        					
 				},
 				{
 					data: null,		
-					className: "text-left",											
+					className: "text-left",	
+					width:"200px",										
 					render: function(data, type, full, meta){
 							return  data.date ;
 					}        					
 				},
 				{
 					data: null,		
-					className: "text-left",											
+					className: "text-left",		
+					width:"100px",									
 					render: function(data, type, full, meta){
 							return  data.status ;
 					}        					
 				},
 				{ 
 					data: null,		
-					className: "text-center",													
+					className: "text-center",	
+					orderable: false,												
 					render: function(data, type, full, meta){
 						str='';
 						var	viewClass	=	"showReceipients";

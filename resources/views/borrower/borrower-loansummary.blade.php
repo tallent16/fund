@@ -85,12 +85,13 @@
 				</thead>
 				
 				<tbody>
+					@if($tranModel->loanList)
 					@foreach ($tranModel->loanList as $loanRow)
 						<tr id="{{$loanRow->loan_id}}" role="row">
 							<td class="text-left"></td>
 							<td class="details-control"></td>
 							<td class="text-left">{{$loanRow->loan_reference_number}}</td>
-							<td class="text-left">{{$loanRow->apply_date}}</td>
+							<td class="text-left col-sm-2">{{$loanRow->apply_date}}</td>
 							<td class="text-left">{{$loanRow->bid_close_date}}</td>
 							<td class="text-right">{{$loanRow->apply_amount}}</td>
 							<td class="text-right">{{$loanRow->bid_sanctioned_amount}}</td>
@@ -138,6 +139,13 @@
 							</tr>											
 						
 					@endforeach
+					@else
+					<tr>
+						<td>
+							No Data Found
+						</td>
+					</tr>
+					@endif
 				</tbody>
 			</table>
 		</div>

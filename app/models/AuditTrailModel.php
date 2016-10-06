@@ -176,11 +176,10 @@ class AuditTrailModel extends TranWrapper {
 									"audit_loan_bids"					=>"Loan Bids Info",
 									"audit_disbursements"				=>"Disbursements Info",
 									"audit_payments"					=>"Payments", 
-									
 									],
 		"Loan Repayment" 		=>	[
 									"audit_loans"						=>"Loans Info",
-									"audit_loan_reschedule_info"		=>"Loan Reschedule Info",
+			 						"audit_loan_reschedule_info"		=>"Loan Reschedule Info",
 									"audit_investor_rescheduled_details"=>"Investor Rescheduled Details",
 									"audit_borrower_rescheduled_details"=>"Borrower Rescheduled Details",						
 									"audit_borrower_repayment_schedule" =>"Borrower Loan Repayment Schedule", 
@@ -199,12 +198,13 @@ class AuditTrailModel extends TranWrapper {
 	}
 	
 	public function getAuditInfo($tablename,$auditkey){
+		
 		$auditDb		=	DB::connection('auditDb');		
 		
 		$sql			=	"SELECT audit_columns('$tablename') columns";				
 
 		$auditdata		=	$auditDb->select($sql);
-		
+		//~ echo "<pre>",print_r($auditdata),"</pre>"; die;
 		$displaysql		=	"SELECT col_name, col_dispname
 									FROM  audit_tablecolumns 
 									WHERE tab_name = '{$tablename}'

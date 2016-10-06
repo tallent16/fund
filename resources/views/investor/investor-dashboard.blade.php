@@ -233,6 +233,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								@if($fundsDepolyedInfo)
 								@foreach($fundsDepolyedInfo as $loanRow)
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
@@ -247,6 +248,13 @@
 										<td class="text-right">{{number_format($loanRow['principal_amount_paid'],2,'.',',')}}</td>
 									</tr>				
 								@endforeach	
+								@else
+									<tr>
+										<td colspan="10" class="text-center">
+											No Data Found
+										</td>
+									</tr>
+								@endif
 												
 							</tbody>
 						</table>						
@@ -286,6 +294,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								@if($invUnderBidInfo)
 								@foreach($invUnderBidInfo as $loanRow)
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
@@ -300,6 +309,13 @@
 										<td></td>
 									</tr>				
 								@endforeach	
+								@else
+									<tr>
+										<td colspan="10" class="text-center">
+											No Data Found
+										</td>
+									</tr>
+								@endif
 							</tbody>
 						</table>											
 					</div><!-----third row end--->	
@@ -334,6 +350,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								@if($overDueInfo)
 								@foreach($overDueInfo as $loanRow)
 									<tr>
 										<td class="text-left">{{$loanRow['business_name']}}</td>
@@ -344,6 +361,13 @@
 										<td colspan="5"></td>
 									</tr>				
 								@endforeach
+								@else
+									<tr>
+										<td colspan="10" class="text-center">
+											No Data Found
+										</td>
+									</tr>
+								@endif
 							</tbody>
 						</table>		
 						</div>									

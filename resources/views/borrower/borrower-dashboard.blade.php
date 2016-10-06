@@ -47,6 +47,8 @@
 							   <div  id="cur_loan_content">
 								   	@if(isset($borCurLoans[0]))
 										{{$borCurLoans[0]->purpose}}
+									@else
+										No Loans Found
 									@endif
 								</div>
 						</div>	<!--end panel body-->
@@ -70,16 +72,22 @@
 										<td  id="cur_loan_rate" >
 											 @if(isset($borCurLoans[0]))
 												{{$borCurLoans[0]->rate}}%
+											 @else
+											    -
 											@endif
 										</td> 
 										<td  id="cur_loan_duration">
 											@if(isset($borCurLoans[0]))
 												{{$borCurLoans[0]->duration}}
+											@else
+											    -
 											@endif
 										</td>
 										<td  id="cur_loan_amount">
 											@if(isset($borCurLoans[0]))
 												{{number_format($borCurLoans[0]->amount,2,'.',',')}}
+											 @else
+											    -
 											@endif
 										</td>
 									</tr>										
@@ -152,19 +160,27 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($borrowerLoans as $loanRow)
-									<tr>
-										<td>{{$loanRow['loan_reference_number']}}</td>
-										<td>{{$loanRow['last_payment']}}</td>
-										<td>{{$loanRow['next_payment']}}</td>
-										<td class="text-right">{{number_format($loanRow['amount_paid'],2,'.',',')}}</td>
-										<td class="text-right">{{$loanRow['inst_rate']}}%</td>
-										<td class="text-right">{{$loanRow['no_of_installment']}}</td>
-										<td class="text-right">{{number_format($loanRow['total_repayments'],2,'.',',')}}</td>
-										<td class="text-right">{{number_format($loanRow['tot_prin_outstanding'],2,'.',',')}}</td>
-										<td>{{$loanRow['repayment_status']}}</td>
-									</tr>				
-								@endforeach						
+								@if($borrowerLoans)
+									@foreach($borrowerLoans as $loanRow)
+										<tr>
+											<td>{{$loanRow['loan_reference_number']}}</td>
+											<td>{{$loanRow['last_payment']}}</td>
+											<td>{{$loanRow['next_payment']}}</td>
+											<td class="text-right">{{number_format($loanRow['amount_paid'],2,'.',',')}}</td>
+											<td class="text-right">{{$loanRow['inst_rate']}}%</td>
+											<td class="text-right">{{$loanRow['no_of_installment']}}</td>
+											<td class="text-right">{{number_format($loanRow['total_repayments'],2,'.',',')}}</td>
+											<td class="text-right">{{number_format($loanRow['tot_prin_outstanding'],2,'.',',')}}</td>
+											<td>{{$loanRow['repayment_status']}}</td>
+										</tr>									
+									@endforeach	
+									@else
+										<tr>
+											<td colspan="9" class="text-center">
+												No Records Found
+											</td>
+										</tr>
+								@endif					
 							</tbody>
 						</table>						
 					</div><!-----third row end--->	
