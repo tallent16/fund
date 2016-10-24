@@ -770,7 +770,8 @@ class TranWrapper extends MoneyMatchModel {
 		$bor_pro_sql	= "	SELECT 	company_image,
 									company_image_thumbnail,
 									acra_profile_doc_url,
-									moa_doc_url
+									moa_doc_url,
+									financial_doc_url
 							FROM 	borrowers
 							WHERE	borrower_id	=	{$id}";
 				

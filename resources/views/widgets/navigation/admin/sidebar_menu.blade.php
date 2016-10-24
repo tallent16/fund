@@ -145,7 +145,7 @@
 		</li>
 	@endpermission
 	<li>
-		<a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('Marketing') }} <span class="fa arrow"></span></a> 
+		<a href="{{ url ('admin/marketing') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('Marketing') }} <span class="fa arrow"></span></a>  
 			<ul class="nav nav-second-level">	 
 				@permission('view_general_message.admin.settings') 
 					<li>

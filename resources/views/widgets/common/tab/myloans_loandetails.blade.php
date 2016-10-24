@@ -1,5 +1,5 @@
 	@var	$finacialRatioInfo	=	$LoanDetMod->finacialRatioInfo;
-	@var	$desitinationPath	=	$LoanDetMod->company_image;
+	@var	$desitinationPath	=	$LoanDetMod->company_image;	
 	
 	<div class="panel panel-primary panel-container">
 		@if ($LoanDetMod->featured_loan == 1)
@@ -63,9 +63,16 @@
 		
 		<div class="row">
 			<div class="col-md-12">
+				
 				<div class="col-md-6">	
-					<div class="pull-left">	
-						<button type="submit" class="btn verification-button">{{ Lang::get('borrower-myloans.download_info')}}</button>
+					<div class="pull-left">										
+						@if($LoanDetMod->financial_doc_url!="")
+						@var	$financialUrl	=	url('download/borrower/profile/attachment')."/".$LoanDetMod->borrower_id."/5";	
+						<a 	href="{{$financialUrl}}"  
+							class="hyperlink btn verification-button">
+							{{ Lang::get('borrower-myloans.download_info')}}
+						</a>	
+						@endif					
 					</div>
 				</div>
 				

@@ -322,6 +322,40 @@
 				</div>							
 			</div>	
 		<!--	row columns added new on 3/June/2016 ACRA Business Profile and Memoradum and Articles of Association -->
+				
+		<div class="row">
+				<div class="col-xs-12 col-sm-5 col-lg-3">											
+					<label class="input-required">
+						{{ Lang::get('Financial Ratio Doc') }}
+					</label>												
+				</div>									
+				<div class="col-xs-12 col-sm-7 col-lg-3"  id="financial_doc_parent">									
+					<input 	type="file" 
+								class="jfilestyle  required" 
+								data-buttonBefore="true" 
+								name="financial_doc_url"
+								id="financial_doc_url"
+								/>	
+															
+					<input 	type="hidden" 
+								id="financial_doc_hidden"
+								name="financial_doc_hidden"
+								value="{{ $modelBorPrf->financial_doc_url }}"
+								/>		
+					@if($modelBorPrf->financial_doc_url!="")
+						@var	$financialUrl	=	url('download/borrower/profile/attachment')."/".$modelBorPrf->borrower_id."/5";	
+						<a 	href="{{$financialUrl}}"  
+							class="hyperlink">
+							{{basename($modelBorPrf->financial_doc_url)}}
+						</a>
+					@endif
+					
+				</div>
+			</div>
+		
+		
+		
+		
 		</fieldset>	
 			<!------row--7----------->	
 			

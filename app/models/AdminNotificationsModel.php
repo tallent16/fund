@@ -107,7 +107,7 @@ class AdminNotificationsModel extends TranWrapper {
 	
 	//  Check if notifiction users exist
 	public function updateStatus($Id,$status) {
-		
+				$userID = '';
 				$dataArray['status']=$status;
 				$where['notification_id']=$Id;
 				/*************Audit UPDATE****************/
@@ -121,6 +121,7 @@ class AdminNotificationsModel extends TranWrapper {
 				foreach($userid	as $row){
 					$userID[] = $row->user_id;
 				}
+				print_r($userID); die;
 				$userids = implode(',',$userID);	
 								
 				$usernameSql	=	"SELECT username FROM users where user_id IN ({$userids})"; 				

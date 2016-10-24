@@ -118,6 +118,7 @@ class BorrowerProfileModel extends TranWrapper {
 						borrowers.company_video_url,
 						borrowers.acra_profile_doc_url,
 						borrowers.moa_doc_url,
+						borrowers.financial_doc_url,
 						borrowers.borrower_risk_grade grade
 				FROM 	borrowers,
 						users
@@ -440,6 +441,25 @@ class BorrowerProfileModel extends TranWrapper {
 			
 			$moa_doc_url								=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
 			$updateDataArry["moa_doc_url"]				=	$moa_doc_url;
+			$updateAttachment							=	true;
+		}
+		if(isset($postArray['financial_doc_url'])){
+			if(isset($postArray['financial_doc_hidden'])){
+				$filePath		=	$postArray['financial_doc_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file			=	$postArray['financial_doc_url'];
+			$filePath		=	$destinationPath."/".$borrowerId;
+			$prefix			=	"FNLRO_";
+			$fileUploadObj->createIfNotExists($filePath);
+			//~ echo $filePath; die;
+			$finan_doc_url								=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$updateDataArry["financial_doc_url"]		=	$finan_doc_url;
 			$updateAttachment							=	true;
 		}
 		

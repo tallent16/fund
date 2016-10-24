@@ -44,22 +44,23 @@ class BorrowerProfileController extends MoneyMatchController {
 	public function downloadAction($profile_id,$fieldno) {
 	
 		$sourceId 		=	explode("_",$profile_id);
-		if( (Auth::user()->usertype	==	USER_TYPE_BORROWER) 
+		if( (Auth::user()->usertype	==	USER_TYPE_BORROWER) || (Auth::user()->usertype	==	USER_TYPE_INVESTOR)
 			|| (Auth::user()->usertype	==	USER_TYPE_ADMIN)) {
 			if( (Auth::user()->user_id	==	$this->borrowerProfileModel->getBorrowerIdByUserInfo($sourceId[0])->user_id)
-				|| (Auth::user()->usertype	==	USER_TYPE_ADMIN) ) { 
+				|| (Auth::user()->usertype	==	USER_TYPE_ADMIN) || (Auth::user()->usertype	==	USER_TYPE_INVESTOR) ) { 
 				$fieldArray	=	array(
 										1=>"company_image",
 										2=>"company_image_thumbnail",
 										3=>"acra_profile_doc_url",
-										4=>"moa_doc_url"
+										4=>"moa_doc_url",
+										5=>"financial_doc_url"
 									);
 					
 				// download borrower profile ACRA and MAOA file
 					$fieldName		=	$fieldArray[$fieldno];
 					
 					$bor_pro_rs		=	$this->borrowerProfileModel->getBorrowerProfileAllAttachments($sourceId[0]);
-					
+					//~ echo "<pre>",print_r($bor_pro_rs),"</pre>"; die;
 					$attachUrl		=	$bor_pro_rs->$fieldName;
 					$attachName 	= 	basename($attachUrl);
 					

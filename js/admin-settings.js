@@ -1,4 +1,50 @@
 $(document).ready(function(){
+	
+	function validateEmail(field) {
+		var regex=/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i;
+		return (regex.test(field)) ? true : false;
+	}
+	function validateMultipleEmailsCommaSeparated(value) {
+		var result = value.split(",");
+		for(var i = 0;i < result.length;i++)
+		if(!validateEmail(result[i])) 
+				return false;               
+		return true;
+	}
+	var $validationtrue = true;		
+	$("#form-settings").submit(function(e) {
+		$('span.error').remove();
+		$('.has-error').removeClass("has-error");
+		
+		var $parentTag	 = $("#mail_cc_parent");
+		var emails 		 = $("#mail_cc").val();		
+		if(validateMultipleEmailsCommaSeparated(emails)== false){	
+			$('.nav-tabs a[href="#general"]').tab('show');		
+			$parentTag.addClass('has-error').append('<span class="control-label error">Incorrect Email format</span>');
+			e.preventDefault();			
+		}		
+			
+		$("input.required.email").each(function(){	
+				
+			var	input_id	=	$(this).attr("id");
+			var inputVal 	= 	$(this).val();
+			var $parentTag = $("#"+input_id+"_parent");		
+			if(validateEmail(inputVal)==false){	
+				$validationtrue = false;						
+				$parentTag.addClass('has-error').append('<span class="control-label error">Incorrect Email Format</span>');
+				return false;		
+			}						
+		});
+		
+		if($validationtrue == false){
+			$('.nav-tabs a[href="#general"]').tab('show');
+			e.preventDefault();
+			return false;			
+		}
+		
+	});
+		
+	
 	  //Only accept numbers    
 	$(".numeric").keydown(function(event) { 
 		// Allow only backspace and delete
