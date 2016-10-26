@@ -88,6 +88,7 @@ class InvestorProfileModel extends TranWrapper {
 											investors.nric_number,
 											investors.nationality,
 											investors.gender,											
+											users.mobile,											
 											ROUND(investors.estimated_yearly_income,2) estimated_yearly_income,																						
 											ifnull(DATE_FORMAT(investors.acc_creation_date,'%d/%m/%Y'),'') acc_creation_date,
 											investors.identity_card_image_front,											
@@ -122,7 +123,8 @@ class InvestorProfileModel extends TranWrapper {
 									AND		investors.user_id	=	users.user_id";
 		
 		$investorprofile_rs		= 	$this->dbFetchAll($investorprofile_sql);
-	
+		
+		//~ echo "<pre>",print_r($investorprofile_rs),"</pre>";die;
 		if ($investorprofile_rs) {
 		
 			$vars = get_object_vars ( $investorprofile_rs[0] );
@@ -151,12 +153,10 @@ class InvestorProfileModel extends TranWrapper {
 	}
 	
 	public function processProfile($postArray) {
-		//~ echo "<pre>",print_r($postArray),"</pre>";
-		//~ die;
-		$transType 		=	$postArray['trantype'];
-		$investorId		=	$this->updateInvestorInfo($postArray,$transType);
+		
+		$transType 		=	$postArray['trantype'];		
 		$moduleName		=	"Investor Profile";
-
+		
 		if($transType	==	"edit") {
 			$investorId  	= 	$postArray['investor_id'];
 			$whereArry		=	array("investor_id" => $investorId);
@@ -172,13 +172,16 @@ class InvestorProfileModel extends TranWrapper {
 		} else {
 			$actionSumm =	"Add";
 			$actionDet	=	"Add New Investor Profile";
+				//~ $this->updateInvestorInfo($postArray,$transType);
 		}
-		$this->updateInvestorBankInfo($postArray,$investorId,$transType);
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"username", $postArray['displayname']);
-		
-		
-		
+		$investorId	=$this->updateInvestorInfo($postArray,$transType);
+		//~ $this->updateMobileNumber($investorId,$postArray);	
+		//~ $this->setAuditOn($moduleName, $actionSumm, $actionDet,
+								//~ "username", $postArray['displayname']);
+		$this->updateInvestorBankInfo($postArray,$investorId,$transType);
+				
 		if (isset($postArray['hidden_investor_status']) 
 				&& $postArray['hidden_investor_status']	==	"corrections_required" ) {
 			if (isset($postArray['comment_row'])) {
@@ -204,7 +207,7 @@ class InvestorProfileModel extends TranWrapper {
 				$status		=	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL;
 			}
 		}
-	
+		//~ echo "<pre>",print_r($postArray),"</pre>"; die;			
 		$firstname 						=	$postArray['firstname'];
 		$lastname						= 	$postArray['lastname'];
 		$displayname					= 	$postArray['displayname'];
@@ -243,6 +246,8 @@ class InvestorProfileModel extends TranWrapper {
 									'nationality' 					=> ($nationality!="")?$nationality:null,
 									'gender' 						=> ($gender!="")?$gender:null,
 									'estimated_yearly_income' 		=> ($estimated_yearly_income!="")?$estimated_yearly_income:null);
+									
+						
 		if(Auth::user()->usertype	==	USER_TYPE_INVESTOR) {
 			if ($transType != "edit") {
 				$dataArray['user_id']	=	$current_user_id;
@@ -698,7 +703,7 @@ class InvestorProfileModel extends TranWrapper {
 	}
 	
 	public function updateMobileNumber($inv_id,$postArray){
-		
+		 
 		$mobile = $postArray['mobile'];
 		$dataArray = array('mobile' => $mobile);
 		$userInfo	=	$this->getInvestorIdByUserInfo($inv_id);

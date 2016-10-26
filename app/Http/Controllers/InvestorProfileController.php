@@ -26,6 +26,7 @@ class InvestorProfileController extends MoneyMatchController {
 				$this->updateMobileAction();
 			}else{
 				$postArray	=	Request::all();
+				
 				$result		=	$this->investorProfileModel->processProfile($postArray);
 				$submitted	=	true;
 			}
