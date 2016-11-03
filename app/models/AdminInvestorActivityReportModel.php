@@ -386,7 +386,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 														AND		inv_rep_sch.payment_date	<= '".$filterToDate."'
 												) xx
 												where debit_amt > 0 or credit_amt > 0
-												ORDER BY  rept_date_orderBy, trans_type_orderBy, ref_no";			
+												ORDER BY  rept_date_orderBy, trans_type_orderBy,ref_no";			
 		$dataArrayInvList				= 	[															
 													"dep_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
 													"trans_ver_param1" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,

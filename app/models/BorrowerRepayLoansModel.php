@@ -43,8 +43,55 @@ class BorrowerRepayLoansModel extends TranWrapper {
 	
 	public function getUnpaidLoans() {
 	
-		$unpaidloan_sql			=	"SELECT loans.loan_id,
-										installment_number,
+		//~ $unpaidloan_sql			=	"SELECT loans.loan_id,
+										//~ installment_number,
+										//~ repayment_schedule_id,										
+										//~ repayment_status,
+										//~ loan_reference_number ref, 										
+										//~ date_format(repayment_schedule_date,'%d-%m-%Y') schd_date,
+										//~ date_format(repayment_schedule_date ,'%Y-%m') inst_period,
+										//~ if (date(repayment_schedule_date) < date(now()),
+											//~ if (penalty_type_applicable in (1,3), 
+													//~ repayment_scheduled_amount * 
+														//~ power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
+															//~ datediff(now(), repayment_schedule_date)), 0) + 
+											//~ if (penalty_type_applicable in (2,3),
+													//~ ifnull(penalty_fixed_amount, 0), 0) -
+											//~ repayment_scheduled_amount, 0) penalty,
+										//~ repayment_scheduled_amount schd_amount
+										
+										//~ FROM	(
+												//~ SELECT	*
+												//~ FROM 	borrower_repayment_schedule
+												//~ WHERE	repayment_status = 1 
+												//~ AND		date(repayment_schedule_date) < date(now())
+												//~ AND		borrower_id = {$this->borrowerId}
+												//~ UNION
+												//~ SELECT 	* 
+												//~ FROM 	borrower_repayment_schedule
+												//~ WHERE	repayment_status = 1 
+												//~ AND 	date(repayment_schedule_date) >= date(now())
+												//~ and		borrower_id = {$this->borrowerId}
+												//~ limit 0,2) loan_repayment, 
+												//~ loans
+										//~ WHERE	loans.loan_id = loan_repayment.loan_id 
+										//~ ORDER BY loan_id, installment_number";
+										
+		 $var_sql			=	"SET @currcount = NULL, @currvalue = NULL";
+		 $this->varlist		=	$this->dbExecuteSql($var_sql);	
+		 
+		 $unpaidloan_sql	= 	"SELECT 		
+									loan_id,
+									installment_number,
+									repayment_schedule_id,
+									ref,schd_date,
+									inst_period,
+									penalty,
+									schd_amount
+ 
+								FROM (
+									SELECT loans.loan_id,
+   										installment_number,
 										repayment_schedule_id,										
 										repayment_status,
 										loan_reference_number ref, 										
@@ -58,25 +105,32 @@ class BorrowerRepayLoansModel extends TranWrapper {
 											if (penalty_type_applicable in (2,3),
 													ifnull(penalty_fixed_amount, 0), 0) -
 											repayment_scheduled_amount, 0) penalty,
-										repayment_scheduled_amount schd_amount
+										repayment_scheduled_amount schd_amount,
+									@currcount := IF(@currvalue = loans.loan_id, @currcount + 1, 1) AS filter_row,
+									@currvalue := loans.loan_id AS loan_table_data
 										
 										FROM	(
 												SELECT	*
 												FROM 	borrower_repayment_schedule
 												WHERE	repayment_status = 1 
 												AND		date(repayment_schedule_date) < date(now())
-												AND		borrower_id = {$this->borrowerId}
-												UNION
+												AND		borrower_id = 21
+
+												UNION 
 												SELECT 	* 
 												FROM 	borrower_repayment_schedule
 												WHERE	repayment_status = 1 
 												AND 	date(repayment_schedule_date) >= date(now())
-												and		borrower_id = {$this->borrowerId}
-												limit 0,2) loan_repayment, 
-												loans
+												and		borrower_id = 21
+                                                 
+												) loan_repayment, 
+												loans 
 										WHERE	loans.loan_id = loan_repayment.loan_id 
-										ORDER BY loan_id, installment_number";
-								
+							
+										order BY loan_repayment.loan_id ) 
+										
+										AS loan_table_data WHERE filter_row <= 2";	
+												
 		$this->unpaidLoanList	=	$this->dbFetchAll($unpaidloan_sql);	
 			
 		return;

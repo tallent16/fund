@@ -71,7 +71,7 @@ class AdminInvestorsProfileReportModel extends TranWrapper {
 													WHERE	bid_status	=:bid_accpt_param	
 													GROUP BY 	investor_id
 												)	loan_accepted
-												ON	loan_applied.investor_id	=	investors.investor_id
+												ON	loan_accepted.investor_id	=	investors.investor_id
 									LEFT JOIN	(
 													SELECT 	investor_id, SUM(interest_amount) tot_interest
 													FROM	investor_repayment_schedule
