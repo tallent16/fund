@@ -48,7 +48,7 @@
 <div class="row">
 	<!--<div class="col-sm-12" >-->
 		<div class="col-sm-3 col-lg-2" id="apply_filter_div" >
-			<button type="submit" class="btn verification-button">
+			<button type="submit" id="filter_invtrans" class="btn verification-button">
 				{{ Lang::get('borrower-loanlisting.apply_filter') }}
 			</button>
 		</div>
@@ -59,7 +59,7 @@
 			<div class="col-sm-12 space-around"> 
 				
 				<div class="table-responsive applyloan"> 
-					<table class="table table-striped table-border-custom text-left">
+					<table id="inv_trans" class="table table-striped table-border-custom text-left">
 						<thead>
 							<tr>
 								<th class="tab-head text-left">{{Lang::get('Reference for Clarity')}}</th>
@@ -104,7 +104,17 @@ $(document).ready(function(){
 	format: 'dd/mm/yyyy' 
 
 	}); 
+	//~ if(window.location.search) {		  
+		//~ $("#inv_trans th:last-child, #inv_trans td:last-child").remove();
+	 //~ }
 }); 
+$("#filter_invtrans").click(function(){
+	    
+     if(window.location.search) {		  
+		$("#inv_trans th:last-child, #inv_trans td:last-child").remove();
+	 }
+});
+
 </script>  
 @endsection  
 @stop

@@ -204,10 +204,10 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 	
 	public function viewEditInvestorDeposits($processtype,$investorId,$paymentId){
 			
-			$this->deposit_date	=	date("d-m-Y");
+			$this->deposit_date	=	date("d-m-Y H:i:s");
 			$viewRecordSql		= "SELECT 
 										ROUND(payments.trans_amount,2) trans_amount,
-										date_format(payments.trans_datetime,'%d-%m-%Y') trans_date,
+										date_format(payments.trans_datetime,'%d-%m-%Y %H:%i:%s') trans_date,
 										payments.trans_reference_number,
 										payments.remarks,
 										investor_bank_transactions.trans_id,
@@ -242,11 +242,11 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 		$paymentId				=	$postArray['payment_id'];
 		$this->investorId		=	$postArray['investor_id'];
 		$this->deposit_amount	=	$this->makeFloat($postArray['deposit_amount']);
-		$this->deposit_date		=	$this->getDbDateFormat($postArray['deposit_date']);
+		$this->deposit_date		=	date("Y-m-d H:i:s", strtotime($postArray['deposit_date']));
 		$this->trans_ref_no		=	$postArray['trans_ref_no'];
 		$this->remarks			=	$postArray['remarks'];
 		$currency				=	'SGD'; // Hardcoded value
-
+		//~ echo "<pre>",print_r($this->deposit_date),"</pre>"; die;
 		$this->username			=	$this->getUserName('Investor', $this->investorId);
 		$moduleName		=	"Investor Deposit";
 
@@ -528,13 +528,14 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 	
 	public function getCurrentInvestorDepositInfo($processtype,$paymentId){
 			
-			$this->deposit_date			=	date("d-m-Y");
+			$this->deposit_date			=	date("d-m-Y H:i:s");
+			
 			$current_investor_id		=	$this->getCurrentInvestorID();
 			$this->processbuttontype 	= 	$processtype;
 			$this->investorId			=	$current_investor_id;
 			$viewRecordSql				= "SELECT 
 													ROUND(payments.trans_amount,2) trans_amount,
-													date_format(payments.trans_datetime,'%d-%m-%Y') trans_date,
+													date_format(payments.trans_datetime,'%d-%m-%Y %H:%i:%s') trans_date,
 													payments.trans_reference_number,
 													payments.remarks,
 													investor_bank_transactions.trans_id,
@@ -560,6 +561,8 @@ class AdminInvestorsDepositListingModel extends TranWrapper {
 					$this->status			=	$viewRecordRs[0]->status;
 					$this->payment_id		=	$paymentId;
 			}
+			//~ echo "<pre>",print_r($viewRecordRs),"</pre>"; die;
+			echo $this->deposit_date;
 	}	
 		
 }

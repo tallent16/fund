@@ -254,12 +254,12 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$paymentId					=	$postArray['payment_id'];
 		$this->investorId			=	$postArray['investor_id'];
 		$this->withdrawal_amount	=	$this->makeFloat($postArray['withdrawal_amount']);
-		$this->request_date			=	$this->getDbDateFormat($postArray['request_date']);
-		$this->settlement_date		=	$this->getDbDateFormat($postArray['settlement_date']);
+		$this->request_date			=	date("Y-m-d H:i:s", strtotime($postArray['request_date']));
+		$this->settlement_date		=	date("Y-m-d H:i:s", strtotime($postArray['settlement_date']));
 		$this->trans_ref_no			=	$postArray['trans_ref_no'];
 		$this->remarks				=	$postArray['remarks'];
 		$currency					=	'SGD'; // Hardcoded value
-	
+		
 		$this->username			=	$this->getUserName('Investor', $this->investorId);
 		$moduleName		=	"Investor Withdrawal";
 
@@ -305,7 +305,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 											'trans_reference_number' 	=> 	$this->trans_ref_no,
 											'status' 					=> 	$paymentStatus,
 											'remarks' 					=> 	$this->remarks);
-
+		//~ echo "<pre>",print_r($withdrawpaymentInsert_data),"</pre>"; die;
 		$withdrawInsert_data			=	array(								
 											'investor_id' 				=> $this->investorId,									
 											'trans_type' 				=> INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL,
@@ -572,23 +572,24 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 		$this->processbuttontype 	= 	$processtype;
 		$this->investorId			=	$current_investor_id;
 		
-		$this->settlement_date		=	date("d-m-Y");
-		$this->request_date			=	date("d-m-Y");
+		$this->settlement_date		=	date("d-m-Y H:i:s");
+		$this->request_date			=	date("d-m-Y H:i:s");
 		if(empty($paymentId)){
 			$viewRecordSql		= "SELECT	available_balance avail_bal
 										FROM	investors
 										WHERE	investor_id = {$current_investor_id}";
 			$this->avail_bal	= $this->dbFetchOne($viewRecordSql);
 		}else{
+			
 		$viewRecordSql		= "SELECT 
 									ROUND(payments.trans_amount,2) withdrawal_amount,
-									date_format(payments.trans_datetime,'%d-%m-%Y') settlement_date,
+									date_format(payments.trans_datetime,'%d-%m-%Y %H:%i:%s') settlement_date,
 									payments.trans_reference_number,
 									payments.remarks,
 									investor_bank_transactions.trans_id,
 									investor_bank_transactions.status,
 									date_format(IFNULL(investor_bank_transactions.entry_date,
-												{$this->settlement_date}),'%d-%m-%Y') entry_date,
+												'{$this->settlement_date}'),'%d-%m-%Y %H:%i:%s') entry_date,
 									( 	SELECT	available_balance
 										FROM	investors
 										WHERE	investor_id = {$current_investor_id}
@@ -600,7 +601,7 @@ class AdminInvestorsWithdrawalsListingModel extends TranWrapper {
 								AND investor_bank_transactions.investor_id = {$current_investor_id}
 								AND investor_bank_transactions.trans_type = :trans_type_codeparam
 								AND payments.payment_id = {$paymentId} ";
-		
+		//~ echo "<pre>",print_r($viewRecordSql),"</pre>"; die;
 		$paramArray			=	["trans_type_codeparam"	=>	INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL];
 		$viewRecordRs		= 	$this->dbFetchWithParam($viewRecordSql,$paramArray);
 		if (count($viewRecordRs) > 0) {

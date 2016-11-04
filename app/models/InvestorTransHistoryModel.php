@@ -13,14 +13,18 @@ class InvestorTransHistoryModel extends TranWrapper {
 	public  $investActReport						=	array();
 	public function getInvestorTransList($fromDate, $toDate, $transType) {
 		
-		$this->tranTypeFilter = array (	"Withdrawals"				=>	Lang::get("Withdrawals"),
-										"Deposits"					=>	Lang::get("Deposits"),
-										"Investments Accepted"		=>	Lang::get("Investments Accepted"),
-										"Investments under Bid"		=>	Lang::get("Investments under Bid"),
-										"Repayment for investments"	=>	Lang::get("Repayment for investments"),
-										"Bid Cancelled"				=>	Lang::get("Bid Cancelled"),
-										"All"						=>	Lang::get("All")
-									);
+		$this->tranTypeFilter = 
+					array (	"Withdrawals"							=>	Lang::get("Withdrawals"),
+							"Deposits"								=>	Lang::get("Deposits"),
+							"Investments – Under Bids"				=>	Lang::get("Investments – Under Bids"),
+							"Investments – Bids Cancelled"			=>	Lang::get("Investments – Bids Cancelled"),
+							"Investments – Bids Rejected"			=>	Lang::get("Investments – Bids Rejected"),
+							"Investments – Overbidded Amt Reversed"	=>	Lang::get("Investments – Overbidded Amt Reversed"),
+							"Loan Repayments – Interest Repaid"		=>	Lang::get("Loan Repayments – Interest Repaid"),
+							"Loan Repayments – Principal Repaid"	=>	Lang::get("Loan Repayments – Principal Repaid"),
+							"Loan Repayments – Penalty Earned"		=>	Lang::get("Loan Repayments – Penalty Earned"),
+							"All"									=>	Lang::get("All")
+							);
 		
 		$this->fromDate = $fromDate;
 		$this->toDate 	= $toDate;
@@ -30,7 +34,7 @@ class InvestorTransHistoryModel extends TranWrapper {
 		$this->current_inverstor_id = $current_inverstor_id;
 		$trantype	= ($this->tranType == 'All' ?'trans_type' : "'{$this->tranType}'");
 		
-		$transListSql	=	"SELECT trans_reference_number,
+		/*$transListSql	=	"SELECT trans_reference_number,
 									date_format(trans_date, '%d-%m-%Y') trans_date,
 									date_format(trans_date, '%Y-%m-%d') date_order,
 									trans_type,
@@ -138,7 +142,7 @@ class InvestorTransHistoryModel extends TranWrapper {
 									'payment_verified'	=>	INVESTOR_REPAYMENT_STATUS_VERIFIED,
 									'payment_status_verified' => PAYMENT_STATUS_VERIFIED,
 																
-									];
+									]; */
 		//~ echo "<pre>",print_r($transListSql),"</pre>";
 		//~ $tranListRs		=	$this->dbFetchWithParam($transListSql, $array_conditions);
 		//~ $this->tranList = $tranListRs;
@@ -146,7 +150,7 @@ class InvestorTransHistoryModel extends TranWrapper {
 		
 		
 		$investorActListSql				=	"	SELECT 	DATE_FORMAT(rept_date,'%d-%m-%Y') trans_date,
-														DATE_FORMAT(rept_date,'%Y-%m-%d') rept_date_orderBy,
+														rept_date rept_date_orderBy,
 														trans_type_orderBy,
 														trans_type,
 														ref_no trans_reference_number,
@@ -290,12 +294,12 @@ class InvestorTransHistoryModel extends TranWrapper {
 																loans.loan_reference_number ref_no,
 																concat('Bidded in ',borrowers.business_name,', Loan @', loan_bids.bid_interest_rate, '%'),
 																
-																loan_bids.accepted_amount trans_amt,
+																(loan_bids.bid_amount-loan_bids.accepted_amount) trans_amt,
 																1 plus_or_minus,
 																1 display_order,
 																loan_bids.bid_amount,
-																loan_bids.accepted_amount debit_amt,
-																loan_bids.bid_amount credit_amt
+																'' debit_amt,
+																'' credit_amt
 																
 														FROM 	loan_bids
 															LEFT JOIN	loans
@@ -385,7 +389,7 @@ class InvestorTransHistoryModel extends TranWrapper {
 														AND		inv_rep_sch.payment_date	<= '".$this->getDbDateFormat($this->toDate)."'
 												) xx
 												
-												ORDER BY  rept_date_orderBy ,trans_type";			
+												WHERE trans_type = {$trantype} ORDER BY  rept_date_orderBy";			
 		$dataArrayInvList				= 	[															
 													"dep_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
 													"trans_ver_param1" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
@@ -401,11 +405,12 @@ class InvestorTransHistoryModel extends TranWrapper {
 											];
 																			
 		$this->tranList[$current_inverstor_id]	=	$this->dbFetchWithParam($investorActListSql, $dataArrayInvList);				
+		 
+		//~ echo "<pre>",print_r($dataArrayInvList),"</pre>";
 		
-		//~ echo "<pre>",print_r($this->investActReport[$current_inverstor_id]),"</pre>";
-		
-		$cur_invbalance = $this->getInvestorInfoById($current_inverstor_id);		
-		$balance	= $cur_invbalance->available_balance;
+		//~ $cur_invbalance = $this->getInvestorInfoById($current_inverstor_id);		
+		//~ $balance	= $cur_invbalance->available_balance;
+		$balance	=	$this->openingBalance[$current_inverstor_id];
 		
 		foreach($this->tranList[$current_inverstor_id] as $key=>$row) {
 		   $crAmt	=	$row->credit_amt;
