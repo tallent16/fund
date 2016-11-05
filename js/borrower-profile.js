@@ -232,20 +232,23 @@ $(document).ready(function (){
 		if($("#screen_mode").val()	==	"borrower"){
 			var	isSaveButtonClicked		=	$("#isSaveButton").val();
 			if(isSaveButtonClicked	!=	"yes") {
-				
-				if(callTabValidateFunc())
-					event.preventDefault();
-				if(validateTab("bank_info")){
-					$('.nav-tabs a[href="#bank_info"]').tab('show');
-					event.preventDefault();
-				}
-				if($("#borrower_status").val()	==	"corrections_required") {
-					if(checkAdminAllCommentsClosed()){
-						showDialog("","Please close the corrections and submit again for approval");
+				if(isSaveButtonClicked == "financial_doc"){
+					formValid	=	true;
+				}else{
+					if(callTabValidateFunc())
+						event.preventDefault();
+					if(validateTab("bank_info")){
+						$('.nav-tabs a[href="#bank_info"]').tab('show');
 						event.preventDefault();
 					}
+					if($("#borrower_status").val()	==	"corrections_required") {
+						if(checkAdminAllCommentsClosed()){
+							showDialog("","Please close the corrections and submit again for approval");
+							event.preventDefault();
+						}
+					}
+					formValid	=	false;
 				}
-				formValid	=	false;
 			}
 		}
 		
@@ -263,6 +266,13 @@ $(document).ready(function (){
 	$(".finacial_row").on("blur", function() {
 		calculateFinacialsTab();
 	});
+	
+	$("#update_Fiancialdoc_button").click(function(){		
+        $("#isSaveButton").val("financial_doc");
+		$("#form-profile").submit();
+		 formValid	=	true;
+    });
+	
 	checkAllTabCompleteStatus();
 	textAreaToolTip();
 });

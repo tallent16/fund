@@ -322,16 +322,16 @@
 				</div>							
 			</div>	
 		<!--	row columns added new on 3/June/2016 ACRA Business Profile and Memoradum and Articles of Association -->
-				
+		</fieldset>			
 		<div class="row">
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
-					<label class="input-required">
+					<label>
 						{{ Lang::get('Financial Ratio Doc') }}
 					</label>												
 				</div>									
 				<div class="col-xs-12 col-sm-7 col-lg-3"  id="financial_doc_parent">									
 					<input 	type="file" 
-								class="jfilestyle  required" 
+								class="jfilestyle" 
 								data-buttonBefore="true" 
 								name="financial_doc_url"
 								id="financial_doc_url"
@@ -356,7 +356,7 @@
 		
 		
 		
-		</fieldset>	
+		
 			<!------row--7----------->	
 			
 		</div><!---panel body---> 

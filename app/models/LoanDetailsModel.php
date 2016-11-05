@@ -446,11 +446,11 @@ class LoanDetailsModel extends TranWrapper {
 		
 		$dataArray 				= 	array(	'loan_id'			=> $postArray['loan_id'],
 											'investor_id'		=> $this->inv_or_borr_id,
-											'bid_datetime' 		=> $this->getDbDateFormat(date("d/m/Y")),
+											'bid_datetime' 		=> date("Y-m-d H:i:s"),
 											'bid_amount' 		=> $bid_amount,
 											'bid_interest_rate' => $bid_interest_rate,
 											'bid_status' 		=> LOAN_BIDS_STATUS_OPEN);
-							
+		//~ echo "<pre>",print_r($dataArray),"</pre>"; die;					
 		$loanBidId				= 	$this->dbInsert('loan_bids', $dataArray, true);
 		
 		

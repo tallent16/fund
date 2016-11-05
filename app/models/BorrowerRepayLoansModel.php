@@ -114,14 +114,14 @@ class BorrowerRepayLoansModel extends TranWrapper {
 												FROM 	borrower_repayment_schedule
 												WHERE	repayment_status = 1 
 												AND		date(repayment_schedule_date) < date(now())
-												AND		borrower_id = 21
+												AND		borrower_id = {$this->borrowerId}
 
 												UNION 
 												SELECT 	* 
 												FROM 	borrower_repayment_schedule
 												WHERE	repayment_status = 1 
 												AND 	date(repayment_schedule_date) >= date(now())
-												and		borrower_id = 21
+												and		borrower_id = {$this->borrowerId}
                                                  
 												) loan_repayment, 
 												loans 
@@ -256,7 +256,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 								
 		$repaySched_rs					=	$this->dbFetchAll($repaySched_sql);
 			
-		$actualdatesql					= "SELECT date_format(CURDATE(),'%d-%m-%Y')";
+		$actualdatesql					= "SELECT date_format(NOW(),'%d-%m-%Y %H:%i:%s')";
 		$this->repaymentDate			= $this->dbFetchOne($actualdatesql);
 					
 		if (count($repaySched_rs) > 0) {			
@@ -622,12 +622,12 @@ class BorrowerRepayLoansModel extends TranWrapper {
 		$this->transreference_no	=	$postArray["trans_ref"];
 		$this->remarks				=	$postArray["repay_remarks"];
 		$this->schedDate			=	$this->getDbDateFormat($postArray["duedate"]); 
-		$this->repaymentDate		=	$this->getDbDateFormat($postArray["actual_date"]); 
+		$this->repaymentDate		=	date("Y-m-d H:i:s", strtotime($postArray['actual_date']));
 		$this->installmentNumber	=	$postArray["installment_number"];
 		$this->paymentId 			=	$postArray["payment_id"];
 		$loanSanctionedAmt			=	0;
 		$currency					=	'SGD'; // Hardcoded value
-
+		
 		$repaymentStatus	=	BORROWER_REPAYMENT_STATUS_UNVERIFIED; 
 
 		$moduleName	=	"Loan Repayment";

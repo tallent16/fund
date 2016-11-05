@@ -33,7 +33,10 @@ class InvestorTransHistoryModel extends TranWrapper {
 		$current_inverstor_id	=	 $this->getCurrentInvestorID();
 		$this->current_inverstor_id = $current_inverstor_id;
 		$trantype	= ($this->tranType == 'All' ?'trans_type' : "'{$this->tranType}'");
-		
+		//~ if(!$trantype){
+			//~ $trantype = 'trans_type';
+		//~ }	
+		//~ echo $this->tranType;
 		/*$transListSql	=	"SELECT trans_reference_number,
 									date_format(trans_date, '%d-%m-%Y') trans_date,
 									date_format(trans_date, '%Y-%m-%d') date_order,
@@ -179,8 +182,8 @@ class InvestorTransHistoryModel extends TranWrapper {
 														WHERE	investor_id	=	{$current_inverstor_id}
 														AND		inv_tran.trans_type	=	:dep_trantype_param
 														AND		inv_tran.status		=	:trans_ver_param1
-														AND		trans_date	>= '".$this->getDbDateFormat($this->fromDate)."'
-														AND		trans_date	<= '".$this->getDbDateFormat($this->toDate) ."'
+														AND		DATE(trans_date)	>= '".$this->getDbDateFormat($this->fromDate)."'
+														AND		DATE(trans_date)	<= '".$this->getDbDateFormat($this->toDate) ."'
 														UNION
 														SELECT 	trans_date rept_date,
 																'Withdrawals' trans_type,
@@ -200,8 +203,8 @@ class InvestorTransHistoryModel extends TranWrapper {
 														WHERE	investor_id	=	{$current_inverstor_id}
 														AND		inv_tran.trans_type	=	:with_trantype_param
 														AND		inv_tran.status		=	:trans_ver_param2
-														AND		trans_date	>= '".$this->getDbDateFormat($this->fromDate)."'
-														AND		trans_date	<= '".$this->getDbDateFormat($this->toDate )."'
+														AND		DATE(trans_date)	>= '".$this->getDbDateFormat($this->fromDate)."'
+														AND		DATE(trans_date)	<= '".$this->getDbDateFormat($this->toDate )."'
 														UNION
 														SELECT 	bid_datetime rept_date,
 																'Investments – Under Bids' trans_type,
@@ -249,11 +252,11 @@ class InvestorTransHistoryModel extends TranWrapper {
 																'Investments – Bids Rejected' trans_type,
 																'CR' trans_type_orderBy,
 																loans.loan_reference_number ref_no,
-																loan_bids.remarks details,
+																concat('Bid Rejected in ',borrowers.business_name,', Loan @', loan_bids.bid_interest_rate, '%'),
 																loan_bids.bid_amount trans_amt,
 																1 plus_or_minus,
 																1 display_order,
-																'' bid_amount,
+																loan_bids.bid_amount bid_amount,
 																'' debit_amt,
 																loan_bids.bid_amount credit_amt
 														FROM 	loan_bids
@@ -335,8 +338,8 @@ class InvestorTransHistoryModel extends TranWrapper {
 																ON	loans.loan_id	=	inv_rep_sch.loan_id
 														WHERE	investor_id			=	{$current_inverstor_id}
 														AND		inv_rep_sch.status	=	:repaid_ver_param1
-														AND		inv_rep_sch.payment_date	>= '".$this->getDbDateFormat($this->fromDate)."'
-														AND		inv_rep_sch.payment_date	<= '".$this->getDbDateFormat($this->toDate)."'
+														AND		DATE(inv_rep_sch.payment_date)	>= '".$this->getDbDateFormat($this->fromDate)."'
+														AND		DATE(inv_rep_sch.payment_date)	<= '".$this->getDbDateFormat($this->toDate)."'
 														UNION
 														SELECT 	payment_date rept_date,
 																'Loan Repayments – Principal Repaid' trans_type,
@@ -360,8 +363,8 @@ class InvestorTransHistoryModel extends TranWrapper {
 																ON	loans.loan_id	=	inv_rep_sch.loan_id
 														WHERE	investor_id			=	{$current_inverstor_id}
 														AND		inv_rep_sch.status	=	:repaid_ver_param2
-														AND		inv_rep_sch.payment_date	>= '".$this->getDbDateFormat($this->fromDate)."'
-														AND		inv_rep_sch.payment_date	<= '".$this->getDbDateFormat($this->toDate)."'
+														AND		DATE(inv_rep_sch.payment_date)	>= '".$this->getDbDateFormat($this->fromDate)."'
+														AND		DATE(inv_rep_sch.payment_date)	<= '".$this->getDbDateFormat($this->toDate)."'
 														UNION
 														SELECT 	payment_date rept_date,
 																'Loan Repayments – Penalty Earned' trans_type,
@@ -385,11 +388,11 @@ class InvestorTransHistoryModel extends TranWrapper {
 																ON	loans.loan_id	=	inv_rep_sch.loan_id
 														WHERE	investor_id			=	{$current_inverstor_id}
 														AND		inv_rep_sch.status	=	:repaid_ver_param3
-														AND		inv_rep_sch.payment_date	>= '".$this->getDbDateFormat($this->fromDate)."'
-														AND		inv_rep_sch.payment_date	<= '".$this->getDbDateFormat($this->toDate)."'
+														AND		DATE(inv_rep_sch.payment_date)	>= '".$this->getDbDateFormat($this->fromDate)."'
+														AND		DATE(inv_rep_sch.payment_date)	<= '".$this->getDbDateFormat($this->toDate)."'
 												) xx
 												
-												WHERE trans_type = {$trantype} ORDER BY  rept_date_orderBy";			
+												WHERE trans_type = {$trantype} ORDER BY rept_date_orderBy";			
 		$dataArrayInvList				= 	[															
 													"dep_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
 													"trans_ver_param1" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED,
@@ -404,12 +407,8 @@ class InvestorTransHistoryModel extends TranWrapper {
 													"repaid_ver_param3" => INVESTOR_REPAYMENT_STATUS_VERIFIED
 											];
 																			
-		$this->tranList[$current_inverstor_id]	=	$this->dbFetchWithParam($investorActListSql, $dataArrayInvList);				
-		 
-		//~ echo "<pre>",print_r($dataArrayInvList),"</pre>";
-		
-		//~ $cur_invbalance = $this->getInvestorInfoById($current_inverstor_id);		
-		//~ $balance	= $cur_invbalance->available_balance;
+		$this->tranList[$current_inverstor_id]	=	$this->dbFetchWithParam($investorActListSql, $dataArrayInvList);	
+				
 		$balance	=	$this->openingBalance[$current_inverstor_id];
 		
 		foreach($this->tranList[$current_inverstor_id] as $key=>$row) {

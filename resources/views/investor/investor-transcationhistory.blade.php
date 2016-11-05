@@ -104,9 +104,9 @@ $(document).ready(function(){
 	format: 'dd/mm/yyyy' 
 
 	}); 
-	//~ if(window.location.search) {		  
-		//~ $("#inv_trans th:last-child, #inv_trans td:last-child").remove();
-	 //~ }
+	if(window.location.search) {		  
+		$("#inv_trans th:last-child, #inv_trans td:last-child").remove();
+	 }
 }); 
 $("#filter_invtrans").click(function(){
 	    

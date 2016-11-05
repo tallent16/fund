@@ -8,7 +8,8 @@
 			$('.actual_date').datetimepicker({
 				autoclose: true, 
 				minView: 2,
-				format: 'dd-mm-yyyy' 
+				"setDate": new Date(),
+				format: 'dd-mm-yyyy hh:mm' 
 			});
 			$("#save_button").on("click",function(){
 				$("#isSaveButton").val("yes");

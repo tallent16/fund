@@ -199,6 +199,24 @@
 					
 						<div class="col-sm-12"> 
 							<div class="pull-right">
+								
+								<!---Financial Doc update--->
+								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									@if(($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED)
+										||	($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) )
+									
+										<button type="button" 
+												class="btn verification-button"
+												id="update_Fiancialdoc_button"
+												>
+												<i class="fa pull-right"></i>
+												{{ Lang::get('Save') }}
+										</button>
+									
+									@endif
+								@endif	
+								<!----->	
+								
 								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
 									@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
 										||	($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) )

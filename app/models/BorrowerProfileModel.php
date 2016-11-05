@@ -1171,4 +1171,42 @@ class BorrowerProfileModel extends TranWrapper {
 			$this->bank_info_complete	=	1;
 		}
 	}
+	
+	public function updateFinancialDoc($borrowerId,$postArray){
+		
+		$fileUploadObj		=	new FileUpload();
+		$updateAttachment	=	false;
+		$destinationPath 	= 	Config::get('moneymatch_settings.upload_bor');
+		$updateDataArry		=	array();
+		
+		$fin_doc = $postArray['financial_doc_url'];
+		$dataArray = array('financial_doc_url' => $fin_doc);
+		
+		if(isset($postArray['financial_doc_url'])){
+			if(isset($postArray['financial_doc_hidden'])){
+				$filePath		=	$postArray['financial_doc_hidden'];
+				$fileUploadObj->deleteFile($filePath);
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file			=	$postArray['financial_doc_url'];
+			$filePath		=	$destinationPath."/".$borrowerId;
+			$prefix			=	"FNLRO_";
+			$fileUploadObj->createIfNotExists($filePath);
+			//~ echo $filePath; die;
+			$finan_doc_url								=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$updateDataArry["financial_doc_url"]		=	$finan_doc_url;
+			$updateAttachment							=	true;
+		}
+		
+		if($updateAttachment) {
+			$whereArray	=	["borrower_id" 	=> $borrowerId];
+			$this->dbUpdate("borrowers", $updateDataArry, $whereArray);
+		}
+		$this->successTxt	= "Borrower Financial Document Updated Successfully";
+		
+	}
 }

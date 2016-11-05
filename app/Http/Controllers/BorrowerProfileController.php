@@ -23,9 +23,15 @@ class BorrowerProfileController extends MoneyMatchController {
 		$activeTab	=	"#company_info";
 		Session::forget("success");
 		if (Request::isMethod('post')) {
+			if(Request::get("isSaveButton")	==	"financial_doc") {
+				$this->updateFinancialDocAction();
+				
+			}else{
 			$postArray		=	Request::all();
 			$result			=	$this->borrowerProfileModel->processProfile($postArray);
 			$activeTab		=	$postArray['active_tab'];	
+			
+			}
 			Session::put("success",$this->borrowerProfileModel->successTxt);
 		}
 		
@@ -39,6 +45,13 @@ class BorrowerProfileController extends MoneyMatchController {
 								);
 		return view('borrower.borrower-profile')
 					->with($withArry);
+	}
+	
+	public function updateFinancialDocAction(){
+		
+		$postArray	=	Request::all();
+		$bor_id 	= 	$postArray['borrower_id'];
+		$this->borrowerProfileModel->updateFinancialDoc($bor_id,$postArray);		
 	}
 	
 	public function downloadAction($profile_id,$fieldno) {
