@@ -107,6 +107,11 @@
 						{{ Lang::get('Disbursement Date') }}
 					</label>
 				</div>	
+				@if($bidsModel->disburse_date)
+						@var $date = $bidsModel->disburse_date
+				@else
+						@var $date = $bidsModel->system_date
+				@endif
 				<div class="col-xs-12 col-sm-7 col-lg-3 controls">
 					<div class="input-group">
 						<input 	id="disbursement_date" 
@@ -116,7 +121,7 @@
 								required
 								onchange="haveToRecalc()"
 								{{$disableFields}}
-								value="{{$bidsModel->system_date}}" />
+								value="{{$date}}" />
 
 						<label for="disbursement_date" class="input-group-addon btn">
 							<span class="glyphicon glyphicon-calendar"></span>
@@ -224,11 +229,11 @@
 					</label>
 				</div>	
 
-				<div class="col-xs-12 col-sm-7 col-lg-3 reschd_date controls" style="display:none" id="reschd_date_div" >									
-					<div class="input-group">
+				<div class="col-xs-12 col-sm-7 col-lg-3 reschd_date controls" style="display:none"  id="reschd_date_div" >		<div id="reschd_date_parent">						
+					<div class="input-group" >
 
 						<input 	type="text" 
-								class="form-control"
+								class="form-control required"
 								name="reschd_date"												
 								id="reschd_date"
 								value="">	
@@ -236,19 +241,19 @@
 						<label for="reschd_date" class="input-group-addon btn">
 								<span class="glyphicon glyphicon-calendar"></span>
 						</label>
-					</div>
+					</div></div>	
 				</div>
 				
 				@endif	
 				
 				
-				<div class="col-xs-12 col-sm-5 col-lg-3">
+				<div class="col-xs-12 col-sm-5 col-lg-3 " >
 					<label id="label_remarks">	
 						{{ Lang::get('Remarks') }}
 					</label>
 				</div>	
-				<div class="col-xs-12 col-sm-7 col-lg-3">									
-					<textarea rows="3" class="form-control" 
+				<div class="col-xs-12 col-sm-7 col-lg-3 " id="remarks_parent">									
+					<textarea rows="3" class="form-control required" 
 							name="remarks" 
 							{{$disableFields}}
 							id="remarks"></textarea>	

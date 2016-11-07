@@ -31,8 +31,7 @@ class InvestorTransHistoryController extends MoneyMatchController {
 		if (isset($_REQUEST["transtype"])) {
 			$transType = $_REQUEST["transtype"];
 		}	
-		
-		$this->tranModel->getInvestorTransList($fromDate, $toDate, $transType);
+		$this->tranModel->getInvestorActivityReportInfo($transType, $fromDate, $toDate);		
 		$withArry	=	array(	"tranModel" => $this->tranModel,
 								"fromDate" 	=> $fromDate, 
 								"toDate" 	=> $toDate,

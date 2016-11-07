@@ -132,7 +132,10 @@ class BorrowerRepayLoansModel extends TranWrapper {
 										AS loan_table_data WHERE filter_row <= 2";	
 												
 		$this->unpaidLoanList	=	$this->dbFetchAll($unpaidloan_sql);	
+		//~ if (count($this->unpaidLoanList) > 0) {	
+			//~ $this->isOverdue			=	$repaySched_rs[0]->overdue;
 			
+		//~ }
 		return;
 
 	}

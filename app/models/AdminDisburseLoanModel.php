@@ -58,6 +58,8 @@ class AdminDisburseLoanModel extends TranWrapper {
 											final_interest_rate,
 											target_interest,
 											repayment_type,
+											date_format(now(), '%d-%m-%Y') system_date,
+											(select date_format(disbursement_date, '%d-%m-%Y') from disbursements where loan_id =:loan_id2) disburse_date,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 
 												   when 2 then 'Monthly Interest'
@@ -69,8 +71,8 @@ class AdminDisburseLoanModel extends TranWrapper {
 												   when 3 then 'Fixed Interest '
 											end as bid_typeText,
 											loan_fees_minimum_applicable,
-											monthly_pay_by_date,
-											date_format(now(), '%d-%m-%Y') system_date
+											monthly_pay_by_date
+											
 									FROM	loans,
 											system_settings,
 											codelist_details
@@ -80,6 +82,7 @@ class AdminDisburseLoanModel extends TranWrapper {
 		
 		$dataArrayLoan		=	[
 									"loan_id" => $loan_id,
+									"loan_id2" => $loan_id,
 									"loanfees_applicable" => LOAN_FEES_APPLICABLE
 								];
 									

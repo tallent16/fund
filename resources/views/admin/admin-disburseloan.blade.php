@@ -636,12 +636,12 @@ function reschdInsts(callback_response) {
 	
 	$("#label_remarks").text("{{Lang::get('Notes for Reschedule')}}")
 	$("#remarks").attr("name", "reschd_notes");
-	$("#remarks").attr("required", true);
+	//~ $("#remarks").attr("required", true);
 	$("#remarks").attr("disabled", false);
 
 	$("#reschd_date_label").show();
 	$("#reschd_date_div").show();
-	$("#reschd_date").attr("required", true);
+	//~ $("#reschd_date").attr("required", true);
 	$("#reschdLoan").hide()
 	$("#saveReschd").show()
 	
@@ -685,8 +685,14 @@ function editInst(instNumber) {
 function saveResc(callback_response) {
 	if (!reschdEdited) {
 		showDialog("FYN", "{{$bidsModel->systemAllMessage[4]['loan_resched_nothing_to_save']}}")
-		return;
+		return false;
+	}else{
+		if(callTabValidateFunc())
+		return false;
+		submitForm	=	true
+		$("form").submit();
 	}
+	
 	switch (callback_response) {
 		case -1:
 			return;
@@ -709,8 +715,6 @@ function saveResc(callback_response) {
 			break;
 			
 	}
-	submitForm	=	true
-	$("form").submit();
 	
 	
 }

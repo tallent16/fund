@@ -40,7 +40,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 	}
 	
 	public function getInvestorActivityReportInfo($filterInv, $filterFromDate, $filterToDate) {
-
+		
 		$this->invFilterValue						=	$filterInv;
 		$this->fromDateFilterValue					=	$filterFromDate;
 		$this->toDateFilterValue					=	$filterToDate;

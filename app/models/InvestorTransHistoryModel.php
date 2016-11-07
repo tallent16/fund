@@ -11,6 +11,186 @@ class InvestorTransHistoryModel extends TranWrapper {
 	public  $toDate;
 	public  $tranType;
 	public  $investActReport						=	array();
+	public  $openingBalance							= 	array();
+	
+	public function getInvestorActivityReportInfo($filterInv, $filterFromDate, $filterToDate) {
+		
+		$this->invFilterValue						=	$filterInv;
+		$this->fromDateFilterValue					=	$filterFromDate;
+		$this->toDateFilterValue					=	$filterToDate;
+		$current_inverstor_id						=	 $this->getCurrentInvestorID();
+		
+		$this->getOpeningBalanceByInvestorId($current_inverstor_id,$filterFromDate);			
+		$this->getInvestorTransList($filterFromDate, $filterToDate, $filterInv);				
+	}
+	
+	public function getOpeningBalanceByInvestorId($investor_id,$filterFromDate) {
+	
+		
+		//*****************************Total Deposit for the investor**********************************************//
+		
+		$depositTotSql							=	"	SELECT 	SUM(trans_amount) totDeposit
+														FROM 	investor_bank_transactions
+														WHERE	investor_id	=	{$investor_id}
+														AND		trans_type	=	:dep_trantype_param
+														AND		status		=	:trans_ver_param
+														AND		trans_date	< '".$this->getDbDateFormat($filterFromDate)."'";
+		$dataArrayDeposit						= 	[															
+															"dep_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
+															"trans_ver_param" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED
+													]	;
+																			
+		$depositTotRs							=	$this->dbFetchWithParam($depositTotSql, $dataArrayDeposit);					
+		$this->investActReport[$investor_id]['totDeposit']	=	$depositTotRs[0]->totDeposit;					
+		
+	//*****************************Total Withdrawals for the investor**********************************************//
+	
+		$withdrawalTotSql						=	"	SELECT 	SUM(trans_amount) totWithdrawal
+														FROM 	investor_bank_transactions
+														WHERE	investor_id	=	{$investor_id}
+														AND		trans_type	=	:with_trantype_param
+														AND		status		=	:trans_ver_param
+														AND		trans_date	< '".$this->getDbDateFormat($filterFromDate)."'";			
+		$dataArrayWithdrawal					= 	[															
+														"with_trantype_param" => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL,
+														"trans_ver_param" =>INVESTOR_BANK_TRANS_STATUS_VERIFIED
+													]	;
+																		
+		$withdrawalTotRs						=	$this->dbFetchWithParam($withdrawalTotSql, $dataArrayWithdrawal);		
+		$this->investActReport[$investor_id]['totWithdrawal']	=	$withdrawalTotRs[0]->totWithdrawal;		
+					
+	//*****************************Total open bids made by the investor**********************************************//
+	
+		$openBidsSql							=	"		SELECT 	SUM(bid_amount) totBidsMade
+															FROM 	loan_bids
+															WHERE	investor_id	=	{$investor_id}
+															AND		bid_status	=	:open_bids__param
+															AND		DATE(bid_datetime)	
+																			< '".$this->getDbDateFormat($filterFromDate)."'";
+		$dataArrayOpenBids						= 	[															
+															"open_bids__param" => LOAN_BIDS_STATUS_OPEN
+													]	;
+																			
+		$openBidsRs								=	$this->dbFetchWithParam($openBidsSql, $dataArrayOpenBids);					
+		$this->investActReport[$investor_id]['totBidsMade']	=	$openBidsRs[0]->totBidsMade;					
+		
+	//*****************************Total cancelled bids by the investor**********************************************//
+	
+		$cancelledBidsSql							=	"	SELECT 	SUM(bid_amount) totBidsCancelled
+															FROM 	loan_bids
+															WHERE	investor_id	=	{$investor_id}
+															AND		bid_status	=	:cancel_bids__param
+															AND		DATE(bid_datetime)
+																			< '".$this->getDbDateFormat($filterFromDate)."'";
+		$dataArrayCancelledBids						= 	[															
+															"cancel_bids__param" => LOAN_BIDS_STATUS_CANCELLED
+														]	;
+																		
+		$cancelledBidsRs							=	$this->dbFetchWithParam($cancelledBidsSql, $dataArrayCancelledBids);			
+		$this->investActReport[$investor_id]['totBidsCancelled']	=	$cancelledBidsRs[0]->totBidsCancelled;			
+				
+	//*****************************Total rejected bids for the investor**********************************************//
+		
+		$rejectedBidsSql							=	"	SELECT 	SUM(bid_amount) totBidsRejected
+															FROM 	loan_bids
+															WHERE	investor_id	=	{$investor_id}
+															AND		bid_status	=	:reject_bids__param
+															AND		DATE(bid_datetime)	
+																			< '".$this->getDbDateFormat($filterFromDate)."'";		
+		$dataArrayRejectedBids						= 	[															
+															"reject_bids__param" => LOAN_BIDS_STATUS_REJECTED
+														]	;
+																		
+		$rejectedBidsRs								=	$this->dbFetchWithParam($rejectedBidsSql, $dataArrayRejectedBids);			
+		$this->investActReport[$investor_id]['totBidsRejected']	=	$rejectedBidsRs[0]->totBidsRejected;			
+						
+	//*****************************Total interest repaid for the investor**********************************************//
+	
+		$interestRepaidSql							=	"		SELECT 	SUM(interest_amount) totInterestRepaid
+																FROM 	investor_repayment_schedule
+																WHERE	investor_id	=	{$investor_id}
+																AND		status		=	:repaid_ver_param
+																AND		payment_date	
+																			< '".$this->getDbDateFormat($filterFromDate)."'";			
+		$dataArrayInterestRepaid					= 	[															
+															"repaid_ver_param" => INVESTOR_REPAYMENT_STATUS_VERIFIED
+														]	;
+																			
+		$interestRepaidRs							=	$this->dbFetchWithParam($interestRepaidSql, $dataArrayInterestRepaid);					
+		$this->investActReport[$investor_id]['totInterestRepaid']	=	$interestRepaidRs[0]->totInterestRepaid;					
+		
+	//*****************************Total principal repaid for the investor**********************************************//
+	
+		$principalRepaidSql								=	"		SELECT 	SUM(principal_amount) totPrincipalRepaid
+																	FROM 	investor_repayment_schedule
+																	WHERE	investor_id	=	{$investor_id}
+																	AND		status		=	:repaid_ver_param
+																	AND		payment_date	
+																			< '".$this->getDbDateFormat($filterFromDate)."'";		
+		$dataArrayPrincipalRepaid						= 	[															
+																"repaid_ver_param" => INVESTOR_REPAYMENT_STATUS_VERIFIED
+															];
+																			
+		$principalRepaidRs								=	$this->dbFetchWithParam($principalRepaidSql, 
+																						$dataArrayPrincipalRepaid);					
+		$this->investActReport[$investor_id]['totPrincipalRepaid']	=	$principalRepaidRs[0]->totPrincipalRepaid;					
+		
+	//*****************************Total Penalty earned**********************************************************//	
+				
+		$penaltyRepaidSql							=	"		SELECT IFNULL(SUM(interest_amount),0) totPenaltyEarned
+																FROM 	investor_repayment_schedule
+																WHERE	investor_id	=	{$investor_id}
+																AND		status		=	:repaid_ver_param
+																AND		payment_date	
+																			< '".$this->getDbDateFormat($filterFromDate)."'";		
+		$dataArrayPenaltyRepaid						= 	[															
+															"repaid_ver_param" => INVESTOR_REPAYMENT_STATUS_VERIFIED
+														]	;
+																			
+		$interestRepaidRs							=	$this->dbFetchWithParam($penaltyRepaidSql, $dataArrayPenaltyRepaid);					
+		$this->investActReport[$investor_id]['totPenaltyEarned']	=	$interestRepaidRs[0]->totPenaltyEarned;
+									
+		$this->openingBalance[$investor_id]	=	0;
+		
+	   foreach($this->investActReport[$investor_id] as $key=>$val) {
+		   
+		  
+		   if(empty($val)) {
+			 $val	=	0;  
+			}
+			switch($key) {
+				case'totDeposit':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
+					break;
+				case'totWithdrawal':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	-	$val;
+					break;
+				case'totBidsMade':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	-	$val;
+					break;
+				case'totBidsCancelled':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
+					break;
+				case'totBidsRejected':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
+					break;
+				case'totInterestRepaid':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
+					break;
+				case'totPrincipalRepaid':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
+					break;
+				case'totPenaltyEarned':
+					$this->openingBalance[$investor_id]	=	$this->openingBalance[$investor_id]	+	$val;
+					break;
+			}
+		
+		}	
+
+	}
+	
+	
+	
 	public function getInvestorTransList($fromDate, $toDate, $transType) {
 		
 		$this->tranTypeFilter = 
@@ -33,124 +213,6 @@ class InvestorTransHistoryModel extends TranWrapper {
 		$current_inverstor_id	=	 $this->getCurrentInvestorID();
 		$this->current_inverstor_id = $current_inverstor_id;
 		$trantype	= ($this->tranType == 'All' ?'trans_type' : "'{$this->tranType}'");
-		//~ if(!$trantype){
-			//~ $trantype = 'trans_type';
-		//~ }	
-		//~ echo $this->tranType;
-		/*$transListSql	=	"SELECT trans_reference_number,
-									date_format(trans_date, '%d-%m-%Y') trans_date,
-									date_format(trans_date, '%Y-%m-%d') date_order,
-									trans_type,
-									trans_amount,
-									remarks,
-									plus_or_minus,
-									display_order
-							FROM (
-									SELECT	payments.trans_reference_number,
-											payments.trans_datetime trans_date,
-											if (investor_bank_transactions.trans_type = :invbankwithdrawal, 'Withdrawals', 'Deposits') trans_type,
-											payments.trans_amount,
-											payments.remarks,
-											if (investor_bank_transactions.trans_type = :invbankdeposit, 1, -1) plus_or_minus,
-											1 display_order
-									FROM	payments,
-											investor_bank_transactions
-									WHERE	investor_bank_transactions.payment_id = payments.payment_id
-									AND		payments.status = :payment_status_verified
-									AND		investor_bank_transactions.investor_id = {$current_inverstor_id}
-									UNION
-									SELECT	loans.loan_reference_number,
-											loans.loan_process_date,
-											'Investments Accepted',
-											loan_bids.accepted_amount,
-											concat('Invested in ',borrowers.business_name,', Loan @', loan_bids.bid_interest_rate, '%'),
-											-1,
-											2 display_order
-									FROM	loans,
-											loan_bids,
-											borrowers
-									WHERE	loans.loan_id = loan_bids.loan_id
-									and loans.borrower_id = borrowers.borrower_id
-									AND	loans.status = :loan_status_disbursed
-									and	loan_bids.bid_status = :loan_bids_accepted
-									and	loan_bids.investor_id = {$current_inverstor_id}
-									UNION
-									SELECT	loans.loan_reference_number,
-											bid_datetime,
-											'Investments under Bid',
-											loan_bids.bid_amount,
-											concat('Bidded in ',borrowers.business_name, ', Loan @', loan_bids.bid_interest_rate, '%'),
-											-1,
-											2 display_order
-									FROM	loans,
-											loan_bids,
-											borrowers
-									WHERE	loans.loan_id = loan_bids.loan_id
-									and loans.borrower_id = borrowers.borrower_id
-									AND	loans.status = :loan_status_approved
-								    AND	loans.status != :loan_status_disbursed1 	
-								    and loan_bids.bid_status IN (1)							
-									and	loan_bids.investor_id = {$current_inverstor_id}
-									UNION
-									SELECT	concat('REP-',loans.loan_id,'-',investor_repayment_schedule.installment_number) loan_reference_number,
-											date_format(investor_repayment_schedule.payment_date, '%Y-%m-%d') payment_date,
-											'Repayment for investments',
-											payment_schedule_amount + 
-											ifnull (investor_repayment_schedule.penalty_amount, 0),
-											concat('Int Recd: ', format(investor_repayment_schedule.interest_amount, 2),
-												if (isnull(penalty_amount), '', concat(' | ','Penalty Recd:', format(penalty_amount,2)))),
-											1,
-											3 display_order
-									FROM	loans,
-											investor_repayment_schedule
-									WHERE	loans.loan_id = investor_repayment_schedule.loan_id
-									AND	investor_repayment_schedule.investor_id = {$current_inverstor_id}
-									AND	investor_repayment_schedule.status = :payment_verified
-									UNION
-									SELECT	loans.loan_reference_number,
-											bid_datetime,
-											'Bid Cancelled',
-											loan_bids.bid_amount,
-											concat('Bid Cancelled in ',borrowers.business_name, ', Loan @', loan_bids.bid_interest_rate, '%'),
-											1,
-											4 display_order
-									FROM	loans,
-											loan_bids,
-											borrowers
-									WHERE	loans.loan_id = loan_bids.loan_id
-									and loans.borrower_id = borrowers.borrower_id
-									
-								   
-									AND	loan_bids.bid_status IN ( :loan_status_cancelled)
-								
-									and	loan_bids.investor_id = {$current_inverstor_id}
-									) investor_transaction
-									WHERE trans_type = {$trantype}
-									AND trans_date
-									BETWEEN  '" . $this->getDbDateFormat($fromDate) . "' 
-									and '".	$this->getDbDateFormat($toDate) . "' 
-									order by date_order , display_order";
-		
-		$array_conditions	=	[	'invbankwithdrawal' => INVESTOR_BANK_TRANSCATION_TRANS_TYPE_WITHDRAWAL,
-									'invbankdeposit'	=> INVESTOR_BANK_TRANSCATION_TRANS_TYPE_DEPOSIT,
-									'loan_status_disbursed'	=>	LOAN_STATUS_DISBURSED,
-									'loan_status_disbursed1'	=>	LOAN_STATUS_DISBURSED,
-									'loan_bids_accepted' => LOAN_BIDS_STATUS_ACCEPTED,
-									
-									'loan_status_approved' => LOAN_STATUS_APPROVED,
-									
-									
-									'loan_status_cancelled' => LOAN_BIDS_STATUS_CANCELLED,
-									
-									'payment_verified'	=>	INVESTOR_REPAYMENT_STATUS_VERIFIED,
-									'payment_status_verified' => PAYMENT_STATUS_VERIFIED,
-																
-									]; */
-		//~ echo "<pre>",print_r($transListSql),"</pre>";
-		//~ $tranListRs		=	$this->dbFetchWithParam($transListSql, $array_conditions);
-		//~ $this->tranList = $tranListRs;
-		
-		
 		
 		$investorActListSql				=	"	SELECT 	DATE_FORMAT(rept_date,'%d-%m-%Y') trans_date,
 														rept_date rept_date_orderBy,

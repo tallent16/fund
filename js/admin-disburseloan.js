@@ -1,6 +1,6 @@
 $("#disbLoan").click(function( event ) {	       
 	if(callTabValidateFunc())
-		event.preventDefault();								
+		event.preventDefault();					 			
 });
 function callTabValidateFunc() {	
 	$('span.error').remove();
