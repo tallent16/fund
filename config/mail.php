@@ -20,8 +20,8 @@ $host 				=	"smtp.gmail.com";
 $port				=	"465";
 $email_from			=	"cs@fundyourselvesnow.com";
 $email_from_name	=	"FundYourselvesNow";
-$password			=	"ganapathi20122012";//"deepansyl";//
-$smtp_userid		="sathya@syllogic.in";//"deepan@syllogic.in";//
+$password			=	"deepansyl";//"ganapathi20122012";
+$smtp_userid		=	"deepan@syllogic.in";//"sathya@syllogic.in";
 $encrption			=	"ssl";
 
 return [

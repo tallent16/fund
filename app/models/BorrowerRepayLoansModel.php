@@ -42,41 +42,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 
 	
 	public function getUnpaidLoans() {
-	
-		//~ $unpaidloan_sql			=	"SELECT loans.loan_id,
-										//~ installment_number,
-										//~ repayment_schedule_id,										
-										//~ repayment_status,
-										//~ loan_reference_number ref, 										
-										//~ date_format(repayment_schedule_date,'%d-%m-%Y') schd_date,
-										//~ date_format(repayment_schedule_date ,'%Y-%m') inst_period,
-										//~ if (date(repayment_schedule_date) < date(now()),
-											//~ if (penalty_type_applicable in (1,3), 
-													//~ repayment_scheduled_amount * 
-														//~ power((1 + (final_interest_rate + penalty_fixed_percent) / (100*365)), 
-															//~ datediff(now(), repayment_schedule_date)), 0) + 
-											//~ if (penalty_type_applicable in (2,3),
-													//~ ifnull(penalty_fixed_amount, 0), 0) -
-											//~ repayment_scheduled_amount, 0) penalty,
-										//~ repayment_scheduled_amount schd_amount
-										
-										//~ FROM	(
-												//~ SELECT	*
-												//~ FROM 	borrower_repayment_schedule
-												//~ WHERE	repayment_status = 1 
-												//~ AND		date(repayment_schedule_date) < date(now())
-												//~ AND		borrower_id = {$this->borrowerId}
-												//~ UNION
-												//~ SELECT 	* 
-												//~ FROM 	borrower_repayment_schedule
-												//~ WHERE	repayment_status = 1 
-												//~ AND 	date(repayment_schedule_date) >= date(now())
-												//~ and		borrower_id = {$this->borrowerId}
-												//~ limit 0,2) loan_repayment, 
-												//~ loans
-										//~ WHERE	loans.loan_id = loan_repayment.loan_id 
-										//~ ORDER BY loan_id, installment_number";
-										
+											
 		 $var_sql			=	"SET @currcount = NULL, @currvalue = NULL";
 		 $this->varlist		=	$this->dbExecuteSql($var_sql);	
 		 
@@ -87,7 +53,13 @@ class BorrowerRepayLoansModel extends TranWrapper {
 									ref,schd_date,
 									inst_period,
 									penalty,
-									schd_amount
+									schd_amount,
+									if(datediff(now(), scheduledate) > 0, 'Overdue', 'Not Overdue') overdue,
+									ifnull(penaltyInt,0.00) penaltyInt,
+									ifnull(penaltycharges,0.00) penaltycharges,
+									scheduledate,
+									date_format(NOW(),'%d-%m-%Y') repaymentdate	,	
+									ifnull(penaltycharges,0.00)	penaltyCompShare					
  
 								FROM (
 									SELECT loans.loan_id,
@@ -95,6 +67,9 @@ class BorrowerRepayLoansModel extends TranWrapper {
 										repayment_schedule_id,										
 										repayment_status,
 										loan_reference_number ref, 										
+										repayment_schedule_date scheduledate, 
+										repayment_penalty_interest penaltyInt,
+										repayment_penalty_charges penaltycharges,										
 										date_format(repayment_schedule_date,'%d-%m-%Y') schd_date,
 										date_format(repayment_schedule_date ,'%Y-%m') inst_period,
 										if (date(repayment_schedule_date) < date(now()),
@@ -132,11 +107,68 @@ class BorrowerRepayLoansModel extends TranWrapper {
 										AS loan_table_data WHERE filter_row <= 2";	
 												
 		$this->unpaidLoanList	=	$this->dbFetchAll($unpaidloan_sql);	
-		//~ if (count($this->unpaidLoanList) > 0) {	
-			//~ $this->isOverdue			=	$repaySched_rs[0]->overdue;
-			
-		//~ }
+		//~ echo "<pre>",print_r($this->unpaidLoanList),"</pre>";
+		foreach($this->unpaidLoanList as $row){
+			if (count($this->unpaidLoanList) > 0) {	
+				$this->isOverdue			=	$row->overdue;
+				$this->penaltyInt			=	$row->penaltyInt;
+				$this->penaltycharges		=	$row->penaltycharges;
+				$this->schd_date			=	$row->schd_date;
+				$this->repaymentdate		=	$row->repaymentdate;
+						
+					//
+					
+				if ($this->penaltyInt > 0 || $this->penaltycharges) {
+					echo  $this->isOverdue;	
+					// The admin has already fixed the penalty amount. You don't have to calculate the penalty amount
+					$this->penaltyAmt = $this->penaltyInt + $this->penaltycharges;
+					$this->penaltyCompShare = $this->penaltycharges;	
+						echo $this->penaltyCompShare.'ss';	
+						
+				} else {
+						
+						if ($this->isOverdue == 'Overdue') {
+						
+							// Calculate the penalty amount
+							$dbFormattedschedDate	=	$this->getDbDateFormat($this->schd_date);
+							$dbFormattedcurDate		=	$this->getDbDateFormat($this->repaymentdate);
+							
+							$penaltyComp_sql		=	"SELECT	penalty_fee_percent,
+																penalty_fee_minimum,
+																penalty_interest
+														FROM	system_settings";
+														
+							$penaltyComp_rs			=	$this->dbFetchAll($penaltyComp_sql);
+							
+							$datetime1 = new \DateTime($dbFormattedschedDate);
+							$datetime2 = new \DateTime($dbFormattedcurDate);
+						
+							$interval = $datetime1->diff($datetime2);
+							$delay_days	= $interval->format('%a');
+							if (count($penaltyComp_rs) > 0) {
+								if(strtotime($dbFormattedcurDate) > strtotime($dbFormattedschedDate)) {
+										die;	
+									$this->penaltyAmt		=	round(($this->schedAmount*(1+
+																$penaltyComp_rs[0]->penalty_interest/36500)**$delay_days)-(
+																	$this->schedAmount),2);
+									
+									$this->penaltyCompShare	=	round(max(($this->schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/100)),$penaltyComp_rs[0]->penalty_fee_minimum),2);
+															
+								}
+							}
+					
+						}
+					}	
+						
+						//
+										
+			}else {
+				// This is an error condition. Can't be true
+				return -1;
+			}
+		}	
 		return;
+		
 
 	}
 	public function getRepaymentDetails($repaymentId ,$loanid) {
@@ -299,7 +331,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 			$this->penaltyAmt = $this->penaltyInt + $this->penaltyFee;
 			$this->penaltyCompShare = $this->penaltyFee;
 		} else {
-			//~ echo 			$this->isOverdue;
+			
 			if ($this->isOverdue == 'Overdue') {
 				// Calculate the penalty amount
 				$dbFormattedschedDate	=	$this->getDbDateFormat($this->schedDate);
@@ -325,6 +357,7 @@ class BorrowerRepayLoansModel extends TranWrapper {
 														$this->schedAmount),2);
 						$this->penaltyCompShare	=	round(max(($this->schedAmount	*(($penaltyComp_rs[0]->penalty_fee_percent)/
 																			100)),$penaltyComp_rs[0]->penalty_fee_minimum),2);
+																		
 					}
 				}
 			}
