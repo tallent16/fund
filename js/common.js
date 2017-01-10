@@ -354,7 +354,7 @@ function showDialog($title, $message) {
 
 function showDialogWithOkCancel($title, $message, $callback) {
 	$title = "Fund Yourselves Now";
-	htmlelement = "<div id='dialog-message' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
+	htmlelement = "<div id='dialog-message' style= 'width:auto !important' title='"+ $title + "'> <p> " + $message+ " </p> </div>"
 	$('body').append(htmlelement);
 
 	var buttonClicked = false;
@@ -382,6 +382,7 @@ function showDialogWithOkCancel($title, $message, $callback) {
 					}
 				}
 				]
+				
 	});
 	
 }
