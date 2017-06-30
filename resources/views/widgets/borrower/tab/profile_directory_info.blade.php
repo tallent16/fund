@@ -50,7 +50,7 @@
 										<tr>
 											<td class="col-md-3">
 												<label class="input-required">
-													{{ Lang::get('borrower-profile.director_name') }}
+													{{ Lang::get('Name') }}
 												</label>
 											</td>
 											<td class="col-md-3" id="name_{{$i}}_parent" colspan="3">
@@ -99,7 +99,7 @@
 										<tr>
 											<td class="col-md-3">
 												<label class="input-required">
-													{{ Lang::get('borrower-profile.director_info') }}
+													{{ Lang::get('Team Member Information') }}
 												</label>
 											</td>
 											<td colspan="3" class="col-md-3"  id="directors_profile_{{$i}}_parent">
@@ -128,13 +128,13 @@
 										</tr>						
 										<tr>
 											<td class="col-md-3">
-												<label class="input-required">
-													{{ Lang::get('Identity Card Front') }}
+												<label class="">
+													{{ Lang::get('Identification Document') }}
 												</label>
 											</td>
 											<td colspan="3" class="col-md-3" id="identity_card_front_{{$i}}_parent">
 												<input 	type="file" 
-														class="jfilestyle required attachment" 
+														class="jfilestyle attachment" 
 														data-buttonBefore="true" 
 														name="director_row[identity_card_front][]"
 														id="identity_card_front_{{$i}}" />
@@ -155,6 +155,7 @@
 												@endif	
 											</td>
 										</tr>													
+<!--
 										<tr>
 											<td class="col-md-3">
 												<label class="input-required">
@@ -183,6 +184,7 @@
 												@endif	
 											</td>
 										</tr>													
+-->
 									</tbody>
 								</table>
 							</div>

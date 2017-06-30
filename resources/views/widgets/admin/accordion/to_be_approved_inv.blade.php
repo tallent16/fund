@@ -6,7 +6,7 @@
 	<table class="table tab-fontsize text-left">
 		<thead>
 			<tr>
-				<th class="tab-head text-left">{{Lang::get('Investor NAME')}}</th>
+				<th class="tab-head text-left">{{Lang::get('BACKER NAME')}}</th>
 				<th class="tab-head text-left">{{Lang::get('Register Date')}}</th>
 			</tr>
 		</thead>

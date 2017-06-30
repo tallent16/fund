@@ -1,0 +1,48 @@
+SELECT 	borrower_name,
+		activity,
+        loan_reference_number,
+        act_date,
+        statusTxt
+FROM(
+		SELECT 	borrowers.business_name borrower_name,
+				"Loan" activity,
+				loan_reference_number,
+				apply_date	act_date,
+				codelist_details.codelist_value statusTxt
+		FROM
+			loans 
+			LEFT JOIN borrowers
+				ON borrowers.borrower_id = loans.borrower_id
+			LEFT JOIN codelist_details
+				ON ( (codelist_details.codelist_code = loans.status) 
+						AND (codelist_id = 7))
+		WHERE	loans.status IN (1,2)
+        UNION
+        SELECT 	borrowers.business_name borrower_name,
+				"Loan" activity,
+				loan_reference_number,
+				bid_close_date	act_date,
+				codelist_details.codelist_value statusTxt
+		FROM
+			loans 
+			LEFT JOIN borrowers
+				ON borrowers.borrower_id = loans.borrower_id
+			LEFT JOIN codelist_details
+				ON ( (codelist_details.codelist_code = loans.status) 
+						AND (codelist_id = 7))
+		WHERE	loans.status = 3
+        UNION
+        SELECT 	borrowers.business_name borrower_name,
+				"Loan" activity,
+				loan_reference_number,
+				apply_date	act_date,
+				codelist_details.codelist_value statusTxt
+		FROM
+			loans 
+			LEFT JOIN borrowers
+				ON borrowers.borrower_id = loans.borrower_id
+			LEFT JOIN codelist_details
+				ON ( (codelist_details.codelist_code = loans.status) 
+						AND (codelist_id = 7))
+		WHERE	loans.status IN (1,2)
+) xx

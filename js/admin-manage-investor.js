@@ -20,7 +20,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("approve");
-			$("#form-manage-investor").attr("action",baseUrl+"/admin/manageinvestors/bulkapprove");
+			$("#form-manage-investor").attr("action",baseUrl+"/admin/managebackers/bulkapprove");
 			$("#form-manage-investor").submit();
 		}
     });
@@ -50,7 +50,7 @@ $(document).ready(function (){
 				return false;
 			}
 			$("#processType").val("reject");
-			$("#form-manage-investor").attr("action",baseUrl+"/admin/manageinvestors/bulkreject");
+			$("#form-manage-investor").attr("action",baseUrl+"/admin/managebackers/bulkreject");
 			$("#form-manage-investor").submit();
 		}
     });
@@ -76,7 +76,7 @@ $(document).ready(function (){
 			
 			}
 			$("#processType").val("delete");
-			$("#form-manage-investor").attr("action",baseUrl+"/admin/manageinvestors/bulkdelete");
+			$("#form-manage-investor").attr("action",baseUrl+"/admin/managebackers/bulkdelete");
 			$("#form-manage-investor").submit();
 		}
     });

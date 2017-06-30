@@ -5,7 +5,7 @@
 				@foreach($settings_list as $row)
 				<div class="row">
 					<div class="col-sm-3">
-						{{Lang::get('Borrower\'s Terms & Conditions')}}
+						{{Lang::get('Creator\'s Terms & Conditions')}}
 					</div>
 					<div class="col-sm-4">
 						<textarea rows="5" class="form-control" name="bor_terms" id="bor_terms">{{$row->toc_borrower}}</textarea>										
@@ -13,7 +13,7 @@
 					<div class="col-sm-3 pull-bottom">
 						<button class="btn verification-button" type="button" onclick="previewBorTerms()">Preview</button>
 					</div>
-					@section ('bortermspopup-box_panel_title',Lang::get('Borrower Terms & Conditions'))
+					@section ('bortermspopup-box_panel_title',Lang::get('Creator Terms & Conditions'))
 					@section ('bortermspopup-box_panel_body')
 
 					@endsection
@@ -34,7 +34,7 @@
 				
 				<div class="row">
 					<div class="col-sm-3">
-						{{Lang::get('Investor\'s Terms & Conditions')}}
+						{{Lang::get('Backer\'s Terms & Conditions')}}
 					</div>
 					<div class="col-sm-4">
 						<textarea rows="5" class="form-control" name="inv_terms" id="inv_terms">{{$row->toc_investor}}</textarea>										
@@ -42,7 +42,7 @@
 					<div class="col-sm-3 pull-bottom">
 						<button class="btn verification-button" type="button" onclick="previewInvTerms()">Preview</button>
 					</div>
-					@section ('invtermspopup-box_panel_title',Lang::get('Investor Terms & Conditions'))
+					@section ('invtermspopup-box_panel_title',Lang::get('Backer Terms & Conditions'))
 					@section ('invtermspopup-box_panel_body')
 
 					@endsection

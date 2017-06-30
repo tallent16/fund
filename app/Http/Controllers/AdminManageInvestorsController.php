@@ -48,7 +48,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		$inv_id		=	base64_decode($inv_id);
 		
 		 if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
-			return redirect()->to('admin/manageinvestors');
+			return redirect()->to('admin/managebackers');
 		}
 		$this->investorProfileModel->getInvestorDetails($inv_id);
 		$withArry	=	array(		"InvPrfMod"=>$this->investorProfileModel,
@@ -121,7 +121,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 		
 		$inv_id		=	base64_decode($inv_id);
 		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
-			return redirect()->to('admin/manageinvestors');
+			return redirect()->to('admin/managebackers');
 		}
 		$inv_profile_status	=	$this->investorProfileModel->getInvestorProfileStatus($inv_id);
 		
@@ -137,14 +137,14 @@ class AdminManageInvestorsController extends MoneyMatchController {
 							->with('failure','Investor Profile information Failed approved');	
 			}
 		}
-		return redirect()->to('admin/manageinvestors');
+		return redirect()->to('admin/managebackers');
 	}
 	
 	public function rejectInvestorAction($inv_id){
 		
 		$inv_id		=	base64_decode($inv_id);
 		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
-			return redirect()->to('admin/manageinvestors');
+			return redirect()->to('admin/managebackers');
 		}
 		$inv_profile_status	=	$this->investorProfileModel->getInvestorProfileStatus($inv_id);
 		
@@ -162,14 +162,14 @@ class AdminManageInvestorsController extends MoneyMatchController {
 							->with('failure','Investor Profile rejected Failed');	
 			}
 		}
-		return redirect()->to('admin/manageinvestors');
+		return redirect()->to('admin/managebackers');
 	}
 	
 	public function deleteInvestorAction($inv_id){
 		
 		$inv_id		=	base64_decode($inv_id);
 		if(!$this->investorProfileModel->CheckInvestorExists($inv_id)){
-			return redirect()->to('admin/manageinvestors');
+			return redirect()->to('admin/managebackers');
 		}
 		$inv_profile_status	=	$this->investorProfileModel->getInvestorProfileStatus($inv_id);
 		
@@ -185,7 +185,7 @@ class AdminManageInvestorsController extends MoneyMatchController {
 							->with('failure','Investor Profile has been made inactive Failed');	
 			}
 		}
-		return redirect()->to('admin/manageinvestors');
+		return redirect()->to('admin/managebackers');
 	}
 	
 	public function approveInvestorBulkAction(){

@@ -24,19 +24,19 @@ class BorrowerMiddleWare {
 		$LoanAllowingStatus	=	BorProfile::getBorrowerLoanAllowingStatus();
 		if($profileStatus	==	BORROWER_STATUS_COMMENTS_ON_ADMIN){
 			if (!$request->session()->has('notification_seen')) {
-				$request->session()->put('notification','Borrower Profile Correction Reqiured');
+				$request->session()->put('notification','Creator Profile Correction Reqiured');
 			}
 		}
 		if($profileStatus	==	0	||	$profileStatus	==BORROWER_STATUS_NEW_PROFILE
 									||	$profileStatus	==BORROWER_STATUS_SUBMITTED_FOR_APPROVAL
 									||	$profileStatus	==BORROWER_STATUS_COMMENTS_ON_ADMIN) {
-			if($request->url()	!=	url('borrower/profile')) {
-				return redirect()->to('borrower/profile');
+			if($request->url()	!=	url('creator/profile')) {
+				return redirect()->to('creator/profile');
 			}
 		}
 		if($LoanAllowingStatus	==	0	) {
-			if($request->url()	==	url('borrower/applyloan')) {
-				return redirect()->to('borrower/profile');
+			if($request->url()	==	url('creator/create_project')) {
+				return redirect()->to('creator/profile');
 			}
 		}
 		

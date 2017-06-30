@@ -33,7 +33,7 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 			$sourceId =	base64_decode($laon_id);
 			$loanStatus		=	$this->borrowerApplyLoanModel->getLoanStatus($sourceId);
 			if($loanStatus	==	LOAN_STATUS_CANCELLED) {
-				return redirect()->to('borrower/myloaninfo');
+				return redirect()->to('creator/myloaninfo');
 			}
 			return $this->getBorrowerLoanDetails('edit', $sourceId);
 		} 
@@ -86,7 +86,7 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 			$withArry["msg"]	=	"Failed to create new loan";
 			Session::put("failure","Loan Information failed saved");
 		}
-		return redirect()->to('borrower/myloaninfo');
+		return redirect()->to('creator/myloaninfo');
 	
 	}
 	
@@ -99,10 +99,12 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 				$this->borrowerApplyLoanModel->bid_close_date	=	date('d-m-Y', strtotime("+20 days"));
 				$this->borrowerApplyLoanModel->processDropDowns();
 				$this->borrowerApplyLoanModel->getBorrowerDocumentListInfo();
+				$this->borrowerApplyLoanModel->defaultMilestones();
 				break;
 				
 			case "edit":
 				$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId);
+				
 				break;
 		}
 		$withArry	=	array(	"BorModLoan"=>$this->borrowerApplyLoanModel,
@@ -116,8 +118,6 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 	protected function checkApplyLoanValidationction() {
 		$postArray	=	Request::all();
 		$rowArray	=	array(	"loan_amountErr"=>"",
-								"bidcloseDateErr"=>"",
-								"target_interestErr"=>"",
 								"partialSubAmountErr"=>""
 							);
 		$status		=	"success";
@@ -126,13 +126,6 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 			$status						=	"error";
 		}
 		
-		if($postArray['targetInterest'] <=	0) {
-			$rowArray['target_interestErr']	=	Lang::get("Target Insterest should be greater than zero");
-			$status		=	"error";
-		}else if($postArray['targetInterest'] >	99.9) {
-			$rowArray['target_interestErr']	=	Lang::get("Target Insterest Cannot be greater than 99.99");
-			$status		=	"error";
-		}
 		if($postArray['partialSubAllowed'] ==	1) {
 			
 			if($postArray['partialSubAmount'] <=	0) {
@@ -142,4 +135,5 @@ class BorrowerApplyLoanController extends MoneyMatchController {
 		}
 		return	json_encode(array("status"=>$status,"row"=>$rowArray));
 	}
+	
 }

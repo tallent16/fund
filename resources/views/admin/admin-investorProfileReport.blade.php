@@ -5,11 +5,11 @@
 	{{ Html::style('css/datatable/dataTables.editor.css') }}		
 	
 @stop
-@section('page_heading',Lang::get('Investor Profile Report') )
+@section('page_heading',Lang::get('Backer Profile Report') )
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="post" action="{{url('admin/investor-profiles/report')}}">
+<form method="post" action="{{url('admin/backer-profiles/report')}}">
 	<input  type="hidden" 
 			name="_token"
 			id="hidden_token"
@@ -41,7 +41,7 @@
 <form 	class="form-horizontal" 
 		id="excel_export" 
 		method="post"
-		action="{{url('admin/investor-profiles-report/download')}}">
+		action="{{url('admin/backer-profiles-report/download')}}">
 		<input  type="hidden" 
 				name="_token"
 				id="hidden_token"
@@ -74,8 +74,8 @@
 				<table class="table tab-fontsize table-border-custom text-left" id="adminloanlisting">
 					<thead>
 						<tr>
-							<th class="tab-head text-left">{{ Lang::get('Investor Id') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Investor User Name') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Backer Id') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Backer User Name') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('First Name') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Last name') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Email') }}</th>
@@ -84,12 +84,9 @@
 							<th class="tab-head text-left">{{ Lang::get('NRIC Number') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Nationality') }}</th>
 							<th class="tab-head text-right">{{ Lang::get('Estimated Yearly Income') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Balance on Hand') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('No of Loans Applied') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('No of Loans Invested') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('No of Project Applied') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('No of Project Invested') }}</th>
 							<th class="tab-head text-right">{{ Lang::get('Total Invested Amount') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Returns') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('ROI') }}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -105,12 +102,9 @@
 								<td class="text-left">{{$listRow->nric_number}}</td>
 								<td class="text-left">{{$listRow->nationality}}</td>
 								<td class="text-right">{{number_format($listRow->estimated_yearly_income,2,'.',',')}}</td>
-								<td class="text-right">{{number_format($listRow->available_balance,2,'.',',')}}</td>
 								<td class="text-right">{{$listRow->no_loan_applied}}</td>
 								<td class="text-right">{{$listRow->no_loan_invested}}</td>
 								<td class="text-right">{{number_format($listRow->tot_invest_amt,2,'.',',')}}</td>
-								<td class="text-right">{{number_format($listRow->tot_returns,2,'.',',')}}</td>
-								<td class="text-right">{{number_format($listRow->roi,2,'.',',')}}</td>
 							</tr>
 						@endforeach
 					</tbody>
@@ -137,7 +131,7 @@
 		if(reportJson.length > 0) {
 			$("#excel_export").submit();
 		}else{
-			showDialog("","No Data avilable to Export");
+			showDialog("","No Data available to Export");
 		}
 		
 	}

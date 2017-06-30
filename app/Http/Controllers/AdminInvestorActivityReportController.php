@@ -98,7 +98,7 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$jsonObj	=	json_decode($postArray['report_json'],true);
-		$needle = 'Transaction Detail Report for Investor:';
+		$needle = 'Transaction Detail Report for Backer:';
 		//~ $result = $this->mySearch($jsonObj, "Date", $needle,strlen($needle));
 		$i	=	0;
 		$prev_inv	=	"";
@@ -126,7 +126,7 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 		//~ echo "<pre>",print_r($jsonObj),"</pre>";
 		//~ die;
 		$headers	=	[
-							0=>"Investor Activity Report",
+							0=>"Backer Activity Report",
 							1=>"for the period {$postArray['from_date']} to {$postArray['to_date']}",
 							//~ 2=>[	"Date",
 									//~ "Transaction Type",
@@ -141,11 +141,11 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 		$headStart	=	1;
 		$startRow	=	3;
 		$breakColumn=	"Date";			
-		Excel::create('InvestorActivityReport', function($excel) 
+		Excel::create('BackerActivityReport', function($excel) 
 			use ($allInvestorArry,$headers,$headStart,$startRow,$breakColumn)
 		 {
 			foreach ($allInvestorArry as $key=>$jsonRow) {
-				$excel->sheet('Investor'.$key, function($sheet)
+				$excel->sheet('Backer'.$key, function($sheet)
 					use ($headers,$headStart,$startRow,$breakColumn,$jsonRow)
 				 {
 						$sheet->getStyle('E')->getAlignment()->applyFromArray(
@@ -173,7 +173,7 @@ class AdminInvestorActivityReportController extends MoneyMatchController {
 							$headerRow ++;
 						}
 						$currExcelRow = $startRow;
-						$needle = 'Transaction Detail Report for Investor:';
+						$needle = 'Transaction Detail Report for Backer:';
 						foreach ($jsonRow as $jsonCol => $jsonVal) {
 							if ( (strlen(strstr($jsonVal['Date'],$needle))	==	0 )
 								) {

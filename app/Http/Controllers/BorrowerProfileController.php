@@ -18,7 +18,7 @@ class BorrowerProfileController extends MoneyMatchController {
 	
 	//render the borrower profiile page
 	public function indexAction() {
-		
+	
 		$submitted	=	false;
 		$activeTab	=	"#company_info";
 		Session::forget("success");

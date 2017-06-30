@@ -1,7 +1,7 @@
 var	formValid	=	false
 var	showPopup	=	true
 $(document).ready(function (){  
-	
+
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('#hidden_token').val()
@@ -79,6 +79,8 @@ $(document).ready(function (){
 		}
 	});
 	
+	getAvailableBalance();
+	
 });
 
 
@@ -113,7 +115,7 @@ function LoanBidClicked() {
 }
 
 function getAvailableBalance() {
-	
+		
 	$.ajax({
 	  type: "POST",
 	  async : false,
@@ -121,16 +123,19 @@ function getAvailableBalance() {
 	  url: baseUrl+"/investor/ajax/availableBalance",
 	  
 	}).done(function(data) {
+		//~ alert(data);
 		$("#available_balance").val(data);
+		
 	});
 }
 function callBidInformationPopup(){
 	
 	var	aval_bal			=	numeral($("#available_balance").val()).value();
+	
 	var	bid_amount			=	numeral($("#bid_amount").val()).value();
 	var	prev_bid_amount		=	numeral($("#prev_bid_amount").val()).value();
 	var after_bid_aval_bal	=	(parseFloat(aval_bal) +	parseFloat(prev_bid_amount)) -	parseFloat(bid_amount);
-	$("#modal_aval_bal_after").html(numeral(after_bid_aval_bal).format("0,00.00"));
+	//~ $("#modal_aval_bal_after").html(numeral(after_bid_aval_bal).format("0,00.00"));
 	
 	$("#confirmation_button").attr("disabled",true);
 	$("#confirmation_button").prop("disabled",true);
@@ -139,6 +144,7 @@ function callBidInformationPopup(){
 	$("#modal_confirm_bid").prop("checked",false);
 	
 	$('#bid_information').modal('show');
+	
 }
 function validateForm() {
 	
@@ -146,41 +152,56 @@ function validateForm() {
 	var	bid_amount			=	numeral($("#bid_amount").val()).value();
 	var	bid_interest_rate	=	numeral($("#bid_interest_rate").val()).value();
 	var	minimum_bid_amount	=	numeral($("#minimum_bid_amount").val()).value();
+	var	total_bid_amount	=	numeral($("#total_bid").val()).value();
+	var	prev_bid_amount		=	numeral($("#prev_bid_amount").val()).value();
+	var	apply_amount		=	numeral($("#apply_amount").val()).value();
+	var amountshouldbid		= 	(parseFloat(total_bid_amount) -	parseFloat(prev_bid_amount));
+	var amountshouldbid		= 	(parseFloat(apply_amount) -	parseFloat(amountshouldbid));
 	var	errorMesage			=	"";
-	getAvailableBalance();
+	
+	//~ getAvailableBalance();
+	
 	AvailableBalance		=	$("#available_balance").val()
+		
+	if(bid_amount > amountshouldbid){		
+		showDialog("","Total funded amount should not be greater than goal amount, You can fund amount maximum : "+amountshouldbid+" (ETH)");
+		formValid	= false;
+		return;
+	}
+		
 	if(	AvailableBalance	==	0) {
 		showDialog("",getBidSystemMessageBySlug("insufficient_available_balance"));
 		formValid	= false;
 		return;
 	}else{
-		if(bid_amount	<=	0) {
+		if(bid_amount	<=	0) {			
 			errorMesage			=	getBidSystemMessageBySlug("bid_amount_greater_zero");
 		}
+	}
 				
-		if(bid_interest_rate	<=	0) {
-			if(errorMesage	==	""	) {
-				errorMesage			=	getBidSystemMessageBySlug("bid_interest_greater_zero");
-			}
-		}
+		//~ if(bid_interest_rate	<=	0) {
+			//~ if(errorMesage	==	""	) {
+				//~ errorMesage			=	getBidSystemMessageBySlug("bid_interest_greater_zero");
+			//~ }
+		//~ }
 		if(errorMesage	!=	""	) {
 			showDialog("",errorMesage);
 			formValid	= false;
 			return;
 		}
-		
+		//~ alert("bid_amount:"+bid_amount+" AvailableBalance:"+AvailableBalance);
 		if(bid_amount	>	AvailableBalance) {
 				showDialog("",getBidSystemMessageBySlug("bid_amount_greater_availbal")	);
 				formValid	= false;
 				return;
 		}
 		
-		if(bid_amount	<	minimum_bid_amount) {
-			showDialog("","The Minimum Bid amount is SGD "+minimum_bid_amount);
-			formValid	= false;
-			return;
-		}
-	}
+		//~ if(bid_amount	<	minimum_bid_amount) {
+			//~ showDialog("","The Minimum Bid amount is SGD "+minimum_bid_amount);
+			//~ formValid	= false;
+			//~ return;
+		//~ }
+	//~ }
 	callBidInformationPopup();
 	formValid	= true;
 	

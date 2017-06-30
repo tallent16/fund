@@ -32,11 +32,19 @@ class BorrowerLoanSummaryModel extends TranWrapper {
 								loans.target_interest,
 								round(loans.final_interest_rate,2) final_interest_rate,
 								round(loans.loan_sanctioned_amount - loans.total_principal_repaid,2) balance_os,
-								loans.status
-						FROM	loans left outer join 
-									(	SELECT 	loan_id, sum(bid_amount) total_bid_amount
-										FROM	loan_bids
-										GROUP BY loan_id) bids on bids.loan_id = loans.loan_id
+								loans.status,
+								total_milestone
+						FROM	loans 
+						LEFT OUTER JOIN 
+								(	SELECT 	loan_id, sum(bid_amount) total_bid_amount
+									FROM	loan_bids
+									GROUP BY loan_id
+								) bids on bids.loan_id = loans.loan_id
+						LEFT OUTER JOIN 
+								(	SELECT 	loan_id, count(milestone_name) total_milestone
+									FROM	loan_milestones milstone
+									GROUP BY loan_id
+								) milstone on milstone.loan_id = loans.loan_id
 						WHERE	status in (3,5,6,7,10)
 						AND		borrower_id = {$borrowId}";
 						

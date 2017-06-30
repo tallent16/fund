@@ -7,7 +7,7 @@
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 		 
 @endsection
-@section('page_heading',Lang::get('Loan Summary'))
+@section('page_heading',Lang::get('Project Summary'))
 @section('section')    
 <div class="col-sm-12 space-around">
 <div id="filter_area" style="display:none">
@@ -57,11 +57,13 @@
 			</button>
 		</div>
 	<!--</div>-->
+<!--
 		<div class="col-sm-5 col-lg-8"> 
 			<div class="form-group">								
 				<button type="submit" class="btn verification-button">{{ Lang::get('borrower-transcationhistory.export_excel') }}</button>		
 			</div>	
 		</div>
+-->
 
 </div>
 
@@ -72,15 +74,13 @@
 				<thead>
 					<tr>
 						<th class="tab-head text-left"></th>
-						<th class="tab-head text-left"></th>
 						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.loan_reference_no') }}</th>
 						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.apply_date') }}</th>
 						<th class="tab-head text-left">{{ Lang::get('borrower-transcationhistory.bid_closedate') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.apply_amt') }}</th>
 						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.amt_realized') }}</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.target_interest') }}%</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.realized_interest') }} %</th>
-						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.balance_outstanding') }}</th>	
+						<th class="tab-head text-right">{{ Lang::get('borrower-transcationhistory.milestone') }}</th>
+						
 					</tr>
 				</thead>
 				
@@ -89,55 +89,14 @@
 					@foreach ($tranModel->loanList as $loanRow)
 						<tr id="{{$loanRow->loan_id}}" role="row">
 							<td class="text-left"></td>
-							<td class="details-control"></td>
 							<td class="text-left">{{$loanRow->loan_reference_number}}</td>
 							<td class="text-left col-sm-2">{{$loanRow->apply_date}}</td>
 							<td class="text-left">{{$loanRow->bid_close_date}}</td>
 							<td class="text-right">{{$loanRow->apply_amount}}</td>
 							<td class="text-right">{{$loanRow->bid_sanctioned_amount}}</td>
-							<td class="text-right">{{$loanRow->target_interest}}</td>
-							<td class="text-right">{{$loanRow->final_interest_rate}}</td>
-							<td class="text-right">{{$loanRow->balance_os}}</td>
+							<td class="text-right">{{$loanRow->total_milestone}}</td>
 						</tr>		
-						<?php
-						$loan_id		= 	$loanRow->loan_id;
-						$loanTrans	 	=	$tranModel->tranList[$loan_id];
-						?>
-						
-							<tr id="tran_row_{{$loan_id}}" style="display:none;">
-								<td colspan="11">										
-									<div class="col-sm-2"></div>
-									<div class="col-sm-10">										
-										<div class="table-responsive" id="trans-history">
-											<table class="table text-left">
-												<tr>														
-													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_type') }}</th>
-													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_date') }}</th>
-													<th class="text-right">{{ Lang::get('borrower-transcationhistory.trans_amt') }}</th>
-													<th class="text-left">{{ Lang::get('borrower-transcationhistory.trans_details') }}</th>
-												</tr>	
-												@if (count($loanTrans) > 0)						
-													@foreach ($loanTrans as $loanTransRow)
-													<tr>
-														<td>{{ Lang::get($loanTransRow->tran_type)}}</td>
-														<td>{{$loanTransRow->tran_date}}</td>
-														<td class="text-right">{{$loanTransRow->tran_amt}}</td>
-														<td>{{ Lang::get($loanTransRow->transdetail)}}</td>
-													</tr>
-													@endforeach
-												@else
-													<tr>
-														<td colspan="4" class="text-center">
-														 No records
-														</td>
-													</tr>
-												@endif
-											</table>
-										</div>
-									</div>
-								</td>
-							</tr>											
-						
+					
 					@endforeach
 					@else
 					<tr>
@@ -192,7 +151,7 @@ $(document).ready(function(){
 			$("#tran_row_"+loan_id).show();				
 		}
 	});
-        
+   
 }); 
 </script>  
 @endsection  

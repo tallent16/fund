@@ -9,11 +9,11 @@
 		}
 	</style>
 @stop
-@section('page_heading',Lang::get('Loan Performance Report') )
+@section('page_heading',Lang::get('Project Performance Report') )
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="post" action="{{url('admin/loan-perform/report')}}">
+<form method="post" action="{{url('admin/project-perform/report')}}">
 	<input  type="hidden" 
 			name="_token"
 			id="hidden_token"
@@ -61,7 +61,7 @@
 <form 	class="form-horizontal" 
 		id="excel_export" 
 		method="post"
-		action="{{url('admin/loan-perform-report/download')}}">
+		action="{{url('admin/project-perform-report/download')}}">
 		<input  type="hidden" 
 				name="_token"
 				id="hidden_token"

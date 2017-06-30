@@ -30,8 +30,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 			return redirect()->to('admin/loanlisting');
 		}
 		$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId);
-		return view('admin.admin-loanapprovalmode')
-					->with(array("adminLoanApprMod"=>$this->borrowerApplyLoanModel,
+		return view('admin.admin-loanapprovalmode') 
+					->with(array(	"adminLoanApprMod"=>$this->borrowerApplyLoanModel,
+									"BorModLoan"=>$this->borrowerApplyLoanModel,
 									"submitted"=>$submitted,
 									"classname"=>"fa fa-check-circle fa-fw"
 								)
@@ -61,7 +62,7 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$transtype	=	$postArray['trantype'];
 		
 		$result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
-		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
+		
 		if($result) {
 			$successTxt	=	$this->borrowerApplyLoanModel->getSystemMessageBySlug("borrower_loan_save_by_admin");
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id)	))
@@ -109,7 +110,7 @@ class AdminLoanApprovalController extends MoneyMatchController {
 						->with('success',$successTxt);
 		}else{
 			return redirect()->route('admin.loanapproval', array('loan_id' => base64_encode($loan_id) ))
-						->with('failure','return borrower  loan approval updated Failed');	
+						->with('failure','return creator  loan approval updated Failed');	
 		}	
 	}
 	
@@ -121,9 +122,9 @@ class AdminLoanApprovalController extends MoneyMatchController {
 		$transtype	=	$postArray['trantype'];
 		
 		$dataArray 	=	array(	'status' 	=>	LOAN_STATUS_APPROVED );
-		//~ $result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
+		$result	=	$this->borrowerApplyLoanModel->processLoan($postArray);
 		$this->borrowerApplyLoanModel->updateLoanGradeRiskFactor($postArray,$loan_id);
-		$this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
+		//~ $this->borrowerApplyLoanModel->updateBiCloseDate($postArray['bid_close_date'],$loan_id);
 		
 		$result		=	$this->borrowerApplyLoanModel->updateLoanApplyStatus($dataArray,$loan_id,
 																				$bor_id,"approve");

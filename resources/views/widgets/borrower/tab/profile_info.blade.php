@@ -9,7 +9,7 @@
 							{{ Lang::get('borrower-profile.companyprofile') }}
 						</label>		
 						<div class="form-group" id="company_profile_parent">
-							<textarea 	class="form-control required" 
+							<textarea 	class="form-control required tinyTextArea" 
 										rows="10" 
 										id="company_profile" 
 										name="company_profile"
@@ -23,7 +23,7 @@
 							{{ Lang::get('borrower-profile.about_us') }}
 						</label>
 						<div class="form-group"  id="about_us_parent"> 
-							<textarea 	class="form-control required" 
+							<textarea 	class="form-control required tinyTextArea" 
 										rows="10" 
 										id="about_us" 
 										name="about_us"

@@ -9,7 +9,17 @@
 	@var	$editCommentInput		=	"disabled"
 	@var	$commentsInfo			=	$BorModLoan->commentsInfo
 @endif
+@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+	@if($adminLoanApprMod->loan_status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL)
+		@var	$applyLoanComtTab	=	""
+	@else
+		@var	$applyLoanComtTab	=	"disabled"
+	@endif
+@else
+	@var	$applyLoanComtTab	=	$BorModLoan->viewStatus
+@endif
 <div id="comments" class="tab-pane fade">  
+	<fieldset {{$applyLoanComtTab}} >
 	<div class="panel panel-default directorinfo applyloan"> 
 		<div class="panel-body">
 			<div class="row">
@@ -128,4 +138,5 @@
 			@endif
 		</div>
 	</div>
+	</fieldset>
 </div>

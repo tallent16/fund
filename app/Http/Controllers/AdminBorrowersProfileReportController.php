@@ -57,8 +57,8 @@ class AdminBorrowersProfileReportController extends MoneyMatchController {
 		$jsonObj	=	json_decode($postArray['report_json'],true);
 		//~ $this->adminInvProRepMod->prnt($jsonObj);
 		$headers	=	[
-							0=> [	'Borrower Id','Organization Name','Key Contact Person','CP Email','CP Mobile',
-									'Paid up Capital','Operation Since','Total Loans Applied','Total Loans Sanctioned',
+							0=> [	'Creator Id','Organization Name','Key Contact Person','CP Email','CP Mobile',
+									'Paid up Capital','Operation Since','Total Loans Applied','Total Projects Sanctioned',
 									'Average Interest Rate','Total Principal OS','Total Interest OS','Total Principal Paid',
 									'Total Interest Paid','Total Penalty Paid','Overdue Amount','Overdue since'
 								]
@@ -72,10 +72,10 @@ class AdminBorrowersProfileReportController extends MoneyMatchController {
 								27=>'AB',28=>'AC',29=>'AD',30=>'AE',31=>'AF',32=>'AG',33=>'AH',34=>'AI',35=>'AJ',
 								36=>'AK',37=>'AL',38=>'AM',39=>'AN',40=>'AO',41=>'AP',42=>'AQ',43=>'AR',44=>'AS'	
 							);
-		Excel::create('BorrowerProfileReport', function($excel) 
+		Excel::create('CreatorProfileReport', function($excel) 
 			use ($jsonObj,$headers,$headStart,$startRow,$breakColumn,$colKeyNameArry)
 		 {
-				$excel->sheet('Borrowers', function($sheet)
+				$excel->sheet('Creators', function($sheet)
 					use ($headers,$headStart,$startRow,$breakColumn,$jsonObj,$colKeyNameArry)
 				 {
 						$headerRow = $headStart;

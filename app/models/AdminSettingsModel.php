@@ -51,9 +51,10 @@ class AdminSettingsModel extends TranWrapper {
 	/**Dropdown Module**/
 	public function getModuleDropdown(){
 		
-		$module_sql			=	 "SELECT 
+		$module_sql			=	 "	SELECT 
 									DISTINCT module 
-									FROM system_messages";
+									FROM system_messages
+									WHERE status = 1";
 							
 		$result_module		=	$this->dbFetchAll($module_sql);
 			
@@ -82,7 +83,8 @@ class AdminSettingsModel extends TranWrapper {
 										   when 0  then 'No'										  
 										END as send_email_text 
 								FROM system_messages 
-								WHERE module = {$moduleWhere} ";
+								WHERE module = {$moduleWhere} 
+								AND status = 1";
 								
 		$module_rs			= 	$this->dbFetchAll($module_sql);
 		return	$module_rs;
@@ -100,7 +102,7 @@ class AdminSettingsModel extends TranWrapper {
 										WHERE slug_name='{$slug}') as email_slug,
 										send_email										 
 									FROM system_messages 
-									WHERE slug_name = '{$slug}' ";
+									WHERE slug_name = '{$slug}'";
 								
 		$editmodule_rs			= 	$this->dbFetchRow($editmodule_sql);
 		
@@ -180,10 +182,10 @@ class AdminSettingsModel extends TranWrapper {
 			$backendTeamEmailName	= $postArray['backend_team_mailname'];
 			$mailCC					= $postArray['mail_cc'];
 			$sendLiveMail			= isset($postArray['livemails'])?$postArray['livemails']:0;
-			$autobidclose			= isset($postArray['autobidclose'])?$postArray['autobidclose']:0;
-			$auto_bids_closetime	= isset($postArray['auto_close_time'])?$postArray['auto_close_time']:"00:00";
-			$remindmail_borrower	= isset($postArray['remindmail_borrower'])?$postArray['remindmail_borrower']:0;
-			$daysbefore_duedate		= $postArray['daysbefore_duedate'];
+			//~ $autobidclose			= isset($postArray['autobidclose'])?$postArray['autobidclose']:0;
+			//~ $auto_bids_closetime	= isset($postArray['auto_close_time'])?$postArray['auto_close_time']:"00:00";
+			//~ $remindmail_borrower	= isset($postArray['remindmail_borrower'])?$postArray['remindmail_borrower']:0;
+			//~ $daysbefore_duedate		= $postArray['daysbefore_duedate'];
 			/*Second Tab*/
 			$mailDriver 			= $postArray['mail_driver'];	
 			$mailHost				= $postArray['mail_host'];	
@@ -192,13 +194,13 @@ class AdminSettingsModel extends TranWrapper {
 			$mailUsername			= $postArray['mail_username'];	
 			$mailPassword			= $postArray['mail_password'];	
 			/*Fourth Tab*/
-			$loanMonthly			= $postArray['loan_monthly'];	
+			//~ $loanMonthly			= $postArray['loan_monthly'];	
 			$processFixedFees		= $postArray['processing_fixed_fees'];	
 			$processFeePercent		= $postArray['processing_fees_percent'];	
 			$processFeeMinimum		= $postArray['processing_fee_minimum'];	
-			$penaltyProcessFee		= $postArray['penalty_process_fee'];	
+			/*$penaltyProcessFee		= $postArray['penalty_process_fee'];	
 			$penaltyProcessPercent	= $postArray['penalty_process_percent'];	
-			$penaltyInterest		= $postArray['penalty_interest'];	
+			$penaltyInterest		= $postArray['penalty_interest'];*/	
 			/*Fifth Tab*/	
 			$borrower_terms			= $postArray['bor_terms'];	
 			$investor_terms			= $postArray['inv_terms'];			
@@ -214,10 +216,10 @@ class AdminSettingsModel extends TranWrapper {
 							'backend_email_label'					=> $backendTeamEmailName,
 							'mail_cc_to'							=> $mailCC,
 							'send_live_mails'						=> $sendLiveMail,
-							'auto_bids_close'						=> $autobidclose,
-							'auto_bids_close_cronjob_time'			=> $auto_bids_closetime,
-							'send_reminder_mails_to_borrower'		=> $remindmail_borrower,
-							'reminder_mails_days_before_due_date'	=> $daysbefore_duedate,
+							//~ 'auto_bids_close'						=> $autobidclose,
+							//~ 'auto_bids_close_cronjob_time'			=> $auto_bids_closetime,
+							//~ 'send_reminder_mails_to_borrower'		=> $remindmail_borrower,
+							//~ 'reminder_mails_days_before_due_date'	=> $daysbefore_duedate,
 							
 							'mail_driver'							=> $mailDriver,
 							'mail_host'								=> $mailHost,
@@ -226,13 +228,13 @@ class AdminSettingsModel extends TranWrapper {
 							'mail_username'							=> $mailUsername,
 							'mail_password'							=> $mailPassword,
 														
-							'monthly_pay_by_date'					=> $loanMonthly,
+							//~ 'monthly_pay_by_date'					=> $loanMonthly,
 							'loan_fixed_fees'						=> $processFixedFees,
 							'loan_fees_percent'						=> $processFeePercent,
 							'loan_fees_minimum_applicable'			=> $processFeeMinimum,
-							'penalty_fee_minimum'					=> $penaltyProcessFee,
-							'penalty_fee_percent'					=> $penaltyProcessPercent,
-							'penalty_interest'						=> $penaltyInterest,
+							//~ 'penalty_fee_minimum'					=> $penaltyProcessFee,
+							//~ 'penalty_fee_percent'					=> $penaltyProcessPercent,
+							//~ 'penalty_interest'						=> $penaltyInterest,
 							
 							'toc_borrower'							=> $borrower_terms,						
 							'toc_investor'							=> $investor_terms,					

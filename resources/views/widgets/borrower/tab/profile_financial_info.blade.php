@@ -1,3 +1,4 @@
+<!--
 @var	$finacialRatioInfo	=	$modelBorPrf->finacialRatioInfo;
 @var	$finacialInfo		=	$modelBorPrf->finacialInfo;
 
@@ -8,7 +9,7 @@
 				<div class="col-sm-12 col-lg-1">
 				</div>
 				<div class="col-sm-12 col-lg-10">			
-					<div class="table-responsive"><!---table start-->
+					<div class="table-responsive">
 						<table class="table table-loan table-border-custom  text-left">		
 							<tbody>
 								<tr>
@@ -65,10 +66,24 @@
 							</tbody>
 						</table>	
 					</div><!----table responsive--->
+<!--
 				</div><!---col---->		
+
+<!--
 				<div class="col-sm-12 col-lg-1">
+-->
+<!--
 				</div>
+-->
+<!--
 			</div><!---row---->	
+
+<!--
 		</div><!--panel body-->													
+
+<!--
 	</div><!--panel-->
+
+<!--
 </div><!--profile tab-->
+

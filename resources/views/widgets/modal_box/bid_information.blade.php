@@ -1,17 +1,19 @@
 <div class="form-group">
 	<label>
-		Thank You for bidding for Loan Reference Number:
+		Thank You for bidding for Project Reference Number:
 					<span id="modal_loan_number">{{$LoanDetMod->loan_reference_number}}</span>
 	</label>
 </div>
+<!--
 <div class="form-group">
 	<label>
 		You avaiable balance after this bid will be : SGD &nbsp;&nbsp;<span id="modal_aval_bal_after"></span>
 	</label>
 </div>
+-->
 <div class="form-group">
 	<label>
-		Once your bid is accepted by the borrower you will be notified of this before further peocessing made
+		Once your bid is accepted by the Creator you will be notified of this before further peocessing made
 	</label>
 </div>
 <div class="form-group">

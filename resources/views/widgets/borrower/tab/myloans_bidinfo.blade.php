@@ -11,7 +11,7 @@
 								<tbody>
 									<tr>
 										<th class="text-center">{{ Lang::get('borrower-myloans.bidder_name') }}</th>
-										<th>{{ Lang::get('borrower-myloans.interest_rate') }}</th>	
+										<th>{{ Lang::get('borrower-myloans.date_backing') }}</th>	
 										<th class="text-right">{{ Lang::get('borrower-myloans.bid_amount') }}</th>				
 									</tr>
 										@if($bidInfoCnt	>	0)
@@ -24,7 +24,7 @@
 												@endif
 												<tr>
 													<td class="tab-bid-label text-center">{{ Lang::get('borrower-myloans.bidder') }} #{{$i}}</td>
-													<td class="{{$tdRowClass}}">{{$bidRow['bid_interest_rate']}}%</td>	
+													<td class="{{$tdRowClass}}">{{$bidRow['bid_date']}}</td>	
 													<td class="{{$tdRowClass}} text-right">{{number_format($bidRow['bid_amount'],2,'.',',')}}</td>		
 												</tr>	
 												@var	$i++;
@@ -41,7 +41,7 @@
 				@if(($LoanDetMod->loan_status	==	LOAN_STATUS_APPROVED)
 					||	($LoanDetMod->loan_status	==	LOAN_STATUS_CLOSED_FOR_BIDS)
 					||	($LoanDetMod->loan_status	==	LOAN_STATUS_BIDS_ACCEPTED) )
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-12 text-right">
 								<button type="button"
 									data-action="{{url('borrower/managebids')."/".$LoanDetMod->loan_id}}"	 
@@ -52,7 +52,7 @@
 								</button>
 							</div>
 						</div>
-					
+					-->
 				@endif
 			
 		</div><!---panel body--->

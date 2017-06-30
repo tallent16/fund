@@ -25,7 +25,7 @@
 	})
 	</script>
 @endsection
-@section('page_heading',Lang::get('Investor Deposit') )
+@section('page_heading',Lang::get('Backer Deposit') )
 @section('section')  
 <div class="col-sm-12 space-around">
 	<form method="get">

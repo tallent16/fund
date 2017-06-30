@@ -5,9 +5,9 @@
 	<table class="table tab-fontsize text-left">
 		<thead>
 			<tr>
-				<th class="tab-head text-left">{{Lang::get('LOAN REF NO')}}</th>
-				<th class="tab-head text-left">{{Lang::get('BORROWER NAME')}}</th>
-				<th class="tab-head text-right">{{Lang::get('LOAN AMOUNT')}}</th>
+				<th class="tab-head text-left">{{Lang::get('REF NO')}}</th>
+				<th class="tab-head text-left">{{Lang::get('CREATOR NAME')}}</th>
+				<th class="tab-head text-right">{{Lang::get('PROJECT AMOUNT')}}</th>
 				<th class="tab-head text-right">{{Lang::get('BID AMOUNT')}}</th>
 			</tr>
 		</thead>

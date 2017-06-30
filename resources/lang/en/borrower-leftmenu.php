@@ -29,5 +29,6 @@ return [
 	'bankdetails'				=> 'Bank Details',
 	'repayloans'				=> 'Repay Loans',	
 	'withdraw'					=> 'Withdraw',
+	'marketplace'				=> 'Marketplace',
 	
 	];

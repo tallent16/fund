@@ -122,12 +122,12 @@ $(document).ready(function (){
     
 	$("#admin_save_button").click(function(){
       $("#isSaveButton").val("yes");
-       $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/save");
+       $("#form-profile").attr("action",baseUrl+"/admin/creator/profile/save");
        formValid	=	true;
     });
     
 	$("#approve_profile_button").click(function(){
-		$("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/approve");
+		$("#form-profile").attr("action",baseUrl+"/admin/creator/profile/approve");
 		
 		formValid	=	true;
 		
@@ -154,11 +154,11 @@ $(document).ready(function (){
     });
     
 	$("#update_grade").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/update_grade");
+      $("#form-profile").attr("action",baseUrl+"/admin/creator/profile/update_grade");
     });
     
 	$("#returnback_button").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/return_borrower");
+      $("#form-profile").attr("action",baseUrl+"/admin/creator/profile/return_borrower");
       
 		//~ if($('.commentClass:checked').length){
 			//~ errMessage	=	"There is no open comments to return back to borrower";
@@ -185,7 +185,7 @@ $(document).ready(function (){
     });
 	
 	$("#save_comment_button").click(function(){
-      $("#form-profile").attr("action",baseUrl+"/admin/borrower/profile/save_comments");
+      $("#form-profile").attr("action",baseUrl+"/admin/creator/profile/save_comments");
       formValid	=	true;
     });
 	
@@ -284,6 +284,7 @@ function callTabValidateFunc() {
 	var active = $("ul.nav-tabs li.active a");
 	var	cur_tab		=	active.attr("href");
 	cur_tab			=	cur_tab.replace("#","");
+	
 	$("#director_error_info").hide();
 	$("#director_error_info").removeClass("has-error");
 	$("#director_error_info").removeClass("alert-danger");
@@ -329,34 +330,6 @@ function callTabValidateFunc() {
 		return true;
 	}else {
 		if(cur_tab	==	"profile_info") {
-			if($("#screen_mode").val()	==	"admin") {
-				$('.nav-tabs a[href="#financial_ratio"]').tab('show');
-				$('a[href="#financial_ratio"]').parent().removeClass("disabled");
-			}else{
-				$('.nav-tabs a[href="#financial_info"]').tab('show');
-				$('a[href="#financial_info"]').parent().removeClass("disabled");
-			}
-			return true;
-		}
-	}
-	if($("#screen_mode").val()	==	"admin") {
-		
-		if(validateTab('financial_ratio')) {
-			$('.nav-tabs a[href="#financial_ratio"]').tab('show');
-			return true;
-		}else {
-			if(cur_tab	==	"financial_ratio") {
-				$('.nav-tabs a[href="#financial_info"]').tab('show');
-				$('a[href="#financial_info"]').parent().removeClass("disabled");
-				return true;
-			}
-		}
-	}
-	if(validateTab('financial_info')) {
-			$('.nav-tabs a[href="#financial_info"]').tab('show');
-			return true;
-	}else{
-		if(cur_tab	==	"financial_info") {
 			$('.nav-tabs a[href="#bank_info"]').tab('show');
 			$('a[href="#bank_info"]').parent().removeClass("disabled");
 			if($("#screen_mode").val()	==	"borrower"){
@@ -368,6 +341,23 @@ function callTabValidateFunc() {
 			return true;
 		}
 	}
+	
+	//~ if(validateTab('financial_info')) {
+			//~ $('.nav-tabs a[href="#financial_info"]').tab('show');
+			//~ return true;
+	//~ }else{
+		//~ if(cur_tab	==	"financial_info") {
+			//~ $('.nav-tabs a[href="#bank_info"]').tab('show');
+			//~ $('a[href="#bank_info"]').parent().removeClass("disabled");
+			//~ if($("#screen_mode").val()	==	"borrower"){
+				//~ if($("#borrower_status").val()	==	""){
+					//~ $("#next_button").hide();
+					//~ $("#submit_button").show();
+				//~ }
+			//~ }
+			//~ return true;
+		//~ }
+	//~ }
 	if(cur_tab	==	"bank_info") {
 		if($("#screen_mode").val()	==	"borrower"){
 			if($("#borrower_status").val()	==	"corrections_required"){
@@ -434,7 +424,10 @@ function addNewDirectorRow(){
 		counterstr = counterint.toString();
 
 		htmlTemplate = htmlTemplate.replace(/XXX/g, counterstr);
-		$(".divs ").append(htmlTemplate);		
+		$(".divs ").append(htmlTemplate);	
+		
+		$("#directors_profile_"+counterstr).summernote({height:300}); 	
+		$("#accomplishments_"+counterstr).summernote({height:300}); 	
 		$("#name_"+counterstr).val("");	
 		$("#max_director").val(counterstr);
 		$("#directorDropDown").append("<option value='"+counterstr+"'>"+""+"</option>");

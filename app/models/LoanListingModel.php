@@ -10,14 +10,14 @@ class LoanListingModel extends TranWrapper {
 	public	$userType			=	"";
 	public $filterIntRateList	= array();
 	public $filterLoanAmtList 	= array();
-	public $filterTenureList 	= array();
+	public $filterProCatList 	= array();
 	public $filterGradeList 	= array();
 	
 	public $loanList 			= array();
 	
 	public $filterIntRateValue	= 'all';
 	public $filterLoanAmtValue	= 'all';
-	public $filterTenureValue 	= 'all';
+	public $filterProCatValue 	= 'all';
 	public $filterGradeValue 	= 'all';
 	
 	public function __construct(){	
@@ -34,7 +34,7 @@ class LoanListingModel extends TranWrapper {
 	public function processDropDowns() {
 		$intRateCode	=	17;
 		$loanAmtCode	=	18;
-		$loanTenureCode =	19;
+		$loanTenureCode =	16;
 		$borrGradeCode	=	20;
 		
 		$filterSql		=	"	SELECT	codelist_id,
@@ -42,10 +42,10 @@ class LoanListingModel extends TranWrapper {
 										codelist_value,
 										expression
 								FROM	codelist_details
-								WHERE	codelist_id in (17, 18, 19, 20)";
+								WHERE	codelist_id in (17, 18, 16, 20)";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);
-
+		
 		if (!$filter_rs) {
 			throw exception ("Code List Master / Detail information not correct");
 			return;
@@ -68,23 +68,19 @@ class LoanListingModel extends TranWrapper {
 					$this->filterLoanAmtList[$codeExpr] 	=	$codeValue;
 					break;
 				
-				case 19:
-					$this->filterTenureList[$codeExpr] 	=	$codeValue;
+				case 16:
+					$this->filterProCatList['all'] 			= 'All';
+					$this->filterProCatList[$codeValue] 	=	$codeValue;
 					break;
 
 				case 20:
 					$this->filterGradeList[$codeExpr] 	=	$codeValue;
 					break;
-			}
-			
-					
-					
+			}	
 		}
-		
-		
 	} // End process_dropdown
 	
-	public function getLoanList($filterIntRate, $filterLoanAmt, $filterTenure, $filterGrade) {
+	public function getLoanList($filterLoanAmt, $filterCat, $filterGrade) {
 	
 		/* ---------------------------------------------------------------
 		 * Values to be returned in the Array
@@ -99,26 +95,28 @@ class LoanListingModel extends TranWrapper {
 			Thumbnail of the company --> get from S3 or local depending on the config from the borrowers table
 		 ---------------------------------------------------------------------------*/
 	
-		$this->filterIntRateValue = $filterIntRate;
 		$this->filterLoanAmtValue = $filterLoanAmt;
-		$this->filterTenureValue  = $filterTenure;
+		$this->filterProCatValue  = $filterCat;
 		$this->filterGradeValue   = $filterGrade;
-		
-		$intWhere			=	($filterIntRate == "all"?"":" AND target_interest ". $filterIntRate. " ");
 								
 		$loanAmtWhere		=	 ($filterLoanAmt == "all"?"":" AND apply_amount	".$filterLoanAmt. " ");
 												
-		$tenureWhere		=	 ($filterTenure == "all"?"":" AND loan_tenure ".$filterTenure. " ");
+		$proCatWhere		=	 ($filterCat == "all"?"":" AND purpose_singleline='".$filterCat. "' ");
 
 		$gradeWhere			=	($filterGrade == "all"? "":" AND loan_risk_grade ".$filterGrade. " ");
 		
 		$loanlist_sql		=	"	SELECT	loans.loan_id,
+											loan_title,
+											loan_description,
+											loan_product_image,
 											business_name,
 											business_organisation,
 											borrowers.industry,
 											purpose_singleline,
+											concat(SUBSTRING(purpose, 1, 100),'...') as purpose,
 											featured_loan,
 											loan_tenure,
+											loan_image_url,
 											round(ifnull(total_bid * 100 / apply_amount,0),2) perc_funded,
 											round(apply_amount,2) apply_amount,
 											target_interest,
@@ -153,17 +151,16 @@ class LoanListingModel extends TranWrapper {
 											ELSE ''
 												END
 									AND		loans.status = 3
-											{$intWhere}
+											
 											{$loanAmtWhere}
-											{$tenureWhere}
+											{$proCatWhere}
 											{$gradeWhere}
 									order by featured_loan desc, loan_display_order asc
 ";
-	
+	 
 		$this->loanList	=	$this->dbFetchWithParam($loanlist_sql, 
 										["bids_cancelled" => LOAN_BIDS_STATUS_CANCELLED]);
-	
-	
+		 
 	}
 	
 	function getAllActiveLoans() {

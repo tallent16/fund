@@ -118,7 +118,7 @@ class AdminManageBorrowersModel extends TranWrapper {
 			throw exception ("Code List Master / Detail information not correct");
 			return;
 		}
-		$this->filterBorrowerStatusList['all'] 	=	'All Borrowers';
+		$this->filterBorrowerStatusList['all'] 	=	'All Creators';
 		foreach($filter_rs as $filter_row) {
 
 			$codeCode 									= 	$filter_row->codelist_code;

@@ -64,7 +64,7 @@ class AdminBorrowerActivityReportController extends MoneyMatchController {
 		
 		$postArray	=	Request::all();
 		$jsonObj	=	json_decode($postArray['report_json'],true);
-		$needle = 'Transaction Detail Report for Borrower:';
+		$needle = 'Transaction Detail Report for Creator:';
 		//~ $result = $this->mySearch($jsonObj, "Date", $needle,strlen($needle));
 		$i	=	0;
 		$prev_bor	=	"";
@@ -93,7 +93,7 @@ class AdminBorrowerActivityReportController extends MoneyMatchController {
 		//~ echo "<pre>",print_r($jsonObj),"</pre>";
 		//~ die;
 		$headers	=	[
-							0=>"Borrower Activity Report",
+							0=>"Creator Activity Report",
 							1=>"for the period {$postArray['from_date']} to {$postArray['to_date']}",
 							//~ 2=>[	"Date",
 									//~ "Transaction Type",
@@ -108,11 +108,11 @@ class AdminBorrowerActivityReportController extends MoneyMatchController {
 		$headStart	=	1;
 		$startRow	=	3;
 		$breakColumn=	"Date";			
-		Excel::create('BorrowerActivityReport', function($excel) 
+		Excel::create('CreatorActivityReport', function($excel) 
 			use ($allBorrowerArry,$headers,$headStart,$startRow,$breakColumn)
 		 {
 			foreach ($allBorrowerArry as $key=>$jsonRow) {
-				$excel->sheet('Borrower'.$key, function($sheet)
+				$excel->sheet('Creator'.$key, function($sheet)
 					use ($headers,$headStart,$startRow,$breakColumn,$jsonRow)
 				 {
 						$sheet->getStyle('E')->getAlignment()->applyFromArray(
@@ -140,7 +140,7 @@ class AdminBorrowerActivityReportController extends MoneyMatchController {
 							$headerRow ++;
 						}
 						$currExcelRow = $startRow;
-						$needle = 'Transaction Detail Report for Borrower:';
+						$needle = 'Transaction Detail Report for Creator:';
 						foreach ($jsonRow as $jsonCol => $jsonVal) {
 							if ( (strlen(strstr($jsonVal['Date'],$needle))	==	0 )
 								) {

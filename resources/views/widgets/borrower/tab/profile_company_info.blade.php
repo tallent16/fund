@@ -265,6 +265,7 @@
 				</div>							
 			</div>	
 			<!--	row columns added new on 3/June/2016 ACRA Business Profile and Memoradum and Articles of Association -->
+<!--
 			<div class="row">
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
@@ -321,8 +322,10 @@
 					@endif							
 				</div>							
 			</div>	
+-->
 		<!--	row columns added new on 3/June/2016 ACRA Business Profile and Memoradum and Articles of Association -->
 		</fieldset>			
+<!--
 		<div class="row">
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label>
@@ -352,6 +355,7 @@
 					
 				</div>
 			</div>
+-->
 		
 		
 		

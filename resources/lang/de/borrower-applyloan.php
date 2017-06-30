@@ -35,4 +35,8 @@ return [
 	'loan_title_info_2'			=> 'Dieser Prozess wird 10 Minuten dauern.', 	
 	'documents_submitted'		=> 'Dokumente eingereicht werden',	
 	'view'						=> 'Aussicht',
+	'create_project'			=> 'Erstellen Sie Projekt',
+	'edit_project'				=> 'Projekt bearbeiten',
+	'project_info'				=>	'Projekt-Info',
+	'rewards_submitted'			=> 'Belohnungen zu werden'
 ];

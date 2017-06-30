@@ -29,17 +29,14 @@ class AdminLoanListingReportModel extends TranWrapper {
 												expression
 										FROM	codelist_details
 										WHERE	codelist_id in (7) && 														
-												codelist_code NOT IN (8,9) 
-										AND		codelist_value !='All'
-										ORDER BY CASE 
-										  WHEN codelist_value = 'New' THEN '1'
-										  WHEN codelist_value = 'Submitted for Approval' THEN '2' 
-										  WHEN codelist_value = 'Pending Comments' THEN '3'
-										  WHEN codelist_value = 'Open for Bids' THEN '4'
-										  WHEN codelist_value = 'Closed for Bids' THEN '5'
-										  WHEN codelist_value = 'Bids Accepted' THEN '6'
-										  WHEN codelist_value = 'Loans Disbursed' THEN '7'
-										  WHEN codelist_value = 'Repayments Complete' THEN '8'
+												codelist_code NOT IN (7,8,9,10) 
+										ORDER BY CASE WHEN codelist_value = 'All' THEN '1'
+										  WHEN codelist_value = 'New' THEN '2'
+										  WHEN codelist_value = 'Submitted for Approval' THEN '3' 
+										  WHEN codelist_value = 'Pending Comments' THEN '4'
+										  WHEN codelist_value = 'Open for Backing' THEN '5'
+										  WHEN codelist_value = 'Closed for Backing' THEN '6'
+										  WHEN codelist_value = 'Project Backed' THEN '7'
 										  ELSE codelist_value END ASC";
 								
 		$filter_rs		= 	$this->dbFetchAll($allLoanStatusSql);	

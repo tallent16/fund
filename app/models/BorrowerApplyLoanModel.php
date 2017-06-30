@@ -6,10 +6,12 @@ use Auth;
 class BorrowerApplyLoanModel extends TranWrapper {
 	
 	public $loan_id		  					=  	"";
+	public $loan_title  					=  	"";
 	public $loan_reference_number  			=  	"";
 	public $borrower_id  					=  	"";
 	public $purpose_singleline		  		=  	"";
 	public $purpose		  					=  	"";
+	public $token_type		  				=  	"";
 	public $apply_date			  			=  	"";
 	public $apply_amount		  			=  	"";
 	public $loan_currency_code			  	=	"";
@@ -21,6 +23,10 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $bid_type			  			=  	"";
 	public $partial_sub_allowed  			=  	"";
 	public $min_for_partial_sub  			=  	"";
+	public $funding_duration  				=  	"";
+	public $latitude  						=  	"";
+	public $longitude  						=  	"";
+	public $loan_image_url  				=  	"";
 	public $repayment_type  				=  	"";
 	public $status  						=  	"";
 	public $statusText  					=  	"New";
@@ -41,6 +47,8 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public $document_details				= 	array();
 	public $submitted_document_details		= 	array();
 	public $purposeSingleLineInfo			= 	array();
+	public $reward_details					= 	array();
+	public $item_details					= 	array();
 	public $bidTypeSelectOptions			= 	"";
 	public $paymentTypeSelectOptions		= 	"";
 	public $completeLoanDetails				= 	0;
@@ -48,6 +56,17 @@ class BorrowerApplyLoanModel extends TranWrapper {
 	public 	$grade 							= 	"";
 	public 	$loan_status 					= 	"";
 	public 	$successTxt 					= 	"";
+	public 	$loan_description 				= 	"";
+	public 	$milstone_name1 				= 	"";
+	public 	$milstone_date1 				= 	"";
+	public 	$milstone1_id 					= 	0;
+	
+	public 	$milstone_name2 				= 	"";
+	public 	$milstone_date2 				= 	"";
+	public 	$milstone2_id 					= 	0;
+	public 	$mileStoneArry					=	array();
+	public 	$numberoftokens					=	1;
+	public 	$costpertoken					=	"";
 	
 	public function getBorrowerLoanDetails($loan_id) {
 		
@@ -57,6 +76,14 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$this->getLoanApplyComments($loan_id);
 		$this->getLoanApplyOpenCommentsCount($loan_id);
 		$this->processDropDowns();
+		$this->getBorrowerAllItemTokes($loan_id);
+		$this->getBorrowerAllRewardTokes($loan_id);
+		$this->getBorrowerAllMilestones($loan_id);
+		
+		
+		//~ echo $this->milestone_name1."<br>";
+		//~ echo $this->milestone_date1."<br>";
+		//~ die;
 	}
 	
 	public function getBorrowOrgName ($borrowerId) {
@@ -74,12 +101,16 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		
 		
 		$loanlist_sql			= "	SELECT 	loans.loan_id,
+											loans.loan_title,
 											loans.loan_reference_number,
 											loans.borrower_id,
 											loans.purpose,
 											loans.purpose_singleline,											
+											loans.token_type,											
 											ifnull(DATE_FORMAT(loans.apply_date,'%d/%m/%Y'),'') apply_date,
 											ROUND(loans.apply_amount,2) apply_amount ,
+											ROUND(loans.numberoftokens,0) numberoftokens ,
+											ROUND(loans.costpertoken,2) costpertoken ,
 											loans.loan_currency_code,
 											loans.loan_tenure,
 											loans.target_interest,
@@ -93,6 +124,12 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											end as bidTypeText,
 											loans.partial_sub_allowed,
 											ROUND(loans.min_for_partial_sub,2) min_for_partial_sub,
+											loans.funding_duration,
+											loans.latitude,
+											loans.longitude,
+											loans.location_description,
+											loans.loan_image_url,
+											loans.loan_video_url,
 											loans.repayment_type,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 
@@ -115,7 +152,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											case loans.status 
 												   when 1 then 'New' 
 												   when 2 then 'Submitted for Approval'
-												   when 3 then 'Approved for Bid'
+												   when 3 then 'Approved for Backing'
 												   when 4 then 'Pending Comments'
 												   when 5 then 'Bid Closed'
 												   when 6 then 'Loan Disbursed'
@@ -131,11 +168,11 @@ class BorrowerApplyLoanModel extends TranWrapper {
 											loans.total_interest_paid,
 											loans.total_penalties_paid,
 											loans.loan_product_image,
-											loans.loan_video_url,
 											loans.loan_risk_grade grade,
 											loans.risk_industry,
 											loans.risk_strength,
 											loans.risk_weakness,
+											loans.loan_description,
 											users.firstname,
 											borrowers.contact_person_mobile ,
 											users.email
@@ -145,13 +182,15 @@ class BorrowerApplyLoanModel extends TranWrapper {
                                     AND		borrowers.user_id 	= 	users.user_id ";
 		
 		$loanlist_rs		= 	$this->dbFetchAll($loanlist_sql);
-		
+		//~ echo "<pre>",print_r($loanlist_rs),"</pre>";
+		//~ die;
 		if ($loanlist_rs) {
 		
 			$vars = get_object_vars ( $loanlist_rs[0] );
 			foreach($vars as $key=>$value) {
 				$this->{$key} = $value;
 			}
+		
 			$this->completeLoanDetails	=	1;
 		}
 	}
@@ -231,8 +270,15 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		 $this->setAuditOn($moduleName, $actionSumm, $actionDet, "Borrower", $borrName);
 										
 		$loanId		=	 $this->updateBorrowerLoanInfo($postArray,$transType,$borrowerId);
-		if(Auth::user()->usertype	==	USER_TYPE_BORROWER) {
-			$this->updateBorrowerLoanDocuments($postArray,$transType,$loanId);
+		if(Auth::user()->usertype	==	USER_TYPE_BORROWER 
+			||Auth::user()->usertype	==	USER_TYPE_ADMIN) {
+			
+			$this->updateProjectImage($loanId,$postArray);
+			
+			$this->updateMilestones($loanId,$postArray);
+			
+			$this->updateBorrowerRewardToken($postArray,$loanId);
+			
 		}
 		
 		if( (isset($postArray['hidden_loan_statusText']) &&
@@ -277,66 +323,70 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		}		
 		
 					
-		$loan_reference_number 			=	"L-";
-		$format_date 					= 	date('Ym');
-		$purpose						= 	$postArray['laon_purpose'];
+		$project_title 					=	$postArray['loan_title'];
+		$project_ref_number 			=	$postArray['project_ref_num'];
+		$purpose						= 	$postArray['project_purpose'];
+		$purpose						= 	$postArray['project_purpose'];
 		$purpose_singleline				= 	$postArray['purpose_singleline'];
-		$apply_date						= 	$this->getDbDateFormat(date("d/m/Y"));
+		$apply_date						= 	$postArray['fund_start_date'];
+		$apply_date						= 	$this->getDbDateFormat($apply_date);
+		$fund_duration					= 	$postArray['fund_duration'];
+		$latitude						= 	$postArray['latitude'];
+		$longitude						= 	$postArray['longitude'];
+		$location_description			= 	$postArray['location_description'];
+		$loan_video_url					= 	$postArray['project_video'];
 		$apply_amount		 			= 	$this->makeFloat($postArray['loan_amount']);
-		$loan_tenure	 				= 	$postArray['loan_tenure'];
-		$target_interest	 			= 	$postArray['target_interest'];
-		$bid_type		 				= 	$postArray['bid_type'];
+		$numberoftokens		 			= 	$this->makeFloat($postArray['no_of_tokens']);
+		$costpertoken		 			= 	$this->makeFloat($postArray['cost_per_token']);
 		$partial_sub_allowed 			= 	$postArray['partial_sub_allowed'];
+		$token_type 					= 	1;
 		if(isset($postArray['min_for_partial_sub']))
 			$min_for_partial_sub 			= 	$this->makeFloat($postArray['min_for_partial_sub']);
 		else
 			$min_for_partial_sub 			= 	"";
-		$repayment_type 				= 	$postArray['payment_type'];
-		$final_interest_rate 			= 	$postArray['target_interest'];
-		$loan_sanctioned_amount 		= 	$apply_amount;
-		$trans_fees						=	($apply_amount*4)/100 ;
-		$total_disbursed				=	$apply_amount	-	$trans_fees;
+		//~ echo $location_description;
+		//~ die;
 		
 		$dataArray = array(	'borrower_id'					=> $borrower_id,
-							'purpose'						=> ($purpose!="")?$purpose:null,
+							'loan_title'					=> ($project_title!="")?$project_title:null,
+							'loan_description'				=> ($purpose!="")?$purpose:null,
+							'loan_reference_number'			=> ($project_ref_number!="")?$project_ref_number:null,
 							'purpose_singleline'			=> ($purpose_singleline!="")?$purpose_singleline:null,
 							'apply_date' 					=> $apply_date,
 							'apply_amount' 					=> ($apply_amount!="")?$apply_amount:null,
-							'loan_tenure' 					=> ($loan_tenure!="")?$loan_tenure:null,
-							'target_interest' 				=> ($target_interest!="")?$target_interest:null,
-							'bid_type' 						=> ($bid_type!="")?$bid_type:null,
+							'numberoftokens' 				=> ($numberoftokens!="")?$numberoftokens:null,
+							'costpertoken' 					=> ($costpertoken!="")?$costpertoken:null,
+							'funding_duration' 				=> ($fund_duration!="")?$fund_duration:null,
+							'latitude' 						=> ($latitude!="")?$latitude:null,
+							'longitude' 					=> ($longitude!="")?$longitude:null,
+							'location_description' 			=> ($location_description!="")
+																		?$location_description:null,
+							'loan_video_url' 				=> ($loan_video_url!="")?$loan_video_url:null,
+
 							'partial_sub_allowed' 			=> ($partial_sub_allowed!="")?$partial_sub_allowed:null,
 							'min_for_partial_sub' 			=> ($min_for_partial_sub!="")?$min_for_partial_sub:null,
-							'repayment_type' 				=> $repayment_type,
-							'final_interest_rate' 			=> ($final_interest_rate!="")?$final_interest_rate:null,
-							'loan_sanctioned_amount' 		=> $loan_sanctioned_amount,
-							'trans_fees' 					=> $trans_fees,
 							'status' 						=> $status,
-							'total_disbursed' 				=> $total_disbursed);
-							
+							'token_type' 					=>	$token_type
+							);			
 	// echo "<pre>",print_r($dataArray),"</pre>";
+		$dataArray['bid_close_date']		=	$this->getDbDateFormat(
+															date('d-m-Y',
+																strtotime($apply_date. "+".$fund_duration." days")
+																));
 		
 		if ($transType != "edit") {
-			$dataArray['bid_close_date']		=	$this->getDbDateFormat(date('d-m-Y', strtotime("+20 days")));
-			
-			$dataArray['penalty_interest']		=	$this->getSystemSettingFieldByKey("penalty_interest");
-			$dataArray['penalty_fee_minimum']	=	$this->getSystemSettingFieldByKey("penalty_fee_minimum");
-			$dataArray['penalty_fee_percent']	=	$this->getSystemSettingFieldByKey("penalty_fee_percent");
 			
 			$loanId =  $this->dbInsert('loans', $dataArray, true);
 			if ($loanId < 0) {
 				return -1;
 			}
-			// Update the loan_reference_number to the newly added row		
-			$dataArray 	   = array( 'loan_reference_number'	=> $loan_reference_number.$format_date."-".$loanId);
-			$whereArry	   = array("loan_id" =>"{$loanId}");
-			$result 	   = $this->dbUpdate('loans', $dataArray, $whereArry );
 			return $loanId;
 		}else{
 			$whereArry								=	array("loan_id" =>"{$loanId}");
 			if (!$this->dbUpdate('loans', $dataArray, $whereArry)) {
 				return -1;
 			}
+			
 			return $loanId;
 		}
 	}
@@ -671,29 +721,343 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$boid				=	$postArray['borrower_id'];
 		
 		$loan_risk_grade	=	($postArray['grade']	!=	"")?$postArray['grade']:NULL;
-		$risk_industry		=	($postArray['risk_industry']	!=	"")?$postArray['risk_industry']:NULL;
-		$risk_strength		=	($postArray['risk_strength']	!=	"")?$postArray['risk_strength']:NULL;
-		$risk_weakness		=	($postArray['risk_weakness']	!=	"")?$postArray['risk_weakness']:NULL;
 		
-		$dataArray			=	array(	"loan_risk_grade"=>$loan_risk_grade,
-										"risk_industry"=>$risk_industry,	
-										"risk_strength"=>$risk_strength,	
-										"risk_weakness"=>$risk_weakness
+		$dataArray			=	array(	"loan_risk_grade"=>$loan_risk_grade
 										);
 		$whereArry			=	array("loan_id" =>"{$loanId}");
 		
-		//~ $databorArray		=	array(	"borrower_risk_grade"=>$loan_risk_grade,
-										//~ "risk_industry"=>$risk_industry,	
-										//~ "risk_strength"=>$risk_strength,	
-										//~ "risk_weakness"=>$risk_weakness
-										//~ );
-		
-		//~ $whereborArry		=	array("borrower_id" =>"{$boid}");
-		
 		$this->dbUpdate('loans', $dataArray, $whereArry);
-		//~ $this->dbUpdate('borrowers', $databorArray, $whereArry);
 				
 		return $loanId;
+	}
+	
+	
+	public function updateBorrowerRewardToken($postArray,$loanId) {
+	
+		$this->dbDelete("token_item", array("loan_id"=>$loanId));
+		
+		if (isset($postArray["reward_row"])) {
+			$rewardRows = $postArray["reward_row"];
+			$numRows = count($rewardRows['title']);
+		} else {
+			$rewardRows = array();
+			$numRows = 0;
+		}
+		//~ echo "<pre>",print_r($rewardRows),"</pre>";
+		//~ echo $loanId;
+		//~ die;
+		//~ 
+		$rowIndex = 0;
+		$rewardIds  = array();
+		
+		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+			
+			$id							= $rewardRows['id'][$rowIndex];
+			if ($id > 0) {
+				$rewardIds[] = $id;
+				$update = true;
+			} else {
+				$update = false;
+			}
+			
+			$token_title				= 	$rewardRows['title'][$rowIndex];
+			$token_cost					= 	$rewardRows['cost'][$rowIndex];
+			$token_description			= 	$rewardRows['desc'][$rowIndex];
+			$token_limit				= 	$rewardRows['limit'][$rowIndex];
+			$token_est_delv_date		= 	$rewardRows['estDelDate'][$rowIndex];
+			// Construct the data array
+			$dataArray = array(	
+							'loan_id' 					=> $loanId,
+							'token_title'	 			=> $token_title,
+							'token_cost'				=> $this->makeFloat($token_cost),
+							'token_description' 		=> $token_description,
+							'token_limit' 				=> $token_limit,
+							'estimated_delivery_date' 	=> ($token_est_delv_date!="")?
+															$this->getDbDateFormat($token_est_delv_date):NULL,
+							);		
+
+			if ($update) {
+				$whereArray	=	["loan_id"=> $loanId,
+								 "token_reward_id"=> $id];
+				
+				$this->dbUpdate("token_reward", $dataArray, $whereArray);
+			
+			} else {
+				$id	 =  $this->dbInsert('token_reward', $dataArray, true);
+				$rewardIds[]	=	$id;
+			}
+			
+		}
+		
+		$where	=	["loan_id" => 	$loanId,
+					 "whereNotIn" =>	["column" => 'token_reward_id',
+										 "valArr" => $rewardIds]];
+		$this->dbDelete("token_reward", $where);
+
+		return 1;
+	}
+	
+	public function updateBorrowerItemToken($postArray,$loanId) {
+	
+		$this->dbDelete("token_reward", array("loan_id"=>$loanId));
+		
+		if (isset($postArray["item_row"])) {
+			$itemdRows = $postArray["item_row"];
+			$numRows = count($itemdRows['title']);
+		} else {
+			$itemdRows = array();
+			$numRows = 0;
+		}
+		//~ echo "<pre>",print_r($directorRows),"</pre>";
+		//~ die;
+		
+		$rowIndex = 0;
+		$itemIds  = array();
+		
+		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+			
+			$id							= $itemdRows['id'][$rowIndex];
+			if ($id > 0) {
+				$itemIds[] = $id;
+				$update = true;
+			} else {
+				$update = false;
+			}
+			
+			$token_title				= 	$itemdRows['title'][$rowIndex];
+			$token_pledge_amount		= 	$itemdRows['plgamt'][$rowIndex];
+			$token_description			= 	$itemdRows['desc'][$rowIndex];
+			$token_est_delv_date		= 	$itemdRows['estDelDate'][$rowIndex];
+			$token_limit				= 	$itemdRows['limit'][$rowIndex];
+			
+			// Construct the data array
+			$dataArray = array(	
+							'loan_id' 					=> $loanId,
+							'token_title'	 			=> $token_title,
+							'token_pledge_amount'		=> $this->makeFloat($token_pledge_amount),
+							'token_description' 		=> $token_description,
+							'token_est_delv_date' 		=> $this->getDbDateFormat($token_est_delv_date),
+							'token_limit' 				=> $token_limit);		
+
+			if ($update) {
+				$whereArray	=	["loan_id" 	=> $loanId,
+								 "token_item_id"			=> $id];
+				$this->dbUpdate("token_item", $dataArray, $whereArray);
+			} else {
+				$id	 =  $this->dbInsert('token_item', $dataArray, true);
+				$itemIds[]	=	$id;
+			}
+			
+		}
+		
+		$where	=	["loan_id" => 	$loanId,
+					 "whereNotIn" =>	["column" => 'token_item_id',
+										 "valArr" => $itemIds]];
+		$this->dbDelete("token_item", $where);
+
+		return 1;
+	}
+	
+	public function getBorrowerAllRewardTokes($loanId,$sortBy='') {
+		
+		$orderBy		=	"";
+		if($sortBy!="") {
+			$orderBy		=	"	ORDER BY token_cost";
+		}
+		$loanreward_sql		= 	"	SELECT 	token_reward_id id,
+												token_title,
+												token_cost,
+												token_description,
+												token_limit,
+												estimated_delivery_date,
+												loans.numberoftokens,
+												(loans.numberoftokens * token_cost) claimamount
+										FROM 	token_reward,loans
+										WHERE	token_reward.loan_id = {$loanId}
+										AND		token_reward.loan_id = loans.loan_id
+										{$orderBy}";
+		
+	
+		$loanreward_rs		= 	$this->dbFetchAll($loanreward_sql);
+		
+		if ($loanreward_rs) {
+			foreach ($loanreward_rs as $rwdRow) {
+				$newrow = count($this->reward_details);
+				$newrow ++;
+				foreach ($rwdRow as $colname => $colvalue) {
+					$this->reward_details[$newrow][$colname] = $colvalue;
+				}
+			}
+		}
+		return $loanreward_rs;
+	}
+	
+	public function getBorrowerAllItemTokes($loanId) {
+		
+		$loanitem_sql		= 	"	SELECT 		token_item_id id,
+												token_title,
+												token_pledge_amount,
+												token_description,
+												token_est_delv_date,
+												token_limit
+										FROM 	token_item
+										WHERE	loan_id = {$loanId}";
+		
+		
+		$loanitem_rs		= 	$this->dbFetchAll($loanitem_sql);
+			
+		if ($loanitem_rs) {
+			foreach ($loanitem_rs as $itemRow) {
+				$newrow = count($this->item_details);
+				$newrow ++;
+				foreach ($itemRow as $colname => $colvalue) {
+					$this->item_details[$newrow][$colname] = $colvalue;
+				}
+			}
+		}
+		return $loanitem_rs;
+	}
+	
+	public function updateProjectImage($loanId,$postArray){
+		
+		$fileUploadObj			=	new FileUpload();
+		$updateAttachment		=	false;
+		$destinationPath 		= 	Config::get('moneymatch_settings.upload_bor');
+		$updateDataArry			=	array();
+		
+		if(!isset($postArray['project_image'])){
+			return;
+		}
+		
+		$project_image 			= 	$postArray['project_image'];
+		$project_image_hidden 	= 	$postArray['project_image_hidden'];
+		$dataArray 				= 	array('loan_image_url' => $project_image);
+		
+		if(isset($project_image)){
+			if(isset($project_image_hidden)){
+				$filePath		=	$project_image_hidden;
+				$fileUploadObj->deleteFile($filePath);
+			}
+			unset($prefix);
+			unset($filename);
+			unset($newfilename);
+			unset($file);
+			
+			$file			=	$project_image;
+			$filePath		=	$destinationPath;
+			$prefix			=	"PROIMG_";
+			$fileUploadObj->createIfNotExists($filePath);
+			//~ echo $filePath; die;
+			$loan_image_url								=	$fileUploadObj->storeFile($filePath ,$file,$prefix);
+			$updateDataArry["loan_image_url"]			=	$loan_image_url;
+			$updateAttachment							=	true;
+		}
+		
+		if($updateAttachment) {
+			$whereArray	=	["loan_id" 	=> $loanId];
+			$this->dbUpdate("loans", $updateDataArry, $whereArray);
+		}
+		$this->successTxt	= "Project Image  Updated Successfully";
+		
+	}
+	
+	public function updateMilestones($loanId,$postArray){
+			
+		if (isset($postArray["milstone_row"])) {
+			$milestoneRows = $postArray["milstone_row"];
+			$numRows = count($milestoneRows['id']);
+		} else {
+			$rewardRows = array();
+			$numRows = 0;
+		}
+		
+		$rowIndex = 0;
+		$milestoneIds  = array();
+		
+		for ($rowIndex = 0; $rowIndex < $numRows; $rowIndex++) {
+			
+			$id							= $milestoneRows['id'][$rowIndex];
+			if ($id > 0) {
+				$milestoneIds[] = $id;
+				$update = true;
+			} else {
+				$update = false;
+			}
+			
+			$milestone_name				= 	$milestoneRows['name'][$rowIndex];
+			$milestone_date				= 	$milestoneRows['date'][$rowIndex];
+			$milestone_disbursed		= 	$milestoneRows['disbursed'][$rowIndex];
+			if(!empty($milestone_name) && !empty($milestone_date) ) {
+				
+				
+				// Construct the data array
+				$dataArray = array(	
+								'loan_id' 					=> $loanId,
+								'milestone_name'	 		=> $milestone_name,
+								'milestone_date'	 		=> (!empty($milestone_date))?
+																	$this->getDbDateFormat($milestone_date):NULL,
+								'milestone_disbursed'	 	=> $milestone_disbursed
+								);		
+
+				if ($update) {
+					$whereArray	=	["loan_id"=> $loanId,
+									 "loan_milestone_id"=> $id];
+					
+					$this->dbUpdate("loan_milestones", $dataArray, $whereArray);
+				
+				} else {
+					$id	 =  $this->dbInsert('loan_milestones', $dataArray, true);
+					$milestoneIds[]	=	$id;
+				}
+			}	
+		}
+		
+		$whereArray	=	["loan_id" 	=> $loanId,
+						 "whereNotIn" =>	["column" => 'loan_milestone_id',
+										 "valArr" => $milestoneIds]];
+		$this->dbDelete("loan_milestones", $whereArray);
+		
+	}
+	
+	public function getBorrowerAllMilestones($loanId) {
+		
+		$milestone_sql		= 	"	SELECT 		*
+									FROM 	 loan_milestones
+									WHERE	loan_id = {$loanId}";
+		
+		$milestone_rs		= 	$this->dbFetchAll($milestone_sql);
+		
+		if(!empty($milestone_rs)) {
+			foreach($milestone_rs as $milestoneRow) {
+				$id			=	$milestoneRow->loan_milestone_id;
+				$name		=	$milestoneRow->milestone_name;
+				$disbursed	=	$milestoneRow->milestone_disbursed;
+				if($milestoneRow->milestone_date	!=	"0000-00-00" && $milestoneRow->milestone_date!="") {
+					$date	=	date("d-m-Y",strtotime($milestoneRow->milestone_date));
+				}
+				else{
+					$date	=	"";
+				}
+				$this->mileStoneArry[$id]	=	array(
+													"milestone_name"=>$name,
+													"milestone_date"=>$date,
+													"milestone_disbursed"=>$disbursed
+												);
+			}
+		}else{
+			$this->defaultMilestones();
+		}
+		return $milestone_rs;
+	}
+	
+	public function defaultMilestones() {
+		
+		
+		$this->mileStoneArry[0]	=	array(
+										"milestone_name"=>"",
+										"milestone_date"=>"",
+										"milestone_disbursed"=>""
+										);
 	}
 	
 }

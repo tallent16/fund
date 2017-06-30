@@ -22,32 +22,25 @@ class LoanListingController extends MoneyMatchController {
 	}
 
 	public function indexAction() { 
-		$filterIntRate 	= 'all';
+		
 		$filterLoanAmt	= 'all';
-		$filterTenure 	= 'all';
+		$filterCat 		= 'all';
 		$filterGrade 	= 'all';
-		
-		if (isset($_REQUEST["intrate_filter"])) 
-			$filterIntRate 	= $_REQUEST["intrate_filter"];
-		
+				
 		if (isset($_REQUEST["loanamt_filter"])) 
 		$filterLoanAmt	= $_REQUEST["loanamt_filter"];
-		
-		
+				
 		if (isset($_REQUEST["tenure_filter"])) 
-		$filterTenure 	= $_REQUEST["tenure_filter"];
+		$filterCat 	= $_REQUEST["tenure_filter"];
 
 		if (isset($_REQUEST["grade_filter"])) 
 		$filterGrade 	= $_REQUEST["grade_filter"];			
 		
-		$this->loanListing->getLoanList($filterIntRate, $filterLoanAmt, $filterTenure, $filterGrade);
+		$this->loanListing->getLoanList($filterLoanAmt, $filterCat, $filterGrade);
 		$this->loanListing->processDropDowns();
-
 		$withArry	=	array(	"loanListing" => $this->loanListing	, "classname"=>"fa fa-list-alt fa-fw");
 		return view('common.loanlisting')
-			->with($withArry); 
-			
-					
+			->with($withArry); 		
 	}
 	
 	public function getActiveLoansAction() {

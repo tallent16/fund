@@ -34,5 +34,9 @@ return [
 	'loan_title_info_1'			=> 'We are happy to help you to get loan quickly.',
 	'loan_title_info_2'			=> 'This process will take 10 mins to complete.', 
 	'documents_submitted'		=> 'Documents to be Submitted',		
-	'view'						=> 'View',
+	'create_project'			=> 'Create Project',
+	'edit_project'				=> 'Edit Project',
+	'project_info'				=>	'Project Info',
+	'rewards_submitted'			=> 'Rewards'
+	
 ];

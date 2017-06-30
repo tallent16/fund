@@ -58,9 +58,9 @@ class AdminInvestorsProfileReportController extends MoneyMatchController {
 		$jsonObj	=	json_decode($postArray['report_json'],true);
 		//~ $this->adminInvProRepMod->prnt($jsonObj);
 		$headers	=	[
-							0=> [	'Investor Id','Investor User Name','First Name','Last name','Email',
+							0=> [	'Backer Id','Backer User Name','First Name','Last name','Email',
 									'Mobile Number','Date of Birth','NRIC Number','Nationality','Estimated Yearly Income',
-									'Balance on Hand','No of Loans Applied','No of Loans Invested','Total Invested Amount',
+									'Balance on Hand','No of Projects Applied','No of Projects Invested','Total Invested Amount',
 									'Total Returns','ROI'
 								]
 						];
@@ -73,10 +73,10 @@ class AdminInvestorsProfileReportController extends MoneyMatchController {
 								27=>'AB',28=>'AC',29=>'AD',30=>'AE',31=>'AF',32=>'AG',33=>'AH',34=>'AI',35=>'AJ',
 								36=>'AK',37=>'AL',38=>'AM',39=>'AN',40=>'AO',41=>'AP',42=>'AQ',43=>'AR',44=>'AS'	
 							);
-		Excel::create('InvestorProfileReport', function($excel) 
+		Excel::create('BackerProfileReport', function($excel) 
 			use ($jsonObj,$headers,$headStart,$startRow,$breakColumn,$colKeyNameArry)
 		 {
-				$excel->sheet('Investors', function($sheet)
+				$excel->sheet('Backers', function($sheet)
 					use ($headers,$headStart,$startRow,$breakColumn,$jsonObj,$colKeyNameArry)
 				 {
 						$headerRow = $headStart;

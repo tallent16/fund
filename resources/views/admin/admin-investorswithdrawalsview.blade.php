@@ -7,7 +7,7 @@
 		var	baseUrl	=	"{{url('')}}"	
 	</script>
 @endsection
-@section('page_heading',Lang::get('Investor Withdrawals') )
+@section('page_heading',Lang::get('Backer Withdrawals') )
 @section('section') 
 @if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
 	@var	$screenMode	=	"admin"
@@ -80,7 +80,7 @@
 					<div class="row"><!-- Row 1 -->					
 						<div class="col-xs-12 col-sm-5 col-lg-3">
 							<label>
-								{{ Lang::get('Investor Name')}}
+								{{ Lang::get('Backer Name')}}
 							</label>
 						</div>								
 						<div class="col-xs-12 col-sm-7 col-lg-3">

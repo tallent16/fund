@@ -77,16 +77,16 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 											) statusText,
 
 											case loans.status 
-												   when 1 then 'Edit Loan' 
-												   when 2 then 'Loan Details'
-												   when 3 then 'Loan Details'
-												   when 4 then 'Edit Loan'
-												   when 5 then 'Loan Details'
-												   when 6 then 'Loan Details'
-												   when 7 then 'Loan Details'
-												   when 8 then 'Cancelled Loan'
-												   when 9 then 'Loan Details'
-												   when 10 then 'Loan Details'
+												   when 1 then 'Edit Project' 
+												   when 2 then 'Project Details'
+												   when 3 then 'Project Details'
+												   when 4 then 'Edit Project'
+												   when 5 then 'Project Details'
+												   when 6 then 'Project Details'
+												   when 7 then 'Project Details'
+												   when 8 then 'Cancelled Project'
+												   when 9 then 'Project Details'
+												   when 10 then 'Project Details'
 											end as viewStatus,
 											case loans.repayment_type 
 												   when 1 then 'Bullet' 

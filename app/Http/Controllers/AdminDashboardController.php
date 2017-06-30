@@ -22,7 +22,7 @@ class AdminDashboardController extends MoneyMatchController {
 		
 		$periodic_snapshot["panels"][]	=	array(
 													"panel_id"=>"not_fully_subscribed",
-													"panel_title"=>"LOANS NOT FULLY SUBSCRIBED",
+													"panel_title"=>"PROJECT NOT FULLY SUBSCRIBED",
 													"panel_body_widget"=>
 																"widgets.admin.accordion.loans_not_fullysubscribed",
 													"panel_body_content"=>
@@ -32,7 +32,7 @@ class AdminDashboardController extends MoneyMatchController {
 		$periodic_snapshot["panels"][]	=	array(
 		
 													"panel_id"=>"defaulting_loans",
-													"panel_title"=>"DEFAULTING LOANS",
+													"panel_title"=>"DEFAULTING PROJECT",
 													"panel_body_widget"=>
 																"widgets.admin.accordion.defaulting_loans",
 													"panel_body_content"=>

@@ -37,7 +37,7 @@
 					<li>
 						<a 	data-toggle="tab"
 							href="#loan_feescharges">
-							{{ Lang::get('Loan Fees And Charges') }}
+							{{ Lang::get('Project Fees And Charges') }}
 						</a>
 					</li>
 					<li>

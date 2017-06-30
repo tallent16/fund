@@ -26,6 +26,7 @@
 			</div>
 		</div>
 	@endif
+	
 	<div class="mainCommentDivBlock">
 			@foreach($commnetInfo as $commentRow)	
 				@if($commentRow['in_response_to']	==	"")

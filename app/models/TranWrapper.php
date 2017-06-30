@@ -910,4 +910,74 @@ class TranWrapper extends MoneyMatchModel {
 		$result		= $this->dbFetchAll($sql);
 		return $result;
 	}
+	
+	public function convertVideoUrlToEmbedeUrl($url,$wd="100%",$hg="400") {
+	
+	   // video url patterns(youtube, instagram, vimeo, dailymotion, youku, mp4, ogg, webm)
+      $ytRegExp = "/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/";
+      $ytMatchRes = preg_match($ytRegExp,$url,$ytMatch);
+    
+      $igRegExp = "/(?:www\.|\/\/)instagram\.com\/p\/(.[a-zA-Z0-9_-]*)/";
+      $igMatchRes =  preg_match($igRegExp,$url,$igMatch);
+
+      $vRegExp = "/\/\/vine\.co\/v\/([a-zA-Z0-9]+)/";
+      $vMatchRes = preg_match($vRegExp,$url,$vMatch);
+
+      $vimRegExp = "/\/\/(player\.)?vimeo\.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/";
+      $vimMatchRes = preg_match($vimRegExp,$url,$vimMatch);
+
+      $dmRegExp = "/.+dailymotion.com\/(video|hub)\/([^_]+)[^#]*(#video=([^_&]+))?/";
+      $dmMatchRes = preg_match($dmRegExp,$url,$dmMatch);
+
+      $youkuRegExp = "/\/\/v\.youku\.com\/v_show\/id_(\w+)=*\.html/";
+      $youkuMatchRes = preg_match($youkuRegExp,$url,$youkuMatch);
+
+      $mp4RegExp = "/^.+.(mp4|m4v)$/";
+      $mp4MatchRes = preg_match($mp4RegExp,$url,$mp4Match);
+
+      $oggRegExp = "/^.+.(ogg|ogv)$/";
+      $oggMatchRes = preg_match($oggRegExp,$url,$oggMatch);
+
+      $webmRegExp = "/^.+.(webm)$/";
+      $webmMatchRes = preg_match($webmRegExp,$url,$webmMatch);
+
+      $video="";
+     
+      if ( $ytMatchRes && strlen($ytMatch[1])	=== 11) {
+       $youtubeId = $ytMatch[1];
+       
+        $video ='<iframe frameborder="0" src="//www.youtube.com/embed/'.$youtubeId.'"' ;
+        $video =$video.' width="'.$wd.'" height="'.$hg.'" ></iframe>';
+      } else if ($igMatchRes && count($igMatch[0])) {
+		  
+		$video ='<iframe frameborder="0" src="https://instagram.com/p/'.$igMatch[1].'/embed/"' ;
+        $video =$video.' width="'.$wd.'" height="'.$hg.'" scrolling="no" allowtransparency="true" ></iframe>';
+        
+      } else if ($vMatchRes && strlen($vMatch[0])) {
+        
+        $video ='<iframe frameborder="0" src="'.$vMatch[0].'/embed/simple"' ;
+        $video =$video.' width="'.$wd.'" height="'.$hg.'" class="vine-embed" ></iframe>';
+        
+      } else if ($vimMatchRes && strlen($vimMatch[3])) {
+		
+		$video ='<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen' ;
+		$video =$video.' frameborder="0" src="//player.vimeo.com/video/'.$vimMatch[3].'"' ;
+        $video =$video.' width="'.$wd.'" height="'.$hg.'" ></iframe>';
+      
+      } else if ($dmMatchRes && strlen($dmMatch[2])) {
+        
+        $video ='<iframe frameborder="0" src="//www.dailymotion.com/embed/video/'.$dmMatch[2].'"' ;
+        $video =$video.' width="'.$wd.'" height="'.$hg.'" class="vine-embed" ></iframe>';
+      } else if ($youkuMatchRes && strlen($youkuMatch[1])) {
+		  
+		$video ='<iframe webkitallowfullscreen mozallowfullscreen allowfullscreen' ;
+		$video =$video.' frameborder="0" src="//player.youku.com/embed/'.$youkuMatch[1].'"' ;
+        $video =$video.' width="'.$wd.'" height="'.$hg.'" ></iframe>';
+      } else if ($mp4MatchRes || $oggMatchRes || $webmMatchRes) {
+		
+		$video	=	'<video controls src="'.$url.'"  width="'.$wd.'" height="'.$hg.'" ></video>';
+      }
+      
+      return	$video;
+	}
 }

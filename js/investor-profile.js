@@ -30,8 +30,9 @@ $(document).ready(function (){
 	});
 //This for admin screen only
 	$("#admin_save_button").click(function(){
+		alert('admin save');
 		$("#isSaveButton").val("yes");
-		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/save");
+		$("#form-profile").attr("action",baseUrl+"/admin/backer/profile/save"); 
 		formValid	=	true;
 		var	email		=	$("#email").val();
 		var	username	=	$("#displayname").val();
@@ -49,7 +50,7 @@ $(document).ready(function (){
 		checkEmail(email);
 		
 		validTab();
-		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/approve");
+		$("#form-profile").attr("action",baseUrl+"/admin/backer/profile/approve");
 		if($('.commentClass:not(#comment_status_XXX)').not(':checked').length){
 			errMessage	=	"Please close all comments before approve";
 			showDialog("",errMessage);
@@ -158,7 +159,7 @@ $(document).ready(function (){
    
     
 	$("#returnback_button").click(function(){
-		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/return_investor");
+		$("#form-profile").attr("action",baseUrl+"/admin/backer/profile/return_investor");
 		formValid	=	true;
 		if($('.commentClass:not(#comment_status_XXX)').length	>	0){
 			var uncheckedLen	=	$("#commentBoxContainer .commentClass").length
@@ -176,7 +177,7 @@ $(document).ready(function (){
     });
 	
 	$("#save_comment_button").click(function(){		
-		$("#form-profile").attr("action",baseUrl+"/admin/investor/profile/save_comments");    
+		$("#form-profile").attr("action",baseUrl+"/admin/backer/profile/save_comments");    
 		formValid	=	true;
     });
     

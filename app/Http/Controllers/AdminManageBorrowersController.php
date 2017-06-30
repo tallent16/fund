@@ -56,7 +56,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		$bor_id		=	base64_decode($bor_id);
 		
 		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
-			return redirect()->to('admin/manageborrowers');
+			return redirect()->to('admin/managecreators');
 		}
 		$this->borrowerProfileModel->getBorrowerDetails($bor_id);
 		$withArry	=	array(		"modelBorPrf"=>$this->borrowerProfileModel,
@@ -142,7 +142,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 		
 		$bor_id		=	base64_decode($bor_id);
 		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
-			return redirect()->to('admin/manageborrowers');
+			return redirect()->to('admin/managecreators');
 		}
 		$bor_profile_status	=	$this->borrowerProfileModel->getBorrowerProfileStatus($bor_id);
 		$dataArray = array(	'status' 	=>	BORROWER_STATUS_VERIFIED );
@@ -157,14 +157,14 @@ class AdminManageBorrowersController extends MoneyMatchController {
 							->with('failure','Borrower Profile information Failed approved');	
 			}
 		}
-		return redirect()->to('admin/manageborrowers');
+		return redirect()->to('admin/managecreators');
 	}
 	
 	public function rejectBorrowerAction($bor_id){
 		
 		$bor_id		=	base64_decode($bor_id);
 		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
-			return redirect()->to('admin/manageborrowers');
+			return redirect()->to('admin/managecreators');
 		}
 		$bor_profile_status	=	$this->borrowerProfileModel->getBorrowerProfileStatus($bor_id);
 		
@@ -181,14 +181,14 @@ class AdminManageBorrowersController extends MoneyMatchController {
 							->with('failure','reject borrower updated Failed');	
 			}
 		}
-		return redirect()->to('admin/manageborrowers');
+		return redirect()->to('admin/managecreators');
 	}
 	
 	public function deleteBorrowerAction($bor_id){
 		
 		$bor_id		=	base64_decode($bor_id);
 		if(!$this->borrowerProfileModel->CheckBorrowerExists($bor_id)){
-			return redirect()->to('admin/manageborrowers');
+			return redirect()->to('admin/managecreators');
 		}
 		$bor_profile_status	=	$this->borrowerProfileModel->getBorrowerProfileStatus($bor_id);
 		
@@ -204,7 +204,7 @@ class AdminManageBorrowersController extends MoneyMatchController {
 							->with('failure','reject borrower updated Failed');	
 			}
 		}
-		return redirect()->to('admin/manageborrowers');
+		return redirect()->to('admin/managecreators');
 	}
 	
 	public function approveBorrowerBulkAction(){

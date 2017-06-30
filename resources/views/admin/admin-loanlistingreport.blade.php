@@ -44,7 +44,7 @@
 		}
 	</style>
 @stop
-@section('page_heading',Lang::get('Loan Listing Report') )
+@section('page_heading',Lang::get('Project Listing Report') )
 @section('section')  
 @var	$apply_date			=	"checked"
 @var	$sanctioned_date	=	""
@@ -57,7 +57,7 @@
 <div id="filter_area" >
 <form 	method="POST" 
 		class='form-validate' 
-		action="{{url('admin/loan-listing/report')}}" >
+		action="{{url('admin/project-listing/report')}}" >
 	<input  type="hidden" 
 			name="_token"
 			id="hidden_token"
@@ -167,7 +167,7 @@
 <form 	class="form-horizontal" 
 		id="excel_export" 
 		method="post"
-		action="{{url('admin/loan-listing-report/download')}}">
+		action="{{url('admin/project-listing-report/download')}}">
 		<input  type="hidden" 
 				name="_token"
 				id="hidden_token"
@@ -202,17 +202,12 @@
 					<table class="table tab-fontsize table-border-custom text-left" id="adminloanlisting">
 						<thead>
 							<tr>
-								<th class="tab-head text-left">{{ Lang::get('Loan Ref No') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Organasition Name') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Borrower Grade') }}</th>
-								<th class="tab-head text-right">{{ Lang::get('Applied Amount') }}</th>
+								<th class="tab-head text-left">{{ Lang::get('Ref No') }}</th>
+								<th class="tab-head text-left">{{ Lang::get('Creator Organasition Name') }}</th>
+								<th class="tab-head text-left">{{ Lang::get('Creator Grade') }}</th>
+								<th class="tab-head text-right">{{ Lang::get('Funding Goal') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Apply Date') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Approval Date') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Disburse Date') }}</th>
-								<th class="tab-head text-right">{{ Lang::get('Tenure') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Bid Type') }}</th>
-								<th class="tab-head text-right">{{ Lang::get('Interest') }}</th>
-								<th class="tab-head text-left">{{ Lang::get('Repayment Type') }}</th>
 								<th class="tab-head text-right">{{ Lang::get('Partial Subscription Amount') }}</th>
 								<th class="tab-head text-left">{{ Lang::get('Status') }}</th>
 							</tr>
@@ -226,11 +221,6 @@
 									<td class="text-right">{{number_format($listRow->apply_amount,2,'.',',')}}</td>
 									<td class="text-left">{{$listRow->apply_date}}</td>
 									<td class="text-left">{{$listRow->loan_approval_date}}</td>
-									<td class="text-left">{{$listRow->disbursement_date}}</td>
-									<td class="text-right">{{$listRow->loan_tenure}}</td>
-									<td class="text-left">{{$listRow->bid_type}}</td>
-									<td class="text-right">{{$listRow->target_interest}}</td>
-									<td class="text-left">{{$listRow->repayment_type}}</td>
 									<td class="text-right">{{number_format($listRow->par_sub_amt,2,'.',',')}}</td>
 									<td class="text-left">{{$listRow->loan_status_name}}</td>
 								</tr>

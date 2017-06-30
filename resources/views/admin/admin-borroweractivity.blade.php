@@ -22,7 +22,7 @@
 		}
 	</script>
 	@endsection
-@section('page_heading',Lang::get('Borrower Activity Report') )
+@section('page_heading',Lang::get('Creator Activity Report') )
 @section('section')  
 	@var	$borFilter	=	$adminBorActRepMod->borFilterValue;
 	@var	$fromDate	=	$adminBorActRepMod->fromDateFilterValue;
@@ -39,7 +39,7 @@
 	<div class="row">		
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
-					<strong>{{ Lang::get('Borrower Name') }}</strong><br>							
+					<strong>{{ Lang::get('Creator Name') }}</strong><br>							
 					{{ Form::select('borrower_filter[]', $borList,$borFilter,
 												[	"class" => "selectpicker",
 													"multiple" => "multiple",

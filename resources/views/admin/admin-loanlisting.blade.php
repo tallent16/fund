@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+	@extends('layouts.dashboard')
 @section('styles')
 	{{ Html::style('css/datatable/jquery.dataTables.css') }}
 	{{ Html::style('css/datatable/dataTables.tableTools.css') }}
@@ -29,7 +29,7 @@
 		}
 	</style>
 @stop
-@section('page_heading',Lang::get('Loan Listing') )
+@section('page_heading',Lang::get('Project Listing') )
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
@@ -92,12 +92,10 @@
 				<table class="table table-striped" id="adminloanlisting">
 					<thead>
 						<tr>
-							<th>{{ Lang::get('Loan Reference No') }}</th>
-							<th>{{ Lang::get('Borrower Organisation Name') }}</th>
-							<th>{{ Lang::get('Loan Amt') }}</th>
-							<th>{{ Lang::get('Target Interest') }}</th>
-							<th>{{ Lang::get('Tenure') }}</th>
-							<th>{{ Lang::get('Bid Type') }}</th>
+							<th>{{ Lang::get('Reference No') }}</th>
+							<th>{{ Lang::get('Creator Organisation Name') }}</th>
+							<th>{{ Lang::get('Project Title') }}</th>
+							<th>{{ Lang::get('Project Amt') }}</th>
 							<th>{{ Lang::get('Bid Close Date') }}</th>
 							<th>{{ Lang::get('Status') }}</th>
 						</tr>

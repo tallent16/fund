@@ -27,7 +27,7 @@
 	</script>
 	<script src="{{ asset("js/borrower-myloaninfo.js") }}" type="text/javascript"></script>
 @endsection
-@section('page_heading',Lang::get('borrower-loaninfo.page_heading') )
+@section('page_heading',Lang::get('My Projects') )
 @section('section')    
 @var	$borrowerAllList	=	$BorModMyLoanInfo->allloan_details
 
@@ -38,7 +38,7 @@
 				<div class="panel panel-primary panel-container">
 					
 					<div class="panel-heading panel-headsection">					
-						{{ Lang::get('borrower-loaninfo.loaninfo') }}
+						{{ Lang::get('PROJECT INFO') }}
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
@@ -48,7 +48,7 @@
 								<div class="row">	
 									<div class="col-sm-12 col-lg-3"> 														
 										<div class="form-group"><br>	
-											<strong>{{ Lang::get('Loan Status') }}</strong>							
+											<strong>{{ Lang::get('Project Status') }}</strong>							
 											{{ 
 												Form::select('loanstatus_filter', 
 																$BorModMyLoanInfo->filterloanStatusList, 
@@ -65,11 +65,6 @@
 											</button>
 										</div>	
 									</div>
-									
-									
-									
-									
-											
 								</div>
 							</form>
 						</div>
@@ -86,7 +81,7 @@
 									<table class="table text-left loaninfo-table-label">		
 										<tbody>																								
 											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.loan_refer') }}</td>														
+												<td>{{ Lang::get('Project Reference') }}</td>														
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.date_applied') }}</td>												
@@ -95,29 +90,15 @@
 												<td>{{ Lang::get('borrower-loaninfo.status') }}</td>												
 											</tr>
 											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.loan_type') }}</td>												
-											</tr>
-											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.bid_type') }}</td>												
-											</tr>
-											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.target_interest') }} %</td>												
-											</tr>
-											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.effective_interest') }} %</td>												
+												<td>{{ Lang::get('Backer List') }} %</td>												
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.amount_applied') }}</td>												
 											</tr>
 											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.amount_realized') }}</td>												
+												<td>{{ Lang::get('Amount Funded') }}</td>												
 											</tr> 
-											<tr> 
-												<td>{{ Lang::get('borrower-loaninfo.repayment_tilldate') }}</td>												
-											</tr>
-											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.principal_outstanding') }}</td>												
-											</tr>
+											
 											<tr>
 												<td>
 													
@@ -141,12 +122,12 @@
 									<div class="col-sm-12 col-lg-3 text-center ">		
 											@if(($loanRow->status	==	BORROWER_STATUS_NEW) || 
 															($loanRow->status	==	LOAN_STATUS_PENDING_COMMENTS))
-												@var	$loan_url	=	'borrower/applyloan/'.base64_encode($loanRow->loan_id)
-												@var	$bid_url	=	'borrower/myloans/'
+												@var	$loan_url	=	'creator/create_project/'.base64_encode($loanRow->loan_id)
+												@var	$bid_url	=	'creator/myprojects/'
 												@var	$bid_url	=	$bid_url.base64_encode($loanRow->loan_id."_bids")
 											@else
-												@var	$loan_url	=	'borrower/myloans/'.base64_encode($loanRow->loan_id)
-												@var	$bid_url	=	'borrower/myloans/'
+												@var	$loan_url	=	'creator/myprojects/'.base64_encode($loanRow->loan_id)
+												@var	$bid_url	=	'creator/myprojects/'
 												@var	$bid_url	=	$bid_url.base64_encode($loanRow->loan_id."_bids")
 											@endif
 											@if($loanRow->viewStatus	!=	"Cancelled Loan")
@@ -193,34 +174,7 @@
 															@endif															
 														</td>															
 													</tr>
-													<tr>
-														<td>
-															@if($loanRow->repayment_type	!=	"")
-																{{$loanRow->repayment_type}}
-															@else
-																--
-															@endif
-														</td>												
-													</tr>
-													<tr>
-														<td>
-															@if($loanRow->bid_type	!=	"")
-																{{$loanRow->bid_type}}
-															@else
-																--
-															@endif
-															
-														</td>												
-													</tr>
-													<tr>
-														<td>
-															@if($loanRow->target_interest	!=	"")
-																{{$loanRow->target_interest}}
-															@else
-																--
-															@endif															
-														</td>													
-													</tr>
+													
 													<tr>
 														<td>
 															@if(($loanRow->status	==	LOAN_STATUS_APPROVED)
@@ -228,7 +182,7 @@
 																||	($loanRow->status	==	LOAN_STATUS_BIDS_ACCEPTED) )
 																<a href="{{ url ($bid_url) }}"
 																	class="btn button-grey">
-																	{{ Lang::get('borrower-loaninfo.view_all_bids') }}
+																	{{ Lang::get('View All Backers') }}
 																</a>														
 															@else
 																--
@@ -253,24 +207,6 @@
 																--
 															@endif															
 														</td>													
-													</tr>
-													<tr>
-														<td>												
-															<button type="button" 
-																	class="btn button-grey repayment_schedule_btn"
-																	data-loan-id="{{$loanRow->loan_id}}">
-																	{{ Lang::get('borrower-loaninfo.repayment_schedule') }}
-															</button>												
-														</td>											
-													</tr>
-													<tr>
-														<td>
-															@if($loanRow->outstanding	!=	"")
-																{{number_format($loanRow->outstanding,2,'.',',')}}
-															@else
-																--
-															@endif	
-														</td>												
 													</tr>
 													<tr>
 														<td>

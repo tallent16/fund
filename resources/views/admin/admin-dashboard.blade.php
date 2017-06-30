@@ -75,7 +75,7 @@
 	<!--row--->
 	<div class="row">
 		<div class="col-lg-12 col-md-12">
-			<h4>BORROWER</h4>			
+			<h4>CREATOR</h4>			
 			<div class="panel-group" id="accordion">
 				<!-----------1 accordion---------------------->
 				@var $panel_body_content = "";
@@ -83,7 +83,7 @@
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"accordion",
 										"panel_id"			=>	"collapseOne",
-										"panel_title"		=> 	"RECENTLY APPROVED BORROWERS",
+										"panel_title"		=> 	"RECENTLY APPROVED CREATOR",
 										"panel_body_widget"	=>	"widgets.admin.accordion.recently_approved_bor",
 										"panel_body_content"=>	$panelBody,
 										"panel_collapse_class"=> "in"
@@ -95,7 +95,7 @@
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"accordion",
 										"panel_id"			=>	"collapseTwo",
-										"panel_title"		=> 	"TO BE APPROVED BORROWERS",
+										"panel_title"		=> 	"TO BE APPROVED CREATOR",
 										"panel_body_widget"	=>	"widgets.admin.accordion.to_be_approved_bor",
 										"panel_body_content"=>	$panelBody,
 										"panel_collapse_class"=> ""
@@ -108,7 +108,7 @@
 				@include('widgets.accordion_widget', array(
 											"panel_group_id"	=>	"accordion",
 											"panel_id"			=>	"collapseThree",
-											"panel_title"		=> 	"RECENT ACTIVITIES OF ALL BORROWERS",
+											"panel_title"		=> 	"RECENT ACTIVITIES OF ALL CREATORS",
 											"panel_body_widget"	=>	
 																"widgets.admin.accordion.recent_activities_bor",
 											"panel_body_content"=>	$panelBody,
@@ -121,7 +121,7 @@
 		
 		<div class="col-lg-12 col-md-12">
 
-			<h4>INVESTOR</h4>			
+			<h4>BACKER</h4>			
 			<div class="panel-group" id="invaccordion">
 				<!-----------1 accordion---------------------->
 				
@@ -129,7 +129,7 @@
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseOne",
-										"panel_title"		=> 	"RECENTLY APPROVED INVESTORS",
+										"panel_title"		=> 	"RECENTLY APPROVED BACKERS",
 										"panel_body_widget"	=>	"widgets.admin.accordion.recently_approved_inv",
 										"panel_body_content" =>	$panelBody,
 										"panel_collapse_class" => "in"
@@ -142,7 +142,7 @@
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseTwo",
-										"panel_title"		=> 	"TO BE APPROVED INVESTORS",
+										"panel_title"		=> 	"TO BE APPROVED BACKERS",
 										"panel_body_widget"	=>	"widgets.admin.accordion.to_be_approved_inv",
 										"panel_body_content" =>	$panelBody,
 										"panel_collapse_class" => "panel-collapse"
@@ -154,7 +154,7 @@
 				@include('widgets.accordion_widget', array(
 										"panel_group_id"	=>	"invaccordion",
 										"panel_id"			=>	"invcollapseThree",
-										"panel_title"		=> 	"RECENT ACTIVITIES OF ALL INVESTORS",
+										"panel_title"		=> 	"RECENT ACTIVITIES OF ALL BACKERS",
 										"panel_body_widget"	 =>	"widgets.admin.accordion.recent_activities_inv",
 										"panel_body_content" =>	$panelBody,
 										"panel_collapse_class" => "panel-collapse"

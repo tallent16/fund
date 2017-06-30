@@ -63,7 +63,8 @@ class	InvestorsWithdrawalsListingController extends MoneyMatchController {
 			$this->investorWithdrawalList->saveInvestorWithDraws($postArray);
 			$submitted		=	true;
 			if($processtype	==	"add") {
-				return redirect()->to('investor/withdrawallist');
+				die;
+				return redirect()->to('backer/withdrawallist'); 
 			}
 		}
 		

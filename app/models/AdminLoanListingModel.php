@@ -33,16 +33,14 @@ class AdminLoanListingModel extends TranWrapper {
 										expression
 								FROM	codelist_details
 								WHERE	codelist_id in (7) && 														
-										codelist_code NOT IN (8,9) 
+										codelist_code NOT IN (7,8,9,10) 
 								ORDER BY CASE WHEN codelist_value = 'All' THEN '1'
 								  WHEN codelist_value = 'New' THEN '2'
 								  WHEN codelist_value = 'Submitted for Approval' THEN '3' 
 								  WHEN codelist_value = 'Pending Comments' THEN '4'
-								  WHEN codelist_value = 'Open for Bids' THEN '5'
-								  WHEN codelist_value = 'Closed for Bids' THEN '6'
-								  WHEN codelist_value = 'Bids Accepted' THEN '7'
-								  WHEN codelist_value = 'Loans Disbursed' THEN '8'
-								  WHEN codelist_value = 'Repayments Complete' THEN '9'
+								  WHEN codelist_value = 'Open for Backing' THEN '5'
+								  WHEN codelist_value = 'Closed for Backing' THEN '6'
+								  WHEN codelist_value = 'Project Backed' THEN '7'
 								  ELSE codelist_value END ASC";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);	
@@ -75,8 +73,10 @@ class AdminLoanListingModel extends TranWrapper {
 	
 	public function viewTransList($fromDate, $toDate, $all_Trans) {
 		
-		$this->fromDate			= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
-		$this->toDate			= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));
+		//~ $this->fromDate			= 	date('d-m-Y', strtotime(date('Y-m')." -1 month"));
+		//~ $this->toDate			= 	date('d-m-Y', strtotime(date('Y-m')." +1 month"));
+		$this->fromDate			= 	$fromDate;
+		$this->toDate			= 	$toDate;
 		$this->filter_code 		= 	11;	
 		$applyFilter			=	0;
 		
@@ -88,7 +88,9 @@ class AdminLoanListingModel extends TranWrapper {
 		} 
 			
 										
-		$lnListSql	=	"SELECT FORMAT(loans.loan_sanctioned_amount,2) loan_sanctioned_amount,
+		//~ $lnListSql	=	"SELECT FORMAT(loans.loan_sanctioned_amount,2) loan_sanctioned_amount,
+		$lnListSql	=	"SELECT FORMAT(loans.apply_amount,2) loan_sanctioned_amount,
+								loans.loan_title,
 								loans.loan_reference_number,
 								loans.loan_id,
 								( 	SELECT	codelist_value 
@@ -137,6 +139,7 @@ class AdminLoanListingModel extends TranWrapper {
 									"loan_reference_number"=>$Row->loan_reference_number,
 									"business_name"=>$Row->business_name,									
 									"loan_sanctioned_amount"=>$Row->loan_sanctioned_amount,
+									"loan_title"=>$Row->loan_title,
 									"target_interest"=>$Row->target_interest,									
 									"loan_tenure"=>$Row->loan_tenure,									
 									"bid_type"=>$Row->bid_type,		
@@ -151,7 +154,9 @@ class AdminLoanListingModel extends TranWrapper {
 	
 	public function viewLoanDisplayOrderList(){
 	
-		$displayListSql	=	"SELECT FORMAT(loans.loan_sanctioned_amount,2) loan_sanctioned_amount,
+		//~ $displayListSql	=	"SELECT FORMAT(loans.loan_sanctioned_amount,2) loan_sanctioned_amount,
+		$displayListSql	=	"SELECT FORMAT(loans.apply_amount,2) loan_sanctioned_amount,
+									loans.loan_title,
 									loans.loan_reference_number,
 									loans.featured_loan,
 									loans.loan_display_order,
@@ -195,7 +200,8 @@ class AdminLoanListingModel extends TranWrapper {
 										"featured_loan"=>$Row->featured_loan,
 										"loan_display_order"=>$Row->loan_display_order,
 										"business_name"=>$Row->business_name,									
-										"loan_sanctioned_amount"=>$Row->loan_sanctioned_amount,										
+										"loan_sanctioned_amount"=>$Row->loan_sanctioned_amount,	
+										"loan_title"=>$Row->loan_title,								
 										"bid_type"=>$Row->bid_type_name,		
 										"status"=>$Row->status,									
 										"bid_close_date"=>$Row->bid_close_date,

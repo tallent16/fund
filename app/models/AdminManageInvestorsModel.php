@@ -111,7 +111,7 @@ class AdminManageInvestorsModel extends TranWrapper {
 			throw exception ("Code List Master / Detail information not correct");
 			return;
 		}
-		$this->filterInvestorStatusList['all'] 	=	'All Investors';
+		$this->filterInvestorStatusList['all'] 	=	'All Backers';
 		foreach($filter_rs as $filter_row) {
 
 			$codeCode 									= 	$filter_row->codelist_code;

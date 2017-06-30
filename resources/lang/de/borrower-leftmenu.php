@@ -29,5 +29,6 @@ return [
 	'bankdetails'				=> 'Bankdaten',
 	'repayloans'				=> 'Darlehen zurückzuzahlen',	
 	'withdraw'					=> 'Abheben',
+	'marketplace'				=> 'Marketplace',
 	
 	];

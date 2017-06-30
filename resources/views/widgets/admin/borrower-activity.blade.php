@@ -20,7 +20,7 @@
 								@if($showBorrowerName)
 									<tr>
 										<td colspan="7" class="text-center">
-											{{ "<strong>".Lang::get('Transaction Detail Report for Borrower:').
+											{{ "<strong>".Lang::get('Transaction Detail Report for Creator:').
 												"</strong>".$borList[$borListRow]}}
 										 </td>
 									</tr>	

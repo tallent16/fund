@@ -25,7 +25,7 @@ class InvestorMiddleWare {
 		$profileStatus	=	InvBal::checkProfileStatus();
 		if($profileStatus	==	INVESTOR_STATUS_COMMENTS_ON_ADMIN){
 			if (!$request->session()->has('notification_seen')) {
-				$request->session()->put('notification','Investor Profile Correction Reqiured');
+				$request->session()->put('notification','Backer Profile Correction Reqiured');
 			}
 		}
 		if($profileStatus	==	0	||	$profileStatus	==INVESTOR_STATUS_NEW_PROFILE
@@ -33,11 +33,11 @@ class InvestorMiddleWare {
 									||	$profileStatus	==INVESTOR_STATUS_COMMENTS_ON_ADMIN) {
 										
 			switch($request->url()) {
-				case url('investor/profile'):
-				case url('investor/profile/mobile/update'):
+				case url('backer/profile'):
+				case url('backer/profile/mobile/update'):
 					break;
 				default:
-					return redirect()->to('investor/profile');
+					return redirect()->to('backer/profile');
 			}
 			//~ if($request->url()	!=	url('investor/profile')) {
 				//~ return redirect()->to('investor/profile');

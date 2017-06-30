@@ -411,14 +411,14 @@ Route::post('admin/approvechangeofbank/reject',
 
  //****************************Manage Profiles for Borrowers Starts*********************************************
  
-	Route::get('admin/manageborrowers', [	'as' 			=> 	'admin.manageborrowers', 
+	Route::get('admin/managecreators', [	'as' 			=> 	'admin.manageborrowers', 
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'listview.admin.manageborrowers',
 											'uses' 			=>	'AdminManageBorrowersController@indexAction'
 										]
 				);
 	
-    Route::get('admin/manageborrowers/approve/{bor_id}',
+    Route::get('admin/managecreators/approve/{bor_id}',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'approve.admin.manageborrowers',
@@ -428,7 +428,7 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 				);   
 				
-    Route::get('admin/manageborrowers/reject/{bor_id}',
+    Route::get('admin/managecreators/reject/{bor_id}',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'reject.admin.manageborrowers',
@@ -438,7 +438,7 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 				);   
 				
-    Route::get('admin/manageborrowers/delete/{bor_id}',
+    Route::get('admin/managecreators/delete/{bor_id}',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'delete.admin.manageborrowers',
@@ -447,7 +447,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageBorrowersController@deleteBorrowerAction'
 										]
 				);   
-    Route::post('admin/manageborrowers/bulkapprove',
+    Route::post('admin/managecreators/bulkapprove',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'approve.admin.manageborrowers',
@@ -456,7 +456,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageBorrowersController@approveBorrowerBulkAction'
 										]
 				);
-    Route::post('admin/manageborrowers/bulkreject',
+    Route::post('admin/managecreators/bulkreject',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'reject.admin.manageborrowers',
@@ -465,7 +465,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageBorrowersController@rejectBorrowerBulkAction'
 										]
 				);
-    Route::post('admin/manageborrowers/bulkdelete',
+    Route::post('admin/managecreators/bulkdelete',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'delete.admin.manageborrowers',
@@ -475,7 +475,7 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 				);
 										
-    Route::get('admin/borrower/profile/{bor_id}',
+    Route::get('admin/creator/profile/{bor_id}',
 										[	
 											'as' 			=> 	'admin.borrowerprofile',
 											'middleware' 	=> 	'permission',
@@ -486,13 +486,13 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 			);
 		
-    Route::post('admin/borrower/profile/save',
+    Route::post('admin/creator/profile/save',
 										[	
 											
 											'uses' 			=>	'AdminManageBorrowersController@saveBorrowerProfileAction'
 										]
 			);
-    Route::post('admin/borrower/profile/save_comments',
+    Route::post('admin/creator/profile/save_comments',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'admin.savecomment',
@@ -501,7 +501,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageBorrowersController@saveCommentProfileAction'
 										]
 			);
-    Route::post('admin/borrower/profile/return_borrower',
+    Route::post('admin/creator/profile/return_borrower',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'returnborrower.admin.manageborrowers',
@@ -510,7 +510,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageBorrowersController@returnBorrowerProfileAction'
 										]
 			);
-    Route::post('admin/borrower/profile/approve',
+    Route::post('admin/creator/profile/approve',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'approve.admin.manageborrowers',
@@ -519,7 +519,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageBorrowersController@approveBorrowerProfileAction'
 										]
 			);
-    Route::post('admin/borrower/profile/update_grade',
+    Route::post('admin/creator/profile/update_grade',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'updategrade.admin.manageborrowers',
@@ -533,13 +533,13 @@ Route::post('admin/approvechangeofbank/reject',
 	
 	//****************************Manage Profiles for Investors starts*******************************************
 	
-    Route::get('admin/manageinvestors', [	'as' 			=> 	'admin.manageinvestors', 
+    Route::get('admin/managebackers', [	'as' 			=> 	'admin.manageinvestors', 
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'listview.admin.manageinvestors',
 											'uses' 			=>	'AdminManageInvestorsController@indexAction'
 										]
 			);
-	Route::get('admin/manageinvestors/approve/{inv_id}',
+	Route::get('admin/managebackers/approve/{inv_id}',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'approve.admin.manageinvestors',
@@ -549,7 +549,7 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 				);   
 				
-    Route::get('admin/manageinvestors/reject/{inv_id}',
+    Route::get('admin/managebackers/reject/{inv_id}',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'reject.admin.manageinvestors',
@@ -559,7 +559,7 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 				);   
 				
-    Route::get('admin/manageinvestors/delete/{inv_id}',
+    Route::get('admin/managebackers/delete/{inv_id}',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'delete.admin.manageinvestors',
@@ -568,7 +568,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageInvestorsController@deleteInvestorAction'
 										]
 				);   
-    Route::post('admin/manageinvestors/bulkapprove',
+    Route::post('admin/managebackers/bulkapprove',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'approve.admin.manageinvestors',
@@ -577,7 +577,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageInvestorsController@approveInvestorBulkAction'
 										]
 				);
-    Route::post('admin/manageinvestors/bulkreject',
+    Route::post('admin/managebackers/bulkreject',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'reject.admin.manageinvestors',
@@ -586,7 +586,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageInvestorsController@rejectInvestorBulkAction'
 										]
 				);
-    Route::post('admin/manageinvestors/bulkdelete',
+    Route::post('admin/managebackers/bulkdelete',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'delete.admin.manageinvestors',
@@ -596,7 +596,7 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 				);
 										
-    Route::get('admin/investor/profile/{inv_id}',
+    Route::get('admin/backer/profile/{inv_id}',
 										[	
 											'as' 			=> 	'admin.investorprofile',
 											'middleware' 	=> 	'permission',
@@ -607,11 +607,11 @@ Route::post('admin/approvechangeofbank/reject',
 										]
 			);
 		
-    Route::post('admin/investor/profile/save',
+    Route::post('admin/backer/profile/save',
 										[	'uses' 			=>	'AdminManageInvestorsController@saveInvestorProfileAction'
 										]
 			);
-    Route::post('admin/investor/profile/save_comments',
+    Route::post('admin/backer/profile/save_comments',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'admin.savecomment',
@@ -620,7 +620,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageInvestorsController@saveCommentProfileAction'
 										]
 			);
-    Route::post('admin/investor/profile/return_investor',
+    Route::post('admin/backer/profile/return_investor',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'returninvestor.admin.manageinvestors',
@@ -629,7 +629,7 @@ Route::post('admin/approvechangeofbank/reject',
 											'uses' 			=>	'AdminManageInvestorsController@returnInvestorProfileAction'
 										]
 			);
-    Route::post('admin/investor/profile/approve',
+    Route::post('admin/backer/profile/approve',
 										[	
 											'middleware' 	=> 	'permission',
 											'permission'	=>	'approve.admin.manageinvestors',
@@ -646,18 +646,25 @@ Route::post('admin/approvechangeofbank/reject',
 	
 	//****************************Manage Loans, Approvals Starts *********************************************************
 	
-    Route::get('admin/loanlisting', [	'as' 			=> 	'admin.loanlisting', 
+    Route::get('admin/projects', [	'as' 			=> 	'admin.loanlisting', 
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'view.admin.manageloans',
 										'uses' 			=>	'AdminLoanListingController@indexAction'
 									]
 			);
 			
-    Route::get('admin/loandisplayorder', [	'as' 			=> 	'admin.loandisplayorder', 
+    Route::get('admin/projectdisplayordering', [	'as' 			=> 	'admin.loandisplayorder', 
 											'uses' 			=>	'AdminLoanDisplayController@indexAction'
 										]
 			);
-			
+	Route::get('admin/manageprojects/{loan_id}', [	'as' 		=> 	'admin.loanlisting', 
+													'middleware' 	=> 	'permission',
+													'permission'	=>	'view.admin.manageloans',
+													'uses' 			=>	'LoanDetailsController@indexAction'
+												]
+			);
+	Route::post('admin/manageprojects/project-updates/{loan_id}', 'LoanDetailsController@UpdateProjectAction');
+	
 	Route::get('admin/managebids/{loan_id}', 
 									[	
 										'middleware' 	=> 	'permission',
@@ -692,7 +699,7 @@ Route::post('admin/approvechangeofbank/reject',
 									]
 			);
     
-	 Route::get('admin/loanapproval/{loan_id}',
+	 Route::get('admin/projectapproval/{loan_id}',
 									[	
 										'as' 			=> 	'admin.loanapproval', 
 										'middleware' 	=> 	'permission',
@@ -703,18 +710,18 @@ Route::post('admin/approvechangeofbank/reject',
 									]
 			);
 		
-    Route::post('admin/loanapproval/save',
+    Route::post('admin/projectapproval/save',
 									[	
 										'uses' 			=>	'AdminLoanApprovalController@saveLoanApprovalAction'
 									]
 			);
 		
-    Route::post('admin/loanapproval/updateBidCloseDate',
+    Route::post('admin/projectapproval/updateBidCloseDate',
 									[	
 										'uses' 			=>	'AdminLoanApprovalController@updateBidCloseDateAction'
 									]
 			);
-    Route::post('admin/loanapproval/save_comments',
+    Route::post('admin/projectapproval/save_comments',
 									[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'admin.savecomment',
@@ -723,7 +730,7 @@ Route::post('admin/approvechangeofbank/reject',
 										'uses' 			=>	'AdminLoanApprovalController@saveCommentLoanApprovalAction'
 									]
 			);
-    Route::post('admin/loanapproval/return_borrower',
+    Route::post('admin/projectapproval/return_borrower',
 									[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'returnborrower.admin.loanapproval',
@@ -732,7 +739,7 @@ Route::post('admin/approvechangeofbank/reject',
 										'uses' 			=>	'AdminLoanApprovalController@returnBorrowerLoanApprovalAction'
 									]
 			);
-    Route::post('admin/loanapproval/approve',
+    Route::post('admin/projectapproval/approve',
 									[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'approve.admin.loanapproval',
@@ -741,7 +748,7 @@ Route::post('admin/approvechangeofbank/reject',
 										'uses' 			=>	'AdminLoanApprovalController@approveLoanApprovalAction'
 									]
 			);
-    Route::post('admin/loanapproval/cancel',
+    Route::post('admin/projectapproval/cancel',
 									[	
 										'middleware' 	=> 	'permission',
 										'permission'	=>	'cancel.admin.loanapproval',
@@ -793,7 +800,7 @@ Route::post('admin/approvechangeofbank/reject',
 									]
 			);
 	
-	 Route::get('admin/loanview/{loan_id}',
+	 Route::get('admin/projectview/{loan_id}',
 									[	
 										'as' 			=> 	'admin.loanview', 
 										'middleware' 	=> 	'permission',
@@ -1187,7 +1194,7 @@ Route::post('admin/approvechangeofbank/reject',
 		Route::get('admin/ajax/adminauditinfo', 'AdminAuditTrailController@getAuditInfoAction');
 		Route::post('admin/ajax/adminauditinfo', 'AdminAuditTrailController@getAuditInfoAction');		
 		
-
+		Route::post('admin/ajaxApplyLoan/checkvalaidation','BorrowerApplyLoanController@checkApplyLoanValidationction');
 	 // **************************** Admin Users Creating, Editing,Roles assigning******************************************
 	 
 	 Route::get('admin/mypage', [
@@ -1205,7 +1212,7 @@ Route::post('admin/approvechangeofbank/reject',
 	 
 	  // **************************** Admin Report******************************************
 	  		
-	 Route::get('admin/investoractivity/report',
+	 Route::get('admin/backeractivity/report',
 							[	
 								'middleware' 		=> 	'permission',
 								'permission'		=>	'viewinvestor.admin.reportactivity',
@@ -1213,30 +1220,30 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 				=>	'AdminInvestorActivityReportController@indexAction'
 							]
 				);
-	 Route::post('admin/investoractivity/report',
+	 Route::post('admin/backeractivity/report',
 							[	
 								
 								'uses' 			=>	'AdminInvestorActivityReportController@indexPostAction'
 							]
 				);
-	 Route::post('admin/investor-activity-report/download','AdminInvestorActivityReportController@DownloadInvestorAction'
+	 Route::post('admin/backer-activity-report/download','AdminInvestorActivityReportController@DownloadInvestorAction'
 							
 				);
 	 
-	 Route::get('admin/borroweractivity/report',
-							[	
-								'middleware' 	=> 	'permission',
-								'permission'	=>	'viewborrower.admin.reportactivity',
-								'action_type'	=>	'Borrower Activity',
-								'uses' 			=>	'AdminBorrowerActivityReportController@indexAction'
-							]
-				);
-	 Route::post('admin/borroweractivity/report',
-							[	
+	 //~ Route::get('admin/creatoractivity/report',
+							//~ [	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewborrower.admin.reportactivity',
+								//~ 'action_type'	=>	'Borrower Activity',
+								//~ 'uses' 			=>	'AdminBorrowerActivityReportController@indexAction'
+							//~ ]
+				//~ );
+	 //~ Route::post('admin/creatoractivity/report',
+							//~ [	
 								
-								'uses' 			=>	'AdminBorrowerActivityReportController@indexPostAction'
-							]
-				);
+								//~ 'uses' 			=>	'AdminBorrowerActivityReportController@indexPostAction'
+							//~ ]
+				//~ );
 	 
 	 Route::post('admin/borrower-activity-report/download',
 											'AdminBorrowerActivityReportController@DownloadBorrowerAction'
@@ -1262,7 +1269,7 @@ Route::post('admin/approvechangeofbank/reject',
 							
 				);
 	//****************************Loan listing report starts ********************************************************
-	 Route::get('admin/loan-listing/report',
+	 Route::get('admin/project-listing/report',
 							[	
 								'middleware' 	=> 	'permission',
 								'permission'	=>	'viewloan.admin.reportlisting',
@@ -1270,20 +1277,20 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminLoanListingReportController@indexAction'
 							]
 				);
-	 Route::post('admin/loan-listing/report',
+	 Route::post('admin/project-listing/report',
 							[	
 								
 								'uses' 			=>	'AdminLoanListingReportController@indexPostAction'
 							]
 				);
-	Route::post('admin/loan-listing-report/download',
+	Route::post('admin/project-listing-report/download',
 											'AdminLoanListingReportController@DownloadLoanListingAction'
 							
 				);
 	 //****************************Loan listing report ends********************************************************
 	 
 	//****************************Investors Profile report starts ******************************************************
-	 Route::get('admin/investor-profiles/report',
+	 Route::get('admin/backer-profiles/report',
 							[	
 								'middleware' 	=> 	'permission',
 								'permission'	=>	'viewinvestor.admin.reportprofile',
@@ -1291,20 +1298,20 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminInvestorsProfileReportController@indexAction'
 							]
 				);
-	 Route::post('admin/investor-profiles/report',
+	 Route::post('admin/backer-profiles/report',
 							[	
 								
 								'uses' 			=>	'AdminInvestorsProfileReportController@indexPostAction'
 							]
 				);
-	Route::post('admin/investor-profiles-report/download',
+	Route::post('admin/backer-profiles-report/download',
 											'AdminInvestorsProfileReportController@DownloadInvestorProfileAction'
 							
 				);
 	 //****************************Investors Profile report ends********************************************************
 	 
 	//****************************Borrowers Profile report starts ********************************************************
-	 Route::get('admin/borrower-profiles/report',
+	 Route::get('admin/creator-profiles/report',
 							[	
 								'middleware' 	=> 	'permission',
 								'permission'	=>	'viewborrower.admin.reportprofile',
@@ -1312,106 +1319,114 @@ Route::post('admin/approvechangeofbank/reject',
 								'uses' 			=>	'AdminBorrowersProfileReportController@indexAction'
 							]
 				);
-	 Route::post('admin/borrower-profiles/report',
+	 Route::post('admin/creator-profiles/report',
 							[	
 								
 								'uses' 			=>	'AdminBorrowersProfileReportController@indexPostAction'
 							]
 				);
-	Route::post('admin/borrower-profiles-report/download',
+	Route::post('admin/creator-profiles-report/download', 
 											'AdminBorrowersProfileReportController@DownloadBorrowerProfileAction'
 							
 				);
 	 //****************************Borrowers Profile report ends********************************************************
 	 
 	 //****************************Loan Performance report starts ********************************************************
-	 Route::get('admin/loan-perform/report',
-							[	
-								'middleware' 	=> 	'permission',
-								'permission'	=>	'viewloan.admin.reportperformance',
-								'action_type'	=>	'Loan Performance Report',
-								'uses' 			=>	'AdminLoanPerformanceReportController@indexAction'
-							]
-				);
-	 Route::post('admin/loan-perform/report',
-							[	
+	 //~ Route::get('admin/project-perform/report',
+							//~ [	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewloan.admin.reportperformance',
+								//~ 'action_type'	=>	'Loan Performance Report',
+								//~ 'uses' 			=>	'AdminLoanPerformanceReportController@indexAction'
+							//~ ]
+				//~ );
+	 //~ Route::post('admin/project-perform/report',
+							//~ [	
 								
-								'uses' 			=>	'AdminLoanPerformanceReportController@indexPostAction'
-							]
-				);
-	Route::post('admin/loan-perform-report/download',
+								//~ 'uses' 			=>	'AdminLoanPerformanceReportController@indexPostAction'
+							//~ ]
+				//~ );
+	//~ Route::post('admin/project-perform-report/download',
 											//~ 'AdminLoanPerformanceReportController@DownloadLoanPerformanceTestAction'
-											'AdminLoanPerformanceReportController@DownloadLoanPerformanceAction'
+											//~ 'AdminLoanPerformanceReportController@DownloadLoanPerformanceAction'
 							
-				);
+				//~ );
 	 //****************************Loan Performance report ends********************************************************
 	 
 	 //****************************commission Fee ledger report starts *************************************************
-	 Route::get('admin/commission-fees-ledger/report',
-							[	
-								'middleware' 	=> 	'permission',
-								'permission'	=>	'viewcommfees.admin.reportledger',
-								'action_type'	=>	'Commission Fees Ledger Report',
-								'uses' 			=>	'AdminCommFeeLedgerReportController@indexAction'
-							]
-				);
-	 Route::post('admin/commission-fees-ledger/report',
-							[	
+	 //~ Route::get('admin/commission-fees-ledger/report',
+							//~ [	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewcommfees.admin.reportledger',
+								//~ 'action_type'	=>	'Commission Fees Ledger Report',
+								//~ 'uses' 			=>	'AdminCommFeeLedgerReportController@indexAction'
+							//~ ]
+				//~ );
+	 //~ Route::post('admin/commission-fees-ledger/report',
+							//~ [	
 								
-								'uses' 			=>	'AdminCommFeeLedgerReportController@indexPostAction'
-							]
-				);
-	Route::post('admin/commission-fees-ledger-report/download',
-											'AdminCommFeeLedgerReportController@DownloadCommissionFeesLedgerAction'
+								//~ 'uses' 			=>	'AdminCommFeeLedgerReportController@indexPostAction'
+							//~ ]
+				//~ );
+	//~ Route::post('admin/commission-fees-ledger-report/download',
+											//~ 'AdminCommFeeLedgerReportController@DownloadCommissionFeesLedgerAction'
 							
-				);
+				//~ );
 	 //****************************commission Fee ledger report ends********************************************************
 	 
 	 //****************************Penalties Levies Ledger report starts *************************************************
-	 Route::get('admin/penalties-levies/report',
-							[	
-								'middleware' 	=> 	'permission',
-								'permission'	=>	'viewpenlev.admin.reportledger',
-								'action_type'	=>	'Penalty levies Ledger Report',
-								'uses' 			=>	'AdminPenaltiesLeviesReportController@indexAction'
-							]
-				);
-	 Route::post('admin/penalties-levies/report',
-							[	
+	 //~ Route::get('admin/penalties-levies/report',
+							//~ [	
+								//~ 'middleware' 	=> 	'permission',
+								//~ 'permission'	=>	'viewpenlev.admin.reportledger',
+								//~ 'action_type'	=>	'Penalty levies Ledger Report',
+								//~ 'uses' 			=>	'AdminPenaltiesLeviesReportController@indexAction'
+							//~ ]
+				//~ );
+	 //~ Route::post('admin/penalties-levies/report',
+							//~ [	
 								
-								'uses' 			=>	'AdminPenaltiesLeviesReportController@indexPostAction'
-							]
-				);
-	Route::post('admin/penalties-levies-report/download',
-											'AdminPenaltiesLeviesReportController@DownloadPenaltyLeviesAction'
+								//~ 'uses' 			=>	'AdminPenaltiesLeviesReportController@indexPostAction'
+							//~ ]
+				//~ );
+	//~ Route::post('admin/penalties-levies-report/download',
+											//~ 'AdminPenaltiesLeviesReportController@DownloadPenaltyLeviesAction'
 							
-				);
+				//~ );
 	 //****************************Penalties Levies ledger report ends********************************************************
 });
 
 // The routes (or pages that are applicable for Borrower Users only
 Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], function() {
 	// Borrower Dashboard
-    Route::get('borrower/dashboard', 'BorrowerDashboardController@indexAction');
+    Route::get('creator/dashboard', 'BorrowerDashboardController@indexAction');
     
     // Borrower Profile
-	Route::match(['get', 'post'],'borrower/profile', 'BorrowerProfileController@indexAction');
+	Route::match(['get', 'post'],'creator/profile', 'BorrowerProfileController@indexAction');
 	
-	// Borrower Apply Loan
+	/* Borrower Apply Loan
 	Route::match(['get', 'post'],'borrower/applyloan','BorrowerApplyLoanController@indexAction');
 	Route::match(['get', 'post'],'borrower/applyloan/{loan_id}','BorrowerApplyLoanController@indexAction');
+	Route::post('borrower/ajaxApplyLoan/checkvalaidation','BorrowerApplyLoanController@checkApplyLoanValidationction');
+	Route::get('borrower/docdownload/{doc_id}','BorrowerApplyLoanController@downloadAction');
+	*/
+	// Creators creating projects
+	Route::match(['get', 'post'],'creator/create_project','BorrowerApplyLoanController@indexAction');
+	Route::match(['get', 'post'],'creator/create_project/{loan_id}','BorrowerApplyLoanController@indexAction');
 	Route::post('borrower/ajaxApplyLoan/checkvalaidation','BorrowerApplyLoanController@checkApplyLoanValidationction');
 	Route::get('borrower/docdownload/{doc_id}','BorrowerApplyLoanController@downloadAction');
 	
 	// Borrower Loan Details
 	Route::get('borrower/myloans/{loan_id}', 'LoanDetailsController@indexAction');	
+	Route::get('creator/myprojects/{loan_id}', 'LoanDetailsController@indexAction');	
+	Route::post('creator/myprojects/project-updates/{loan_id}', 'LoanDetailsController@UpdateProjectAction');	
 	
 	Route::get('borrower/managebids/{loan_id}', 'AdminManageBidsController@getLoanDetailsAction');
     Route::post('borrower/bidclose', 'AdminManageBidsController@bidCloseAction');
     Route::post('borrower/bidaccept', 'AdminManageBidsController@acceptBidsAction');
     
 	Route::post('ajax/borrower/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	
-	Route::get('borrower/myloaninfo', 'BorrowerMyLoanInfoController@indexAction');	
+	Route::get('creator/myloaninfo', 'BorrowerMyLoanInfoController@indexAction');	
 	Route::post('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 	Route::get('ajax/borower_repayment_schedule', 'BorrowerMyLoanInfoController@ajaxRepayScheduleAction');	
 
@@ -1420,8 +1435,8 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 		
 	// Borrower Loan Listing
 	Route::get('borrower/loanslist', 'LoanListingController@indexAction');	 
-	Route::get('borrower/loansummary', 'BorrowerLoanSummaryController@indexAction'); 
-	Route::get('borrower/transhistory', 'BorrowerTransHistoryController@indexAction'); 
+	Route::get('creator/projectsummary', 'BorrowerLoanSummaryController@indexAction'); 
+	Route::get('creator/transhistory', 'BorrowerTransHistoryController@indexAction'); 
 	Route::post('borrower/ajax/trans_detail', 'BorrowerTransHistoryController@ajaxTransationAction');	
 	Route::get('borrower/repayloans', 'BorrowerRepayLoansController@indexAction');
 	Route::get('borrower/settings', 'BorrowerSettingsController@indexAction');	
@@ -1432,29 +1447,40 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 			);
 	Route::post('borrower/borrowersrepayview/save','BorrowerRepayLoansController@saveAction');
 	Route::post('borrower/ajax/recalculatePenality','BorrowerRepayLoansController@recalculatePenalityAction');
+	
+	//Request Help And Rewards Helping routes
+	Route::get('creator/request_help', 'BorrowerReqHelpController@indexAction');	
+	Route::get('creator/reward_help', 'BorrowerRewdHelpController@indexAction');	
+	
+	//Creator Wallet route
+	Route::get('creator/wallet', 'CreatorWalletController@indexAction');	
+	
+	
 });
 
 // The routes (or pages that are applicable for investor users only
 Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], function()
 {
 	// Investor Dashboard
-    Route::get('investor/dashboard', 'InvestorDashboardController@indexAction');
+    Route::get('backer/dashboard', 'InvestorDashboardController@indexAction');
     
-    // Investor Profile
-   
-    Route::post('investor/profile', 'InvestorProfileController@indexAction');
+    // Investor Profile   
+    Route::post('backer/profile', 'InvestorProfileController@indexAction');
     Route::post('investor/checkFieldExists', 'InvestorProfileController@ajaxCheckFieldExistsAction');
 	Route::get('investor/loanslist', 'LoanListingController@indexAction');
+	Route::get('backer/marketplace', 'BackerMarketPlaceController@indexAction');
+	//Creator Wallet route
+	Route::get('backer/wallet', 'CreatorWalletController@indexAction');	
 	
 	// Loans 
-    Route::get('investor/myloaninfo', 'InvestorMyLoanInfoController@indexAction');
+    Route::get('backer/myprojects', 'InvestorMyLoanInfoController@indexAction');
     Route::match(['get', 'post'],'investor/myloans/{loan_id}', 'LoanDetailsController@indexAction');  
     
     // Transaction History
     Route::get('investor/transhistory', 'InvestorTransHistoryController@indexAction'); 
     
     // Banking
-    Route::get('investor/depositlist', 'InvestorsDepositListingController@indexAction');
+    Route::get('backer/depositlist', 'InvestorsDepositListingController@indexAction');
     Route::get('investor/deposit/{type}/{payment_id}', 
 								[	
 									'as'			=>	'investor.investordepositedit',
@@ -1463,21 +1489,21 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
 			);
     Route::post('investor/investordepositview/save',	'AdminInvestorsDepositListingController@saveDepositAction');
     
-    Route::get('investor/withdrawallist', 'InvestorsWithdrawalsListingController@indexAction');
-    Route::get('investor/withdrawal/{type}/{payment_id}', 
+    Route::get('backer/withdrawallist', 'InvestorsWithdrawalsListingController@indexAction');
+    Route::get('backer/withdrawal/{type}/{payment_id}', 
 																[	
 									'as'			=>	'investor.investorwithdrawaledit',
 									'uses' 			=>	'InvestorsWithdrawalsListingController@viewWithDrawAction'
 								]
 				);
-	Route::post('investor/investorwithdrawalview/save','AdminInvestorsWithdrawalsListingController@saveWithdrawalAction');
-    Route::match(['get', 'post'],'investor/bankdetails', 'BankProcessController@indexAction');   
+	Route::post('backer/investorwithdrawalview/save','AdminInvestorsWithdrawalsListingController@saveWithdrawalAction');
+    Route::match(['get', 'post'],'backer/bankdetails', 'BankProcessController@indexAction');   
     
     Route::post('ajax/investor/send_comment', 'LoanDetailsController@ajaxSubmitCommentAction');	
     Route::post('ajax/investor/send_reply', 'LoanDetailsController@ajaxSubmitReplyAction');	   	
     Route::post('investor/ajax/availableBalance', 'LoanDetailsController@ajaxAvailableBalanceAction');	   	
 });
- Route:get('investor/profile', ['as'=>'investor.profile','uses'=>'InvestorProfileController@indexAction']);
+ Route:get('backer/profile', ['as'=>'investor.profile','uses'=>'InvestorProfileController@indexAction']);
  
 // Common Modules
 Route::get('customRedirectPath', 'HomeController@customRedirectPath');
@@ -1530,4 +1556,18 @@ Route::get('admin/mailer/action/delete/{Id}','AdminBulkMailersController@deleteM
 Route::get('admin/mailer/action/process/{Id}','AdminBulkMailersController@processMailer'); 
 //Get user notifications
 Route::post('admin/user/notifications','AdminNotificationsController@getUserNotifications'); 
- 
+
+//static homepage
+//~ Route::get('exploreprojects','HomeController@getProjects');  
+Route::get('explorecategories/{catname}','HomeController@getProjects');  //category listing filter 	- frontend
+Route::get('categories','HomeController@allCategoriesPage');     		 //categories listing 		- frontend
+
+Route::get('projectlisting','HomeController@allProjectsPage');			 //projects listing 		- frontend
+Route::get('projectlisting/{type}','HomeController@allProjectsPage');	 //projects listing filter 	- frontend
+Route::get('projectdetails/{loan_id}','HomeController@projectDetails');  //project details 			- frontend
+Route::post('projectdetails/{loan_id}','HomeController@projectDetails'); //project details 			- frontend
+
+Route::get('excitingProjects','HomeController@getExcitingProjects');  	 //backend no use - exciting
+Route::get('popularProjects','HomeController@getPopularProjects');     	 //backend no use - popular
+Route::get('projects','LoanListingController@indexAction');	 			 //backend no use - listing
+Route::get('explorecategories','HomeController@getAllCategories');  	 //backend no use - category listing

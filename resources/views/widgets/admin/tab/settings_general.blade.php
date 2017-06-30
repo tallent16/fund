@@ -78,7 +78,7 @@
 						<br>					
 					</div>
 				</div>	
-				<hr>
+			<!--	<hr>
 				<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Auto Close of Bids')}}
@@ -134,6 +134,7 @@
 						<br>					
 					</div>
 				</div>
+				-->
 				@endforeach	
 			</div>
 			

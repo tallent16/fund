@@ -24,6 +24,7 @@ return [
 	'apply_amt'						=> 'Appliquer Montant',
 	'amt_realized'					=> 'Montant réalisé',
 	'target_interest'				=> 'intérêt cible',
+	'milestone'						=> ' Milestones',
 	'realized_interest'				=> 'intérêt réalisé',
 	'balance_outstanding'			=> 'Solde en cours',
 	'trans_type'					=> 'Type transcation',

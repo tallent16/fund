@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 use Request;
 use	\App\models\LoanDetailsModel;
+use	\App\models\BorrowerApplyLoanModel;
 use Auth;
 use Session;
 class LoanDetailsController extends MoneyMatchController {
@@ -13,6 +14,7 @@ class LoanDetailsController extends MoneyMatchController {
 	//Additional initiate model
 	public function littleMoreInit() {
 		$this->loanDetailsModel	=	new LoanDetailsModel;
+		$this->borrowerApplyLoanModel	=	new BorrowerApplyLoanModel;
 	}
 	
 	public function indexAction($loan_id) {
@@ -37,9 +39,14 @@ class LoanDetailsController extends MoneyMatchController {
 		}
 		
 		$this->loanDetailsModel->getLoanDetails($sourceId[0]);
-		
+		$this->borrowerApplyLoanModel->getBorrowerLoanDetails($sourceId[0]);
+		if(!empty($this->borrowerApplyLoanModel->loan_video_url)) {
+			$this->borrowerApplyLoanModel->loan_video_url = $this->borrowerApplyLoanModel->convertVideoUrlToEmbedeUrl($this->borrowerApplyLoanModel->loan_video_url);
+			
+		}
 		switch($this->loanDetailsModel->userType) {
 				case USER_TYPE_BORROWER:
+				case USER_TYPE_ADMIN:
 					$viewTemplate	=	"borrower.borrower-myloans";
 					break;
 				case USER_TYPE_INVESTOR:
@@ -50,7 +57,9 @@ class LoanDetailsController extends MoneyMatchController {
 								"classname"=>"fa fa-file-text fa-fw",
 								"loan_id"=>$loan_id,
 								"submitted"=>$submitted,
-								"subType"=>$subType
+								"subType"=>$subType,
+								"BorModLoan"=>$this->borrowerApplyLoanModel,
+								"adminLoanApprMod"=>$this->borrowerApplyLoanModel
 								);
 		return view($viewTemplate)
 			->with($withArry);
@@ -79,6 +88,26 @@ class LoanDetailsController extends MoneyMatchController {
 	public function ajaxAvailableBalanceAction() {
 		$availableBalance		=	$this->loanDetailsModel->getInvestorAvailablBalance();
 		return $availableBalance;
+	}
+	
+	
+	public function UpdateProjectAction($loan_id) {
+		
+		if(	$this->loanDetailsModel->userType	==	USER_TYPE_BORROWER) {
+			$url		=	"creator/myprojects/".$loan_id;
+		}else{
+			$url		=	"admin/manageprojects/".$loan_id;
+		}
+		$postArray	=	Request::all();
+		$result		=	$this->loanDetailsModel->saveProjectUpdates(base64_decode($loan_id),$postArray);
+		$result		=	true;
+		if($result) {
+			$withArray	=	array("success"=>"Successfully Project Updated");
+		}else{
+			$withArray	=	array("failure"=>"nothing updated");
+		}
+		
+		return redirect()->to($url)->with($withArray);
 	}
 	
 }

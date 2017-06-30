@@ -26,7 +26,7 @@
 					$("#current_loan_index").val(changeCurLoanInd);
 				}
 			});
-			repaymentBarChartFunc();
+			//~ repaymentBarChartFunc();
 		});
 		
 		function repaymentBarChartFunc(){
@@ -79,11 +79,10 @@
 			
 			$("#cur_loan_subhead").html(currentlist.business_name);
 			$("#cur_loan_content").html(currentlist.purpose);
-			$("#cur_loan_rate").html(currentlist.rate+"%");
-			$("#cur_loan_duration").html(currentlist.duration);
-			$("#cur_loan_amount").html(numeral(currentlist.amount).format("0,0.00"));
-			$("#cur_loan_repayment_type").html(currentlist.repayment_type);
-			$("#cur_loan_bid_type").html(currentlist.bid_type);
+			$("#cur_project_amount").html(numeral(currentlist.amount).format("0,0.00"));
+			$("#cur_project_amount_realized").html(numeral(currentlist.amount_realized).format("0,0.00"));
+			$("#cur_project_close_date").html(currentlist.close_date);
+			$("#cur_project_noofdays").html(currentlist.funding_duration);
 		}
 		//~ function setwidth(){
 			//~ Chart.types.Bar.extend({

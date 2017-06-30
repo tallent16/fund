@@ -61,9 +61,9 @@ class AdminLoanPerformanceReportController extends MoneyMatchController {
 		$borRepShcd	=	$this->adminLoanPerRepMod->repayment_schedule;
 		//~ $this->adminInvProRepMod->prnt($borRepShcd);
 		$headers	=	[
-							0=> [	'Loan Ref No','Organization Name','Borrower Grade','Bid Type','Repayment Type',
-									'Tenure','Loan Applied Amount','Total Bids Received Number','Total Bids Received Amount',
-									'Loan Sanctioned Amount','Total Prinicipal O/s','Total Interest OS',
+							0=> [	'Project Ref No','Organization Name','Creator Grade','Bid Type','Repayment Type',
+									'Tenure','Project Applied Amount','Total Bids Received Number','Total Bids Received Amount',
+									'Project Sanctioned Amount','Total Prinicipal O/s','Total Interest OS',
 									'Total Penalty Interest','Total Penalty Charges','Overdue Amount','Overdue since'
 								]
 						];
@@ -80,10 +80,10 @@ class AdminLoanPerformanceReportController extends MoneyMatchController {
 								27=>'AB',28=>'AC',29=>'AD',30=>'AE',31=>'AF',32=>'AG',33=>'AH',34=>'AI',35=>'AJ',
 								36=>'AK',37=>'AL',38=>'AM',39=>'AN',40=>'AO',41=>'AP',42=>'AQ',43=>'AR',44=>'AS'	
 							);
-		Excel::create('LoanPerformanceLedgerReport', function($excel) 
+		Excel::create('ProjectPerformanceLedgerReport', function($excel) 
 			use ($jsonObj,$headers,$headStart,$startRow,$colKeyNameArry,$headersRepSch,$borRepShcd)
 		 {
-				$excel->sheet('Loans', function($sheet)
+				$excel->sheet('Projects', function($sheet)
 					use ($headers,$headStart,$startRow,$jsonObj,$colKeyNameArry,$headersRepSch,$borRepShcd)
 				 {
 						$headerRow = $headStart;
@@ -169,10 +169,10 @@ class AdminLoanPerformanceReportController extends MoneyMatchController {
 		$newJsonArry	=	$result['newJsonArry'];
 		$setBoldRowArry	=	$result['setBoldRowArry'];
 		
-		Excel::create('LoanPerformanceLedgerReport', function($excel) 
+		Excel::create('ProjectPerformanceLedgerReport', function($excel) 
 			use ($newJsonArry,$setBoldRowArry)
 		 {
-				$excel->sheet('Loans', function($sheet)
+				$excel->sheet('Projects', function($sheet)
 					use ($newJsonArry,$setBoldRowArry)
 				 {		
 					 $sheet->fromArray($newJsonArry);

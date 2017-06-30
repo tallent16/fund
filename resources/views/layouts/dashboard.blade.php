@@ -12,7 +12,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <input type="hidden" id="hidden_token" value="{{ csrf_token() }}"/>
-                  <a class="navbar-brand" href="{{ url ('') }}">{{ Html::image('img/LOGO.jpg') }}</a>
+                  <a class="navbar-brand" href="{{ url ('') }}">{{ Html::image('img/logo_horizontal-small.png') }}</a>
             </div>
             <!-- /.navbar-header --> 
 			
@@ -38,13 +38,15 @@
 						<li><a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ 			Lang::get('borrower-leftmenu.user_profile') }}</a>
                         </li>
 						@elseif(Auth::user()->usertype == USER_TYPE_INVESTOR)
-						<li><a href="{{ url ('investor/profile') }}"><i class="fa fa-user fa-fw"></i>User Profile</a>
+						<li><a href="{{ url ('backer/profile') }}"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
                         @else
                         
 						@endif
+						 @if(Auth::user()->usertype == USER_TYPE_ADMIN)
                         <li><a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
                         </li>
+                        @endif
                         <li class="divider"></li>
                         <li><a href="{{ url ('auth/logout') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('borrower-leftmenu.logout') }} </a>
                         </li>

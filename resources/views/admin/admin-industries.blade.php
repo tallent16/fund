@@ -3,7 +3,7 @@
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>	
 	<script src="{{ url("js/admin-industries.js") }}" type="text/javascript"></script>	
 @endsection
-@section('page_heading',Lang::get('Industries') )
+@section('page_heading',Lang::get('Categories') )
 @section('section')  
 @var $industry_list = $adminindustryModel->industry_list;
 <div class="col-sm-12 space-around">
@@ -17,7 +17,7 @@
 					<div class="panel-heading panel-headsection">
 						<div class="row">
 						   <div class="col-xs-6">
-								<span class="pull-left">{{ Lang::get('Industry Type') }}</span> 
+								<span class="pull-left">{{ Lang::get('Category Type') }}</span> 
 							</div>									
 						</div>                           
 					</div>				
@@ -27,7 +27,7 @@
 							<thead>
 								<tr>									
 									<th class="tab-head text-left col-sm-2 text-center">{{ Lang::get('S.No') }}</th>
-									<th class="tab-head text-left col-sm-8">{{ Lang::get('Industries') }}</th>
+									<th class="tab-head text-left col-sm-8">{{ Lang::get('Categories') }}</th>
 									<th class="tab-head text-left col-sm-2 text-center">
 										<label>
 											<input type="checkbox" id="select_all_list" value="Select All">
@@ -76,7 +76,7 @@
 						id="new_industry"
 						class="btn verification-button"	>
 						<i class="fa pull-right"></i>
-						{{ Lang::get('New Industry Type')}}
+						{{ Lang::get('New Category Type')}}
 				</button>
 				<button type="button"
 						id="delete_industry"

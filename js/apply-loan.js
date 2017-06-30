@@ -36,6 +36,14 @@ $(document).ready(function(){
 				event.preventDefault();
 				
 			}
+		
+			if($("#reward_token_table tbody tr:not('.no_data_row')").length	==	0) {
+					event.preventDefault();
+					errMessage	=	"No Rewards Token entered";
+					showDialog("",errMessage);
+					return;
+			}
+		
 		}
 		
 		
@@ -49,7 +57,8 @@ $(document).ready(function(){
 	
 		if($min_for_partial_sub != ''){
 			if($loan_amount < $min_for_partial_sub)
-			{ 	alert($loan_amount);
+			{ 	
+				//~ alert($loan_amount);
 				var $parentTag = $('#min_for_partial_sub_parent');
 				$parentTag.addClass('has-error').append('<span class="control-label error"> Subscription Amount should not be greater than Loan Amount</span>');
 			} else{
@@ -62,7 +71,8 @@ $(document).ready(function(){
 	})
 
 	$(".amount-align").on("blur", function() {
-		onBlurNumberField(this)
+		onBlurNumberField(this);
+		
 	});
 	
 	$("input[name=partial_sub_allowed]:radio").change(function () {
@@ -97,11 +107,15 @@ $(document).ready(function(){
 	
 	//$("input[name=partial_sub_allowed]:radio").trigger("change");
 	callcheckAllTabFilledFunc();
+
+	
 });		
 function callTabValidateFunc() {
 	
 	$('span.error').remove();
 	$('.has-error').removeClass("has-error");
+	$("#milestone_error_info").hide();
+	
 	var active = $("ul.nav-tabs li.active a");
 	var	cur_tab		=	active.attr("href");
 	cur_tab			=	cur_tab.replace("#","");
@@ -155,10 +169,42 @@ function validateTab(cur_tab) {
 			
 		}	
 	}
-	if ($("#"+cur_tab).has('.has-error').length > 0)
+	if ($("#"+cur_tab).has('.has-error').length > 0) {
 		return true;
-	else
+	}else{
+		if(cur_tab	==	"loans_info") {
+			if(checkMilestoneDisbused()) {
+				$("#milestone_error_info").show();
+				$("#milestone_error_info").addClass("has-error");
+				$("#milestone_error_info").addClass("alert-danger");
+				return	true;	
+			}
+		}
 		return false;
+	}
+}
+
+function checkMilestoneDisbused() {
+	
+	var	totMilestoneDisbursed	=	0;
+	$('#milestone-table > tbody  > tr').each(function() {
+		id			=	$(this).attr('id');
+		id			=	id.replace("milestone_row_","");
+		name		=	$("#milstone_name_"+id).val();
+		date		=	$("#milstone_date_"+id).val();
+		disbursed	=	$("#milstone_disbursed_"+id).val();
+		if(name!=""&& date!=""	&& disbursed!="" ) {
+			totMilestoneDisbursed	=	totMilestoneDisbursed	+	parseInt(disbursed);
+		}
+	});
+	//~ alert(totMilestoneDisbursed);
+	if(totMilestoneDisbursed	>	0) {
+		if(totMilestoneDisbursed	!=	100) {
+			
+			return	true;	
+		}
+	}
+	return false;
 }
 function callcheckAllTabFilledFunc() {
 	var	completeLoanDetails	=	$("#completeLoanDetails").val();	
@@ -193,7 +239,7 @@ function checkAjaxValidation() {
 			var data = {	
 						loan_amount:loan_amount,
 						//~ bidcloseDate:bidcloseDate,
-						targetInterest:targetInterest,
+						//~ targetInterest:targetInterest,
 						partialSubAllowed:partialSubAllowed,
 						partialSubAmount:partialSubAmount
 						};
@@ -218,9 +264,9 @@ function checkAjaxValidation() {
 						//~ if(data.row.bidcloseDateErr	!="")
 							//~ $("#date-picker-2_parent").addClass('has-error').
 													//~ append('<span class="control-label error">'+data.row.bidcloseDateErr+'</span>');
-						if(data.row.target_interestErr	!="")
-							$("#target_interest_parent").addClass('has-error').
-													append('<span class="control-label error">'+data.row.target_interestErr+'</span>');
+						//~ if(data.row.target_interestErr	!="")
+							//~ $("#target_interest_parent").addClass('has-error').
+													//~ append('<span class="control-label error">'+data.row.target_interestErr+'</span>');
 						if(data.row.partialSubAmountErr	!="")
 							$("#min_for_partial_sub_parent").addClass('has-error').
 													append('<span class="control-label error">'+data.row.partialSubAmountErr+'</span>');

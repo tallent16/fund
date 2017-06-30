@@ -17,7 +17,9 @@
 			background-color:#333;
 			color:#fff;
 		}	
-		
+		.dataTable td{
+			color:#222;
+		}
 		.dataTable td a{
 			color:#333;
 			text-decoration:none;		
@@ -27,7 +29,7 @@
 		}
 	</style>
 @stop
-@section('page_heading',Lang::get('Manage Investor') )
+@section('page_heading',Lang::get('Manage Backers') )
 @section('section')  
 @var	$adminInvModel	=	$admininvModel->investorListInfo
 
@@ -50,7 +52,7 @@
 		<form action="" method="get">
 			<div class="col-sm-6 col-lg-3"> 														
 				<div class="form-group">
-					<strong>{{ Lang::get('Investor Status') }}</strong>							
+					<strong>{{ Lang::get('Status') }}</strong>							
 					{{ 
 						Form::select('investorstatus_filter',$admininvModel->filterInvestorStatusList, 
 										$admininvModel->filterInvestorStatusValue,
@@ -72,7 +74,7 @@
 	</div><!-------- First row--------------->
 
                 <!--------- Data table starts------------>
-               <form method="post" id="form-manage-investor" action="{{url('admin/investor/updateprofile')}}">
+               <form method="post" id="form-manage-investor" action="{{url('admin/backer/updateprofile')}}">
 					<div class="row">		
 						<div class="col-lg-12 col-md-12">
 							<div class="table-responsive">
@@ -88,8 +90,10 @@
 											<th>{{ Lang::get('Name') }}</th>
 											<th>{{ Lang::get('Email-Id') }}</th>
 											<th>{{ Lang::get('Mobile No') }}</th>
-											<th>{{ Lang::get('Active Loans') }}</th>
+											<th>{{ Lang::get('Active Projects') }}</th>
+<!--
 											<th>{{ Lang::get('Available Balance') }}</th>
+-->
 											<th>{{ Lang::get('Status') }}</th>
 											<th>{{ Lang::get('Actions') }}</th>
 											<th>{{ Lang::get('Hidden Staus') }}</th>

@@ -13,7 +13,7 @@ return [
 	|
 	*/
 	
-	'page_heading'					=> 'My Loans',
+	'page_heading'					=> 'My Projects',
 	'loaninfo'						=> 'LOAN INFO',
 	'loan_refer'					=> 'Loan Reference',
 	'date_applied'					=> 'Date Applied',

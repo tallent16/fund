@@ -20,6 +20,7 @@ class InvestorMyLoanInfoModel extends TranWrapper {
 		
 		$loanlist_sql					= "	SELECT 	loans.loan_id,
 													loans.borrower_id,
+													loans.loan_title,
 													loans.loan_reference_number,
 													borrowers.business_name borrower_name,
 													borrowers.borrower_risk_grade,
@@ -29,11 +30,11 @@ class InvestorMyLoanInfoModel extends TranWrapper {
 													ROUND(loan_bids.accepted_amount,2) amount_accepted ,
 													loan_bids.bid_interest_rate insterest_bid ,
 													case loan_bids.bid_status 
-														   when 1 then 'Bidded' 
+														   when 1 then 'Backed' 
 														   when 2 then 'Bid Accepted'
 														   when 3 then 'Bid Not Accepted'
 													end as status,
-													'Loan Details' viewStatus
+													'Project Details' viewStatus
 											FROM 	loan_bids,
 													loans, 
 													borrowers
@@ -85,7 +86,7 @@ class InvestorMyLoanInfoModel extends TranWrapper {
 										expression
 								FROM	codelist_details
 								WHERE	codelist_id =	7
-								AND		codelist_code in (3,6,9)";
+								AND		codelist_code in (3,6)";
 								
 		$filter_rs		= 	$this->dbFetchAll($filterSql);
 
@@ -93,7 +94,7 @@ class InvestorMyLoanInfoModel extends TranWrapper {
 			throw exception ("Code List Master / Detail information not correct");
 			return;
 		}
-		$this->filterloanStatusList['all'] 	=	'All Loans';
+		$this->filterloanStatusList['all'] 	=	'All Projects';
 		foreach($filter_rs as $filter_row) {
 
 			$codeCode 								= 	$filter_row->codelist_code;

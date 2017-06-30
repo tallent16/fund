@@ -1,30 +1,33 @@
 @extends ('layouts.plane')
+@section('styles')
+	<link href="{{ url('css/frontpage.css') }}" type="text/css" rel="stylesheet" />	
+@endsection 
 @section('bottomscripts') 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ url('js/passwordstrength.js') }}" type="text/javascript"></script>	  
 	<script src="{{ url('js/jquery.validate.min.js') }}" type="text/javascript"></script>	  
-	<script>
-		
+	<script>		
 		var systemSettings					=	{{json_encode($regMod->systemAllSetting)}}
 		var systemMessages					=	{{json_encode($regMod->systemAllMessage[1])}}
-		
 	</script>
 	<script src="{{ url('js/register.js') }}" type="text/javascript"></script>	  
 
 @endsection
 @section ('body')
+@include('header',array('class'=>'',)) 
 <!-- Register Content -->
-<div class="container">
+<div class="container-fluid"  style="margin-top:120px;margin-bottom:120px;">   
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-7 register-style">		
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 register-style">		
             <!-- Register Block -->
+<!--
             <div class="block block-themed">
 				<div class="row header-register">
 					<div class="block-header">	
 						<div class="row">
 							<div class="col-md-3">
 								<h5 class="block-title">
-									{{ Lang::get('register.register') }}
+									{{ Lang::get('Sign up') }}
 								</h5>
 							</div> 
 							<div class="col-md-9 text-right"> 
@@ -36,11 +39,23 @@
 					</div>      
 				</div>                            
             </div>
+-->
+<!--
             <div class="row col-md-offset-3"> 
 				<a class="navbar-brand" href="{{ url ('') }}">
 					{{ Html::image('img/LOGO.jpg') }}
 				</a> 
 			</div>
+-->
+
+<div class="panel panel-default">
+	  
+		<div class="panel-heading">
+		<h3 class="panel-title">Sign Up</h3>
+	
+	</div>
+		
+	<div class="panel-body">
             <div class="block-content block-content-full block-content-narrow">                    
                   <br>
 					<form 	id="form-register" method="post" action="{{ url('submit_registration')}}"
@@ -52,11 +67,11 @@
 							<div class="form-group col-xs-12">								
 								<label for="example-inline-radio2" class="radio-inline">
 									<input checked="checked" name="Userrole" type="radio" value="Investor" />                                    
-									{{ Lang::get('register.investor') }}
+									{{ Lang::get('Backer') }}
 								</label>
 								<label for="example-inline-radio1" class="radio-inline">
 									<input id="Userrole" name="Userrole" type="radio" value="Borrower" />                                    
-								   {{ Lang::get('register.borrower') }}
+								   {{ Lang::get('Creator') }}
 								</label>								
 							</div>
 						</div>						
@@ -71,7 +86,7 @@
 											placeholder="User Name" 
 											type="text" 
 											data-val="true"
-											data-val-required="Please enter an Username"
+											data-val-required="Please enter Username"
 											data-val-remote="Username already registered. Please enter a different Username"
 											value="" />
 									</div>
@@ -214,7 +229,8 @@
 					<div class="row">
 						<div class="col-xs-12 form-group">
 							<label class="css-input switch switch-sm switch-success">
-								{{ Lang::get('register.logging') }} 
+								{{ Lang::get('Bound to our Terms and Service') }} 
+<!--
 								<a target="_blank" href="">
 								   {{ Lang::get('register.termsissuer') }}
 								</a>,
@@ -228,6 +244,7 @@
 								<a target="_blank" href="">
 									{{ Lang::get('register.privacy') }}
 								</a>
+-->
 							</label>
 						</div>
 					</div>
@@ -239,8 +256,9 @@
 									class="btn btn-success register-button">
 									<i class="fa pull-right"></i> 
 									{{ Lang::get('register.signup') }}
-							</button>
+							</button> <a href="{{ url ('auth/login') }}">Sign In</a>
 						</div>
+						
 					</div>
 					<input 	data-val="true" 
 							data-val-required="The PrivateReferral field is required." 
@@ -254,6 +272,9 @@
                <!-- </div>-->
             </div>
             <!-- END Register Block -->
+            
+            </div>
+            </div>
         </div>
     </div>
 </div>
@@ -300,5 +321,7 @@
 												'footerExists'=>'yes'
 											))
 <!-- END Register Content -->
+@include('footer',array('class'=>'',))
 @endsection
+
 @stop

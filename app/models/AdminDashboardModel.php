@@ -228,7 +228,7 @@ class AdminDashboardModel extends TranWrapper {
 											FROM(
 													SELECT 	loans.borrower_id borrower_id,
 															'' borrower_name,
-															'Loan' activity,
+															'Project' activity,
 															loan_reference_number,
 															apply_date	act_date,
 															loans.status statusTxt
@@ -237,7 +237,7 @@ class AdminDashboardModel extends TranWrapper {
 													UNION
 													SELECT 	loans.borrower_id borrower_id,
 															'' borrower_name,
-															'Loan' activity,
+															'Project' activity,
 															loan_reference_number,
 															bid_close_date	act_date,
 															loans.status statusTxt
@@ -246,7 +246,7 @@ class AdminDashboardModel extends TranWrapper {
 													UNION
 													SELECT 	loans.borrower_id borrower_id,
 															'' borrower_name,
-															'Loan' activity,
+															'Project' activity,
 															loan_reference_number,
 															(	SELECT	MAX(repayment_actual_date)
 																FROM	borrower_repayment_schedule

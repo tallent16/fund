@@ -9,7 +9,7 @@
 	</script>
 	<script src="{{ asset("js/investor-myloaninfo.js") }}" type="text/javascript"></script>
 @endsection
-@section('page_heading',Lang::get('My Loans') )
+@section('page_heading',Lang::get('My Projects') )
 @section('section')    
 @var	$investortAllLoan	=	$InvModMyLoanInfo->allLoanInfo
 
@@ -20,7 +20,7 @@
 				<div class="panel panel-primary panel-container">
 					
 					<div class="panel-heading panel-headsection">					
-						{{ Lang::get('LOAN INFO')}}
+						{{ Lang::get('PROJECT INFO')}}
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
@@ -29,7 +29,7 @@
 								<div class="row">	
 									<div class="col-sm-12 col-lg-3"> 														
 										<div class="form-group"><br>	
-											<strong>{{ Lang::get('Loan Status') }}</strong>							
+											<strong>{{ Lang::get('Project Status') }}</strong>							
 											{{ 
 												Form::select('loanstatus_filter', 
 																$InvModMyLoanInfo->filterloanStatusList, 
@@ -74,11 +74,12 @@
 										<table class="table text-left myloan-table-left-label">		
 											<tbody>																								
 												<tr>
-													<td>{{ Lang::get('Loan Reference')}}</td>														
+													<td>{{ Lang::get('Project Reference')}}</td>														
 												</tr>
 												<tr>
-													<td>{{ Lang::get('Borrower\'s Name')}}</td>												
+													<td>{{ Lang::get('Project Title')}}</td>												
 												</tr>
+<!--
 												<tr>
 													<td>{{ Lang::get('Grade')}}</td>												
 												</tr>
@@ -97,6 +98,7 @@
 												<tr>
 													<td>{{ Lang::get('Interest % bid')}}</td>												
 												</tr>
+-->
 												<tr>
 													<td>{{ Lang::get('Status')}}</td>												
 												</tr>	
@@ -118,7 +120,7 @@
 								<div class="col-sm-7 col-lg-10 loan-details pagination">
 									
 									@foreach($investortAllLoan as $loanRow)
-										@var	$loan_url	=	'investor/myloans/'.base64_encode($loanRow->loan_id)
+										@var	$loan_url	=	'/projectdetails/'.base64_encode($loanRow->loan_id)
 										<div class="col-sm-12 col-lg-3 text-center">									
 												<a 	href="{{ url ($loan_url) }}"
 													class="btn btn-lg loan-detail-button">
@@ -139,13 +141,14 @@
 														</tr>
 														<tr>
 															<td>
-																@if($loanRow->borrower_name	!=""	)
-																	{{$loanRow->borrower_name}}
+																@if($loanRow->loan_title	!=""	)
+																	{{$loanRow->loan_title}}
 																@else
 																	--
 																@endif
 															</td>														
 														</tr>
+<!--
 														<tr>
 															<td>
 																@if($loanRow->borrower_risk_grade	!=""	)
@@ -200,6 +203,7 @@
 																@endif
 															</td>											
 														</tr>
+-->
 														<tr>
 															<td>
 																@if($loanRow->status	!=""	)

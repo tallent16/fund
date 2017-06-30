@@ -5,11 +5,11 @@
 	{{ Html::style('css/datatable/dataTables.editor.css') }}		
 	
 @stop
-@section('page_heading',Lang::get('Borrower Profile Report') )
+@section('page_heading',Lang::get('Creator Profile Report') )
 @section('section')  
 <div class="col-sm-12 space-around">
 <div id="filter_area" >
-<form method="post" action="{{url('admin/borrower-profiles/report')}}">
+<form method="post" action="{{url('admin/creator-profiles/report')}}">
 	<input  type="hidden" 
 			name="_token"
 			id="hidden_token"
@@ -42,7 +42,7 @@
 <form 	class="form-horizontal" 
 		id="excel_export" 
 		method="post"
-		action="{{url('admin/borrower-profiles-report/download')}}">
+		action="{{url('admin/creator-profiles-report/download')}}">
 		<input  type="hidden" 
 				name="_token"
 				id="hidden_token"
@@ -75,23 +75,15 @@
 				<table class="table tab-fontsize table-border-custom text-left" id="adminloanlisting">
 					<thead>
 						<tr>
-							<th class="tab-head text-left">{{ Lang::get('Borrower Id') }}</th>
+							<th class="tab-head text-left">{{ Lang::get('Creator Id') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Organization Name') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Key Contact Person') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('CP Email') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('CP Mobile') }}</th>
 							<th class="tab-head text-right">{{ Lang::get('Paid up Capital') }}</th>
 							<th class="tab-head text-left">{{ Lang::get('Operation Since') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Loans Applied') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Loans Sanctioned') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Average Interest Rate') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Principal OS') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Interest OS') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Principal Paid') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Interest Paid') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Total Penalty Paid') }}</th>
-							<th class="tab-head text-right">{{ Lang::get('Overdue Amount') }}</th>
-							<th class="tab-head text-left">{{ Lang::get('Overdue since') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Projects Applied') }}</th>
+							<th class="tab-head text-right">{{ Lang::get('Total Projects Sanctioned') }}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -106,28 +98,6 @@
 								<td class="text-left">{{$listRow->operation_since}}</td>
 								<td class="text-right">{{$listRow->tot_loan_applied}}</td>
 								<td class="text-right">{{$listRow->tot_loan_sanctioned}}</td>
-								<td class="text-right">{{$listRow->avg_int_rate}}</td>
-								<td class="text-right">
-									{{number_format($listRow->tot_principal_os,2,'.',',')}}
-								</td>
-								<td class="text-right">
-									{{number_format($listRow->tot_int_os,2,'.',',')}}
-								</td>
-								<td class="text-right">
-									{{number_format($listRow->tot_principal_paid,2,'.',',')}}
-								</td>
-								<td class="text-right">
-									{{number_format($listRow->tot_int_paid,2,'.',',')}}
-								</td>
-								<td class="text-right">
-									{{number_format($listRow->tot_penalty_paid,2,'.',',')}}
-								</td>
-								<td class="text-right">
-									{{number_format($listRow->overdue_amt,2,'.',',')}}
-								</td>
-								<td class="text-left">
-									{{$listRow->overdue_since}}
-								</td>
 							</tr>
 						@endforeach
 					</tbody>

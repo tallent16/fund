@@ -19,7 +19,7 @@
 						@var	$openBal	=	$adminInvActRepMod->openingBalance[$invListRow]
 								<tr>
 										<td colspan="7" class="text-center">
-											{{ "<strong>".Lang::get('Transaction Detail Report for Investor:').
+											{{ "<strong>".Lang::get('Transaction Detail Report for Backer:').
 												"</strong>".$invList[$invListRow]}}
 										 </td>
 									</tr>	

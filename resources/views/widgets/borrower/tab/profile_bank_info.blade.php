@@ -6,7 +6,7 @@
 					<!---row1----->
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">
+							<label class="">
 								{{ Lang::get('borrower-profile.bank_name') }}
 							</label>												
 						</div>
@@ -16,7 +16,7 @@
 										id="bank_name" 
 										name="bank_name"
 										value="{{ $modelBorPrf->bank_name }}"
-										class="form-control required"
+										class="form-control"
 										/>
 						</div>
 					</div>
@@ -24,7 +24,7 @@
 					<!---row2----->					
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">
+							<label class="">
 								{{ Lang::get('borrower-profile.bank_code') }}
 							</label>												
 						</div>
@@ -34,7 +34,7 @@
 										id="bank_code" 
 										name="bank_code"
 										value="{{ $modelBorPrf->bank_code }}"
-										class="form-control required"
+										class="form-control"
 										/>	
 						</div>
 					</div>
@@ -42,7 +42,7 @@
 					<!---row3----->
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">	
+							<label class="">	
 								{{ Lang::get('borrower-profile.branch_code') }}
 							</label>												
 						</div>
@@ -52,7 +52,7 @@
 											id="branch_code" 
 											name="branch_code"
 											value="{{ $modelBorPrf->branch_code }}"
-											class="form-control required"
+											class="form-control"
 											/>
 						</div>
 					</div>
@@ -60,7 +60,7 @@
 					<!---row4----->	
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">
+							<label class="">
 								{{ Lang::get('borrower-profile.acc_num') }}
 							</label>												
 						</div>
@@ -70,7 +70,7 @@
 										id="bank_account_number" 
 										name="bank_account_number"
 										value="{{ $modelBorPrf->bank_account_number }}"
-										class="form-control required numeric"
+										class="form-control numeric"
 										/>
 						</div>
 					</div>			
@@ -78,14 +78,14 @@
 					<!---row5----->	
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">
+							<label class="">
 								{{ Lang::get('Bank Statement') }}
 							</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="bank_statement_parent">													
 								<input 	type="file" 
-										class="jfilestyle  required" 
+										class="jfilestyle" 
 										data-buttonBefore="true" 
 										name="bank_statement"
 										/>

@@ -31,8 +31,10 @@ $(document).ready(function (){
 		
 		if($("#read_toc_message").is(":checked")) {
 			$('#form-register').submit();
+			console.log("toc_message_submit");
 		}
 	 }); 
+	 
 	 
 	 //~ $.validator.addMethod("alphanumeric", function(value, element) {   
 		//~ return this.optional(element) || /^(?=.*\d+)(?=.*[!@#$%^&*()_+])[a-zA-Z\d\!@#\$%&\*]{10,}$/.test(value);

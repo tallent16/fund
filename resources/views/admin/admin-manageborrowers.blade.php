@@ -17,7 +17,7 @@
 			background-color:#333;
 			color:#fff;
 		}
-		.dataTable td a{
+		.dataTable td a, .dataTable td{
 			color:#333;
 			text-decoration:none;		
 		}		
@@ -26,7 +26,7 @@
 		}
 	</style>
 @stop
-@section('page_heading',Lang::get('Manage Borrowers') )
+@section('page_heading',Lang::get('Manage Creators') )
 @section('section')  
 @var	$adminBorModel	=	$adminbormodel->borrowerListInfo
 
@@ -50,7 +50,7 @@
 		<form action="" method="get">
 			<div class="col-sm-6 col-lg-3">	
 				<div class="form-group">			
-					<strong>{{ Lang::get('Borrower Status') }}</strong>							
+					<strong>{{ Lang::get('Status') }}</strong>							
 					{{ 
 						Form::select('borrowerstatus_filter',$adminbormodel->filterBorrowerStatusList, 
 										$adminbormodel->filterBorrowerStatusValue,
@@ -70,7 +70,7 @@
 
 				<!-----datatable starts---->
 
-				<form method="post" id="form-manage-borrower" action="{{url('admin/borrower/updateprofile')}}">
+				<form method="post" id="form-manage-borrower" >
 					<div class="row">		
 						<div class="col-lg-12 col-md-12">
 							<div class="table-responsive">
@@ -87,8 +87,7 @@
 											<th>{{ Lang::get('Industry') }}</th>
 											<th>{{ Lang::get('Email Id') }}</th>										
 											<th>{{ Lang::get('Mobile No') }}</th>											
-											<th>{{ Lang::get('Active Loans') }}</th>
-											<th>{{ Lang::get('Total Balance Outstanding') }}</th>
+											<th>{{ Lang::get('Active Projects') }}</th>
 											<th>{{ Lang::get('Status') }}</th>
 											<th>{{ Lang::get('Actions') }}</th>
 											<th>{{ Lang::get('Hidden Staus') }}</th>

@@ -6,36 +6,38 @@
 	@endpermission				
 	@permission('listview.admin.manageborrowers') 
 		<li>
-			<a href="{{ url ('admin/manageborrowers') }}"><i class="fa  fa-reply fa-fw"></i>{{ Lang::get('Manage Borrowers') }} </a> 
+			<a href="{{ url ('admin/managecreators') }}"><i class="fa  fa-reply fa-fw"></i>{{ Lang::get('Manage Creators') }} </a> 
 		</li>
 	@endpermission
 	@permission('listview.admin.manageinvestors')
 		<li>
-			<a href="{{ url ('admin/manageinvestors') }}"><i class="fa fa-share fa-fw"></i>{{ Lang::get('Manage Investors') }} </a> 
+			<a href="{{ url ('admin/managebackers') }}"><i class="fa fa-share fa-fw"></i>{{ Lang::get('Manage Backers') }} </a> 
 		</li>
 	@endpermission
 	@permission('view.admin.manageloans')
 		<li>
-			<a href="{{ url ('admin/manageloans') }}"><i class="fa fa-signal fa-fw"></i>{{ Lang::get('Manage Loans') }} <span class="fa arrow"></span></a> 
+			<a href="{{ url ('admin/manageloans') }}"><i class="fa fa-signal fa-fw"></i>{{ Lang::get('Manage Projects') }} <span class="fa arrow"></span></a> 
 				<ul class="nav nav-second-level">
 					<li>
-						<a href="{{ url ('admin/loanlisting') }}">{{ Lang::get('All Loans') }}</a>
+						<a href="{{ url ('admin/projects') }}">{{ Lang::get('All Projects') }}</a>
 					</li> 
 				<li>
-						<a href="{{ url ('admin/loandisplayorder') }}">{{ Lang::get('Loan Display Ordering') }}</a>
+						<a href="{{ url ('admin/projectdisplayordering') }}">{{ Lang::get('Project Display Ordering') }}</a>
 					</li> 					
 				</ul>
 		</li>
 	@endpermission
+	<!--	
 	@permission('view.admin.banking')
 		<li>
 			<a href="{{ url ('admin/borrowersrepayment') }}"><i class="fa  fa-bank fa-fw"></i>{{ Lang::get('Banking') }} <span class="fa arrow"></span></a> 
 				<ul class="nav nav-second-level">
-					@permission('listview.admin.borrowerrepayment')
+				@permission('listview.admin.borrowerrepayment')
 						<li>
 							<a href="{{ url ('admin/borrowersrepaylist') }}">{{ Lang::get('Repayment List') }}</a>
 						</li>
 					@endpermission
+					
 					@permission('listview.admin.investorsdeposit')			
 						<li>
 							<a href="{{ url ('admin/investordepositlist') }}">{{ Lang::get('Investor Deposit List') }}</a>
@@ -54,6 +56,7 @@
 				</ul>	
 		</li>
 	@endpermission
+	-->
 	@permission('view.admin.reports')
 	<li>
 		<a href="{{ url ('admin/reports') }}">
@@ -64,18 +67,21 @@
 		<ul class="nav nav-second-level">
 			@permission('viewinvestor.admin.reportactivity')
 			<li>
-				<a href="{{ url ('admin/investoractivity/report') }}">
-					{{ Lang::get('Investor Activity Report') }}
+				<a href="{{ url ('admin/backeractivity/report') }}">
+					{{ Lang::get('Backer Activity Report') }}
 				</a>
 			</li> 
 			@endpermission
+<!--
+			
 			@permission('viewborrower.admin.reportactivity')
 			<li>
-				<a href="{{ url ('admin/borroweractivity/report') }}">
-					{{ Lang::get('Borrower Activity Report') }}
+				<a href="{{ url ('admin/creatoractivity/report') }}">
+					{{ Lang::get('Creator Activity Report') }}
 				</a>
 			</li> 
 			@endpermission
+			
 			@permission('viewbank.admin.reportactivity')
 			<li>
 				<a href="{{ url ('admin/bankactivity/report') }}">
@@ -83,31 +89,33 @@
 				</a>
 			</li>
 			@endpermission
+-->
 			@permission('viewloan.admin.reportlisting')
 			<li>
-				<a href="{{ url ('admin/loan-listing/report') }}">
-					{{ Lang::get('Loan Listing Report') }}
+				<a href="{{ url ('admin/project-listing/report') }}">
+					{{ Lang::get('Project Listing Report') }}
 				</a>
 			</li>
 			@endpermission
 			@permission('viewinvestor.admin.reportprofile')
 			<li>
-				<a href="{{ url ('admin/investor-profiles/report') }}">
-					{{ Lang::get('Investor Profiles Report') }}
+				<a href="{{ url ('admin/backer-profiles/report') }}">
+					{{ Lang::get('Backer Profiles Report') }}
 				</a>
 			</li>
 			@endpermission
 			@permission('viewborrower.admin.reportprofile')
 			<li>
-				<a href="{{ url ('admin/borrower-profiles/report') }}">
-					{{ Lang::get('Borrower Profiles Report') }}
+				<a href="{{ url ('admin/creator-profiles/report') }}">
+					{{ Lang::get('Creator Profiles Report') }}
 				</a>
 			</li>
 			@endpermission
+<!--
 			@permission('viewloan.admin.reportperformance')
 			<li>
-				<a href="{{ url ('admin/loan-perform/report') }}">
-					{{ Lang::get('Loan Performance Report') }}
+				<a href="{{ url ('admin/project-perform/report') }}">
+					{{ Lang::get('Project Performance Report') }}
 				</a>
 			</li>
 			@endpermission
@@ -125,6 +133,7 @@
 				</a>
 			</li>
 			@endpermission
+-->
 		</ul>
 	</li>
 	<li>
@@ -179,14 +188,15 @@
 				@endpermission
 				@permission('view_industries.admin.settings') 
 					<li>
-						<a href="{{ url ('admin/industries') }}">{{ Lang::get('Industries') }}</a>
+						<a href="{{ url ('admin/industries') }}">{{ Lang::get('Categories') }}</a>
 					</li>
 				@endpermission	
-				@permission('view_general_message.admin.settings') 
+				<!--@permission('view_general_message.admin.settings') 
 					<li>
 						<a href="{{ url ('admin/loandocrequired') }}">{{ Lang::get('Loan Documents Required') }}</a>
 					</li>
 				@endpermission
+				-->
 			</ul>
 	</li>	  
 </ul>

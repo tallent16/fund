@@ -36,7 +36,7 @@
 										@if( $InvDashMod->isFeaturedLoanInfo	==	"yes" )
 											{{Lang::get('FEATURED LOANS')}}
 										@else
-											{{Lang::get('AVAILABLE LOANS')}}
+											{{Lang::get('AVAILABLE PROJECTS')}}
 										@endif
 									</span> 
 								</div>
@@ -68,30 +68,10 @@
 							<table class="table text-left">								
 								<tbody>
 									<tr>
-										<td  class="tab-left-head col-sm-6">
-										{{Lang::get('Rate')}}
-										</td> 
-										<td  id="cur_loan_rate" class="col-sm-6">
-											 @if(isset($invFeatureLoans[0]))
-												{{$invFeatureLoans[0]->rate}}%
-											@endif
-										</td>										
-									</tr>	
-									<tr>
-										<td class="tab-left-head" >
-											{{Lang::get('Tenure')}}
-										</td> 
-										<td  id="cur_loan_duration">
-											 @if(isset($invFeatureLoans[0]))
-												{{$invFeatureLoans[0]->duration}}
-											@endif
-										</td>										
-									</tr>
-									<tr>
 										<td class="tab-left-head" >
 											{{Lang::get('Amount')}}
 										</td> 
-										<td  id="cur_loan_amount">
+										<td  id="cur_project_amount">
 											 @if(isset($invFeatureLoans[0]))
 												{{number_format($invFeatureLoans[0]->amount,2,'.',',')}}
 											@endif
@@ -99,24 +79,34 @@
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
-											{{Lang::get('Type of Repayment')}}
+											{{Lang::get('Amount Realised')}}
 										</td> 
-										<td  id="cur_loan_repayment_type">
+										<td  id="cur_project_amount_realized">
 											 @if(isset($invFeatureLoans[0]))
-												{{$invFeatureLoans[0]->repayment_type}}
+												{{number_format($invFeatureLoans[0]->amount_realized,2,'.',',')}}
 											@endif
 										</td>										
 									</tr>
 									<tr>
-										<td class="tab-left-head">
-											{{Lang::get('Bid Type')}}
+										<td class="tab-left-head" >
+											{{Lang::get('Close Date')}}
 										</td> 
-										<td  id="cur_loan_bid_type">
+										<td  id="cur_project_close_date">
 											 @if(isset($invFeatureLoans[0]))
-												{{$invFeatureLoans[0]->bid_type}}
+												{{$invFeatureLoans[0]->close_date}}
 											@endif
 										</td>										
-									</tr>									
+									</tr>
+									<tr>
+										<td class="tab-left-head" >
+											{{Lang::get('No of days to closure')}}
+										</td> 
+										<td  id="cur_project_noofdays">
+											 @if(isset($invFeatureLoans[0]))
+												{{$invFeatureLoans[0]->funding_duration}}
+											@endif
+										</td>										
+									</tr>
 								</tbody>
 							</table>							 
 						</div> <!---table end--->   	
@@ -125,6 +115,7 @@
 				<!-----first col end----->
 				<!-----second col-------->
 				<div class="col-lg-6 col-md-6">
+<!--
 					<div class="panel panel-default">
 						<div class="panel-body">
 							@section ('cchart4_panel_title',Lang::get('Return on Investment(%)'))
@@ -134,67 +125,7 @@
 							@include('widgets.panel', array('header'=>true, 'as'=>'cchart4'))
 						</div>								
 					</div>	
-
-							<div class="table-responsive">                         
-									<table class="table" id="account-summary">
-										<thead>
-											<tr>
-												<th class="tab-head text-left">{{Lang::get('ACCOUNT SUMMARY')}}</th>
-												<th class="tab-head text-right">{{Lang::get('VERIFIED')}}</th>
-												<th class="tab-head text-right">{{Lang::get('PENDING APPROVAL')}}</th>										
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td class="text-left tab-left-head">{{Lang::get('Investments')}}</td>
-												<td class="text-right">
-													{{number_format($Investments_verified,2,'.',',')}}
-												</td>
-												<td class="text-right">
-													{{number_format($Investments_pending,2,'.',',')}}
-												</td>										
-											</tr>
-											<tr>
-												<td class="text-left tab-left-head">{{Lang::get('Deposits')}}</td>
-												<td class="text-right">
-													{{number_format($deposits_verified,2,'.',',')}}
-												</td>	
-												<td class="text-right">
-													{{number_format($deposits_pending,2,'.',',')}}
-												</td>	
-																							
-											</tr>	
-											<tr> 
-												<td class="text-left tab-left-head">{{Lang::get('Withdrawals')}}</td>
-												<td class="text-right">
-													{{number_format($withdrawals_verified,2,'.',',')}}
-												</td>	
-												<td class="text-right">
-													{{number_format($withdrawals_pending,2,'.',',')}}
-												</td>	
-																				
-											</tr>
-											<tr> 
-												<td class="text-left tab-left-head">{{Lang::get('Earnings')}}</td>
-												<td class="text-right">
-													{{number_format($earnings_verified,2,'.',',')}}
-												</td>	
-												<td class="text-right">
-													{{number_format($earnings_pending,2,'.',',')}}
-												</td>	
-																				
-											</tr>
-											<tr>
-												<td class="text-left tab-left-head">{{Lang::get('Available for investment')}}</td>
-												<td class="text-right">{{number_format($ava_for_invest,2,'.',',')}}</td>
-												<td class="text-right"></td>										
-											</tr>										
-																				
-										</tbody>
-									</table>                     
-								</div>
-					
-					
+-->
 				</div>			
 			<!--second col end--->				
 		</div>
@@ -206,7 +137,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{{Lang::get('FUNDS DEPLOYED')}}
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{{Lang::get('PROJECTS FUNDED')}}
           <span class="pull-right"><i class="fa fa-caret-down cursor-pointer"></i></span></a>
         </h4>
       
@@ -220,16 +151,10 @@
 						<table class="table text-left">
 							<thead>
 								<tr>
-									<th class="tab-head text-left">{{Lang::get('Borrower\'s Name')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Creator\'s Name')}}</th>
 									<th class="tab-head text-left">{{Lang::get('Grade')}}</th>
-									<th class="tab-head text-right">{{Lang::get('Total Amount of Loan')}}</th>
 									<th class="tab-head text-right">{{Lang::get('Amount Invested')}}</th>
-									<th class="tab-head text-left">{{Lang::get('Date of Investment')}}</th>
-									<th class="tab-head text-right">{{Lang::get('Tenure of Loan')}}</th>
-									<th class="tab-head text-left">{{Lang::get('Type of Loan')}}</th>
-									<th class="tab-head text-right">{{Lang::get('Rate of Interest')}}</th>
-									<th class="tab-head text-right">{{Lang::get('Interest Paid')}}</th>
-									<th class="tab-head text-right">{{Lang::get('Principal Paid')}}</th>
+									<th class="tab-head text-center">{{Lang::get('Date of Investment')}}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -237,15 +162,9 @@
 								@foreach($fundsDepolyedInfo as $loanRow)
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
-										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td class="text-right">{{number_format($loanRow['loan_sanctioned_amount'],2,'.',',')}}</td>
+										<td>{{$loanRow['loan_risk_grade']}}</td>
 										<td class="text-right">{{number_format($loanRow['bid_amount'],2,'.',',')}}</td>
-										<td>{{$loanRow['date_of_investment']}}</td>
-										<td class="text-right">{{$loanRow['loan_tenure']}}</td>
-										<td>{{$loanRow['bid_type']}}</td>
-										<td class="text-right">{{$loanRow['bid_interest_rate']}}</td>
-										<td class="text-right">{{number_format($loanRow['interest_paid'],2,'.',',')}}</td>
-										<td class="text-right">{{number_format($loanRow['principal_amount_paid'],2,'.',',')}}</td>
+										<td class="text-center">{{$loanRow['date_of_investment']}}</td>
 									</tr>				
 								@endforeach	
 								@else
@@ -268,7 +187,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">{{Lang::get('INVESTMENTS UNDER BID')}}
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">{{Lang::get('PROJECTS UNDER BID')}}
             <span class="pull-right"><i class="fa fa-caret-down cursor-pointer"></i></span></a>
         </h4>
       </div>
@@ -281,16 +200,10 @@
 						<table class="table text-left">
 							<thead>
 								<tr>
-									<th class="tab-head text-left">{{Lang::get('Borrower\'s Name')}}</th>
+									<th class="tab-head text-left">{{Lang::get('Creator\'s Name')}}</th>
 									<th class="tab-head text-left">{{Lang::get('Grade')}}</th>
-									<th class="tab-head text-right">{{Lang::get('Total Amount of Loan')}}</th>
 									<th class="tab-head text-right">{{Lang::get('Amount Invested')}}</th>
-									<th class="tab-head text-left">{{Lang::get('Date of Investment')}}</th>
-									<th class="tab-head text-left">{{Lang::get('Bid Close Date')}}</th>
-									<th class="tab-head text-right">{{Lang::get('Tenure of Loan')}}</th>
-									<th class="tab-head text-left">{{Lang::get('Type of Loan')}}</th>	
-									<th class="tab-head text-left"></th>	
-									<th class="tab-head text-left"></th>									
+									<th class="tab-head text-center">{{Lang::get('Date of Investment')}}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -298,15 +211,9 @@
 								@foreach($invUnderBidInfo as $loanRow)
 									<tr>
 										<td>{{$loanRow['business_name']}}</td>
-										<td>{{$loanRow['borrower_risk_grade']}}</td>
-										<td class="text-right">{{number_format($loanRow['apply_amount'],2,'.',',')}}</td>
+										<td>{{$loanRow['loan_risk_grade']}}</td>
 										<td class="text-right">{{number_format($loanRow['bid_amount'],2,'.',',')}}</td>
-										<td>{{$loanRow['date_of_investment']}}%</td>
-										<td>{{$loanRow['bid_close_date']}}</td>
-										<td class="text-right">{{$loanRow['loan_tenure']}}</td>
-										<td>{{$loanRow['bid_type']}}</td>
-										<td></td>
-										<td></td>
+										<td class="text-center">{{$loanRow['date_of_investment']}}</td>
 									</tr>				
 								@endforeach	
 								@else
@@ -326,6 +233,7 @@
         </div>
       </div>
     </div>
+<!--
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -338,6 +246,7 @@
         
 				 <div class="panel panel-primary panel-container">
 					<div class="table-responsive"><!---table start-->	
+<!--
 					<table class="table text-left">
 							<thead>
 								<tr>
@@ -371,13 +280,20 @@
 							</tbody>
 						</table>		
 						</div>									
-				</div><!-----third row end--->	
+-->
+<!--
+				</div>
+-->
+				<!-----third row end--->	
+<!--
                 </div>              
         
         </div>
       </div>
     </div>
   </div> 
+-->
+
 
     @endsection  
 @stop

@@ -11,15 +11,15 @@ $(document).ready(function() {
 	$("#filter_status").click(function(event){   //filter the status
 		var	transcation_filter	=	$("#filter_transcations").find("option:selected").val();
 		transcation_filter		=	(transcation_filter	==	"11")?"":transcation_filter;		
-		$loanlisting.columns(8).search(transcation_filter).draw();	
+		$loanlisting.columns(5).search(transcation_filter).draw();	
 		
 				//From date and To date filtering
 		$.fn.dataTableExt.afnFiltering.push(
 			function( oSettings, aData, iDataIndex ) {
 				var iFini = document.getElementById('fromdate').value;
 				var iFfin = document.getElementById('todate').value;
-				var iStartDateCol = 6;
-				var iEndDateCol = 6;
+				var iStartDateCol = 3;
+				var iEndDateCol = 3;
 
 				iFini=iFini.substring(6,10) + iFini.substring(3,5)+ iFini.substring(0,2);
 				iFfin=iFfin.substring(6,10) + iFfin.substring(3,5)+ iFfin.substring(0,2);
@@ -117,40 +117,39 @@ function inheritvarvalues(data){
 		
 	
 	if  (data.status	==	LOAN_STATUS_SUBMITTED_FOR_APPROVAL){
-				var	actionUrl		=	baseUrl+'/admin/loanapproval';
-				var	actionUrl		=	actionUrl+"/"+loan_id	;
+		var	actionUrl		=	baseUrl+'/admin/projectapproval';
+		var	actionUrl		=	actionUrl+"/"+loan_id	;
 	}					
 	else if (data.status	==	LOAN_STATUS_APPROVED){																	
-				var	actionUrl		=	baseUrl+'/admin/managebids';
-				var	actionUrl		=	actionUrl+"/"+atob(loan_id);		
+		//~ var	actionUrl		=	baseUrl+'/admin/managebids';
+		var	actionUrl		=	baseUrl+'/admin/manageprojects';
+		//~ var	actionUrl		=	actionUrl+"/"+atob(loan_id);		
+		var	actionUrl		=	actionUrl+"/"+loan_id;		
 	}			
 	else if (data.status	==	LOAN_STATUS_CLOSED_FOR_BIDS){
-				var	actionUrl		=	baseUrl+'/admin/managebids';
-				var	actionUrl		=	actionUrl+"/"+atob(loan_id);	
-	}	
-	else if	(data.status == LOAN_STATUS_BIDS_ACCEPTED)		{											
-				var	actionUrl		=	baseUrl+'/admin/disburseloan';
-				var	actionUrl		=	actionUrl+"/"+loan_id	;		
-	}						
-	else{
-				var	actionUrl		=	"javascript:void(0);";								
+		//~ var	actionUrl		=	baseUrl+'/admin/managebids';
+		var	actionUrl		=	baseUrl+'/admin/manageprojects';
+		//~ var	actionUrl		=	actionUrl+"/"+atob(loan_id);	
+		var	actionUrl		=	actionUrl+"/"+loan_id;		
+	}else{
+		var	actionUrl		=	"javascript:void(0);";								
 	}
 	
 	
 	if  (data.status	==	LOAN_STATUS_NEW){ 
-			var	actionUrl		=	baseUrl+'/admin/loanapproval';  
+			var	actionUrl		=	baseUrl+'/admin/projectapproval';  
 			var	actionUrl		=	actionUrl+"/"+loan_id;
 	}
 	if  (data.status	==	LOAN_STATUS_DISBURSED){
-			var	actionUrl		=	baseUrl+'/admin/loanview';
+			var	actionUrl		=	baseUrl+'/admin/projectview';
 			var	actionUrl		=	actionUrl+"/"+loan_id;	
 	}
 	if  (data.status	==	LOAN_STATUS_LOAN_REPAID){
-			var	actionUrl		=	baseUrl+'/admin/loanview';
+			var	actionUrl		=	baseUrl+'/admin/projectview';
 			var	actionUrl		=	actionUrl+"/"+loan_id;	
 	}
 	if  (data.status	==	LOAN_STATUS_PENDING_COMMENTS){
-			var	actionUrl		=	baseUrl+'/admin/loanapproval';
+			var	actionUrl		=	baseUrl+'/admin/projectapproval';
 			var	actionUrl		=	actionUrl+"/"+loan_id;		 				
 	}
 	return actionUrl;
@@ -191,48 +190,24 @@ function callDataTableFunc(){
 						},
 						{ 													
 							data: null,		
+							className: "text-left",											
+							render: function(data, type, full, meta){ 								
+								var actionUrl = inheritvarvalues(data);	           				
+								var str ="";  								
+								str=str+'<a href="'+actionUrl+'"';
+								str=str+'>'+data.loan_title+'</a>';						
+								return str;
+        					 
+        					}
+						},
+						{ 													
+							data: null,		
 							className: "text-right",											
 							render: function(data, type, full, meta){ 								
 								var actionUrl = inheritvarvalues(data);	           				
 								var str ="";  								
 								str=str+'<a href="'+actionUrl+'"';
 								str=str+'>'+data.loan_sanctioned_amount+'</a>';						
-								return str;
-        					 
-        					}
-						},
-						{ 													
-							data: null,		
-							className: "text-right",											
-							render: function(data, type, full, meta){ 								
-								var actionUrl = inheritvarvalues(data);	           				
-								var str ="";  								
-								str=str+'<a href="'+actionUrl+'"';
-								str=str+'>'+data.target_interest+'</a>';						
-								return str;
-        					 
-        					}
-						},
-						{ 													
-							data: null,		
-							className: "text-right",											
-							render: function(data, type, full, meta){ 								
-								var actionUrl = inheritvarvalues(data);	           				
-								var str ="";  								
-								str=str+'<a href="'+actionUrl+'"';
-								str=str+'>'+data.loan_tenure+'</a>';						
-								return str;
-        					 
-        					}
-						},
-						{ 													
-							data: null,		
-							className: "text-right",											
-							render: function(data, type, full, meta){ 								
-								var actionUrl = inheritvarvalues(data);	           				
-								var str ="";  								
-								str=str+'<a href="'+actionUrl+'"';
-								str=str+'>'+data.bid_type+'</a>';						
 								return str;
         					 
         					}

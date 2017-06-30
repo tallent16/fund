@@ -265,6 +265,8 @@ class InvestorProfileModel extends TranWrapper {
 		if ($transType != "edit") {
 			
 			//Insert the investor table
+			//Available Balance update the randon number new backers
+			 $dataArray['available_balance']	=	rand(100000,500000);
 			$investorId =  $this->dbInsert('investors', $dataArray, true);			
 			$this->uploadInvestorProfileAttachments($postArray,$investorId);
 			if ($investorId < 0) {

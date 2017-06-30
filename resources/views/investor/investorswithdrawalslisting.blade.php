@@ -25,7 +25,7 @@
 	})
 	</script>
 @endsection
-@section('page_heading',Lang::get('Investor Withdrawals') )
+@section('page_heading',Lang::get('Backer Withdrawals') )
 @section('section')  
 <div class="col-sm-12 space-around">
 	<form method="get">
@@ -70,7 +70,7 @@
 	</form>
 	<div class="row">
 		<div class="col-lg-12">
-			@var	$Url	=	url('investor/withdrawal/')
+			@var	$Url	=	url('backer/withdrawal/')
 			@var	$addUrl	=	$Url."/add/0"
 			<a 	href="{{$addUrl}}"
 				class="btn verification-button">
@@ -102,7 +102,7 @@
 					<tbody>
 						@if (count($InvWithDrawListMod->withdrawListInfo) > 0)			
 							@foreach($InvWithDrawListMod->withdrawListInfo as $withdrawListRow)
-								@var	$invUrl	=	url('investor/withdrawal/')
+								@var	$invUrl	=	url('backer/withdrawal/')
 								@var	$invaddUrl	=	$invUrl."/add/0"
 							
 								@var	$inveditUrl	=	$invUrl."/edit/".base64_encode($withdrawListRow->payment_id)

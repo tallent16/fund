@@ -13,10 +13,11 @@ return [
 	|
 	*/
 	
-	'loan_details'					=> 'DETAILS DE PRÊT',
-	'company_details'				=> 'SOCIÉTÉ',
-	'loan_updates'					=> 'PRÊT MISES À JOUR',
-	'bid_info'						=> 'BID INFO',
+	'project_details'				=> 'DÉTAILS DU PROJET',
+	'owner_details'					=> 'DÉTAILS DU PROPRIÉTAIRE',
+	'rewards'						=> 'RÉCOMPENSES',
+	'updates'						=> 'MISES À JOUR',
+	'backers_info'					=> 'INFORMATIONS SUR LE DOSSIER',
 	'bidders'						=> 'Les soumissionnaires',
 	'of'							=> 'de',
 	'goal'							=> 'Objectif',

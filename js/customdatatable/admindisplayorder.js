@@ -81,7 +81,18 @@ function callDataTableFunc(){
 								str=str+data.business_name+'</a>';							
 							return str;
 						}
-					},	
+					},{ 
+						data: null,
+						className: "text-left",
+						render: function(data, type, full, meta){
+							
+							var str ="";							      					    
+								str=str+'<a href="javascript:void(0);"';
+								str=str+' class="editor_edit" >';
+								str=str+data.loan_title+'</a>';							
+							return str;
+						}
+					},
 					{ 
 						data: null,
 						className: "text-right",
@@ -94,18 +105,6 @@ function callDataTableFunc(){
 							return str;
 						}
 					},	
-					{ 
-						data: null,
-						className: "text-left",
-						render: function(data, type, full, meta){
-							
-							var str ="";							      					    
-								str=str+'<a href="javascript:void(0);"';
-								str=str+' class="editor_edit" >';
-								str=str+data.bid_type+'</a>';							
-							return str;
-						}
-					},
 					{ 
 						data: null,
 						className: "text-left",

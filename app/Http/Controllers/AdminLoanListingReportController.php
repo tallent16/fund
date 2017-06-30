@@ -72,7 +72,7 @@ class AdminLoanListingReportController extends MoneyMatchController {
 		$jsonObj	=	json_decode($postArray['report_json'],true);
 		
 		$headers	=	[
-							0=> [	'Loan Ref No','Organasition Name','Borrower Grade','Applied Amount','Apply Date',
+							0=> [	'Project Ref No','Organasition Name','Borrower Grade','Applied Amount','Apply Date',
 									'Approval Date','Disburse Date','Tenure','Bid Type','Interest','Repayment Type',
 									'Partial Subscription Amount','Status'
 								]
@@ -86,10 +86,10 @@ class AdminLoanListingReportController extends MoneyMatchController {
 								27=>'AB',28=>'AC',29=>'AD',30=>'AE',31=>'AF',32=>'AG',33=>'AH',34=>'AI',35=>'AJ',
 								36=>'AK',37=>'AL',38=>'AM',39=>'AN',40=>'AO',41=>'AP',42=>'AQ',43=>'AR',44=>'AS'	
 							);
-		Excel::create('LoanListingReport', function($excel) 
+		Excel::create('ProjectListingReport', function($excel) 
 			use ($jsonObj,$headers,$headStart,$startRow,$breakColumn,$colKeyNameArry)
 		 {
-				$excel->sheet('Loans', function($sheet)
+				$excel->sheet('Projects', function($sheet)
 					use ($headers,$headStart,$startRow,$breakColumn,$jsonObj,$colKeyNameArry)
 				 {
 						$headerRow = $headStart;

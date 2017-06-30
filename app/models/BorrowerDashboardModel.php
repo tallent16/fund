@@ -7,6 +7,7 @@ class BorrowerDashboardModel extends TranWrapper {
 	public $barchart_detJson	= 	"";
 	public $current_loansJson	= 	"";
 	public $barchart_details	= 	array();
+	public $milestones_rs		= 	array();
 	
 	public function getBorrowerDashboardDetails() {
 		$this->getBorrowerLoanList();
@@ -16,6 +17,25 @@ class BorrowerDashboardModel extends TranWrapper {
 		if($this->curloans	==	""){
 			$this->curloans	=	array();
 		}
+		$this->getmilestonedetails();
+	}
+	public function getmilestonedetails(){
+		$milestonedetails_sql	=	"SELECT	
+											loan_id,
+											loan_milestone_id,										
+											milestone_name,
+											date_format(milestone_date, '%d-%m-%Y') milestone_date,
+											milestone_disbursed
+									FROM 	loan_milestones
+									";
+								
+		$this->milestones_rs	= 	$this->dbFetchAll($milestonedetails_sql);
+		//~ print_r($this->milestones_rs); die;	
+		if ($this->milestones_rs) {
+			return $this->milestones_rs;
+		}
+		return "";					
+								
 	}
 	
 	public function getBorrowerLoanList() {

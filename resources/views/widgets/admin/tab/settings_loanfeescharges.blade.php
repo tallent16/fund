@@ -3,6 +3,7 @@
 		<div class="panel-body">
 			<div class="col-sm-12">
 				@foreach($settings_list as $row)
+<!--
 				<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Loan Monthly Pay by Day')}}
@@ -14,6 +15,7 @@
 								value="{{$row->monthly_pay_by_date}}">										
 					</div>
 				</div>		
+-->
 				<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Processing Fixed Fees')}}
@@ -47,6 +49,7 @@
 								value="{{$row->loan_fees_minimum_applicable}}">										
 					</div>
 				</div>	
+				<!--
 				<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Penalty Process Fees Amount')}}
@@ -58,6 +61,7 @@
 								value="{{$row->penalty_fee_minimum}}">										
 					</div>
 				</div>	
+				
 				<div class="row">
 					<div class="col-sm-3">
 					{{Lang::get('Penalty Process Fees Amount(%)')}}
@@ -80,6 +84,7 @@
 								value="{{$row->penalty_interest}}">										
 					</div>
 				</div>	
+			-->
 				@endforeach	
 			</div>
 			

@@ -437,6 +437,9 @@ function modalBodyScrollable() {
 		$('.modal-body').css({maxHeight:($customHeight +'px'),
 								'overflow-y':'scroll'
 						 });
+		$('#videoPopup .modal-body').css({maxHeight:('100%'),
+								'overflow-y':'auto'
+						 });
 }
 
 /*------------------------------------------------------------------------

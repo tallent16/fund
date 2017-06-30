@@ -29,10 +29,10 @@
 		<div class="col-sm-12 col-lg-8 ">							
 			<ul class="nav nav-tabs">
 				<li class="active">
-					<a data-toggle="tab" href="#home">{{Lang::get('LOAN DETAILS')}}</a>
+					<a data-toggle="tab" href="#home">{{Lang::get('PROJECT DETAILS')}}</a>
 				</li>			
 				<li>
-					<a data-toggle="tab" href="#company_details">{{Lang::get('COMPANY DETAILS')}}</a>
+					<a data-toggle="tab" href="#company_details">{{Lang::get('OWNER DETAILS')}}</a>
 				</li>	
 				@if($LoanDetMod->loan_status	==	LOAN_STATUS_DISBURSED)
 					<li>

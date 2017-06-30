@@ -33,7 +33,7 @@
 				});
 				datasetsArry.push({
 					  
-						label: "Loan",
+						label: "Project",
 						fillColor : colors[0].fillColor,
 						strokeColor : colors[0].strokeColor,
 						pointColor: "rgba(220,220,220,1)",

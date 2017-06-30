@@ -13,10 +13,11 @@ return [
 	|
 	*/
 	
-	'loan_details'					=> 'KREDIT DETAILS',
-	'company_details'				=> 'FIRMENDETAILS',
-	'loan_updates'					=> 'KREDIT UPDATES',
-	'bid_info'						=> 'BID INFO',
+	'project_details'				=> 'PROJEKT DETAILS',
+	'owner_details'					=> 'EIGENTÜMERDATEN',
+	'rewards'						=> 'BELOHNUNGEN',
+	'updates'						=> 'AKTUALISIERUNGEN',
+	'backers_info'					=> 'BACKERS',
 	'bidders'						=> 'Bieter',
 	'of'							=> 'von',
 	'goal'							=> 'Tor',

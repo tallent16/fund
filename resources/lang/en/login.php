@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'sign_in'		 => 'Please Sign In',
+	'sign_in'		 => 'Sign In',
 	'next'   		 => 'Next &raquo;',
 	'login'     	 => 'Login',
 	'back2register'	 => 'Back to Register',	

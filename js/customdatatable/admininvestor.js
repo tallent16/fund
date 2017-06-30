@@ -10,7 +10,7 @@ $(document).ready(function() {
 	 $("#filter_status").click(function(event){
 		var	investorstatus_filter	=	$("#investorstatus_filter").find("option:selected").val();
 		investorstatus_filter		=	(investorstatus_filter	==	"all")?"":investorstatus_filter;		
-		$investor.columns(9).search(investorstatus_filter).draw();
+		$investor.columns(8).search(investorstatus_filter).draw();
 	});
 });
 
@@ -42,7 +42,7 @@ function callDataTableFunc(){
 							className: "text-left",													
 							render: function(data, type, full, meta){                				
 								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
+								str=str+'<a href="'+baseUrl+'/admin/backer/profile/'+btoa(data.investor_id)+'"';
 								str=str+'>'+data.nricno+'</a>';						
 								return str;
         					}        					
@@ -52,7 +52,7 @@ function callDataTableFunc(){
 							className: "text-left",												
 							render: function(data, type, full, meta){                				
 								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
+								str=str+'<a href="'+baseUrl+'/admin/backer/profile/'+btoa(data.investor_id)+'"';
 								str=str+'>'+data.display_name+'</a>';						
 								return str;
         					}        					
@@ -62,7 +62,7 @@ function callDataTableFunc(){
 							className: "text-left",													
 							render: function(data, type, full, meta){                				
 								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
+								str=str+'<a href="'+baseUrl+'/admin/backer/profile/'+btoa(data.investor_id)+'"';
 								str=str+'>'+data.email+'</a>';						
 								return str;
         					}        					
@@ -72,7 +72,7 @@ function callDataTableFunc(){
 							className: "text-left",												
 							render: function(data, type, full, meta){                				
 								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
+								str=str+'<a href="'+baseUrl+'/admin/backer/profile/'+btoa(data.investor_id)+'"';
 								str=str+'>'+data.mobile_number+'</a>';						
 								return str;
         					}        					
@@ -82,12 +82,12 @@ function callDataTableFunc(){
 							className: "text-right",											
 							render: function(data, type, full, meta){                				
 								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
+								str=str+'<a href="'+baseUrl+'/admin/backer/profile/'+btoa(data.investor_id)+'"';
 								str=str+'>'+data.active_loan+'</a>';						
 								return str;
         					}        					
 						},
-						{   
+					/*	{   
 							data: null,		
 							className: "text-right",																
 							render: function(data, type, full, meta){                				
@@ -96,13 +96,13 @@ function callDataTableFunc(){
 								str=str+'>'+data.available_balance+'</a>';						
 								return str;
         					}        					
-						},
+						},*/
 						{ 
 							data: null,	
 							className: "text-left",																		
 							render: function(data, type, full, meta){                				
 								var str ="";  								
-								str=str+'<a href="'+baseUrl+'/admin/investor/profile/'+btoa(data.investor_id)+'"';
+								str=str+'<a href="'+baseUrl+'/admin/backer/profile/'+btoa(data.investor_id)+'"';
 								str=str+'>'+data.statusText+'</a>';						
 								return str;
         					}        					
@@ -133,7 +133,7 @@ function callDataTableFunc(){
 								if(data.status	==	submittedForApproval){
 									if(approveinvestor == "yes"){
 										var	appClass	=	"";
-										var	appUrl		=	baseUrl+'/admin/manageinvestors/approve';
+										var	appUrl		=	baseUrl+'/admin/managebackers/approve';
 										var	appUrl		=	appUrl+"/"+encode_inv_id;
 									}
 								}
@@ -141,14 +141,14 @@ function callDataTableFunc(){
 									|| (data.status	==	submittedForApproval)){
 									if(rejectinvestor == "yes"){
 										var	rejClass	=	"manageinvestors_reject";
-										var	rejUrl		=	baseUrl+'/admin/manageinvestors/reject';
+										var	rejUrl		=	baseUrl+'/admin/managebackers/reject';
 										var	rejUrl		=	rejUrl+"/"+encode_inv_id;
 									}
 								}
 								if(data.active_loan == 0){
 									if(deleteinvestor == "yes"){
 										var	delClass	=	"manageinvestors_delete";
-										var	delUrl		=	baseUrl+'/admin/manageinvestors/delete';
+										var	delUrl		=	baseUrl+'/admin/managebackers/delete';
 										var	delUrl		=	delUrl+"/"+encode_inv_id;
 									}
 								}

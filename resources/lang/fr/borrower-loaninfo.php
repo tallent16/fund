@@ -13,7 +13,7 @@ return [
 	|
 	*/
 	
-	'page_heading'					=> 'Mes prêts',
+	'page_heading'					=> 'Mes Projets',
 	'loaninfo'						=> 'PRÊT INFO',
 	'loan_refer'					=> 'prêt Référence',
 	'date_applied'					=> 'Date de la demande',

@@ -127,9 +127,9 @@
 		
 		$("#cur_loan_subhead").html(currentlist.business_name+" "+currentlist.business_organisation);
 		$("#cur_loan_content").html(currentlist.purpose);
-		$("#cur_loan_rate").html(currentlist.rate+"%");
+		$("#cur_loan_rate").html(currentlist.rate+"%"+" ETH");
 		$("#cur_loan_duration").html(currentlist.duration);
-		$("#cur_loan_amount").html(numeral(currentlist.amount).format("0,0.00"));
+		$("#cur_loan_amount").html(numeral(currentlist.amount).format("0,0.00")+" ETH");
 	}
 	function setwidth(){
 		Chart.types.Bar.extend({

@@ -11,7 +11,7 @@ class AdminInvestorActivityReportModel extends TranWrapper {
 	
 	public function processInvestorDropDowns(){
 	
-		$filterSql						=	"SELECT users.firstname,
+		$filterSql						=	"SELECT CONCAT(users.firstname,' ',users.lastname) firstname,
 													investors.investor_id
 											 FROM   investors,users
 											 WHERE  investors.user_id = users.user_id 

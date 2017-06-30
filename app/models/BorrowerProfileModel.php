@@ -516,7 +516,7 @@ class BorrowerProfileModel extends TranWrapper {
 			$accomplishments			= 	$directorRows['accomplishments'][$rowIndex];
 			$directors_profile			= 	$directorRows['directors_profile'][$rowIndex];
 			$identity_card_front		= 	$directorRows['identity_card_front'][$rowIndex];
-			$identity_card_back			= 	$directorRows['identity_card_back'][$rowIndex];
+			//~ $identity_card_back			= 	$directorRows['identity_card_back'][$rowIndex];
 			$destinationPath 			= 	Config::get('moneymatch_settings.upload_bor');
 			
 			// Construct the data array
@@ -560,27 +560,27 @@ class BorrowerProfileModel extends TranWrapper {
 				$updateDataArry			=	array(	"identity_card_front"=>$identity_card_front);
 				$updateAttachment		=	true;
 			}
-			if(isset($identity_card_back)){	
-				if(isset($postArray['identity_card_back_hidden'][$rowIndex])){
-					$filePath		=	$postArray['identity_card_back_hidden'][$rowIndex];
-					$fileUploadObj->deleteFile($filePath);
-				}
-				unset($prefix);
-				unset($filename);
-				unset($newfilename);
-				unset($file);
+			//~ if(isset($identity_card_back)){	
+				//~ if(isset($postArray['identity_card_back_hidden'][$rowIndex])){
+					//~ $filePath		=	$postArray['identity_card_back_hidden'][$rowIndex];
+					//~ $fileUploadObj->deleteFile($filePath);
+				//~ }
+				//~ unset($prefix);
+				//~ unset($filename);
+				//~ unset($newfilename);
+				//~ unset($file);
 				
-				$file			=	$identity_card_back;
-				$filePath		=	$destinationPath."/".$borrowerId;
-				$prefix			=	"dir_iden_back_{$id}_";
-				$fileUploadObj->storeFile($filePath ,$file,$prefix);
-				$filename 									= 	$file->getClientOriginalName();
-				$newfilename 								= 	preg_replace('/\s+/', '_', $filename);
-				$newfilename 								= 	$prefix.$newfilename;
-				$identity_card_back							=	$filePath."/".$newfilename;
-				$updateDataArry["identity_card_back"]		=	$identity_card_back;
-				$updateAttachment							=	true;
-			}
+				//~ $file			=	$identity_card_back;
+				//~ $filePath		=	$destinationPath."/".$borrowerId;
+				//~ $prefix			=	"dir_iden_back_{$id}_";
+				//~ $fileUploadObj->storeFile($filePath ,$file,$prefix);
+				//~ $filename 									= 	$file->getClientOriginalName();
+				//~ $newfilename 								= 	preg_replace('/\s+/', '_', $filename);
+				//~ $newfilename 								= 	$prefix.$newfilename;
+				//~ $identity_card_back							=	$filePath."/".$newfilename;
+				//~ $updateDataArry["identity_card_back"]		=	$identity_card_back;
+				//~ $updateAttachment							=	true;
+			//~ }
 			if($updateAttachment) {
 				$whereArray	=	["borrower_id" 	=> $borrower_id,
 								 "id"			=> $id];
@@ -596,9 +596,9 @@ class BorrowerProfileModel extends TranWrapper {
 		foreach($directors as $dirRow) {
 			unset($dirFilePath);
 			$dirFilePathFront	=	$dirRow->identity_card_front;
-			$dirFilePathBack	=	$dirRow->identity_card_back;
+			//~ $dirFilePathBack	=	$dirRow->identity_card_back;
 			$fileUploadObj->deleteFile($dirFilePathFront);
-			$fileUploadObj->deleteFile($dirFilePathBack);
+			//~ $fileUploadObj->deleteFile($dirFilePathBack);
 		}
 		$this->dbDelete("borrower_directors", $where);
 
@@ -1178,6 +1178,9 @@ class BorrowerProfileModel extends TranWrapper {
 		$updateAttachment	=	false;
 		$destinationPath 	= 	Config::get('moneymatch_settings.upload_bor');
 		$updateDataArry		=	array();
+		if(!isset( $postArray['financial_doc_url'] ) ) {
+			return;	
+		}
 		
 		$fin_doc = $postArray['financial_doc_url'];
 		$dataArray = array('financial_doc_url' => $fin_doc);

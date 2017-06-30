@@ -24,6 +24,7 @@ return [
 	'apply_amt'						=> 'bewerben Betrag',
 	'amt_realized'					=> 'Betrag Realisiert',
 	'target_interest'				=> 'Zielzins',
+	'milestone'						=> ' Milestones',
 	'realized_interest'				=> 'Realisiert Interesse',
 	'balance_outstanding'			=> 'Restlicher Betrag',
 	'trans_type'					=> 'transcation Typ',

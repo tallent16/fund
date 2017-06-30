@@ -22,7 +22,7 @@
 		}
 	</script>
 	@endsection
-@section('page_heading',Lang::get('Investor Activity Report') )
+@section('page_heading',Lang::get('Backer Activity Report') )
 @section('section')  
 	@var	$invFilter	=	$adminInvActRepMod->invFilterValue;
 	@var	$fromDate	=	$adminInvActRepMod->fromDateFilterValue;
@@ -39,7 +39,7 @@
 	<div class="row">		
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
-					<strong>{{ Lang::get('Investor Name') }}</strong><br>							
+					<strong>{{ Lang::get('Backer Name') }}</strong><br>							
 					{{ Form::select('investor_filter[]', $invList,$invFilter,
 												[	"class" => "selectpicker",
 													"multiple" => "multiple",
@@ -90,7 +90,7 @@
 <form 	class="form-horizontal" 
 		id="excel_export" 
 		method="post"
-		action="{{url('admin/investor-activity-report/download')}}">
+		action="{{url('admin/backer-activity-report/download')}}">
 		<input  type="hidden" 
 				name="_token"
 				id="hidden_token"

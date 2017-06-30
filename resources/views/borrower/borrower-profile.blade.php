@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')	
 @section('styles')
 	<link href="{{ url('css/bootstrap-datetimepicker.css') }}" rel="stylesheet"> 	
+	<link href='{{ asset("assets/summernote/summernote.css") }}' rel="stylesheet">	 
 @endsection
 @section('bottomscripts')
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -8,13 +9,40 @@
 		var baseUrl	=	"{{url('')}}"
 		$(document).ready(function(){ 	
 			$(".jfilestyle").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
+			$('#company_profile').summernote({height:300});
+			$('#about_us').summernote({height:300});
+			@if($modelBorPrf->viewStatus	==	"disabled")
+				$('#company_profile').summernote('disable');
+				$('#about_us').summernote('disable');
+			@endif
+			
+			$( "textarea[name='director_row[accomplishments][]'" ).each(function() {
+				var id	=	$(this).attr("id");
+				if(	id	!=	"accomplishments_XXX") {
+					$(this).summernote({height:300}); 
+					@if($modelBorPrf->viewStatus	==	"disabled")
+						$(this).summernote('disable');
+					@endif
+				}
+			});
+			
+			$( "textarea[name='director_row[directors_profile][]'" ).each(function() {
+				var id	=	$(this).attr("id");
+				if(	id	!=	"directors_profile_XXX") {
+					$(this).summernote({height:300}); 
+					@if($modelBorPrf->viewStatus	==	"disabled")
+						$(this).summernote('disable');
+					@endif
+				}
+			});
 		}); 
 	</script>	 
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>		
 	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>		 	
-	<script src="{{ url('js/numeral.min.js') }}" type="text/javascript"></script>		 	
+	<script src="{{ url('js/numeral.min.js') }}" type="text/javascript"></script>		
+	 <script src="{{ asset('assets/summernote/summernote.js')}}" type="text/javascript"></script>
 @endsection 
 @section('page_heading',Lang::get('borrower-profile.profile'))
 @section('status_button')						
@@ -119,9 +147,9 @@
 							<li class="disabled" id="director_info_parent">
 								<a 	data-toggle="tab"
 									href="#director_info">
-									{{ Lang::get('borrower-profile.directors_info') }}
+									{{ Lang::get('TEAM INFO') }}
 								</a>
-							</li>
+							</li>      
 							@if($canViewProfileInfoTab	==	"yes")	  
 								<li  class="disabled"  id="profile_info_parent">
 									<a 	data-toggle="tab"
@@ -130,6 +158,7 @@
 									</a>
 								</li>	
 							@endif
+<!--
 							@if($canViewFinacialRatioTab	==	"yes")
 								<li id="financial_ratio_parent">
 									<a 	data-toggle="tab"
@@ -144,6 +173,7 @@
 										{{ Lang::get('borrower-profile.financial_info') }}
 									</a>
 								</li>	
+-->
 							
 							<li class="disabled" id="bank_info_parent" >
 								<a 	data-toggle="tab"
@@ -176,13 +206,21 @@
 								@include('widgets.borrower.tab.profile_info')
 							<!-----Third Tab content ends----->	
 						@endif
+<!--
 						@if($canViewFinacialRatioTab	==	"yes")
+-->
 							<!-----Four Tab content starts----->
+<!--
 								@include('widgets.borrower.tab.profile_financial_ratio')
+
 							<!-----Four Tab content ends----->	
+<!--
 						@endif
+
 						<!-----Four Tab content starts----->
+<!--
 							@include('widgets.borrower.tab.profile_financial_info')
+
 						<!-----Four Tab content ends----->	
 						
 						<!-----Five Tab content starts----->
@@ -200,22 +238,6 @@
 						<div class="col-sm-12"> 
 							<div class="pull-right">
 								
-								<!---Financial Doc update--->
-								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
-									@if(($modelBorPrf->status	==	BORROWER_STATUS_VERIFIED)
-										||	($modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL) )
-									
-										<button type="button" 
-												class="btn verification-button"
-												id="update_Fiancialdoc_button"
-												>
-												<i class="fa pull-right"></i>
-												{{ Lang::get('Save') }}
-										</button>
-									
-									@endif
-								@endif	
-								<!----->	
 								
 								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
 									@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
@@ -311,7 +333,7 @@
 				<tr>
 					<td class="col-md-3">
 						<label class="input-required">
-							{{ Lang::get('borrower-profile.director_name') }}
+							{{ Lang::get('Name') }}
 						</label>
 					</td>
 					<td class="col-md-3"  id="name_XXX_parent" colspan="3">
@@ -357,7 +379,7 @@
 				<tr>
 					<td  class="col-md-3">
 						<label class="input-required">
-							{{ Lang::get('borrower-profile.director_info') }}
+							{{ Lang::get('Team Member Information') }}
 						</label>
 					</td>
 					<td colspan="3" class="col-md-3" 	id="directors_profile_XXX_parent">
@@ -384,13 +406,13 @@
 				</tr>
 				<tr>
 					<td class="col-md-3">
-						<label class="input-required">
-							{{ Lang::get('Identity Card Front') }}
+						<label class="">
+							{{ Lang::get('Identification Document') }}
 						</label>
 					</td>
 					<td colspan="3" class="col-md-3" id="identity_card_front_XXX_parent">
 						<input 	type="file" 
-								class="required attachment" 
+								class="attachment" 
 								data-buttonBefore="true" 
 								name="director_row[identity_card_front][]"
 								id="identity_card_front_XXX" />
@@ -402,6 +424,7 @@
 								/>		
 					</td>
 				</tr>													
+<!--
 				<tr>
 					<td class="col-md-3">
 						<label class="input-required">
@@ -422,6 +445,7 @@
 								/>		
 					</td>
 				</tr>																		
+-->
 			</table></div>
 		</div>
 	</div>

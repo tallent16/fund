@@ -29,7 +29,7 @@
 		}
 	</style>
 @stop
-@section('page_heading',Lang::get('Loan Display Order') )
+@section('page_heading',Lang::get('Project Display Order') )
 @section('section') 
 <div class="col-sm-12 space-around">
 	
@@ -40,10 +40,10 @@
 					<thead>
 						<tr>	
 							<th></th>						
-							<th>{{ Lang::get('Loan Reference No') }}</th>
-							<th>{{ Lang::get('Borrower Organisation Name') }}</th>
-							<th>{{ Lang::get('Loan Amt') }}</th>
-							<th>{{ Lang::get('Bid Type') }}</th>
+							<th>{{ Lang::get('Reference No') }}</th>
+							<th>{{ Lang::get('Creator Organisation Name') }}</th>
+							<th>{{ Lang::get('Project Title') }}</th>
+							<th>{{ Lang::get('Project Amt') }}</th>
 							<th>{{ Lang::get('Bid Close Date') }}</th>						
 							<th>{{ Lang::get('Status') }}</th>						
 							<th>{{ Lang::get('Featured') }}</th>

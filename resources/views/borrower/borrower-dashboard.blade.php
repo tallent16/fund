@@ -7,6 +7,12 @@
 		height: 12px;
 		margin-right: 5px;
 	}
+	.table-verticalscroll{
+		height: 300px;
+		overflow-y: auto;   
+		display: block;
+		overflow-x: hidden
+	}
 </style>
 @endsection
 @section('page_heading',Lang::get('borrower-dashboard.page_heading') )
@@ -24,7 +30,7 @@
 						<div class="panel-heading panel-headsection"><!--panel head-->
 							<div class="row">
 								<div class="col-xs-10 col-lg-10">
-									<span class="pull-left">{{ Lang::get('borrower-dashboard.current_loan') }} </span> 
+									<span class="pull-left">{{ Lang::get('Current Project') }} </span> 
 								</div>
 								
 								<div class="col-xs-2 col-lg-1">
@@ -57,13 +63,13 @@
 								<thead>
 									<tr>
 										<th class="tab-head col-sm-4">
-											{{ Lang::get('borrower-dashboard.rate') }}
+											{{ Lang::get('Goal') }}
 										</th>
 										<th class="tab-head col-sm-4">
-											{{ Lang::get('borrower-dashboard.duration') }}
+											{{ Lang::get('Duration Left') }}
 										</th>
 										<th class="tab-head col-sm-4">
-											{{ Lang::get('borrower-dashboard.amount') }}
+											{{ Lang::get('Amount Raised') }}
 										</th>
 									</tr>
 								</thead>
@@ -71,7 +77,7 @@
 									<tr>
 										<td  id="cur_loan_rate" >
 											 @if(isset($borCurLoans[0]))
-												{{$borCurLoans[0]->rate}}%
+												{{$borCurLoans[0]->rate}} ETH
 											 @else
 											    -
 											@endif
@@ -85,7 +91,7 @@
 										</td>
 										<td  id="cur_loan_amount">
 											@if(isset($borCurLoans[0]))
-												{{number_format($borCurLoans[0]->amount,2,'.',',')}}
+												{{number_format($borCurLoans[0]->amount,2,'.',',')}} ETH
 											 @else
 											    -
 											@endif
@@ -100,19 +106,13 @@
 				<!-----second col-------->
 				<div class="col-lg-6 col-md-6">
 					<div class="panel panel-default">
-						<div class="panel-body">
-							@section ('cchart4_panel_title',Lang::get('borrower-dashboard.bar_chart'))
-							@section ('cchart4_panel_body')
-							@include('widgets.charts.cbarchart')
-							@endsection
-							@include('widgets.panel', array('header'=>true, 'as'=>'cchart4'))
-						</div>
+						
 						<div class="table-responsive">                         
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th class="tab-head-red">{{ Lang::get('borrower-dashboard.loan_taken') }}</th>
-										<th class="totalamount">{{ Lang::get('borrower-dashboard.total_amount') }}</th>										
+										<th class="tab-head-red">{{ Lang::get('Projects Created') }}</th>
+										<th class="totalamount">{{ Lang::get('Amount Raised') }}</th>										
 									</tr>
 								</thead>
 								<tbody>
@@ -131,58 +131,50 @@
 						</div>				
 					</div>
 				</div>			
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-primary panel-container">
+					<div class="panel-heading panel-headsection">
+							{{ Lang::get('Upcoming Milestones')	}}	
+						</div>
+						
+						<div class="table-responsive">                         
+							<table class="table text-left">
+								<tbody class="table-verticalscroll">
+								@if(count($BorDashMod->milestones_rs) > 0)
+									@foreach($BorDashMod->milestones_rs as $milestonesrow)	
+									<tr>											
+										<td style="width:60%">									
+											{{$milestonesrow->milestone_name}}								
+											
+										</td>
+										<td style="width:30%">
+											{{"[".$milestonesrow->milestone_date."] "}} 
+										</td>
+										<td class="text-right" style="width:30%">								
+											{{$milestonesrow->milestone_disbursed}}								
+										</td>	
+									</tr>
+									@endforeach	
+								@else
+									<tr>
+										<td>				
+											{{"No Milestones Found"}}
+										</td>
+									</tr>
+								@endif	
+								</tbody>
+							</table>
+						</div>
+						
+					</div>
+				</div>
+				
 			<!--second col end--->				
 		</div>
+		
+		
 		<!---third row---->
-		<div class="row">
-			 <div class="col-lg-12 col-md-12">
-				 <div class="panel panel-primary panel-container">
-					<div class="panel-heading panel-headsection">
-						<div class="row">
-						   <div class="col-xs-12">
-								<span class="pull-left">{{ Lang::get('UPCOMING PAYMENTS') }}</span> 
-							</div>									
-						</div>                           
-					</div>				
-					<div class="table-responsive">
-						<table class="table text-left">
-							<thead>
-								<tr>
-									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.loan_refer') }}</th>
-									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.last_payment') }}</th>
-									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.next_payment') }}</th>
-									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.amount_paid') }}</th>
-									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.interest_rate') }}</th>
-									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.installments') }}</th>
-									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.repayment_amount') }}</th>
-									<th class="tab-head text-right">{{ Lang::get('borrower-dashboard.principal_amount') }}</th>
-									<th class="tab-head text-left">{{ Lang::get('borrower-dashboard.lastest_status') }}</th>
-								</tr>
-							</thead>
-							<tbody>
-								@if($borrowerLoans)
-									@foreach($borrowerLoans as $loanRow)
-										<tr>
-											<td>{{$loanRow['loan_reference_number']}}</td>
-											<td>{{$loanRow['last_payment']}}</td>
-											<td>{{$loanRow['next_payment']}}</td>
-											<td class="text-right">{{number_format($loanRow['amount_paid'],2,'.',',')}}</td>
-											<td class="text-right">{{$loanRow['inst_rate']}}%</td>
-											<td class="text-right">{{$loanRow['no_of_installment']}}</td>
-											<td class="text-right">{{number_format($loanRow['total_repayments'],2,'.',',')}}</td>
-											<td class="text-right">{{number_format($loanRow['tot_prin_outstanding'],2,'.',',')}}</td>
-											<td>{{$loanRow['repayment_status']}}</td>
-										</tr>									
-									@endforeach	
-									@else
-										<tr>
-											<td colspan="9" class="text-center">
-												No Records Found
-											</td>
-										</tr>
-								@endif					
-							</tbody>
-						</table>						
+			
 					</div><!-----third row end--->	
                 </div>              
           @endsection  

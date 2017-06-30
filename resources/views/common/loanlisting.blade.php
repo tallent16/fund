@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('page_heading',Lang::get('borrower-loanlisting.page_heading'))
+@section('page_heading',Lang::get('Project Listing'))
 @section('bottomscripts')
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 @endsection
@@ -19,6 +19,7 @@
 <form >
 	<div class="row">	
 		<!--<div class="col-sm-12"> -->
+<!--
 			<div class="col-sm-12 col-lg-3"> 														
 				<div class="form-group">	
 					<strong>{{ Lang::get('borrower-loanlisting.interest_rate') }}</strong><br>							
@@ -26,10 +27,11 @@
 						 ["class" => "selectpicker","filter_field" => "Yes"]) }} 
 				</div>	
 			</div>
+-->
 					
 			<div class="col-sm-12 col-lg-3"> 
 				<div class="form-group">								
-					<strong>{{ Lang::get('borrower-loanlisting.loan_amount') }}</strong><br>							
+					<strong>{{ Lang::get('Project Goal Amount') }}</strong><br>							
 					{{ Form::select('loanamt_filter', $loanListing->filterLoanAmtList, $loanListing->filterLoanAmtValue,
 						 ["class" => "selectpicker","filter_field" => "Yes"]) }} 
 				</div>	
@@ -37,8 +39,8 @@
 
 			<div class="col-sm-12 col-lg-3"> 														
 				<div class="form-group">							
-					<strong>{{ Lang::get('borrower-loanlisting.tenure') }}</strong><br>							
-					{{ Form::select('tenure_filter', $loanListing->filterTenureList, $loanListing->filterTenureValue,
+					<strong>{{ Lang::get('Project Category') }}</strong><br>							
+					{{ Form::select('tenure_filter', $loanListing->filterProCatList, $loanListing->filterProCatValue,
 						 ["class" => "selectpicker","filter_field" => "Yes"]) }} 
 				</div>	
 			</div>

@@ -1,0 +1,21 @@
+[2017-06-30 00:00:01] production.ERROR: exception 'ErrorException' with message 'Undefined variable: invUserInfo' in /var/www/html/app/models/AdminManageBidsModel.php:294
+Stack trace:
+#0 /var/www/html/app/models/AdminManageBidsModel.php(294): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/var/www/html/a...', 294, Array)
+#1 /var/www/html/app/models/AdminManageBidsModel.php(217): App\models\AdminManageBidsModel->closeRejectLoan(36)
+#2 /var/www/html/app/models/AdminManageBidsModel.php(133): App\models\AdminManageBidsModel->closeBids(36, false)
+#3 /var/www/html/app/Console/Kernel.php(32): App\models\AdminManageBidsModel->autoCloseBid()
+#4 [internal function]: App\Console\Kernel->App\Console\{closure}()
+#5 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(526): call_user_func_array(Object(Closure), Array)
+#6 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Scheduling/CallbackEvent.php(57): Illuminate\Container\Container->call(Object(Closure), Array)
+#7 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(54): Illuminate\Console\Scheduling\CallbackEvent->run(Object(Illuminate\Foundation\Application))
+#8 [internal function]: Illuminate\Console\Scheduling\ScheduleRunCommand->fire()
+#9 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(526): call_user_func_array(Array, Array)
+#10 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(115): Illuminate\Container\Container->call(Array)
+#11 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(257): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /var/www/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(101): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#13 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Application.php(874): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#14 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Application.php(195): Symfony\Component\Console\Application->doRunCommand(Object(Illuminate\Console\Scheduling\ScheduleRunCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#15 /var/www/html/vendor/symfony/console/Symfony/Component/Console/Application.php(126): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#16 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(94): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#17 /var/www/html/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#18 {main}  

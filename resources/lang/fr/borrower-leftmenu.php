@@ -29,5 +29,6 @@ return [
 	'bankdetails'				=> 'Coordonnées bancaires',
 	'repayloans'				=> 'rembourser les prêts',	
 	'withdraw'					=> 'Se désister',
+	'marketplace'				=> 'Marketplace',
 	
 	];

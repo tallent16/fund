@@ -35,4 +35,14 @@ return [
 	'loan_title_info_2'			=> 'Ce processus prendra 10 minutes pour terminer .', 
 	'documents_submitted'		=> 'Documents à soumettre',	
 	'view'						=> 'Vue',
+	
+	'no'						=> 'Nein',
+	'loan_title_info_1'			=> 'Wir freuen uns, Sie Darlehen schnell zu helfen .',
+	'loan_title_info_2'			=> 'Dieser Prozess wird 10 Minuten dauern.', 	
+	'documents_submitted'		=> 'Dokumente eingereicht werden',	
+	'view'						=> 'Aussicht',
+	'create_project'			=> 'Créer un projet',
+	'edit_project'				=> 'Modifier le projet',
+	'project_info'				=>	'Informations sur le projet',
+	'rewards_submitted'			=> 'Récompenses à soumettre'
 ];

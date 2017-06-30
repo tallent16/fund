@@ -7,6 +7,9 @@ class LoanDetailsModel extends TranWrapper {
 	public	$borrower_id				=	"";
 	public	$company_name				=	"";
 	public	$company_image				=	"";
+	public	$loan_video_url				=	"";
+	public	$loanEmbedvideoUrl			=	"";
+	public	$loan_image_url				=	"";
 	public 	$industry					=	"";
 	public 	$about_us					=	"";
 	public 	$risk_industry				=	"";
@@ -21,6 +24,8 @@ class LoanDetailsModel extends TranWrapper {
 	public 	$status						=  	"";
 	public 	$borrower_risk_grade		=  	"";
 	public 	$loan_id					=  	"";
+	public 	$loan_title					=  	"";
+	public 	$loan_description			=  	"";
 	public 	$loan_reference_number		=  	"";
 	public 	$loan_tenure				=  	"";
 	public	$perc_funded				=	"";
@@ -43,6 +48,8 @@ class LoanDetailsModel extends TranWrapper {
 	public 	$paymentScheduleInfo 		= 	array();
 	public 	$bidSystemMessageInfo 		= 	array();
 	public 	$successTxt 				= 	"";
+	public 	$loan_update_id 			= 	0;
+	public 	$update_description 		= 	"";
 	
 	public function __construct($attributes = array()){	
 		
@@ -50,6 +57,7 @@ class LoanDetailsModel extends TranWrapper {
 		$this->userType 		= 	$this->getUserType();
 		$this->inv_or_borr_id	=	($this->userType == 1)? $this->getCurrentBorrowerID(): 
 															$this->getCurrentInvestorID();
+			
 		$this->typePrefix		=	($this->userType == 1)? "borrower":
 															"investor";
 		$this->min_bid_amount	=	$this->getSystemSettingFieldByKey("minmum_bid_amount");
@@ -63,7 +71,7 @@ class LoanDetailsModel extends TranWrapper {
 		$this->getLoanDirector();
 		$this->getBidAverageInterest($loan_id);
 		$this->getLoanComments($loan_id);	
-		$this->getLoanComments($loan_id);	
+		$this->getProjectUpdates($loan_id);
 		switch($this->userType) {
 			case	USER_TYPE_INVESTOR:
 				$this->getPaymentSchedule($loan_id);
@@ -106,9 +114,15 @@ class LoanDetailsModel extends TranWrapper {
 											borrowers.status,
 											ifnull(loans.loan_risk_grade,'- - -') loan_risk_grade,
 											loans.loan_id,
+											loans.loan_title,
+											loans.loan_description,
 											loans.loan_reference_number,
+											loans.loan_image_url,
+											loans.loan_video_url,
 											loans.loan_tenure,
+											date_format(loans.bid_close_date,'%d/%m/%Y') bid_close_date,
 											loans.featured_loan,
+											loans.location_description,
 											round(ifnull(total_bid * 100 / apply_amount,0),2) perc_funded,
 											loans.target_interest,
 											loans.bid_type,
@@ -168,6 +182,9 @@ class LoanDetailsModel extends TranWrapper {
 				$this->{$colname} = $colvalue;
 			}
 		}
+		if(!empty($this->loan_video_url)) {
+			$this->loanEmbedvideoUrl = $this->convertVideoUrlToEmbedeUrl($this->loan_video_url);
+		}
 		if($this->company_image!=""){
 			
 		}
@@ -177,6 +194,8 @@ class LoanDetailsModel extends TranWrapper {
 	public function getLoanDirector() {
 		
 		$director_sql		= 	"	SELECT 	name,
+											age,
+											overall_experience,
 											accomplishments,
 											directors_profile
 									FROM 	borrower_directors
@@ -233,6 +252,7 @@ class LoanDetailsModel extends TranWrapper {
 		
 		$bid_sql	= 	"		SELECT 		ROUND(bid_interest_rate,1) bid_interest_rate,
 											ROUND(bid_amount,2) bid_amount,
+											DATE_FORMAT(bid_datetime,'%d-%m-%Y') bid_date,
 											bid_id
 								FROM 		loan_bids	
 								WHERE		loan_id	=	{$loan_id}
@@ -311,6 +331,7 @@ class LoanDetailsModel extends TranWrapper {
 				}
 			}
 		}
+		
 		return $finacial_rs;
 	}
 
@@ -420,9 +441,9 @@ class LoanDetailsModel extends TranWrapper {
 		
 		$transType				=	$postArray['bid_trantype'];
 		$bid_amount				=	$this->makeFloat($postArray['bid_amount']);
-		$bid_interest_rate		=	$this->makeFloat($postArray['bid_interest_rate']);
+		//~ $bid_interest_rate		=	$this->makeFloat($postArray['bid_interest_rate']);
 		$this->min_bid_amount	=	$this->getSystemSettingFieldByKey("minmum_bid_amount");
-		if(	($bid_interest_rate	>	0)	&&	($bid_interest_rate	>	0)	) {
+		//~ if(	($bid_interest_rate	>	0)	&&	($bid_interest_rate	>	0)	) {
 			if(	$bid_amount	>=	$this->min_bid_amount ) {
 			
 				if($transType	==	"new") {
@@ -431,17 +452,19 @@ class LoanDetailsModel extends TranWrapper {
 					return $this->updateBidInfo($postArray);
 				}
 			}
-		}else{
-			return	-1;
-		}
+		//~ }else{
+			//~ return	-1;
+		//~ }
 	}
 	
 	public function insertBidInfo($postArray) {
 		
 		$bid_amount				=	$postArray['bid_amount'];
 		$bid_amount				=	$this->makeFloat($bid_amount);
-		$bid_interest_rate		=	$postArray['bid_interest_rate'];
-		$bid_interest_rate		=	$this->makeFloat($bid_interest_rate);
+		$bid_interest_rate		=	"15.00";
+		//~ $bid_interest_rate		=	$postArray['bid_interest_rate'];
+		//~ $bid_interest_rate		=	$this->makeFloat($bid_interest_rate);
+		
 		$available_balance		=	$this->getInvestorAvailableBalanceById($this->inv_or_borr_id);
 		
 		$dataArray 				= 	array(	'loan_id'			=> $postArray['loan_id'],
@@ -473,8 +496,9 @@ class LoanDetailsModel extends TranWrapper {
 		
 		$bid_amount				=	$postArray['bid_amount'];
 		$bid_amount				=	$this->makeFloat($bid_amount);
-		$bid_interest_rate		=	$postArray['bid_interest_rate'];
-		$bid_interest_rate		=	$this->makeFloat($bid_interest_rate);
+		$bid_interest_rate		=	"15.00";
+		//~ $bid_interest_rate		=	$postArray['bid_interest_rate'];
+		//~ $bid_interest_rate		=	$this->makeFloat($bid_interest_rate);
 		$prev_bid_amount		=	$this->makeFloat($postArray['prev_bid_amount']);
 		$available_balance		=	$this->getInvestorAvailableBalanceById($this->inv_or_borr_id);
 
@@ -520,7 +544,57 @@ class LoanDetailsModel extends TranWrapper {
 	}
 	
 	public	function getInvestorAvailablBalance() {
+		
 		$available_balance		=	$this->getInvestorAvailableBalanceById($this->inv_or_borr_id);
+		
 		return	$available_balance;
 	}
+	
+	
+	public function saveProjectUpdates($loan_id,$postArray) {
+		
+	
+		$loan_update_id		=	$postArray['loan_update_id'];
+		$update_description	=	$postArray['project_updates'];
+		$update				=	false;
+		
+		$moduleName	=	"Project Details";
+	
+		$dataArray 				= 	array(	'loan_id' 				=> $loan_id,
+											'update_description' 	=>$update_description );
+		$actionSumm =	"Project Updates";
+		$actionDet  =	"Project Updates by creator";
+		$creatorName	=	$this->getUserName("Borrower", $this->inv_or_borr_id);
+		$this->setAuditOn($moduleName, $actionSumm, $actionDet, "Creator Name",$creatorName);
+		
+		if($loan_update_id	>	0) {
+			$update		=	true;
+		}
+		
+		if($update) {
+			$whereArry		=	array("loan_update_id" =>"{$loan_update_id}");
+			$this->dbUpdate('loan_updates', $dataArray, $whereArry);
+		
+		}else{
+			$loan_update_id	= 	$this->dbInsert('loan_updates', $dataArray, true);
+		}
+		return $loan_update_id;
+	}
+	
+	public function getProjectUpdates($loan_id) {
+		
+		$selectSql			= "	SELECT 	*		
+								FROM	loan_updates 
+								WHERE	loan_id	=	{$loan_id}";
+		
+		$rs					= 	$this->dbFetchAll($selectSql);
+	
+		if(!empty($rs)) {
+			$this->loan_update_id		=	$rs[0]->loan_update_id;
+			$this->update_description	=	$rs[0]->update_description;
+		}
+		
+		return	$rs;
+	}
+	
 }

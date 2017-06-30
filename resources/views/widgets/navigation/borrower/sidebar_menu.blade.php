@@ -17,26 +17,32 @@
 		@var	$class1				=	'disabled'
 		@var	$title				=	''
 		@var	$showToolTipClass	=	''
+		@var	$reqHelpUrl		=	url ('creator/request_help')
+		@var	$rewdHelpUrl	=	url ('creator/reward_help')
+		@var	$walletUrl		=	url ('creator/wallet')
 	@else
 		@var	$class			=	''
-		@var	$dashboardUrl	=	url ('borrower/dashboard')
+		@var	$dashboardUrl	=	url ('creator/dashboard')
 		@if(!$LoanAllowingStatus)
 			@var	$applyLoanUrl		=	'javascript:void(0);'
 			@var	$class1				=	'disabled'
 			@var	$title				=	'Your are not Eligible for apply loan'
 			@var	$showToolTipClass	=	'tooltip'
 		@else
-			@var	$applyLoanUrl		=	url ('borrower/applyloan')
+			@var	$applyLoanUrl		=	url ('creator/create_project')
 			@var	$class1				=	''
 			@var	$title				=	''
 			@var	$showToolTipClass	=	''
 		@endif
 		@var	$loansListUrl	=	url ('borrower/loanslist')
-		@var	$myLoanInfoUrl	=	url ('borrower/myloaninfo')
-		@var	$loanSummaryUrl	=	url ('borrower/loansummary')
-		@var	$transactionUrl	=	url ('borrower/transhistory')
+		@var	$myLoanInfoUrl	=	url ('creator/myloaninfo')
+		@var	$loanSummaryUrl	=	url ('creator/projectsummary')
+		@var	$transactionUrl	=	url ('creator/transhistory')
 		@var	$bankDetailsUrl	=	url ('borrower/bankdetails')
 		@var	$repayLoanUrl	=	url ('borrower/repayloans')
+		@var	$reqHelpUrl		=	url ('creator/request_help')
+		@var	$rewdHelpUrl	=	url ('creator/reward_help')
+		@var	$walletUrl		=	url ('creator/wallet')
 		
 		
 	@endif
@@ -49,46 +55,53 @@
 			<a href="{{ $dashboardUrl }}"><i class="fa fa-tachometer fa-fw"></i>{{ Lang::get('borrower-leftmenu.dashboard') }} </a> 
 		</li>
 		<li> 
-			<a href="{{ url ('borrower/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
+			<a href="{{ url ('creator/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('borrower-profile.profile') }} </a>
 		</li>               
-									 
+								 
 		<li class="{{$class}}">
-			<a href="#"><i class="fa fa-file-image-o fa-fw"></i>{{ Lang::get('borrower-leftmenu.loans') }} <span class="fa arrow"></span></a>
+			<a href="#"><i class="fa fa-file-image-o fa-fw"></i>{{ Lang::get('Projects') }} <span class="fa arrow"></span></a>
 			<ul class="nav nav-second-level">
 				<li class="{{$class1}}">
 					<a 	href="{{ $applyLoanUrl }}"
 						title="{{$title}}" 
 						data-toggle="{{$showToolTipClass}}"
 						>
-						{{ Lang::get('borrower-leftmenu.applyloans') }}
+						{{ Lang::get('Create Projects') }}
 					</a>
 				</li> 
-			
+			<li class="{{$class}}">
+				<a href="{{$reqHelpUrl}}">{{ Lang::get('Request Help') }}</a> 
+			</li> 
+			<li class="{{$class}}">
+				<a href="{{$rewdHelpUrl}}">{{ Lang::get('Reward Helpers') }}</a> 
+			</li> 	
+<!--
 				<li class="{{$class}}">
-					<a href="{{ $loansListUrl }}">{{ Lang::get('borrower-leftmenu.loanslist') }}</a> 
+					<a href="{{ $loansListUrl }}">{{ Lang::get('Project Listing') }}</a> 
 				</li>       
+-->
 				<li class="{{$class}}">
-					<a href="{{ $myLoanInfoUrl }}">{{ Lang::get('borrower-leftmenu.myloans') }}</a> 
+					<a href="{{ $myLoanInfoUrl }}">{{ Lang::get('My Projects') }}</a> 
 				</li>                              
 			</ul>
 		<!-- /.nav-second-level -->
 		</li>
 		<li class="{{$class}}">
-			<a href="#"><i class="fa fa-list-ul fa-fw"></i>{{ Lang::get('borrower-leftmenu.transcation') }} <span class="fa arrow"></span></a>
+			<a href="{{ $loanSummaryUrl }}"><i class="fa fa-list-ul fa-fw"></i>
+			{{ Lang::get('Project Summary') }} </a>
+		</li> 
+		
+		<li class="{{$class}}">
+			<a href="{{$walletUrl}}"><i class="fa fa-google-wallet fa-fw"></i>{{ Lang::get('Wallet') }} 
+<!--
+			<span class="fa arrow"></span></a>
+
 			<ul class="nav nav-second-level">
 				<li class="{{$class}}">
-					<a href="{{ $loanSummaryUrl }}">{{ Lang::get('Loan Summary') }}</a>
-				</li> 
-				<li class="{{$class}}">
-					<a href="{{ $transactionUrl }}">{{ Lang::get('borrower-leftmenu.transhistory') }}</a>
-				</li>  
-				<li class="{{$class}}">
-					<a href="{{ $bankDetailsUrl }}">{{ Lang::get('borrower-leftmenu.bankdetails') }}</a>
-				</li>  
-				<li class="{{$class}}">
-					<a href="{{ $repayLoanUrl }}">{{ Lang::get('borrower-leftmenu.repayloans') }}</a>
-				</li>                                                             
+					<a href="#">{{ Lang::get('My Account') }}</a>
+				</li>								                                                        
 			</ul>
+-->
 		<!-- /.nav-second-level -->
 		</li>   
 		<li>
