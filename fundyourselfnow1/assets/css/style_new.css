@@ -1,0 +1,1210 @@
+body{font-family: 'Open Sans', sans-serif;}
+.topnav .btn-group {
+    padding: 0 15px 0 0;
+    font-size: 15px;
+   list-style: none;
+}
+.topnav .btn-group a{color: #F6942C;}
+.nav.navbar-nav li a {
+    color: #000;
+}
+.style-switcher{display: none;}
+
+.table-verticalscroll {
+    height: 350px;
+    overflow-y: auto;
+    display: block;
+    overflow-x: hidden;
+}
+
+.panel-primary > .panel-heading {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+.tab-head-red {
+    background-color: #8B170A;
+    color: #fff;
+}
+.totalamount {
+    background-color: #F6942C;
+    color: #fff;
+}
+.panel-subhead {
+    color: #F58D0D;
+    font-weight: 600;
+}
+.panel-primary {
+    border-color: #ededed;
+}
+.topnav .dropdown-menu {
+    left: -135px;
+    }
+
+.nav.navbar-nav li a:hover{color: #F6942C;}
+.nav.navbar-nav .active1{color: #F6942C;}
+.verification-button, .verification-button:hover {
+    background-color: #F6942C;
+    color: #fff;
+    border: none;
+    width: auto;
+}
+.inner1 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 10px;
+  padding-left: 10px;
+  background: #fff;
+  border: 10px solid #e4e4e4;
+  padding-top: 10px;
+  
+}
+.tab-head {
+    background-color: #383838;
+    color: #fff;
+}
+#transhistory-container table {
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+}
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+table#account-summary, .table-border-custom {
+    border: 1px solid #ccc;
+}
+.annoucement-msg, .tab-head-red {
+    background-color: #8B170A;
+    color: #fff;
+}
+.inner1 .nav-tabs {
+    border-bottom: 1px solid #ddd;
+    background-color: #2A292A;
+}
+.inner1 .nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    font-weight: bold;
+	color: #fff;
+}
+.inner1 .nav-tabs > li.active > a, .inner1 .nav-tabs > li.active > a:hover, .inner1 .nav-tabs > li.active > a:focus {
+    color: #F6942C;
+    cursor: default;
+    background-color: transparent;
+    border: none;
+        border-bottom-color: currentcolor;
+    border-bottom-color: transparent;
+}
+.inner1 .nav-tabs > li.active > a, .inner1 .nav-tabs > li.active > a:hover{
+    color: #F6942C;
+    cursor: default;
+    background-color: #0F0101;
+    border: none;
+        border-bottom-color: currentcolor;
+    border-bottom-color: transparent;
+}
+.inner1 .nav-tabs > li > a:hover {
+    background: transparent;
+	
+}
+.inner1 .nav > li > a:hover, .inner1 .nav > li > a:focus {
+    background-color: transparent;
+    text-decoration: none;
+}
+.inner1 .nav-tabs > li > a:hover {
+    border-color: transparent;
+}
+
+.form-control {
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+   
+}
+
+.bootstrap-select > .btn {
+    width: 100%;
+}
+.controls .input-group {
+    width: 100%;
+    margin: 5px 0 0 0;
+}
+.nav > li.disabled > a {
+    color: #fff;
+}
+.nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
+    color: #F6942C;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+	 border-color: transparent;
+}
+.applyloan .btn-group.bootstrap-select {
+    width: 100%;
+}
+#directorDropDown {
+    width: 100%;
+    padding: 6px 12px;
+    margin-bottom: 14px;
+}
+.form-control[disabled], fieldset[disabled] .form-control {
+    cursor: pointer;
+}
+
+#milstone_name_1 {
+    margin-top: 5px;
+}
+#milstone_disbursed_1 {
+    margin-top: 5px;
+}
+#save_button {
+    margin-bottom: 10px;
+}
+#next_button {
+    margin-bottom: 10px;
+}
+.noti {
+    height: 150px;
+    padding-top: 50px;
+	background-color: #dedede;
+	font-size: 17px;
+	text-align: center;
+}
+
+ul.thumbnails { 
+    margin-bottom: 0px;
+}
+.caption p {
+    text-align: center;
+}
+
+
+.btn.btn-lg.loan-detail-button {
+    background: #f6942c none repeat scroll 0 0;
+    color: #fff;
+    display: block;
+    float: none;
+    font-size: 14px;
+    margin: 0 auto;
+    padding: 7px 1px;
+    text-align: center;
+    width: 120px;
+}
+.btn.button-grey {
+    background: #b6b6b6 none repeat scroll 0 0;
+    color: #fff;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: 135px;
+}
+.fff .caption {
+    border: 1px solid #d7d7d7;
+    min-height: 247px;
+    padding: 12px 3px;
+}
+.pager{text-align: right;}
+
+.tab-bid-label {
+    background-image: url('../img/label.png');
+    color: #fff;
+    background-repeat: no-repeat;
+    background-size: 95% 95%;
+}
+.table-bidinfo {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+table.table.table-bidinfo tr td, table.table.table-bidinfo tr th {
+    border: none;
+}
+.tab-row-orange {
+    background-color: #F6942C;
+    color: #fff;
+}
+.annoucement-msg-container {
+    text-align: center;
+	
+}
+#hide_show_filter {
+    margin-bottom: 8px;
+}
+#submit_button {
+    margin-bottom: 10px;
+}
+.top-statistics {
+    padding: 15px;
+}
+.table.text-left.loaninfo-table-label td {
+    border: none;
+}
+.bg-light.lter, .bg-light > .lter {
+    background-color: #ffffff !important;
+    padding-bottom: 6px;
+}
+.top-statistics p {
+    color: #404040;
+    font-size: 1.1875em;
+}
+.top-statistics .volume-currency {
+    color: #9696a4;
+}
+.top-statistics .stat-highest p {
+    color: #54aa22;
+}
+.top-statistics .stat-lowest p {
+    color: #e65a5a;
+}
+.market_change_negative {
+    color: rgba(230, 90, 90, 0.6) !important;
+}
+.change-negative {
+    color: #f03838 !important;
+}
+.price-table table tr td:last-child {
+    color: #3c9b00;
+}
+.top-statistics .stat-highest {
+    border-left: 1px solid rgba(150, 150, 164, 0.2);
+}
+.top-statistics {
+    background-image: linear-gradient(to bottom, #ececf0, #f7f7f9), linear-gradient(#589cff, #589cff), linear-gradient(#ffffff, #ffffff);
+    box-shadow: 0 7px 8px 0 #ccc;
+    padding: 7px 15px;
+}
+#buy {
+    background-color: #F6942C;
+    border: medium none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1.0625em;
+    font-weight: 500;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    transition: all 0.3s ease 0s;
+	margin-top: 8px;
+}
+#sell {
+    background-color: #F6942C;
+    border: medium none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1.0625em;
+    font-weight: 500;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    transition: all 0.3s ease 0s;
+	margin-top: 8px;
+}
+ .offer-group .input-label, .offer-group .input-currency {
+    bottom: 0;
+    margin-top: 10px;
+    position: absolute;
+    top: 0;
+}
+.offer-group {
+    margin-top: 6px;
+    position: relative;
+}
+.offer-block .offer-form .offer-label, .offer-block .offer-form .input-label {
+    display: inline-block;
+    margin-right: 25px;
+    min-width: 75px;
+	margin-left: 10px;
+}
+.offer-block .offer-form form input {
+    padding: 10px 50px 10px 115px;
+}
+.offer-group .input-currency {
+    right: 14px;
+}
+.full-width {
+    width: 100%;
+}
+.offer-block .offer-form .offer {
+    background-color: #f7f7f9;
+    border-radius: 4px;
+	overflow: hidden;
+width: 100%;
+
+}
+.offer-block .offer-form {
+    border-left: 1px solid #ececf0;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.offer-block .offer-form h3 {
+    float: left;
+}
+.offer-block .offer-form .purse-amount {
+    color: #1a78ff;
+    float: right;
+    font-size: 0.8125em;
+}
+#rwd_save {
+    background: #F6942C;
+    color: #fff;
+}
+
+
+.offer-block .offer-form .purse-amount span {
+    vertical-align: middle;
+}
+.navbar-inverse {
+    background-color: #fff;
+    border-color: #cccccc;
+}
+.main-bar {
+    background: #f5f5f5 none repeat scroll 0 0;
+}
+.head .main-bar h3 {
+color: #555;}
+#top > .navbar {
+    border-top: 3px solid #f6942c !important;
+}
+.head{border-bottom: none;}
+
+.outer {
+    background-color: #bfbfbf;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #f6942c;
+    color: #fff;
+}
+.navbar-brand.mobile {
+    display: none;
+}
+.top_n{display: none;}
+#company_image_parent {
+    padding: 5px 15px;
+}
+.inner1 .nav-tabs > li{margin-bottom: 0px;}
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    background-color: transparent;
+    color: #f6942c;
+}
+body {
+    overflow-x: hidden;
+}
+.thumbnails {
+    padding: 0;
+}
+.btn.verification-button {
+    margin-top: 41px;
+}
+.pagination{padding: 0px;}
+
+.tx_b {
+ padding: 20px 15px;
+}
+#top .topnav {
+    float: left;
+   }
+    .navbar-nav{float: right;}
+	.navbar-header {
+    float: none;
+} 
+.navbar-brand > img {
+    display: block;
+    margin: 0 auto;
+}
+.nav.navbar-nav a:last-child {
+    padding-right: 0;
+}
+.navbar-brand{float: none; display: block;}
+/*--new--*/
+.topnav1 {
+    float: right;
+	padding: 15px 13px;
+}
+.topnav1 a {
+    padding: 0 2px;
+	color: #f6942c;
+}
+.dropdown-menu li a i {
+    margin: 0;
+    min-width: 27px;
+    padding: 0;
+    text-align: center;
+}
+.dropdown-menu > li > a{padding:3px 7px;}
+.topnav{display: none;}
+.topnav1 .dropdown-menu {
+    left: -135px;
+    }
+
+
+@media screen and (max-width: 1350px){ .nav > li > a {
+  padding: 15px 6px;  font-size: 14px;}
+  .topnav1 a{font-size: 14px;}
+  .topnav1{padding:15px 6px;}
+}
+
+
+/*--end---*/
+@media screen and (max-width: 1200px){ #inv_profile_info .col-xs-12{ margin: 4px 0px;
+} .applyloan .row {
+    margin-bottom:0px;
+}
+.btn.verification-button {
+    margin-top: 5px;
+}
+.nav > li > a {
+    display: block;
+    font-size: 13px;
+    padding: 15px 1px;
+    position: relative;
+
+}
+.topnav1{padding:15px 0px;}
+.topnav1 a{font-size: 13px;}
+}
+@media screen and (max-width: 991px){
+.nav > li > a {
+font-size: 14px;
+    padding: 15px 15px;
+    position: relative;
+
+}
+ .topnav1 a{font-size: 14px;}
+.nav.navbar-nav a:first-child {
+    padding-left: 0;
+}
+.navbar-brand > img{width: 100%;  margin-top: 4px;}
+
+.topnav .btn-group {
+    padding: 0 12px 0 0;
+}
+.topnav1 {
+padding: 15px 12px;
+}
+.collapse.navbar-collapse.navbar-ex1-collapse {
+    float: right;
+}
+.navbar-brand > img {
+    float: left;
+    margin-top: -5px;
+    width: auto;
+}
+
+}
+@media (max-width: 767px) {
+	.collapse.navbar-collapse.navbar-ex1-collapse {
+    float: left;
+    width: 100%;
+}
+	.navbar-nav {
+    float: left;
+    width: 100%;
+}
+	.navbar-brand > img{width: 100%;  margin-top: 0px;}
+	
+	.nav > li > a {
+    font-size: 14px;
+	}
+	.navbar-brand.mobile {
+    display: block;
+    float: left;
+}
+	.outer{padding: 0px;}
+    .page-header, .control-box {
+        text-align: center;
+    }
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+    color: #000 !important;
+}
+.head .main-bar h3 {
+font-size: 17px; margin-bottom: 14px;}
+.form-control.btn.verification-button {
+    margin-top: 4px;
+}
+.input-required {
+    padding: 10px 0;
+}
+#inv_profile_info .col-xs-12{ margin: 0px;
+}
+#top > .navbar .dropdown-menu > li > a:hover, #top > .navbar .dropdown-menu > li > a:focus {
+    background-color: #333;
+    color: #fff !important;
+}
+.navbar-brand {
+    display: none;
+}
+.navbar-brand.mobile {
+    display: block;
+}
+#top .topnav {
+    margin: 10px 0;
+    text-align: left;
+}
+.top_n{display: block !important;}
+.topnav{display: none;}
+.head .main-bar h3{margin: 0px;}
+#company_image_parent {
+    padding: 15px;
+}
+.inner1 .nav-tabs li a {
+    font-size: 12px;
+}
+.input-required {
+    padding: 7px 0 0;
+}
+#address_proof_image_parent{margin: 7px 0px;}
+#identity_card_image_back_parent{margin: 7px 0px;}
+.topnav .btn-group {
+    font-size: 15px;
+    list-style: outside none none;
+    padding: 3px 0 0 6px;
+}
+.offer-block .offer-form{padding-right: 0px; padding-left: 15px;}
+.btn.verification-button {
+    margin-top: 10px;
+}
+.fff .caption{margin: 12px 0px;}
+.nav.navbar-nav a:first-child {
+    padding-left: 15px;;
+}
+.topnav .dropdown-menu {
+    left: -86px;
+}
+.topnav1{display: none;}
+
+
+}
+@media (max-width: 479px) {
+    .fff .caption {
+        word-break: break-all;
+    }
+	.head .main-bar h3 {
+   font-size: 15px; margin-bottom: 14px;
+   
+}	
+.offer-label {
+    margin-left: 0 !important;
+}
+.head .main-bar h3 {margin: 0px;}
+#company_image_parent {
+    padding: 15px;
+}
+.topnav .btn-group {
+    font-size: 15px;
+    list-style: outside none none;
+    padding: 3px 0 0 6px;
+}
+}
+
+/*----new--*/
+
+.topnav .btn-group {
+    padding: 0 15px 0 0;
+    font-size: 15px;
+   list-style: none;
+}
+.topnav .btn-group a{color: #F6942C;}
+.nav.navbar-nav li a {
+    color: #000;
+}
+.style-switcher{display: none;}
+
+.table-verticalscroll {
+    height: 350px;
+    overflow-y: auto;
+    display: block;
+    overflow-x: hidden;
+}
+
+.panel-primary > .panel-heading {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+.tab-head-red {
+    background-color: #8B170A;
+    color: #fff;
+}
+.totalamount {
+    background-color: #F6942C;
+    color: #fff;
+}
+.panel-subhead {
+    color: #F58D0D;
+    font-weight: 600;
+}
+.panel-primary {
+    border-color: #ededed;
+}
+.topnav .dropdown-menu{left: -135px;}
+.topnav1 .dropdown-menu{left: -135px;}
+.nav.navbar-nav li a:hover{color: #F6942C;}
+.nav.navbar-nav .active1{color: #F6942C;}
+.verification-button, .verification-button:hover {
+    background-color: #F6942C;
+    color: #fff;
+    border: none;
+    width: auto;
+}
+.inner1 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 10px;
+  padding-left: 10px;
+  background: #fff;
+  border: 10px solid #e4e4e4;
+  padding-top: 10px;
+  
+}
+.tab-head {
+    background-color: #383838;
+    color: #fff;
+	 padding: 11px 12px;
+}
+#transhistory-container table {
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+}
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+table#account-summary, .table-border-custom {
+    border: 1px solid #ccc;
+}
+.annoucement-msg, .tab-head-red {
+    background-color: #f6942c;
+    color: #fff;
+}
+
+
+.form-control {
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+   
+}
+
+.bootstrap-select > .btn {
+    width: 100%;
+}
+.controls .input-group {
+    width: 100%;
+    margin: 5px 0 0 0;
+}
+.nav > li.disabled > a {
+    color: #fff;
+}
+.nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
+    color: #F6942C;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+	 border-color: transparent;
+}
+.applyloan .btn-group.bootstrap-select {
+    width: 100%;
+}
+#directorDropDown {
+    width: 100%;
+    padding: 6px 12px;
+    margin-bottom: 14px;
+}
+.form-control[disabled], fieldset[disabled] .form-control {
+    cursor: pointer;
+}
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    cursor: pointer;
+}
+.dropdown-menu > li > a{color: #000 !important;}
+.dropdown-menu > li > a:hover {
+    color: #fff !important;
+    background: #333;
+}
+.applyloan .row {
+    margin-bottom: 8px;
+}
+.input-required::after {
+    content: "*";
+    color: red;
+}
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    pointer-events: none;
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: .65;
+}
+#business_organisation {
+   width: 100%;
+padding: 8px 4px;
+background-color: #eee;
+opacity: 1;
+border: 1px solid #ccc;
+border-radius: 4px;
+
+}
+
+	
+
+.selectpicker.text-right.required{width: 100%;
+   width: 100%;
+padding: 8px 4px;
+background-color: #eee;
+opacity: 1;
+border: 1px solid #ccc;
+border-radius: 4px;
+text-align: left
+
+}
+#purpose_singleline{   width: 100%;
+padding: 7px 4px;
+
+opacity: 1;
+border: 1px solid #ccc;
+border-radius: 4px;
+text-align: left}
+
+.selectpicker{width: 100%;
+padding: 6px 4px;
+
+opacity: 1;
+border: 1px solid #ccc;
+border-radius: 4px;}
+
+	
+	label{font-weight: normal;}
+	
+.tab-content .active {
+    color: #4B4949;
+}
+.status-label {
+    color: #F6942C;
+    background-color: transparent;
+    border: 1px solid #F6942C;
+}
+
+li{list-style: none;}
+.caption p {
+    text-align: center;
+}
+
+
+.btn.btn-lg.loan-detail-button {
+    background: #F6942C;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+    float: none;
+    width: 120px;
+    font-size: 14px;
+    padding: 7px 1px;
+}
+.btn.button-grey {
+    text-align: center;
+    background: #b6b6b6;
+    color: #fff;
+    margin: 0 auto;
+    display: block;
+    width: 135px;
+}
+.fff .caption {
+    border: 1px solid #d7d7d7;
+    min-height: 247px;
+    padding: 12px 3px;
+}
+.pager{text-align: right;}
+
+.tab-bid-label {
+    background-image: url('../img/label.png');
+    color: #fff;
+    background-repeat: no-repeat;
+    background-size: 95% 95%;
+}
+.table-bidinfo {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+table.table.table-bidinfo tr td, table.table.table-bidinfo tr th {
+    border: none;
+}
+.tab-row-orange {
+    background-color: #F6942C;
+    color: #fff;
+}
+.annoucement-msg-container {
+    text-align: center;
+}
+#hide_show_filter {
+    margin-bottom: 8px;
+}
+#submit_button {
+    margin-bottom: 10px;
+}
+.table.text-left.loaninfo-table-label td {
+    border: none;
+}
+.modal-body .row {
+    margin-bottom: 7px;
+}
+.verification-button, .verification-button:hover {
+    background-color: #F6942C;
+    color: #fff;
+    border: none;
+    width: auto !important;
+}
+#milestone_row_1 > td {
+    padding: 2px 3px;
+}
+.table1 {
+    width: 100%;
+}
+
+.navbar-inverse {
+    background-color: #fff;
+    border-color: #cccccc;
+}
+.main-bar {
+    background: #f5f5f5 none repeat scroll 0 0;
+    padding:1px 15px;
+}
+.head .main-bar h3 {
+color: #555;}
+#top > .navbar {
+    border-top: 3px solid #f6942c !important;
+}
+.head{border-bottom: none;}
+
+.outer {
+    background-color: #bfbfbf;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #f6942c;
+    color: #fff;
+}
+.navbar-brand.mobile {
+    display: none;
+}
+.top_n{display: none;}
+#company_image_parent {
+    padding: 5px 15px;
+}
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    background-color: transparent;
+    color: #f6942c;
+}
+body {
+    overflow-x: hidden;
+}
+.thumbnails {
+    padding: 0;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #f6942c;
+    color: #fff;
+}
+.pagination{padding: 0px;}
+.loan-info-wrapper .btn.verification-button{
+    margin-top: 41px;
+}
+#project_purpose {
+    width: 49%;
+    min-height: 150px;
+    height: 150px;
+}
+#top .topnav {
+    float: left;
+   }
+   .navbar-nav{float: right;}
+  .navbar-header {
+    float: none;
+} 
+.topnav1 {
+    float: right;
+	padding: 15px 13px;
+}
+.topnav1 a {
+    padding: 0 2px;
+	color: #f6942c;
+}
+.navbar-brand{float: none; display: block;}
+.navbar-brand > img {
+    display: block;
+    margin: 0 auto;
+}
+/*.nav.navbar-nav a:last-child {
+    padding-right: 0;
+}*/
+.dropdown-menu li a i {
+    margin: 0;
+    min-width: 27px;
+    padding: 0;
+    text-align: center;
+}
+.dropdown-menu > li > a{padding:3px 7px;}
+
+.topnav{display: none;}
+#top {
+  padding-top: 70px;
+}
+
+@media screen and (max-width: 1330px){ .nav > li > a {
+  padding: 15px 6px;  font-size: 14px;}
+  .topnav1 a{font-size: 14px;}
+  .topnav1{padding:15px 6px;}
+}
+@media screen and (max-width: 1200px){ #company_info .col-xs-12{ margin: 4px 0px;
+} #loans_info .col-xs-12 {
+    padding-bottom: 10px;
+}
+.head .main-bar h3 {
+    margin-right: 4px;
+}
+.loan-info-wrapper .btn.verification-button{
+    margin-top: 5px;
+}
+.nav > li > a {
+    display: block;
+    font-size: 13px;
+    padding: 15px 1px;
+    position: relative;
+
+}
+.topnav1{padding:15px 0px;}
+.topnav1 a{font-size: 13px;}
+}
+@media screen and (max-width: 991px){
+	.nav > li > a {
+    display: block;
+    font-size: 14px;
+    padding: 15px 15px;
+    position: relative;
+
+}
+ .topnav1 a{font-size: 14px;}
+ 
+.nav.navbar-nav a:first-child {
+    padding-left: 0;
+}
+#project_purpose {
+    width: 100%;
+}
+.topnav .btn-group {
+    padding: 0 12px 0 0;
+}
+.topnav1 .btn-group {
+    padding: 0 12px 0 0;
+}
+.navbar-brand > img{width: 100%;  margin-top: 4px;}
+.topnav1 {
+   
+    padding: 15px 12px;
+}
+.collapse.navbar-collapse.navbar-ex1-collapse {
+    float: right;
+}
+.navbar-brand > img {
+    float: left;
+    margin-top: -5px;
+    width: auto;
+}
+#top {
+  padding-top: 110px;
+}
+}
+@media (max-width: 767px) {
+	.collapse.navbar-collapse.navbar-ex1-collapse {
+    float: left;
+    width: 100%;
+}
+	.navbar-brand > img{width: 100%;  margin-top: 0px;}
+	
+	.nav > li > a {
+    font-size: 14px;
+	}
+	.nav.navbar-nav a:first-child {
+    padding-left: 15px;;
+}
+	.outer{padding: 0px;}
+	
+    .page-header, .control-box {
+        text-align: center;
+    } 
+	.head .main-bar h3 {
+   font-size: 17px; margin-bottom: 14px;
+   
+}	
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+    color: #000 !important;
+}
+
+.form-control.btn.verification-button {
+    margin-top: 4px;
+}
+#top > .navbar .dropdown-menu > li > a:hover, #top > .navbar .dropdown-menu > li > a:focus {
+  color: #fff !important;
+}
+#top .topnav {
+    margin: 10px 0;
+    text-align: left;
+}
+.top_n{display: block !important;}
+.topnav{display: none;}
+.head .main-bar h3{margin-bottom: 0px;}
+.navbar-brand {
+    display: none;
+}
+.navbar-brand.mobile {
+    display: block;
+}
+#company_image_parent {
+    padding: 15px;
+}
+.topnav .btn-group {
+    font-size: 15px;
+    list-style: outside none none;
+    padding: 3px 0 0 6px;
+}
+.btn.button-grey {
+    background: #b6b6b6 none repeat scroll 0 0;
+    color: #fff;
+    display: block;
+    font-size: 13px;
+    margin: 0 auto;
+    text-align: center;
+    width: 120px;
+}
+.btn.btn-lg.loan-detail-button {
+    background: #f6942c none repeat scroll 0 0;
+    color: #fff;
+    display: block;
+    float: none;
+    font-size: 13px;
+    margin: 0 auto;
+    padding: 7px 1px;
+    text-align: center;
+    width: 115px;
+}
+#loans_info .col-xs-12 {
+    padding-bottom: 2px;
+}
+.applyloan .row {
+    margin-bottom: 2px;
+}
+#company_info .col-xs-12 {
+    margin: 2px 0 0;
+}
+.btn.verification-button {
+    margin-top: 10px;
+}
+.fff .caption{margin: 12px 0px;}
+#apply_filter_div {
+    margin-right: 90px;
+}
+.topnav .dropdown-menu {
+    left: -86px;
+}
+.navbar-brand{float: left;}
+ .navbar-nav{float: left;}
+ .navbar-nav {
+    float: left;
+    width: 100%;
+}
+.topnav1{display: none;}
+#top {
+    padding-top: 88px;
+}
+.main-bar {
+    padding: 10px 15px;
+}
+}
+@media (max-width: 479px) {
+	#apply_filter_div {
+    margin-right: 90px;
+}
+    .fff .caption {
+        word-break: break-all;
+    }
+	.head .main-bar h3 {
+   font-size: 13px; margin-bottom: 14px;
+	}
+	.tab-head {padding: 2px 2px; font-size: 11px;}
+	.inner1 .nav-tabs > li {
+    display: block;
+    padding: 10px;
+    position: relative;
+    width: 50%;
+}
+
+.status-label {
+    font-size: 14px;
+}
+.head .main-bar h3 {margin: 0px;}
+.btn.button-grey {font-size:12px;}
+#company_image_parent {
+    padding: 15px;
+}
+.head .main-bar h3 {
+    margin-right: 4px;
+}
+#company_info .col-xs-12 {
+    margin: 2px 0 0;
+}
+.inner1 .nav-tabs > li.active > a, .inner1 .nav-tabs > li.active > a:hover{background: transparent;}
+.inner1 .nav-tabs li a {
+    display: inline;
+	
+}
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+[2017-09-04 16:20:19] production.ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'DEVFYN.audit_master' doesn't exist (SQL: 	SELECT 	audit_key,
+									user_id,	
+									(select DEVFYN.users.username  from DEVFYN.users where fynAudit.audit_master.user_id =DEVFYN.users.user_id )	as username,								
+									module_name,
+									action_summary,
+									action_detail,
+									DATE_FORMAT(action_datetime, '%d-%m-%Y') AS action_datetime,
+									key_displayfieldname,
+									key_displayfieldvalue
+							FROM	audit_master
+							WHERE	action_datetime between :from_date and :to_date  
+							AND		module_name = if (:module1 = 'all', module_name, :module2)
+							AND 	action_summary = if (:filteraction1 = 'all', action_summary, :filteraction2) 							
+							)  

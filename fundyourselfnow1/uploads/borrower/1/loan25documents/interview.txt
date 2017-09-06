@@ -1,0 +1,166 @@
+1)What is MVC?
+    Answer:
+
+	 MVC stands for Model, View, and Controller. PHP MVC  is an effective way to manage the code into 3 different layers.
+	
+	Model– It represents the application data domain. In other words applications business logic is contained within the model
+		 and is responsible for maintaining data
+	View– It represents the user interface, with which the end users communicates. In short all the user interface logic is contained 
+		within the VIEW
+	Controller– It is the controller that answers to user actions. Based on the user actions, the respective controller responds
+		    within the model and choose a view to render that display the user interface.  The user input logic is contained 
+		    with-in the controller.
+ 	 	
+2) List out few different return types of a controller action method?
+
+	View Result
+	Javascript Result
+	Redirect Result
+	Json Result
+	Content Result
+
+3) Mention what is the difference between adding routes, to a webform application and an MVC application?
+
+	To add routes to a webform application, we can use MapPageRoute() method of the RouteCollection class, where adding routes to an 
+	MVC application, you can use MapRoute() method.
+
+4) Mention what are the two ways to add constraints to a route?
+
+	The two methods to add constraints to a route is
+
+	Use regular expressions
+	Use an object that implements IRouteConstraint Interface
+
+5) Mention what is the advantages of MVC?
+
+	MVC segregates your project into a different segment, and it becomes easy for developers to work on
+	It is easy to edit or change some part of your project that makes project less development and maintenance cost
+	MVC makes your project more systematic.
+
+6) Mention what “beforFilter()”,“beforeRender” and “afterFilter” functions do in Controller?
+
+	beforeFilter(): This function is run before every action in the controller. It’s the right place to check for an active session 
+	or inspect user permissions.
+	beforeRender(): This function is called after controller action logic, but before the view is rendered. This function is not often 
+	used, but may be required If you are calling render() manually before the end of a given action
+	afterFilter(): This function is called after every controller action, and after rendering is done. It is the last controller 
+	method to run.
+
+7) Explain the role of components Presentation, Abstraction and Control in MVC?
+
+	Presentation: It is the visual representation of a specific abstraction within the application
+	Abstraction: It is the business domain functionality within the application
+	Control: It is a component that keeps consistency between the abstraction within the system and their presentation to the user 
+	in addition to communicating with other controls within the system.
+
+8) Mention the advantages and disadvantages of MVC model?
+
+	Advantages:
+
+	 It represents clear separation between business logic and presentation logic
+	Each MVC object has different responsibilities
+	The development progresses in parallel
+	Easy to manage and maintain
+	All classes and object are independent of each other
+
+	Disadvantages:
+
+	he model pattern is little complex
+	Inefficiency of data access in view
+	With modern user interface, it is difficult to use MVC
+	You need multiple programmers for parallel development
+	Multiple technologies knowledge is required
+
+9) Explain what are the steps for the execution of an MVC project?
+
+  The steps for the execution of an MVC project includes
+
+	Receive first request for the application
+	Performs routing
+	Creates MVC request handler
+	Create Controller
+	Execute Controller
+	Invoke action
+	Execute Result
+
+10) Explain what is routing? What are the three segments for routing is important?
+
+	Routing helps you to decide a URL structure and map the URL with the Controller.
+
+	The three segments that are important for routing is
+
+	ControllerName
+	ActionMethodName
+	Parameter
+
+11) Explain how routing is done in MVC pattern?
+
+	There is a group of routes called the RouteCollection, which consists of registered routes in the application.  The RegisterRoutes 
+	method records the routes in this collection.  A route defines a URL pattern and a handler to use if the request matches the pattern. 
+	The first parameter to the MapRoute method is the name of the route. The second parameter will be the pattern to which the URL matches.  
+	The third parameter might be the default values for the placeholders if they are not determined.
+
+12) What is partial view in MVC?
+
+	Partial view in MVC renders a portion of view content. It is helpful in reducing code duplication. In simple terms, partial view 
+	allows to render a view within the parent view.
+
+13) Mention what is the difference between “ActionResult” and “ViewResult” ?
+
+	“ActionResult” is an abstract class while “ViewResult” is derived from “AbstractResult” class.  “ActionResult” has a number of
+	derived classes like “JsonResult”, “FileStreamResult” and “ViewResult” .
+
+	“ActionResult” is best if you are deriving different types of view dynamically.
+
+14) List out the types of result in MVC?
+
+	In MVC, there are twelve types of results in MVC where “ActionResult” class is the main class while the 11 are their sub-types
+
+		ViewResult
+		PartialViewResult
+		EmptyResult
+		RedirectResult
+		RedirectToRouteResult
+		JsonResult
+		JavaScriptResult
+		ContentResult
+		FileContentResult
+		FileStreamResult
+		FilePathResult
+
+15) What is MVC architecture
+
+		A design pattern describes a proven solution to a recurring design problem, placing particular emphasis on the context and forces surrounding the problem, and the consequences and impact of the solution.  
+		 
+		There are many good reasons to use design patterns. Here are three: 
+		 
+		1) They are proven. You tap the experience, knowledge and insights of developers who have used these patterns successfully in their own work. 
+		 
+		2) They are reusable. When a problem recurs, you don't have to invent a new solution; you follow the pattern and adapt it as necessary. 
+		 
+		3) They are expressive. Design patterns provide a common vocabulary of solutions, which you can use to express larger solutions succinctly. 
+		 
+		The goal of the MVC design pattern is to separate the application object (model) from the way it is represented to the user (view) from the way in which the user controls it (controller).  
+		 
+		The MVC architecture has the following benefits: 
+		 
+		1) Multiple views using the same model: The separation of model and view allows multiple views to use the same enterprise model. Consequently, an enterprise application's model components are easier to implement, test, and maintain, since all access to the model goes through these components. 
+		 
+		2) Easier support for new types of clients: To support a new type of client, you simply write a view and controller for it and wire them into the existing enterprise model. 
+		 
+		3) Clarity of design: By glancing at the model's public method list, it should be easy to understand how to control the model's behavior. When designing the application, this trait makes the entire program easier to implement and maintain. 
+		 
+		4) Efficient modularity: of the design allows any of the components to be swapped in and out as the user or programmer desires - even the model! Changes to one aspect of the program aren't coupled to other aspects, eliminating many nasty debugging situations. Also, development of the various components can progress in parallel, once the interface between the components is clearly defined.  
+		 
+		5) Ease of growth: Controllers and views can grow as the model grows; and older versions of the views and controllers can still be used as long as a common interface is maintained.  
+		 
+		6) Distributable: With a couple of proxies one can easily distribute any MVC application by only altering the startup method of the application.
+
+17)  Explain the concept of View Model in MVC?
+
+18) Where do we see Separation of Concerns in MVC?
+
+Between the data-processing (Model) and the rest of the application.
+When we talk about Views and Controllers, their ownership itself explains separation. The views are just the presentation form of an application, it does not have to know specifically about the requests coming from controller. The Model is independent of View and Controllers, it only holds business entities that can be passed to any View by the controller as required for exposing them to the end user. The controller is independent of Views and Models, its sole purpose is to handle requests and pass it on as per the routes defined and as per the need of rendering views. Thus our business entities (model), business logic (controllers) and presentation logic (views) lie in logical/physical layers independent of each other.
+
+19) 
