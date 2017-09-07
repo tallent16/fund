@@ -1,5 +1,32 @@
+
+
 $(document).ready(function (){  
-	$("#password").passStrengthify(); 
+	var abc = $("#password").passStrengthify(); 
+   var password = $("#password").val();
+  var ConfirmPassword = $("#ConfirmPassword").val();
+ $("#ConfirmPassword").keyup(function() {
+  if(password==ConfirmPassword){
+    $('#ConfirmPassword-error').html('');
+  }
+
+    });
+     $("#password").keyup(function() {
+         var value = $('#txt').text();
+       // alert(value);
+        if(value == 'Very strong' || value =='Moderate' || value =='Good' || value == 'Strong'){
+        var password = $("#password").val();
+        var matchpass = password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{10,30}$/);
+       
+      
+    if (matchpass){
+     $("#Password-error1").html("");
+    } else{
+       
+         $("#Password-error1").html("Password should be min 10 characters. The password should contain 1 uppercase and 1 lowercase alphabet, 1 number and 1 special Character (!@#$%^&*)");
+         
+     }
+ }
+     });
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('#hidden_token').val()
@@ -34,13 +61,18 @@ $(document).ready(function (){
 			console.log("toc_message_submit");
 		}
 	 }); 
-	 
+
+
+
+	/* function custompasswordstrength(value, element) {   
+        return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{10,15}$/.test(value);
+    }, "Letters, numbers ,special characters"); */
 	 
 	 //~ $.validator.addMethod("alphanumeric", function(value, element) {   
 		//~ return this.optional(element) || /^(?=.*\d+)(?=.*[!@#$%^&*()_+])[a-zA-Z\d\!@#\$%&\*]{10,}$/.test(value);
 	//~ }
 	//~ , "Letters, numbers ,special characters"); 
-	 $.validator.addMethod("custompasswordstrength", function(value, element) {   
+	 $.validator.addMethod("custompasswordstrength", function(value, element) {  alert(element); 
 		return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{10,15}$/.test(value);
 	}, "Letters, numbers ,special characters"); 
       jQuery.validator.addMethod("specialChars", function( value, element ) {
@@ -109,7 +141,12 @@ $(document).ready(function (){
                     
 					//~ minlength: 10,
 					//~ alphanumeric: true
-					custompasswordstrength:true,
+					//custompasswordstrength:true,
+                },
+                'country': {
+                    required: true,
+                    
+                   
                 },
                 'ConfirmPassword': {
                     required: true,
@@ -144,7 +181,10 @@ $(document).ready(function (){
                 },
                 'password': {
                     required: 'Please provide a password',
-                    custompasswordstrength: systemMessages['register_weak_password']
+                   // custompasswordstrength: systemMessages['register_weak_password']
+                },
+                'country': {
+                     required: 'Please select  a country',
                 },
                 'ConfirmPassword': {
                     required: 'Please enter the password again',

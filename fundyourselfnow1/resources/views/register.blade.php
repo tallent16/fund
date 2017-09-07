@@ -76,7 +76,7 @@
 								</label>								
 							</div>
 						</div>						
-						<!---row1--->
+					
 						<div class="row">
 							<div class="col-xs-6 form-group">
 								<div class="form-material form-material-success">
@@ -111,7 +111,7 @@
 								</div>									
 							</div>
 						</div>
-					<!---row2--->	
+					
 					<div class="row">
 						<div class="col-xs-6 form-group">
 							<div class="form-material form-material-success">					
@@ -154,6 +154,7 @@
 										placeholder="******" 
 										type="Password" 
 										value="" />
+										<div id="Password-error1" style=" color: #a94442;"></div>
 								<div id="messages"></div>
 							</div>
 						</div>	
@@ -161,10 +162,6 @@
 							<div class="form-material form-material-success">
 								<label for="register-password2" class="input-required">{{ Lang::get('register.confirmpass') }}</label>
 								<input 	class="form-control" 
-										data-val="true" 
-										data-val-equalto="* The password and confirmation password do not match." 
-										data-val-equalto-other="*.Password" 
-										data-val-required="* Confirmation Password is required" 
 										id="ConfirmPassword" 
 										name="ConfirmPassword" 
 										placeholder="******" 
@@ -189,7 +186,7 @@
 						<div class="col-xs-6 form-group">	
 							<div class="form-material">
 								<label for="example-select" class="input-required">{{ Lang::get('register.secuirtyquestion') }}</label>
-								<select class="selectpicker" 
+								<select class="selectpicker customeselect"  
 										data-val="true" 
 										data-val-number="The field SecurityQuestion1 must be a number." 
 										data-val-required="The SecurityQuestion1 field is required." 
@@ -230,9 +227,12 @@
                    <div class="row">
 						<div class="col-xs-6 form-group">
                           <div class="form-material">
+                          <label 	for="register-lastname" class="input-required"> {{ Lang::get('Nationality') }}</label>
 					<select id="country" name="country" class="form-control">
+				<option value = "">Please select </option>
                     @foreach ($countries as $country)
-                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+
+                        <option value="{{ $country->id }}" <?php if($country->code==$usercountry){ echo "selected"; }?>>{{ $country->name }}</option>
                     @endforeach             
                 </select>
                 </div>

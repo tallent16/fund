@@ -74,11 +74,18 @@ $(document).ready(function (){
 	});
 	// date picker
 	$('#date_of_birth').datetimepicker({
-		autoclose: true,
-		minView: 2,
-		format: 'dd/mm/yyyy'
+		startView: "decade",
+		endDate: '-18y',
+	   
+		//autoclose: true,
+		//minView: 2, 
+		//format: 'dd/mm/yyyy'
 	});   
 	
+	$('#date_of_birth').datetimepicker({
+		"defaultDate":'09/07/1980'
+	});   
+
 	$("#form-profile").submit(function(e) {
 		
 		if($("#screen_mode").val()	==	"investor"){

@@ -96,6 +96,7 @@
 									<input 	type="text" 
 											id="date_of_birth"  
 											name="date_of_birth" 
+											
 											value="{{$InvPrfMod->date_of_birth}}"
 											class="date-picker-2 form-control required"
 											{{$InvPrfMod->viewStatus}} 

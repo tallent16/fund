@@ -188,7 +188,11 @@ ul.thumbnails {
     margin-bottom: 0px;
 }
 .caption p {
+    overflow: hidden;
+    padding: 4px 0 7px;
     text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -927,7 +931,7 @@ body {
 }
 .pagination{padding: 0px;}
 .loan-info-wrapper .btn.verification-button{
-    margin-top: 41px;
+    margin-top: 47px;
 }
 #project_purpose {
     width: 49%;
@@ -1178,7 +1182,10 @@ body {
 	
 }
 
-	
+.explore_area ul li a img { 
+    vertical-align: top;
+     margin-right: 2px;
+ }	
 
 
 

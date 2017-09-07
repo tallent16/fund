@@ -17,7 +17,7 @@
 				<aside class="col-md-4 col-sm-6 col-xs-8 explore_area">
 					<ul>
 					@var $exploreurl = "/categories/" 
-						<li>	<a href="{{url('categories')}}"><i class="fa fa-plus-square" aria-hidden="true"></i> Explore
+						<li>	<a href="{{url('categories')}}"><img src="{{ url('assets/images/bulb.png') }}" alt="" /></i> Explore
 			</a></li>
 						<li class="web_search">
 							<input type="text" class="form-control" value="" placeholder="Search.." />
@@ -67,8 +67,9 @@
 						<div aria-expanded="false" id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav">
 
+
 								    @if(Auth::check())
-				
+                                    
    @if(Auth::user()->usertype  ==  USER_TYPE_BORROWER)
                         @var    $manage =   'creator/dashboard'
 @var    $profileStatus      =   BorProfile::checkProfileStatus()
@@ -227,7 +228,7 @@
                                     @endif
 
         <li class="block-title new_tb" style="padding:5px;margin: 0 15px 0 0;">            
-            <i class="fa fa-bell" data-toggle="popover" data-content="" style="cursor: pointer;" data-original-title="" title="" aria-describedby="popover705785"></i>
+            <i class="fa fa-bell notification_btn" data-toggle="popover" data-content="" style="cursor: pointer;" data-original-title="" title="" aria-describedby="popover705785"></i>
                 <span class="notificationCount1 label" id="notificationCount" style="display: none;"></span>
                 <span class="hidden notifyList">
                     <div class="collection">

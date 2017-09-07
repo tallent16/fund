@@ -428,9 +428,10 @@ function addNewDirectorRow(){
 		
 		$("#directors_profile_"+counterstr).summernote({height:300}); 	
 		$("#accomplishments_"+counterstr).summernote({height:300}); 	
-		$("#name_"+counterstr).val("");	
+		//$("#name_"+counterstr).val("");	
 		$("#max_director").val(counterstr);
-		$("#directorDropDown").append("<option value='"+counterstr+"'>"+""+"</option>");
+		var myvalue = $("#name_"+counterstr).val();
+		$("#directorDropDown").append("<option value='"+counterstr+"'>"+myvalue+"</option>");
 		$('#directorDropDown').val(counterstr);
 		$("#directorDropDown").selectpicker("refresh");
 		$(".divs div.dir-list:visible").hide();

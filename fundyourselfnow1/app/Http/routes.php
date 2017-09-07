@@ -27,7 +27,14 @@ Route::get('test1', function()
 	$s3->put("test.txt",'This is a dummy file for testing','public');
 
 });
+Route::post('/language-choose','LanguageController@changelanguage');
 
+Route::post('/language' , [
+	'before'=>'csrf',
+	'as'=>'language-choose',
+	'uses'=>'LanguageController@changelanguage',
+	]
+);
  Route::any('page/{page}','HomeController@staticPage');
 
 // global contants for all requests

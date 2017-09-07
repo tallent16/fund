@@ -50,7 +50,7 @@
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group" id="apply_filter_div">	
-					<button type="submit" class="btn verification-button btn-block yellow_btn">
+					<button type="submit" class="btn verification-button btn-block yellow_btn" style="margin-top:0;">
 						{{ Lang::get('borrower-loanlisting.apply_filter') }}			
 					</button>	
 				</div>	

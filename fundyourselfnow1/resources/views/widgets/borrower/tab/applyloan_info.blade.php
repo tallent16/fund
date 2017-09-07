@@ -434,20 +434,7 @@
 
 				
 				
-				@if($show_map	==	"yes")
-					<!-- ------------------------------row8--------------------------------- -->	
-				<div class="row" id="add_links_row" {{$add_milestone_button}}>
-					<div class="col-xs-12 col-sm-12 col-lg-12">											
-						<button type="button" 
-								class="btn verification-button" 
-								onclick="addNewSocialLinkRow()"
-								>
-								<i class="fa pull-right"></i>
-								{{ Lang::get('Add Social Link') }}
-							</button>	
-					</div>	
-				</div>
-				@endif
+			
 
 	<!--  ------------- Social Links Section ---------------  -->
 
@@ -728,10 +715,12 @@
 				<fieldset class="gllpLatlonPicker">
 						<!-- ------------------------------row 9--------------------------------- -->	
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-lg-12">											
-							<label>
-								<b>{{ Lang::get('Project Location') }}:</b>
-							</label>												
+						<div class="col-xs-12 col-sm-12 col-lg-12">	
+							<div class="gray_bg">										
+								<label>
+									{{ Lang::get('Project Location') }}:
+								</label>
+							</div>											
 						</div>	
 					</div>
 						<!-- ------------------------------row 10------------------------------ -->	
@@ -805,7 +794,7 @@
 								accept="image/*" 
 								id="project_image" 
 								name="project_image" 
-								class="jfilestyle  required" 
+								class="jfilestyle  required choose_btn" 
 								>	
 						<input 	type="hidden" 
 								id="project_image_hidden"
@@ -821,6 +810,8 @@
 						@endif							
 					</div>	
 					
+				</div>
+				<div class="row">
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label>
 							{{ Lang::get('Project Video') }}
@@ -835,13 +826,13 @@
 								value="{{ $BorModLoan->loan_video_url }}"
 								/>	
 						<span>Video URL? <small class="text-muted">(YouTube, Vimeo, Vine, Instagram, DailyMotion or Youku)</small></span>
-					</div>
+					</div>					
 				</div>
 				<!-- ------------------------------row 12--------------------------------- -->	
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
 						<label>
-							<b>{{ Lang::get('Purpose of Project') }}:</b>
+							<b>{{ Lang::get('Description of the project') }}:</b>
 						</label>												
 					</div>	
 				</div>
