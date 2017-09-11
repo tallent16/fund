@@ -11,6 +11,18 @@
 		var systemSettings					=	{{json_encode($regMod->systemAllSetting)}}
 		var systemMessages					=	{{json_encode($regMod->systemAllMessage[1])}}
 	</script>
+ 
+	<?php  
+	 if(config::get('app.locale') != ''){
+         $lang = config::get('app.locale');
+
+   }else{
+   $lang = 'en';
+
+   }  
+     $validation = "js/validation/register_".$lang.".js"; 
+   ?>
+<script src="{{ url($validation) }}" type="text/javascript"></script>	  
 	<script src="{{ url('js/register.js') }}" type="text/javascript"></script>	  
 
 @endsection
@@ -52,7 +64,7 @@
 <div class="panel panel-default">
 	  
 		<div class="panel-heading">
-		<h3 class="panel-title">Sign Up</h3>
+		<h3 class="panel-title">  {{ Lang::get('register.signup') }}</h3>
 	
 	</div>
 		
@@ -68,11 +80,11 @@
 							<div class="form-group col-xs-12">								
 								<label for="example-inline-radio2" class="radio-inline">
 									<input checked="checked" name="Userrole" type="radio" value="Investor" />                                    
-									{{ Lang::get('Backer') }}
+									{{ Lang::get('register.backer') }}
 								</label>
 								<label for="example-inline-radio1" class="radio-inline">
 									<input id="Userrole" name="Userrole" type="radio" value="Borrower" />                                    
-								   {{ Lang::get('Creator') }}
+								   {{ Lang::get('register.creator') }}
 								</label>								
 							</div>
 						</div>						
@@ -80,11 +92,11 @@
 						<div class="row">
 							<div class="col-xs-6 form-group">
 								<div class="form-material form-material-success">
-									<label 	for="register-username" class="input-required"> {{ Lang::get('User Name') }}</label>
+									<label 	for="register-username" class="input-required"> {{ Lang::get('register.username') }}</label>
 									<input 	class="form-control" 
 											id="username"
 											name="username" 
-											placeholder="User Name" 
+											placeholder=" {{ Lang::get('register.username') }}" 
 											type="text" 
 											data-val="true"
 											data-val-required="Please enter Username"
@@ -95,7 +107,7 @@
 						
 							<div class="col-xs-6 form-group">									
 								<div class="form-material form-material-success">
-									<label 	for="register-email" class="input-required"> {{ Lang::get('login.email') }}</label>
+									<label 	for="register-email" class="input-required"> {{ Lang::get('register.email') }}</label>
 									<input 	class="form-control" 
 											data-val="true" data-val-regex="* Please enter a valid e-mail adress" 
 											data-val-regex-pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" 
@@ -106,7 +118,7 @@
 											data-val-required="* E-mail Id is required" 
 											id="EmailAddress" 
 											name="EmailAddress" 
-											placeholder="Email Id" 
+											placeholder="{{ Lang::get('register.email') }}" 
 											type="text" value="" />
 								</div>									
 							</div>
@@ -115,11 +127,11 @@
 					<div class="row">
 						<div class="col-xs-6 form-group">
 							<div class="form-material form-material-success">					
-								<label 	for="register-firstname" class="input-required"> {{ Lang::get('First Name') }}</label>
+								<label 	for="register-firstname" class="input-required"> {{ Lang::get('register.firstname') }}</label>
 									<input 	class="form-control" 
 										id="firstname"
 										name="firstname" 
-										placeholder="First Name" 
+										placeholder="{{ Lang::get('register.firstname') }}" 
 										type="text" 
 										value="" />
 							</div>
@@ -127,11 +139,11 @@
 							
 						<div class="col-xs-6 form-group">
 							<div class="form-material form-material-success">	
-								<label 	for="register-lastname" class="input-required"> {{ Lang::get('Last Name') }}</label>
+								<label 	for="register-lastname" class="input-required"> {{ Lang::get('register.lastname') }}</label>
 								<input 	class="form-control" 
 										id="lastname"
 										name="lastname" 
-										placeholder="Last Name" 
+										placeholder="{{ Lang::get('register.lastname') }}" 
 										type="text" 
 										value="" />
 							</div>
@@ -139,16 +151,11 @@
 					</div>
 					<!---row3---->	
 					<div class="row">
-						<div class="col-xs-6 form-group">						
+						<div class="col-xs-6 form-group pass">						
 							<div class="form-material form-material-success">
-								<label for="register-password" class="input-required">{{ Lang::get('login.password') }}</label>
+								<label for="register-password" class="input-required">{{ Lang::get('register.password') }}</label>
 								<input 	class="form-control" 
-										data-val="true"
-										data-val-remote="* Email and Password must not be same" 
-										data-val-remote-additionalfields="*.Password,*.EmailAddress" 
-										data-val-remote-type="POST" 
-										data-val-remote-url="/Authentication/User/CheckEmailPasswordMatchcase" 
-										data-val-required="* Password is required" 
+										
 										id="password"
 										name="password" 
 										placeholder="******" 
@@ -158,7 +165,7 @@
 								<div id="messages"></div>
 							</div>
 						</div>	
-						<div class="col-xs-6 form-group">
+						<div class="col-xs-6 form-group cpass">
 							<div class="form-material form-material-success">
 								<label for="register-password2" class="input-required">{{ Lang::get('register.confirmpass') }}</label>
 								<input 	class="form-control" 
@@ -167,6 +174,7 @@
 										placeholder="******" 
 										type="Password" 
 										value="" />
+										<div id="CPassword-error1" style=" color: #a94442;"></div>
 							</div>
 						</div>  
 					                     
@@ -183,13 +191,10 @@
 						</div> 				
 					 <!---row4---->	                     
 					<div class="row">
-						<div class="col-xs-6 form-group">	
+						<div class="col-xs-6 form-group ques">	
 							<div class="form-material">
 								<label for="example-select" class="input-required">{{ Lang::get('register.secuirtyquestion') }}</label>
 								<select class="selectpicker customeselect"  
-										data-val="true" 
-										data-val-number="The field SecurityQuestion1 must be a number." 
-										data-val-required="The SecurityQuestion1 field is required." 
 										id="SecurityQuestion1" 
 										name="SecurityQuestion1" >
 										<option value="">--{{ Lang::get('register.select') }}--</option>
@@ -207,6 +212,7 @@
 										<option value="13">{{ Lang::get('register.primaryschool') }}</option>
 										<option value="14">{{ Lang::get('register.favmovie') }}</option>
 								</select>
+								<div id="SecurityQuestion1-error" style=" color: #a94442;"></div>
 							</div>
 						</div>
 						<div class="col-xs-6 form-group">
@@ -227,7 +233,7 @@
                    <div class="row">
 						<div class="col-xs-6 form-group">
                           <div class="form-material">
-                          <label 	for="register-lastname" class="input-required"> {{ Lang::get('Nationality') }}</label>
+                          <label 	for="register-lastname" class="input-required"> {{ Lang::get('register.nationality') }}</label>
 					<select id="country" name="country" class="form-control">
 				<option value = "">Please select </option>
                     @foreach ($countries as $country)
@@ -242,7 +248,7 @@
 					<div class="row">
 						<div class="col-xs-12 form-group">
 							<label class="css-input switch switch-sm switch-success">
-								{{ Lang::get('Bound to our Terms and Service') }} 
+								{{ Lang::get('register.bound_to') }} 
 <!--
 								<a target="_blank" href="">
 								   {{ Lang::get('register.termsissuer') }}
@@ -269,7 +275,7 @@
 									class="btn btn-success register-button">
 									<i class="fa pull-right"></i> 
 									{{ Lang::get('register.signup') }}
-							</button> <a href="{{ url ('auth/login') }}">Sign In</a>
+							</button> <a href="{{ url ('auth/login') }}">{{ Lang::get('register.sign_in') }}</a>
 						</div>
 						
 					</div>

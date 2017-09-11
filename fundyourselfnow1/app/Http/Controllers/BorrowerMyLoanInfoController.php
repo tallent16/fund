@@ -35,6 +35,7 @@ class BorrowerMyLoanInfoController extends MoneyMatchController {
 	
 	echo $objectUrl;die;
 	*/
+	
 	return view('clander')->with(array('home'=>$data));
 			
 	 }

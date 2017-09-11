@@ -18,6 +18,7 @@ class Kernel extends HttpKernel {
 		//'App\Http\Middleware\VerifyCsrfToken',
 		'App\Http\Middleware\App',
 		'App\Http\Middleware\TestDatabaseConnectionMiddleware',
+		'App\Http\Middleware\Language',
 	];
 
 	/**

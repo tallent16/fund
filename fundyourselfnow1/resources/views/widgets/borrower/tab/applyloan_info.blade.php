@@ -445,18 +445,13 @@
 						</label>												
 					</div>	
 					
-					<div 	class="col-md-6" 
-							id="social_link_error_info"  style="display:none;margin-bottom:10px;">		
-							<label 	class="error"
-									id="updates_link_error_label"
-							>{{ Lang::get('Sum of the milestone disbursal should be 100% ')}}</label>											
-					</div>		
+						
 				</div>
 				
 				<div class="row" id="links-container">
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
 						<div class="table-responsive applyloan"> 
-							<table id="links-table" class="table">
+							<table id="links-table" class="table" style="margin-bottom: 10px;">
 								<thead>
 									<tr >
 										<th class="tab-head text-left" width="25%">{{ Lang::get('Type')}}</th>
@@ -529,12 +524,12 @@
 				</div>
 				@if($show_map	==	"yes")
 					<!-- ------------------------------row8--------------------------------- -->	
-				<div class="row" id="add_links_row" {{$add_milestone_button}}>
+				<div class="row" id="add_links_row">
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
 						<button type="button" 
 								class="btn verification-button" 
 								onclick="addNewSocialLinkRow()"
-								>
+					style="margin-left:7px;">
 								<i class="fa pull-right"></i>
 								{{ Lang::get('Add Social Link') }}
 							</button>	
@@ -542,7 +537,7 @@
 				</div>
 				@endif
 
-	<!--  ------------- END Social Links Section ---------------  -->
+	
 					<!--<div class="row">
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
 						<label>

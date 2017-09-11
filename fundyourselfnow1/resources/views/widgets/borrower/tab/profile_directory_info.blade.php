@@ -1,4 +1,5 @@
 @var $borrowerDirectors = $modelBorPrf->director_details;
+
 <div id="director_info" class="tab-pane fade" >
 	<div class="panel panel-default directorinfo applyloan" onload="rem();"> 						
 		<div class="panel-body">	
@@ -11,10 +12,9 @@
 					<div class="col-xs-9">										  
 						<select class="selectpicker select-width" id="directorDropDown">  
 						<!--
-						<option value="">Please Select Directors</option>
+						<option value="">{{ Lang::get('borrower-profile.select_director') }}</option>
 						-->
 						{{ $modelBorPrf->directorSelectOptions }}
-
 						</select>											
 					</div>										
 				</div><!--row-->			
@@ -28,7 +28,7 @@
 			</div>	<!--col-4 end-->		    
 			<div class="col-lg-8"></div>
 			
-			<div class="col-sm-12 col-lg-12">	
+			<div class="col-sm-12 col-lg-10">	
 				<div class="row">
 				<div class="panel-primary panel-container">
 					<div class="panel-heading panel-headsection"><!--panel head-->
@@ -42,9 +42,9 @@
 				
 				<div class="table-responsive"><!---table start-->
 					<div class="divs">
-                                                 @var	$i	=	1
+						@var	$i	=	1
 						@foreach($borrowerDirectors as $directorRow)
-								<div  class="dir-list" id="{{ $directorRow['slno']}}">
+							<div  class="dir-list" id="{{ $directorRow['slno']}}" >
 								<table class="table table-bordered .tab-fontsize text-left">		
 									<tbody>
 										<tr>
@@ -73,7 +73,7 @@
 													{{ Lang::get('borrower-profile.age') }}
 												</label>
 											</td>
-											<td class="col-md-3" id="age_1_parent">
+											<td class="col-md-3" id="age_{{$i}}_parent">
 												<input 	type="text" 
 														id="age_{{$i}}" 
 														name="director_row[age][]"
@@ -86,7 +86,7 @@
 												{{ Lang::get('borrower-profile.overall_exp') }}
 												</label>
 											</td>
-											<td class="col-md-3" id="overall_experience_1_parent">
+											<td class="col-md-3" id="overall_experience_{{$i}}_parent">
 												<input 	type="text" 
 														id="overall_experience_{{$i}}" 
 														name="director_row[overall_experience][]"
@@ -102,8 +102,8 @@
 													{{ Lang::get('Team Member Information') }}
 												</label>
 											</td>
-											<td colspan="3" class="col-md-3"  id="directors_profile_1_parent">
-												<textarea id="directors_profile_{{$i}}" 
+											<td colspan="3" class="col-md-3"  id="directors_profile_{{$i}}_parent">
+												<textarea	id="directors_profile_{{$i}}" 
 															onload="rem();"
 															name="director_row[directors_profile][]"
 															class="form-control required"
@@ -117,7 +117,7 @@
 												{{ Lang::get('borrower-profile.accomplish') }}
 											</td>
 											<td colspan="3" class="col-md-3">
-												<textarea id="accomplishments_{{$i}}" 
+												<textarea	id="accomplishments_{{$i}}" 
 															name="director_row[accomplishments][]"
 															class="form-control accomplishments"
 															data-toggle="tooltip"
@@ -132,7 +132,7 @@
 													{{ Lang::get('Identification Document') }}
 												</label>
 											</td>
-											<td colspan="3" class="col-md-3" id="identity_card_front_1_parent">
+											<td colspan="3" class="col-md-3" id="identity_card_front_{{$i}}_parent">
 												<input 	type="file" 
 														class="jfilestyle attachment" 
 														data-buttonBefore="true" 
@@ -152,45 +152,59 @@
 														class="hyperlink">
 														{{basename( $directorRow['identity_card_front'])}}
 													</a>
-												@endif		
-													
+												@endif	
 											</td>
 										</tr>													
-
+<!--
+										<tr>
+											<td class="col-md-3">
+												<label class="input-required">
+													{{ Lang::get('Identity Card Back') }}
+												</label>
+											</td>
+											<td colspan="3" class="col-md-3" id="identity_card_back_{{$i}}_parent">
+												<input 	type="file" 
+														class="jfilestyle required attachment" 
+														data-buttonBefore="true" 
+														name="director_row[identity_card_back][]"
+														id="identity_card_back_{{$i}}" />
+												<input 	type="hidden" 
+														id="identity_card_back_{{$i}}_hidden"
+														name="director_row[identity_card_back_hidden][]"
+														value="{{ $directorRow['identity_card_back'] }}"
+														/>		
+												@if($directorRow['identity_card_back']!="")
+													@var	$backUrl	=	url('download/borrower/director/attachment');
+													@var	$backUrl	=	$backUrl."/".$modelBorPrf->borrower_id
+													@var	$backUrl	=	$backUrl."/".$directorRow['id']."/back"
+													<a href="{{$backUrl}}" 
+														class="hyperlink">
+														{{basename($directorRow['identity_card_back'])}}
+													</a>
+												@endif	
+											</td>
+										</tr>													
+-->
 									</tbody>
 								</table>
 							</div>
 							@var	$i++
-						@endforeach		
-												
-						</div>
+						@endforeach
+					</div>
 								
 												
 				</div><!--table-->
 				</div>
-				<!--div class="row">	
+				<div class="row">	
 					<div class="pull-left">											
 						<button type="button"
-								class="btn verification-button  disabled"
+								class="btn verification-button  {{$modelBorPrf->viewStatus}}"
 								id="add-director">
 							<i class="fa pull-right"></i>
-							Add
+							{{ Lang::get('borrower-profile.add') }}
 						</button>											
 					</div>
-					<div class="text-center pull-right">
-						<ul class="pagination">
-							<li>
-								<a href="javascript:void(0)" id="prev">
-									<i class="fa fa-chevron-circle-left"></i>
-								</a>
-							</li>
-							<li>
-								<a href="javascript:void(0)" id="next">
-									<i class="fa fa-chevron-circle-right"></i>
-								</a>
-							</li>	
-						</ul>
-					</div>				
+									
 						</br> 						
 				</div><!--row-->						
 				</div>	<!--col-10 end-->		    
@@ -199,5 +213,3 @@
 		</div><!--panel body-->
 	</div><!--panel------>	
 </div><!--director tab-->
-													<!-----Third Tab content starts----->
-								

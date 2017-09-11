@@ -6,12 +6,11 @@
 	textarea{
 		margin-top:7px;
 	}
-	a{
-		color:#337ab7;
-	}
+	
 	.btn.verification-button {
     	margin-top: 47px !important;
 	}
+
 	</style>
 @endsection
 
@@ -127,11 +126,11 @@
 						</div>
 						<div class="row"> 
 							@if(count($investortAllLoan) > 0)
-								<div class="col-sm-5 col-lg-2">		
+								<div class="col-sm-5 col-lg-2" style="padding-top: 8px;">		
 									<a class="btn btn-lg loan-detail-button" style="visibility:hidden;">Hidden Field														
 									</a>								
 									<div class="table-responsive"><!---table start-->
-										<table class="table text-left myloan-table-left-label">		
+										<table class="table text-left loaninfo-table-label">		
 											<tbody>																								
 												<tr>
 													<td>{{ Lang::get('Project Reference')}}</td>														
@@ -178,7 +177,7 @@
 -->				
 
 
-								<div class="col-sm-6 col-lg-10 loan-details pagination">
+								<div class="col-sm-6 col-lg-10 loan-details pagination" style="margin:0;">
 								
 							
 							<div class="carousel slide" id="myCarousel">
@@ -231,7 +230,8 @@
 											              	   </div>
 											              	   </div>
 								</div><!---col--10-->
-									 <nav>
+										<div class="clearfix"></div>
+									                      <nav>
 															<ul class="control-box pager">
 																<li><a data-slide="prev" href="#myCarousel" class=""><i class="glyphicon glyphicon-chevron-left"></i></a></li>
 																<li><a data-slide="next" href="#myCarousel" class=""><i class="glyphicon glyphicon-chevron-right"></i></li>
@@ -242,7 +242,7 @@
 							<!---row--->
 						@else
 							<p style="padding:10px">
-								{{ Lang::get('No Loans Found') }}
+								{{ Lang::get('No Projects Found') }}
 							</p>
 						@endif
 						

@@ -20,7 +20,7 @@ class Language {
          $locale = Session::get('locale',config::get('app.locale'));
 
 		}else{
-         $locale = 'fr';
+         $locale = 'en';
 
 
 		}

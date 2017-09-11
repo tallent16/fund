@@ -58,7 +58,7 @@ class BorrowerMyLoanInfoModel extends TranWrapper {
 		$current_borrower_id	=	 $this->getCurrentBorrowerID();
 		
 		$loanlist_sql			= "	SELECT 	loans.loan_id,
-											loans.borrower_id,
+											loans.borrower_id,loans.loan_title,
 											loans.loan_reference_number,loans.ristricted_countries as countries,
 											ifnull(DATE_FORMAT(loans.apply_date,'%d %b %Y'),'') apply_date,
 											loans.status,

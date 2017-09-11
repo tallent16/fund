@@ -57,7 +57,7 @@
                 @endif
                 
 				{{session()->forget('submit')}}
-							<h3 class="panel-title">Sign In</h3>
+							<h3 class="panel-title">{{ Lang::get('login.sign_in') }}</h3>
 						</div>
 
 						<div class="panel-body">
@@ -66,12 +66,12 @@
                                                                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
 								<fieldset>
 									<div class="form-group">
-										<input class="form-control" placeholder="Email or Username" name="email" autofocus="" type="text">
+										<input class="form-control" placeholder="{{ Lang::get('login.email_place') }}" name="email" autofocus="" type="text">
 									</div>
 									<div class="form-group">
-										<input class="form-control" placeholder="Password" name="password" value="" type="password">
+										<input class="form-control" placeholder="{{ Lang::get('login.password') }}" name="password" value="" type="password">
 										<div class="text-right" style="font-size:85%">
-											Forgot or Change <a href="{{ url ('reset') }}">Password</a>?
+											{{ Lang::get('login.forgot_password') }} <a href="{{ url ('reset') }}">{{ Lang::get('login.password') }}</a>?
 										</div>
 									</div>
 									<div class="checkbox">							
@@ -79,7 +79,7 @@
 												<input name="remember" value="Remember Me" type="checkbox">{{ Lang::get('login.remember') }}
 											</label>
 									</div>
-									<button type="submit" class="btn btn-block full_orange_btn animated_slow">Login</button>
+									<button type="submit" class="btn btn-block full_orange_btn animated_slow">{{ Lang::get('login.login') }}</button>
 								</fieldset>
 							</form>
 					        <p class="dont_account">Don't have an account! <a href="{{ url ('register') }}">Sign Up Here</a> </p>    

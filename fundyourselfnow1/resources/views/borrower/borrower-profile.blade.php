@@ -1,11 +1,19 @@
 @extends('layouts.plane')
 
 @section('page_heading',Lang::get('Crowd Funding'))  
+
 @section('bottomscripts')
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!-- <script src="{{ asset('assets/scripts/frontend.js')}}" type="text/javascript"></script>		 -->
+	<script src="{{ url('js/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>	
+	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
+	<script src="{{ url('js/borrower-profile.js') }}" type="text/javascript"></script>		 	
+	<script src="{{ url('js/numeral.min.js') }}" type="text/javascript"></script>		
+	 <script src="{{ asset('assets/summernote/summernote.js')}}" type="text/javascript"></script>
+	
 	<script>
 		var baseUrl	=	"{{url('')}}"
-		$(document).ready(function(){ 	
+		$(document).ready(function(){ 
+
 			$(".jfilestyle").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
 			$('#company_profile').summernote({height:300});
 			$('#about_us').summernote({height:300});
@@ -35,10 +43,11 @@
 			});
 		}); 
 	</script>	 
-	
+
 @endsection 
+
 @section('section')   
-		@var	$inputTabInfo	=	array("company info"=>"company info","director info"=>"director info")
+			@var	$inputTabInfo	=	array("company info"=>"company info","director info"=>"director info")
 		@var	$inputTabInfo["profile info"]	=	"profile info"
 		@var	$inputTabInfo["finacial info"]	=	"finacial info"
 		@var	$inputTabInfo["bank info"]		=	"bank info"
@@ -156,59 +165,62 @@
 												
 																
 																									
-																												<!-----Body Content----->
-		<div class="col-sm-12 space-around"> 
+																												
+			<div class="col-sm-12 space-around"> 
 			<form method="post" id="form-profile" name="form-profile" enctype="multipart/form-data">
-				<input type="hidden" name="_token" id="_token" value="u4e9tp0XvhdZIcoimhUSZW4pn0LbLnu3yh3I2kaK">
-				<input type="hidden" name="trantype" value="edit">
+				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="trantype" value="{{ $trantype }}">
 				<input type="hidden" id="isSaveButton" name="isSaveButton" value="">
-				<input type="hidden" name="borrower_id" value="4">
-				<input type="hidden" name="borrower_bankid" value="3">
-				<input type="hidden" id="screen_mode" value="borrower">
-				<input type="hidden" name="hidden_borrower_status" id="borrower_status" value="">
-				<input type="hidden" name="current_profile_status" value="4">
-				<input type="hidden" id="profile_status" value="Verified">
+				<input type="hidden" name="borrower_id" value="{{ $modelBorPrf->borrower_id }}">
+				<input type="hidden" name="borrower_bankid" value="{{ $modelBorPrf->borrower_bankid }}">
+				<input type="hidden" id="screen_mode" value="{{$screenMode}}">
+				<input type="hidden" name="hidden_borrower_status" id="borrower_status" value="{{$borrower_status}}">
+				<input type="hidden" name="current_profile_status" value="{{$modelBorPrf->status}}">
+				<input type="hidden" id="profile_status" value="{{$modelBorPrf->statusText}}">
 				<input type="hidden" name="admin_process" id="admin_process" value="">
-				<input type="hidden" id="company_info_complete" value="1">
-				<input type="hidden" id="director_info_complete" value="1">
-				<input type="hidden" id="profile_info_complete" value="1">
-				<input type="hidden" id="bank_info_complete" value="1">
-				<input type="hidden" id="active_tab" name="active_tab" value="#company_info">
+				<input type="hidden" id="company_info_complete" value="{{$modelBorPrf->company_info_complete}}">
+				<input type="hidden" id="director_info_complete" value="{{$modelBorPrf->director_info_complete}}">
+				<input type="hidden" id="profile_info_complete" value="{{$profile_info_tab}}">
+				<input type="hidden" id="bank_info_complete" value="{{$modelBorPrf->bank_info_complete}}">
+				<input type="hidden" id="active_tab" name="active_tab" value="{{$activeTab}}">
 				<div class="row">	
 					
-					<div class="col-lg-12 col-md-12 col-xs-12">
-						<!-----Tab Starts----->
+					<div class="col-lg-12 col-md-6 col-xs-12">
+					
 						<ul class="nav nav-tabs">
 							<li class="active" id="company_info_parent" >
 								<a 	data-toggle="tab" 
 									href="#company_info">
-									COMPANY INFO
+									{{ Lang::get('borrower-profile.company_info') }}
 								</a>
 							</li>
 							<li class="disabled" id="director_info_parent">
 								<a 	data-toggle="tab"
 									href="#director_info">
-									TEAM INFO
+									{{ Lang::get('TEAM INFO') }}
 								</a>
-							</li>      
-								  
+							</li>       
+							@if($canViewProfileInfoTab	==	"yes")	  
 								<li  class="disabled"  id="profile_info_parent">
 									<a 	data-toggle="tab"
 										href="#profile_info">
-										PROFILE INFO
+										{{ Lang::get('borrower-profile.profile_info') }}
 									</a>
 								</li>	
-							<!--
-															<li id="financial_ratio_parent">
+							@endif
+<!--
+							@if($canViewFinacialRatioTab	==	"yes")
+								<li id="financial_ratio_parent">
 									<a 	data-toggle="tab"
 										href="#financial_ratio">
-										FINANCIAL RATIO
+										{{ Lang::get('FINANCIAL RATIO') }}
 									</a>
 								</li>	
-															<li  class="disabled"  id="financial_info_parent">
+							@endif
+								<li  class="disabled"  id="financial_info_parent">
 									<a 	data-toggle="tab"
 										href="#financial_info">
-										FINANCIAL INFO
+										{{ Lang::get('borrower-profile.financial_info') }}
 									</a>
 								</li>	
 -->
@@ -216,25 +228,33 @@
 							<li class="disabled" id="bank_info_parent" >
 								<a 	data-toggle="tab"
 									href="#bank_info">
-									BANK INFO
+									{{ Lang::get('borrower-profile.bank_info') }}
 								</a>
 							</li>	
-													<!--			-->			   							
+							@if($canViewCommentsTab	==	"yes")
+								<li id="comments_info_parent">
+									<a 	data-toggle="tab"
+										href="#comments_info">
+										{{ Lang::get('COMMENTS') }}
+									</a>
+								</li>	
+							@endif
+						<!--	@if(Auth::user()->username == "admin")-->
+						<!--	@endif		-->			   							
 						</ul>	
-		<div class="tab-content">
-
-
-<!-----First Tab content Starts----->
-							@include('widgets.borrower.tab.profile_company_info')
-						<!-----First Tab content end----->
+				
+					<div class="tab-content">
 						
-						<!-----Second Tab content starts----->
+							@include('widgets.borrower.tab.profile_company_info')
+					
+						
+						
 							@include('widgets.borrower.tab.profile_directory_info')
-						<!-----Second Tab content ends----->
+					
 						@if($canViewProfileInfoTab	==	"yes")
-							<!-----Third Tab content starts----->
+						
 								@include('widgets.borrower.tab.profile_info')
-							<!-----Third Tab content ends----->	
+							
 						@endif
 <!--
 						@if($canViewFinacialRatioTab	==	"yes")
@@ -243,7 +263,7 @@
 <!--
 								@include('widgets.borrower.tab.profile_financial_ratio')
 
-							<!-----Four Tab content ends----->	
+								
 <!--
 						@endif
 
@@ -261,10 +281,7 @@
 								@include('widgets.common.tab.profile_comments')
 							<!-----Sixth Tab content ends----->
 						@endif
-
-
-						<!-----Five Tab content ends----->	
-												
+						
 					</div>	<!---col ends-->	
 				
 					
@@ -272,9 +289,82 @@
 							<div class="pull-right">
 								
 								
-																																																																																											
-																
-														</div>
+								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+										||	($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) )
+										<button type="submit" 
+												id="save_button"
+											class="btn verification-button" >
+											<i class="fa pull-right"></i>
+											{{ Lang::get('borrower-profile.save_button') }}
+										</button>
+									@endif
+								@endif
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if($modelBorPrf->status	!=	BORROWER_STATUS_NEW_PROFILE)
+										<button type="submit" 
+												id="admin_save_button"
+											class="btn verification-button" >
+											<i class="fa pull-right"></i>
+											{{ Lang::get('borrower-profile.save_button') }}
+										</button>
+									@endif
+								@endif
+								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									@if($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) 
+										<button type="button" 
+												id="next_button"
+												style="display:none;"
+												data-tab-id="company_info"
+											class="btn verification-button" >
+											<i class="fa pull-right"></i>
+											{{ Lang::get('Next') }}
+										</button>
+									@endif
+								@endif
+								@if(Auth::user()->usertype	==	USER_TYPE_BORROWER)
+									@if(($modelBorPrf->status	==	BORROWER_STATUS_COMMENTS_ON_ADMIN)
+										||	($modelBorPrf->status	==	BORROWER_STATUS_NEW_PROFILE) )
+										<button type="submit" 
+												style="display:none"
+												id="submit_button"
+												class="btn verification-button {{$modelBorPrf->viewStatus}}"
+												 {{$modelBorPrf->viewStatus}}>
+											<i class="fa pull-right"></i>
+											{{ Lang::get('borrower-profile.submit_verification') }}
+										</button>
+									@endif
+								@endif
+								
+								@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+									@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+										@permission('returnborrower.admin.manageborrowers')
+												<button type="button"
+														id="returnback_button"
+														style="display:none"
+														class="btn verification-button"
+														data-screen-type="borrower"
+													<i class="fa pull-right"></i>
+													{{ Lang::get('Return to Borrower') }}
+												</button>
+										@endpermission
+									@endif
+								@endif
+								
+							@if(Auth::user()->usertype	==	USER_TYPE_ADMIN)
+								@if( $modelBorPrf->status	==	BORROWER_STATUS_SUBMITTED_FOR_APPROVAL)
+									@permission('approve.admin.manageborrowers')
+											<button type="button"
+													id="approve_profile_button"
+													class="btn verification-button"
+													data-screen-type="borrower"
+												<i class="fa pull-right"></i>
+												{{ Lang::get('Approve Profile') }}
+											</button>
+									@endpermission
+								@endif
+							@endif
+							</div>
 						</div> 
 				
 				
@@ -283,8 +373,8 @@
 	</div>
  </div>
 <div style="display:none">
-<input type="hidden" id="max_director" value= "3" />
-<input type="hidden" id="max_comment" value= "0" />
+<input type="hidden" id="max_director" value= "{{ count($modelBorPrf->director_details) }}" />
+<input type="hidden" id="max_comment" value= "{{ count($modelBorPrf->commentsInfo) }}" />
 	<div  id="directorTemplate">
 		<div id="XXX" class="dir-list">
 			<div class="table-responsive">
@@ -293,7 +383,7 @@
 				<tr>
 					<td class="col-md-3">
 						<label class="input-required">
-							Name
+							{{ Lang::get('Name') }}
 						</label>
 					</td>
 					<td class="col-md-3"  id="name_XXX_parent" colspan="3">
@@ -313,7 +403,7 @@
 				<tr>
 					<td class="col-md-3">
 						<label class="input-required">
-						Age
+						{{ Lang::get('borrower-profile.age') }}
 						</label>
 					</td>
 					<td class="col-md-3" id="age_XXX_parent" >
@@ -325,7 +415,7 @@
 					</td>	
 					<td class="col-md-3">
 						<label class="input-required">
-						Overall experience in years
+						{{ Lang::get('borrower-profile.overall_exp') }}
 						</label>
 					</td>
 					<td class="col-md-3" id="overall_experience_XXX_parent"  colspan="3">
@@ -339,7 +429,7 @@
 				<tr>
 					<td  class="col-md-3">
 						<label class="input-required">
-							Team Member Information
+							{{ Lang::get('Team Member Information') }}
 						</label>
 					</td>
 					<td colspan="3" class="col-md-3" 	id="directors_profile_XXX_parent">
@@ -352,7 +442,7 @@
 				</tr>
 				<tr>
 					<td  class="col-md-3">
-						Accomplishments/Other info
+						{{ Lang::get('borrower-profile.accomplish') }}
 					</td>
 					<td colspan="3" class="col-md-3">
 						<textarea	id="accomplishments_XXX" 
@@ -367,7 +457,7 @@
 				<tr>
 					<td class="col-md-3">
 						<label class="">
-							Identification Document
+							{{ Lang::get('Identification Document') }}
 						</label>
 					</td>
 					<td colspan="3" class="col-md-3" id="identity_card_front_XXX_parent">
@@ -388,7 +478,7 @@
 				<tr>
 					<td class="col-md-3">
 						<label class="input-required">
-							Identity Card Back
+							{{ Lang::get('Identity Card Back') }}
 						</label>
 					</td>
 					<td colspan="3" class="col-md-3" id="identity_card_back_XXX_parent">
@@ -425,7 +515,10 @@
 				</div>
 				
 				<div class="col-xs-4">
-					<select class="inputTabDropDown text-right required" id="input_tab_XXX" name="comment_row[input_tab][]"><option value="company info">company info</option><option value="director info">director info</option><option value="profile info">profile info</option><option value="finacial info">finacial info</option><option value="bank info">bank info</option></select>
+					{{ Form::select('comment_row[input_tab][]',$inputTabInfo,'' , 
+											['class' => 'inputTabDropDown text-right required',
+											'id'=>'input_tab_XXX']) 
+					}}
 				</div>
 				<div class="col-xs-5" id="comments_XXX_parent">
 					<div class="col-xs-10">
@@ -471,17 +564,17 @@
     </div><!-- /#wrapper -->
      
 	 
-	<script>var baseUrl	=	"http://demo.fundyourselfnow.com"</script> 
+	<script>var baseUrl	=	"http://52.74.139.176/fundslive/"</script> 
  
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
 	<script>
-		var baseUrl	=	"http://demo.fundyourselfnow.com"
+		var baseUrl	=	"http://52.74.139.176/fundslive/"
 		$(document).ready(function(){ 	
 			$(".jfilestyle").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
 			$('#company_profile').summernote({height:300});
 			$('#about_us').summernote({height:300});
-							$('#company_profile').summernote('disable');
-				$('#about_us').summernote('disable');
+						//	$('#company_profile').summernote('disable');
+				//$('#about_us').summernote('disable');
 						
 			$( "textarea[name='director_row[accomplishments][]'" ).each(function() {
 				var id	=	$(this).attr("id");

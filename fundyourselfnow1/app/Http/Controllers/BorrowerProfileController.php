@@ -36,6 +36,8 @@ class BorrowerProfileController extends MoneyMatchController {
 		}
 		
 		$this->borrowerProfileModel->getBorrowerDetails(); 
+		/*echo $activeTab;
+	       echo '<pre>';print_r($this->borrowerProfileModel);die;*/
 		
 		$withArry		=	array(	"modelBorPrf"=>$this->borrowerProfileModel,
 									"classname"=>"fa fa-user fa-fw",

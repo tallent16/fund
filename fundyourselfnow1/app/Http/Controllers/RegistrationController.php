@@ -20,9 +20,40 @@ class RegistrationController extends MoneyMatchController {
 	}
 	//render the Registration page
 	public function indexAction() {
+		    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+
+    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+
+    $remote  = @$_SERVER['REMOTE_ADDR'];
+
+    $result  = array('country'=>'', 'city'=>'');
+
+    if(filter_var($client, FILTER_VALIDATE_IP)){
+
+        $ip = $client;
+
+    }elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+
+        $ip = $forward;
+
+    }else{
+
+        $ip = $remote;
+
+    }
+
+    $ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));    
+
+    if($ip_data && $ip_data->geoplugin_countryName != null){
+
+      $usercountry_code = $ip_data->geoplugin_countryCode;
+
+        $result['city'] = $ip_data->geoplugin_city;
+
+    }
 		$this->user->getModuleSystemMessages();
 		 $country = DB::table('countries')->get();
-		 return view('register')->with(array("regMod"=>$this->user,'countries'=>$country));
+		 return view('register')->with(array("regMod"=>$this->user,'countries'=>$country,'usercountry'=>$usercountry_code));
 		
 	}
 	

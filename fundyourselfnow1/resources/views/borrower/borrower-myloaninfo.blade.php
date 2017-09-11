@@ -105,15 +105,18 @@
 						
 						@if(count($borrowerAllList) > 0)
 						<div class="row"> 
-							<!----col--2--->
-							<div class="col-sm-6 col-lg-2">
+							<div class="col-sm-6 col-lg-2" style="padding-top: 10px;">
 									<a class="btn btn-lg loan-detail-button" style="visibility:hidden;">Hidden Field														
 									</a>											
 								<div class="table-responsive"><!---table start-->
 									<table class="table text-left loaninfo-table-label">		
 										<tbody>																								
+											
 											<tr>
 												<td>{{ Lang::get('Project Reference') }}</td>														
+											</tr>
+											<tr>
+												<td>{{ Lang::get('Project Title') }}</td>														
 											</tr>
 											<tr>
 												<td>{{ Lang::get('borrower-loaninfo.date_applied') }}</td>												
@@ -177,23 +180,28 @@
 												@var	$bid_url	=	'creator/myprojects/'
 												@var	$bid_url	=	$bid_url.base64_encode($loanRow->loan_id."_bids")
 											@endif
+												<div class="projectdetails_btn">
 											@if($loanRow->viewStatus	!=	"Cancelled Loan" && $loanRow->viewStatus	!=	"")
 
-												<a href="{{ url ($loan_url) }}"
+											<a href="{{ url ($loan_url) }}"
 													class="btn btn-lg loan-detail-button">
 													{{$loanRow->viewStatus}}
 												</a>
 											@else
+
 												<!-- <a href="javascript:void(0);"
 													class="btn btn-lg loan-detail-button">
 													{{$loanRow->viewStatus}}
 												</a> -->
 											@endif	
+											</div>
+											
 												<p>@if($loanRow->loan_reference_number	!=	"")
 																{{$loanRow->loan_reference_number}}
 															@else
 																--
 															@endif	</p>
+															<p>{{$loanRow->loan_title}}</p>
 															<p>	@if($loanRow->apply_date	!=	"")
 																{{$loanRow->apply_date}}
 															@else
@@ -249,7 +257,7 @@
 			
 						@else
 							<p>
-								{{ Lang::get('borrower-loaninfo.no_loan_found') }}
+								No Projects found
 							</p>
 						@endif
 					

@@ -6,13 +6,12 @@
 	@var $opt2	="selected"
 @endif
 <div class="tab-content">
-						<!-----First Tab content Starts----->
+						
 							<div id="company_info" class="tab-pane fade in active">		
 	<div class="panel panel-default applyloan">   
 		<div class="panel-body">
 			
-			
-			<!------row--1----------->	
+
 			<div class="row">
                 <fieldset {{ $modelBorPrf->viewStatus }}>				
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
@@ -38,16 +37,16 @@
 						 													
 					<select class="selectpicker required"
 							id="business_organisation" 
-							name="business_organisation">
+							name="business_organisation"
+							>
 							{{ $modelBorPrf->busin_organSelectOptions }}
-					</select>									
+					</select>								
 				</div>
 </fieldset>				
 			</div>		
-			<!------row--1----------->	
-			<!------row 2------------>		
+				
 			<div class="row">
-                   <fieldset disabled>				
+                  <fieldset {{ $modelBorPrf->viewStatus }}>					
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
 							{{ Lang::get('borrower-profile.regis_num') }}
@@ -76,10 +75,10 @@
 				</div>
 				</fieldset>
 			</div>			
-			<!------row 2------------>
-			<!------row--3----------->
+			
 			<div class="row">
-			<fieldset disabled>	
+			
+                  <fieldset {{ $modelBorPrf->viewStatus }}>	
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
 						{{ Lang::get('borrower-profile.reg_address') }}
@@ -100,15 +99,14 @@
 				<div class="col-xs-12 col-sm-7 col-lg-3"  id="mailing_address_parent">													
 						<textarea	id="mailing_address" 
 									name="mailing_address"
-									class="form-control required"
-								>mailing address</textarea>				
+									class="form-control required">{{ $modelBorPrf->mailing_address }}</textarea>				
 				</div>
 				</fieldset>
 			</div>			
-			<!------row--3----------->
-			<!------row--4----------->
+			
 			<div class="row">
-			<fieldset disabled>	
+			
+                  <fieldset {{ $modelBorPrf->viewStatus }}>	
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
 						{{ Lang::get('borrower-profile.date_incorp') }}
@@ -152,10 +150,10 @@
 				</div>
 </fieldset>				
 			</div>
-			<!------row--4----------->
-			<!------row--5----------->				
+							
 			<div class="row">
-			<fieldset disabled>	
+			
+                  <fieldset {{ $modelBorPrf->viewStatus }}>		
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
 						{{ Lang::get('borrower-profile.paid_capital') }}
@@ -186,10 +184,10 @@
 				</div>	
 </fieldset>				
 			</div>
-			<!------row--5----------->
-			<!------row--6----------->
+			
 			<div class="row">
-			<fieldset disabled>	
+		
+                  <fieldset {{ $modelBorPrf->viewStatus }}>	
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
 						{{ Lang::get('borrower-profile.contact_person') }}
@@ -204,11 +202,23 @@
 								/>		
 				</div>							
 				
-				
+				<div class="col-xs-12 col-sm-5 col-lg-3">											
+					<label class="input-required">
+						{{ Lang::get('borrower-profile.contact_mobile') }}
+					</label>												
+				</div>									
+				<div class="col-xs-12 col-sm-7 col-lg-3"  id="contact_person_mobile_parent">													
+					<input 	type="text" 
+								id="contact_person_mobile" 
+								name="contact_person_mobile"
+								value="{{ $modelBorPrf->contact_person_mobile }}"
+								class="form-control text-right  required mobile"
+								maxlength="10"
+								/>	
+				</div>
 				</fieldset>
 			</div>
-			<!------row--6----------->
-			<!------row--7----------->	
+			
 			<div class="row">
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
@@ -227,7 +237,7 @@
 					<input 	type="hidden" 
 								id="company_image_hidden"
 								name="company_image_hidden"
-								value="uploads/borrower/4/profile_image_logo.jpg"
+								value="@if (isset($modelBorPrf->company_image)){{config('moneymatch_settings.image_url') }}{{$modelBorPrf->company_image}} @endif"
 								/>		
 						@if($modelBorPrf->company_image!="")
 						<a 	href="{{config('moneymatch_settings.image_url') }}{{$modelBorPrf->company_image}}"  

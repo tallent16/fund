@@ -24,7 +24,7 @@
 					
 								
 					<div class="row">	
-<fieldset disabled>					
+<fieldset {{ $modelBorPrf->viewStatus }}>					
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="">
 								{{ Lang::get('borrower-profile.bank_code') }}
@@ -43,7 +43,7 @@
 					</div>
 					
 					<div class="row">	
-<fieldset disabled>					
+<fieldset {{ $modelBorPrf->viewStatus }}>					
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="">	
 								{{ Lang::get('borrower-profile.branch_code') }}
@@ -62,7 +62,7 @@
 					</div>
 					
 					<div class="row">	
-<fieldset disabled>					
+<fieldset {{ $modelBorPrf->viewStatus }}>					
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="">
 								{{ Lang::get('borrower-profile.acc_num') }}
@@ -81,7 +81,7 @@
 					</div>			
 					
 					<div class="row">
-<fieldset disabled>					
+<fieldset {{ $modelBorPrf->viewStatus }}>					
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="">
 								{{ Lang::get('Bank Statement') }}

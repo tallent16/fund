@@ -48,7 +48,9 @@ class InvestorProfileController extends MoneyMatchController {
 	public function ajaxCheckFieldExistsAction() {		
 		
 		$postArray	=	Request::all();
+		
 		$result		=	$this->investorProfileModel->CheckFieldExists($postArray);
+
 		if($result) {
 			echo "2";
 			return;

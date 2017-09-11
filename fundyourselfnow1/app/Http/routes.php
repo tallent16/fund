@@ -1475,7 +1475,7 @@ Route::group(['middleware' => 'App\Http\Middleware\BorrowerMiddleWare'], functio
 	
 	
 });
-
+Route::any('investor/checkFieldExists', 'InvestorProfileController@ajaxCheckFieldExistsAction');
 // The routes (or pages that are applicable for investor users only
 Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], function()
 {
@@ -1484,7 +1484,7 @@ Route::group(['middleware' => 'App\Http\Middleware\InvestorMiddleWare'], functio
     Route::get('backer/transaction','InvestorProfileController@transaction');
     // Investor Profile   
     Route::post('backer/profile', 'InvestorProfileController@indexAction');
-    Route::post('investor/checkFieldExists', 'InvestorProfileController@ajaxCheckFieldExistsAction');
+    //Route::post('investor/checkFieldExists', 'InvestorProfileController@ajaxCheckFieldExistsAction1');
 	Route::get('investor/loanslist', 'LoanListingController@indexAction');
 	Route::get('backer/marketplace', 'BackerMarketPlaceController@indexAction');
 	//Creator Wallet route

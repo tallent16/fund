@@ -231,7 +231,7 @@ class BorrowerProfileModel extends TranWrapper {
 		
 		$this->setAuditOn($moduleName, $actionSumm, $actionDet,
 								"business_name", $postArray['business_name']);
-
+       //  echo '<pre>';print_r($postArray)
 		$borrowerId		=	 $this->updateBorrowerInfo($postArray,$transType);
 
 		$this->updateBorrowerDirectorInfo($postArray,$borrowerId);
@@ -406,7 +406,7 @@ class BorrowerProfileModel extends TranWrapper {
 			$updateAttachment	=	true;
 		}
 		if(isset($postArray['acra_profile_doc_url']) && $postArray['acra_profile_doc_url']!=''){
-			if(isset($postArray['acra_profile_doc_url_hidden'])){
+			if(isset($postArray['acra_profile_doc_url_hidden']) && $postArray['acra_profile_doc_url_hidden'] != ''){
 				$filePath		=	$postArray['acra_profile_doc_url_hidden'];
 				$fileUploadObj->deleteFile($filePath);
 			}
@@ -541,6 +541,7 @@ class BorrowerProfileModel extends TranWrapper {
 			if(isset($identity_card_front)){
 				if(isset($postArray['identity_card_front_hidden'][$rowIndex]) && $postArray['identity_card_front_hidden'][$rowIndex]!=''){
 					$filePath		=	$postArray['identity_card_front_hidden'][$rowIndex];
+					
 					$fileUploadObj->deleteFile($filePath);
 					
 				}
@@ -594,10 +595,14 @@ class BorrowerProfileModel extends TranWrapper {
 										 "valArr" => $directorIds]];
 		$dirFilePath	=	"";
 		foreach($directors as $dirRow) {
-			unset($dirFilePath);
+					unset($dirFilePath);
 			$dirFilePathFront	=	$dirRow->identity_card_front;
 			//~ $dirFilePathBack	=	$dirRow->identity_card_back;
+
+			if($dirFilePathFront!=''){
+
 			$fileUploadObj->deleteFile($dirFilePathFront);
+		}
 			//~ $fileUploadObj->deleteFile($dirFilePathBack);
 		}
 		$this->dbDelete("borrower_directors", $where);

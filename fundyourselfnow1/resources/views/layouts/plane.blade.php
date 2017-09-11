@@ -76,10 +76,42 @@ var baseUrl = "http://52.74.139.176/fundslive/";
 	
 
   $(document).ready(function (){ 
+ $('#language').change(function(){
 
+    var locale = $(this).val();
+    var _token = $("input[name=_token]").val();
+    $.ajax({
+     url:baseUrl+"language",
+     type:"post",
+     data:{'locale':locale,'_token':_token},
+     datatype:'json',
+     succes:function(data){
+
+     },
+     error:function(data){
+
+     },
+     beforeSend:function(){
+
+     },
+     complete:function(data){
+     window.location.reload(true);
+     }
+
+    })
+
+   });
 
      $('[data-toggle="tooltip"]').tooltip();
+     $('.notification_btn').click(function(event){
+      $(this).toggleClass('active');
+      event.stopPropagation();
+     });
   });
+  $(window).click(function(e) {
+     $('.notification_btn').removeClass('active');
+});
+
 </script>
   <script src="{{ url('js/common.js') }}" type="text/javascript"></script>  
    <!--  <script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script> -->

@@ -7,6 +7,7 @@ use InvBal;
 use AdminAccess;
 use Session;
 use DB;
+use Lang;
 class CustomAuthController extends MoneyMatchController {
 	/**
 	 * The Guard implementation.
@@ -53,7 +54,7 @@ class CustomAuthController extends MoneyMatchController {
 			|| Auth::attempt(['username' => $email, 'password' => $password, 'status' => 2,'email_verified' => 1 ]) ) {  
         
             $userType			=	Auth::user()->usertype;
-        $id = Auth::id(); 
+              $id = Auth::id(); 
          
             /*If the user is borrower then check the status,
              *Status is deleted or reject not allow logout and thrown error
@@ -67,9 +68,13 @@ class CustomAuthController extends MoneyMatchController {
 				}
 			}
 			
-             if($userType	==	USER_TYPE_BORROWER) {
+             if($userType	==	USER_TYPE_BORROWER){
+
+				
 				$profileStatus	=	BorProfile::checkProfileStatus();
+				//echo $profileStatus;die;
 				$welcomeMessage	=	BorProfile::getWelcomeMessage();
+
 				if( ($profileStatus	==	BORROWER_STATUS_DELETED)
 					|| ( $profileStatus	==	BORROWER_STATUS_REJECTED ) ) {
 					Auth::logout();
@@ -79,6 +84,10 @@ class CustomAuthController extends MoneyMatchController {
 				if(Auth::user()->show_welcome_popup	==	1) {
 					Session::put("show_welcome_popup","yes");
 					Session::put("welcome_message",$welcomeMessage);
+				}
+				if($profileStatus == 0){
+              return redirect('creator/profile');
+
 				}
 			}
              if($userType	==	USER_TYPE_INVESTOR) {
@@ -103,7 +112,7 @@ class CustomAuthController extends MoneyMatchController {
 				}
 			}
 			
-			return redirect()->intended($this->redirectPath());
+		return redirect()->intended($this->redirectPath());
         }else {  
 		
             return redirect($this->loginPath())
@@ -117,7 +126,8 @@ class CustomAuthController extends MoneyMatchController {
 	 * @return string
 	 */
 	protected function getFailedLoginMessage() {
-		return 'These credentials do not match our records.';
+		$error_message = Lang::get('login.error_message');
+		return $error_message;
 	}
 
 	/**

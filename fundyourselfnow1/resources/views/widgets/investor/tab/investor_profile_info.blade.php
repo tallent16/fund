@@ -114,7 +114,7 @@
 					<div class="row">
 					
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label  class="input-required">	{{ Lang::get('Nationality') }}</label>												
+							<label  class="input-required">	{{ Lang::get('Location by Country') }}</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3">							
@@ -155,7 +155,7 @@
 								value="{{$InvPrfMod->nric_number}}" 
 								class="form-control text-right required" >
 						</div>
-						<div class="col-xs-12 col-sm-5 col-lg-3">											
+						<!-- <div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="input-required">	{{ Lang::get('Estimated Yearly Income') }}</label>												
 						</div>
 											
@@ -168,10 +168,7 @@
 										decimal=2
 										
 										>								
-						</div>
-											
-					</div>						
-					<div class="row">		
+						</div> -->
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="input-required">	{{ Lang::get('Ethereum Address.') }}</label>												
 						</div>
@@ -183,9 +180,9 @@
 								value="{{$InvPrfMod->eth}}" 
 								class="form-control text-right required" >
 						</div>
-					
 											
 					</div>						
+											
 					
 					<hr>
 

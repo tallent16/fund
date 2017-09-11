@@ -36,7 +36,8 @@
                     <div class="reader" style="display: none;"></div>
                 </span>
         </li>
-
+        
+ 
                         <!-- <li class='dropdown new_tb'>
                         
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -66,6 +67,9 @@
 						</div>
 						<div aria-expanded="false" id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav">
+                             
+ <li role="presentation"><select id="language" name="locale"><option value="en" <?php if(config::get('app.locale') == 'en') { echo "selected"; }?>>english</option><option value="zh" <?php if(config::get('app.locale') == 'zh') { echo "selected"; }?>>Chinese</option></select></li>
+
 
 
 								    @if(Auth::check())

@@ -223,7 +223,7 @@ class InvestorProfileModel extends TranWrapper {
 			$gender 			= 	$postArray['gender'];
 		else
 			$gender 			= 	"";
-		$estimated_yearly_income		= 	$this->makeFloat($postArray['estimated_yearly_income']);
+		//$estimated_yearly_income		= 	$this->makeFloat($postArray['estimated_yearly_income']);
 		$acc_creation_date				=	$this->getDbDateFormat(date("d/m/Y"));
 		if(Auth::user()->usertype	==	USER_TYPE_INVESTOR) {
 			$current_user_id				=	$this->getCurrentuserID();
@@ -248,7 +248,7 @@ class InvestorProfileModel extends TranWrapper {
 									'nric_number'					=> ($nric_number!="")?$nric_number:null,
 									'nationality' 					=> ($nationality!="")?$nationality:null,
 									'gender' 						=> ($gender!="")?$gender:null,
-									'estimated_yearly_income' 		=> ($estimated_yearly_income!="")?$estimated_yearly_income:null,
+									//'estimated_yearly_income' 		=> ($estimated_yearly_income!="")?$estimated_yearly_income:null,
 									'eth' 						=> ($eth!="")?$eth:null,
 									);
 									

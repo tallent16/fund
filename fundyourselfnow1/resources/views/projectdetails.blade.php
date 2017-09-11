@@ -108,40 +108,24 @@
 
 
 						
-					<!-- <aside class="col-sm-4 project_right_side">
-						<h4 class="sidebar_title">Milestones</h4>
+				<aside class="col-sm-4 project_right_side">
+						
+						<!-- <h4 class="sidebar_title">Social Links</h4>
+						@if($all_links)
 						<div class="sidebar_box">
-						@if(!empty($BorModLoan->mileStoneArry))
-							<table cellspacing="0" cellpadding="0">
-                             <thead>
-                                     
-				
-									<tr>
-										<th>Date</th>
-										<th>Name</th>
-										<th>Release %</th>
-									</tr>
-								</thead>
-								<tbody>
-										@foreach($BorModLoan->mileStoneArry as $val)
-									<tr>
-										<td>{{$val['milestone_date']}}</td>
-										<td>{{$val['milestone_name']}}</td>
-										<td>{{$val['milestone_disbursed']}}</td>
+						<ul>
+						@foreach($all_links as $val)
+						
+							<li><a href="<?php echo $val->link; ?>" target="_blank">{{$val->name}}</a></li>
+                          @endforeach	 
+                        </ul>
+                        </div>	
+				 @else	<div class="row text-center"style="border:1px solid #ccc;padding:5px;">
+						No Links Found
+					</div>
+				@endif
 
-									</tr>
-									@if($val['milestone_date'] ==''  && $val['milestone_name']=='' && $val['milestone_disbursed'] =='')
-							<div class="row text-center">
-								No Milestones Found
-							</div>
-						@endif
-									
-					@endforeach
-				
-				@endif	
-								</tbody>
-							</table>
-						</div>
+			<div> </div> -->
 
 						<h4 class="sidebar_title">Rewards</h4>
 						@if($BorModLoan->reward_details)
