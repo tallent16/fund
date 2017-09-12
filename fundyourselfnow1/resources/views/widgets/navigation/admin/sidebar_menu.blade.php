@@ -203,6 +203,11 @@
 				@endpermission
 				@permission('view_organisation_type.admin.settings') 
 					<li>
+						<a href="{{ url ('admin/update/help_page') }}">{{ Lang::get('Help') }}</a>
+					</li>
+				@endpermission
+				@permission('view_organisation_type.admin.settings') 
+					<li>
 						<a href="{{ url ('admin/update/help_support') }}">{{ Lang::get('Help & Support') }}</a>
 					</li>
 				@endpermission

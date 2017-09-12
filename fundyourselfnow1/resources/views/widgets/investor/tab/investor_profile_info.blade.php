@@ -61,12 +61,15 @@
 							<input type="text" 
 									name="email" 
 									id="email" 
-									value="{{$InvPrfMod->email}}" 
+									value="<?php if(!empty($InvPrfMod->updated_email)){ echo $InvPrfMod->updated_email; } else{ echo $InvPrfMod->email; } ?>" 
 									onchange="checkEmail(this.value);"
 									class="form-control  required">
 							<label 	style="display: none;" 
 									class="control-label label_email_error" 
 									></label>
+							@if(!empty($InvPrfMod->updated_email))
+								<h5 class="text-danger" id="upd_email">This email is not varified.</h5>
+							@endif
 						</div>						
 					</div>
 					

@@ -362,7 +362,11 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$pre_start_date 			        =	$postArray['pre_start_date'];
 		$pre_start_date						= 	$this->getDbDateFormat($pre_start_date);
 		$crowd_duration 			    =	$postArray['crowd_duration'];
+		if(@$postArray['country']){
 		$countries 			        =	implode(",",$postArray['country']);
+	}else{
+	$countries = '';	
+	}
 		$crowd_start_date		        =	$postArray['crowd_start_date'];
 		if(@$postArray['contract_address']){
 		$contract_address 			    =	$postArray['contract_address'];

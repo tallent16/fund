@@ -52,6 +52,17 @@ class TranWrapper extends MoneyMatchModel {
 		$cnt 	= $this->dbFetchOne($sql);
 		return ($cnt == 0)?false:true;
 	}
+
+	public function CheckExistingUserUpdatedEmail($userEmail,$id) {
+		
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	users 
+					WHERE 	updated_email = '".$userEmail."' 
+					AND 	user_id <>".$id;
+				
+		$cnt 	= $this->dbFetchOne($sql);
+		return ($cnt == 0)?false:true;
+	}
 	
 	public function getUserName($userType, $userId) {
 		switch ($userType) {

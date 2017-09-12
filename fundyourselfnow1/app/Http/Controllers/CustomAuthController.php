@@ -85,9 +85,13 @@ class CustomAuthController extends MoneyMatchController {
 					Session::put("show_welcome_popup","yes");
 					Session::put("welcome_message",$welcomeMessage);
 				}
-				if($profileStatus == 0){
-              return redirect('creator/profile');
-
+				if(Auth::user()->login_status == 1) {
+					if($profileStatus == 0){
+              			return redirect('creator/profile');
+					}
+				} else {
+					DB::table('users')->where('user_id',$id)->update(['login_status' => '1']);
+					return redirect('page/help_page');
 				}
 			}
              if($userType	==	USER_TYPE_INVESTOR) {

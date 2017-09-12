@@ -19,7 +19,8 @@
    }else{
    $lang = 'en';
 
-   }  
+   }
+
      $validation = "js/validation/register_".$lang.".js"; 
    ?>
 <script src="{{ url($validation) }}" type="text/javascript"></script>	  

@@ -137,6 +137,7 @@ class InvestorProfileModel extends TranWrapper {
 											users.lastname,
 											users.username displayname,
 											users.email,
+											users.updated_email,
 											users.mobile,
 											users.user_id
 									FROM 	users
@@ -235,12 +236,18 @@ class InvestorProfileModel extends TranWrapper {
 			$date_of_birth				= 	$this->getDbDateFormat($date_of_birth);
 		$nric_number 					= 	$postArray['nric_number'];
 		
-		
+		if(Auth::user()->email	!=	$postArray['email']) {
+			$email = Auth::user()->email;
+			$updated_email	=	$postArray['email'];
+		} else {
+			$updated_email	= '';
+		}
 		
 		$dataUserArray 	= 	array(	'firstname' 					=> ($firstname!="")?$firstname:null,
 									'lastname'						=> ($lastname!="")?$lastname:null,
 									'username'						=> ($displayname!="")?$displayname:null,
 									'email'							=> $email,
+									'updated_email'					=> $updated_email,
 									'mobile' 						=> ($mobile!="")?$mobile:null);
 									
 									
@@ -431,9 +438,14 @@ class InvestorProfileModel extends TranWrapper {
 		}else{
 			$userEmail	=	$postArray['field_value'];
 			$id			=	$postArray['user_id'];
-			return	$this->CheckExistingUserEmail($userEmail,$id);
+			$res = $this->CheckExistingUserUpdatedEmail($userEmail,$id);
+			if($res){
+				return	$res;
+			}else{
+				return	$this->CheckExistingUserEmail($userEmail,$id);
+			}
 		}
-		return $investorBankId;
+		//return $investorBankId;
 	}
 	
 	

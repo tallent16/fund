@@ -74,19 +74,21 @@ $(document).ready(function (){
 	});
 	// date picker
 	$('#date_of_birth').datetimepicker({
+		format: 'dd/mm/yyyy',
 		startView: "decade",
-		endDate: '-18y',
+		endDate: '-12y',
+		minView: 'month',
+        autoclose: true
 	   
 		//autoclose: true,
 		//minView: 2, 
-		//format: 'dd/mm/yyyy'
 	});   
 	
 	$('#date_of_birth').datetimepicker({
 		"defaultDate":'09/07/1980'
 	});   
 
-	$("#form-profile").submit(function(e) {
+	$("#form-profile").submit(function(e){
 		
 		if($("#screen_mode").val()	==	"investor"){
 			var	email		=	$("#email").val();
@@ -228,7 +230,7 @@ function checkDisplayName(value) {
 	}
 }
 function checkEmail(value) {
-	
+
 	if((value!='')) {
 		if(!validateEmail(value)) {
 			$(".label_email_error").html("Invalid Email");
@@ -243,8 +245,10 @@ function checkEmail(value) {
 						'field_name':'email',
 						'field_value':value,
 						'type':'email'
-					},
+					},			
+					dataType: "json",
 			  success: function (data) {
+			  	//alert(data);
 				  if(data=='1') {
 					 $(".label_email_error").html("");
 					 $(".label_email_error").hide();
@@ -253,6 +257,7 @@ function checkEmail(value) {
 				  } else if(data=='2') {
 					 $(".label_email_error").html("Email "+ value +" already exists");
 					 $("#email").val("");
+					 $("#upd_email").hide();
 					 $(".label_email_error").show();
 					 $(".label_email_error").parent().addClass("has-error");
 				  }

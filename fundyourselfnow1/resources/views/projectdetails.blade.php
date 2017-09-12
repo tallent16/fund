@@ -154,7 +154,7 @@
 					</div>
 				@endif
 
-              </aside> -->
+              </aside> 
 				</div>
 			</div>
 		</section>
