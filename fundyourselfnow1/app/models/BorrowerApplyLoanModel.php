@@ -351,7 +351,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		//$fund_duration					= 	$postArray['fund_duration'];
 		$latitude						= 	$postArray['latitude'];
 		$longitude						= 	$postArray['longitude'];
-		$location_description			= 	$postArray['location_description'];
+		$location_description			= 	(!empty($postArray['location_description'])) ? $postArray['location_description'] : '';
 		$loan_video_url					= 	$postArray['project_video'];
 		$apply_amount		 			= 	$this->makeFloat($postArray['loan_amount']);
 		$numberoftokens		 			= 	$this->makeFloat($postArray['no_of_tokens']);
