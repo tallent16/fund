@@ -520,13 +520,13 @@ function calculateCostOfTokenFunc() {
 &nbsp;
 
 @if($BorModLoan->loan_id	==	"")
-	Create Projects
+	{{ Lang::get('borrower-applyloan.create_projects') }}
 @else 
-Edit Projects
+{{ Lang::get('borrower-applyloan.edit_project') }}
    @endif         
           </h3></div>
 		   <div class="col-xs-6 ">
-		  <h3><span class="label label-default status-label pull-right">New</span></h3>
+		  <h3><span class="label label-default status-label pull-right">{{ Lang::get('borrower-applyloan.new') }}</span></h3>
 		  </div>
                            
                             <!-- /.main-bar -->
@@ -549,7 +549,7 @@ Edit Projects
 			<div class="annoucement-msg-container">
 				<div class="alert alert-success annoucement-msg">
 					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					<h4>We are happy to help you to get project amount quickly.This process will take 10 mins to complete.</h4>	
+					<h4>{{ Lang::get('borrower-applyloan.long_text') }}</h4>	
 				</div>
 			</div>				
 		</div>
@@ -620,7 +620,7 @@ Edit Projects
 								class="btn verification-button"
 								{{$BorModLoan->viewStatus}}>
 							<i class="fa pull-right"></i>
-							Save
+								{{ Lang::get('borrower-applyloan.save') }}
 						</button>
 						@if($BorModLoan->loan_status	==	LOAN_STATUS_NEW)
 							@if(!$BorModLoan->completeLoanDetails)
@@ -629,7 +629,7 @@ Edit Projects
 										data-tab-id="company_info"
 										class="btn verification-button" >
 										<i class="fa pull-right"></i>
-										{{ Lang::get('Next') }}
+										{{ Lang::get('borrower-applyloan.next') }}
 								</button>
 							@endif		
 						@endif		
@@ -639,7 +639,7 @@ Edit Projects
 								id="submit_button"
 								{{$BorModLoan->viewStatus}}>
 							<i class="fa pull-right"></i>
-							{{ Lang::get('borrower-profile.submit_verification') }}
+							{{ Lang::get('borrower-applyloan.submit_varify') }}
 						</button>
 					@endif
 				</div>	
@@ -860,19 +860,19 @@ Edit Projects
 							 value="">									
 					<div class="select_outer">
 <select id="link_name_1" class="form-control select-width" name="link_row[name][]" style="widh:100%;">
-						<option value="">Please Select</option>
-						<option value="Website">Website</option>
-						<option value="Whitepaper">Whitepaper</option>
-						<option value="Blog">Blog</option>
-						<option value="Facebook">Facebook</option>
-						<option value="Twitter">Twitter</option>
-						<option value="LinkedIn">LinkedIn</option>
-						<option value="Slack">Slack</option>
-						<option value="Telegram">Telegram</option>
-						<option value="Github">Github</option>
-						<option value="Youtube">Youtube</option>
-						<option value="QQ">QQ</option>
-						<option value="Weibo">Weibo</option>
+                            <option value="">{{ Lang::get('borrower-applyloan.please_select')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Website')}}">{{ Lang::get('borrower-applyloan.Website')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Whitepaper')}}" >{{ Lang::get('borrower-applyloan.Whitepaper')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Blog')}}" >{{ Lang::get('borrower-applyloan.Blog')}}</option>
+						    <option value="{{ Lang::get('borrower-applyloan.Facebook')}}" >{{ Lang::get('borrower-applyloan.Twitter')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Facebook')}}" >{{ Lang::get('borrower-applyloan.Twitter')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.LinkedIn')}}" >{{ Lang::get('borrower-applyloan.LinkedIn')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Slack')}}" >{{ Lang::get('borrower-applyloan.Slack')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Telegram')}}">{{ Lang::get('borrower-applyloan.Telegram')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Github')}}">{{ Lang::get('borrower-applyloan.Github')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Youtube')}}">{{ Lang::get('borrower-applyloan.Youtube')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.QQ')}}" >{{ Lang::get('borrower-applyloan.QQ')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Weibo')}}" >{{ Lang::get('borrower-applyloan.Weibo')}}</option>
 					</select>
 					</div>	
 				</td>
@@ -1100,19 +1100,19 @@ Edit Projects
 							 value="">									
 					<div class="select_outer">
 <select id="link_name_1" class="form-control select-width" name="link_row[name][]" style="widh:100%;">
-						<option value="">Please Select</option>
-						<option value="Website">Website</option>
-						<option value="Whitepaper">Whitepaper</option>
-						<option value="Blog">Blog</option>
-						<option value="Facebook">Facebook</option>
-						<option value="Twitter">Twitter</option>
-						<option value="LinkedIn">LinkedIn</option>
-						<option value="Slack">Slack</option>
-						<option value="Telegram">Telegram</option>
-						<option value="Github">Github</option>
-						<option value="Youtube">Youtube</option>
-						<option value="QQ">QQ</option>
-						<option value="Weibo">Weibo</option>
+						<option value="">{{ Lang::get('borrower-applyloan.please_select')}}</option>
+						  <option value="{{ Lang::get('borrower-applyloan.Website')}}">{{ Lang::get('borrower-applyloan.Website')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Whitepaper')}}" >{{ Lang::get('borrower-applyloan.Whitepaper')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Blog')}}" >{{ Lang::get('borrower-applyloan.Blog')}}</option>
+						    <option value="{{ Lang::get('borrower-applyloan.Facebook')}}" >{{ Lang::get('borrower-applyloan.Twitter')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Facebook')}}" >{{ Lang::get('borrower-applyloan.Twitter')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.LinkedIn')}}" >{{ Lang::get('borrower-applyloan.LinkedIn')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Slack')}}" >{{ Lang::get('borrower-applyloan.Slack')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Telegram')}}">{{ Lang::get('borrower-applyloan.Telegram')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Github')}}">{{ Lang::get('borrower-applyloan.Github')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Youtube')}}">{{ Lang::get('borrower-applyloan.Youtube')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.QQ')}}" >{{ Lang::get('borrower-applyloan.QQ')}}</option>
+							<option value="{{ Lang::get('borrower-applyloan.Weibo')}}" >{{ Lang::get('borrower-applyloan.Weibo')}}</option>
 					</select>
 					</div>	
 				</td>

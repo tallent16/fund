@@ -48,7 +48,7 @@
 		<!--<div class="col-sm-12"> -->
 		<div class="col-sm-12 col-lg-3"> 														
 			<div class="form-group">	
-				<strong>F{{ Lang::get('borrower-transcationhistory.filter_transcations')}}</strong><br>	
+				<strong>{{ Lang::get('borrower-transcationhistory.filter_transcations')}}</strong><br>	
 				    {{ Form::select('transtype', $tranModel->tranTypeFilter, $tranModel->tranType,
                      ["class" => "selectpicker",
                      "filter_field" => "Yes"]) }} 
