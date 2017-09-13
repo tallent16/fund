@@ -226,6 +226,11 @@
 						<a href="{{ url ('admin/update/privacy_policy') }}">{{ Lang::get('Privacy Policy') }}</a>
 					</li>
 				@endpermission	
+				@permission('view_industries.admin.settings') 
+					<li>
+						<a href="{{ url ('admin/update/how_it_works') }}">{{ Lang::get('How It Works') }}</a>
+					</li>
+				@endpermission	
 				<!--@permission('view_general_message.admin.settings') 
 					<li>
 						<a href="{{ url ('admin/loandocrequired') }}">{{ Lang::get('Loan Documents Required') }}</a>

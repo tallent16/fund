@@ -114,6 +114,10 @@ class CustomAuthController extends MoneyMatchController {
 					Session::put("welcome_message",$welcomeMessage);
 					
 				}
+				if(Auth::user()->login_status == 0) {
+					DB::table('users')->where('user_id',$id)->update(['login_status' => '1']);
+					return redirect('page/help_page');
+				}
 			}
 			
 		return redirect()->intended($this->redirectPath());

@@ -191,7 +191,7 @@ $(document).ready(function (){
            $('.btn-default').css( 'border-color','#a94442');
           }
         
-    if ($('#form-register').valid() && pass == '1') {
+    if ($('#form-register').valid() && pass == '1' && $('#password').val()==$('#ConfirmPassword').val()) {
       $("#toc_information").modal();
       if($("input[name='Userrole']:checked").val()  ==  "Investor") {
         $("#toc_messageblock").html(systemSettings['toc_investor']);
@@ -304,7 +304,7 @@ $(document).ready(function (){
                    
                 },
                 'ConfirmPassword': {
-                    required: true
+                    required: true,
                     //equalTo: '#password',
                     //minlength: 5
                 },

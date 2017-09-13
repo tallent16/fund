@@ -56,7 +56,7 @@
 				<div class="row">		
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label class="input-required">
-							{{ Lang::get('Project Category') }}
+							{{ Lang::get('borrower-applyloan.project_cat') }}
 						</label>
 					</div>	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="purpose_singleline_parent">															   
@@ -69,7 +69,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="input-required">
-								{{ Lang::get('Project Title') }}
+								{{ Lang::get('borrower-applyloan.project_title') }}
 							</label>												
 					</div>																
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="loan_title_parent">													
@@ -83,7 +83,7 @@
 				<div class="row">		
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label class="input-required">
-							{{ Lang::get('Project Ref Number') }}
+						{{ Lang::get('borrower-applyloan.project_ref') }}
 						</label>
 					</div>	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="project_ref_num_parent">
@@ -95,7 +95,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Funding Goal ETH') }}
+							{{ Lang::get('borrower-applyloan.funsing_goal') }}
 						</label>												
 					</div>													
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="loan_amount_parent">													
@@ -112,7 +112,7 @@
 				<div class="row">		
 					<div class="col-xs-12 col-sm-5 col-lg-3">
 						<label class="input-required">
-							{{ Lang::get('No of Tokens') }}
+							{{ Lang::get('borrower-applyloan.no_of_token') }}
 						</label>
 					</div>	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id=no_of_tokens_parent">
@@ -125,7 +125,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Cost Per Token') }}
+							{{ Lang::get('borrower-applyloan.cost_per_token') }}
 						</label>												
 					</div>													
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="cost_per_token_parent">													
@@ -146,7 +146,7 @@
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('borrower-applyloan.accept_partial_sub') }}
+							{{ Lang::get('borrower-applyloan.partial_subsciption') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="payment_type_parent">	<label class="radio-inline">
@@ -167,7 +167,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('borrower-applyloan.minimum_limit') }}
+							{{ Lang::get('borrower-applyloan.mini_subscription') }}
 						</label>												
 					</div>																
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="min_for_partial_sub_parent">														 
@@ -184,7 +184,7 @@
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Pre-Sale (No of Days)') }}
+							{{ Lang::get('borrower-applyloan.pre_sale_days') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="pre_duration_parent">	
@@ -198,7 +198,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Pre-Sale Starting Date') }}
+							{{ Lang::get('borrower-applyloan.pre_sale_start') }}
 						</label>												
 					</div>																
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="pre_start_date_parent">	
@@ -223,7 +223,7 @@
                <div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Crowd-Sale (No of Days)') }}
+							{{ Lang::get('borrower-applyloan.crowd_sale_days') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="crowd_duration_parent">	
@@ -237,7 +237,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Crowd-Sale Starting Date') }}
+							{{ Lang::get('borrower-applyloan.crowd_sale_date') }}
 						</label>												
 					</div>																
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="fund_start_date_parent">	
@@ -263,7 +263,7 @@
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Smart Contract Address') }}
+							{{ Lang::get('borrower-applyloan.Contract_adddress') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="contract_address_parent">			
@@ -277,7 +277,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Wallet Address') }}
+							{{ Lang::get('borrower-applyloan.wallet_address') }}
 						</label>												
 					</div>																
 				<div class="col-xs-12 col-sm-7 col-lg-3" id="wallet_address_parent">		
@@ -297,7 +297,7 @@
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Smart Contract Address') }}
+							{{ Lang::get('borrower-applyloan.Contract_adddress') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="contract_address_parent">			
@@ -311,7 +311,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Wallet Address') }}
+							{{ Lang::get('borrower-applyloan.wallet_address') }}
 						</label>												
 					</div>																
 				<div class="col-xs-12 col-sm-7 col-lg-3" id="token_address_parent">		
@@ -331,7 +331,7 @@
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('ETH Balance') }}
+							{{ Lang::get('borrower-applyloan.eth_bal') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="contract_address_parent">			
@@ -344,7 +344,7 @@
 					</div>	
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label>
-							{{ Lang::get(' KYC verification') }}
+							{{ Lang::get('borrower-applyloan.kyc_varification') }}
 						</label>												
 					</div>																
 				<div class="col-xs-12 col-sm-7 col-lg-3" id="Kyc">		
@@ -360,7 +360,7 @@
 
 <div class="row">	
 <?php //echo '<pre>'; print_r($BorModLoan);die; 
-	if($BorModLoan->countries!=''){
+	if(!empty($BorModLoan->countries) && $BorModLoan->countries!=''){
 		$cechecked = "checked";
 	$selectedcountries = explode(",",$BorModLoan->countries);
 	}else{
@@ -372,7 +372,7 @@
 					
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label>
-							{{ Lang::get(' Country Restriction') }}
+							{{ Lang::get('borrower-applyloan.country_restriction') }}
 						</label>												
 					</div>																
 				<div class="col-xs-12 col-sm-7 col-lg-3" id="Kyc">		
@@ -385,15 +385,17 @@
 				<div id="restricted_countries" >
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label>
-							{{ Lang::get(' Restricted Countries') }}
+							{{ Lang::get('borrower-applyloan.resticted_country') }}
 						</label>												
 					</div>  
 					
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="countries">	
 				<select class="form-control select-width" multiple="multiple" name="country[]" id="country_name" style="widh:100%;">
+														@if(!empty($countries))
 														@foreach($countries as $key=>$country)
 														<option value="{{$country->id}}" <?php if (in_array($country->id,$selectedcountries)) { echo 'selected'; }?>>{{$country->name}}</option>
-														@endforeach					
+														@endforeach
+														@endif					
 													</select>
 													</div>
 													</div>
@@ -406,7 +408,7 @@
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('ETH Balance') }}
+								{{ Lang::get('borrower-applyloan.eth_bal') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="contract_address_parent">			
@@ -419,7 +421,7 @@
 					</div>	
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label>
-							{{ Lang::get(' KYC verification') }}
+							{{ Lang::get('borrower-applyloan.kyc_varification') }}
 						</label>												
 					</div>																
 				<div class="col-xs-12 col-sm-7 col-lg-3" id="Kyc">		
@@ -441,7 +443,7 @@
 		<div class="row">
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
 						<label>
-							<b>{{ Lang::get('Social Links') }}:</b>
+							<b>{{ Lang::get('borrower-applyloan.social_links') }}:</b>
 						</label>												
 					</div>	
 					
@@ -454,9 +456,9 @@
 							<table id="links-table" class="table" style="margin-bottom: 10px;">
 								<thead>
 									<tr >
-										<th class="tab-head text-left" width="25%">{{ Lang::get('Type')}}</th>
-										<th class="tab-head text-left"  width="25%">{{ Lang::get('Link') }}</th>
-										<th class="tab-head text-left"  width="50%">Action</th>
+										<th class="tab-head text-left" width="25%">{{ Lang::get('borrower-applyloan.type')}}</th>
+										<th class="tab-head text-left"  width="25%">{{ Lang::get('borrower-applyloan.link') }}</th>
+										<th class="tab-head text-left"  width="50%">{{ Lang::get('borrower-applyloan.action') }}</th>
 										<!-- <th class="tab-head text-right"  width="20%">{{ Lang::get('% of Disbursal') }}</th>
 										@if($applyLoanTab	==	"")
 											<th class="tab-head text-center"  width="20%">Action</th>
@@ -476,19 +478,19 @@
 											 value="{{$key}}">	
 												 <div class="select_outer">						
 													<select class="form-control select-width" name="link_row[name][]" id="link_name_{{$n}}" style="widh:100%;">
-														<option value="">Please Select</option>
-														<option value="Website" <?php if($linkRow['name']=='Website'){ echo 'selected'; }?>>Website</option>
-														<option value="Whitepaper" <?php if($linkRow['name']=='Whitepaper'){ echo 'selected'; }?>>Whitepaper</option>
-														<option value="Blog" <?php if($linkRow['name']=='Blog'){ echo 'selected'; }?>>Blog</option>
-														<option value="Facebook" <?php if($linkRow['name']=='Facebook'){ echo 'selected'; }?>>Facebook</option>
-														<option value="Twitter" <?php if($linkRow['name']=='Twitter'){ echo 'selected'; }?>>Twitter</option>
-														<option value="LinkedIn" <?php if($linkRow['name']=='LinkedIn'){ echo 'selected'; }?>>LinkedIn</option>
-														<option value="Slack" <?php if($linkRow['name']=='Slack'){ echo 'selected'; }?>>Slack</option>
-														<option value="Telegram" <?php if($linkRow['name']=='Telegram'){ echo 'selected'; }?>>Telegram</option>
-														<option value="Github" <?php if($linkRow['name']=='Github'){ echo 'selected'; }?>>Github</option>
-														<option value="Youtube" <?php if($linkRow['name']=='Youtube'){ echo 'selected'; }?>>Youtube</option>
-														<option value="QQ" <?php if($linkRow['name']=='QQ'){ echo 'selected'; }?>>QQ</option>
-														<option value="Weibo" <?php if($linkRow['name']=='Weibo'){ echo 'selected'; }?>>Weibo</option>
+														<option value="">{{ Lang::get('borrower-applyloan.please_select')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Website')}}" <?php if($linkRow['name']=='Website'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Website')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Whitepaper')}}" <?php if($linkRow['name']=='Whitepaper'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Whitepaper')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Blog')}}" <?php if($linkRow['name']=='Blog'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Blog')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Facebook')}}" <?php if($linkRow['name']=='Facebook'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Twitter')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Facebook')}}" <?php if($linkRow['name']=='Twitter'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Twitter')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.LinkedIn')}}" <?php if($linkRow['name']=='LinkedIn'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.LinkedIn')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Slack')}}" <?php if($linkRow['name']=='Slack'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Slack')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Telegram')}}" <?php if($linkRow['name']=='Telegram'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Telegram')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Github')}}" <?php if($linkRow['name']=='Github'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Github')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Youtube')}}" <?php if($linkRow['name']=='Youtube'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Youtube')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.QQ')}}" <?php if($linkRow['name']=='QQ'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.QQ')}}</option>
+														<option value="{{ Lang::get('borrower-applyloan.Weibo')}}" <?php if($linkRow['name']=='Weibo'){ echo 'selected'; }?>>{{ Lang::get('borrower-applyloan.Weibo')}}</option>
 													</select>
 												</div>
 											</td>
@@ -531,7 +533,7 @@
 								onclick="addNewSocialLinkRow()"
 					style="margin-left:7px;">
 								<i class="fa pull-right"></i>
-								{{ Lang::get('Add Social Link') }}
+								{{ Lang::get('borrower-applyloan.add_link') }}
 							</button>	
 					</div>	
 				</div>
@@ -713,7 +715,7 @@
 						<div class="col-xs-12 col-sm-12 col-lg-12">	
 							<div class="gray_bg">										
 								<label>
-									{{ Lang::get('Project Location') }}:
+									{{ Lang::get('borrower-applyloan.project_location') }}
 								</label>
 							</div>											
 						</div>	
@@ -723,7 +725,7 @@
 					<div class="row">						
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label>
-								{{ Lang::get('Location Description') }}
+								{{ Lang::get('borrower-applyloan.location_description') }}
 							</label>												
 						</div>																	
 						<div class="col-xs-12 col-sm-7 col-lg-6">	
@@ -747,7 +749,7 @@
 											
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label>
-								{{ Lang::get('Latitude') }}
+								{{ Lang::get('borrower-applyloan.Latitude') }}
 							</label>												
 						</div>																	
 						<div class="col-xs-12 col-sm-7 col-lg-3">	
@@ -762,7 +764,7 @@
 						
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label>
-								{{ Lang::get('Longitude') }}
+								{{ Lang::get('borrower-applyloan.Longitude') }}
 							</label>												
 						</div>																
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="min_for_partial_sub_parent">														 
@@ -781,7 +783,7 @@
 				<div class="row">						
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label class="input-required">
-							{{ Lang::get('Project Image') }}
+							{{ Lang::get('borrower-applyloan.project_image') }}
 						</label>												
 					</div>																	
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="project_image_parent">	
@@ -809,7 +811,7 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-5 col-lg-3">											
 						<label>
-							{{ Lang::get('Project Video') }}
+							{{ Lang::get('borrower-applyloan.project_video') }}
 						</label>												
 					</div>																
 					<div class="col-xs-12 col-sm-7 col-lg-3">	
@@ -820,14 +822,14 @@
 								name="project_video"
 								value="{{ $BorModLoan->loan_video_url }}"
 								/>	
-						<span>Video URL? <small class="text-muted">(YouTube, Vimeo, Vine, Instagram, DailyMotion or Youku)</small></span>
+						<span>{{ Lang::get('borrower-applyloan.video_url') }} <small class="text-muted">{{ Lang::get('borrower-applyloan.url_type') }}</small></span>
 					</div>					
 				</div>
 				<!-- ------------------------------row 12--------------------------------- -->	
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
 						<label>
-							<b>{{ Lang::get('Description of the project') }}:</b>
+							<b>{{ Lang::get('borrower-applyloan.project_description') }}:</b>
 						</label>												
 					</div>	
 				</div>

@@ -93,7 +93,8 @@
 				
 				<div class="col-xs-12 col-sm-5 col-lg-3">											
 					<label class="input-required">
-						{{ Lang::get('Mailing Address') }}
+					{{ Lang::get('borrower-profile.mailing_address') }}
+						
 					</label>												
 				</div>									
 				<div class="col-xs-12 col-sm-7 col-lg-3"  id="mailing_address_parent">													

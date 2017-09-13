@@ -17,10 +17,10 @@
 				<aside class="col-md-4 col-sm-6 col-xs-8 explore_area">
 					<ul>
 					@var $exploreurl = "/categories/" 
-						<li>	<a href="{{url('categories')}}"><img src="{{ url('assets/images/bulb.png') }}" alt="" /></i> Explore
+						<li>	<a href="{{url('categories')}}"><img src="{{ url('assets/images/bulb.png') }}" alt="" /></i>{{ Lang::get('menu.explore') }} 
 			</a></li>
 						<li class="web_search">
-							<input type="text" class="form-control" value="" placeholder="Search.." />
+							<input type="text" class="form-control" value="" placeholder="{{ Lang::get('menu.search') }}" />
 							<i class="fa fa-search" aria-hidden="true"></i>
 						</li>
 						<li class="mobile_search">
@@ -31,12 +31,11 @@
                 <span class="notificationCount1 label" id="notificationCount" style="display: none;"></span>
                 <span class="hidden notifyList">
                     <div class="collection">
-                        <center id="empty">All Notifications Caught!</center>
+                        <center id="empty">{{ Lang::get('menu.all_notification') }}</center>
                     </div>
                     <div class="reader" style="display: none;"></div>
                 </span>
         </li>
-        
  
                         <!-- <li class='dropdown new_tb'>
                         
@@ -67,8 +66,17 @@
 						</div>
 						<div aria-expanded="false" id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav">
-                             
- <li role="presentation"><select id="language" name="locale"><option value="en" <?php if(config::get('app.locale') == 'en') { echo "selected"; }?>>english</option><option value="zh" <?php if(config::get('app.locale') == 'zh') { echo "selected"; }?>>Chinese</option></select></li>
+                             <?php  
+     if(config::get('app.locale') != ''){
+         $lang = config::get('app.locale');
+
+   }else{
+   $lang = 'en';
+
+   }
+
+   ?>
+ <li role="presentation"><select id="language" name="locale"><option value="en" <?php if( $lang == 'en') { echo "selected"; }?>>English</option><option value="zh" <?php if( $lang == 'zh') { echo "selected"; }?>>Chinese</option></select></li>
 
 
 
@@ -173,57 +181,57 @@
 
 <!--<a href="{{url($manage)}}"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>-->
 <ul class="dropdown-menu" aria-labelledby="dLabel">
-										   <li><a href="{{url($manage)}}"><i class="fa fa-tachometer" aria-hidden="true"></i>Dashboard</a></li>
+										   <li><a href="{{url($manage)}}"><i class="fa fa-tachometer" aria-hidden="true"></i>{{ Lang::get('menu.dashboard') }}</a></li>
                                     @if(Auth::user()->usertype == USER_TYPE_BORROWER)
-                                      <li><a href="{{ url ('creator/profile') }}"><i class="fa fa-user fa-fw"></i>{{     
-                                Lang::get('borrower-leftmenu.user_profile') }}</a>
+                                      <li><a href="{{ url ('creator/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('menu.user_profile') }}</a>
                         </li>
-                        <li><a href="{{ $loanSummaryUrl }}"><i class="fa fa-list-ul fa-fw"></i>Project Summary</a></li>
+                        <li><a href="{{ $loanSummaryUrl }}"><i class="fa fa-list-ul fa-fw"></i>{{ Lang::get('menu.project_summary') }}</a></li>
                         @elseif(Auth::user()->usertype == USER_TYPE_INVESTOR)
-                        <li><a href="{{ url ('backer/profile') }}"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="{{ url ('backer/profile') }}"><i class="fa fa-user fa-fw"></i>{{ Lang::get('menu.user_profile') }}</a>
                         </li>
                             <li>
-            <a href="{{ url ('backer/marketplace') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('borrower-leftmenu.marketplace') }}</a>
+            <a href="{{ url ('backer/marketplace') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('menu.marketplace') }}</a>
         </li>
 
                         @else
                         
                         @endif
                          @if(Auth::user()->usertype == USER_TYPE_ADMIN)
-                        <li><a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>{{ Lang::get('borrower-leftmenu.settings') }}</a>
+                        <li><a href="{{ url ('admin/settings') }}"><i class="fa fa-cogs fa-fw"></i>Setting</a>
                         </li>
                         @endif
 
 
                                              @if(Auth::user()->usertype == USER_TYPE_BORROWER)
-                                            <li><a href="{{$walletUrl}}" target="_blank"><i class="fa fa-google-wallet fa-fw"></i>Wallet</a></li>
+                                            <li><a href="{{$walletUrl}}" target="_blank"><i class="fa fa-google-wallet fa-fw"></i>{{ Lang::get('menu.wallet') }}</a></li>
                                                @endif
                                                     @if(Auth::user()->usertype == USER_TYPE_INVESTOR)
-										  <li><a href="https://www.myetherwallet.com/" target="_blank"><i class="fa fa-google-wallet fa-fw"></i>Wallet</a>
+										  <li><a href="https://www.myetherwallet.com/" target="_blank"><i class="fa fa-google-wallet fa-fw"></i>{{ Lang::get('menu.wallet') }}</a>
                                           </li>
                                           @if($eth)
-  <li><a href="{{ url ('backer/transaction') }}" target="_blank"><i class="fa fa-clock-o" aria-hidden="true"></i>Transaction History </a></li> 
+  <li>
+  <a href="{{ url ('backer/transaction') }}" target="_blank"><i class="fa fa-clock-o" aria-hidden="true"></i>{{ Lang::get('menu.transaction_history') }} </a></li> 
   @endif
                                                @endif
-                                                <li><a href="{{ url ('auth/logout') }}"><i class="fa fa-external-link fa-fw"></i>Logout</a></li>
+                                                <li><a href="{{ url ('auth/logout') }}"><i class="fa fa-external-link fa-fw"></i>{{ Lang::get('menu.logout') }}</a></li>
 									</ul> 
 									</li> 
                                        @if(Auth::user()->usertype != USER_TYPE_ADMIN)
     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-file-image-o fa-fw"></i> Projects <b class="caret"></b>
+                                            <i class="fa fa-file-image-o fa-fw"></i> {{ Lang::get('menu.projects') }} <b class="caret"></b>
                                         </a>
 
                                         <ul class="dropdown-menu">
                                          @if(Auth::user()->usertype == USER_TYPE_BORROWER)
-                                            <li><a  href="{{ $applyLoanUrl }}">Create Projects</a></li>
-                                            <li><a href="{{$reqHelpUrl}}">Request Help</a></li>
-                                            <li><a href="{{$rewdHelpUrl}}">Reward Helpers</a></li>
-                                            <li><a href="{{ $myLoanInfoUrl }}">My Projects</a></li>
+                                            <li><a  href="{{ $applyLoanUrl }}"> {{ Lang::get('menu.create_projects') }}</a></li>
+                                            <li><a href="{{$reqHelpUrl}}">{{ Lang::get('menu.request_help') }}</a></li>
+                                            <li><a href="{{$rewdHelpUrl}}">{{ Lang::get('menu.reward_help') }}</a></li>
+                                            <li><a href="{{ $myLoanInfoUrl }}">{{ Lang::get('menu.my_projrcts') }}</a></li>
                                              @endif
                                               @if(Auth::user()->usertype == USER_TYPE_INVESTOR)
-                                            <li>    <a href="{{ url ('/projectlisting') }}">{{ Lang::get('Project Listing') }}</a> </li>       
-                                            <li><a href="{{ url ('backer/myprojects') }}">{{ Lang::get('My Projects') }}</a> </li>
+                                            <li>    <a href="{{ url ('/projectlisting') }}">{{ Lang::get('menu.projectlisting') }}</a> </li>       
+                                            <li><a href="{{ url ('backer/myprojects') }}">{{ Lang::get('menu.my_projrcts') }}</a> </li>
                                          
                                              @endif
 
@@ -236,7 +244,7 @@
                 <span class="notificationCount1 label" id="notificationCount" style="display: none;"></span>
                 <span class="hidden notifyList">
                     <div class="collection">
-                        <center id="empty">All Notifications Caught!</center>
+                        <center id="empty">{{ Lang::get('menu.all_notification') }}</center>
                     </div>
                     <div class="reader" style="display: none;"></div>
                 </span>
@@ -255,12 +263,12 @@
                                     </li> -->
                                		
 				@else
-						<li role="presentation"><a href="{{url('project_calander')}}">Project Calendar</a></li>		
-						<li role="presentation"><a href="{{ url ('auth/login') }}">Login</a></li>
+						<li role="presentation"><a href="{{url('project_calander')}}">{{ Lang::get('menu.project_calander') }}</a></li>		
+						<li role="presentation"><a href="{{ url ('auth/login') }}">{{ Lang::get('menu.login') }}</a></li>
 
-								<li role="presentation"><a href="{{ url ('register') }}">Signup</a></li>   
+								<li role="presentation"><a href="{{ url ('register') }}">{{ Lang::get('menu.signup') }}</a></li>   
 								 
-				<li role="presentation"><a href="{{ url ('auth/login') }}" class="orange_btn animated_slow">Start a Project</a></li>	 								
+				<li role="presentation"><a href="{{ url ('auth/login') }}" class="orange_btn animated_slow">{{ Lang::get('menu.start_project') }}</a></li>	 								
   @endif				  
 							</ul>
 						</div>
