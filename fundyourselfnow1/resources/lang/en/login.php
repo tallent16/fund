@@ -13,14 +13,19 @@ return [
 	|
 	*/
 
-	'sign_in'		 => 'Sign In',
-	'next'   		 => 'Next &raquo;',
-	'login'     	 => 'Login',
-	'back2register'	 => 'Back to Register',	
-	'pleasesignin'   => 'Please Sign In',	
-	'Whoopsmsg'    	 => 'There were some problems with your input.',	
-	'Whoops'    	 => 'Whoops',	
-	'email'    		 => 'Email',	
-	'password'   	 => 'Password',	
-	'remember'    	 => 'Remember Me',	
+	'sign_in'		 => "Sign In",
+	'next'   		 =>   "Next &raquo;",
+	'login'     	 =>  "Login",
+	'back2register'	 => "Back to Register",
+	'pleasesignin'   => "Please Sign In",	
+	'Whoopsmsg'    	 => "There were some problems with your input.",
+	'Whoops'    	 => "Whoops",
+	'email'    		 =>  "Email",
+	'password'   	 => "Password",
+	'remember'    	 => "Remember Me",
+	'email_place'	 =>  "Email or Username",
+	'forgot_password' => "Forgot or Change Password?",
+	'sign_up_page'    =>"Don't have an account! Sign Up Here",
+	"error_message"   =>"These credentials do not match our records."
+
 ];
