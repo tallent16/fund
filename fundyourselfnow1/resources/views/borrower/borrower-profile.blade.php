@@ -564,11 +564,11 @@
     </div><!-- /#wrapper -->
      
 	 
-	<script>var baseUrl	=	"http://52.74.139.176/fundslive/"</script> 
+	<script>var baseUrl	=	"{{ url('/') }}"</script> 
  
 		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
 	<script>
-		var baseUrl	=	"http://52.74.139.176/fundslive/"
+		var baseUrl	=	"{{ url('/') }}"
 		$(document).ready(function(){ 	
 			$(".jfilestyle").jfilestyle({buttonText: "Upload",buttonBefore: true,inputSize: '110px'});  // file upload  
 			$('#company_profile').summernote({height:300});

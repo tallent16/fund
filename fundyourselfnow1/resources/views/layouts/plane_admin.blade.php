@@ -34,7 +34,7 @@
 <script src="{{ url('js/selectpicker/bootstrap-select.js') }}" type="text/javascript"></script>	
 <script>
 
-var baseUrl = "http://52.74.139.176/fundslive/";
+var baseUrl = "{{ url('/') }}";
 
 	$(document).ready(function (){  
 		 $('[data-toggle="tooltip"]').tooltip();

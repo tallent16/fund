@@ -71,7 +71,7 @@ var usertype = "<?php echo Auth::user()->usertype ?>";
 
 <script>
 
-var baseUrl = "http://52.74.139.176/fundslive/";
+var baseUrl = "{{ url('/') }}";
 
 	
 

@@ -360,7 +360,7 @@
 
 <div class="row">	
 <?php //echo '<pre>'; print_r($BorModLoan);die; 
-	if($BorModLoan->countries!=''){
+	if(!empty($BorModLoan->countries) && $BorModLoan->countries!=''){
 		$cechecked = "checked";
 	$selectedcountries = explode(",",$BorModLoan->countries);
 	}else{
@@ -391,9 +391,11 @@
 					
 					<div class="col-xs-12 col-sm-7 col-lg-3" id="countries">	
 				<select class="form-control select-width" multiple="multiple" name="country[]" id="country_name" style="widh:100%;">
+														@if(!empty($countries))
 														@foreach($countries as $key=>$country)
 														<option value="{{$country->id}}" <?php if (in_array($country->id,$selectedcountries)) { echo 'selected'; }?>>{{$country->name}}</option>
-														@endforeach					
+														@endforeach
+														@endif					
 													</select>
 													</div>
 													</div>
