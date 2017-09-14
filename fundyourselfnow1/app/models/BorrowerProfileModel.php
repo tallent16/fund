@@ -378,9 +378,14 @@ class BorrowerProfileModel extends TranWrapper {
 			$fileUploadObj->createIfNotExists($imagePath);
 			
 			$company_image		=	$fileUploadObj->storeFile($imagePath ,$file,$prefix);
-			$updateDataArry		=	array(	"company_image"=>$company_image,
-											"company_image_thumbnail"=>$company_image
+			if(empty($postArray['company_thumbnail_hidden']) || empty(trim($postArray['company_thumbnail_hidden'])) ) {
+				$company_thumbnail		=	$fileUploadObj->storeFile($imagePath ,$file,"thumbnail_");
+				$updateDataArry		=	array(	"company_image"=>$company_image,
+											"company_image_thumbnail"=>$company_thumbnail
 											);
+			}
+				else
+					$updateDataArry["company_image"]	=	$company_image;
 			$updateAttachment	=	true;
 		}
 		if(isset($postArray['company_thumbnail']) && $postArray['company_thumbnail']!=''){

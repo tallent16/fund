@@ -230,7 +230,9 @@ class Filesystem implements FilesystemInterface
      */
     public function delete($path)
     {
+           
         $path = Util::normalizePath($path);
+       
         $this->assertPresent($path);
 
         return $this->getAdapter()->delete($path);
@@ -277,6 +279,7 @@ class Filesystem implements FilesystemInterface
      */
     public function getMimetype($path)
     {
+
         $path = Util::normalizePath($path);
         $this->assertPresent($path);
 
@@ -292,6 +295,7 @@ class Filesystem implements FilesystemInterface
      */
     public function getTimestamp($path)
     {
+
         $path = Util::normalizePath($path);
         $this->assertPresent($path);
 
@@ -381,6 +385,7 @@ class Filesystem implements FilesystemInterface
      */
     public function assertPresent($path)
     {
+
         if ($this->config->get('disable_asserts', false) === false && ! $this->has($path)) {
             throw new FileNotFoundException($path);
         }

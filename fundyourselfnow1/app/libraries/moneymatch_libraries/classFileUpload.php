@@ -14,6 +14,8 @@ class FileUpload {
 			$newfilename 			= 	$prefix.$newfilename;
 			$fullDestinationPath	=	$destinationPath."/".$newfilename;
 			$disk					=	Storage::disk('s3');
+			$cmd = "s3cmd put ./img/404.jpg s3://devfyn/".$fullDestinationPath." 2>&1";
+			$result = shell_exec($cmd);
 			$disk->put($fullDestinationPath,file_get_contents($file));
 			$disk->setVisibility($fullDestinationPath, 'public');
 		} else {
@@ -59,7 +61,11 @@ class FileUpload {
 		$s3BucketEnabled	=	Config::get("moneymatch_settings.s3_bucket_enabled");
 		if ($s3BucketEnabled) {
 			$disk					=	Storage::disk('s3');
-			$disk->delete($filePath);
+			$cmd = "s3cmd del s3://devfyn/".$filePath." 2>&1";
+			$result = shell_exec($cmd);
+			if(strpos($result, 'ERROR') !== false)
+				$disk->delete(trim($filePath));
+			return;
 		} else {
 			File::Delete($filePath);
 		}

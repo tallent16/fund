@@ -238,7 +238,7 @@
 					<input 	type="hidden" 
 								id="company_image_hidden"
 								name="company_image_hidden"
-								value="@if (isset($modelBorPrf->company_image) && strlen(trim($modelBorPrf->company_image)) > 0){{config('moneymatch_settings.image_url') }}{{$modelBorPrf->company_image}} @endif"
+								value="@if (isset($modelBorPrf->company_image) && strlen(trim($modelBorPrf->company_image)) > 0){{$modelBorPrf->company_image}} @endif"
 								/>		
 						@if($modelBorPrf->company_image!="")
 						<a 	href="{{config('moneymatch_settings.image_url') }}{{$modelBorPrf->company_image}}"  
