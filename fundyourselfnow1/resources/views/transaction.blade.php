@@ -93,18 +93,18 @@ function timeSince(date) {
 	<!-- start ico calendar area here -->
 	<section class="ico_calendar">
 		<div class="container">
-			<h3>Transaction History</h3>
+			<h3>{{Lang::get('backer_transaction.page_heading')}}</h3>
 			<div class="responsive-table">
 				<table width="100%" cellspacing="0" cellpadding="0" class="table_area">
 					<thead>
 						<tr>
-							<th width="10%" >TxHash</th>
-                <th width="10%">Age</th>
-							<th width="10%">Block</th>
-							<th width="15%">from</th>
-							<th width="15%">to</th>
-							<th width="15%">value</th>
-							<th width="15%">[TxFee]</th>
+							<th width="10%" >{{Lang::get('backer_transaction.TxHash')}}</th>
+                <th width="10%">{{Lang::get('backer_transaction.age')}}</th>
+							<th width="10%">{{Lang::get('backer_transaction.block')}}</th>
+							<th width="15%">{{Lang::get('backer_transaction.from')}}</th>
+							<th width="15%">{{Lang::get('backer_transaction.to')}}</th>
+							<th width="15%">{{Lang::get('backer_transaction.value')}}</th>
+							<th width="15%">{{Lang::get('backer_transaction.txfee')}}</th>
 						</tr>
 					</thead>
 					<tbody id="myTable"> 

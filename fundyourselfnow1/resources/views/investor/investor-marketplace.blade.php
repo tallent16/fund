@@ -41,7 +41,7 @@
             <header class="head">                   
             <!-- /.search-bar -->
                 <div class="main-bar">
-                	<h3><i class="fa fa-external-link fa-fw"></i>&nbsp; Marketplace</h3>
+                	<h3><i class="fa fa-external-link fa-fw"></i>&nbsp; {{Lang::get('marketplace.page_heading')}}</h3>
                 </div>
                 <!-- /.main-bar -->
             </header>
@@ -55,36 +55,36 @@
 		<div class="col-sm-12 space-around">
 <div class="annoucement-msg-container">
 		<div class="alert alert-success annoucement-msg">
-			<h4>Note: This is a sample page! We are working hard to develop this function in our future release</h4>	
+			<h4>{{Lang::get('marketplace.note')}}</h4>	
 		</div>
 	</div>
 
 <div class="top-statistics">
 	<div class="row">
 		<div class="col-md-2 col-sm-4 col-xs-6">
-			<h5>Market</h5>
+			<h5>{{Lang::get('marketplace.Market')}}</h5>
 			<p class="market-name">{{$tokens['MLN'][0]}}</p>
 		</div>
 		<div class="col-md-2 col-sm-4 col-xs-6">
-			<h5>Last price</h5>
+			<h5>{{Lang::get('marketplace.last_price')}}</h5>
 			<p  class="market-price">{{$tokens['MLN'][1]}}</p>
 		</div>
 		<div class="col-md-2 col-sm-4 col-xs-6 stat-volume">
-			<h5>Volume 24-hours</h5>
+			<h5>{{Lang::get('marketplace.volume')}}</h5>
 			<p class="text-nowrap">
 				<span class="market-volume">{{ str_replace(" BTC","",$tokens['MLN'][2])}}</span>
 			<span class="volume-currency">BTC</span></p>
 		</div>
 		<div class="col-md-2 col-sm-4 col-xs-6 stat-highest">
-			<h5>Highest 24-hours</h5>
+			<h5>{{Lang::get('marketplace.highest_hr')}}</h5>
 			<p  class="market-highest-24">{{$tokens['MLN'][3]}}</p>
 		</div>
 		<div class="col-md-2 col-sm-4 col-xs-6 stat-lowest">
-			<h5>Lowest 24-hours</h5>
+			<h5>{{Lang::get('marketplace.lowest')}}</h5>
 			<p  class="market-lowest-24">{{$tokens['MLN'][4]}}</p>
 		</div>
 		<div class="col-md-2 col-sm-4 col-xs-6 stat-change">
-			<h5>Change 24-hours</h5>
+			<h5>{{Lang::get('marketplace.change')}}</h5>
 			<p   class="market-change-24 market_change_negative">{{$tokens['MLN'][5]}}</p>
 		</div>
 	</div>
@@ -93,23 +93,23 @@
 <div class="col-sm-12 space-around" style="background-color:#fff;">
 	<div class="row">
 		<div class="col-md-4 col-xs-12 price-table">
-			<h3>Markets</h3>
+			<h3>{{Lang::get('marketplace.Markets')}}</h3>
 			<div class="table-responsive">
 			<table fixed-header="" style="z-index:999;position:relative;" class="table table-hover markets-table">
 				<thead style="display: block;">
 					<tr>
-						<th style="width: 102px;">Coin</th>
-						<th style="width: 101px;">Price</th>
+						<th style="width: 102px;">{{Lang::get('marketplace.Coin')}}</th>
+						<th style="width: 101px;">{{Lang::get('marketplace.Price')}}</th>
 						<th ng-click="marketFilter='Volume';marketFilterDirection ? marketFilterDirection = false : marketFilterDirection = true" class="market-filter market-volume" role="button" tabindex="0" style="width: 72px;">
 							<i ng-class="marketFilter == 'Change' || !marketFilterDirection ? 'hidden' : ''" aria-hidden="true" class="ion-chevron-down"></i>
 							<i ng-class="marketFilter == 'Change' || marketFilterDirection ? 'hidden' : ''" aria-hidden="true" class="ion-chevron-up hidden"></i>
-
-							Volume 
+              
+							{{Lang::get('marketplace.Volume')}}
 						</th>
 						<th ng-click="marketFilter='Change';marketFilterDirection ? marketFilterDirection = false : marketFilterDirection = true" class="market-filter market-change" role="button" tabindex="0" style="width: 70px;">
 							<i ng-class="marketFilter  == 'Volume' || !marketFilterDirection ? 'hidden' : ''" aria-hidden="true" class="ion-chevron-down hidden"></i>           
 							<i ng-class="marketFilter  == 'Volume' || marketFilterDirection  ? 'hidden' : ''" aria-hidden="true" class="ion-chevron-up hidden"></i>
-							<span>Change</span>
+							<span>{{Lang::get('marketplace.Change')}}</span>
 						</th>
 					</tr>
 				</thead>
@@ -126,7 +126,7 @@
 					</tr>
 					<tr class="market market-28" data-ng-click="setPair(ticker.PairId,$event)" data-ng-repeat="ticker in tickers | orderObjectBy: marketFilter :marketFilterDirection " role="button" tabindex="0" style=""
 					onclick="setMarketPlaceValues('TIME')">
-						<td style="width: 90px;">TIME
+						<td style="width: 90px;">{{Lang::get('marketplace.TIME')}}
 						</td>
 						<td style="width: 91px;">{{$tokens['TIME'][1]}}</td>
 						<td style="width: 62px;">{{ str_replace(" BTC","",$tokens['TIME'][2])}}</td>
@@ -165,33 +165,33 @@
 				</div>
 				<div class="offer">
 					<p>
-						<span class="offer-label">Lowest Ask</span>
+						<span class="offer-label">{{Lang::get('marketplace.lowest_ask')}}</span>
 						<span 	ng-click="lowestAskClick()" 
 								class="offer-value pointer lowest_ask" 
 								role="button" 
 								tabindex="0">{{$tokens['MLN'][6]}}</span> BTC
 					</p>
 					<p ng-click="setBuyMaxAmount()" role="button" tabindex="0">
-						<span class="offer-label">Max Amount</span>
+						<span class="offer-label">{{Lang::get('marketplace.max_ammount')}}</span>
 						<span class="offer-value pointer"> BTC</span>
 					</p>
 				</div>
 				
 				<form name="buyForm" class="uniform-form ng-pristine ng-valid" data-ng-submit="createOrder('buy')">
 					<div class="offer-group">
-						<label class="input-label textbox-price">Price</label>
+						<label class="input-label textbox-price">{{Lang::get('marketplace.Price')}}</label>
 						<input type="text" input-decimal-separator="8" ng-change="setBuyTotalOrAmount()" data-ng-model="BuyOrder.Price" name="price" class="form-control trade-input ng-pristine ng-untouched ng-valid ng-empty amount-align" decimal="2" aria-invalid="false"
 						id="buy_price_input">
 						<span class="input-currency textbox-currency">BTC</span>
 					</div>
 					<div class="offer-group">
-						<label class="input-label textbox-price">Amount</label>
+						<label class="input-label textbox-price">{{Lang::get('marketplace.Amount')}}</label>
 						<input type="text" input-decimal-separator="8" ng-change="setBuyTotal()" data-ng-model="BuyOrder.Amount" class="form-control trade-input ng-pristine ng-untouched ng-valid ng-empty amount-align" decimal="2" aria-invalid="false"
 						id="buy_amount_input">
 						<span class="input-currency textbox-currency current_token">MLN</span>
 					</div>
 					<div class="offer-group">
-						<label class="input-label">Total</label>
+						<label class="input-label">{{Lang::get('marketplace.total')}}</label>
 						<input type="text" input-decimal-separator="8" ng-change="setBuyAmount()" data-ng-model="BuyOrder.Total" 
 						class="form-control trade-input ng-pristine ng-untouched ng-valid ng-empty amount-align" 
 						decimal="2"
@@ -199,7 +199,7 @@
 						id="buy_total_input">
 						<span class="input-currency">BTC</span>
 					</div>
-					<button type="submit" class="button full-width" id="buy"><span>Buy</span>
+					<button type="submit" class="button full-width" id="buy"><span>{{Lang::get('marketplace.Buy')}}</span>
 						<div style="display:none" id="buyLoading" class="spinner">
 						  <div class="rect1"></div>
 						  <div class="rect2"></div>
@@ -209,7 +209,7 @@
 						</div>
 					</button>
 				</form>
-				<p>Service Fee 0.25% ( <span class="buy_fee">0.00000000</span> <span class="current_token">MLN</span>)</p>
+				<p>{{Lang::get('marketplace.service')}} 0.25% ( <span class="buy_fee">0.00000000</span> <span class="current_token">MLN</span>)</p>
 				<!---->
 			</div>
 			<div class="col-md-6 col-xs-6 offer-form">
@@ -221,34 +221,34 @@
 				</div>
 				<div class="offer">
 					<p>
-						<span class="offer-label">Highest Bid</span>
+						<span class="offer-label">{{Lang::get('marketplace.highest_bid')}}</span>
 						<span 	ng-click="higestBidClick()" 
 								class="offer-value pointer highest_bid" 
 								role="button" 
 								tabindex="0">{{$tokens['MLN'][7]}}</span> BTC
 					</p>
 					<p ng-click="SellOrder.Amount = BaseBalance.Value;setSellTotal()" role="button" tabindex="0">
-						<span class="offer-label">Max Amount</span>
+						<span class="offer-label">{{Lang::get('marketplace.max_ammount')}}</span>
 						<span class="offer-value pointer current_token"> MLN</span>
 					</p>
 				</div>
 				<form class="uniform-form ng-pristine ng-valid" data-ng-submit="createOrder('sell')">
 					<div class="offer-group">
-						<label class="input-label">Price</label>
+						<label class="input-label">{{Lang::get('marketplace.Price')}}</label>
 						<input type="text" input-decimal-separator="8" ng-change="setSellTotal()" data-ng-model="SellOrder.Price" class="form-control trade-input ng-pristine ng-untouched ng-valid ng-empty amount-align" decimal=2 aria-invalid="false" id="sell_price_input">
 						<span class="input-currency">BTC</span>
 					</div>
 					<div class="offer-group">
-						<label class="input-label">Amount</label>
+						<label class="input-label">{{Lang::get('marketplace.Amount')}}</label>
 						<input type="text" input-decimal-separator="8" ng-change="setSellTotal()" data-ng-model="SellOrder.Amount" class="form-control trade-input ng-pristine ng-untouched ng-valid ng-empty amount-align" decimal="2" aria-invalid="false" id="sell_amount_input">
 						<span class="input-currency current_token">MLN</span>
 					</div>
 					<div class="offer-group">
-						<label class="input-label">Total</label>
+						<label class="input-label">{{Lang::get('marketplace.total')}}</label>
 						<input type="text" input-decimal-separator="8" ng-change="setSellAmount()" data-ng-model="SellOrder.Total" class="form-control trade-input ng-pristine ng-untouched ng-valid ng-empty amount-align" decimal="2" aria-invalid="false" id="sell_total_input">
 						<span class="input-currency">BTC</span>
 					</div>
-					<button type="submit" class="button full-width" id="sell"><span>Sell</span>
+					<button type="submit" class="button full-width" id="sell"><span>{{Lang::get('marketplace.Sell')}}</span>
 					  <div style="display:none" id="sellLoading" class="spinner">
 						  <div class="rect1"></div>
 						  <div class="rect2"></div>
@@ -258,7 +258,7 @@
 						</div>
 					  </button>
 				</form>
-				<p>Service Fee 0.25% ( <span class="sell_fee">0.00000000</span> BTC)</p>
+				<p>{{Lang::get('marketplace.service')}} 0.25% ( <span class="sell_fee">0.00000000</span> BTC)</p>
 			</div>
 		</div>
 	</div>

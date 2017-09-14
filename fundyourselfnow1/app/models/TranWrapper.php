@@ -171,6 +171,16 @@ class TranWrapper extends MoneyMatchModel {
 		$cnt 	= $this->dbFetchOne($sql);
 		return ($cnt == 0)?false:true;
 	}
+
+	public function checkUpdateEmailToken($code) {
+		
+		$sql	= "	SELECT 	count(*) cnt 
+					FROM 	users 
+					WHERE 	updated_email_token = '".$code."'";
+				
+		$cnt 	= $this->dbFetchOne($sql);
+		return ($cnt == 0)?false:true;
+	}
 	
 	public function checkCodeStatus($code) {
 		
@@ -187,6 +197,21 @@ class TranWrapper extends MoneyMatchModel {
 	
 		$whereArry	=	array("activation" =>"{$code}");
 		$this->dbUpdate('users', array('status' => USER_STATUS_VERIFIED,'email_verified' => USER_EMAIL_VERIFIED), $whereArry);
+	}
+
+	public function updateEmail($code) {
+		$sql	= "	SELECT 	*  
+					FROM 	users 
+					WHERE 	updated_email_token = '".$code."'";
+		$user_data 	= 	$this->dbFetchAll($sql);
+		if($user_data){
+			$user_id = $user_data[0]->user_id;
+			$updatedEmail = $user_data[0]->updated_email;
+
+			$whereArry	=	array("user_id" =>"{$user_id}");
+			$this->dbUpdate('users', array('email' => $updatedEmail, 'updated_email' => '', 'updated_email_token' => ''), $whereArry);
+		}
+
 	}
 	 
 	public function getCurrentuserID() { 

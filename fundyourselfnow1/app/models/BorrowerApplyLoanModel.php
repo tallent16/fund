@@ -1056,7 +1056,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			
 			$milestone_name				= 	$milestoneRows['name'][$rowIndex];
 			$milestone_date				= 	$milestoneRows['date'][$rowIndex];
-			$milestone_disbursed		= 	$milestoneRows['disbursed'][$rowIndex];
+			//$milestone_disbursed		= 	$milestoneRows['disbursed'][$rowIndex];
 			if(!empty($milestone_name) && !empty($milestone_date) ) {
 				
 				
@@ -1066,7 +1066,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 								'milestone_name'	 		=> $milestone_name,
 								'milestone_date'	 		=> (!empty($milestone_date))?
 																	$this->getDbDateFormat($milestone_date):NULL,
-								'milestone_disbursed'	 	=> $milestone_disbursed
+								//'milestone_disbursed'	 	=> $milestone_disbursed
 								);		
 
 				if ($update) {
@@ -1156,7 +1156,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 			foreach($milestone_rs as $milestoneRow) {
 				$id			=	$milestoneRow->loan_milestone_id;
 				$name		=	$milestoneRow->milestone_name;
-				$disbursed	=	$milestoneRow->milestone_disbursed;
+				//$disbursed	=	$milestoneRow->milestone_disbursed;
 				if($milestoneRow->milestone_date	!=	"0000-00-00" && $milestoneRow->milestone_date!="") {
 					$date	=	date("d-m-Y",strtotime($milestoneRow->milestone_date));
 				}
@@ -1166,7 +1166,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 				$this->mileStoneArry[$id]	=	array(
 													"milestone_name"=>$name,
 													"milestone_date"=>$date,
-													"milestone_disbursed"=>$disbursed
+													//"milestone_disbursed"=>$disbursed
 												);
 			}
 		}else{
@@ -1205,7 +1205,7 @@ class BorrowerApplyLoanModel extends TranWrapper {
 		$this->mileStoneArry[0]	=	array(
 										"milestone_name"=>"",
 										"milestone_date"=>"",
-										"milestone_disbursed"=>""
+										//"milestone_disbursed"=>""
 										);
 	}
 

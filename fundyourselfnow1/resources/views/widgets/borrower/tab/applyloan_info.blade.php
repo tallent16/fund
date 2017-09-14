@@ -540,7 +540,7 @@
 				@endif
 
 	
-					<!--<div class="row">
+					<div class="row">
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
 						<label>
 							<b>{{ Lang::get('Project Milestones') }}:</b>
@@ -563,7 +563,7 @@
 									<tr >
 										<th class="tab-head text-left" width="20%">{{ Lang::get('Milestone Name')}}</th>
 										<th class="tab-head text-left"  width="20%">{{ Lang::get('Milestone Date') }}</th>
-										<th class="tab-head text-right"  width="20%">{{ Lang::get('% of Disbursal') }}</th>
+										<!-- <th class="tab-head text-right"  width="20%">{{ Lang::get('% of Disbursal') }}</th> -->
 										@if($applyLoanTab	==	"")
 											<th class="tab-head text-center"  width="20%">Action</th>
 										@endif
@@ -601,14 +601,16 @@
 													</div>													
 												</div>			
 											</td>
-											<td>
+											<?php /*
+											<!-- <td>
 												<input 	type="text" 
 														class="form-control select-width amount-align  text-right "
 														name="milstone_row[disbursed][]"
 														id="milstone_disbursed_{{$i}}"
 														decimal="0"
 														value="{{$mileRow['milestone_disbursed']}}" style="float: right;">	
-											</td>
+											</td> -->
+											*/ ?>
 											@if($applyLoanTab	==	"")
 												<td class="text-center">
 													@if($show_map	==	"yes")
@@ -631,7 +633,7 @@
 							</table>
 						</div>	
 					</div>	
-				</div> -->
+				</div> 
 <!--
 				<div id="milestone-container">
 					@var	$i	=1
@@ -695,7 +697,7 @@
 					@endforeach
 				</div>
 -->
-				<!-- @if($show_map	==	"yes")
+				 @if($show_map	==	"yes")
 					
 				<div class="row" id="add_milestone_row" {{$add_milestone_button}}>
 					<div class="col-xs-12 col-sm-12 col-lg-12">											
@@ -708,7 +710,7 @@
 							</button>	
 					</div>	
 				</div>
-				@endif -->
+				@endif 
 				<fieldset class="gllpLatlonPicker">
 						<!-- ------------------------------row 9--------------------------------- -->	
 					<div class="row">

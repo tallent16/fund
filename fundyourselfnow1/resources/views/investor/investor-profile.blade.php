@@ -30,6 +30,15 @@
 -->
 	<script>var	baseUrl	=	"{{url('')}}"</script>
 	<script src="{{ url('js/apply-loan.js') }}"></script>  
+	<script>
+    $(document).ready(function(){
+    	var choose = "{{ Lang::get('investor-profile.choose_file') }}"
+      $('.jfilestyle').find("label span").html(choose);
+
+    })
+
+
+	</script>
 
 @endsection
 @section('body')
@@ -147,7 +156,7 @@
 							<li class="active">
 								<a 	data-toggle="tab" 
 									href="#inv_profile_info">
-									{{ Lang::get('PROFILE INFO') }}
+									{{ Lang::get('investor-profile.profile_info') }}
 								</a>
 							</li>
 							<!--	@if(Auth::user()->username == "admin")-->
@@ -156,7 +165,7 @@
 								<li class="">
 									<a 	data-toggle="tab"
 										href="#comments_info">
-										{{ Lang::get('COMMENTS INFO') }}
+										{{ Lang::get('investor-profile.comments_info') }}
 									</a>
 								</li>
 							@endif
@@ -179,7 +188,7 @@
 						||	($InvPrfMod->status	==	INVESTOR_STATUS_SUBMITTED_FOR_APPROVAL) )
 					<div>
 						<p class="bg-warning">
-							If you need to change your profile information, please drop an email to admin@fundyourselfnow.com
+							{{ Lang::get('investor-profile.backer_profile_txt') }}
 						</p>
 					</div> 
 				@endif

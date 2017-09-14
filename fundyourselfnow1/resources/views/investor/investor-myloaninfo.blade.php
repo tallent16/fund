@@ -52,7 +52,7 @@
                                 <h3>
               <i class="fa fa-google-wallet" aria-hidden="true"></i>
 &nbsp;
-            My Projects
+          {{ Lang::get('borrower-myloans.my_project') }}
           </h3>
 		  </div>
                             </div>
@@ -79,7 +79,7 @@
 				<div class="panel panel-primary panel-container">
 					
 					<div class="panel-heading panel-headsection">					
-						{{ Lang::get('PROJECT INFO')}}
+						{{ Lang::get('borrower-myloans.PROJECT_INFO') }}
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
@@ -88,7 +88,7 @@
 								<div class="row">	
 									<div class="col-sm-12 col-lg-3"> 														
 										<div class="form-group"><br>	
-											<strong>{{ Lang::get('Project Status') }}</strong>							
+											<strong>{{ Lang::get('borrower-myloans.project_status') }}</strong>							
 											{{ 
 												Form::select('loanstatus_filter', 
 																$InvModMyLoanInfo->filterloanStatusList, 
@@ -133,10 +133,10 @@
 										<table class="table text-left loaninfo-table-label">		
 											<tbody>																								
 												<tr>
-													<td>{{ Lang::get('Project Reference')}}</td>														
+													<td>{{ Lang::get('borrower-myloans.pro_refrence') }}</td>																
 												</tr>
 												<tr>
-													<td>{{ Lang::get('Project Title')}}</td>												
+													<td>{{ Lang::get('borrower-myloans.project_title') }}</td>												
 												</tr>
 <!--
 												<tr>
@@ -159,7 +159,7 @@
 												</tr>
 -->
 												<tr>
-													<td>{{ Lang::get('Status')}}</td>												
+													<td>{{ Lang::get('borrower-myloans.Status') }}</td>											
 												</tr>	
 												<tr>
 													<td>

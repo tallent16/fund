@@ -55,7 +55,7 @@
                                 <h3>
               <i class="fa fa-tachometer" aria-hidden="true"></i>
 &nbsp;
-            Dashboard
+           {{Lang::get('backer-dashboard.dashboard')}}
           </h3>
                             </div>
                             <!-- /.main-bar -->
@@ -76,9 +76,9 @@
 								<div class="col-xs-8 col-lg-10">
 									<span class="pull-left">
 									@if( $InvDashMod->isFeaturedLoanInfo	==	"yes" )
-											{{Lang::get('FEATURED LOANS')}}
+											{{Lang::get('backer-dashboard.feature_project')}}
 										@else
-											{{Lang::get('AVAILABLE PROJECTS')}}
+											{{Lang::get('backer-dashboard.available_project')}}
 										@endif
 
 									</span> 
@@ -123,7 +123,7 @@
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
-											{{Lang::get('Amount Realised')}}
+											{{Lang::get('backer-dashboard.amount_realised')}}
 										</td> 
 										<td  id="cur_project_amount_realized">
 											@if(isset($invFeatureLoans[0]))
@@ -133,7 +133,7 @@
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
-											{{Lang::get('Close Date')}}
+											{{Lang::get('backer-dashboard.close_date')}}
 										</td> 
 										<td  id="cur_project_close_date">
 											 @if(isset($invFeatureLoans[0]))
@@ -143,7 +143,7 @@
 									</tr>
 									<tr>
 										<td class="tab-left-head" >
-											No of days to closure
+											{{Lang::get('backer-dashboard.no_of_days')}}
 										</td> 
 										<td  id="cur_project_noofdays">
 											 												20
