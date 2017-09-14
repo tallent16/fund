@@ -197,7 +197,7 @@
 							<li class="disabled" id="director_info_parent">
 								<a 	data-toggle="tab"
 									href="#director_info">
-									{{ Lang::get('TEAM INFO') }}
+									{{ Lang::get('borrower-profile.team_info') }}
 								</a>
 							</li>       
 							@if($canViewProfileInfoTab	==	"yes")	  
@@ -235,7 +235,7 @@
 								<li id="comments_info_parent">
 									<a 	data-toggle="tab"
 										href="#comments_info">
-										{{ Lang::get('COMMENTS') }}
+										{{ Lang::get('borrower-profile.comment') }}
 									</a>
 								</li>	
 							@endif
@@ -383,7 +383,7 @@
 				<tr>
 					<td class="col-md-3">
 						<label class="input-required">
-							{{ Lang::get('Name') }}
+							{{ Lang::get('borrower-profile.Name') }}
 						</label>
 					</td>
 					<td class="col-md-3"  id="name_XXX_parent" colspan="3">
@@ -429,7 +429,7 @@
 				<tr>
 					<td  class="col-md-3">
 						<label class="input-required">
-							{{ Lang::get('Team Member Information') }}
+							{{ Lang::get('borrower-profile.team_member_info') }}
 						</label>
 					</td>
 					<td colspan="3" class="col-md-3" 	id="directors_profile_XXX_parent">
@@ -457,7 +457,7 @@
 				<tr>
 					<td class="col-md-3">
 						<label class="">
-							{{ Lang::get('Identification Document') }}
+							{{ Lang::get('borrower-profile.id_doc') }}
 						</label>
 					</td>
 					<td colspan="3" class="col-md-3" id="identity_card_front_XXX_parent">

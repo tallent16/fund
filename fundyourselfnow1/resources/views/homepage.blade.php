@@ -30,7 +30,7 @@
 			      <div class="carousel-caption">
 			        <div class="table_box">
 			        	<div class="table_inner">
-			        		<h1>Get Help and Funding for Your Idea.<br/>Get Rewarded for Your Investment</h1>
+			        		<h1>{{Lang::get('home.banner_text')}}</h1>
 			        		<a href="#" class="watch_now_btn animated_slow" data-toggle="modal" data-target="#info_video">Watch Now</a>
 			        	</div>
 			        </div>
@@ -41,7 +41,7 @@
 			      <div class="carousel-caption">
 			        <div class="table_box">
 			        	<div class="table_inner">
-			        		<h1>The Doctor's Case Movie Project</h1>
+			        		<h1>{{Lang::get('home.banner_text1')}}</h1>
 			        		@var $excitingurl = '/projectlisting/exciting'
 			        		<a href="{{url('projectlisting/exciting') }}" class="watch_now_btn animated_slow">Featured Project</a>
 			        	</div>
@@ -53,8 +53,8 @@
 			      <div class="carousel-caption">
 			        <div class="table_box">
 			        	<div class="table_inner">
-			        		<h1>Relive what the Russian punk </br>collective experienced </h1>
-			        		<a href="{{url('projectlisting')}}" class="watch_now_btn animated_slow">View Project</a>
+			        		<h1>{{Lang::get('home.banner_text2')}} </br>{{Lang::get('home.banner_text3')}} </h1>
+			        		<a href="{{url('projectlisting')}}" class="watch_now_btn animated_slow">{{Lang::get('home.banner_text4')}}</a>
 			        	</div>
 			        </div>
 			      </div>
@@ -63,11 +63,11 @@
 
 		 <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
            <span class="glyphicon glyphicon-chevron-left"></span>
-           <span class="sr-only">Previous</span>
+           <span class="sr-only">{{Lang::get('home.previous')}}</span>
          </a>
          <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right"></span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{{Lang::get('home.next')}}</span>
          </a>
 		</div>
 		
@@ -104,12 +104,12 @@
 <!-- start projects area here -->
 	<section class="project_area">
 		<div class="container">
-
+         <div  id ="funded"> {{Lang::get('project_detail.funded')}}</div>
 		<!-- feature projects area here -->
 			<article class="project_boxouter">
                             @var $excitingurl = '/projectlisting/exciting'
                              @var $excitingurl = url($excitingurl)
-				<h3>Featured Projects <a href="{{ $excitingurl }}" class="see_all">See All</a></h3>
+				<h3>{{Lang::get('home.featured_project')}} <a href="{{ $excitingurl }}" class="see_all">{{Lang::get('home.see_all')}}</a></h3>
 				<div class="row">
 					@foreach ($home->recommendedList as $loanRow)
 				@include('widgets.homepage_exciting_listing', array('class'=>'', "loanRow"=>$loanRow))
@@ -123,7 +123,7 @@
 			<article class="project_boxouter">
                          @var $popularurl = '/projectlisting/popular'
 				 @var $popularurl = url($popularurl)		
-				<h3>What's Popular<a href="{{ $popularurl }}" class="see_all">See All</a></h3>
+				<h3>{{Lang::get('home.popular_project')}}<a href="{{ $popularurl }}" class="see_all">{{Lang::get('home.see_all')}}</a></h3>
 				<div class="row">
 					@foreach ($home->loanList as $loanRow)
 				@include('widgets.homepage_popular_listing', array('class'=>'', "loanRow"=>$loanRow))
@@ -136,7 +136,7 @@
 			<article class="project_boxouter">
                             @var $exploreurl = "/categories/"
                              @var $exploreurl = url($exploreurl)
-				<h3>Explore Categories <a href="{{ $exploreurl }}" class="see_all">See All</a></h3>
+				<h3>{{Lang::get('home.explore_cat')}} <a href="{{ $exploreurl }}" class="see_all">{{Lang::get('home.see_all')}}</a></h3>
 				<div class="row">
                                   @foreach ($home-> filterIndustryList as $loanRow)
 					<aside class="col-sm-3 col-xs-6">
@@ -167,10 +167,10 @@
 <!-- start get start today area here -->
 	<section class="get_started text-center">
 		<div class="container">
-			<h3>Get Started Today</h3>
-			<p>Discover new crowdfunding campaign or start your own campaign to raise funds.</p>
-			<a href="{{url('projectlisting')}}" class="white_btn border_btn animated_slow">EXPLORE PROJECTS</a>
-			<a href="#" class="white_btn animated_slow">START A PROJECT</a>
+			<h3>{{Lang::get('home.get_start')}}</h3>
+			<p>{{Lang::get('home.discover')}}</p>
+			<a href="{{url('projectlisting')}}" class="white_btn border_btn animated_slow">{{Lang::get('home.explore_project')}}</a>
+			<a href="#" class="white_btn animated_slow">{{Lang::get('home.start_project')}}</a>
 		</div>
 	</section>
 

@@ -12,8 +12,8 @@
 	
 	<script src="{{ asset('assets/summernote/summernote.js')}}" type="text/javascript"></script>
 	
-	<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script> 
-
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDRAUL60x59Me2ISReMzt5UiOLHP8kDFUU&sensor=false&amp;libraries=places"></script>
+	
 	<script src="{{ url('js/jquery.geocomplete.js') }}"></script>
 	<script src="{{ url('js/jquery-filestyle.min.js') }}" type="text/javascript"></script>	
 	

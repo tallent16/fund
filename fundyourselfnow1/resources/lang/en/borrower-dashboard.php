@@ -15,9 +15,13 @@ return [
 
 	'page_heading'			=> 'Dashboard',
 	'annocement_section'	=> 'Announcement Section:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-	'current_loan'			=> 'CURRENT LOAN',
-	'companyname'			=> 'MKM Car Leasing Pvt Ltd',
-	'content'				=> 'Borrower mainly conducts Visual Arts enrichment programs for play-groups, nurseries and kindergartens. Business model has changed since 2010, it started out as a retail outlet selling children art and craft products like Modelling Clay.',
+	'current_project'		 => 'CURRENT Project',
+	'goal'			         => 'Goal',
+	'current_loan'			 => 'Project Created',
+	'project_created'		 => 'Project Created',
+	'amount_raised'		     => 'Ammount Raised',
+	'Upcoming_milestones'    => 'Upcoming Milestones',
+    'Txt'		=> 'Borrower mainly conducts Visual Arts enrichment programs for play-groups, nurseries and kindergartens. Business model has changed since 2010, it started out as a retail outlet selling children art and craft products like Modelling Clay.',
 	'rate'					=> 'Rate',
 	'duration'				=> 'Duration',
 	'amount'				=> 'Amount',
@@ -37,4 +41,5 @@ return [
 	'lastest_status'		=> 'Latest Status',
 	'nov'					=> 'Nov',
 	'paid'					=> 'Paid',
+	'no_milestones'			=> 'No Milestones Found',
 ];

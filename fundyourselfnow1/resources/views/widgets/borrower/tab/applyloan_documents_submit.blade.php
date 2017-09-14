@@ -102,7 +102,7 @@
 					<div class="col-sm-12">	
 						<input type="button" 
 								class="btn verification-button"
-								value="Add a new reward"
+								value="{{ Lang::get('borrower-applyloan.add_reward') }}"
 								onclick="rewardTokenPopupFunc('add',0)" />
 					</div>
 					@endif
@@ -116,14 +116,14 @@
 							<table class="table"  id="reward_token_table">
 								<thead>
 									<tr>
-										<th class="tab-head text-left">Token Title</th>
-										<th class="tab-head text-right">No of Token</th>
-										<th class="tab-head text-left">Token Description</th>
-										<th class="tab-head text-right">Token Limit</th>
-										<th class="tab-head text-left">Estimate Delivery Date</th>
+										<th class="tab-head text-left">{{ Lang::get('borrower-applyloan.token_title') }}</th>
+										<th class="tab-head text-right">{{ Lang::get('borrower-applyloan.no_of_token') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('borrower-applyloan.token_description') }}</th>
+										<th class="tab-head text-right">{{ Lang::get('borrower-applyloan.token_limit') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('borrower-applyloan.estimate_date') }}</th>
 										@if($applyLoanRwdTab	==	"")
 											@if($show_map	==	"yes")
-												<th class="tab-head text-left">Action</th>
+												<th class="tab-head text-left">{{ Lang::get('borrower-applyloan.action') }}</th>
 											@endif
 										@endif
 									</tr>
@@ -216,7 +216,7 @@
 									@else
 										<tr class="no_data_row">
 											<td colspan="5" >
-												No Data Found
+												{{ Lang::get('borrower-applyloan.no_data') }}
 											</td>
 										</tr>
 									@endif
@@ -247,13 +247,13 @@
 							<table class="table"  id="item_token_table">
 								<thead>
 									<tr>
-										<th class="tab-head text-left">Title</th>
-										<th class="tab-head text-right">Pledge amount</th>
-										<th class="tab-head text-left">Description</th>
-										<th class="tab-head text-right">Estimate Delivery Date</th>
-										<th class="tab-head text-right">Reward Limit</th>
+										<th class="tab-head text-left">{{ Lang::get('borrower-applyloan.title') }}</th>
+										<th class="tab-head text-right">{{ Lang::get('borrower-applyloan.Pledge_amount') }}</th>
+										<th class="tab-head text-left">{{ Lang::get('borrower-applyloan.description') }}</th>
+										<th class="tab-head text-right">{{ Lang::get('borrower-applyloan.estimate_date') }}</th>
+										<th class="tab-head text-right">{{ Lang::get('borrower-applyloan.reward_limit') }}</th>
 										@if($show_map	==	"yes")
-											<th class="tab-head text-left">Action</th>
+											<th class="tab-head text-left">{{ Lang::get('borrower-applyloan.action') }}</th>
 										@endif
 									</tr>
 								</thead>
@@ -343,7 +343,7 @@
 									@else
 										<tr class="no_data_row">
 											<td colspan="6" >
-												No Data Found
+												{{Lang::get('borrower-applyloan.no_data')}}
 											</td>
 										</tr>
 									@endif

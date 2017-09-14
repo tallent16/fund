@@ -70,7 +70,7 @@
 				<div class="panel panel-primary panel-container">
 					
 					<div class="panel-heading panel-headsection">					
-						{{ Lang::get('PROJECT INFO') }}
+						{{ Lang::get('borrower-myloans.PROJECT_INFO') }}
 					</div>
 					
 					<div class="col-sm-12 loan-info-wrapper">
@@ -80,7 +80,7 @@
 								<div class="row">	
 									<div class="col-sm-12 col-lg-3"> 														
 										<div class="form-group"><br>	
-											<strong>{{ Lang::get('Project Status') }}</strong>							
+											<strong>{{ Lang::get('borrower-myloans.project_status') }}</strong>							
 											{{ 
 												Form::select('loanstatus_filter', 
 																$BorModMyLoanInfo->filterloanStatusList, 
@@ -93,7 +93,7 @@
 									<div class="col-sm-12 col-lg-3"> 														
 										<div class="form-group">	
 											<button type="submit" class="btn verification-button">
-												{{ Lang::get('Apply Filter') }}			
+												{{ Lang::get('borrower-myloans.apply_filter') }}			
 											</button>
 										</div>	
 									</div>
@@ -113,25 +113,25 @@
 										<tbody>																								
 											
 											<tr>
-												<td>{{ Lang::get('Project Reference') }}</td>														
+												<td>{{ Lang::get('borrower-myloans.pro_refrence') }}</td>														
 											</tr>
 											<tr>
-												<td>{{ Lang::get('Project Title') }}</td>														
+												<td>{{ Lang::get('borrower-myloans.project_title') }}</td>														
 											</tr>
 											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.date_applied') }}</td>												
+												<td>{{ Lang::get('borrower-myloans.date_applied') }}</td>												
 											</tr>
 											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.status') }}</td>												
+												<td>{{ Lang::get('borrower-myloans.Status') }}</td>												
 											</tr>
 											<tr>
-												<td>{{ Lang::get('Backer List') }} %</td>												
+												<td>{{ Lang::get('borrower-myloans.backer_list') }} %</td>												
 											</tr>
 											<tr>
-												<td>{{ Lang::get('borrower-loaninfo.amount_applied') }}</td>												
+												<td>{{ Lang::get('borrower-myloans.ammount_apply') }}</td>												
 											</tr>
 											<tr>
-												<td>{{ Lang::get('Amount Funded') }}</td>												
+												<td>{{ Lang::get('borrower-myloans.ammount_funded') }}</td>												
 											</tr> 
 											
 											<tr>
@@ -218,7 +218,7 @@
 																||	($loanRow->status	==	LOAN_STATUS_BIDS_ACCEPTED) )
 																<a href="{{ url ($bid_url) }}"
 																	class="btn button-grey">
-																	{{ Lang::get('View All Backers') }}
+																	{{ Lang::get('borrower-myloans.view_backer') }}
 																</a>														
 															@else
 																--
@@ -257,7 +257,7 @@
 			
 						@else
 							<p>
-								No Projects found
+								{{ Lang::get('borrower-myloans.no_project') }}
 							</p>
 						@endif
 					
@@ -282,5 +282,5 @@
 											))
 
 
-@endsection  
-@stop
+   @endsection  
+   @stop
