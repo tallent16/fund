@@ -166,7 +166,7 @@
 						@foreach($BorModLoan->reward_details as $val)
 						<div class="sidebar_box">
 							<h4>{{$val['token_title']}}<span><i class="fa fa-tag" aria-hidden="true"></i> {{ Round($val['token_cost'],0)}}  {{ Lang::get('project_detail.token_require') }}</span></h4>
-							<p>Lang::get('project_detail.recieve_text') }}</p>
+							<p><strong>{{ Lang::get('project_detail.recieve_text') }}</strong></p>
 							<ul>
 								{{$val['token_description']}}
 							</ul>
