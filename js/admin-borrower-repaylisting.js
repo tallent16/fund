@@ -1,5 +1,5 @@
 $(document).ready(function (){  
-	
+	// test push check
 	 $('div.ui-button').on('dialogclose', function(event) {
 		alert('closed');SS
 	});
