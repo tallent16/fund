@@ -239,8 +239,35 @@ class InvestorProfileModel extends TranWrapper {
 		if(Auth::user()->email	!=	$postArray['email']) {
 			$email = Auth::user()->email;
 			$updated_email	=	$postArray['email'];
+			$updateEmailToken = md5($postArray['email'].time());
 		} else {
 			$updated_email	= '';
+			$updateEmailToken = '';
+		}
+		$slug_name	=	"updated_email_verified";
+		
+		if($updated_email != '' && $updated_email != $email){
+			$moneymatchSettings = $this->getMailSettingsDetail();
+			$fields = array(
+				'[borrower_firstname]',
+				'[borrower_lastname]',
+				'[signup_email]',
+				'[investor_firstname]', 
+				'[investor_lastname]', 
+				'[confirmation_url]',
+				'[application_name]'
+				);
+
+			$replace_array = array(
+				$postArray['firstname'], 
+				$postArray['lastname'], 
+				$postArray['email'], 
+				$postArray['firstname'], 
+				$postArray['lastname'],
+				url()."/changeEmail/".$updateEmailToken, 
+				$moneymatchSettings[0]->application_name
+				);
+			$this->sendMailByModule($slug_name,$postArray['email'],$fields,$replace_array);
 		}
 		
 		$dataUserArray 	= 	array(	'firstname' 					=> ($firstname!="")?$firstname:null,
@@ -248,6 +275,7 @@ class InvestorProfileModel extends TranWrapper {
 									'username'						=> ($displayname!="")?$displayname:null,
 									'email'							=> $email,
 									'updated_email'					=> $updated_email,
+									'updated_email_token'			=> $updateEmailToken,
 									'mobile' 						=> ($mobile!="")?$mobile:null);
 									
 									

@@ -366,7 +366,7 @@ function noRowFoundItemTokenFunc() {
 
 
 
-/*function addNewMilestoneRow() {
+function addNewMilestoneRow() {
 	
 	htmlTemplate 	= "";
 	htmlTemplate 	= $("#milestonerow_template").html();
@@ -401,7 +401,7 @@ function noRowFoundItemTokenFunc() {
 	if($("#milestone-table .milestone_rows").length	>=	3) {
 		$("#add_milestone_row").hide();
 	}
-}*/
+}
 
 function addNewSocialLinkRow() {
 	
@@ -798,7 +798,7 @@ function calculateCostOfTokenFunc() {
 			</tr>		
 		</table>
 	</div>
-	<!-- <div id="milestone_template">
+	 <div id="milestone_template">
 		<table id="dummy_table">
 			<tr  id="milestonerow_template">
 				<td>
@@ -828,14 +828,14 @@ function calculateCostOfTokenFunc() {
 						</div>													
 					</div>			 
 				</td>
-				<td>
+				<!-- <td>
 					<input 	type="text" 
 							class="form-control select-width amount-align text-right "
 							name="milstone_row[disbursed][]"
 							id="milstone_disbursed_XXX"
 							decimal="0"
 							value="" style="float:right">	
-				</td>
+				</td> -->
 				<td class="text-center">
 					<a 	href="javascript:void(0);"
 								onclick="delMilestoneRow(XXX)"
@@ -848,7 +848,7 @@ function calculateCostOfTokenFunc() {
 			</tr>
 		</table>
 	</div>
- -->
+ 
 	<div id="link_template">
 		<table id="dummy_table">
 			<tr  id="linksrow_template">
@@ -1038,7 +1038,7 @@ function calculateCostOfTokenFunc() {
 			</tr>		
 		</table>
 	</div>
-	<!-- <div id="milestone_template">
+	 <div id="milestone_template">
 		<table id="dummy_table">
 			<tr  id="milestonerow_template">
 				<td>
@@ -1068,14 +1068,14 @@ function calculateCostOfTokenFunc() {
 						</div>													
 					</div>			 
 				</td>
-				<td>
+				<!-- <td>
 					<input 	type="text" 
 							class="form-control select-width amount-align text-right "
 							name="milstone_row[disbursed][]"
 							id="milstone_disbursed_XXX"
 							decimal="0"
 							value="" style="float:right">	
-				</td>
+				</td> -->
 				<td class="text-center">
 					<a 	href="javascript:void(0);"
 								onclick="delMilestoneRow(XXX)"
@@ -1088,7 +1088,7 @@ function calculateCostOfTokenFunc() {
 			</tr>
 		</table>
 	</div>
- -->
+ 
 	<div id="link_template">
 		<table id="dummy_table">
 			<tr  id="linksrow_template">

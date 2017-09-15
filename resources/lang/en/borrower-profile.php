@@ -99,9 +99,9 @@ return [
 	'Tourism'	            => 'Tourism',
 	'Holiday'	            => 'Holiday',
   'Submit for varification' =>"Submit for varification",
-	' Profile'              =>'Profile',
-	' team_info'              =>'TEAM INFO',
-	' Submitted for verification'              =>'Submitted for verification',
+	'Profile'               =>'Profile',
+	'team_info'             =>'TEAM INFO',
+	'Submitted for verification'              =>'Submitted for verification',
 
 	
 	

@@ -49,7 +49,7 @@ return [
 	'comment'				=> 'Comments',
 	'select'				=> 'Select',
 	'select_director' 		=> 'Please Select Directors',
-	'director_name'			=> 'Director \'s Name',
+	'director_names'			=> 'Director \'s Name',
 	'director_name'			=> 'Director Name',
 	'director_info'			=> 'Director \'s Information',
 	'age'					=> 'Age',
@@ -99,9 +99,9 @@ return [
 	'Tourism'	            => 'Tourism',
 	'Holiday'	            => 'Holiday',
   'Submit for varification' =>"Submit for varification",
-	' Profile'              =>'Profile',
-	' team_info'              =>'TEAM INFO',
-	' Submitted for verification'              =>'Submitted for verification',
+	'Profile'               =>'Profile',
+	'team_info'             =>'TEAM INFO',
+	'Submitted for verification'              =>'Submitted for verification',
 
 	
 	

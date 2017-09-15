@@ -7,7 +7,7 @@
 				var total_fund = "<?php echo $loanRow->apply_amount ?>";	
 				var    loan_id = "<?php  echo $loanRow->loan_id ?>";
 					my_values(eth_bal,contract_address,total_fund,loan_id);
-
+                
 	   // var contract_address = "0xB1021477444C6566509e1b80d2C99E9603A31C47";
 	   
 		// 
@@ -35,8 +35,8 @@
                      var percent = total_eth/total_fund;
                                    
                      var final_per = parseFloat(percent*100).toFixed(2);
-                     
-                  $('.total_per'+loan_id).html(final_per+' % Funded')
+                     var funded  = "{{Lang::get('project_detail.funded')}}";
+                  $('.total_per'+loan_id).html(final_per+' % '+funded)
                 $('#'+loan_id).html('<div style="width:'+final_per+'%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="42" role="progressbar" class="progress-bar progress-bar-danger"><span class="sr-only">'+final_per+'% Complete</span></div>')
 
 			});	
@@ -60,7 +60,7 @@
 										
 									</div>
 									<p class="pull-left total_per<?php  echo $loanRow->loan_id; ?>"></p>
-									<p class="pull-right">{{$loanRow->days_to_go}} Days Left</p>
+									<p class="pull-right">{{$loanRow->days_to_go}} {{ Lang::get('project_detail.day_left') }}</p>
 									<div class="clearfix"></div>
 								</div>
 							</div>

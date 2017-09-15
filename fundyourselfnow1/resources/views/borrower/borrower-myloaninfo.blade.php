@@ -53,7 +53,7 @@
                                 <h3>
               <i class="fa fa-google-wallet fa-fw"></i>
 &nbsp;
-            My Projects
+          {{ Lang::get('borrower-myloans.my_project') }}
           </h3>
                             </div>
                             <!-- /.main-bar -->

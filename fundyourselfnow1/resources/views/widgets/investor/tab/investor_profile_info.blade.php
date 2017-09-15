@@ -17,7 +17,7 @@
 					
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">	{{ Lang::get('First Name') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.first_name') }}</label>												
 						</div>											
 						<div class="col-xs-12 col-sm-7 col-lg-3">													
 								<input type="text" name="firstname" 
@@ -26,7 +26,7 @@
 						</div>
 						
 						<div class="col-xs-12 col-sm-5 col-lg-3">										
-							<label class="input-required">	{{ Lang::get('Last Name') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.last_name') }}</label>												
 						</div>											
 						<div class="col-xs-12 col-sm-7 col-lg-3">												
 								<input type="text" name="lastname" 
@@ -39,7 +39,7 @@
 					
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">	{{ Lang::get('Display Name') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.dispaly_name') }}</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3">													
@@ -55,7 +55,7 @@
 						</div>
 						
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">	{{ Lang::get('Email') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.email') }}</label>												
 						</div>											
 						<div class="col-xs-12 col-sm-7 col-lg-3">												
 							<input type="text" 
@@ -68,7 +68,7 @@
 									class="control-label label_email_error" 
 									></label>
 							@if(!empty($InvPrfMod->updated_email))
-								<h5 class="text-danger" id="upd_email">This email is not varified.</h5>
+								<h5 class="text-danger" id="upd_email">	{{ Lang::get('investor-profile.not_varified') }}</h5>
 							@endif
 						</div>						
 					</div>
@@ -78,7 +78,7 @@
 				
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">										
-							<label class="input-required">	{{ Lang::get('Mobile Number') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.mobile_number') }}</label>												
 						</div>											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="mobile_parent" >												
 								<input type="text" 
@@ -91,7 +91,7 @@
 						</div>
 						
 						<div class="col-xs-12 col-sm-5 col-lg-3" >									
-							<label class="input-required">	{{ Lang::get('Date of Birth') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.dob') }}</label>												
 						</div>											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="date_of_birth_parent">												
 							<div class="controls">
@@ -117,14 +117,14 @@
 					<div class="row">
 					
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label  class="input-required">	{{ Lang::get('Location by Country') }}</label>												
+							<label  class="input-required">	{{ Lang::get('investor-profile.location') }}</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3">							
 							{{ Form::select('nationality', $InvPrfMod->allTransList, $InvPrfMod->nationality_code, ["class" => "selectpicker required"]) }} 
 						</div>
 							<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">	{{ Lang::get('Gender') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.Gender') }}</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3">													
@@ -133,14 +133,14 @@
 										name="gender" 
 										value="1" 
 										{{$gender_male}}>
-								{{ Lang::get('Male')}}
+								{{ Lang::get('investor-profile.male')}}
 							</label>
 							<label class="radio-inline">
 								<input type="radio" 
 										name="gender" 
 										value="2" 
 										{{$gender_female}}>
-								{{ Lang::get('Female')}}
+								{{ Lang::get('investor-profile.Female')}}
 							</label>
 						</div>
 						
@@ -148,7 +148,7 @@
 					
 					<div class="row">		
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">	{{ Lang::get('NRIC Number') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.NRIC') }}</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="nric_number_parent">													
@@ -173,7 +173,7 @@
 										>								
 						</div> -->
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
-							<label class="input-required">	{{ Lang::get('Ethereum Address.') }}</label>												
+							<label class="input-required">	{{ Lang::get('investor-profile.eth_address') }}</label>												
 						</div>
 											
 						<div class="col-xs-12 col-sm-7 col-lg-3" >													
@@ -189,12 +189,12 @@
 					
 					<hr>
 
-					<!---------------------------row--6---------------------->	
+					
 					<!---------------------------row--7---------------------->	
 					<div class="row">
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="input-required">
-								{{ Lang::get('Copy of ID-card - Front') }}
+								{{ Lang::get('investor-profile.copy_of_id') }}
 							</label>												
 						</div>									
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="identity_card_image_front_parent">									
@@ -222,7 +222,7 @@
 
 						<div class="col-xs-12 col-sm-5 col-lg-3">
 							<label class="input-required">
-								{{ Lang::get('Copy of ID-card - Back') }}
+								{{ Lang::get('investor-profile.copy_of_id_back') }}
 							</label>												
 						</div>
 											
@@ -252,7 +252,7 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-5 col-lg-3">											
 							<label class="input-required">
-								{{ Lang::get('Address Proof Copy') }}
+								{{ Lang::get('investor-profile.address_proof_copy') }}
 							</label>												
 						</div>									
 						<div class="col-xs-12 col-sm-7 col-lg-3" id="address_proof_image_parent"	>									

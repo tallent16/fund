@@ -156,4 +156,27 @@ class RegistrationController extends MoneyMatchController {
 		}		
 		return redirect('auth/login'); 
 	}
+
+	//checks the Change Email
+	public function changeEmailAction($updateEmailToken) {
+		
+		if(!empty($updateEmailToken) && isset($updateEmailToken)) {
+			$code	=	$updateEmailToken;
+			$result	=	$this->user->checkUpdateEmailToken($code);
+
+			if($result) {
+
+				$this->user->updateEmail($code);
+				$activationMsg	=	$this->user->getSystemMessageBySlug("updated_email_verified");
+				return redirect('auth/login')->with("activation",$activationMsg);				
+
+			}else{
+					$activationMsg	=	$this->user->getSystemMessageBySlug("updated_email_error");
+					return redirect('auth/login')->with("activation",$activationMsg);					
+			}
+
+		}
+		
+		return redirect('auth/login'); 
+	}
 }

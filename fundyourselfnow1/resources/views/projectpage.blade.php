@@ -31,7 +31,7 @@
 	<form>
 		<div class="row">
 			<div class="col-lg-1 col-sm-2"> 	
-				 <label>{{ Lang::get('Filter by') }}</label>	
+				 <label>{{ Lang::get('project_detail.filter_by') }}</label>	
 			</div>
 			<div class="col-lg-4 col-sm-3"> 																			
 				<div class="form-group">	
@@ -40,7 +40,7 @@
 				</div>							
 			</div>
 			<div class="col-lg-1 col-sm-2"> 	
-				 <label>{{ Lang::get('Sort by') }}</label>
+				 <label>{{ Lang::get('project_detail.sort_by') }}</label>
 			</div>			
 			<div class="col-lg-4 col-sm-3"> 				
 				<div class="form-group">		

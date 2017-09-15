@@ -40,9 +40,10 @@
 			<div class="tabs_area">
 				<div class="container">
 					<ul class="nav nav-tabs" role="tablist">
-					    <li role="presentation" class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Project Info</a></li>
-					    <li role="presentation"><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Company Info</a></li>
-					    <li role="presentation"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">Latest News</a></li>
+					   <li role="presentation" class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">
+					    {{ Lang::get('project_detail.project_info') }}</a></li>
+					    <li role="presentation"><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">{{ Lang::get('project_detail.company_info') }}</a></li>
+					    <li role="presentation"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">{{ Lang::get('project_detail.latest_news') }}</a></li>
 					  </ul>
 				</div>
 			</div>
@@ -62,10 +63,10 @@
 						    		<div class="owner_imagebox">
 						    			<img src="images/user.jpg" alt="" class="img-circle" />
 						    			<h4 style="color: #000;">{{$cinfo['name']}}</h4>
-						    			<h5>Age: {{$cinfo['age']}}</h5>
-						    			<h5>Experience :{{$cinfo['overall_experience']}}</h5>
+						    			<h5>{{ Lang::get('project_detail.age') }}: {{$cinfo['age']}}</h5>
+						    			<h5>{{ Lang::get('project_detail.Experience') }} :{{$cinfo['overall_experience']}}</h5>
 						    		</div>
-						    		<h4>Team Info</h4>
+						    		<h4>{{ Lang::get('project_detail.team_info') }}</h4>
 						    		<p>{{$cinfo['directors_profile']}}</p>
 						    	</div>
 
@@ -75,14 +76,14 @@
 						    </div>
 						    <div role="tabpanel" class="tab-pane" id="tab3">
 						    	<article class="updates_box">
-                    <h5 class="text-uppercase"><span><img src="{{ url('assets/images/icon_f.png') }}" alt="" /></span>project updates</h5>
+                    <h5 class="text-uppercase"><span><img src="{{ url('assets/images/icon_f.png') }}" alt="" /></span>{{ Lang::get('project_detail.pro_updates') }}</h5>
                     <ul>
                      @if(!empty($project_update))
                      @foreach($project_update as $pu)
                       <li>
                         <img src="{{url().'/'.$LoanDetMod->loan_image_url}}" alt="" class="updates_userimg" />
                         <p>{{$pu->update_description}}</p>
-                        <span class="update_date"><a>Posted on <?php   echo date("M j, Y", strtotime($pu->date)); ?></a></span>
+                        <span class="update_date"><a>{{ Lang::get('project_detail.post') }} <?php   echo date("M j, Y", strtotime($pu->date)); ?></a></span>
                       </li>
                       @endforeach
                      @endif
@@ -91,13 +92,13 @@
                   </article>
 
                   <article class="updates_box twitter_updates_box">
-                    <h5 class="text-uppercase"><span><i style="color:#1da1f2; font-size:18px;" class="fa fa-twitter" aria-hidden="true"></i></span>Twitter</h5>
+                    <h5 class="text-uppercase"><span><i style="color:#1da1f2; font-size:18px;" class="fa fa-twitter" aria-hidden="true"></i></span>{{ Lang::get('project_detail.Twitter') }} </h5>
                      <div id=all_tweets></div>
                    
                   </article>
 
                   <article class="updates_box twitter_updates_box">
-                    <h5 class="text-uppercase"><span><i style="color:#3b5998; font-size:18px;" class="fa fa-facebook-square" aria-hidden="true"></i></span>Facebook</h5>
+                    <h5 class="text-uppercase"><span><i style="color:#3b5998; font-size:18px;" class="fa fa-facebook-square" aria-hidden="true"></i></span>{{ Lang::get('project_detail.Facebook') }} </h5>
                     <ul id="fb">
                     
                     </ul>
@@ -126,13 +127,46 @@
 				@endif
 
 			<div> </div> -->
+             <h4 class="sidebar_title">{{ Lang::get('project_detail.Milestones') }}</h4>
+						<div class="sidebar_box">
+						@if(!empty($BorModLoan->mileStoneArry))
+							<table cellspacing="0" cellpadding="0">
 
-						<h4 class="sidebar_title">Rewards</h4>
+								<thead>
+                                     
+				
+									<tr>
+										<th>Date</th>
+										<th>Name</th>
+									<!-- 	<th>Release %</th> -->
+									</tr>
+								</thead>
+								<tbody>
+										@foreach($BorModLoan->mileStoneArry as $val)
+									<tr>
+										<td>{{$val['milestone_date']}}</td>
+										<td>{{$val['milestone_name']}}</td>
+									<?php /*	<!-- <td>{{$val['milestone_disbursed']}}</td> -->*/ ?>
+
+									</tr>
+									@if($val['milestone_date'] ==''  && $val['milestone_name']=='' && $val['milestone_disbursed'] =='')
+							<div class="row text-center">
+									{{ Lang::get('project_detail.no_milestone') }}
+							</div>
+						@endif
+									
+					@endforeach
+				
+				@endif	
+								</tbody>
+							</table>
+						</div>
+							<h4 class="sidebar_title">{{ Lang::get('project_detail.rewards') }}</h4>
 						@if($BorModLoan->reward_details)
 						@foreach($BorModLoan->reward_details as $val)
 						<div class="sidebar_box">
-							<h4>{{$val['token_title']}}<span><i class="fa fa-tag" aria-hidden="true"></i> {{ Round($val['token_cost'],0)}} tokens required</span></h4>
-							<p>You will receive:</p>
+							<h4>{{$val['token_title']}}<span><i class="fa fa-tag" aria-hidden="true"></i> {{ Round($val['token_cost'],0)}}  {{ Lang::get('project_detail.token_require') }}</span></h4>
+							<p>Lang::get('project_detail.recieve_text') }}</p>
 							<ul>
 								{{$val['token_description']}}
 							</ul>
@@ -141,7 +175,7 @@
 								<a href="#">
 									<div class="table_box">
 										<div class="table_inner">
-											<i class="fa fa-link" aria-hidden="true"></i><br/><br/>Select Reward
+											<i class="fa fa-link" aria-hidden="true"></i><br/><br/>{{ Lang::get('project_detail.select_reward') }}
 										</div>
 									</div>	
 								</a>
@@ -150,7 +184,7 @@
 						</div>
                         @endforeach		
 				@else	<div class="row text-center"style="border:1px solid #ccc;padding:5px;">
-						No Rewards Found
+						{{ Lang::get('project_detail.no_reward') }} 
 					</div>
 				@endif
 

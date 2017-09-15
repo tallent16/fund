@@ -50,7 +50,7 @@
 										<tr>
 											<td class="col-md-3">
 												<label class="input-required">
-													{{ Lang::get('Name') }}
+													{{ Lang::get('borrower-profile.Name') }}
 												</label>
 											</td>
 											<td class="col-md-3" id="name_{{$i}}_parent" colspan="3">
@@ -99,7 +99,7 @@
 										<tr>
 											<td class="col-md-3">
 												<label class="input-required">
-													{{ Lang::get('Team Member Information') }}
+													{{ Lang::get('borrower-profile.team_member_info') }}
 												</label>
 											</td>
 											<td colspan="3" class="col-md-3"  id="directors_profile_{{$i}}_parent">
@@ -129,7 +129,7 @@
 										<tr>
 											<td class="col-md-3">
 												<label class="">
-													{{ Lang::get('Identification Document') }}
+													{{ Lang::get('borrower-profile.id_doc') }}
 												</label>
 											</td>
 											<td colspan="3" class="col-md-3" id="identity_card_front_{{$i}}_parent">
@@ -204,20 +204,7 @@
 							{{ Lang::get('borrower-profile.add') }}
 						</button>											
 					</div>
-					<div class="text-center pull-right">
-						<ul class="pagination">
-							<li>
-								<a href="javascript:void(0)" id="prev">
-									<i class="fa fa-chevron-circle-left"></i>
-								</a>
-							</li>
-							<li>
-								<a href="javascript:void(0)" id="next">
-									<i class="fa fa-chevron-circle-right"></i>
-								</a>
-							</li>	
-						</ul>
-					</div>				
+									
 						</br> 						
 				</div><!--row-->						
 				</div>	<!--col-10 end-->		    

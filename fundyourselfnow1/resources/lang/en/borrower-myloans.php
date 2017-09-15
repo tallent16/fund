@@ -67,4 +67,6 @@ return [
 	'Backer #1'                    =>    'Backer #1',
 	'Backer #2'                    =>    'Backer #2',
 	'no_project'					=> 'No Projects found',
+	'my_project'					=> 'My Projects',
+
 ];
