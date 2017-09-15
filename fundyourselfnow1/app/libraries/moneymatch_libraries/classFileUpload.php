@@ -4,6 +4,8 @@ use Config;
 use Storage;
 
 class FileUpload {
+
+	const S3_URI = "s3://devfyn/";
 	
 	public function storeFile ($destinationPath,$file,$prefix='') {
 		
@@ -14,7 +16,8 @@ class FileUpload {
 			$newfilename 			= 	$prefix.$newfilename;
 			$fullDestinationPath	=	$destinationPath."/".$newfilename;
 			$disk					=	Storage::disk('s3');
-			$cmd = "s3cmd put ./img/404.jpg s3://devfyn/".$fullDestinationPath." 2>&1";
+			$file_path = $file->getPathName();
+			$cmd = "s3cmd put $file_path ".self::S3_URI.$fullDestinationPath." 2>&1";
 			$result = shell_exec($cmd);
 			$disk->put($fullDestinationPath,file_get_contents($file));
 			$disk->setVisibility($fullDestinationPath, 'public');
@@ -61,7 +64,7 @@ class FileUpload {
 		$s3BucketEnabled	=	Config::get("moneymatch_settings.s3_bucket_enabled");
 		if ($s3BucketEnabled) {
 			$disk					=	Storage::disk('s3');
-			$cmd = "s3cmd del s3://devfyn/".$filePath." 2>&1";
+			$cmd = "s3cmd del ".self::S3_URI.$filePath." 2>&1";
 			$result = shell_exec($cmd);
 			if(strpos($result, 'ERROR') !== false)
 				$disk->delete(trim($filePath));
