@@ -602,14 +602,14 @@
 												</div>			
 											</td>
 											<?php /*
-											<!-- <td>
+											 <td>
 												<input 	type="text" 
 														class="form-control select-width amount-align  text-right "
 														name="milstone_row[disbursed][]"
 														id="milstone_disbursed_{{$i}}"
 														decimal="0"
 														value="{{$mileRow['milestone_disbursed']}}" style="float: right;">	
-											</td> -->
+											</td> 
 											*/ ?>
 											@if($applyLoanTab	==	"")
 												<td class="text-center">

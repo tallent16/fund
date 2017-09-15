@@ -165,10 +165,10 @@
 							{{ Lang::get('Upcoming Milestones')	}}	
 						</div>
 						
+						@if(count($BorDashMod->milestones_rs) > 0)
 						<div class="table-responsive">                         
 							<table class="table text-left">
 								<tbody class="table-verticalscroll">
-									@if(count($BorDashMod->milestones_rs) > 0)
 									@foreach($BorDashMod->milestones_rs as $milestonesrow)										
 									<tr>											
 										<td style="width:60%">									
@@ -179,25 +179,14 @@
 											{{"[".$milestonesrow->milestone_date."] "}} 
 										</td>
 										<td class="text-right" style="width:30%">								
-											{{$milestonesrow->milestone_disbursed}}																
+										<?php /*{{$milestonesrow->milestone_disbursed}}*/	?>															
 										</td>	
 									</tr>
-										@endforeach	
-								@else
-									<tr>
-										<td>				
-											{{"No Milestones Found"}}
-										</td>
-									</tr>
-								@endif	
-										
-									
-										
-									
+										@endforeach								
 								</tbody>
 							</table>
 						</div>
-						
+						@endif
 					</div>
 				</div>
 				

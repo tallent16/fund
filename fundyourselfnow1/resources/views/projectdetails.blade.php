@@ -127,6 +127,7 @@
 				@endif
 
 			<div> </div> -->
+			<div id="milestones_table">
              <h4 class="sidebar_title">{{ Lang::get('project_detail.Milestones') }}</h4>
 						<div class="sidebar_box">
 						@if(!empty($BorModLoan->mileStoneArry))
@@ -149,17 +150,18 @@
 									<?php /*	<!-- <td>{{$val['milestone_disbursed']}}</td> -->*/ ?>
 
 									</tr>
-									@if($val['milestone_date'] ==''  && $val['milestone_name']=='' && $val['milestone_disbursed'] =='')
-							<div class="row text-center">
-									{{ Lang::get('project_detail.no_milestone') }}
-							</div>
+									@if($val['milestone_date'] ==''  && $val['milestone_name']=='' /*&& $val['milestone_disbursed'] ==''*/)
+							<script type="text/javascript" language="javascript">
+								document.getElementById("milestones_table").style.display='none';
+							</script>
 						@endif
 									
 					@endforeach
 				
 				@endif	
-								</tbody>
+							</tbody>
 							</table>
+						</div>
 						</div>
 							<h4 class="sidebar_title">{{ Lang::get('project_detail.rewards') }}</h4>
 						@if($BorModLoan->reward_details)
