@@ -66,7 +66,7 @@ class FileUpload {
 			$disk					=	Storage::disk('s3');
 			$cmd = "s3cmd del ".self::S3_URI.$filePath." 2>&1";
 			$result = shell_exec($cmd);
-			if(strpos($result, 'ERROR') !== false)
+			if(!(strpos($result, 'delete: ') !== false))
 				$disk->delete(trim($filePath));
 			return;
 		} else {
